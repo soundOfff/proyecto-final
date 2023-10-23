@@ -21,6 +21,7 @@ jobs:
             cd /home/ubuntu/velo-legal
             git pull
             docker stop $(docker ps -aq)
+            cd back
             docker build -t velo-legal-api .
             docker run -d -p 80:80 --name velo-legal-api velo-legal-api 
             rm -rf vendor

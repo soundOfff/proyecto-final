@@ -26,7 +26,9 @@ jobs:
         run: |
           touch .env
           echo FOO=bar >> .env
-          cat .env          
+          cat .env 
+      - name: cd in front dir
+        run: cd front         
       - name: npm install
         run: npm install
       - name: build
@@ -40,4 +42,4 @@ jobs:
       - name: deploy
         run: |
           aws s3 rm s3://${{ env.S3_BUCKET }}/ --recursive
-          aws s3 cp ./dist s3://${{ env.S3_BUCKET }} --cache-control 'public, max-age=31104000' --recursive
+          aws s3 cp ./.next/server/app s3://${{ env.S3_BUCKET }} --cache-control 'public, max-age=31104000' --recursive

@@ -20,6 +20,9 @@ jobs:
             ssh-add /home/ubuntu/.ssh/id_rsa
             cd /home/ubuntu/velo-legal
             git pull
+            docker stop $(docker ps -aq)
+            docker build -t velo-legal-api .
+            docker run -d -p 80:80 --name velo-legal-api velo-legal-api 
             rm -rf vendor
             docker exec velo-legal-api php composer.phar install
             docker exec velo-legal-api php artisan migrate

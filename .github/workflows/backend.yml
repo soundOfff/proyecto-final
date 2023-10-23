@@ -1,0 +1,25 @@
+name: Backend Pipeline
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Connect to server and deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          script: |
+            eval $(ssh-agent)
+            ssh-add /home/ubuntu/.ssh/id_rsa
+            cd /home/ubuntu/velo-legal
+            git pull
+            rm -rf vendor
+            composer install
+            php artisan migrate

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('invoice_id')->constrained();
             $table->foreignId('contact_id')->constrained();
             $table->foreignId('staff_id')->constrained('staffs');
-            $table->morph('fileable');
+            $table->morphs('fileable');
 
             $table->string('attachment_key');
             $table->dateTime('date_added');

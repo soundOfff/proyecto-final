@@ -11,7 +11,7 @@ COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 WORKDIR /srv/app
 
-RUN apt-get update && apt-get install -y libonig-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libonig-dev git && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install mbstring pdo pdo_mysql \ 
     && a2enmod rewrite negotiation \

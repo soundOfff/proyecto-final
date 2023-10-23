@@ -1,0 +1,43 @@
+name: FrontEnd Pipeline
+on:
+  push:
+    branches: 
+      - main
+concurrency: cloudfront-deploys
+jobs:
+  cloudfront-deploys:
+    name: cloudfront-deploys
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '18.18.2'
+      S3_BUCKET: 'velo-legal-website'
+      AWS_REGION: 'us-east-1'
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo FOO=bar >> .env
+          cat .env          
+      - name: npm install
+        run: npm install
+      - name: build
+        run: npm run build
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: deploy
+        run: |
+          aws s3 rm s3://${{ env.S3_BUCKET }}/ --recursive
+          aws s3 cp ./dist s3://${{ env.S3_BUCKET }} --cache-control 'public, max-age=31104000' --recursive

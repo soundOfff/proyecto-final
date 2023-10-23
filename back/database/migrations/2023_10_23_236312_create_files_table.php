@@ -10,14 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('project_files', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('invoice_id')->constrained();
             $table->foreignId('contact_id')->constrained();
+            $table->foreignId('staff_id')->constrained('staffs');
+            $table->morph('fileable');
 
+            $table->string('attachment_key');
             $table->dateTime('date_added');
-            $table->text('description');
             $table->string('external');
             $table->text('external_link');
             $table->string('name');
@@ -34,6 +35,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_files');
+        Schema::dropIfExists('files');
     }
 };

@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('project_activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id');
-            $table->foreignId('staff_id');
-            $table->foreignId('contact_id');
+            $table->foreignId('project_id')->constrained();
+            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('contact_id')->constrained();
 
             $table->text('additional_data');
             $table->dateTime('date_added');

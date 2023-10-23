@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('project_id');
-            $table->foreignId('staff_id');
-            $table->foreignId('user_id');
+            $table->foreignId('project_id')->constrained();
+            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('user_id')->constrained();
 
             $table->boolean('active');
             $table->boolean('contract_emails');

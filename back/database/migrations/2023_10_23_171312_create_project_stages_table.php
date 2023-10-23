@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('project_stages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id');
-            $table->foreignId('staff_id');
+            $table->foreignId('project_id')->constrained();
+            $table->foreignId('staff_id')->constrained('staffs');
 
             $table->dateTime('start_timestamp');
             $table->dateTime('end_timestamp');

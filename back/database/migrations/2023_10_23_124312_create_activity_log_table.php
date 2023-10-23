@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('project_settings', function (Blueprint $table) {
+        Schema::create('activity_log', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained();
+            $table->foreignId('staff_id')->constrained('staffs');
 
-            $table->string('name');
-            $table->text('value');
+            $table->dateTime('date');
+            $table->string('description');
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_settings');
+        Schema::dropIfExists('activity_log');
     }
 };

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('staffs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id');
+            $table->foreignId('role_id')->constrained();
 
             $table->integer('active');
             $table->integer('admin');

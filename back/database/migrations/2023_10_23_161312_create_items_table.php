@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_group_id');
+            $table->foreignId('item_group_id')->constrained();
 
             $table->mediumText('description');
             $table->text('long_description');

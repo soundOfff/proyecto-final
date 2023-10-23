@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('contact_permissions', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('permission_id');
-            $table->foreignId('user_id');
+            $table->foreignId('permission_id')->constrained();
+            $table->foreignId('user_id')->constrained();
         });
     }
 

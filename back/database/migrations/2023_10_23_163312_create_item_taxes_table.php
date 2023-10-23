@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('item_taxes', function (Blueprint $table) {
             $table->id();
             $table->morphs('item_taxable');
-            $table->foreignId('item_id');
+            $table->foreignId('item_id')->constrained();
 
             $table->string('name');
             $table->decimal('rate');

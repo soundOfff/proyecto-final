@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id');
+            $table->foreignId('staff_id')->constrained('staffs');
 
             $table->integer('creator');
             $table->dateTime('date');

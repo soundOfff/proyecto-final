@@ -10,12 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('project_settings', function (Blueprint $table) {
+        Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained();
-
             $table->string('name');
-            $table->text('value');
         });
     }
 
@@ -24,6 +21,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_settings');
+        Schema::dropIfExists('permissions');
     }
 };

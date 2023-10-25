@@ -41,9 +41,12 @@ import BasicLayout from "/pagesComponents/authentication/components/BasicLayout"
 // Images
 import bgImage from "/assets/images/bg-sign-in-basic.jpeg";
 
-function Basic() {
-  const [rememberMe, setRememberMe] = useState(false);
+export async function getStaticProps() {
+  return { props: { NEXTAUTH_URL: process.env.NEXTAUTH_URL } };
+}
 
+function Basic({ NEXTAUTH_URL }) {
+  const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   return (
@@ -96,7 +99,14 @@ function Basic() {
                 variant="body1"
                 color="white"
               >
-                <GoogleIcon onClick={() => signIn("google")} color="inherit" />
+                <GoogleIcon
+                  onClick={() =>
+                    signIn("google", {
+                      callbackUrl: NEXTAUTH_URL,
+                    })
+                  }
+                  color="inherit"
+                />
               </MDTypography>
             </Grid>
           </Grid>

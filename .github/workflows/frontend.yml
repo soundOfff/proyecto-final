@@ -1,45 +1,28 @@
-name: FrontEnd Pipeline
+name: Frontend Pipeline
 on:
   push:
-    branches: 
-      - main
-concurrency: cloudfront-deploys
+    branches: [ main ]
+
 jobs:
-  cloudfront-deploys:
-    name: cloudfront-deploys
-    timeout-minutes: 10
+  build:
+    name: Deploy
     runs-on: ubuntu-latest
-    env:
-      NODE_VERSION: '18.18.2'
-      S3_BUCKET: 'velo-legal-website'
-      AWS_REGION: 'us-east-1'
+    if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
+      - name: Connect to server and deploy
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          fetch-depth: 0
-      - name: Install node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: 'Create env file'
-        run: |
-          touch .env
-          echo FOO=bar >> .env
-          cat .env      
-      - name: npm install
-        working-directory: front
-        run: npm install
-      - name: build
-        working-directory: front
-        run: npm run build
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-      - name: deploy
-        run: |
-          aws s3 rm s3://${{ env.S3_BUCKET }}/ --recursive
-          aws s3 cp ./front/out s3://${{ env.S3_BUCKET }} --cache-control 'public, max-age=31104000' --recursive
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          script: |
+            eval $(ssh-agent)
+            ssh-add /home/ubuntu/.ssh/id_rsa
+            cd /var/www/velo-legal
+            git pull
+            cd front
+            npm install
+            npm run build
+            pm2 restart all
+            
+            

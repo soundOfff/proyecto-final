@@ -46,8 +46,8 @@ import profilePicture from "/assets/images/team-3.jpg";
 const routes = [
   {
     type: "collapse",
-    name: "Brooklyn Alice",
-    key: "brooklyn-alice",
+    name: "Guest",
+    key: "profile-user",
     icon: <MDAvatar src={profilePicture.src} alt="Brooklyn Alice" size="sm" />,
     collapse: [
       {
@@ -63,11 +63,21 @@ const routes = [
       {
         name: "Logout",
         key: "logout",
-        route: "/authentication/sign-in/basic",
+        route: "/projects",
       },
     ],
   },
   { type: "divider", key: "divider-0" },
+  { type: "title", title: "Projects", key: "title-projects" },
+  {
+    type: "collapse",
+    name: "Projects",
+    key: "projects",
+    route: "/projects",
+    icon: <Icon fontSize="medium">account_tree</Icon>,
+    noCollapse: true,
+  },
+  { type: "divider", key: "divider-1" },
   {
     type: "collapse",
     name: "Dashboards",
@@ -299,7 +309,7 @@ const routes = [
       },
     ],
   },
-  { type: "divider", key: "divider-1" },
+  { type: "divider", key: "divider-2" },
   { type: "title", title: "Docs", key: "title-docs" },
   {
     type: "collapse",

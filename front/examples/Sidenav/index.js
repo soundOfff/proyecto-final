@@ -30,6 +30,7 @@ import Icon from "@mui/material/Icon";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import MDAvatar from "/components/MDAvatar";
 
 // NextJS Material Dashboard 2 PRO examples
 import SidenavCollapse from "/examples/Sidenav/SidenavCollapse";
@@ -40,6 +41,8 @@ import SidenavItem from "/examples/Sidenav/SidenavItem";
 import SidenavRoot from "/examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "/examples/Sidenav/styles/sidenav";
 
+import { useSession, signOut } from "next-auth/react";
+
 // NextJS Material Dashboard 2 PRO context
 import {
   useMaterialUIController,
@@ -47,8 +50,10 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "/context";
+import { Skeleton } from "@mui/material";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+  const { data: session, status } = useSession();
   const [openCollapse, setOpenCollapse] = useState(false);
   const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
   const [controller, dispatch] = useMaterialUIController();
@@ -158,7 +163,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             <SidenavItem color={color} name={name} active={key === itemName} />
           </MuiLink>
         ) : (
-          <Link href={route} key={key} sx={{ textDecoration: "none" }}>
+          <Link
+            href={route}
+            key={key}
+            sx={{ textDecoration: "none" }}
+            onClick={() => signOut()}
+          >
             <SidenavItem color={color} name={name} active={key === itemName} />
           </Link>
         );
@@ -203,22 +213,65 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             </Link>
           );
         } else {
-          returnValue = (
-            <SidenavCollapse
-              key={key}
-              name={name}
-              icon={icon}
-              active={key === collapseName}
-              open={openCollapse === key}
-              onClick={() =>
-                openCollapse === key
-                  ? setOpenCollapse(false)
-                  : setOpenCollapse(key)
-              }
-            >
-              {collapse ? renderCollapse(collapse) : null}
-            </SidenavCollapse>
-          );
+          if (key === "profile-user") {
+            if (status === "loading") {
+              returnValue = (
+                <MDBox display="flex" alignItems="center">
+                  <Skeleton
+                    variant="circular"
+                    sx={{ ml: 4, mr: 2 }}
+                    width={36}
+                    height={36}
+                  />
+                  <Skeleton variant="rectangular" width={122} height={36} />
+                </MDBox>
+              );
+            } else {
+              returnValue = (
+                <SidenavCollapse
+                  key={key}
+                  name={session?.user.name ?? "Guest"}
+                  icon={
+                    session ? (
+                      <MDAvatar
+                        src={session.user.image}
+                        alt={session.user.name}
+                        size="sm"
+                      />
+                    ) : (
+                      icon
+                    )
+                  }
+                  active={key === collapseName}
+                  open={openCollapse === key}
+                  onClick={() =>
+                    openCollapse === key
+                      ? setOpenCollapse(false)
+                      : setOpenCollapse(key)
+                  }
+                >
+                  {collapse ? renderCollapse(collapse) : null}
+                </SidenavCollapse>
+              );
+            }
+          } else {
+            returnValue = (
+              <SidenavCollapse
+                key={key}
+                name={name}
+                icon={icon}
+                active={key === collapseName}
+                open={openCollapse === key}
+                onClick={() =>
+                  openCollapse === key
+                    ? setOpenCollapse(false)
+                    : setOpenCollapse(key)
+                }
+              >
+                {collapse ? renderCollapse(collapse) : null}
+              </SidenavCollapse>
+            );
+          }
         }
       } else if (type === "title") {
         returnValue = (

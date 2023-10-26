@@ -24,7 +24,7 @@ function DataTableBodyCell({ noBorder, align, children }) {
     <MDBox
       component="td"
       textAlign={align}
-      py={1.5}
+      py={3}
       px={3}
       sx={({
         palette: { light },
@@ -41,7 +41,7 @@ function DataTableBodyCell({ noBorder, align, children }) {
         display="inline-block"
         width="max-content"
         color="text"
-        sx={{ verticalAlign: "middle" }}
+        sx={{ verticalAlign: "middle", maxWidth: "300px" }}
       >
         {children}
       </MDBox>

@@ -36,7 +36,6 @@ import MDBadge from "/components/MDBadge";
 // NextJS Material Dashboard 2 PRO examples
 import Breadcrumbs from "/examples/Breadcrumbs";
 import NotificationItem from "/examples/Items/NotificationItem";
-import { useSession, signIn, signOut } from "next-auth/react";
 
 // Custom styles for DashboardNavbar
 import {
@@ -55,7 +54,6 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "/context";
-import { Button } from "@mui/material";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -69,7 +67,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useRouter().pathname.split("/").slice(1);
-  const { data: session } = useSession();
 
   useEffect(() => {
     // Setting the navbar type
@@ -184,22 +181,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              {session ? (
-                <Button variant="text" onClick={() => signOut()}>
-                  {session.user.email}
-                </Button>
-              ) : (
-                <Link
-                  href="/authentication/sign-in/basic"
-                  passHref
-                  legacyBehavior
-                >
-                  <IconButton sx={navbarIconButton} size="small" disableRipple>
-                    <Icon sx={iconsStyle}>account_circle</Icon>
-                  </IconButton>
-                </Link>
-              )}
-
+              <Link
+                href="/authentication/sign-in/basic"
+                passHref
+                legacyBehavior
+              >
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  <Icon sx={iconsStyle}>account_circle</Icon>
+                </IconButton>
+              </Link>
               <IconButton
                 size="small"
                 disableRipple

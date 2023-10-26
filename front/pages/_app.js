@@ -182,7 +182,7 @@ function Main({ Component, pageProps }) {
           <Sidenav
             color={sidenavColor}
             brand={brandIcon}
-            brandName="Material Dashboard PRO"
+            brandName="Velo Legal"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

@@ -125,7 +125,7 @@ const pageRoutes = [
     ],
   },
   {
-    name: "authenticaton",
+    name: "authentication",
     collapse: [
       {
         name: "sign in",

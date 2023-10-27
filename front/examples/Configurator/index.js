@@ -37,6 +37,9 @@ import MDButton from "/components/MDButton";
 // Custom styles for the Configurator
 import ConfiguratorRoot from "/examples/Configurator/ConfiguratorRoot";
 
+// Set next-translate language
+import setLanguage from "next-translate/setLanguage";
+
 // NextJS Material Dashboard 2 PRO context
 import {
   useMaterialUIController,
@@ -69,6 +72,16 @@ function Configurator() {
     "warning",
     "error",
   ];
+
+  const [lang, setLang] = useState(false);
+
+  useEffect(() => {
+    if (lang) {
+      setLanguage("en");
+    } else {
+      setLanguage("es");
+    }
+  }, [lang]);
 
   // Use the useEffect hook to change the button state for the sidenav type based on window size.
   useEffect(() => {
@@ -321,6 +334,17 @@ function Configurator() {
           <MDTypography variant="h6">Light / Dark</MDTypography>
 
           <Switch checked={darkMode} onChange={handleDarkMode} />
+        </MDBox>
+        <Divider />
+        <MDBox
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          lineHeight={1}
+        >
+          <MDTypography variant="h6">Español / Inglés</MDTypography>
+
+          <Switch checked={lang} onChange={() => setLang(!lang)} />
         </MDBox>
         <Divider />
         <MDBox mt={3} mb={2}>

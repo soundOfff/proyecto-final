@@ -13,8 +13,10 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 
 import dataTableData from "/pagesComponents/projects/data/projectData";
+import useTranslation from "next-translate/useTranslation";
 
 function Projects() {
+  const { t, lang } = useTranslation("common");
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -33,7 +35,7 @@ function Projects() {
                   variant="h6"
                   fontWeight="medium"
                 >
-                  Projects
+                  {t("title")}
                 </MDTypography>
                 <MDButton variant="gradient" color="dark">
                   New Project

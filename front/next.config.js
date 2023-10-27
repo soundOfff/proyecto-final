@@ -9,15 +9,20 @@ const withTM = require("next-transpile-modules")([
   "react-github-btn",
 ]);
 
-module.exports = withTM({
-  reactStrictMode: true,
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/dashboards/analytics",
-        permanent: true,
-      },
-    ];
-  },
-});
+const nextTranslate = require("next-translate-plugin");
+
+module.exports = {
+  ...withTM({
+    reactStrictMode: true,
+    async redirects() {
+      return [
+        {
+          source: "/",
+          destination: "/dashboards/analytics",
+          permanent: true,
+        },
+      ];
+    },
+  }),
+  ...nextTranslate(),
+};

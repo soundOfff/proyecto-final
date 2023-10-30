@@ -15,6 +15,7 @@ import MDInput from "/components/MDInput";
 
 import dataTableData from "/pagesComponents/projects/data/projectData";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 
 function Projects() {
   const { t, lang } = useTranslation("common");
@@ -43,9 +44,11 @@ function Projects() {
                 <MDBox pr={1}>
                   <MDInput label="Search here" sx={{ width: "300px" }} />
                 </MDBox>
-                <MDButton variant="gradient" color="dark">
-                  New Project
-                </MDButton>
+                <Link href="/projects/create">
+                  <MDButton variant="gradient" color="dark">
+                    New Project
+                  </MDButton>
+                </Link>
               </MDBox>
               <MDBox py={1}>
                 <DataTable

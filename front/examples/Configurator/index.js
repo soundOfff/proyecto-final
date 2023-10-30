@@ -76,11 +76,7 @@ function Configurator() {
   const [lang, setLang] = useState(false);
 
   useEffect(() => {
-    if (lang) {
-      setLanguage("en");
-    } else {
-      setLanguage("es");
-    }
+    lang ? setLanguage("en") : setLanguage("es");
   }, [lang]);
 
   // Use the useEffect hook to change the button state for the sidenav type based on window size.

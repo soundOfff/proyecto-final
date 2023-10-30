@@ -333,7 +333,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                 component="img"
                 src={brand.src}
                 alt={brandName}
-                width="1.75rem"
+                width="11rem"
               />
             ) : (
               brand
@@ -342,14 +342,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               width={!brandName && "100%"}
               sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
             >
-              <MDTypography
+              {/* <MDTypography
                 component="h6"
                 variant="button"
                 fontWeight="medium"
                 color={textColor}
               >
                 {brandName}
-              </MDTypography>
+              </MDTypography> */}
             </MDBox>
           </MDBox>
         </Link>

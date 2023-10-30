@@ -11,12 +11,14 @@ import Card from "@mui/material/Card";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import MDInput from "/components/MDInput";
 
 import dataTableData from "/pagesComponents/projects/data/projectData";
 import useTranslation from "next-translate/useTranslation";
 
 function Projects() {
   const { t, lang } = useTranslation("common");
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -29,6 +31,7 @@ function Projects() {
                 justifyContent="space-between"
                 pt={3}
                 px={3}
+                mb={4}
               >
                 <MDTypography
                   width={"fit-content"}
@@ -37,6 +40,9 @@ function Projects() {
                 >
                   {t("title")}
                 </MDTypography>
+                <MDBox pr={1}>
+                  <MDInput label="Search here" sx={{ width: "300px" }} />
+                </MDBox>
                 <MDButton variant="gradient" color="dark">
                   New Project
                 </MDButton>
@@ -45,8 +51,8 @@ function Projects() {
                 <DataTable
                   table={dataTableData}
                   entriesPerPage={false}
-                  showTotalEntries={false}
-                  isSorted={false}
+                  showTotalEntries={true}
+                  isSorted={true}
                   noEndBorder
                 />
               </MDBox>

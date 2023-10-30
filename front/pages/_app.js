@@ -61,8 +61,8 @@ import {
 // Images
 import favicon from "/assets/images/favicon.png";
 import appleIcon from "/assets/images/apple-icon.png";
-import brandWhite from "/assets/images/logo-ct.png";
-import brandDark from "/assets/images/logo-ct-dark.png";
+import logoWhite from "/assets/logo/White/asset-29.svg";
+import logoDark from "/assets/logo/Black/asset-27.svg";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createCache({ key: "css", prepend: true });
@@ -125,7 +125,7 @@ function Main({ Component, pageProps }) {
   }, [pathname]);
 
   const brandIcon =
-    (transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite;
+    (transparentSidenav && !darkMode) || whiteSidenav ? logoDark : logoWhite;
 
   const configsButton = (
     <MDBox

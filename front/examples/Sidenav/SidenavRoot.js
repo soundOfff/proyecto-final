@@ -22,7 +22,7 @@ export default styled(Drawer)(({ theme, ownerState }) => {
   const { transparentSidenav, whiteSidenav, miniSidenav, darkMode } =
     ownerState;
 
-  const sidebarWidth = 250;
+  const sidebarWidth = 300;
   const { transparent, gradients, white, background } = palette;
   const { xxl } = boxShadows;
   const { pxToRem, linearGradient } = functions;

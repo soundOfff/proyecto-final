@@ -67,22 +67,11 @@ const routes = [
       },
     ],
   },
-  { type: "divider", key: "divider-0" },
-  { type: "title", title: "Projects", key: "title-projects" },
   {
     type: "collapse",
-    name: "Projects",
-    key: "projects",
-    route: "/projects",
-    icon: <Icon fontSize="medium">account_tree</Icon>,
-    noCollapse: true,
-  },
-  { type: "divider", key: "divider-1" },
-  {
-    type: "collapse",
-    name: "Dashboards",
+    name: "Tablero",
     key: "dashboards",
-    icon: <Icon fontSize="medium">dashboard</Icon>,
+    icon: <Icon fontSize="medium">home</Icon>,
     collapse: [
       {
         name: "Analytics",
@@ -96,387 +85,307 @@ const routes = [
       },
     ],
   },
-  { type: "title", title: "Pages", key: "title-pages" },
   {
     type: "collapse",
-    name: "Pages",
-    key: "pages",
-    icon: <Icon fontSize="medium">image</Icon>,
-    collapse: [
-      {
-        name: "Profile",
-        key: "profile",
-        collapse: [
-          {
-            name: "Profile Overview",
-            key: "profile-overview",
-            route: "/pages/profile/profile-overview",
-          },
-          {
-            name: "All Projects",
-            key: "all-projects",
-            route: "/pages/profile/all-projects",
-          },
-        ],
-      },
-      {
-        name: "Users",
-        key: "users",
-        collapse: [
-          {
-            name: "New User",
-            key: "new-user",
-            route: "/pages/users/new-user",
-          },
-        ],
-      },
-      {
-        name: "Account",
-        key: "account",
-        collapse: [
-          {
-            name: "Settings",
-            key: "settings",
-            route: "/pages/account/settings",
-          },
-          {
-            name: "Billing",
-            key: "billing",
-            route: "/pages/account/billing",
-          },
-          {
-            name: "Invoice",
-            key: "invoice",
-            route: "/pages/account/invoice",
-          },
-        ],
-      },
-      {
-        name: "Projects",
-        key: "projects",
-        collapse: [
-          {
-            name: "Timeline",
-            key: "timeline",
-            route: "/pages/projects/timeline",
-          },
-        ],
-      },
-      {
-        name: "Pricing Page",
-        key: "pricing-page",
-        route: "/pages/pricing-page",
-      },
-      { name: "RTL", key: "rtl", route: "/pages/rtl" },
-      {
-        name: "Widgets",
-        key: "widgets",
-        route: "/pages/widgets",
-      },
-      {
-        name: "Charts",
-        key: "charts",
-        route: "/pages/charts",
-      },
-      {
-        name: "Notfications",
-        key: "notifications",
-        route: "/pages/notifications",
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "Applications",
-    key: "applications",
-    icon: <Icon fontSize="medium">apps</Icon>,
-    collapse: [
-      {
-        name: "Kanban",
-        key: "kanban",
-        route: "/applications/kanban",
-      },
-      {
-        name: "Wizard",
-        key: "wizard",
-        route: "/applications/wizard",
-      },
-      {
-        name: "Data Tables",
-        key: "data-tables",
-        route: "/applications/data-tables",
-      },
-      {
-        name: "Calendar",
-        key: "calendar",
-        route: "/applications/calendar",
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "Ecommerce",
-    key: "ecommerce",
-    icon: <Icon fontSize="medium">shopping_basket</Icon>,
-    collapse: [
-      {
-        name: "Products",
-        key: "products",
-        collapse: [
-          {
-            name: "New Product",
-            key: "new-product",
-            route: "/ecommerce/products/new-product",
-          },
-          {
-            name: "Edit Product",
-            key: "edit-product",
-            route: "/ecommerce/products/edit-product",
-          },
-          {
-            name: "Product Page",
-            key: "product-page",
-            route: "/ecommerce/products/product-page",
-          },
-        ],
-      },
-      {
-        name: "Orders",
-        key: "orders",
-        collapse: [
-          {
-            name: "Order List",
-            key: "order-list",
-            route: "/ecommerce/orders/order-list",
-          },
-          {
-            name: "Order Details",
-            key: "order-details",
-            route: "/ecommerce/orders/order-details",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "Authentication",
-    key: "authentication",
-    icon: <Icon fontSize="medium">content_paste</Icon>,
-    collapse: [
-      {
-        name: "Sign In",
-        key: "sign-in",
-        collapse: [
-          {
-            name: "Basic",
-            key: "basic",
-            route: "/authentication/sign-in/basic",
-          },
-          {
-            name: "Cover",
-            key: "cover",
-            route: "/authentication/sign-in/cover",
-          },
-          {
-            name: "Illustration",
-            key: "illustration",
-            route: "/authentication/sign-in/illustration",
-          },
-        ],
-      },
-      {
-        name: "Sign Up",
-        key: "sign-up",
-        collapse: [
-          {
-            name: "Cover",
-            key: "cover",
-            route: "/authentication/sign-up/cover",
-          },
-        ],
-      },
-      {
-        name: "Reset Password",
-        key: "reset-password",
-        collapse: [
-          {
-            name: "Cover",
-            key: "cover",
-            route: "/authentication/reset-password/cover",
-          },
-        ],
-      },
-    ],
-  },
-  { type: "divider", key: "divider-2" },
-  { type: "title", title: "Docs", key: "title-docs" },
-  {
-    type: "collapse",
-    name: "Basic",
-    key: "basic",
-    icon: <Icon fontSize="medium">upcoming</Icon>,
-    collapse: [
-      {
-        name: "Getting Started",
-        key: "getting-started",
-        collapse: [
-          {
-            name: "Overview",
-            key: "overview",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/overview/material-dashboard/",
-          },
-          {
-            name: "License",
-            key: "license",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/license/material-dashboard/",
-          },
-          {
-            name: "Quick Start",
-            key: "quick-start",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/quick-start/material-dashboard/",
-          },
-          {
-            name: "Build Tools",
-            key: "build-tools",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/build-tools/material-dashboard/",
-          },
-        ],
-      },
-      {
-        name: "Foundation",
-        key: "foundation",
-        collapse: [
-          {
-            name: "Colors",
-            key: "colors",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/colors/material-dashboard/",
-          },
-          {
-            name: "Grid",
-            key: "grid",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/grid/material-dashboard/",
-          },
-          {
-            name: "Typography",
-            key: "base-typography",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/base-typography/material-dashboard/",
-          },
-          {
-            name: "Borders",
-            key: "borders",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/borders/material-dashboard/",
-          },
-          {
-            name: "Box Shadows",
-            key: "box-shadows",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/box-shadows/material-dashboard/",
-          },
-          {
-            name: "Functions",
-            key: "functions",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/functions/material-dashboard/",
-          },
-          {
-            name: "Routing System",
-            key: "routing-system",
-            href: "https://www.creative-tim.com/learning-lab/nextjs/routing-system/material-dashboard/",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "Components",
-    key: "/components",
-    icon: <Icon fontSize="medium">view_in_ar</Icon>,
-    collapse: [
-      {
-        name: "Alerts",
-        key: "alerts",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/alerts/material-dashboard/",
-      },
-      {
-        name: "Avatar",
-        key: "avatar",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/avatar/material-dashboard/",
-      },
-      {
-        name: "Badge",
-        key: "badge",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/badge/material-dashboard/",
-      },
-      {
-        name: "Badge Dot",
-        key: "badge-dot",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/badge-dot/material-dashboard/",
-      },
-      {
-        name: "Box",
-        key: "box",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/box/material-dashboard/",
-      },
-      {
-        name: "Buttons",
-        key: "buttons",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/buttons/material-dashboard/",
-      },
-      {
-        name: "Date Picker",
-        key: "date-picker",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/datepicker/material-dashboard/",
-      },
-      {
-        name: "Dropzone",
-        key: "dropzone",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/dropzone/material-dashboard/",
-      },
-      {
-        name: "Editor",
-        key: "editor",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/quill/material-dashboard/",
-      },
-      {
-        name: "Input",
-        key: "input",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/input/material-dashboard/",
-      },
-      {
-        name: "Pagination",
-        key: "pagination",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/pagination/material-dashboard/",
-      },
-      {
-        name: "Progress",
-        key: "progress",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/progress/material-dashboard/",
-      },
-      {
-        name: "Snackbar",
-        key: "snackbar",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/snackbar/material-dashboard/",
-      },
-      {
-        name: "Social Button",
-        key: "social-button",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/social-buttons/material-dashboard/",
-      },
-      {
-        name: "Typography",
-        key: "typography",
-        href: "https://www.creative-tim.com/learning-lab/nextjs/typography/material-dashboard/",
-      },
-    ],
-  },
-  {
-    type: "collapse",
-    name: "Change Log",
-    key: "changelog",
-    href: "https://github.com/creativetimofficial/ct-nextjs-material-dashboard-pro/blob/main/CHANGELOG.md",
-    icon: <Icon fontSize="medium">receipt_long</Icon>,
+    name: "Projects",
+    key: "projects",
+    route: "/projects",
+    icon: <Icon fontSize="medium">menu</Icon>,
     noCollapse: true,
   },
+  {
+    type: "collapse",
+    name: "Clientes",
+    key: "clients",
+    route: "/clients",
+    icon: <Icon fontSize="medium">person</Icon>,
+    noCollapse: true,
+  },
+  // { type: "divider", key: "divider-1" },
+  {
+    type: "collapse",
+    name: "Ventas",
+    key: "sales",
+    icon: <Icon fontSize="medium">balance</Icon>,
+    collapse: [
+      {
+        name: "Propuestas",
+        key: "proposals",
+        route: "/proposals",
+      },
+      { name: "Proformas", key: "pro-forms", route: "/pro-forms" },
+      {
+        name: "Facturas",
+        key: "invoices",
+        route: "/invoices",
+      },
+      {
+        name: "Cobros",
+        key: "payments",
+        route: "/payments",
+      },
+      {
+        name: "Notas de Crédito",
+        key: "credit-notes",
+        route: "/credit-notes",
+      },
+      {
+        name: "Articulos",
+        key: "articles",
+        route: "/articles",
+      },
+    ],
+  },
+  {
+    type: "collapse",
+    name: "Suscripciones",
+    key: "subscriptions",
+    route: "/subscriptions",
+    icon: <Icon fontSize="medium">refresh</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Tareas",
+    key: "tasks",
+    route: "/tasks",
+    icon: <Icon fontSize="medium">list</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Soporte",
+    key: "supports",
+    route: "/supports",
+    icon: <Icon fontSize="medium">book_online</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Clientes Potenciales",
+    key: "leads",
+    route: "/leads",
+    icon: <Icon fontSize="medium">wifi_calling_3</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Base De Conocimiento",
+    key: "knowledge-bases",
+    route: "/knowledge-bases",
+    icon: <Icon fontSize="medium">folder</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Utilidades",
+    key: "utilities",
+    icon: <Icon fontSize="medium">balance</Icon>,
+    collapse: [
+      {
+        name: "Multimedia",
+        key: "multimedia",
+        route: "/multimedia",
+      },
+      {
+        name: "Exportador en masa PDF",
+        key: "export-pdf",
+        route: "/export-pdf",
+      },
+      {
+        name: "Calendario",
+        key: "calendary",
+        route: "/calendary",
+      },
+      {
+        name: "Metas",
+        key: "goals",
+        route: "/goals",
+      },
+      {
+        name: "Encuestas",
+        key: "surveys",
+        route: "/surveys",
+      },
+    ],
+  },
+  {
+    type: "collapse",
+    name: "Informes",
+    key: "reports",
+    icon: <Icon fontSize="medium">leaderboard</Icon>,
+    collapse: [
+      {
+        name: "Ventas",
+        key: "report-sales",
+        route: "/report-sales",
+      },
+      {
+        name: "Gastos",
+        key: "report-expenses",
+        route: "/report-expenses",
+      },
+      {
+        name: "Gastos vs Ingresos",
+        key: "expenses_vs_income",
+        route: "/report-expenses-vs-income",
+      },
+      {
+        name: "Metas",
+        key: "report-goals",
+        route: "/report-goals",
+      },
+      {
+        name: "Encuestas",
+        key: "report-leads",
+        route: "/report-leads",
+      },
+      {
+        name: "Resumen de Tabla de Tiempos",
+        key: "report-timesheets",
+        route: "/report-timesheets",
+      },
+      {
+        name: "Articulos De Conocimiento",
+        key: "knowledge-base-articles",
+        route: "/report-knowledge-base-articles",
+      },
+    ],
+  },
+  {
+    type: "collapse",
+    name: "Configuracion",
+    key: "settings",
+    route: "/settings",
+    icon: <Icon fontSize="medium">settings</Icon>,
+    noCollapse: true,
+  },
+  // { type: "divider", key: "divider-0" },
+  // { type: "title", title: "Vistas", key: "title-projects" },
+  // {
+  //   type: "collapse",
+  //   name: "Applications",
+  //   key: "applications",
+  //   icon: <Icon fontSize="medium">apps</Icon>,
+  //   collapse: [
+  //     {
+  //       name: "Kanban",
+  //       key: "kanban",
+  //       route: "/applications/kanban",
+  //     },
+  //     {
+  //       name: "Wizard",
+  //       key: "wizard",
+  //       route: "/applications/wizard",
+  //     },
+  //     {
+  //       name: "Data Tables",
+  //       key: "data-tables",
+  //       route: "/applications/data-tables",
+  //     },
+  //     {
+  //       name: "Calendar",
+  //       key: "calendar",
+  //       route: "/applications/calendar",
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Ecommerce",
+  //   key: "ecommerce",
+  //   icon: <Icon fontSize="medium">shopping_basket</Icon>,
+  //   collapse: [
+  //     {
+  //       name: "Products",
+  //       key: "products",
+  //       collapse: [
+  //         {
+  //           name: "New Product",
+  //           key: "new-product",
+  //           route: "/ecommerce/products/new-product",
+  //         },
+  //         {
+  //           name: "Edit Product",
+  //           key: "edit-product",
+  //           route: "/ecommerce/products/edit-product",
+  //         },
+  //         {
+  //           name: "Product Page",
+  //           key: "product-page",
+  //           route: "/ecommerce/products/product-page",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       name: "Orders",
+  //       key: "orders",
+  //       collapse: [
+  //         {
+  //           name: "Order List",
+  //           key: "order-list",
+  //           route: "/ecommerce/orders/order-list",
+  //         },
+  //         {
+  //           name: "Order Details",
+  //           key: "order-details",
+  //           route: "/ecommerce/orders/order-details",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Authentication",
+  //   key: "authentication",
+  //   icon: <Icon fontSize="medium">content_paste</Icon>,
+  //   collapse: [
+  //     {
+  //       name: "Sign In",
+  //       key: "sign-in",
+  //       collapse: [
+  //         {
+  //           name: "Basic",
+  //           key: "basic",
+  //           route: "/authentication/sign-in/basic",
+  //         },
+  //         {
+  //           name: "Cover",
+  //           key: "cover",
+  //           route: "/authentication/sign-in/cover",
+  //         },
+  //         {
+  //           name: "Illustration",
+  //           key: "illustration",
+  //           route: "/authentication/sign-in/illustration",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       name: "Sign Up",
+  //       key: "sign-up",
+  //       collapse: [
+  //         {
+  //           name: "Cover",
+  //           key: "cover",
+  //           route: "/authentication/sign-up/cover",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       name: "Reset Password",
+  //       key: "reset-password",
+  //       collapse: [
+  //         {
+  //           name: "Cover",
+  //           key: "cover",
+  //           route: "/authentication/reset-password/cover",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];
 
 export default routes;

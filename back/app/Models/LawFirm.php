@@ -11,7 +11,7 @@ class LawFirm extends Model
         'name',
     ];
 
-    public function country(): HasMany
+    public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
     }

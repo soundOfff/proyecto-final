@@ -18,8 +18,8 @@ class Country extends Model
         'un_member',
     ];
 
-    public function Client(): HasMany
+    public function partners(): HasMany
     {
-        return $this->hasMany(Client::class);
+        return $this->hasMany(Partner::class);
     }
 }

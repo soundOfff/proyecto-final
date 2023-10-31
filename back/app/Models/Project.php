@@ -75,7 +75,7 @@ class Project extends Model
         return $this->belongsTo(LawFirm::class);
     }
 
-    public function staff(): BelongsToMany
+    public function staffs(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class);
     }

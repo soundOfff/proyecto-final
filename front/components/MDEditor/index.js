@@ -35,7 +35,7 @@ import MDEditorRoot from "./MDEditorRoot";
 // Material Dashboard 2 PRO React context
 import { useMaterialUIController } from "../../context";
 
-function MDEditor({ value }) {
+function MDEditor({ value, editorStyle }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -52,7 +52,11 @@ function MDEditor({ value }) {
   return (
     <MDEditorRoot ownerState={{ darkMode }}>
       {value && typeof value === "function" && value(convertedContent)}
-      <Editor editorState={editorState} onEditorStateChange={setEditorState} />
+      <Editor
+        editorState={editorState}
+        editorStyle={editorStyle}
+        onEditorStateChange={setEditorState}
+      />
     </MDEditorRoot>
   );
 }

@@ -10,18 +10,11 @@ import Card from "@mui/material/Card";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import MDEditor from "/components/MDEditor";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 
 function Projects() {
-  const [editorState, setEditorState] = useState();
-
-  var Editor = dynamic(() => import("/components/Editor/Editor"), {
-    ssr: false,
-  });
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -38,7 +31,7 @@ function Projects() {
                 <MDTypography sx={{ mb: 5, textAlign: "center" }}>
                   Notas Privadas
                 </MDTypography>
-                <Editor />
+                <MDEditor editorStyle={{ minHeight: "40vh" }} />
                 <MDBox display="flex" justifyContent="end" my={5}>
                   <Link href="/projects">
                     <MDButton variant="gradient" color="dark">

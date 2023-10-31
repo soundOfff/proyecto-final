@@ -63,7 +63,7 @@ const routes = [
       {
         name: "Logout",
         key: "logout",
-        route: "/projects",
+        route: "/dashboard/sales",
       },
     ],
   },
@@ -87,7 +87,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Projects",
+    name: "Casos",
     key: "projects",
     route: "/projects",
     icon: <Icon fontSize="medium">menu</Icon>,

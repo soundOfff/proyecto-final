@@ -15,6 +15,8 @@ Coded by www.creative-tim.com
 
 // Sales dashboard components
 import DefaultCell from "/pagesComponents/projects/components/DefaultCell";
+import MDButton from "/components/MDButton";
+import Link from "next/link";
 
 const dataTableData = {
   columns: [
@@ -24,6 +26,7 @@ const dataTableData = {
     { Header: "Jurisdicción", accessor: "jurisdiction" },
     { Header: "Etapa", accessor: "stage" },
     { Header: "Comentarios", accessor: "comments" },
+    { Header: "Acciones", accessor: "actions" },
   ],
 
   rows: [
@@ -34,6 +37,15 @@ const dataTableData = {
       jurisdiction: <DefaultCell>La Chorrera</DefaultCell>,
       stage: <DefaultCell>2. Admision Demanda</DefaultCell>,
       comments: <DefaultCell>Pendiente de admisión de la demanda.</DefaultCell>,
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
+        </DefaultCell>
+      ),
     },
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
@@ -45,6 +57,15 @@ const dataTableData = {
         <DefaultCell>
           La demanda se admite mediante el Auto No. 2189 del 12 de septiembre de
           2023 y se solicita notificación.
+        </DefaultCell>
+      ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
         </DefaultCell>
       ),
     },
@@ -60,6 +81,15 @@ const dataTableData = {
           2023 y se solicita notificación.
         </DefaultCell>
       ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
+        </DefaultCell>
+      ),
     },
     {
       client: <DefaultCell>Alberto Caballero Diaz</DefaultCell>,
@@ -73,6 +103,15 @@ const dataTableData = {
           2023, y se envía a notificación
         </DefaultCell>
       ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
+        </DefaultCell>
+      ),
     },
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
@@ -83,6 +122,15 @@ const dataTableData = {
       comments: (
         <DefaultCell>
           Presentamos demanda el día 20 de septiembre de 2023.
+        </DefaultCell>
+      ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
         </DefaultCell>
       ),
     },
@@ -98,6 +146,15 @@ const dataTableData = {
           originalmente, estamos en espera del oficio de desglose
         </DefaultCell>
       ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
+        </DefaultCell>
+      ),
     },
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
@@ -109,6 +166,15 @@ const dataTableData = {
         <DefaultCell>
           La demanda se admite mediante Auto No. 2112 del 13 de septiembre de
           2023 y se envía a notificación.
+        </DefaultCell>
+      ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
         </DefaultCell>
       ),
     },
@@ -124,6 +190,15 @@ const dataTableData = {
           2023 y se envía a notificación.
         </DefaultCell>
       ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
+        </DefaultCell>
+      ),
     },
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
@@ -136,6 +211,15 @@ const dataTableData = {
           Solicitamos la notificación del demandado, se admitió la demanda el 31
           de julio de 2023, sin embargo por error del juzgado el auto no se
           digitalizó en tiempo oportuno.
+        </DefaultCell>
+      ),
+      actions: (
+        <DefaultCell>
+          <Link href="/projects/create">
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
         </DefaultCell>
       ),
     },

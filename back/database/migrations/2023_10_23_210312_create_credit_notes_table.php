@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('credit_notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->decimal('amount');
             $table->date('date');
@@ -27,6 +27,8 @@ return new class extends Migration {
             $table->string('company');
             $table->boolean('consolidator')->default(false);
             $table->integer('consolidator_id')->nullable();
+
+            $table->timestamps();
         });
     }
 

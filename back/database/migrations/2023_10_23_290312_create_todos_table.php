@@ -12,13 +12,15 @@ return new class extends Migration {
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->dateTime('date_added');
             $table->dateTime('date_finished');
             $table->text('description');
             $table->boolean('finished');
             $table->integer('item_order');
+
+            $table->timestamps();
         });
     }
 

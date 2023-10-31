@@ -13,10 +13,12 @@ return new class extends Migration {
         Schema::create('task_assigned', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->integer('assigned_from');
             $table->boolean('is_assigned_from_contact');
+
+            $table->timestamps();
         });
     }
 

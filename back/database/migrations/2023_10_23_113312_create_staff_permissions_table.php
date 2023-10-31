@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('staff_permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->string('feature');
             $table->string('capability');
+
+            $table->timestamps();
         });
     }
 

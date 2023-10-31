@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('project_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
             $table->foreignId('contact_id')->constrained();
 
             $table->dateTime('date_added');
@@ -26,6 +26,8 @@ return new class extends Migration {
             $table->string('subject');
             $table->text('thumbnail_link');
             $table->boolean('visible_to_customer');
+
+            $table->timestamps();
         });
     }
 

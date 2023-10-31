@@ -13,10 +13,12 @@ return new class extends Migration {
         Schema::create('proposal_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proposal_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->mediumText('content');
             $table->dateTime('date_added');
+
+            $table->timestamps();
         });
     }
 

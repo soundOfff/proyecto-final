@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained();
+            $table->foreignId('partner_id')->constrained();
 
             $table->integer('added_from');
             $table->decimal('adjustment');
@@ -24,7 +25,6 @@ return new class extends Migration {
             $table->string('billing_street');
             $table->string('billing_zip');
             $table->integer('cancel_overdue_reminders');
-            $table->integer('client_id');
             $table->text('client_note');
             $table->integer('currency');
             $table->boolean('custom_recurring');
@@ -63,6 +63,7 @@ return new class extends Migration {
             $table->decimal('total');
             $table->integer('total_cycles');
             $table->decimal('total_tax');
+
             $table->timestamps();
         });
     }

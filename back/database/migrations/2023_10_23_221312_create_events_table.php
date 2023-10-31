@@ -23,6 +23,8 @@ return new class extends Migration {
             $table->integer('reminder_before');
             $table->string('reminder_before_type');
             $table->mediumText('title');
+
+            $table->timestamps();
         });
     }
 

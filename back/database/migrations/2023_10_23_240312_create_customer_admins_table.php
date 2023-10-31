@@ -12,9 +12,11 @@ return new class extends Migration {
     {
         Schema::create('customer_admins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->text('date_assigned');
+
+            $table->timestamps();
         });
     }
 

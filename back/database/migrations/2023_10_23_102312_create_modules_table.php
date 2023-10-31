@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string('installed_version');
             $table->string('name');
+
+            $table->timestamps();
         });
     }
 

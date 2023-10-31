@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->binary('data');
             $table->string('ip_address');
             $table->integer('timestamp');
+            $table->timestamps();
         });
     }
 

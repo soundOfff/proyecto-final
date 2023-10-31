@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->integer('finished');
             $table->integer('finished_from');
             $table->integer('list_order');
+
+            $table->timestamps();
         });
     }
 

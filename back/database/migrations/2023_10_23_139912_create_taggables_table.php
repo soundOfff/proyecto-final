@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->morphs('taggable');
             $table->string('tag_order');
+
+            $table->timestamps();
         });
     }
 

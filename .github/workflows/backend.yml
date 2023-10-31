@@ -1,7 +1,7 @@
 name: Backend Pipeline
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -22,7 +22,5 @@ jobs:
             git pull
             cd back
             composer install
-            php artisan migrate
-
-            
-            
+            php artisan migrate:fresh
+            php artisan db:seed

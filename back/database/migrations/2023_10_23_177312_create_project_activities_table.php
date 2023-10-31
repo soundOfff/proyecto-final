@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('project_activities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
             $table->foreignId('contact_id')->constrained();
 
             $table->text('additional_data');
@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('description_key');
             $table->string('full_name');
             $table->integer('visible_to_customer');
+
+            $table->timestamps();
         });
     }
 

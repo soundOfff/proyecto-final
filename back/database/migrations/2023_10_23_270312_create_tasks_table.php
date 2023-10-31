@@ -42,6 +42,8 @@ return new class extends Migration {
             $table->integer('status');
             $table->integer('total_cycles');
             $table->boolean('visible_to_client');
+
+            $table->timestamps();
         });
     }
 

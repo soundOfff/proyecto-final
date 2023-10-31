@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('invoice_id')->constrained();
             $table->foreignId('contact_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
             $table->morphs('fileable');
 
             $table->string('attachment_key');
@@ -27,6 +27,8 @@ return new class extends Migration {
             $table->string('subject');
             $table->text('thumbnail_link');
             $table->boolean('visible_to_customer');
+
+            $table->timestamps();
         });
     }
 

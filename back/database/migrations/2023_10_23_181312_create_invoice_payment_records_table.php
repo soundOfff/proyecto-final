@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('payment_method');
             $table->string('payment_mode');
             $table->mediumText('transaction_id');
+
+            $table->timestamps();
         });
     }
 

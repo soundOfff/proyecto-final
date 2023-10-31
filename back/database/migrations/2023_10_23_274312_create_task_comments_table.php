@@ -13,12 +13,14 @@ return new class extends Migration {
         Schema::create('task_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
             $table->foreignId('file_id')->constrained();
             $table->foreignId('contact_id')->constrained();
 
             $table->text('content');
             $table->dateTime('date_added');
+
+            $table->timestamps();
         });
     }
 

@@ -13,7 +13,9 @@ return new class extends Migration {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
             $table->foreignId('country_id')->constrained();
+            $table->foreignId('user_id')->constrained();
 
+            $table->integer('lead_id')->nullable();
             $table->integer('active');
             $table->integer('added_from');
             $table->string('address');
@@ -26,6 +28,26 @@ return new class extends Migration {
             $table->string('company');
             $table->boolean('consolidator')->default(false);
             $table->integer('consolidator_id')->nullable();
+            $table->integer('default_currency');
+            $table->string('default_language');
+            $table->integer('dv');
+            $table->string('latitude');
+            $table->string('longitude');
+            $table->string('phone_number');
+            $table->integer('registration_confirmed');
+            $table->string('shipping_city');
+            $table->integer('shipping_country');
+            $table->string('shipping_state');
+            $table->string('shipping_street');
+            $table->string('shipping_zip');
+            $table->integer('show_primary_contact');
+            $table->string('state');
+            $table->string('stripe_id');
+            $table->string('vat');
+            $table->string('website');
+            $table->string('zip');
+
+            $table->timestamps();
         });
     }
 

@@ -37,6 +37,8 @@ return new class extends Migration {
             $table->integer('tax');
             $table->integer('tax2');
             $table->integer('total_cycles');
+
+            $table->timestamps();
         });
     }
 

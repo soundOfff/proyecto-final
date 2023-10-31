@@ -51,6 +51,8 @@ return new class extends Migration {
             $table->decimal('total');
             $table->decimal('total_tax');
             $table->string('zip');
+
+            $table->timestamps();
         });
     }
 

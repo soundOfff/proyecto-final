@@ -12,14 +12,16 @@ return new class extends Migration {
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('calling_code');
-            $table->string('cctld');
-            $table->string('iso2');
-            $table->char('iso3');
+            $table->string('calling_code')->nullable();
+            $table->string('cctld')->nullable();
+            $table->string('iso2')->nullable();
+            $table->char('iso3')->nullable();
             $table->string('long_name');
-            $table->string('num_code');
-            $table->string('short_name');
-            $table->string('un_member');
+            $table->string('num_code')->nullable();
+            $table->string('short_name')->nullable();
+            $table->string('un_member')->nullable();
+
+            $table->timestamps();
         });
     }
 

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('customer_admin_id')->constrained();
             $table->foreignId('customer_group_id')->constrained();
+            $table->timestamps();
         });
     }
 

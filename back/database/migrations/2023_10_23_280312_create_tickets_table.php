@@ -30,6 +30,8 @@ return new class extends Migration {
             $table->text('name');
             $table->integer('subject');
             $table->string('key');
+
+            $table->timestamps();
         });
     }
 

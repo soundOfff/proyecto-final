@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->dateTime('date_added');
             $table->string('file_name');
             $table->string('file_type');
+
+            $table->timestamps();
         });
     }
 

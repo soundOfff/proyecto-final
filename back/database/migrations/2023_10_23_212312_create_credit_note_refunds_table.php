@@ -13,12 +13,13 @@ return new class extends Migration {
         Schema::create('credit_note_refunds', function (Blueprint $table) {
             $table->id();
             $table->foreignId('credit_note_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->decimal('amount');
             $table->text('note');
             $table->string('payment_mode');
             $table->date('refunded_on');
+
             $table->timestamps();
         });
     }

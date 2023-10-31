@@ -13,7 +13,9 @@ return new class extends Migration {
         Schema::create('task_followers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
+
+            $table->timestamps();
         });
     }
 

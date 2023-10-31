@@ -13,7 +13,9 @@ return new class extends Migration {
         Schema::create('pinned_projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
+
+            $table->timestamps();
         });
     }
 

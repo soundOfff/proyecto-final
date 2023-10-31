@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('placement');
             $table->string('symbol');
             $table->string('thousand_separator');
+
+            $table->timestamps();
         });
     }
 

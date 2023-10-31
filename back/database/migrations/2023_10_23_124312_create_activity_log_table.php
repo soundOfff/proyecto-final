@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('activity_log', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->dateTime('date');
             $table->string('description');
+
+            $table->timestamps();
         });
     }
 

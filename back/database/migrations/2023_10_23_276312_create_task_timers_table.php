@@ -13,12 +13,14 @@ return new class extends Migration {
         Schema::create('task_timers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained();
-            $table->foreignId('staff_id')->constrained('staffs');
+            $table->foreignId('staff_id')->constrained();
 
             $table->string('start_time');
             $table->string('end_time');
             $table->decimal('hourly_rate');
             $table->text('note');
+
+            $table->timestamps();
         });
     }
 

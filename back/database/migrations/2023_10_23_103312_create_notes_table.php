@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->dateTime('date_contacted');
             $table->dateTime('date_added');
             $table->text('description');
+
+            $table->timestamps();
         });
     }
 

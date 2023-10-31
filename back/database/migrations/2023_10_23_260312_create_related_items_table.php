@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->morphs('related_itemable');
 
             $table->integer('total_cycles');
+
+            $table->timestamps();
         });
     }
 

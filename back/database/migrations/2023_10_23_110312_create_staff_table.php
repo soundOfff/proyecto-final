@@ -10,12 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('staffs', function (Blueprint $table) {
+        Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->constrained();
 
-            $table->integer('active');
-            $table->integer('admin');
+            $table->boolean('active');
             $table->string('default_language');
             $table->string('direction');
             $table->string('email');
@@ -23,7 +22,7 @@ return new class extends Migration {
             $table->mediumText('facebook');
             $table->string('first_name');
             $table->decimal('hourly_rate');
-            $table->boolean('is_not_staff');
+            $table->boolean('is_staff');
             $table->mediumText('linkedin');
             $table->dateTime('last_activity');
             $table->string('last_ip');
@@ -37,9 +36,9 @@ return new class extends Migration {
             $table->string('phone_number');
             $table->string('profile_image');
             $table->string('skype');
-            $table->string('two_factor_auth_code');
-            $table->dateTime('two_factor_auth_code_requested');
-            $table->boolean('two_factor_auth_enabled');
+            $table->string('two_factor_auth_code')->nullable();
+            $table->dateTime('two_factor_auth_code_requested')->nullable();
+            $table->boolean('two_factor_auth_enabled')->default(false);
 
             $table->timestamps();
         });

@@ -39,7 +39,7 @@ const dataTableData = {
       comments: <DefaultCell>Pendiente de admisión de la demanda.</DefaultCell>,
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -61,7 +61,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -83,7 +83,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -105,7 +105,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -126,7 +126,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -148,7 +148,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -170,7 +170,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -192,7 +192,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -215,7 +215,7 @@ const dataTableData = {
       ),
       actions: (
         <DefaultCell>
-          <Link href="/projects/create">
+          <Link href="/projects/show">
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>

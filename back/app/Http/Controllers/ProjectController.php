@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
@@ -14,7 +15,21 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Project::class)->allowedFilters('amount');
+        $query = QueryBuilder::for(Project::class)
+            ->allowedFilters([
+                AllowedFilter::partial('responsiblePerson.company'),
+            ])
+            ->allowedIncludes([
+                'stages',
+                'notes',
+                'status',
+                'jurisdiction',
+                'defendant',
+                'plaintiff',
+                'responsiblePerson',
+                'lawFirm',
+                'staffs',
+            ]);
 
         $projects = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

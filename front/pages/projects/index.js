@@ -13,12 +13,71 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDInput from "/components/MDInput";
 
-import dataTableData from "/pagesComponents/projects/data/projectData";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 
-function Projects() {
+export async function getStaticProps() {
+  const includes = [
+    "stages",
+    "notes",
+    "status",
+    "jurisdiction",
+    "defendant",
+    "plaintiff",
+    "responsiblePerson",
+    "lawFirm",
+    "staffs",
+  ];
+
+  const params = {
+    include: includes.join(","),
+  };
+
+  const url = new URL(`${process.env.API_URL}/projects?${params}`);
+  url.search = new URLSearchParams(params);
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch posts, received status ${res.status}`);
+  }
+
+  return {
+    props: {
+      projects: data.data.projects,
+    },
+    revalidate: 10,
+  };
+}
+
+function Projects({ projects }) {
   const { t, lang } = useTranslation("common");
+
+  const dataTableData = {
+    columns: [
+      { Header: "Cliente", accessor: "responsiblePerson.firstName" },
+      { Header: "Saldo/Capital", accessor: "amount" },
+      { Header: "Firma Asignada", accessor: "lawFirm.name" },
+      { Header: "Jurisdicción", accessor: "jurisdiction.name" },
+      { Header: "Etapa", accessor: "stages[0].startTimestamp" },
+      { Header: "Comentarios", accessor: "notes[0].content" },
+      { Header: "Acciones", accessor: "actions" },
+    ],
+
+    rows: projects.map((project) => {
+      return {
+        ...project,
+        actions: (
+          <Link key={project.id} href={`/projects/${project.id}`}>
+            <MDButton variant="text" color="dark">
+              Ver
+            </MDButton>
+          </Link>
+        ),
+      };
+    }),
+  };
 
   return (
     <DashboardLayout>

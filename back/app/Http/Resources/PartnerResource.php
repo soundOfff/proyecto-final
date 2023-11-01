@@ -48,7 +48,7 @@ class PartnerResource extends JsonResource
             'zip' => $this->zip,
             'projects' => ProjectResource::make($this->whenLoaded('projects')),
             'country' => CountryResource::make($this->whenLoaded('country')),
-            'user' => UserCollection::make($this->whenLoaded('user')),
+            'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

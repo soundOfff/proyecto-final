@@ -9,6 +9,7 @@ use App\Models\LawFirm;
 use App\Models\Partner;
 use App\Models\Project;
 use App\Models\ProjectNote;
+use App\Models\ProjectStage;
 use App\Models\ProjectStatus;
 use App\Models\Role;
 use App\Models\Staff;
@@ -32,7 +33,9 @@ class ProjectSeeder extends Seeder
             ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'defendant')
             ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'plaintiff')
             ->has(ProjectNote::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'notes')
+            ->has(ProjectStage::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'stages')
             ->has(Staff::factory()->for(Role::all()->random())->count(3), 'staffs')
+            ->count(10)
             ->create();
     }
 }

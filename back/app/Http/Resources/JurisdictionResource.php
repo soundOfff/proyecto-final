@@ -15,7 +15,7 @@ class JurisdictionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->active,
+            'name' => $this->name,
             'projects' => ProjectResource::make($this->whenLoaded('projects')),
         ];
     }

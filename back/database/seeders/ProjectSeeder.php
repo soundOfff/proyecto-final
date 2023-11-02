@@ -25,17 +25,19 @@ class ProjectSeeder extends Seeder
      */
     public function run()
     {
-        Project::factory()
-            ->for(ProjectStatus::all()->random(), 'status')
-            ->for(Jurisdiction::all()->random())
-            ->for(LawFirm::all()->random())
-            ->for(Contact::all()->random(), 'responsiblePerson')
-            ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'defendant')
-            ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'plaintiff')
-            ->has(ProjectNote::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'notes')
-            ->has(ProjectStage::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'stages')
-            ->has(Staff::factory()->for(Role::all()->random())->count(3), 'staffs')
-            ->count(10)
-            ->create();
+        collect(range(1, 10))
+            ->each(function () {
+                Project::factory()
+                    ->for(ProjectStatus::all()->random(), 'status')
+                    ->for(Jurisdiction::all()->random())
+                    ->for(LawFirm::all()->random())
+                    ->for(Contact::all()->random(), 'responsiblePerson')
+                    ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'defendant')
+                    ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'plaintiff')
+                    ->has(ProjectNote::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'notes')
+                    ->has(ProjectStage::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'stages')
+                    ->has(Staff::factory()->for(Role::all()->random())->count(3), 'staffs')
+                    ->create();
+            });
     }
 }

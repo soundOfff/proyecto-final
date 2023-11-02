@@ -18,6 +18,7 @@ class ProjectController extends Controller
         $query = QueryBuilder::for(Project::class)
             ->allowedFilters([
                 AllowedFilter::partial('responsiblePerson.company'),
+                AllowedFilter::exact('status', 'status.id'),
             ])
             ->allowedIncludes([
                 'stages',

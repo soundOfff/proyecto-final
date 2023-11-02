@@ -67,6 +67,7 @@ const routes = [
       },
     ],
   },
+  { type: "divider", key: "divider-0" },
   {
     type: "collapse",
     name: "Tablero",
@@ -85,6 +86,7 @@ const routes = [
       },
     ],
   },
+  { type: "divider", key: "divider-1" },
   {
     type: "collapse",
     name: "Casos",

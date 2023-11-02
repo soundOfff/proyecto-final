@@ -7,6 +7,11 @@ import Footer from "/examples/Footer";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -16,8 +21,15 @@ import MDInput from "/components/MDInput";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 
-export async function getStaticProps() {
-  const includes = [
+import { getAll as getAllProjects } from "/services/projects";
+
+import { getAll as getAllStatuses } from "/services/project-statuses";
+import { getOne as getOneStatus } from "/services/project-statuses";
+
+import { useRouter } from "next/router";
+
+export async function getServerSideProps(context) {
+  const include = [
     "stages",
     "notes",
     "status",
@@ -29,30 +41,30 @@ export async function getStaticProps() {
     "staffs",
   ];
 
+  const statusId = context.query.statusId;
+  const filters = statusId ? { "filter[status]": statusId } : null;
+  const statusSelected = statusId ? await getOneStatus(statusId) : null;
+
   const params = {
-    include: includes.join(","),
+    include,
+    ...filters,
   };
 
-  const url = new URL(`${process.env.API_URL}/projects?${params}`);
-  url.search = new URLSearchParams(params);
-
-  const res = await fetch(url);
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch posts, received status ${res.status}`);
-  }
+  const projects = await getAllProjects(params);
+  const statuses = await getAllStatuses();
 
   return {
     props: {
-      projects: data.data.projects,
+      projects,
+      statuses,
+      statusSelected,
     },
-    revalidate: 10,
   };
 }
 
-function Projects({ projects }) {
+function Projects({ projects, statuses, statusSelected }) {
   const { t, lang } = useTranslation("common");
+  const router = useRouter();
 
   const dataTableData = {
     columns: [
@@ -60,6 +72,7 @@ function Projects({ projects }) {
       { Header: "Saldo/Capital", accessor: "amount" },
       { Header: "Firma Asignada", accessor: "lawFirm.name" },
       { Header: "Jurisdicción", accessor: "jurisdiction.name" },
+      { Header: "Estado", accessor: "status.label" },
       { Header: "Etapa", accessor: "stages[0].startTimestamp" },
       { Header: "Comentarios", accessor: "notes[0].content" },
       { Header: "Acciones", accessor: "actions" },
@@ -69,7 +82,7 @@ function Projects({ projects }) {
       return {
         ...project,
         actions: (
-          <Link key={project.id} href={`/projects/${project.id}`}>
+          <Link key={project.id} href={`/projects/show/${project.id}`}>
             <MDButton variant="text" color="dark">
               Ver
             </MDButton>
@@ -100,9 +113,30 @@ function Projects({ projects }) {
                 >
                   {t("title")}
                 </MDTypography>
-                <MDBox pr={1}>
-                  <MDInput label="Search here" sx={{ width: "300px" }} />
-                </MDBox>
+                <FormControl sx={{ width: "30%" }}>
+                  <InputLabel id="status-label">Estado</InputLabel>
+                  <Select
+                    labelId="status-label"
+                    value={statusSelected ? statusSelected.label : ""}
+                    label="Status"
+                    sx={{ height: "100%" }}
+                  >
+                    {statuses.map((status) => (
+                      <MenuItem
+                        key={status.id}
+                        value={status.label}
+                        onClick={(e) =>
+                          router.push(`/projects?statusId=${status.id}`)
+                        }
+                      >
+                        {status.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: "30%" }}>
+                  <MDInput label="Search here" height="100%" />
+                </FormControl>
                 <Link href="/projects/create">
                   <MDButton variant="gradient" color="dark">
                     New Project

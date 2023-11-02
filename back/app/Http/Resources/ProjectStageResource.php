@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,8 +16,8 @@ class ProjectStageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'startTimestamp' => $this->start_timestamp,
-            'endTimestamp' => $this->end_timestamp,
+            'startTimestamp' => Carbon::parse($this->start_timestamp)->format('d-m-Y'),
+            'endTimestamp' => Carbon::parse($this->end_timestamp)->format('d-m-Y'),
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'staff' => StaffResource::make($this->whenLoaded('staff')),
         ];

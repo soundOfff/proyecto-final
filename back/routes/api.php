@@ -21,6 +21,7 @@ Route::get('/hello-world', function () {
 });
 
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/projects/{project}', [ProjectController::class, 'show']);
 
 Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
 Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);

@@ -13,4 +13,19 @@ async function getAll(params) {
   return data.projects;
 }
 
-export { getAll };
+async function getOne(projectId, params) {
+  const url = new URL(`${process.env.API_URL}/projects/${projectId}?${params}`);
+  url.search = new URLSearchParams(params);
+
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch posts, received status ${res.status}`);
+  }
+
+  const { data: project } = await res.json();
+
+  return project;
+}
+
+export { getAll, getOne };

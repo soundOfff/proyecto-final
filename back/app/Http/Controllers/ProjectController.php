@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -52,7 +53,13 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $project = QueryBuilder::for(Project::class)
+            ->allowedIncludes([
+                'staffs',
+            ])
+            ->find($project->id);
+
+        return new ProjectResource($project);
     }
 
     /**

@@ -121,6 +121,13 @@ function Projects({ projects, statuses, statusSelected }) {
                     label="Status"
                     sx={{ height: "100%" }}
                   >
+                    <MenuItem
+                      key="all"
+                      value="Todos"
+                      onClick={(e) => router.push(`/projects`)}
+                    >
+                      Todos
+                    </MenuItem>
                     {statuses.map((status) => (
                       <MenuItem
                         key={status.id}

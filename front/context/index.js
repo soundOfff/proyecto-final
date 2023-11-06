@@ -17,6 +17,7 @@ Coded by www.creative-tim.com
   This file is used for controlling the global states of the components,
   you can customize the states for the different components here.
 */
+"use client";
 
 import { createContext, useContext, useMemo, useReducer } from "react";
 

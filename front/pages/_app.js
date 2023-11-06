@@ -38,14 +38,9 @@ import Configurator from "/examples/Configurator";
 
 // NextJS Material Dashboard 2 PRO themes
 import theme from "/assets/theme";
-import themeRTL from "/assets/theme/theme-rtl";
 
 // NextJS Material Dashboard 2 PRO Dark Mode themes
 import themeDark from "/assets/theme-dark";
-import themeDarkRTL from "/assets/theme-dark/theme-rtl";
-
-// RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
 
 // NextJS Material Dashboard 2 PRO routes
 import routes from "/routes";
@@ -71,7 +66,6 @@ function Main({ Component, pageProps }) {
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
-    direction,
     layout,
     openConfigurator,
     sidenavColor,
@@ -80,18 +74,7 @@ function Main({ Component, pageProps }) {
     darkMode,
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useRouter();
-
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
-
-    setRtlCache(cacheRtl);
-  }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -112,11 +95,6 @@ function Main({ Component, pageProps }) {
   // Change the openConfigurator state
   const handleConfiguratorOpen = () =>
     setOpenConfigurator(dispatch, !openConfigurator);
-
-  // Setting the dir attribute for the body element
-  useEffect(() => {
-    document.body.setAttribute("dir", direction);
-  }, [direction]);
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
@@ -151,29 +129,7 @@ function Main({ Component, pageProps }) {
     </MDBox>
   );
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-        <CssBaseline />
-        <Component {...pageProps} />
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brandIcon}
-              brandName="Material Dashboard PRO"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
+  return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       <Component {...pageProps} />
@@ -197,7 +153,8 @@ function Main({ Component, pageProps }) {
 }
 
 import { SessionProvider } from "next-auth/react";
-import "./globals.css";
+
+import "../globals.css";
 
 function MyApp({
   Component,

@@ -41,10 +41,10 @@ import { useMaterialUIController } from "/context";
 function SidenavCollapse({
   icon,
   name,
-  children,
-  active,
-  noCollapse,
-  open,
+  children = false,
+  active = false,
+  noCollapse = false,
+  open = false,
   ...rest
 }) {
   const [controller] = useMaterialUIController();
@@ -120,14 +120,6 @@ function SidenavCollapse({
     </>
   );
 }
-
-// Setting default values for the props of SidenavCollapse
-SidenavCollapse.defaultProps = {
-  active: false,
-  noCollapse: false,
-  children: false,
-  open: false,
-};
 
 // Typechecking props for the SidenavCollapse
 SidenavCollapse.propTypes = {

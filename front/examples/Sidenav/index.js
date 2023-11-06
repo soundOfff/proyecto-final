@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -51,15 +52,22 @@ import {
   setWhiteSidenav,
 } from "/context";
 import { Skeleton } from "@mui/material";
+import { usePathname } from "next/navigation";
 
-function Sidenav({ color, brand, brandName, routes, ...rest }) {
+function Sidenav({
+  color = "dark",
+  brand = "Velo Legal",
+  brandName,
+  routes,
+  ...rest
+}) {
   const { data: session, status } = useSession();
   const [openCollapse, setOpenCollapse] = useState(false);
   const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } =
     controller;
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const collapseName = pathname.split("/").slice(1)[0];
   const items = pathname.split("/").slice(1);
   const itemParentName = items[1];
@@ -364,12 +372,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     </SidenavRoot>
   );
 }
-
-// Setting default values for the props of Sidenav
-Sidenav.defaultProps = {
-  color: "dark",
-  brand: "",
-};
 
 // Typechecking props for the Sidenav
 Sidenav.propTypes = {

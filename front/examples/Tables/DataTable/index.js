@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { useMemo, useEffect, useState } from "react";
 
@@ -49,13 +50,13 @@ import DataTableHeadCell from "/examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "/examples/Tables/DataTable/DataTableBodyCell";
 
 function DataTable({
-  entriesPerPage,
-  canSearch,
-  showTotalEntries,
-  table,
-  pagination,
-  isSorted,
-  noEndBorder,
+  entriesPerPage = { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
+  canSearch = false,
+  showTotalEntries = true,
+  table = [],
+  pagination = { variant: "gradient", color: "dark" },
+  isSorted = true,
+  noEndBorder = false,
 }) {
   const defaultValue = entriesPerPage.defaultValue
     ? entriesPerPage.defaultValue
@@ -298,16 +299,6 @@ function DataTable({
     </TableContainer>
   );
 }
-
-// Setting default values for the props of DataTable
-DataTable.defaultProps = {
-  entriesPerPage: { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
-  canSearch: false,
-  showTotalEntries: true,
-  pagination: { variant: "gradient", color: "dark" },
-  isSorted: true,
-  noEndBorder: false,
-};
 
 // Typechecking props for the DataTable
 DataTable.propTypes = {

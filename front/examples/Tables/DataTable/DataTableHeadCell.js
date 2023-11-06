@@ -25,7 +25,13 @@ import MDBox from "/components/MDBox";
 // NextJS Material Dashboard 2 PRO contexts
 import { useMaterialUIController } from "/context";
 
-function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
+function DataTableHeadCell({
+  width = "auto",
+  sorted = "none",
+  align = "left",
+  children,
+  ...rest
+}) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -86,13 +92,6 @@ function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
     </MDBox>
   );
 }
-
-// Setting default values for the props of DataTableHeadCell
-DataTableHeadCell.defaultProps = {
-  width: "auto",
-  sorted: "none",
-  align: "left",
-};
 
 // Typechecking props for the DataTableHeadCell
 DataTableHeadCell.propTypes = {

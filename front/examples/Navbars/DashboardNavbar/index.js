@@ -12,11 +12,11 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -30,7 +30,6 @@ import Icon from "@mui/material/Icon";
 
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
-import MDInput from "/components/MDInput";
 import MDBadge from "/components/MDBadge";
 
 // NextJS Material Dashboard 2 PRO examples
@@ -54,8 +53,9 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "/context";
+import { usePathname } from "next/navigation";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -66,7 +66,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
     darkMode,
   } = controller;
   const [openMenu, setOpenMenu] = useState(false);
-  const route = useRouter().pathname.split("/").slice(1);
+  const pathname = usePathname();
+  const route = pathname.split("/").slice(1);
 
   useEffect(() => {
     // Setting the navbar type
@@ -229,13 +230,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     </AppBar>
   );
 }
-
-// Setting default values for the props of DashboardNavbar
-DashboardNavbar.defaultProps = {
-  absolute: false,
-  light: false,
-  isMini: false,
-};
 
 // Typechecking props for the DashboardNavbar
 DashboardNavbar.propTypes = {

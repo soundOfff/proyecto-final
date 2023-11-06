@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { useState, useEffect } from "react";
 
@@ -76,7 +77,9 @@ function Configurator() {
   const [lang, setLang] = useState(false);
 
   useEffect(() => {
-    lang ? setLanguage("en") : setLanguage("es");
+    async () => {
+      lang ? await setLanguage("en") : await setLanguage("es");
+    };
   }, [lang]);
 
   // Use the useEffect hook to change the button state for the sidenav type based on window size.

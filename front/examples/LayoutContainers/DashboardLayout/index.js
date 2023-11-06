@@ -12,10 +12,9 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { useEffect } from "react";
-
-import { useRouter } from "next/router";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -25,11 +24,12 @@ import MDBox from "/components/MDBox";
 
 // NextJS Material Dashboard 2 PRO context
 import { useMaterialUIController, setLayout } from "/context";
+import { usePathname } from "next/navigation";
 
 function DashboardLayout({ children }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav } = controller;
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");

@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { forwardRef } from "react";
 
@@ -27,12 +28,12 @@ import { useMaterialUIController } from "/context";
 const MDTypography = forwardRef(
   (
     {
-      color,
-      fontWeight,
-      textTransform,
-      verticalAlign,
-      textGradient,
-      opacity,
+      color = "dark",
+      fontWeight = false,
+      textTransform = "none",
+      verticalAlign = "unset",
+      textGradient = false,
+      opacity = 1,
       children,
       ...rest
     },
@@ -60,16 +61,6 @@ const MDTypography = forwardRef(
     );
   }
 );
-
-// Setting default values for the props of MDTypography
-MDTypography.defaultProps = {
-  color: "dark",
-  fontWeight: false,
-  textTransform: "none",
-  verticalAlign: "unset",
-  textGradient: false,
-  opacity: 1,
-};
 
 // Typechecking props for the MDTypography
 MDTypography.propTypes = {

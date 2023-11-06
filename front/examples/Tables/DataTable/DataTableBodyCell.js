@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 
-function DataTableBodyCell({ noBorder, align, children }) {
+function DataTableBodyCell({ noBorder = false, align = "left", children }) {
   return (
     <MDBox
       component="td"
@@ -48,12 +48,6 @@ function DataTableBodyCell({ noBorder, align, children }) {
     </MDBox>
   );
 }
-
-// Setting default values for the props of DataTableBodyCell
-DataTableBodyCell.defaultProps = {
-  noBorder: false,
-  align: "left",
-};
 
 // Typechecking props for the DataTableBodyCell
 DataTableBodyCell.propTypes = {

@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { forwardRef } from "react";
 
@@ -25,7 +26,18 @@ import MDButtonRoot from "/components/MDButton/MDButtonRoot";
 import { useMaterialUIController } from "/context";
 
 const MDButton = forwardRef(
-  ({ color, variant, size, circular, iconOnly, children, ...rest }, ref) => {
+  (
+    {
+      size = "medium",
+      variant = "contained",
+      color = "white",
+      circular = false,
+      iconOnly = false,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
     const [controller] = useMaterialUIController();
     const { darkMode } = controller;
 
@@ -43,15 +55,6 @@ const MDButton = forwardRef(
     );
   }
 );
-
-// Setting default values for the props of MDButton
-MDButton.defaultProps = {
-  size: "medium",
-  variant: "contained",
-  color: "white",
-  circular: false,
-  iconOnly: false,
-};
 
 // Typechecking props for the MDButton
 MDButton.propTypes = {

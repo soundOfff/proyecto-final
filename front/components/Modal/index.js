@@ -2,9 +2,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
 
-function CustomModal({ open, handleClose, children }) {
+function CustomModal({ open, onClose, children }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -22,7 +21,7 @@ function CustomModal({ open, handleClose, children }) {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       slotProps={{

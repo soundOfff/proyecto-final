@@ -24,11 +24,11 @@ import Modal from "/components/Modal";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 
-import { getAll as getAllProjects } from "/services/projects";
+import { getAll as getAllProjects } from "/actions/projects";
 import { getOne as getOneProject } from "../../actions/projects";
 
-import { getAll as getAllStatuses } from "/services/project-statuses";
-import { getOne as getOneStatus } from "/services/project-statuses";
+import { getAll as getAllStatuses } from "/actions/project-statuses";
+import { getOne as getOneStatus } from "/actions/project-statuses";
 
 import { useRouter } from "next/router";
 import { useState } from "react";

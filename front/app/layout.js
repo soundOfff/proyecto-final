@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
       <body>
         <MaterialUIControllerProvider>
           <SessionProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider options={{ key: "mui" }}>{children}</ThemeProvider>
           </SessionProvider>
         </MaterialUIControllerProvider>
       </body>

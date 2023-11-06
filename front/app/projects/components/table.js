@@ -38,7 +38,7 @@ export default function Table({ columns, rows }) {
           >
             Ver
           </MDButton>
-          <Link key={project.id} href={`/projects2/create-notes/${project.id}`}>
+          <Link key={project.id} href={`/projects/create-notes/${project.id}`}>
             <MDButton variant="text" color="dark">
               Agregar Notas
             </MDButton>

@@ -14,15 +14,15 @@ const nextTranslate = require("next-translate-plugin");
 module.exports = {
   ...withTM({
     reactStrictMode: true,
-    async redirects() {
-      return [
-        {
-          source: "/",
-          destination: "/dashboards/analytics",
-          permanent: true,
-        },
-      ];
-    },
+    // async redirects() {
+    //   return [
+    //     {
+    //       source: "/",
+    //       destination: "/dashboards/analytics",
+    //       permanent: true,
+    //     },
+    //   ];
+    // },
   }),
   ...nextTranslate(),
 };

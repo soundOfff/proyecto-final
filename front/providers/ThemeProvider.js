@@ -8,6 +8,7 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "/context";
+
 import { usePathname } from "next/navigation";
 
 import CssBaseline from "@mui/material/CssBaseline";
@@ -139,7 +140,7 @@ export default function Theme(props) {
         key={cache.key}
         data-emotion={`${cache.key} ${names.join(" ")}`}
         dangerouslySetInnerHTML={{
-          __html: styles,
+          __html: options.prepend ? `@layer emotion {${styles}}` : styles,
         }}
       />
     );
@@ -160,12 +161,12 @@ export default function Theme(props) {
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
+            {children}
             <Configurator />
             {configsButton}
           </>
         )}
         {layout === "vr" && <Configurator />}
-        {children}
       </ThemeProvider>
     </CacheProvider>
   );

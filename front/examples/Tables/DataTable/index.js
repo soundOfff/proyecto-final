@@ -248,7 +248,7 @@ function DataTable({
       <MDBox
         display="flex"
         flexDirection={{ xs: "column", sm: "row" }}
-        justifyContent="space-between"
+        justifyContent="space-around"
         alignItems={{ xs: "flex-start", sm: "center" }}
         p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
       >

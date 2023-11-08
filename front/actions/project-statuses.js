@@ -7,7 +7,7 @@ async function getAll(params) {
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch, received status ${res.status}`);
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
   const { data } = await res.json();
@@ -24,7 +24,7 @@ async function getOne(statusId, params) {
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch, received status ${res.status}`);
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
   const { data: status } = await res.json();

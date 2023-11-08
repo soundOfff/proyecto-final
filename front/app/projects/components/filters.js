@@ -3,28 +3,49 @@
 import { InputLabel, MenuItem, FormControl, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-
 import MDInput from "/components/MDInput";
-
-import { useCreateQueryParams } from "/hooks/useCreateQueryString";
 
 export default function Filters({ statuses }) {
   const defaultStatus = { id: 0, label: "Todos" };
   const [status, setStatus] = useState(defaultStatus);
 
+  const [search, setSearch] = useState(null);
+
+  function handleSearch(e) {
+    const search = e.target.value;
+    if (search.length > 1) {
+      setTimeout(() => {
+        setSearch(search);
+      }, 300);
+    } else {
+      setSearch(null);
+    }
+  }
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const createQueryString = useCreateQueryParams(searchParams);
-
   useEffect(() => {
-    if (status.id !== 0) {
-      router.replace(pathname + "?" + createQueryString("statusId", status.id));
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+
+    if (status.id) {
+      params.set("statusId", status.id);
     } else {
-      router.replace(pathname);
+      params.delete("statusId");
     }
-  }, [status, router, pathname, searchParams, createQueryString]);
+
+    if (search) {
+      params.set("search", search);
+    } else {
+      params.delete("search");
+    }
+
+    const queryParams = params.toString();
+    const query = queryParams ? `?${queryParams}` : "";
+
+    router.push(`${pathname}${query}`);
+  }, [status, router, pathname, searchParams, search]);
 
   return (
     <>
@@ -50,7 +71,7 @@ export default function Filters({ statuses }) {
         </Select>
       </FormControl>
       <FormControl sx={{ width: "30%" }}>
-        <MDInput label="Buscar" />
+        <MDInput label="Buscar" onChange={handleSearch} />
       </FormControl>
     </>
   );

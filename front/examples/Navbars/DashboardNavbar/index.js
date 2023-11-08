@@ -55,7 +55,7 @@ import {
 } from "/context";
 import { usePathname } from "next/navigation";
 
-function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
+function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const {

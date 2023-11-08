@@ -5,6 +5,11 @@ import MDButton from "/components/MDButton";
 import DataTable from "/examples/Tables/DataTable";
 import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
+import MDBox from "/components/MDBox";
+
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Tooltip from "@mui/material/Tooltip";
 
 import { useEffect, useState } from "react";
 import { getOne } from "/actions/projects";
@@ -28,20 +33,22 @@ export default function Table({ columns, rows }) {
       ...project,
       actions: (
         <>
-          <MDButton
-            variant="text"
-            color="dark"
-            onClick={() => {
-              setProjectId(project.id);
-              setOpen(true);
-            }}
-          >
-            Ver
-          </MDButton>
+          <Tooltip title="Ver">
+            <VisibilityIcon
+              color="dark"
+              fontSize="large"
+              onClick={() => {
+                setProjectId(project.id);
+                setOpen(true);
+              }}
+              sx={{ mr: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
+
           <Link key={project.id} href={`/projects/create-notes/${project.id}`}>
-            <MDButton variant="text" color="dark">
-              Agregar Notas
-            </MDButton>
+            <Tooltip title="Agregar Notas">
+              <EditNoteIcon color="dark" fontSize="large" />
+            </Tooltip>
           </Link>
         </>
       ),
@@ -51,13 +58,12 @@ export default function Table({ columns, rows }) {
   const dataTableData = { columns, rows };
 
   return (
-    <>
+    <MDBox>
       {project && (
         <Modal
           open={open}
           onClose={() => {
             setOpen(false);
-            setProject(null);
           }}
         >
           <ModalContent project={project} />
@@ -70,6 +76,6 @@ export default function Table({ columns, rows }) {
         isSorted={true}
         noEndBorder
       />
-    </>
+    </MDBox>
   );
 }

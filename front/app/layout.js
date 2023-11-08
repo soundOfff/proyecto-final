@@ -4,7 +4,7 @@ import SessionProvider from "/providers/SessionProvider";
 
 import "../globals.css";
 
-import ThemeProvider from "../providers/ThemeProvider";
+import ThemeProvider from "/providers/ThemeProvider";
 
 import favicon from "/assets/images/favicon.png";
 import appleIcon from "/assets/images/apple-icon.png";

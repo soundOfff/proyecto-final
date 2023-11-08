@@ -25,7 +25,7 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 
 import { getAll as getAllProjects } from "/actions/projects";
-import { getOne as getOneProject } from "../../actions/projects";
+import { getOne as getOneProject } from "/actions/projects";
 
 import { getAll as getAllStatuses } from "/actions/project-statuses";
 import { getOne as getOneStatus } from "/actions/project-statuses";

@@ -15,7 +15,7 @@ class ProjectStatusSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            ['id' => 1, 'name' => 'started', 'label' => 'No Iniciado'],
+            ['id' => 1, 'name' => 'not_started', 'label' => 'No Iniciado'],
             ['id' => 2, 'name' => 'developing', 'label' => 'En Desarrollo'],
             ['id' => 3, 'name' => 'waiting', 'label' => 'En Espera'],
             ['id' => 4, 'name' => 'canceled', 'label' => 'Cancelado'],

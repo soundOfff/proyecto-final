@@ -6,6 +6,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -18,8 +19,8 @@ class ProjectController extends Controller
     {
         $query = QueryBuilder::for(Project::class)
             ->allowedFilters([
-                AllowedFilter::partial('responsiblePerson.company'),
                 AllowedFilter::exact('status', 'status.id'),
+                AllowedFilter::scope('search'),
             ])
             ->allowedIncludes([
                 'stages',
@@ -76,5 +77,16 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+    }
+
+    public function countByStatuses()
+    {
+        $countByStatuses = DB::table('project_statuses')
+            ->selectRaw('label, count(projects.project_status_id) as count')
+            ->leftJoin('projects', 'projects.project_status_id', '=', 'project_statuses.id')
+            ->groupBy('label', 'project_statuses.id')
+            ->get();
+
+        return response()->json($countByStatuses);
     }
 }

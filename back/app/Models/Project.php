@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class Project extends Model
 {
@@ -45,6 +47,11 @@ class Project extends Model
         return $this->hasMany(ProjectNote::class);
     }
 
+    public function members(): HasMany
+    {
+        return $this->hasMany(ProjectMember::class);
+    }
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
@@ -75,8 +82,25 @@ class Project extends Model
         return $this->belongsTo(LawFirm::class);
     }
 
+    public function serviceType(): BelongsTo
+    {
+        return $this->belongsTo(ProjectServiceType::class, 'project_service_type_id');
+    }
+
+    public function billingType(): BelongsTo
+    {
+        return $this->belongsTo(ProjectBillingType::class, 'project_billing_type_id');
+    }
+
     public function staffs(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%");
+        });
     }
 }

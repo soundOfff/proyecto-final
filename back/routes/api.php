@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectMemberController;
+use App\Http\Controllers\ProjectServiceTypeController;
 use App\Http\Controllers\ProjectStatusController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,11 +24,17 @@ Route::get('/hello-world', function () {
     return response()->json('Hello World');
 });
 
+Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
+
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 Route::get('/projects/{project}', [ProjectController::class, 'show']);
 
 Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
 Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);
+
+Route::get('/partners/select', [PartnerController::class, 'select']);
+Route::get('/staffs/select', [StaffController::class, 'select']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

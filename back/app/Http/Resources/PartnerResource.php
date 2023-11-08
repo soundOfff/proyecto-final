@@ -15,7 +15,6 @@ class PartnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'countryId' => $this->country_id,
             'active' => $this->active,
             'addedFrom' => $this->added_from,
             'address' => $this->address,
@@ -46,6 +45,7 @@ class PartnerResource extends JsonResource
             'vat' => $this->vat,
             'website' => $this->website,
             'zip' => $this->zip,
+            'country' => CountryResource::make($this->whenLoaded('country')),
             'projects' => ProjectResource::make($this->whenLoaded('projects')),
             'country' => CountryResource::make($this->whenLoaded('country')),
             'user' => UserResource::make($this->whenLoaded('user')),

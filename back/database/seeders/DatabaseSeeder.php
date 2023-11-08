@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CountrySeeder::class);
         $this->call(JurisdictionSeeder::class);
         $this->call(LawFirmSeeder::class);
+        $this->call(ProjectBillingTypeSeeder::class);
+        $this->call(ProjectServiceTypeSeeder::class);
         $this->call(ProjectSeeder::class);
     }
 }

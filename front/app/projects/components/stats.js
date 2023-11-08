@@ -48,7 +48,7 @@ export default function Stats({ countByStatuses }) {
             color={setColor(status.label)}
             size="xs"
             container
-            sx={{ mx: 3, mt: 3, height: "2rem" }}
+            sx={{ mx: 3, mt: 2, height: "2rem" }}
           />
         </MDBox>
       ))}

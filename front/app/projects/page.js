@@ -50,7 +50,7 @@ export default async function Projects({ searchParams }) {
   const { t, lang } = useTranslation("common");
 
   const columns = [
-    { Header: "#", accessor: "id" },
+    { Header: "Expediente", accessor: "expedient" },
     { Header: "Nombre", accessor: "name" },
     { Header: "Cliente", accessor: "responsiblePerson.firstName" },
     { Header: "Demandante", accessor: "plaintiff.company" },

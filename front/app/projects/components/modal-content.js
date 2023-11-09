@@ -20,7 +20,7 @@ export default function ModalComponent({ project }) {
           display="flex"
           justifyContent="space-between"
         >
-          <MDTypography variant="h5" textAlign="center" mr={10}>
+          <MDTypography variant="h4" textAlign="center" mr={10}>
             {project.name}
           </MDTypography>
 

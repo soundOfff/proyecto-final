@@ -11,7 +11,8 @@ import {
 
 import { usePathname } from "next/navigation";
 
-import CssBaseline from "@mui/material/CssBaseline";
+import { CssBaseline } from "@mui/material";
+
 import Icon from "@mui/material/Icon";
 
 // NextJS Material Dashboard 2 PRO components
@@ -34,7 +35,7 @@ import { useEffect, useState } from "react";
 
 import createCache from "@emotion/cache";
 import { useServerInsertedHTML } from "next/navigation";
-import { CacheProvider } from "@emotion/react";
+import { CacheProvider as DefaultCacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
 
 export default function Theme(props) {
@@ -104,17 +105,20 @@ export default function Theme(props) {
     </MDBox>
   );
 
-  const { options, children } = props;
+  const { options, CacheProvider = DefaultCacheProvider, children } = props;
 
-  const [{ cache, flush }] = useState(() => {
+  const [registry] = useState(() => {
     const cache = createCache(options);
     cache.compat = true;
     const prevInsert = cache.insert;
     let inserted = [];
     cache.insert = (...args) => {
-      const serialized = args[1];
+      const [selector, serialized] = args;
       if (cache.inserted[serialized.name] === undefined) {
-        inserted.push(serialized.name);
+        inserted.push({
+          name: serialized.name,
+          isGlobal: selector === "",
+        });
       }
       return prevInsert(...args);
     };
@@ -127,27 +131,51 @@ export default function Theme(props) {
   });
 
   useServerInsertedHTML(() => {
-    const names = flush();
-    if (names.length === 0) {
+    const inserted = registry.flush();
+    if (inserted.length === 0) {
       return null;
     }
     let styles = "";
-    for (const name of names) {
-      styles += cache.inserted[name];
-    }
+    let dataEmotionAttribute = registry.cache.key;
+
+    const globals = [];
+
+    inserted.forEach(({ name, isGlobal }) => {
+      const style = registry.cache.inserted[name];
+
+      if (typeof style !== "boolean") {
+        if (isGlobal) {
+          globals.push({ name, style });
+        } else {
+          styles += style;
+          dataEmotionAttribute += ` ${name}`;
+        }
+      }
+    });
+
     return (
-      <style
-        key={cache.key}
-        data-emotion={`${cache.key} ${names.join(" ")}`}
-        dangerouslySetInnerHTML={{
-          __html: options.prepend ? `@layer emotion {${styles}}` : styles,
-        }}
-      />
+      <>
+        {globals.map(({ name, style }) => (
+          <style
+            key={name}
+            data-emotion={`${registry.cache.key}-global ${name}`}
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: style }}
+          />
+        ))}
+        {styles !== "" && (
+          <style
+            data-emotion={dataEmotionAttribute}
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: styles }}
+          />
+        )}
+      </>
     );
   });
 
   return (
-    <CacheProvider value={cache}>
+    <CacheProvider value={registry.cache}>
       <ThemeProvider theme={darkMode ? themeDark : theme}>
         <CssBaseline />
 

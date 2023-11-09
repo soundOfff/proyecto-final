@@ -27,8 +27,11 @@ Route::get('/hello-world', function () {
 Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
-Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
+Route::post('/projects', [ProjectController::class, 'store']);
+Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
 Route::get('/projects/{project}', [ProjectController::class, 'show']);
+
+Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 
 Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
 Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);

@@ -33,7 +33,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MDEditorRoot from "./MDEditorRoot";
 
 // Material Dashboard 2 PRO React context
-import { useMaterialUIController } from "../../context";
+import { useMaterialUIController } from "/context";
 
 function MDEditor({ value = () => {}, editorStyle }) {
   const [controller] = useMaterialUIController();

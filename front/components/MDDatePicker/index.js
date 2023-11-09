@@ -25,7 +25,7 @@ import "flatpickr/dist/flatpickr.css";
 // NextJS Material Dashboard 2 PRO components
 import MDInput from "/components/MDInput";
 
-function MDDatePicker({ input, ...rest }) {
+function MDDatePicker({ input = {}, ...rest }) {
   return (
     <Flatpickr
       {...rest}
@@ -35,11 +35,6 @@ function MDDatePicker({ input, ...rest }) {
     />
   );
 }
-
-// Setting default values for the props of MDDatePicker
-MDDatePicker.defaultProps = {
-  input: {},
-};
 
 // Typechecking props for the MDDatePicker
 MDDatePicker.propTypes = {

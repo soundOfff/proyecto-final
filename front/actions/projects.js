@@ -47,23 +47,48 @@ async function getCountByStatuses() {
 }
 
 async function store(formData) {
-  const url = new URL(`${process.env.API_URL}/projects/counts/status`);
+  var data = {};
+  formData.forEach((value, key) => (data[key] = value));
+  data.project_member_ids = data.project_member_ids.split(",");
+  var body = JSON.stringify(data);
 
-  const res = await fetch(url);
+  console.log(data);
+
+  const request = new Request(`${process.env.API_URL}/projects`, {
+    method: "POST",
+    body: body,
+  });
+
+  const res = await fetch(request);
 
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  const countByStatuses = await res.json();
+  console.log(res.status);
 
   revalidatePath("/projects");
 
-  return countByStatuses;
+  return {
+    redirect: true,
+    redirectUri: `/projects`,
+    result: [],
+    error: null,
+  };
 }
 
 async function destroy(projectId) {
-  const url = new URL(`${process.env.API_URL}/projects/${projectId}`);
+  const request = new Request(`${process.env.API_URL}/projects/${projectId}`, {
+    method: "DELETE",
+  });
+
+  const res = await fetch(request);
+
+  if (!res.ok) {
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  revalidatePath("/projects");
 }
 
-export { getAll, getOne, store, getCountByStatuses };
+export { getAll, getOne, store, destroy, getCountByStatuses };

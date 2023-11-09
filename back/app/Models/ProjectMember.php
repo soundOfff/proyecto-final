@@ -10,6 +10,11 @@ class ProjectMember extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'staff_id',
+        'project_id',
+    ];
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

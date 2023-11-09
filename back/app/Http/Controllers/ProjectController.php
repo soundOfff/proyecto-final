@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Models\Project;
+use App\Models\ProjectMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -44,9 +46,18 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        //
+        $newProject = $request->validated();
+        $ids = $newProject['project_member_ids'];
+
+        $project = Project::create($newProject);
+
+        foreach ($ids as $id) {
+            ProjectMember::create(['staff_id' => $id, 'project_id' => $project->id]);
+        }
+
+        return response()->json(null, 201);
     }
 
     /**
@@ -76,7 +87,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        Project::destroy($project->id);
+
+        return response()->json(null, 204);
     }
 
     public function countByStatuses()

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/projects`);
@@ -47,34 +48,26 @@ async function getCountByStatuses() {
 }
 
 async function store(formData) {
-  var data = {};
+  const data = {};
   formData.forEach((value, key) => (data[key] = value));
   data.project_member_ids = data.project_member_ids.split(",");
-  var body = JSON.stringify(data);
 
-  console.log(data);
-
-  const request = new Request(`${process.env.API_URL}/projects`, {
+  const res = await fetch(`${process.env.API_URL}/projects`, {
     method: "POST",
-    body: body,
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
   });
 
-  const res = await fetch(request);
-
   if (!res.ok) {
+    const data = await res.json();
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
-
-  console.log(res.status);
-
   revalidatePath("/projects");
 
-  return {
-    redirect: true,
-    redirectUri: `/projects`,
-    result: [],
-    error: null,
-  };
+  redirect("/projects");
 }
 
 async function destroy(projectId) {

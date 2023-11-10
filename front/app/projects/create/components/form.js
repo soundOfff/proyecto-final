@@ -10,7 +10,8 @@ import MDDatePicker from "/components/MDDatePicker";
 import { Autocomplete } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import FormField from "/pagesComponents/pages/account/components/FormField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { EditorState } from "draft-js";
 
 export default function Form({
   partners,
@@ -18,11 +19,21 @@ export default function Form({
   serviceTypes,
   members,
   storeProject,
+  billingTypes,
 }) {
   const [partner, setPartner] = useState(null);
   const [status, setStatus] = useState(null);
   const [serviceType, setServiceType] = useState(null);
+  const [billingType, setBillingType] = useState(null);
   const [membersSelected, setMembers] = useState([]);
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [description, setDescription] = useState(null);
+
+  useEffect(() => {
+    setDescription(editorState.getCurrentContent().getPlainText());
+  }, [editorState, setDescription]);
 
   return (
     <MDBox component="form" action={storeProject} pb={3} px={3}>
@@ -49,7 +60,7 @@ export default function Form({
         <Grid item xs={12} sm={6}>
           <FormField name="expedient" label="Expediente" placeholder="00001" />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Autocomplete
             onChange={(e, partner) => setPartner(partner)}
             options={partners}
@@ -64,9 +75,9 @@ export default function Form({
               />
             )}
           />
-          <input name="responsible_type_id" type="hidden" value={partner?.id} />
+          <input name="defendant_id" type="hidden" value={partner?.id} />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Autocomplete
             onChange={(e, status) => setStatus(status)}
             options={statuses}
@@ -83,7 +94,7 @@ export default function Form({
           />
           <input name="project_status_id" type="hidden" value={status?.id} />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Autocomplete
             onChange={(e, type) => setServiceType(type)}
             options={serviceTypes}
@@ -102,6 +113,27 @@ export default function Form({
             name="project_service_type_id"
             type="hidden"
             value={serviceType?.id}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Autocomplete
+            onChange={(e, type) => setBillingType(type)}
+            options={billingTypes}
+            getOptionLabel={(option) => option.label}
+            renderInput={(params) => (
+              <MDInput
+                {...params}
+                variant="standard"
+                label="Tipo De Facturación"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
+          />
+          <input
+            name="project_billing_type_id"
+            type="hidden"
+            value={billingType?.id}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -150,7 +182,12 @@ export default function Form({
           <MDTypography variant="body2" color="text">
             Descripción Del Caso
           </MDTypography>
-          <MDEditor editorStyle={{ minHeight: "20vh" }} />
+          <MDEditor
+            editorStyle={{ minHeight: "20vh" }}
+            editorState={editorState}
+            setEditorState={setEditorState}
+          />
+          <input name="description" type="hidden" value={description} />
         </Grid>
       </Grid>
     </MDBox>

@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -22,7 +22,6 @@ import PropTypes from "prop-types";
 import dynamic from "next/dynamic";
 
 // draft-js
-import { EditorState } from "draft-js";
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
@@ -35,13 +34,14 @@ import MDEditorRoot from "./MDEditorRoot";
 // Material Dashboard 2 PRO React context
 import { useMaterialUIController } from "/context";
 
-function MDEditor({ value = () => {}, editorStyle }) {
+function MDEditor({
+  value = () => {},
+  editorStyle,
+  editorState,
+  setEditorState,
+}) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
 
   return (
     <MDEditorRoot ownerState={{ darkMode }}>

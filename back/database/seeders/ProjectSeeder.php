@@ -36,7 +36,6 @@ class ProjectSeeder extends Seeder
                     ->for(LawFirm::all()->random())
                     ->for(ProjectBillingType::all()->random(), 'billingType')
                     ->for(ProjectServiceType::all()->random(), 'serviceType')
-                    ->for(LawFirm::all()->random())
                     ->for(Contact::all()->random(), 'responsiblePerson')
                     ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'defendant')
                     ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'plaintiff')

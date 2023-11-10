@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProjectBillingTypeController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\ProjectServiceTypeController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\StaffController;
@@ -25,6 +25,7 @@ Route::get('/hello-world', function () {
 });
 
 Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
+Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'index']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
 Route::post('/projects', [ProjectController::class, 'store']);

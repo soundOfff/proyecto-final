@@ -57,7 +57,7 @@ class ProjectController extends Controller
             ProjectMember::create(['staff_id' => $id, 'project_id' => $project->id]);
         }
 
-        return response()->json(null, 201);
+        return response()->json($project, 201);
     }
 
     /**

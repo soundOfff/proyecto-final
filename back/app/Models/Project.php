@@ -61,6 +61,11 @@ class Project extends Model
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
     }
 
+    public function partner(): BelongsTo
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
     public function jurisdiction(): BelongsTo
     {
         return $this->belongsTo(Jurisdiction::class);

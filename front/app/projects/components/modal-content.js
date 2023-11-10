@@ -35,7 +35,7 @@ export default function ModalComponent({ project }) {
         <MDBox display="flex" alignContent="baseline" mt={3}>
           <MonetizationOnOutlinedIcon sx={{ mx: 1 }} />
           <MDTypography variant="h6" fontWeight="light">
-            {moneyFormat(project.amount)}
+            {moneyFormat(project.cost)}
           </MDTypography>
           <DateRangeIcon sx={{ ml: 4, mr: 1 }} />
           <MDTypography variant="h6" fontWeight="light" sx={{ mr: 1 }}>
@@ -97,7 +97,7 @@ export default function ModalComponent({ project }) {
           </Grid>
           <Grid item xs={6}>
             <MDTypography variant="body2" color="text">
-              {project.staffs[0].firstName} {project.staffs[0].lastName}
+              {project.staffs[0]?.firstName} {project.staffs[0]?.lastName}
             </MDTypography>
           </Grid>
         </Grid>

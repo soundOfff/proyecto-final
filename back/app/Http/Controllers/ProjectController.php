@@ -34,7 +34,7 @@ class ProjectController extends Controller
                 'responsiblePerson',
                 'lawFirm',
                 'staffs',
-            ]);
+            ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

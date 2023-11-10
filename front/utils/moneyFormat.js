@@ -3,5 +3,5 @@ export default function moneyFormat(currency) {
     style: "currency",
     currency: "USD",
   });
-  return formatter.format(currency.toFixed(2));
+  return currency ? formatter.format(currency) : "";
 }

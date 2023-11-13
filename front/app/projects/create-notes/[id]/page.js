@@ -1,6 +1,4 @@
-import DashboardLayout from "/examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "/examples/Navbars/DashboardNavbar";
-import Footer from "/examples/Footer";
+"use client";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -12,11 +10,25 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDEditor from "/components/MDEditor";
 
-import Link from "next/link";
+import { attach } from "/actions/project-notes";
+
+import { EditorState } from "draft-js";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 function Projects() {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [content, setContent] = useState(null);
+  const { id: projectId } = useParams();
+
+  useEffect(() => {
+    setContent(editorState.getCurrentContent().getPlainText());
+  }, [editorState, setContent]);
+
   return (
-    <MDBox py={3} mb={10}>
+    <MDBox component="form" action={attach} pb={3} px={3}>
       <Grid
         container
         justifyContent="center"
@@ -29,13 +41,17 @@ function Projects() {
               <MDTypography sx={{ mb: 5, textAlign: "center" }}>
                 Notas Privadas
               </MDTypography>
-              <MDEditor editorStyle={{ minHeight: "40vh" }} />
+              <MDEditor
+                editorStyle={{ minHeight: "40vh" }}
+                editorState={editorState}
+                setEditorState={setEditorState}
+              />
+              <input name="content" type="hidden" value={content} />
+              <input name="project_id" type="hidden" value={projectId} />
               <MDBox display="flex" justifyContent="end" my={5}>
-                <Link href="/projects">
-                  <MDButton variant="gradient" color="dark">
-                    Guardar
-                  </MDButton>
-                </Link>
+                <MDButton type="submit" variant="gradient" color="dark">
+                  Guardar
+                </MDButton>
               </MDBox>
             </MDBox>
           </Card>

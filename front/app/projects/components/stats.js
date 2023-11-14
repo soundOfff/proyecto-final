@@ -1,7 +1,7 @@
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
-import { Divider } from "@mui/material";
+
 import {
   NOT_STARTED,
   DEVELOPING,
@@ -31,6 +31,7 @@ export default function Stats({ countByStatuses }) {
     <MDBox
       sx={{
         display: "flex",
+        flexWrap: "wrap",
         justifyContent: "space-around",
         alignItems: "center",
         pb: 2,

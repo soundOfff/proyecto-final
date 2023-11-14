@@ -6,14 +6,18 @@ import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDSnackbar from "/components/MDSnackbar";
+import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 
+import ResponsiveTableContent from "./responsive-table-content";
+
 import { useEffect, useState } from "react";
 import { getOne, destroy } from "/actions/projects";
+import { Grid } from "@mui/material";
 
 export default function Table({ columns, rows }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
@@ -77,7 +81,20 @@ export default function Table({ columns, rows }) {
     };
   });
 
-  const dataTableData = { columns, rows };
+  const desktop = { columns, rows };
+  const mobile = {
+    columns: [
+      {
+        Header: "",
+        accessor: "mobile",
+        width: "100%",
+        Cell: (props) => {
+          return <ResponsiveTableContent props={props} />;
+        },
+      },
+    ],
+    rows,
+  };
 
   return (
     <MDBox>
@@ -102,10 +119,19 @@ export default function Table({ columns, rows }) {
         bgWhite
       />
       <DataTable
-        table={dataTableData}
+        className="desktop"
+        table={desktop}
         entriesPerPage={false}
         showTotalEntries={true}
         isSorted={true}
+        noEndBorder
+      />
+      <DataTable
+        className="mobile"
+        table={mobile}
+        entriesPerPage={false}
+        isSorted={false}
+        showTotalEntries={true}
         noEndBorder
       />
     </MDBox>

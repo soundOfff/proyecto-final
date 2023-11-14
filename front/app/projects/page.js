@@ -4,10 +4,8 @@ import Card from "@mui/material/Card";
 
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
-import MDButton from "/components/MDButton";
 
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
 
 import { getAll as getAllProjects } from "/actions/projects";
 import { getAll as getAllStatuses } from "/actions/project-statuses";
@@ -58,6 +56,7 @@ export default async function Projects({ searchParams }) {
     { Header: "Estado", accessor: "status.label" },
     { Header: "Última Nota", accessor: "notes[0].content" },
     { Header: "Acciones", accessor: "actions", textAlign: "center" },
+    { Header: "", accessor: "mobile", textAlign: "center" },
   ];
 
   return (
@@ -66,14 +65,7 @@ export default async function Projects({ searchParams }) {
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
             <Stats countByStatuses={countByStatuses} />
-            <MDBox display="flex" justifyContent="space-between" p={3} m={3}>
-              <Filters statuses={statuses} />
-              <Link href="/projects/create">
-                <MDButton variant="gradient" color="dark">
-                  Nuevo Proyecto
-                </MDButton>
-              </Link>
-            </MDBox>
+            <Filters statuses={statuses} />
             <MDBox py={1}>
               <Table columns={columns} rows={projects} />
             </MDBox>

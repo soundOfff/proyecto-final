@@ -57,6 +57,7 @@ function DataTable({
   pagination = { variant: "gradient", color: "dark" },
   isSorted = true,
   noEndBorder = false,
+  className = "desktop",
 }) {
   const defaultValue = entriesPerPage.defaultValue
     ? entriesPerPage.defaultValue
@@ -66,7 +67,6 @@ function DataTable({
     : ["5", "10", "15", "20", "25"];
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
-
   const tableInstance = useTable(
     { columns, data, initialState: { pageIndex: 0 } },
     useGlobalFilter,
@@ -162,7 +162,7 @@ function DataTable({
   }
 
   return (
-    <TableContainer sx={{ boxShadow: "none" }}>
+    <TableContainer sx={{ boxShadow: "none" }} className={className}>
       {entriesPerPage || canSearch ? (
         <MDBox
           display="flex"
@@ -327,6 +327,7 @@ DataTable.propTypes = {
   }),
   isSorted: PropTypes.bool,
   noEndBorder: PropTypes.bool,
+  class: PropTypes.string,
 };
 
 export default DataTable;

@@ -60,10 +60,19 @@ export default function Filters({ statuses }) {
     <Grid container spacing={3} my={3}>
       <Grid item xs={12} sm={4}>
         <FormControl
-          sx={{ width: { lg: "80%", xs: "100%" }, height: "45px", mb: 3 }}
+          sx={{
+            width: { lg: "80%", xs: "100%" },
+            height: "45px",
+            mb: 3,
+          }}
         >
           <InputLabel id="status">Estado</InputLabel>
-          <Select labelId="status" value={status.label} sx={{ height: "100%" }}>
+          <Select
+            labelId="status"
+            label="Estado"
+            value={status.label}
+            sx={{ height: "100%" }}
+          >
             <MenuItem
               key="all"
               value="Todos"
@@ -96,11 +105,13 @@ export default function Filters({ statuses }) {
           <MDInput label="Buscar" onChange={handleSearch} />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={4}>
-        <Link
-          href="/projects/create"
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
+      <Grid
+        item
+        xs={12}
+        sm={4}
+        sx={{ display: "flex", justifyContent: "center" }}
+      >
+        <Link href="/projects/create">
           <MDButton variant="gradient" color="dark">
             Nuevo Proyecto
           </MDButton>

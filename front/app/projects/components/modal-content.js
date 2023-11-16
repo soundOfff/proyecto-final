@@ -21,7 +21,7 @@ export default function ModalComponent({ project }) {
           display="flex"
           justifyContent="space-between"
         >
-          <MDTypography variant="h4" textAlign="center" mr={10}>
+          <MDTypography variant="h4" textAlign="center" mr={{ md: 10, xs: 2 }}>
             {project.name}
           </MDTypography>
 
@@ -33,34 +33,45 @@ export default function ModalComponent({ project }) {
             sx={{ maxHeight: "40px", marginTop: "0" }}
           />
         </MDBox>
-        <MDBox display="flex" alignContent="baseline" mt={3}>
-          <MonetizationOnOutlinedIcon sx={{ mx: 1 }} />
-          <MDTypography variant="h6" fontWeight="light">
-            {moneyFormat(project.cost)}
-          </MDTypography>
-          <DateRangeIcon sx={{ ml: 4, mr: 1 }} />
-          <MDTypography variant="h6" fontWeight="light" sx={{ mr: 1 }}>
-            Desde
-          </MDTypography>
-          <MDTypography variant="h6" color="text" fontWeight="light">
-            {project.startDate}
-          </MDTypography>
-          <DateRangeIcon sx={{ ml: 4, mr: 1 }} />
-          <MDTypography
-            variant="h6"
-            color="caption"
-            fontWeight="light"
-            sx={{ mr: 1 }}
-          >
-            Hasta
-          </MDTypography>
-          <MDTypography variant="h6" color="text" fontWeight="light">
-            {project.deadline}
-          </MDTypography>
-        </MDBox>
+        <Grid container mt={3}>
+          <Grid item xs={12} xxl={2} display="flex">
+            <MonetizationOnOutlinedIcon sx={{ mr: 1 }} />
+            <MDTypography variant="h6" color="text" fontWeight="light">
+              {moneyFormat(project.cost)}
+            </MDTypography>
+          </Grid>
+          <Grid item xs={12} xxl={2} mr={5} display="flex">
+            <DateRangeIcon />
+            <MDTypography variant="h6" fontWeight="light" sx={{ mx: 1 }}>
+              Desde
+            </MDTypography>
+            <MDTypography variant="h6" color="text" fontWeight="light">
+              {project.startDate}
+            </MDTypography>
+          </Grid>
+          <Grid item xs={12} xxl={2} display="flex">
+            <DateRangeIcon />
+            <MDTypography
+              variant="h6"
+              color="caption"
+              fontWeight="light"
+              sx={{ mx: 1 }}
+            >
+              Hasta
+            </MDTypography>
+            <MDTypography variant="h6" color="text" fontWeight="light">
+              {project.deadline}
+            </MDTypography>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item xs={12} mt={5}>
-        <Grid container spacing={5} mx={10} justifyContent="center">
+      <Grid item xs={12} mt={3}>
+        <Grid
+          container
+          spacing={5}
+          mx={{ xl: 10, xs: 0 }}
+          justifyContent="center"
+        >
           <Grid item xs={6}>
             <MDTypography variant="body2" fontWeight="medium">
               Horas Estimadas
@@ -75,7 +86,12 @@ export default function ModalComponent({ project }) {
         <Divider fullWidth />
       </Grid>
       <Grid item xs={12}>
-        <Grid container spacing={5} mx={10} justifyContent="center">
+        <Grid
+          container
+          spacing={5}
+          mx={{ xl: 10, xs: 0 }}
+          justifyContent="center"
+        >
           <Grid item xs={6}>
             <MDTypography variant="body2" fontWeight="medium">
               Fecha De Creación
@@ -90,7 +106,12 @@ export default function ModalComponent({ project }) {
         <Divider fullWidth />
       </Grid>
       <Grid item xs={12}>
-        <Grid container spacing={5} mx={10} justifyContent="center">
+        <Grid
+          container
+          spacing={5}
+          mx={{ xl: 10, xs: 0 }}
+          justifyContent="center"
+        >
           <Grid item xs={6}>
             <MDTypography variant="body2" fontWeight="medium">
               Abogado Principal

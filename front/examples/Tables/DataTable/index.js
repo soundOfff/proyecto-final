@@ -48,6 +48,7 @@ import MDPagination from "/components/MDPagination";
 // NextJS Material Dashboard 2 PRO examples
 import DataTableHeadCell from "/examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "/examples/Tables/DataTable/DataTableBodyCell";
+import ResponsiveTableContent from "/app/projects/components/responsive-table-content";
 
 function DataTable({
   entriesPerPage = { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
@@ -205,7 +206,10 @@ function DataTable({
         </MDBox>
       ) : null}
       <Table {...getTableProps()}>
-        <MDBox component="thead">
+        <MDBox
+          component="thead"
+          sx={{ display: { md: "table-header-group", xs: "none" } }}
+        >
           {headerGroups.map((headerGroup, key) => (
             <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column, key) => (
@@ -224,7 +228,10 @@ function DataTable({
             </TableRow>
           ))}
         </MDBox>
-        <TableBody {...getTableBodyProps()}>
+        <TableBody
+          {...getTableBodyProps()}
+          sx={{ display: { md: "table-row-group", xs: "none" } }}
+        >
           {page.map((row, key) => {
             prepareRow(row);
             return (
@@ -239,6 +246,25 @@ function DataTable({
                     {cell.render("Cell")}
                   </DataTableBodyCell>
                 ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+        <TableBody
+          {...getTableBodyProps()}
+          sx={{ display: { md: "none", xs: "table-row-group" } }}
+        >
+          {page.map((row, key) => {
+            prepareRow(row);
+            return (
+              <TableRow key={key} {...row.getRowProps()}>
+                <DataTableBodyCell
+                  key={key}
+                  noBorder={noEndBorder && rows.length - 1 === key}
+                  {...row.cells[0].getCellProps()}
+                >
+                  <ResponsiveTableContent row={row} />
+                </DataTableBodyCell>
               </TableRow>
             );
           })}

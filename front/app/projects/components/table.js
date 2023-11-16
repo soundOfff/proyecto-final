@@ -13,8 +13,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 
-import ResponsiveTableContent from "./responsive-table-content";
-
 import { useEffect, useState } from "react";
 import { getOne, destroy } from "/actions/projects";
 
@@ -78,7 +76,6 @@ export default function Table({ rows }) {
       },
     },
     { Header: "Acciones", accessor: "actions", textAlign: "center" },
-    { Header: "", accessor: "mobile", textAlign: "center" },
   ];
 
   rows = rows.map((project) => {
@@ -117,20 +114,7 @@ export default function Table({ rows }) {
     };
   });
 
-  const desktop = { columns, rows };
-  const mobile = {
-    columns: [
-      {
-        Header: "",
-        accessor: "mobile",
-        width: "100%",
-        Cell: (props) => {
-          return <ResponsiveTableContent props={props} />;
-        },
-      },
-    ],
-    rows,
-  };
+  const table = { columns, rows };
 
   return (
     <MDBox>
@@ -155,19 +139,10 @@ export default function Table({ rows }) {
         bgWhite
       />
       <DataTable
-        className="desktop"
-        table={desktop}
+        table={table}
         entriesPerPage={false}
         showTotalEntries={true}
         isSorted={true}
-        noEndBorder
-      />
-      <DataTable
-        className="mobile"
-        table={mobile}
-        entriesPerPage={false}
-        isSorted={false}
-        showTotalEntries={true}
         noEndBorder
       />
     </MDBox>

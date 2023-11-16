@@ -44,6 +44,7 @@
     "formik": "2.4.5",
     "html-react-parser": "4.2.2",
     "jsvectormap": "1.5.3",
+    "moment": "^2.29.4",
     "next": "^14.0.1",
     "next-auth": "^4.24.3",
     "next-compose-plugins": "^2.2.1",

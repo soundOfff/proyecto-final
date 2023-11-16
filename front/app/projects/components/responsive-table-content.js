@@ -22,31 +22,31 @@ export default function ResponsiveTableContent({ props }) {
         <MDTypography variant="body2">Cliente</MDTypography>
       </Grid>
       <Grid item xs={6}>
-        {props.cell.row.original.responsiblePerson.firstName}
+        {props.cell.row.original.responsiblePerson?.firstName}
       </Grid>
       <Grid item xs={6}>
         <MDTypography variant="body2">Demandante</MDTypography>
       </Grid>
       <Grid item xs={6}>
-        {props.cell.row.original.plaintiff.company}
+        {props.cell.row.original.plaintiff?.company}
       </Grid>
       <Grid item xs={6}>
         <MDTypography variant="body2">Demandado</MDTypography>
       </Grid>
       <Grid item xs={6}>
-        {props.cell.row.original.defendant.company}
+        {props.cell.row.original.defendant?.company}
       </Grid>
       <Grid item xs={6}>
         <MDTypography variant="body2">Estado</MDTypography>
       </Grid>
       <Grid item xs={6}>
-        {props.cell.row.original.status.label}
+        {props.cell.row.original.status?.label}
       </Grid>
       <Grid item xs={6}>
         <MDTypography variant="body2">Última Nota</MDTypography>
       </Grid>
       <Grid item xs={6}>
-        {props.cell.row.original.notes.at(-1).content}
+        {props.cell.row.original.notes.at(-1)?.content}
       </Grid>
     </Grid>
   );

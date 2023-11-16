@@ -47,11 +47,7 @@ async function getCountByStatuses() {
   return countByStatuses;
 }
 
-async function store(formData) {
-  const data = {};
-  formData.forEach((value, key) => (data[key] = value));
-  data.project_member_ids = data.project_member_ids.split(",");
-
+async function store(data) {
   const res = await fetch(`${process.env.API_URL}/projects`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -65,6 +61,7 @@ async function store(formData) {
     const data = await res.json();
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
+
   revalidatePath("/projects");
 
   redirect("/projects");

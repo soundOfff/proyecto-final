@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import MDInput from "/components/MDInput";
-import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 
 export default function Filters({ statuses }) {
@@ -98,7 +97,10 @@ export default function Filters({ statuses }) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={4}>
-        <Link href="/projects/create">
+        <Link
+          href="/projects/create"
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
           <MDButton variant="gradient" color="dark">
             Nuevo Proyecto
           </MDButton>

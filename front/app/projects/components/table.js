@@ -6,7 +6,6 @@ import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDSnackbar from "/components/MDSnackbar";
-import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -17,7 +16,6 @@ import ResponsiveTableContent from "./responsive-table-content";
 
 import { useEffect, useState } from "react";
 import { getOne, destroy } from "/actions/projects";
-import { Grid } from "@mui/material";
 
 export default function Table({ columns, rows }) {
   const [projectIdShow, setProjectIdShow] = useState(0);

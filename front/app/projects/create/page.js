@@ -19,19 +19,15 @@ export default async function NewProject() {
   const members = await selectMembers();
 
   return (
-    <Card id="new-project" sx={{ overflow: "visible", mb: 5 }}>
-      <MDBox p={3}>
-        <Form
-          {...{
-            partners,
-            statuses,
-            serviceTypes,
-            members,
-            storeProject,
-            billingTypes,
-          }}
-        />
-      </MDBox>
-    </Card>
+    <Form
+      {...{
+        partners,
+        statuses,
+        serviceTypes,
+        members,
+        storeProject,
+        billingTypes,
+      }}
+    />
   );
 }

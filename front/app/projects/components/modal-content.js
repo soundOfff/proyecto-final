@@ -1,4 +1,5 @@
 "use client";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 // NextJS Material Dashboard 2 PRO components
@@ -27,7 +28,7 @@ export default function ModalComponent({ project }) {
           <MDBadge
             variant="contained"
             color="info"
-            badgeContent={`Caso Número ${project.id}`}
+            badgeContent={`Expediente ${project.expedient}`}
             container
             sx={{ maxHeight: "40px", marginTop: "0" }}
           />

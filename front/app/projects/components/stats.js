@@ -9,6 +9,7 @@ import {
   CANCELED,
   FINALIZED,
 } from "/utils/constants/projectStatusLabels";
+import { Grid } from "@mui/material";
 
 function setColor(label) {
   if (label === NOT_STARTED) {
@@ -28,31 +29,30 @@ function setColor(label) {
 
 export default function Stats({ countByStatuses }) {
   return (
-    <MDBox
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-around",
-        alignItems: "center",
-        pb: 2,
-      }}
-    >
+    <Grid container>
       {countByStatuses.map((status) => (
-        <MDBox key={status.label} display="flex" px={4}>
-          <MDTypography variant="h3" sx={{ mt: 2 }}>
-            {status.count}
-          </MDTypography>
-          <MDBadge
-            border
-            variant="contained"
-            badgeContent={`${status.label}`}
-            color={setColor(status.label)}
-            size="xs"
-            container
-            sx={{ mx: 3, mt: 2, height: "2rem" }}
-          />
-        </MDBox>
+        <Grid
+          item
+          key={status.label}
+          margin="auto"
+          minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
+        >
+          <MDBox display="flex" alignContent="center" my={2}>
+            <MDTypography variant="h3" display="inline-block">
+              {status.count}
+            </MDTypography>
+            <MDBadge
+              border
+              variant="contained"
+              badgeContent={`${status.label}`}
+              color={setColor(status.label)}
+              size="xs"
+              container
+              sx={{ ml: 1, height: "2rem" }}
+            />
+          </MDBox>
+        </Grid>
       ))}
-    </MDBox>
+    </Grid>
   );
 }

@@ -6,6 +6,7 @@ import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDSnackbar from "/components/MDSnackbar";
+import MDBadge from "/components/MDBadge";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -17,7 +18,9 @@ import ResponsiveTableContent from "./responsive-table-content";
 import { useEffect, useState } from "react";
 import { getOne, destroy } from "/actions/projects";
 
-export default function Table({ columns, rows }) {
+import { setColor } from "/utils/project-state-colors";
+
+export default function Table({ rows }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [projectIdDelete, setProjectIdDelete] = useState(0);
   const [project, setProject] = useState(null);
@@ -42,6 +45,41 @@ export default function Table({ columns, rows }) {
       deleteProject();
     }
   }, [projectIdDelete]);
+
+  const columns = [
+    { Header: "Expediente", accessor: "expedient" },
+    { Header: "Nombre", accessor: "name" },
+    { Header: "Cliente", accessor: "responsiblePerson.firstName" },
+    { Header: "Demandante", accessor: "plaintiff.company" },
+    { Header: "Demandado", accessor: "defendant.company" },
+    {
+      Header: "Estado",
+      accessor: "status.label",
+      textAlign: "center",
+      Cell: ({ value }) => {
+        return (
+          <MDBadge
+            border
+            variant="contained"
+            badgeContent={value}
+            color={setColor(value)}
+            size="xs"
+            container
+            sx={{ ml: 1, height: "2rem" }}
+          />
+        );
+      },
+    },
+    {
+      Header: "Última Nota",
+      accessor: "notes",
+      Cell: ({ value }) => {
+        return value.at(-1).content;
+      },
+    },
+    { Header: "Acciones", accessor: "actions", textAlign: "center" },
+    { Header: "", accessor: "mobile", textAlign: "center" },
+  ];
 
   rows = rows.map((project) => {
     return {

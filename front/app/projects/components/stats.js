@@ -2,30 +2,9 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
 
-import {
-  NOT_STARTED,
-  DEVELOPING,
-  WAITING,
-  CANCELED,
-  FINALIZED,
-} from "/utils/constants/projectStatusLabels";
 import { Grid } from "@mui/material";
 
-function setColor(label) {
-  if (label === NOT_STARTED) {
-    return "primary";
-  } else if (label === DEVELOPING) {
-    return "info";
-  } else if (label === WAITING) {
-    return "warning";
-  } else if (label === CANCELED) {
-    return "error";
-  } else if (label === FINALIZED) {
-    return "success";
-  } else {
-    return "dark";
-  }
-}
+import { setColor } from "/utils/project-state-colors";
 
 export default function Stats({ countByStatuses }) {
   return (

@@ -47,27 +47,15 @@ export default async function Projects({ searchParams }) {
 
   const { t, lang } = useTranslation("common");
 
-  const columns = [
-    { Header: "Expediente", accessor: "expedient" },
-    { Header: "Nombre", accessor: "name" },
-    { Header: "Cliente", accessor: "responsiblePerson.firstName" },
-    { Header: "Demandante", accessor: "plaintiff.company" },
-    { Header: "Demandado", accessor: "defendant.company" },
-    { Header: "Estado", accessor: "status.label" },
-    { Header: "Última Nota", accessor: "notes[0].content" },
-    { Header: "Acciones", accessor: "actions", textAlign: "center" },
-    { Header: "", accessor: "mobile", textAlign: "center" },
-  ];
-
   return (
-    <MDBox>
+    <MDBox mb={3}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
             <Stats countByStatuses={countByStatuses} />
             <Filters statuses={statuses} />
             <MDBox py={1}>
-              <Table columns={columns} rows={projects} />
+              <Table rows={projects} />
             </MDBox>
           </Grid>
         </Grid>

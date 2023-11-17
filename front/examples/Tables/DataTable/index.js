@@ -58,7 +58,6 @@ function DataTable({
   pagination = { variant: "gradient", color: "dark" },
   isSorted = true,
   noEndBorder = false,
-  className = "desktop",
 }) {
   const defaultValue = entriesPerPage.defaultValue
     ? entriesPerPage.defaultValue
@@ -163,7 +162,14 @@ function DataTable({
   }
 
   return (
-    <TableContainer sx={{ boxShadow: "none" }} className={className}>
+    <TableContainer sx={{ boxShadow: "none" }}>
+      {showTotalEntries && (
+        <MDBox mb={{ xs: 5, sm: 2, float: "right" }} mr={3}>
+          <MDTypography variant="button" color="secondary" fontWeight="regular">
+            Mostrando {entriesStart} - {entriesEnd} de {rows.length} proyectos
+          </MDTypography>
+        </MDBox>
+      )}
       {entriesPerPage || canSearch ? (
         <MDBox
           display="flex"
@@ -278,17 +284,6 @@ function DataTable({
         alignItems={{ xs: "flex-start", sm: "center" }}
         p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
       >
-        {showTotalEntries && (
-          <MDBox mb={{ xs: 3, sm: 0 }}>
-            <MDTypography
-              variant="button"
-              color="secondary"
-              fontWeight="regular"
-            >
-              Showing {entriesStart} to {entriesEnd} of {rows.length} entries
-            </MDTypography>
-          </MDBox>
-        )}
         {pageOptions.length > 1 && (
           <MDPagination
             variant={pagination.variant ? pagination.variant : "gradient"}

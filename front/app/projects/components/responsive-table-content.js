@@ -14,7 +14,7 @@ export default function ResponsiveTableContent({ row }) {
             </Grid>
             <Grid item xs={6}>
               {Array.isArray(cell.value)
-                ? cell.value.at(-1).content
+                ? Object.values(cell.value.at(-1))[0]
                 : cell.value}
             </Grid>
           </>

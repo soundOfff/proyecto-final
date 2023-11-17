@@ -72,7 +72,7 @@ export default function Table({ rows }) {
       Header: "Última Nota",
       accessor: "notes",
       Cell: ({ value }) => {
-        return value.at(-1).content;
+        return value.length > 0 ? value.at(-1).content : null;
       },
     },
     { Header: "Acciones", accessor: "actions", textAlign: "center" },

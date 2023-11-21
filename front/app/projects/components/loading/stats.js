@@ -11,7 +11,7 @@ export default function StatsLoading() {
           margin="auto"
           minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
         >
-          <Skeleton variant="rounded" width={210} height={118} />
+          <Skeleton variant="rounded" width="100%" height={118} />
         </Grid>
       ))}
     </Grid>

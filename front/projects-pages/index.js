@@ -25,10 +25,10 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 
 import { getAll as getAllProjects } from "/actions/projects";
-import { getOne as getOneProject } from "/actions/projects";
+import { show as showProject } from "/actions/projects";
 
 import { getAll as getAllStatuses } from "/actions/project-statuses";
-import { getOne as getOneStatus } from "/actions/project-statuses";
+import { show as showStatus } from "/actions/project-statuses";
 
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -55,13 +55,13 @@ export async function getServerSideProps(context) {
 
   if (statusId) {
     filter = { "filter[status]": statusId };
-    statusSelected = await getOneStatus(statusId);
+    statusSelected = await showStatus(statusId);
   }
 
   if (projectId) {
     const include = ["staffs"];
     const params = { include };
-    projectSelected = await getOneProject(projectId, params);
+    projectSelected = await showProject(projectId, params);
   }
 
   const params = {

@@ -68,6 +68,12 @@ class ProjectController extends Controller
         $project = QueryBuilder::for(Project::class)
             ->allowedIncludes([
                 'staffs',
+                'defendant',
+                'plaintiff',
+                'billingType',
+                'serviceType',
+                'status',
+                'members.staff',
             ])
             ->find($project->id);
 

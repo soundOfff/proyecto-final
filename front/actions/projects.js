@@ -18,9 +18,10 @@ async function getAll(params) {
   return data.projects;
 }
 
-async function getOne(projectId, params) {
-  const url = new URL(`${process.env.API_URL}/projects/${projectId}?${params}`);
+async function show(id, params) {
+  const url = new URL(`${process.env.API_URL}/projects/${id}`);
   url.search = new URLSearchParams(params);
+  console.log(url.search);
 
   const res = await fetch(url);
 
@@ -81,4 +82,4 @@ async function destroy(projectId) {
   revalidatePath("/projects");
 }
 
-export { getAll, getOne, store, destroy, getCountByStatuses };
+export { getAll, show, store, destroy, getCountByStatuses };

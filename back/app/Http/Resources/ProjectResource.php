@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -31,7 +32,11 @@ class ProjectResource extends JsonResource
             'amount' => $this->amount,
             'juryNumber' => $this->jury_number,
             'onSchedule' => $this->on_schedule,
+            'createdAt' => Carbon::parse($this->created_at)->format('d-m-Y'),
+            'billingType' => ProjectBillingTypeResource::make($this->whenLoaded('billingType')),
+            'serviceType' => ProjectServiceTypeResource::make($this->whenLoaded('serviceType')),
             'stages' => ProjectStageResource::collection($this->whenLoaded('stages')),
+            'members' => ProjectMemberResource::collection($this->whenLoaded('members')),
             'notes' => ProjectNoteResource::collection($this->whenLoaded('notes')),
             'status' => ProjectStatusResource::make($this->whenLoaded('status')),
             'jurisdiction' => JurisdictionResource::make($this->whenLoaded('jurisdiction')),

@@ -11,10 +11,11 @@ import MDBadge from "/components/MDBadge";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PreviewIcon from "@mui/icons-material/Preview";
 import Tooltip from "@mui/material/Tooltip";
 
 import { useEffect, useState } from "react";
-import { getOne, destroy } from "/actions/projects";
+import { show, destroy } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
 
@@ -27,7 +28,7 @@ export default function Table({ rows }) {
 
   useEffect(() => {
     const fetchProject = async () => {
-      setProject(await getOne(projectIdShow, { include: "staffs" }));
+      setProject(await show(projectIdShow, { include: "staffs" }));
     };
     if (projectIdShow) {
       fetchProject();
@@ -83,8 +84,13 @@ export default function Table({ rows }) {
       ...project,
       actions: (
         <>
-          <Tooltip title="Ver">
-            <VisibilityIcon
+          <Tooltip title="Ver Detalles">
+            <Link key={project.id} href={`/projects/${project.id}`}>
+              <VisibilityIcon color="dark" fontSize="medium" sx={{ mr: 2 }} />
+            </Link>
+          </Tooltip>
+          <Tooltip title="Vista Rápida">
+            <PreviewIcon
               color="info"
               fontSize="medium"
               onClick={() => {

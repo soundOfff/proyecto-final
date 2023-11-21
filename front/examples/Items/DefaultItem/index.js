@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+"use client";
 
 import { forwardRef } from "react";
 
@@ -31,9 +32,11 @@ import defaultItemIconBox from "/examples/Items/DefaultItem/styles";
 const DefaultItem = forwardRef(
   ({ color, icon, title, description, ...rest }, ref) => (
     <MDBox {...rest} ref={ref} display="flex" alignItems="center">
-      <MDBox sx={(theme) => defaultItemIconBox(theme, { color })}>
-        <Icon>{icon}</Icon>
-      </MDBox>
+      {icon && (
+        <MDBox sx={(theme) => defaultItemIconBox(theme, { color })}>
+          <Icon>{icon}</Icon>
+        </MDBox>
+      )}
       <MDBox ml={2} mt={0.5} lineHeight={1.4}>
         <MDTypography display="block" variant="button" fontWeight="medium">
           {title}

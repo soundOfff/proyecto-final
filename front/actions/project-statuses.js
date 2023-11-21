@@ -15,7 +15,7 @@ async function getAll(params) {
   return data.statuses;
 }
 
-async function getOne(statusId, params) {
+async function show(statusId, params) {
   const url = new URL(
     `${process.env.API_URL}/project-statuses/${statusId}?${params}`
   );
@@ -32,4 +32,4 @@ async function getOne(statusId, params) {
   return status;
 }
 
-export { getAll, getOne };
+export { getAll, show };

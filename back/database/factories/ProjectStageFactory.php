@@ -17,7 +17,6 @@ class ProjectStageFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->title(),
             'start_timestamp' => fake()->dateTime(),
             'end_timestamp' => fake()->dateTime(),
         ];

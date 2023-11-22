@@ -13,6 +13,7 @@ use App\Models\ProjectMember;
 use App\Models\ProjectNote;
 use App\Models\ProjectServiceType;
 use App\Models\ProjectStage;
+use App\Models\ProjectStageType;
 use App\Models\ProjectStatus;
 use App\Models\Role;
 use App\Models\Staff;
@@ -40,7 +41,12 @@ class ProjectSeeder extends Seeder
                     ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'defendant')
                     ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'plaintiff')
                     ->has(ProjectNote::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'notes')
-                    ->has(ProjectStage::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'stages')
+                    ->has(ProjectStage::factory()
+                        ->for(Staff::factory()->for(Role::all()->random())->create())
+                        ->for(ProjectStageType::all()->random(), 'type')
+                        ->count(3),
+                        'stages'
+                    )
                     ->has(Staff::factory()->for(Role::all()->random())->count(3), 'staffs')
                     ->has(ProjectMember::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'members')
                     ->create();

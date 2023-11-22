@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LawFirmSeeder::class);
         $this->call(ProjectBillingTypeSeeder::class);
         $this->call(ProjectServiceTypeSeeder::class);
+        $this->call(ProjectStageTypeSeeder::class);
         $this->call(ProjectSeeder::class);
     }
 }

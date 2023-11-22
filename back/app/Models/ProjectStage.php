@@ -11,7 +11,6 @@ class ProjectStage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'start_timestamp',
         'end_timestamp',
     ];
@@ -24,5 +23,10 @@ class ProjectStage extends Model
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(ProjectStageType::class, 'project_stage_type_id');
     }
 }

@@ -30,41 +30,38 @@ export default async function Show({ params }) {
 
   return (
     <Card sx={{ px: 10, py: 5 }}>
-      <MDBox
-        mt={3}
-        mb={5}
-        lineHeight={0}
-        display="flex"
-        justifyContent="space-between"
-      >
-        <MDBox display="inline-block">
+      <Grid container mt={3} mb={5} lineHeight={0}>
+        <Grid item xs={12} md={6}>
           <MDTypography
             variant="h4"
             textAlign="center"
-            mr={{ md: 5, xs: 0 }}
-            display="inline"
+            mr={5}
+            display="inline-block"
+            mb={{ xs: 5 }}
           >
             {project.name}
           </MDTypography>
+        </Grid>
+
+        <Grid item xs={12} md={6} display="flex" justifyContent="end">
+          <MDBadge
+            variant="gradient"
+            color="dark"
+            badgeContent={`Expediente ${project.expedient}`}
+            container
+            sx={{ height: "40px", mr: 5 }}
+          />
           <MDBadge
             variant="contained"
             badgeContent={`${project.status.label}`}
             color={setColor(project.status.label)}
             container
-            sx={{ maxHeight: "40px", marginTop: "0" }}
+            sx={{ height: "40px" }}
           />
-        </MDBox>
+        </Grid>
+      </Grid>
 
-        <MDBadge
-          variant="contained"
-          color="info"
-          badgeContent={`Expediente ${project.expedient}`}
-          container
-          sx={{ maxHeight: "40px", marginTop: "0" }}
-        />
-      </MDBox>
-
-      <Grid container mt={3} ml={2}>
+      <Grid container ml={2}>
         <Grid item xs={12} md={6} xxl={3} whiteSpace="nowrap">
           <DefaultItem
             color="dark"

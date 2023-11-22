@@ -4,9 +4,14 @@ import Card from "@mui/material/Card";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import MDBadge from "/components/MDBadge";
+import MDAvatar from "/components/MDAvatar";
+import bruceMars from "/assets/images/bruce-mars.jpg";
 
 import DefaultItem from "/examples/Items/DefaultItem";
 import { Divider, Grid } from "@mui/material";
+
+import { setColor } from "/utils/project-state-colors";
 
 import moneyFormat from "/utils/moneyFormat";
 
@@ -25,24 +30,100 @@ export default async function Show({ params }) {
 
   return (
     <Card sx={{ px: 10, py: 5 }}>
-      <Grid container>
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Expediente"
-            description={project.expedient}
+      <MDBox
+        mt={3}
+        mb={5}
+        lineHeight={0}
+        display="flex"
+        justifyContent="space-between"
+      >
+        <MDBox display="inline-block">
+          <MDTypography
+            variant="h4"
+            textAlign="center"
+            mr={{ md: 5, xs: 0 }}
+            display="inline"
+          >
+            {project.name}
+          </MDTypography>
+          <MDBadge
+            variant="contained"
+            badgeContent={`${project.status.label}`}
+            color={setColor(project.status.label)}
+            container
+            sx={{ maxHeight: "40px", marginTop: "0" }}
           />
-        </Grid>
-        <Grid xs={12} md={6} mt={3}>
+        </MDBox>
+
+        <MDBadge
+          variant="contained"
+          color="info"
+          badgeContent={`Expediente ${project.expedient}`}
+          container
+          sx={{ maxHeight: "40px", marginTop: "0" }}
+        />
+      </MDBox>
+
+      <Grid container mt={3} ml={2}>
+        <Grid item xs={12} md={6} xxl={3} whiteSpace="nowrap">
           <DefaultItem
             color="dark"
-            title="Coste Total"
+            title="Costo"
+            icon="monetization_on_outlined"
             description={moneyFormat(project.cost)}
           />
         </Grid>
 
-        <Divider variant="left" sx={{ width: "70%" }} />
+        <Grid
+          item
+          xs={12}
+          md={6}
+          xxl={3}
+          mt={{ xxl: 0, md: 0, xs: 3 }}
+          whiteSpace="nowrap"
+        >
+          <DefaultItem
+            color="dark"
+            title="Creado"
+            icon="date_range"
+            description={project.createdAt}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          xxl={3}
+          mt={{ xxl: 0, md: 3, xs: 3 }}
+          whiteSpace="nowrap"
+        >
+          <DefaultItem
+            color="dark"
+            title="Comienzo"
+            icon="date_range"
+            description={project.startDate}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          xxl={3}
+          mt={{ xxl: 0, md: 3, xs: 3 }}
+          whiteSpace="nowrap"
+        >
+          <DefaultItem
+            color="dark"
+            title="Fin"
+            icon="date_range"
+            description={project.deadline}
+          />
+        </Grid>
+      </Grid>
 
+      <Divider variant="left" sx={{ width: "100%" }} />
+
+      <Grid container>
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -70,40 +151,6 @@ export default async function Show({ params }) {
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
-            title="Tipo De Servicio"
-            description={project.serviceType.label}
-          />
-        </Grid>
-
-        <Divider variant="left" sx={{ width: "70%" }} />
-
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Fecha De Creación"
-            description={project.createdAt}
-          />
-        </Grid>
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Fecha De Inicio"
-            description={project.startDate}
-          />
-        </Grid>
-
-        <Divider variant="left" sx={{ width: "70%" }} />
-
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Fecha De Entrega"
-            description={project.deadline}
-          />
-        </Grid>
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
             title="Horas Estimadas"
             description={project.estimatedHours}
           />
@@ -111,6 +158,13 @@ export default async function Show({ params }) {
 
         <Divider variant="left" sx={{ width: "70%" }} />
 
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Tipo De Servicio"
+            description={project.serviceType.label}
+          />
+        </Grid>
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -122,40 +176,62 @@ export default async function Show({ params }) {
             }
           />
         </Grid>
-        <Grid xs={12} md={6} pl={2} mt={3}>
-          <MDBox mt={0.5} lineHeight={1.4}>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        <Grid xs={12} mt={3}>
+          <MDBox ml={2} mt={0.5} lineHeight={1.4}>
             <MDTypography display="block" variant="button" fontWeight="medium">
-              Miembros Del Caso
+              Descripción
             </MDTypography>
-          </MDBox>
-          {project.members.map((member) => (
             <MDTypography
-              key={member.id}
               variant="button"
               fontWeight="regular"
               color="text"
-              mr={2}
+              textAlign="center"
             >
-              {member.staff.firstName + " " + member.staff.lastName}
+              {project.description}
             </MDTypography>
-          ))}
+          </MDBox>
         </Grid>
 
         <Divider variant="left" sx={{ width: "70%" }} />
 
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Estado"
-            description={project.status.label}
-          />
-        </Grid>
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Descripción"
-            description={project.description}
-          />
+        <Grid xs={12} pl={2} mt={3}>
+          <MDBox mt={0.5} lineHeight={1.4}>
+            <MDTypography
+              display="block"
+              variant="button"
+              fontWeight="medium"
+              mb={2}
+            >
+              Miembros Del Caso
+            </MDTypography>
+          </MDBox>
+          {project.members.map((member) => (
+            <MDBox key={member.id} display="inline-block" mr={2}>
+              <MDAvatar
+                src={bruceMars.src}
+                alt="profile-image"
+                size="md"
+                shadow="sm"
+                sx={{
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  marginRight: "0.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              />
+              <MDTypography
+                variant="button"
+                fontWeight="regular"
+                color="text"
+                mr={2}
+              >
+                {member.staff.firstName + " " + member.staff.lastName}
+              </MDTypography>
+            </MDBox>
+          ))}
         </Grid>
       </Grid>
     </Card>

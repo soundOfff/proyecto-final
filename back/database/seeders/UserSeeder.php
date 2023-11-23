@@ -19,15 +19,7 @@ class UserSeeder extends Seeder
     {
         User::factory()
             ->for(Role::all()->random())
-            ->has(
-                Contact::factory()
-                    ->for(
-                        Staff::factory()
-                            ->for(Role::all()->random())
-                            ->create()
-                    )
-                    ->count(3)
-            )
+            ->has(Contact::factory()->for(Staff::all()->random())->count(3))
             ->count(10)
             ->create();
     }

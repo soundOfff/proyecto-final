@@ -12,33 +12,34 @@ return new class extends Migration {
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained();
+            $table->foreignId('role_id')->constrained()->onUpdate('cascade');
 
-            $table->boolean('active');
-            $table->string('default_language');
-            $table->string('direction');
             $table->string('email');
-            $table->text('email_signature');
-            $table->mediumText('facebook');
             $table->string('first_name');
-            $table->decimal('hourly_rate');
-            $table->boolean('is_staff');
-            $table->mediumText('linkedin');
-            $table->dateTime('last_activity');
-            $table->string('last_ip');
-            $table->dateTime('last_login');
             $table->string('last_name');
-            $table->dateTime('last_password_change');
-            $table->string('media_path_slug');
-            $table->string('new_pass_key');
-            $table->dateTime('new_pass_key_requested');
             $table->string('password');
-            $table->string('phone_number');
-            $table->string('profile_image');
-            $table->string('skype');
+            $table->boolean('active')->default(true);
+            $table->boolean('admin')->default(false);
+            $table->decimal('hourly_rate')->default(0);
+            $table->boolean('is_staff')->default(false);
+            $table->boolean('two_factor_auth_enabled')->default(false);
+            $table->string('default_language')->nullable();
+            $table->string('direction')->nullable();
+            $table->text('email_signature')->nullable();
+            $table->mediumText('facebook')->nullable();
+            $table->mediumText('linkedin')->nullable();
+            $table->dateTime('last_activity')->nullable();
+            $table->string('last_ip')->nullable();
+            $table->dateTime('last_login')->nullable();
+            $table->dateTime('last_password_change')->nullable();
+            $table->string('media_path_slug')->nullable();
+            $table->string('new_pass_key')->nullable();
+            $table->dateTime('new_pass_key_requested')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('profile_image')->nullable();
+            $table->string('skype')->nullable();
             $table->string('two_factor_auth_code')->nullable();
             $table->dateTime('two_factor_auth_code_requested')->nullable();
-            $table->boolean('two_factor_auth_enabled')->default(false);
 
             $table->timestamps();
         });

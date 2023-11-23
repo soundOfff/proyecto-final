@@ -21,7 +21,6 @@ async function getAll(params) {
 async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/projects/${id}`);
   url.search = new URLSearchParams(params);
-  console.log(url.search);
 
   const res = await fetch(url);
 

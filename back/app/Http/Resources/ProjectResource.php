@@ -42,7 +42,7 @@ class ProjectResource extends JsonResource
             'jurisdiction' => JurisdictionResource::make($this->whenLoaded('jurisdiction')),
             'defendant' => PartnerResource::make($this->whenLoaded('defendant')),
             'plaintiff'=> PartnerResource::make($this->whenLoaded('plaintiff')),
-            'responsiblePerson' => ContactResource::make($this->whenLoaded('responsiblePerson')),
+            'responsiblePerson' => PartnerResource::make($this->whenLoaded('responsiblePerson')),
             'lawFirm' => LawFirmResource::make($this->whenLoaded('lawFirm')),
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),
         ];

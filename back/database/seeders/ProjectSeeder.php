@@ -31,25 +31,26 @@ class ProjectSeeder extends Seeder
     {
         collect(range(1, 10))
             ->each(function () {
-                Project::factory()
+                $project = Project::factory()
                     ->for(ProjectStatus::all()->random(), 'status')
                     ->for(Jurisdiction::all()->random())
                     ->for(LawFirm::all()->random())
                     ->for(ProjectBillingType::all()->random(), 'billingType')
                     ->for(ProjectServiceType::all()->random(), 'serviceType')
-                    ->for(Contact::all()->random(), 'responsiblePerson')
-                    ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'defendant')
-                    ->for(Partner::factory()->for(Country::all()->random())->for(User::all()->random())->create(), 'plaintiff')
-                    ->has(ProjectNote::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'notes')
+                    ->for(Partner::all()->random(), 'responsiblePerson')
+                    ->for(Partner::all()->random(), 'defendant')
+                    ->for(Partner::all()->random(), 'plaintiff')
+                    ->has(ProjectNote::factory()->for(Staff::all()->random())->count(3), 'notes')
                     ->has(ProjectStage::factory()
-                        ->for(Staff::factory()->for(Role::all()->random())->create())
+                        ->for(Staff::all()->random())
                         ->for(ProjectStageType::all()->random(), 'type')
                         ->count(3),
                         'stages'
                     )
-                    ->has(Staff::factory()->for(Role::all()->random())->count(3), 'staffs')
-                    ->has(ProjectMember::factory()->for(Staff::factory()->for(Role::all()->random())->create())->count(3), 'members')
+                    ->has(ProjectMember::factory()->for(Staff::all()->random())->count(3), 'members')
                     ->create();
+
+                $project->staffs()->attach(Staff::inRandomOrder()->take(3)->pluck('id'));
             });
     }
 }

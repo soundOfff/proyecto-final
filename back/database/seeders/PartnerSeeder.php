@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Country;
+use App\Models\Partner;
 use App\Services\Utils;
 use Illuminate\Database\Seeder;
 
-class CountrySeeder extends Seeder
+class PartnerSeeder extends Seeder
 {
     private $utils;
 
@@ -22,10 +22,10 @@ class CountrySeeder extends Seeder
      */
     public function run()
     {
-        $countries = $this->utils->csvToArray(database_path('imports/countries.csv'));
+        $partners = $this->utils->csvToArray(database_path('imports/partners.csv'));
 
-        foreach ($countries as $country) {
-            Country::updateOrCreate(['id' => $country['id']], $country);
+        foreach ($partners as $partner) {
+            Partner::updateOrCreate(['id' => $partner['id']], $partner);
         }
     }
 }

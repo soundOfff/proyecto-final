@@ -31,6 +31,8 @@ class ProjectSeeder extends Seeder
     {
         collect(range(1, 10))
             ->each(function () {
+                $randomStaffs = Staff::inRandomOrder()->take(3)->get();
+
                 $project = Project::factory()
                     ->for(ProjectStatus::all()->random(), 'status')
                     ->for(Jurisdiction::all()->random())
@@ -47,10 +49,13 @@ class ProjectSeeder extends Seeder
                         ->count(3),
                         'stages'
                     )
-                    ->has(ProjectMember::factory()->for(Staff::all()->random())->count(3), 'members')
                     ->create();
 
                 $project->staffs()->attach(Staff::inRandomOrder()->take(3)->pluck('id'));
+
+                foreach ($randomStaffs as $staff) {
+                    $project->members()->save(ProjectMember::factory()->for($staff)->make());
+                }
             });
     }
 }

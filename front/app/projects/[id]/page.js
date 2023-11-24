@@ -207,18 +207,20 @@ export default async function Show({ params }) {
           </MDBox>
           {project.members.map((member) => (
             <MDBox key={member.id} display="inline-block" mr={2}>
-              <MDAvatar
-                src={bruceMars.src}
-                alt="profile-image"
-                size="md"
-                shadow="sm"
-                sx={{
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  marginRight: "0.5rem",
-                  marginBottom: "0.5rem",
-                }}
-              />
+              {member.staff.profileImage && (
+                <MDAvatar
+                  src={`/images/staff/${member.staff.profileImage}`}
+                  alt="profile-image"
+                  size="md"
+                  shadow="sm"
+                  sx={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    marginRight: "0.5rem",
+                    marginBottom: "0.5rem",
+                  }}
+                />
+              )}
               <MDTypography
                 variant="button"
                 fontWeight="regular"

@@ -21,7 +21,6 @@ export default function Stats({ countByStatuses }) {
               {status.count}
             </MDTypography>
             <MDBadge
-              border
               variant="contained"
               badgeContent={`${status.label}`}
               color={setColor(status.label)}

@@ -58,7 +58,6 @@ export default function Table({ rows }) {
       Cell: ({ value }) => {
         return (
           <MDBadge
-            border
             variant="contained"
             badgeContent={value}
             color={setColor(value)}

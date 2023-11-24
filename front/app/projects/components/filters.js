@@ -13,12 +13,16 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
+import { useMaterialUIController } from "/context";
 
 export default function Filters({ statuses }) {
   const defaultStatus = { id: 0, label: "Todos" };
   const [status, setStatus] = useState(defaultStatus);
 
   const [search, setSearch] = useState(null);
+
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
 
   function handleSearch(e) {
     const search = e.target.value;
@@ -112,7 +116,7 @@ export default function Filters({ statuses }) {
         sx={{ display: "flex", justifyContent: "center" }}
       >
         <Link href="/projects/create">
-          <MDButton variant="gradient" color="dark">
+          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Nuevo Proyecto
           </MDButton>
         </Link>

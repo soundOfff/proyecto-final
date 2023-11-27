@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import DataTable from "/examples/Tables/DataTable";
-import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
-import MDSnackbar from "/components/MDSnackbar";
-import MDBadge from "/components/MDBadge";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -43,54 +40,13 @@ export default function Table({ rows }) {
       accessor: "active",
       Cell: ({ value }) => {
         const label = { inputProps: { "aria-label": "Is active switch" } };
-        return <Switch {...label} checked={value} />;
+        return <Switch {...label} checked={Boolean(value)} />;
       },
     },
-    // { Header: "Tipo de Cliente", accessor: "" },
+    { id: "clientType", Header: "Tipo de Cliente", accessor: "" },
     { Header: "Fecha de Creación", accessor: "createdAt" },
-    { Header: "Industria", accessor: "" },
+    { id: "industry", Header: "Industria", accessor: "" },
   ];
-
-  rows = rows.map((project) => {
-    return {
-      ...project,
-      actions: (
-        <>
-          <Tooltip title="Ver Detalles">
-            <Link key={project.id} href={`/projects/${project.id}`}>
-              <VisibilityIcon color="dark" fontSize="medium" sx={{ mr: 2 }} />
-            </Link>
-          </Tooltip>
-          <Tooltip title="Vista Rápida">
-            <PreviewIcon
-              color="info"
-              fontSize="medium"
-              onClick={() => {
-                setProjectIdShow(project.id);
-                setOpen(true);
-              }}
-              sx={{ mr: 3, cursor: "pointer" }}
-            />
-          </Tooltip>
-          <Link key={project.id} href={`/projects/create-notes/${project.id}`}>
-            <Tooltip title="Agregar Notas">
-              <EditNoteIcon color="warning" fontSize="medium" />
-            </Tooltip>
-          </Link>
-          <Tooltip title="Eliminar">
-            <DeleteIcon
-              color="error"
-              fontSize="medium"
-              onClick={() => {
-                setProjectIdDelete(project.id);
-              }}
-              sx={{ ml: 3, cursor: "pointer" }}
-            />
-          </Tooltip>
-        </>
-      ),
-    };
-  });
 
   const table = { columns, rows };
 

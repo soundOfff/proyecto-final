@@ -103,7 +103,6 @@ const routes = [
     icon: <Icon fontSize="medium">person</Icon>,
     noCollapse: true,
   },
-  // { type: "divider", key: "divider-1" },
   {
     type: "collapse",
     name: "Ventas",

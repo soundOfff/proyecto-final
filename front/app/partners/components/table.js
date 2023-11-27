@@ -1,14 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
-import PreviewIcon from "@mui/icons-material/Preview";
-import Tooltip from "@mui/material/Tooltip";
 
 import { Switch } from "@mui/material";
 
@@ -21,7 +14,7 @@ export default function Table({ rows }) {
       Header: "Contacto Principal",
       accessor: "user.contacts",
       Cell: ({ value }) => {
-        return value.length > 0
+        return value && value.length
           ? `${value.at(0).firstName} ${value.at(0).lastName}`
           : null;
       },
@@ -31,7 +24,7 @@ export default function Table({ rows }) {
       Header: "Email principal",
       accessor: "user.contacts",
       Cell: ({ value }) => {
-        return value.length > 0 ? value.at(0).email : null;
+        return value && value.length ? value.at(0).email : null;
       },
     },
     { Header: "Teléfono", accessor: "phoneNumber" },

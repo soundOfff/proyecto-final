@@ -125,7 +125,7 @@ export default async function Show({ params }) {
           <DefaultItem
             color="dark"
             title="Demandado"
-            description={project.defendant.company}
+            description={project.defendant?.company}
           />
         </Grid>
         <Grid xs={12} md={6} mt={3}>

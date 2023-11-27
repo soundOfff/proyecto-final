@@ -132,7 +132,7 @@ export default async function Show({ params }) {
           <DefaultItem
             color="dark"
             title="Demandante"
-            description={project.plaintiff.company}
+            description={project.plaintiff?.company}
           />
         </Grid>
 
@@ -142,7 +142,7 @@ export default async function Show({ params }) {
           <DefaultItem
             color="dark"
             title="Tipo De Facturación"
-            description={project.billingType.label}
+            description={project.billingType?.label}
           />
         </Grid>
         <Grid xs={12} md={6} mt={3}>
@@ -159,7 +159,7 @@ export default async function Show({ params }) {
           <DefaultItem
             color="dark"
             title="Tipo De Servicio"
-            description={project.serviceType.label}
+            description={project.serviceType?.label}
           />
         </Grid>
         <Grid xs={12} md={6} mt={3}>
@@ -167,9 +167,9 @@ export default async function Show({ params }) {
             color="dark"
             title="Abogado Principal"
             description={
-              project.staffs.at(-1).firstName +
+              project.staffs.at(-1)?.firstName +
               " " +
-              project.staffs.at(-1).lastName
+              project.staffs.at(-1)?.lastName
             }
           />
         </Grid>

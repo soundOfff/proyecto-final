@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('project_status_id')->constrained();
             $table->foreignId('jurisdiction_id')->nullable()->constrained();
             $table->foreignId('project_billing_type_id')->constrained();
-            $table->foreignId('project_service_type_id')->constrained();
+            $table->foreignId('project_service_type_id')->nullable()->constrained();
             $table->foreignId('responsible_person_id')->nullable()->constrained(table: 'partners', indexName: 'projects_responsible_person_id_foreign');
             $table->foreignId('defendant_id')->constrained(table: 'partners', indexName: 'projects_defendant_id_foreign');
             $table->foreignId('plaintiff_id')->nullable()->constrained(table: 'partners', indexName: 'projects_plaintiff_id_foreign');
@@ -23,16 +23,16 @@ return new class extends Migration {
 
             $table->integer('added_from')->nullable();
             $table->date('date_finished')->nullable();
-            $table->date('deadline');
-            $table->text('description');
+            $table->date('deadline')->nullable();
+            $table->text('description')->nullable();
             $table->decimal('estimated_hours');
             $table->string('name');
-            $table->string('expedient');
+            $table->string('expedient')->nullable();
             $table->integer('progress')->nullable();
             $table->integer('progress_from_tasks')->nullable();
             $table->decimal('cost');
             $table->decimal('rate_per_hour')->nullable();
-            $table->date('start_date');
+            $table->date('start_date')->nullable();
             $table->float('amount')->nullable();
             $table->integer('jury_number')->nullable();
             $table->boolean('on_schedule')->nullable();

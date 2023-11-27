@@ -4,18 +4,28 @@ namespace App\Services;
 
 class Utils
 {
-    public function csvToArray($file)
+    public function csvToArray($file = '', $delimiter = ',')
     {
-        $rows = array_map('str_getcsv', file($file));
-        $header = array_shift($rows);
-        $csv = [];
-        foreach ($rows as $row) {
-            $row = array_map(function ($value) {
-                return $value === 'null' ? null : $value;
-            }, $row);
-            $csv[] = array_combine($header, $row);
+        if (! file_exists($file) || ! is_readable($file)) {
+            return false;
         }
 
-        return $csv;
+        $header = null;
+        $data = [];
+        if (($handle = fopen($file, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+                if (! $header) {
+                    $header = $row;
+                } else {
+                    $row = array_map(function ($value) {
+                        return $value === '' || $value === 'null' ? null : $value;
+                    }, $row);
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+        }
+
+        return $data;
     }
 }

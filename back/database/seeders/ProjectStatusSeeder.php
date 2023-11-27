@@ -18,8 +18,8 @@ class ProjectStatusSeeder extends Seeder
             ['id' => 1, 'name' => 'not_started', 'label' => 'No Iniciado'],
             ['id' => 2, 'name' => 'developing', 'label' => 'En Desarrollo'],
             ['id' => 3, 'name' => 'waiting', 'label' => 'En Espera'],
-            ['id' => 4, 'name' => 'canceled', 'label' => 'Cancelado'],
-            ['id' => 5, 'name' => 'finished', 'label' => 'Finalizado'],
+            ['id' => 4, 'name' => 'finished', 'label' => 'Finalizado'],
+            ['id' => 5, 'name' => 'canceled', 'label' => 'Cancelado'],
         ];
 
         foreach ($statuses as $status) {

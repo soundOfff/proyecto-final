@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Project;
+use App\Models\ProjectNote;
 use App\Services\Utils;
 use Illuminate\Database\Seeder;
 
-class ProjectSeeder extends Seeder
+class ProjectNoteSeeder extends Seeder
 {
     private $utils;
 
@@ -22,10 +22,10 @@ class ProjectSeeder extends Seeder
      */
     public function run()
     {
-        $projects = $this->utils->csvToArray(database_path('imports/projects.csv'));
+        $projectNotes = $this->utils->csvToArray(database_path('imports/project_notes.csv'));
 
-        foreach ($projects as $project) {
-            Project::updateOrCreate(['id' => $project['id']], $project);
+        foreach ($projectNotes as $projectNote) {
+            ProjectNote::updateOrCreate(['id' => $projectNote['id']], $projectNote);
         }
     }
 }

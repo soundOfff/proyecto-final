@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->string('short_name');
             $table->string('num_code');
             $table->string('long_name');
-            $table->string('calling_code');
-            $table->string('cctld');
+            $table->string('calling_code')->nullable();
+            $table->string('cctld')->nullable();
             $table->string('iso2');
             $table->char('iso3');
             $table->string('un_member');

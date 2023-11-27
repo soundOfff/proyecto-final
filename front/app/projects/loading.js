@@ -1,4 +1,4 @@
-import { Card, Grid, Skeleton } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import StatsLoading from "./components/loading/stats";
 import FiltersLoading from "./components/loading/filters";

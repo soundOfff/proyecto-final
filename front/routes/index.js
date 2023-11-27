@@ -99,7 +99,7 @@ const routes = [
     type: "collapse",
     name: "Clientes",
     key: "clients",
-    route: "/clients",
+    route: "/partners",
     icon: <Icon fontSize="medium">person</Icon>,
     noCollapse: true,
   },

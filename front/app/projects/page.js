@@ -5,8 +5,6 @@ import Card from "@mui/material/Card";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 
-import useTranslation from "next-translate/useTranslation";
-
 import { getAll as getAllProjects } from "/actions/projects";
 import { getAll as getAllStatuses } from "/actions/project-statuses";
 import { getCountByStatuses } from "/actions/projects";
@@ -44,8 +42,6 @@ export default async function Projects({ searchParams }) {
   const projects = await getAllProjects(params);
   const statuses = await getAllStatuses();
   const countByStatuses = await getCountByStatuses();
-
-  const { t, lang } = useTranslation("common");
 
   return (
     <MDBox mb={3}>

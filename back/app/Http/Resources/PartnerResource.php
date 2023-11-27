@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,6 +16,7 @@ class PartnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'active' => $this->active,
             'addedFrom' => $this->added_from,
             'address' => $this->address,
@@ -45,6 +47,7 @@ class PartnerResource extends JsonResource
             'vat' => $this->vat,
             'website' => $this->website,
             'zip' => $this->zip,
+            'createdAt' => Carbon::parse($this->created_at)->format('m/d/Y g:i A'),
             'country' => CountryResource::make($this->whenLoaded('country')),
             'projects' => ProjectResource::make($this->whenLoaded('projects')),
             'country' => CountryResource::make($this->whenLoaded('country')),

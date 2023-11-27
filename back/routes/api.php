@@ -40,7 +40,9 @@ Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuse
 Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
 Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);
 
+Route::get('/partners', [PartnerController::class, 'index']);
 Route::get('/partners/select', [PartnerController::class, 'select']);
+
 Route::get('/staffs/select', [StaffController::class, 'select']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

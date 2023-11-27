@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Partner;
+use App\Models\Contact;
 use App\Services\Utils;
 use Illuminate\Database\Seeder;
 
-class PartnerSeeder extends Seeder
+class ContactSeeder extends Seeder
 {
     private $utils;
 
@@ -22,10 +22,10 @@ class PartnerSeeder extends Seeder
      */
     public function run()
     {
-        $partners = $this->utils->csvToArray(database_path('imports/partners.csv'));
+        $contacts = $this->utils->csvToArray(database_path('imports/contacts.csv'));
 
-        foreach ($partners as $partner) {
-            Partner::updateOrCreate(['id' => $partner['user_id']], $partner);
+        foreach ($contacts as $contact) {
+            Contact::updateOrCreate(['id' => $contact['id']], $contact);
         }
     }
 }

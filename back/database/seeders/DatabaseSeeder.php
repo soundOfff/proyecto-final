@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(JurisdictionSeeder::class);
         $this->call(LawFirmSeeder::class);
         $this->call(PartnerSeeder::class);
+        $this->call(ContactSeeder::class);
         $this->call(ProjectBillingTypeSeeder::class);
         $this->call(ProjectServiceTypeSeeder::class);
         $this->call(ProjectStageTypeSeeder::class);

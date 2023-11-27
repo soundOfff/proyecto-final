@@ -167,9 +167,10 @@ export default async function Show({ params }) {
             color="dark"
             title="Abogado Principal"
             description={
+              project.staffs.length > 0 &&
               project.staffs.at(-1)?.firstName +
-              " " +
-              project.staffs.at(-1)?.lastName
+                " " +
+                project.staffs.at(-1)?.lastName
             }
           />
         </Grid>

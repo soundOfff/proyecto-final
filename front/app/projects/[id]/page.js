@@ -6,7 +6,6 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
 import MDAvatar from "/components/MDAvatar";
-import bruceMars from "/assets/images/bruce-mars.jpg";
 
 import DefaultItem from "/examples/Items/DefaultItem";
 import { Divider, Grid } from "@mui/material";
@@ -47,7 +46,7 @@ export default async function Show({ params }) {
           <MDBadge
             variant="gradient"
             color="dark"
-            badgeContent={`Expediente ${project.expedient}`}
+            badgeContent={`Expediente ${project.expedient ?? ""}`}
             container
             sx={{ height: "40px", mr: 5 }}
           />

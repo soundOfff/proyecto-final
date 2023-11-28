@@ -46,11 +46,7 @@ export default function Table({ rows }) {
   }, [projectIdDelete]);
 
   const columns = [
-    { Header: "Expediente", accessor: "expedient" },
     { Header: "Nombre", accessor: "name" },
-    { Header: "Cliente", accessor: "responsiblePerson.firstName" },
-    { Header: "Demandante", accessor: "plaintiff.company" },
-    { Header: "Demandado", accessor: "defendant.company" },
     {
       Header: "Estado",
       accessor: "status.label",

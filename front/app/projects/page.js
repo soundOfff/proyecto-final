@@ -13,17 +13,7 @@ import Table from "./components/table";
 import Filters from "./components/filters";
 import Stats from "./components/stats";
 
-const include = [
-  "stages",
-  "notes",
-  "status",
-  "jurisdiction",
-  "defendant",
-  "plaintiff",
-  "responsiblePerson",
-  "lawFirm",
-  "staffs",
-];
+const include = ["notes", "status"];
 
 export const dynamic = "force-dynamic";
 

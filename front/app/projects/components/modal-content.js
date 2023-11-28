@@ -150,9 +150,14 @@ export default function ModalComponent({ project }) {
         <MDTypography variant="h4" textAlign="center" my={2}>
           Descripción
         </MDTypography>
-        <MDTypography variant="body2" textTransform="capitalize" paragraph>
-          {project.description ?? "Sin descripción"}
-        </MDTypography>
+        <MDTypography
+          variant="body2"
+          textTransform="capitalize"
+          paragraph
+          dangerouslySetInnerHTML={{
+            __html: project.description ?? "Sin descripción",
+          }}
+        ></MDTypography>
       </MDBox>
     </Grid>
   );

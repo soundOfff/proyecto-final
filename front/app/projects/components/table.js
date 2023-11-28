@@ -11,7 +11,7 @@ import MDBadge from "/components/MDBadge";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PreviewIcon from "@mui/icons-material/Preview";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
 import Tooltip from "@mui/material/Tooltip";
 
 import { useEffect, useState } from "react";
@@ -85,7 +85,7 @@ export default function Table({ rows }) {
             </Link>
           </Tooltip>
           <Tooltip title="Vista Rápida">
-            <PreviewIcon
+            <FlashOnIcon
               color="info"
               fontSize="medium"
               onClick={() => {

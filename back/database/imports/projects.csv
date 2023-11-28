@@ -1,4 +1,4 @@
-"id","name","description","project_status_id","responsible_person_id","project_billing_type_id","start_date","deadline","created_at","date_finished","progress","progress_from_tasks","cost","rate_per_hour","estimated_hours","added_from"
+"id","name","description","project_status_id","defendant_id","project_billing_type_id","start_date","deadline","created_at","date_finished","progress","progress_from_tasks","cost","rate_per_hour","estimated_hours","added_from"
 2,"Recurso de impugnación ","Recurso de impugnacion en contra de adjudicacion de la licitacion publica numero 2019-1-10-0-08-lp-333392",4,3,1,"2019-07-24","2019-07-29","2019-08-05","",0,1,2500.0,0.0,0.0,3
 5,"BANCO DELTA VS JUAN PABLO GUTIERREZ y FUNDACIÓN GUTIS","PROCESO EJECUTIVO HIPOTECARIO (MAYOR CUANT&#205;A)",4,6,1,"2019-08-05","","2019-08-05","",100,1,6317.2,0.0,0.0,5
 6,"Actualización de Compraventa de Inmueble","<ol>

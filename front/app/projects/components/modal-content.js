@@ -10,6 +10,8 @@ import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlin
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import moneyFormat from "/utils/moneyFormat";
 import { Divider } from "@mui/material";
+import HandIcon from "/assets/logo/Black/hand.svg";
+import Image from "next/image";
 
 export default function ModalComponent({ project }) {
   return (
@@ -21,7 +23,7 @@ export default function ModalComponent({ project }) {
           display="flex"
           justifyContent="space-between"
         >
-          <MDTypography variant="h4" textAlign="center" mr={{ md: 10, xs: 2 }}>
+          <MDTypography variant="h4" mr={{ md: 10, xs: 2 }}>
             {project.name}
           </MDTypography>
 
@@ -40,7 +42,21 @@ export default function ModalComponent({ project }) {
               {moneyFormat(project.cost)}
             </MDTypography>
           </Grid>
-          <Grid item xs={12} xxl={2} mr={5} display="flex">
+          {project.defendant && (
+            <Grid item xs={12} xxl={3} display="flex">
+              <Image
+                src={HandIcon}
+                width="20"
+                height="17"
+                alt="Hand Icon"
+                style={{ marginRight: "10px" }}
+              />
+              <MDTypography variant="h6" color="text" fontWeight="light">
+                {project.defendant.company}
+              </MDTypography>
+            </Grid>
+          )}
+          <Grid item xs={12} xxl={3} mr={5} display="flex">
             <DateRangeIcon />
             <MDTypography variant="h6" fontWeight="light" sx={{ mx: 1 }}>
               Desde
@@ -49,27 +65,30 @@ export default function ModalComponent({ project }) {
               {project.startDate}
             </MDTypography>
           </Grid>
-          <Grid item xs={12} xxl={2} display="flex">
-            <DateRangeIcon />
-            <MDTypography
-              variant="h6"
-              color="caption"
-              fontWeight="light"
-              sx={{ mx: 1 }}
-            >
-              Hasta
-            </MDTypography>
-            <MDTypography variant="h6" color="text" fontWeight="light">
-              {project.deadline}
-            </MDTypography>
-          </Grid>
+          {project.deadline && (
+            <Grid item xs={12} xxl={3} display="flex">
+              <DateRangeIcon />
+              <MDTypography
+                variant="h6"
+                color="caption"
+                fontWeight="light"
+                sx={{ mx: 1 }}
+              >
+                Hasta
+              </MDTypography>
+              <MDTypography variant="h6" color="text" fontWeight="light">
+                {project.deadline}
+              </MDTypography>
+            </Grid>
+          )}
         </Grid>
       </Grid>
-      <Grid item xs={12} mt={3}>
+      <Grid item xs={12}>
         <Grid
           container
           spacing={5}
           mx={{ xl: 10, xs: 0 }}
+          mt={{ xl: 3, xs: 0 }}
           justifyContent="center"
         >
           <Grid item xs={6}>
@@ -105,31 +124,34 @@ export default function ModalComponent({ project }) {
         </Grid>
         <Divider fullWidth />
       </Grid>
-      <Grid item xs={12}>
-        <Grid
-          container
-          spacing={5}
-          mx={{ xl: 10, xs: 0 }}
-          justifyContent="center"
-        >
-          <Grid item xs={6}>
-            <MDTypography variant="body2" fontWeight="medium">
-              Abogado Principal
-            </MDTypography>
-          </Grid>
-          <Grid item xs={6}>
-            <MDTypography variant="body2" color="text">
-              {project.staffs[0]?.firstName} {project.staffs[0]?.lastName}
-            </MDTypography>
+      {project.staffs > 0 && (
+        <Grid item xs={12}>
+          <Grid
+            container
+            spacing={5}
+            mx={{ xl: 10, xs: 0 }}
+            justifyContent="center"
+          >
+            <Grid item xs={6}>
+              <MDTypography variant="body2" fontWeight="medium">
+                Abogado Principal
+              </MDTypography>
+            </Grid>
+            <Grid item xs={6}>
+              <MDTypography variant="body2" color="text">
+                {project.staffs[0]?.firstName} {project.staffs[0]?.lastName}
+              </MDTypography>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
+
       <MDBox m={5} lineHeight={1}>
-        <MDTypography variant="h4" textAlign="center" m={2}>
+        <MDTypography variant="h4" textAlign="center" my={2}>
           Descripción
         </MDTypography>
         <MDTypography variant="body2" textTransform="capitalize" paragraph>
-          {project.description}
+          {project.description ?? "Sin descripción"}
         </MDTypography>
       </MDBox>
     </Grid>

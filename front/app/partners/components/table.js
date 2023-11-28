@@ -14,7 +14,7 @@ export default function Table({ rows }) {
       Header: "Contacto Principal",
       accessor: "user.contacts",
       Cell: ({ value }) => {
-        return value && value.length
+        return value.length > 0
           ? `${value.at(0).firstName} ${value.at(0).lastName}`
           : null;
       },
@@ -24,7 +24,7 @@ export default function Table({ rows }) {
       Header: "Email principal",
       accessor: "user.contacts",
       Cell: ({ value }) => {
-        return value && value.length ? value.at(0).email : null;
+        return value.length > 0 ? value.at(0).email : null;
       },
     },
     { Header: "Teléfono", accessor: "phoneNumber" },

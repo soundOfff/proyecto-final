@@ -14,11 +14,16 @@ async function getSelect() {
   return data.partners;
 }
 
-async function getAll(params = {}) {
+async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/partners`);
   url.search = new URLSearchParams(params);
 
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
 
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);

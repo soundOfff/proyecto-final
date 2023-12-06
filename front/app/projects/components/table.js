@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import MaterialLink from "@mui/material/Link";
 import DataTable from "/examples/Tables/DataTable";
 import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
@@ -9,7 +10,6 @@ import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import Tooltip from "@mui/material/Tooltip";
@@ -48,7 +48,18 @@ export default function Table({ rows }) {
   }, [projectIdDelete]);
 
   const columns = [
-    { Header: "Nombre", accessor: "name" },
+    {
+      Header: "Nombre",
+      accessor: "name",
+      Cell: ({ value, row }) => {
+        return (
+          <MaterialLink href={`projects/${row.original.id}`} color="info">
+            {value}
+          </MaterialLink>
+        );
+      },
+      width: "30%",
+    },
     {
       Header: "Estado",
       accessor: "status.label",
@@ -65,6 +76,7 @@ export default function Table({ rows }) {
           />
         );
       },
+      width: "15%",
     },
     {
       Header: "Última Nota",
@@ -72,32 +84,29 @@ export default function Table({ rows }) {
       Cell: ({ value }) => {
         return value.length > 0 ? value.at(-1).content : null;
       },
+      width: "50%",
     },
-    { Header: "Acciones", accessor: "actions", textAlign: "center" },
-  ];
-
-  rows = rows.map((project) => {
-    return {
-      ...project,
-      actions: (
+    {
+      Header: "Acciones",
+      accessor: "actions",
+      textAlign: "center",
+      Cell: ({ row }) => (
         <>
-          <Tooltip title="Ver Detalles">
-            <Link key={project.id} href={`/projects/${project.id}`}>
-              <VisibilityIcon color="dark" fontSize="medium" sx={{ mr: 2 }} />
-            </Link>
-          </Tooltip>
           <Tooltip title="Vista Rápida">
             <FlashOnIcon
               color="info"
               fontSize="medium"
               onClick={() => {
-                setProjectIdShow(project.id);
+                setProjectIdShow(row.original.id);
                 setOpen(true);
               }}
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
-          <Link key={project.id} href={`/projects/create-notes/${project.id}`}>
+          <Link
+            key={row.original.id}
+            href={`/projects/create-notes/${row.original.id}`}
+          >
             <Tooltip title="Agregar Notas">
               <EditNoteIcon color="warning" fontSize="medium" />
             </Tooltip>
@@ -107,15 +116,15 @@ export default function Table({ rows }) {
               color="error"
               fontSize="medium"
               onClick={() => {
-                setProjectIdDelete(project.id);
+                setProjectIdDelete(row.original.id);
               }}
               sx={{ ml: 3, cursor: "pointer" }}
             />
           </Tooltip>
         </>
       ),
-    };
-  });
+    },
+  ];
 
   const table = { columns, rows };
 

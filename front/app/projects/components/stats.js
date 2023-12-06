@@ -17,7 +17,11 @@ export default function Stats({ countByStatuses }) {
           minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
         >
           <MDBox display="flex" alignContent="center" my={2}>
-            <MDTypography variant="h3" display="inline-block">
+            <MDTypography
+              variant="h3"
+              display="inline-block"
+              minWidth={{ xs: "150px", sm: "auto" }}
+            >
               {status.count}
             </MDTypography>
             <MDBadge

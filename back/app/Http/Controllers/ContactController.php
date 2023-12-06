@@ -2,27 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PartnerResourceCollection;
-use App\Http\Resources\PartnerSelectResourceCollection;
-use App\Models\Partner;
-use App\Models\Project;
+use App\Models\Contact;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
 
-class PartnerController extends Controller
+class ContactController extends Controller
 {
-    public function select()
-    {
-        $partners = Partner::all();
-
-        return new PartnerSelectResourceCollection($partners);
-    }
-
     public function stats()
     {
-        $total = Partner::all()->count();
-        $active = Partner::where('active', true)->count();
+        $total = Contact::all()->count();
+        $active = Contact::where('active', true)->count();
         $inactive = $total - $active;
 
         return response()->json([
@@ -37,16 +25,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Partner::class)
-        ->allowedIncludes([
-            'user.contacts',
-        ]);
-
-        $partners = request()->has('perPage')
-            ? $query->paginate((int) request('perPage'))
-            : $query->get();
-
-        return new PartnerResourceCollection($partners);
+        //
     }
 
     /**

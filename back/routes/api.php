@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProjectBillingTypeController;
 use App\Http\Controllers\ProjectController;
@@ -42,6 +43,9 @@ Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class,
 
 Route::get('/partners', [PartnerController::class, 'index']);
 Route::get('/partners/select', [PartnerController::class, 'select']);
+Route::get('/partners/stats', [PartnerController::class, 'stats']);
+
+Route::get('/contacts/stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs/select', [StaffController::class, 'select']);
 

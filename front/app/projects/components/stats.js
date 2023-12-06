@@ -16,7 +16,7 @@ export default function Stats({ countByStatuses }) {
           margin="auto"
           minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
         >
-          <MDBox display="flex" alignContent="center" my={2}>
+          <MDBox my={2}>
             <MDTypography
               variant="h3"
               display="inline-block"
@@ -30,7 +30,12 @@ export default function Stats({ countByStatuses }) {
               color={setColor(status.label)}
               size="xs"
               container
-              sx={{ ml: 1, height: "2rem" }}
+              sx={{
+                ml: { xs: 0, sm: 2 },
+                mb: 1,
+                height: "2rem",
+                minWidth: "108px",
+              }}
             />
           </MDBox>
         </Grid>

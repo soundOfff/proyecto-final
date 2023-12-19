@@ -3,12 +3,20 @@
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 
-import { Switch } from "@mui/material";
+import { Link, Switch } from "@mui/material";
 
 export default function Table({ rows }) {
   const columns = [
     { Header: "#", accessor: "id" },
-    { Header: "Empresa", accessor: "company" },
+    {
+      Header: "Empresa",
+      accessor: "company",
+      Cell: ({ value, row }) => (
+        <Link href={`partners/${row.original.id}/profile`} color="info">
+          {value}
+        </Link>
+      ),
+    },
     {
       id: "contactName",
       Header: "Contacto Principal",

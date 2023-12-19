@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('country_id')->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('consolidator_id')->nullable()->constrained('partners');
 
             $table->integer('lead_id')->nullable();
             $table->boolean('active')->default(true);
@@ -26,8 +27,7 @@ return new class extends Migration {
             $table->string('billing_zip')->nullable();
             $table->string('city')->nullable();
             $table->string('company')->nullable();
-            $table->boolean('consolidator')->default(false);
-            $table->integer('consolidator_id')->nullable();
+            $table->boolean('is_consolidator')->default(false);
             $table->boolean('default_currency')->default(false);
             $table->string('default_language')->nullable();
             $table->integer('dv')->nullable();

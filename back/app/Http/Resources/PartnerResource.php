@@ -27,7 +27,7 @@ class PartnerResource extends JsonResource
             'billingZip' => $this->billing_zip,
             'city' => $this->city,
             'company' => $this->company,
-            'consolidator' => $this->consolidator,
+            'isConsolidator' => $this->is_consolidator,
             'consolidatorId' => $this->consolidator_id,
             'defaultCurrency' => $this->default_currency,
             'defaultLanguage' => $this->default_language,
@@ -51,6 +51,7 @@ class PartnerResource extends JsonResource
             'country' => CountryResource::make($this->whenLoaded('country')),
             'projects' => ProjectResource::make($this->whenLoaded('projects')),
             'country' => CountryResource::make($this->whenLoaded('country')),
+            'consolidator' => static::make($this->whenLoaded('consolidator')),
             'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }

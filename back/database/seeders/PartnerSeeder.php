@@ -23,9 +23,16 @@ class PartnerSeeder extends Seeder
     public function run()
     {
         $partners = $this->utils->csvToArray(database_path('imports/partners.csv'));
+        $consolidators = array_map(fn ($partner) => ['user_id' => $partner['user_id'], 'consolidator_id' => $partner['consolidator_id']], $partners);
 
         foreach ($partners as $partner) {
+            unset($partner['consolidator_id']);
+
             Partner::updateOrCreate(['id' => $partner['user_id']], $partner);
+        }
+
+        foreach ($consolidators as $consolidator) {
+            Partner::where('user_id', $consolidator['user_id'])->update(['consolidator_id' => $consolidator['consolidator_id']]);
         }
     }
 }

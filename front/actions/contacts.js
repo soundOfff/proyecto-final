@@ -1,5 +1,5 @@
 async function getStats() {
-  const url = new URL(`${process.env.API_URL}/contacts/stats`);
+  const url = new URL(`${process.env.API_URL}/contact-stats`);
 
   const res = await fetch(url, {
     headers: {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProjectBillingTypeController;
 use App\Http\Controllers\ProjectController;
@@ -22,10 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/hello-world', function () {
-    return response()->json('Hello World');
-});
-
 Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
 Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'index']);
 
@@ -42,12 +39,16 @@ Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
 Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);
 
 Route::get('/partners', [PartnerController::class, 'index']);
-Route::get('/partners/select', [PartnerController::class, 'select']);
-Route::get('/partners/stats', [PartnerController::class, 'stats']);
+Route::get('/partners/{partner}', [PartnerController::class, 'show']);
+Route::put('/partners/{partner}', [PartnerController::class, 'update']);
+Route::get('/partner-stats', [PartnerController::class, 'stats']);
+Route::get('/partners-select', [PartnerController::class, 'select']);
 
-Route::get('/contacts/stats', [ContactController::class, 'stats']);
+Route::get('/countries-select', [CountryController::class, 'select']);
 
-Route::get('/staffs/select', [StaffController::class, 'select']);
+Route::get('/contact-stats', [ContactController::class, 'stats']);
+
+Route::get('/staffs-select', [StaffController::class, 'select']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

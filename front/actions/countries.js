@@ -1,5 +1,5 @@
-async function select() {
-  const url = new URL(`${process.env.API_URL}/staffs-select`);
+async function getSelect() {
+  const url = new URL(`${process.env.API_URL}/countries-select`);
 
   const res = await fetch(url);
 
@@ -9,7 +9,7 @@ async function select() {
 
   const { data } = await res.json();
 
-  return data.staffs;
+  return data.countries;
 }
 
-export { select };
+export { getSelect };

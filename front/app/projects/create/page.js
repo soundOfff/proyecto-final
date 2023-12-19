@@ -1,8 +1,3 @@
-import Card from "@mui/material/Card";
-
-// NextJS Material Dashboard 2 PRO components
-import MDBox from "/components/MDBox";
-
 import { getSelect as getPartnerSelect } from "/actions/partners";
 import { getAll as getAllStatuses } from "/actions/project-statuses";
 import { getAll as getAllServiceTypes } from "/actions/project-service-types";

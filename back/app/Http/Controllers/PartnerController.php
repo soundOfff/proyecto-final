@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PartnerRequest;
+use App\Http\Resources\PartnerResource;
 use App\Http\Resources\PartnerResourceCollection;
 use App\Http\Resources\PartnerSelectResourceCollection;
 use App\Models\Partner;
-use App\Models\Project;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -14,7 +15,10 @@ class PartnerController extends Controller
 {
     public function select()
     {
-        $partners = Partner::all();
+        $partners = QueryBuilder::for(Partner::class)
+        ->allowedFilters([
+            AllowedFilter::exact('is_consolidator'),
+        ])->get();
 
         return new PartnerSelectResourceCollection($partners);
     }
@@ -40,6 +44,8 @@ class PartnerController extends Controller
         $query = QueryBuilder::for(Partner::class)
         ->allowedIncludes([
             'user.contacts',
+            'country',
+            'consolidator',
         ]);
 
         $partners = request()->has('perPage')
@@ -52,31 +58,48 @@ class PartnerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PartnerRequest $request)
     {
-        //
+        $newPartner = $request->validated();
+
+        $partner = Partner::create($newPartner);
+
+        return response()->json($partner, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Partner $partner)
     {
-        //
+        $partner = QueryBuilder::for(Partner::class)
+        ->allowedIncludes([
+            'projects',
+            'country',
+            'user.contacts',
+            'consolidator',
+        ])
+        ->find($partner->id);
+
+    return new PartnerResource($partner);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(PartnerRequest $request, Partner $partner)
     {
-        //
+        $partnerUpdate = $request->validated();
+
+        Partner::find($partner->id)->update($partnerUpdate);
+
+        return response()->json(null, 204);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Partner $partner)
     {
         //
     }

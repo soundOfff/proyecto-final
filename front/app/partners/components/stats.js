@@ -5,7 +5,7 @@ import MDBadge from "/components/MDBadge";
 
 export default function Stats({ stats }) {
   return (
-    <Grid container>
+    <Grid container sx={{ mx: { xs: 0, sm: 5 } }}>
       <Grid item xs={12} md={6} lg={12}>
         <Grid container>
           <Grid item xs={12} lg={4}>

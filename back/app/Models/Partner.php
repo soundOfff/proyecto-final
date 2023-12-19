@@ -23,7 +23,7 @@ class Partner extends Model
         'billing_zip',
         'city',
         'company',
-        'consolidator',
+        'is_consolidator',
         'consolidator_id',
         'default_currency',
         'default_language',
@@ -58,5 +58,10 @@ class Partner extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function consolidator(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'consolidator_id', 'id', 'consolidator');
     }
 }

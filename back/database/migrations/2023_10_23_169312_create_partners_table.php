@@ -15,13 +15,14 @@ return new class extends Migration {
             $table->foreignId('country_id')->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('consolidator_id')->nullable()->constrained('partners');
+            $table->integer('billing_country_id')->nullable()->constrained('countries');
+            $table->integer('shipping_country_id')->nullable()->constrained('countries');
 
             $table->integer('lead_id')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('added_from')->default(false);
             $table->string('address')->nullable();
             $table->string('billing_city')->nullable();
-            $table->integer('billing_country')->nullable();
             $table->string('billing_state')->nullable();
             $table->string('billing_street')->nullable();
             $table->string('billing_zip')->nullable();
@@ -35,7 +36,6 @@ return new class extends Migration {
             $table->string('longitude')->nullable();
             $table->string('phone_number')->nullable();
             $table->boolean('registration_confirmed')->default(true);
-            $table->integer('shipping_country')->nullable();
             $table->string('shipping_city')->nullable();
             $table->string('shipping_state')->nullable();
             $table->string('shipping_street')->nullable();

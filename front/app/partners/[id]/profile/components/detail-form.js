@@ -15,10 +15,10 @@ import MDButton from "/components/MDButton";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { ErrorMessage, Form, Formik } from "formik";
 
-import form from "../schemas/form";
-import validations from "../schemas/validations";
+import detailForm from "../schemas/detail-form";
+import detailValidations from "../schemas/detail-validations";
 
-export default function PartnerForm({
+export default function DetailFormComponent({
   partner,
   consolidators,
   countries,
@@ -40,7 +40,7 @@ export default function PartnerForm({
       website,
       zip,
     },
-  } = form;
+  } = detailForm;
 
   const submitForm = async (values, actions) => {
     await updatePartner(partner.id, values);
@@ -54,7 +54,7 @@ export default function PartnerForm({
     <Card sx={{ overflow: "visible", my: 3 }}>
       <Formik
         initialValues={initialValues}
-        validationSchema={validations}
+        validationSchema={detailValidations}
         onSubmit={handleSubmit}
       >
         {({ errors, values, touched, isSubmitting, setFieldValue }) => (

@@ -17,7 +17,7 @@ class Partner extends Model
         'added_from',
         'address',
         'billing_city',
-        'billing_country',
+        'billing_country_id',
         'billing_state',
         'billing_street',
         'billing_zip',
@@ -33,7 +33,7 @@ class Partner extends Model
         'phone_number',
         'registration_confirmed',
         'shipping_city',
-        'shipping_country',
+        'shipping_country_id',
         'shipping_state',
         'shipping_street',
         'shipping_zip',
@@ -63,5 +63,13 @@ class Partner extends Model
     public function consolidator(): BelongsTo
     {
         return $this->belongsTo(self::class, 'consolidator_id', 'id', 'consolidator');
+    }
+
+    public function billingCountry(): BelongsTo {
+        return $this->belongsTo(Country::class, 'billing_country_id', 'id', 'billingCountry');
+    }
+
+    public function shippingCountry(): BelongsTo {
+        return $this->belongsTo(Country::class, 'shipping_country_id', 'id', 'shippingCountry');
     }
 }

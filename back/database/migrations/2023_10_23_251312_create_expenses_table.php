@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('invoice_id')->constrained();
             $table->foreignId('project_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->foreignId('expense_category_id')->constrained();
 
             $table->integer('added_from');

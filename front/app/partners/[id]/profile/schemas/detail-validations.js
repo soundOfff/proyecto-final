@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from "yup";
-import checkout from "./form";
+import detailForm from "./detail-form";
 
 const {
   formField: {
@@ -28,9 +28,9 @@ const {
     city,
     consolidator,
   },
-} = checkout;
+} = detailForm;
 
-const validations = Yup.object().shape({
+const detailValidations = Yup.object().shape({
   [company.name]: Yup.string().required(company.errorMsg),
   [state.name]: Yup.string().nullable(),
   [country.name]: Yup.object().nullable(),
@@ -42,4 +42,4 @@ const validations = Yup.object().shape({
   [consolidator.name]: Yup.object().required(consolidator.errorMsg),
 });
 
-export default validations;
+export default detailValidations;

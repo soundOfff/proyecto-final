@@ -76,6 +76,8 @@ class PartnerController extends Controller
         ->allowedIncludes([
             'projects',
             'country',
+            'shippingCountry',
+            'billingCountry',
             'user.contacts',
             'consolidator',
         ])

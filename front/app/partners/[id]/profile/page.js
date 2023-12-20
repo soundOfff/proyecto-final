@@ -16,9 +16,11 @@ export default async function Profile({ params: { id } }) {
       "billingCountry",
     ],
   });
+
   const consolidators = await getPartnersSelect({
     "filter[is_consolidator]": 1,
   });
+
   const countries = await getCountriesSelect();
 
   return (

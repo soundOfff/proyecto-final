@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-async function getAll(params) {
+export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/projects`);
   url.search = new URLSearchParams(params);
 
@@ -18,7 +18,7 @@ async function getAll(params) {
   return data.projects;
 }
 
-async function show(id, params) {
+export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/projects/${id}`);
   url.search = new URLSearchParams(params);
 
@@ -33,7 +33,7 @@ async function show(id, params) {
   return project;
 }
 
-async function getCountByStatuses() {
+export async function getCountByStatuses() {
   const url = new URL(`${process.env.API_URL}/projects/counts/status`);
 
   const res = await fetch(url);
@@ -47,7 +47,7 @@ async function getCountByStatuses() {
   return countByStatuses;
 }
 
-async function store(data) {
+export async function store(data) {
   const res = await fetch(`${process.env.API_URL}/projects`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -67,7 +67,7 @@ async function store(data) {
   redirect("/projects");
 }
 
-async function destroy(projectId) {
+export async function destroy(projectId) {
   const request = new Request(`${process.env.API_URL}/projects/${projectId}`, {
     method: "DELETE",
   });
@@ -80,5 +80,3 @@ async function destroy(projectId) {
 
   revalidatePath("/projects");
 }
-
-export { getAll, show, store, destroy, getCountByStatuses };

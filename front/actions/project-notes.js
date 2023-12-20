@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-async function attach(formData) {
+export async function attach(formData) {
   const data = {};
   formData.forEach((value, key) => (data[key] = value));
 
@@ -28,5 +28,3 @@ async function attach(formData) {
 
   redirect("/projects");
 }
-
-export { attach };

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProjectBillingTypeController;
 use App\Http\Controllers\ProjectController;
@@ -43,6 +44,8 @@ Route::get('/partners/{partner}', [PartnerController::class, 'show']);
 Route::put('/partners/{partner}', [PartnerController::class, 'update']);
 Route::get('/partner-stats', [PartnerController::class, 'stats']);
 Route::get('/partners-select', [PartnerController::class, 'select']);
+
+Route::get('/expenses', [ExpenseController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
 

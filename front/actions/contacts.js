@@ -1,4 +1,4 @@
-async function getStats() {
+export async function getStats() {
   const url = new URL(`${process.env.API_URL}/contact-stats`);
 
   const res = await fetch(url, {
@@ -16,5 +16,3 @@ async function getStats() {
 
   return data;
 }
-
-export { getStats };

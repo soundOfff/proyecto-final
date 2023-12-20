@@ -1,6 +1,6 @@
 "use server";
 
-async function getAll(params) {
+export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/project-statuses?${params}`);
   url.search = new URLSearchParams(params);
 
@@ -15,7 +15,7 @@ async function getAll(params) {
   return data.statuses;
 }
 
-async function show(statusId, params) {
+export async function show(statusId, params) {
   const url = new URL(
     `${process.env.API_URL}/project-statuses/${statusId}?${params}`
   );
@@ -31,5 +31,3 @@ async function show(statusId, params) {
 
   return status;
 }
-
-export { getAll, show };

@@ -1,4 +1,4 @@
-async function select() {
+export async function select() {
   const url = new URL(`${process.env.API_URL}/staffs-select`);
 
   const res = await fetch(url);
@@ -11,5 +11,3 @@ async function select() {
 
   return data.staffs;
 }
-
-export { select };

@@ -1,8 +1,5 @@
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
-// NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 
 import { getAll as getAllProjects } from "/actions/projects";

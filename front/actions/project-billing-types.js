@@ -1,4 +1,4 @@
-async function getAll() {
+export async function getAll() {
   const url = new URL(`${process.env.API_URL}/project-billing-types`);
 
   const res = await fetch(url);
@@ -11,5 +11,3 @@ async function getAll() {
 
   return data.billingTypes;
 }
-
-export { getAll };

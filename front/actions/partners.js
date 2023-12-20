@@ -13,7 +13,7 @@ function map(data) {
   };
 }
 
-async function getSelect(params) {
+export async function getSelect(params) {
   const url = new URL(`${process.env.API_URL}/partners-select`);
   url.search = new URLSearchParams(params);
 
@@ -28,7 +28,7 @@ async function getSelect(params) {
   return data.partners;
 }
 
-async function getAll(params) {
+export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/partners`);
   url.search = new URLSearchParams(params);
 
@@ -48,7 +48,7 @@ async function getAll(params) {
   return data.partners;
 }
 
-async function show(id, params) {
+export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/partners/${id}`);
   url.search = new URLSearchParams(params);
 
@@ -68,7 +68,7 @@ async function show(id, params) {
   return partner;
 }
 
-async function update(id, data) {
+export async function update(id, data) {
   const res = await fetch(`${process.env.API_URL}/partners/${id}`, {
     method: "PUT",
     body: JSON.stringify(map(data)),
@@ -89,7 +89,7 @@ async function update(id, data) {
   redirect("/partners");
 }
 
-async function getStats() {
+export async function getStats() {
   const url = new URL(`${process.env.API_URL}/partner-stats`);
 
   const res = await fetch(url, {
@@ -107,5 +107,3 @@ async function getStats() {
 
   return data;
 }
-
-export { getSelect, getAll, show, update, getStats };

@@ -105,6 +105,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Gastos",
+    key: "expenses",
+    route: "/expenses",
+    icon: <Icon fontSize="medium">description</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
     name: "Ventas",
     key: "sales",
     icon: <Icon fontSize="medium">balance</Icon>,

@@ -12,28 +12,29 @@ return new class extends Migration {
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained();
-            $table->foreignId('project_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('project_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('expense_category_id')->constrained();
 
             $table->integer('added_from');
             $table->decimal('amount');
             $table->integer('billable');
+            $table->integer('payment_mode')->nullable();
             $table->boolean('create_invoice_billable');
             $table->integer('currency');
             $table->integer('custom_recurring');
             $table->integer('cycles');
             $table->date('date');
             $table->dateTime('date_added');
-            $table->string('expense_name');
-            $table->date('last_recurring_date');
-            $table->text('note');
+            $table->string('name')->nullable();
+            $table->date('last_recurring_date')->nullable();
+            $table->text('note')->nullable();
             $table->integer('recurring');
             $table->integer('recurring_from');
-            $table->string('recurring_type');
-            $table->string('reference_no');
-            $table->integer('repeat_every');
+            $table->string('recurring_type')->nullable();
+            $table->string('reference_no')->nullable();
+            $table->integer('repeat_every')->nullable();
             $table->boolean('send_invoice_to_customer');
             $table->integer('tax');
             $table->integer('tax2');

@@ -46,6 +46,7 @@ Route::get('/partner-stats', [PartnerController::class, 'stats']);
 Route::get('/partners-select', [PartnerController::class, 'select']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
+Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
 

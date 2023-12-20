@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
 use Illuminate\Http\Request;
@@ -44,16 +45,14 @@ class ExpenseController extends Controller
     {
         $expense = QueryBuilder::for(Expense::class)
         ->allowedIncludes([
-            'projects',
-            'country',
-            'shippingCountry',
-            'billingCountry',
-            'user.contacts',
-            'consolidator',
+            'user.partners',
+            'category',
+            'project',
+            'invoice',
         ])
         ->find($expense->id);
 
-    return new ($expense);
+    return new ExpenseResource($expense);
     }
 
     /**

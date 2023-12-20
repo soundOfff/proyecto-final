@@ -2,9 +2,31 @@
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
+import MDTypography from "/components/MDTypography";
+import Modal from "/components/Modal";
+import ModalContent from "./modal-content";
 import moneyFormat from "/utils/moneyFormat";
+import { show } from "/actions/expenses";
+import { useEffect, useState } from "react";
 
 export default function Table({ rows }) {
+  const [expenseIdShow, setExpenseIdShow] = useState(0);
+  const [expense, setExpense] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchExpense = async () => {
+      setExpense(
+        await show(expenseIdShow, {
+          include: ["category", "project", "invoice", "user.partners"],
+        })
+      );
+    };
+    if (expenseIdShow) {
+      fetchExpense();
+    }
+  }, [expenseIdShow]);
+
   const columns = [
     {
       Header: "Categoría",
@@ -18,6 +40,19 @@ export default function Table({ rows }) {
     {
       Header: "Nombre",
       accessor: "name",
+      Cell: ({ row }) => (
+        <MDTypography
+          color="info"
+          variant="button"
+          onClick={() => {
+            setExpenseIdShow(row.original.id);
+            setOpen(true);
+          }}
+          sx={{ cursor: "pointer" }}
+        >
+          {row.original.name}
+        </MDTypography>
+      ),
     },
     {
       Header: "Fecha",
@@ -30,7 +65,8 @@ export default function Table({ rows }) {
     {
       Header: "Cliente",
       accessor: "user",
-      Cell: ({ value }) => (value.partners ? value.partners[0]?.company : null),
+      Cell: ({ value }) =>
+        value && value.partners ? value.partners[0].company : null,
     },
     {
       Header: "Factura",
@@ -42,6 +78,16 @@ export default function Table({ rows }) {
 
   return (
     <MDBox>
+      {expense && (
+        <Modal
+          open={open}
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <ModalContent expense={expense} />
+        </Modal>
+      )}
       <DataTable
         table={table}
         entriesPerPage={false}

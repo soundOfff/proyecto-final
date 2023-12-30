@@ -185,10 +185,10 @@ export default async function Show({ params }) {
               variant="button"
               fontWeight="regular"
               color="text"
-              textAlign="center"
-            >
-              {project.description}
-            </MDTypography>
+              dangerouslySetInnerHTML={{
+                __html: project.description ?? "Sin descripción",
+              }}
+            />
           </MDBox>
         </Grid>
 

@@ -180,6 +180,7 @@ function Sidenav({
           </Link>
         );
       }
+
       return <SidenavList key={key}>{returnValue}</SidenavList>;
     });
 
@@ -223,7 +224,11 @@ function Sidenav({
           if (key === "profile-user") {
             if (status === "loading") {
               returnValue = (
-                <MDBox display="flex" alignItems="center">
+                <MDBox
+                  key={"loader-user-profile"}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Skeleton
                     variant="circular"
                     sx={{ ml: 4, mr: 2 }}

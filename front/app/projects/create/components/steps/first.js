@@ -11,9 +11,6 @@ import { EditorState } from "draft-js";
 import { ErrorMessage } from "formik";
 
 export default function First({ formData }) {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { name, cost, estimatedHours, expedient, description } = formField;
   const {
@@ -22,6 +19,9 @@ export default function First({ formData }) {
     estimatedHours: estimatedHoursV,
     expedient: expedientV,
   } = values;
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   useEffect(() => {
     setFieldValue(

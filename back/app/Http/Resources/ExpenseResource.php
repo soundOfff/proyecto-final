@@ -19,12 +19,13 @@ class ExpenseResource extends JsonResource
             'amount' => $this->amount,
             'name' => $this->name,
             'name' => $this->name,
-            'payment_mode' => $this->payment_mode,
             'date' => $this->date,
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'category' => ExpenseCategoryResource::make($this->whenLoaded('category')),
             'user' => UserResource::make($this->whenLoaded('user')),
             'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
+            'currency' => CurrencyResource::make($this->whenLoaded('currency')),
+            'paymentMethod' => PaymentMethodResource::make($this->whenLoaded('paymentMethod')),
         ];
     }
 }

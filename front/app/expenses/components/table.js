@@ -3,13 +3,20 @@
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import MDButton from "/components/MDButton";
 import Modal from "/components/Modal";
 import ModalContent from "./modal-content";
 import moneyFormat from "/utils/moneyFormat";
+import Link from "next/link";
 import { show } from "/actions/expenses";
 import { useEffect, useState } from "react";
+import { useMaterialUIController } from "/context";
+import { Tooltip } from "@mui/material";
+import { FlashOnOutlined } from "@mui/icons-material";
 
 export default function Table({ rows }) {
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
   const [expenseIdShow, setExpenseIdShow] = useState(0);
   const [expense, setExpense] = useState(null);
   const [open, setOpen] = useState(false);
@@ -41,17 +48,12 @@ export default function Table({ rows }) {
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (
-        <MDTypography
-          color="info"
-          variant="button"
-          onClick={() => {
-            setExpenseIdShow(row.original.id);
-            setOpen(true);
-          }}
-          sx={{ cursor: "pointer" }}
+        <Link
+          href={`/expenses/${row.original.id}`}
+          sx={{ cursor: "pointer", color: "info" }}
         >
           {row.original.name}
-        </MDTypography>
+        </Link>
       ),
     },
     {
@@ -61,16 +63,46 @@ export default function Table({ rows }) {
     {
       Header: "Caso",
       accessor: "project.name",
+      Cell: ({ value, row }) => {
+        return row.original.project ? (
+          <Link
+            href={`/projects/${row.original.project?.id}`}
+            sx={{ cursor: "pointer", color: "info" }}
+          >
+            {row.original.project.name}
+          </Link>
+        ) : null;
+      },
     },
     {
       Header: "Cliente",
       accessor: "user",
       Cell: ({ value }) =>
-        value && value.partners ? value.partners[0].company : null,
+        value && value.partners ? (
+          <Link href={`/partners/${value.partners[0].id}/profile`}>
+            {value.partners[0].company}
+          </Link>
+        ) : null,
     },
     {
       Header: "Factura",
       accessor: "invoice.id",
+    },
+    {
+      Header: "Acciones",
+      Cell: ({ row }) => (
+        <Tooltip title="Vista Rápida">
+          <FlashOnOutlined
+            color="info"
+            fontSize="medium"
+            onClick={() => {
+              setExpenseIdShow(row.original.id);
+              setOpen(true);
+            }}
+            sx={{ mr: 3, cursor: "pointer" }}
+          />
+        </Tooltip>
+      ),
     },
   ];
 
@@ -88,6 +120,13 @@ export default function Table({ rows }) {
           <ModalContent expense={expense} />
         </Modal>
       )}
+      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+        <Link href="/expenses/create">
+          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+            Registrar Gasto
+          </MDButton>
+        </Link>
+      </MDBox>
       <DataTable
         table={table}
         entriesPerPage={false}

@@ -14,6 +14,7 @@ import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { ErrorMessage, Form, Formik } from "formik";
+import { update as updatePartner } from "/actions/partners";
 
 import detailForm from "../schemas/detail-form";
 import detailValidations from "../schemas/detail-validations";
@@ -22,7 +23,6 @@ export default function DetailFormComponent({
   partner,
   consolidators,
   countries,
-  updatePartner,
 }) {
   const initialValues = partner;
 

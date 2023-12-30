@@ -10,7 +10,7 @@ class Expense extends Model
 {
     protected $fillable = [
         'expense_category_id',
-        'currency',
+        'currency_id',
         'amount',
         'tax',
         'tax2',
@@ -54,5 +54,25 @@ class Expense extends Model
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
+    }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    public function tax1(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class);
+    }
+
+    public function tax2(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class);
+    }
+
+    public function paymentMethod(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 }

@@ -24,9 +24,9 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 
-function FormField({ label, name, ...rest }) {
+function FormField({ label, name, box, ...rest }) {
   return (
-    <MDBox mb={1.5}>
+    <MDBox mb={1.5} {...box}>
       <Field
         {...rest}
         name={name}

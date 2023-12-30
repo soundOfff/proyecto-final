@@ -81,7 +81,7 @@ const routes = [
       },
       {
         name: "Sales",
-        key: "sales",
+        key: "dashboard-sales",
         route: "/dashboards/sales",
       },
     ],

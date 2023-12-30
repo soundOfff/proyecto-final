@@ -9,15 +9,10 @@ export default function ModalContent({ expense }) {
     <MDBox sx={{ p: 5 }}>
       <Grid container lineHeight={0} ml={2}>
         <Grid item xs={12} md={6}>
-          <MDTypography variant="h4" mr={5} display="inline-block" mb={1}>
+          <MDTypography variant="h4" mr={5} mb={1}>
             {expense.category.name}
           </MDTypography>
-          <MDTypography
-            color="text"
-            fontWeight="light"
-            mr={5}
-            display="inline-block"
-          >
+          <MDTypography color="text" fontWeight="light" mr={5}>
             {expense.name}
           </MDTypography>
         </Grid>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
@@ -21,7 +22,8 @@ class ExpenseController extends Controller
             'category',
             'project',
             'invoice',
-        ]);
+        ])
+        ->orderBy('id', 'desc');
 
         $expense = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -33,9 +35,13 @@ class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ExpenseRequest $request)
     {
-        //
+        $newExpense = $request->validated();
+
+        $expense = Expense::create($newExpense);
+
+        return response()->json($expense, 201);
     }
 
     /**

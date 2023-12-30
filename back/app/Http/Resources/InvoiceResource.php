@@ -16,6 +16,7 @@ class InvoiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'number' => $this->number,
         ];
     }
 }

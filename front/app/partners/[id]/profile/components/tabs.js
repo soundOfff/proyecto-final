@@ -4,9 +4,8 @@ import { AppBar, Tab, Tabs } from "@mui/material";
 import { useEffect, useState } from "react";
 import breakpoints from "/assets/theme/base/breakpoints";
 
-export default function TabsComponent() {
+export default function TabsComponent({ tabIndex, setTabIndex }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -28,12 +27,12 @@ export default function TabsComponent() {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const handleSetTabValue = (event, newValue) => setTabIndex(newValue);
 
   return (
     <AppBar position="static">
       <Tabs
-        value={tabValue}
+        value={tabIndex}
         orientation={tabsOrientation}
         onChange={handleSetTabValue}
       >

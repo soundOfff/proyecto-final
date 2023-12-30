@@ -14,15 +14,10 @@ export default async function Page({ params: { id } }) {
     <Card sx={{ px: 10, py: 10, my: 5 }}>
       <Grid container lineHeight={0} ml={2}>
         <Grid item xs={12} md={6}>
-          <MDTypography variant="h4" mr={5} display="inline-block" mb={1}>
+          <MDTypography variant="h4" mr={5} mb={1}>
             {expense.category.name}
           </MDTypography>
-          <MDTypography
-            color="text"
-            fontWeight="light"
-            mr={5}
-            display="inline-block"
-          >
+          <MDTypography color="text" fontWeight="light" mr={5}>
             {expense.name}
           </MDTypography>
         </Grid>
@@ -75,7 +70,7 @@ export default async function Page({ params: { id } }) {
           <DefaultItem
             color="dark"
             title="Factura"
-            description={expense.invoice.id}
+            description={expense.invoice?.id}
           />
         </Grid>
 

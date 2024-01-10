@@ -13,6 +13,7 @@ import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 
 export default function Second({
   formData,
@@ -29,6 +30,8 @@ export default function Second({
     paymentMethod,
     reference,
     repeat,
+    recurring,
+    recurringType,
     isInfinite,
     totalCycles,
     createInvoiceBillable,
@@ -214,10 +217,57 @@ export default function Second({
             color="error"
             fontWeight="regular"
           >
-            <ErrorMessage name={tax.name} />
+            <ErrorMessage name={repeat.name} />
           </MDTypography>
         </MDBox>
       </Grid>
+      {values[repeat.name] === CUSTOM && (
+        <>
+          <Grid item xs={12} sm={6}>
+            <FormField
+              name={recurring.name}
+              type={recurring.type}
+              label=""
+              placeholder={recurring.placeholder}
+              error={errors.recurring && touched.recurring}
+              success={recurring.length > 0 && !errors.recurring}
+              box={{ width: "80%" }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Autocomplete
+              value={RECURRING_TYPES.find(
+                (recurring_type) =>
+                  recurring_type.id === values[recurringType.name]
+              )}
+              onChange={(e, recurringTypeSelected) =>
+                setFieldValue(recurringType.name, recurringTypeSelected.id)
+              }
+              options={RECURRING_TYPES}
+              getOptionLabel={(option) => option.label}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={recurring.name} />
+              </MDTypography>
+            </MDBox>
+          </Grid>
+        </>
+      )}
       {values[repeat.name] && (
         <Grid item xs={12}>
           <MDBox display="flex" alignItems="center">

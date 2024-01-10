@@ -10,7 +10,7 @@ class InvoiceController extends Controller
     public function select()
     {
         $invoices = Invoice::query()
-        ->select('number')
+        ->select('id', 'number')
         ->distinct()
         ->get();
 

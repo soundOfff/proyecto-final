@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
-import { PaymentTwoTone } from "@mui/icons-material";
+import { CUSTOM } from "/utils/constants/repeats";
 
 const {
   formField: {
@@ -27,10 +27,12 @@ const {
     currency,
     partner,
     reference,
-    repeat,
     paymentMethod,
     tax,
     tax2,
+    repeat,
+    recurring,
+    recurringType,
     totalCycles,
     isInfinite,
   },
@@ -54,6 +56,11 @@ const validations = [
     [paymentMethod.name]: Yup.string().required(paymentMethod.errorMsg),
     [reference.name]: Yup.string(),
     [repeat.name]: Yup.string(),
+    [recurring.name]: Yup.number().when(repeat.name, {
+      is: (value) => value !== CUSTOM,
+      then: (schema) =>
+        schema.min(1, "Debe ser mayor a 0").required("Este campo es requerido"),
+    }),
     [isInfinite.name]: Yup.boolean(),
     [totalCycles.name]: Yup.number().when(isInfinite.name, {
       is: false,

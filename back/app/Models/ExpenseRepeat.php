@@ -10,6 +10,8 @@ class ExpenseRepeat extends Model
 {
     use HasFactory;
 
+    private const CUSTOM = 8;
+
     protected $fillable = [
         'id',
         'label',
@@ -19,5 +21,10 @@ class ExpenseRepeat extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(Expense::class);
+    }
+
+    public static function isCustom(int $id): bool
+    {
+        return self::find(self::CUSTOM)->id === $id;
     }
 }

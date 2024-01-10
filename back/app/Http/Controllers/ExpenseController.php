@@ -6,6 +6,7 @@ use App\Http\Requests\ExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
+use App\Models\ExpenseRepeat;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -41,6 +42,12 @@ class ExpenseController extends Controller
 
         $expense = Expense::create($newExpense);
 
+        if (ExpenseRepeat::isCustom($request['recurring_type'])) {
+            $expense->recurring_type = $request['recurring_type'];
+            $expense->custom_recurring = $request['recurring'] * Expense::CUSTOM_RECURRING_TYPES[$request['recurring_type']];
+            $expense->save();
+        }
+
         return response()->json($expense, 201);
     }
 
@@ -58,7 +65,7 @@ class ExpenseController extends Controller
         ])
         ->find($expense->id);
 
-    return new ExpenseResource($expense);
+        return new ExpenseResource($expense);
     }
 
     /**

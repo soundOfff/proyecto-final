@@ -80,6 +80,13 @@ const form = {
       name: "repeat_id",
       label: "Repetir cada",
     },
+    recurring: {
+      name: "recurring",
+      type: "number",
+    },
+    recurringType: {
+      name: "recurring_type",
+    },
     isInfinite: {
       name: "is_infinite",
       label: "Infinito",

@@ -117,7 +117,7 @@ export default function First({ formData, partners, categories, invoices }) {
       <Grid item xs={12} sm={6}>
         <Autocomplete
           onChange={(e, invoiceSelected) =>
-            setFieldValue(invoice.name, invoiceSelected?.id)
+            setFieldValue(invoice.name, invoiceSelected?.id ?? "")
           }
           options={invoices}
           getOptionLabel={(option) => String(option.number)}

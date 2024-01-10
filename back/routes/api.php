@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
@@ -51,7 +52,6 @@ Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
 
 Route::get('/taxes', [TaxController::class, 'index']);
 
-
 Route::get('/partners', [PartnerController::class, 'index']);
 Route::get('/partners/{partner}', [PartnerController::class, 'show']);
 Route::put('/partners/{partner}', [PartnerController::class, 'update']);
@@ -64,6 +64,8 @@ Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
 Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
+
+Route::get('/estimates', [EstimateController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
 

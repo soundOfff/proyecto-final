@@ -22,7 +22,8 @@ class EstimateController extends Controller
             'invoice',
             'billingCountry',
             'shippingCountry',
-        ]);
+        ])
+        ->orderBy('id', 'desc');
 
         $estimates = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

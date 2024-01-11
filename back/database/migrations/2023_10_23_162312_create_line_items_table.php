@@ -14,13 +14,13 @@ return new class extends Migration {
             $table->id();
             $table->morphs('line_itemable');
 
-            $table->mediumText('description');
+            $table->mediumText('description')->nullable();
             $table->decimal('item_discount');
             $table->integer('item_order');
-            $table->mediumText('long_description');
-            $table->decimal('qty');
+            $table->mediumText('long_description')->nullable();
+            $table->decimal('quantity');
             $table->decimal('rate');
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->string('unit');
 
             $table->timestamps();

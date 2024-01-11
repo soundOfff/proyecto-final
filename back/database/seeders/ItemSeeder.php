@@ -25,7 +25,6 @@ class ItemSeeder extends Seeder
         $items = $this->utils->csvToArray(database_path('imports/items.csv'));
 
         foreach ($items as $item) {
-            dump($item);
             Item::updateOrCreate(['id' => $item['id']], $item);
         }
     }

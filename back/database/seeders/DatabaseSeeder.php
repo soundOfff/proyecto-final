@@ -37,5 +37,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectMemberSeeder::class);
         $this->call(ItemGroupSeeder::class);
         $this->call(ItemSeeder::class);
+        $this->call(LineItemSeeder::class);
     }
 }

@@ -12,14 +12,14 @@ return new class extends Migration {
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_group_id')->constrained();
+            $table->foreignId('item_group_id')->nullable()->constrained();
+            $table->foreignId('tax_id')->nullable()->constrained();
+            $table->foreignId('tax2_id')->nullable()->constrained('taxes');
 
             $table->mediumText('description');
-            $table->text('long_description');
+            $table->text('long_description')->nullable();
             $table->decimal('rate');
-            $table->integer('tax');
-            $table->integer('tax2');
-            $table->string('unit');
+            $table->string('unit')->nullable();
 
             $table->timestamps();
         });

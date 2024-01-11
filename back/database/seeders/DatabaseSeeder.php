@@ -35,5 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ExpenseSeeder::class);
         $this->call(ProjectNoteSeeder::class);
         $this->call(ProjectMemberSeeder::class);
+        $this->call(ItemGroupSeeder::class);
+        $this->call(ItemSeeder::class);
     }
 }

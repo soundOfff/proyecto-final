@@ -32,6 +32,7 @@ const {
     agent,
     repeat,
     discountType,
+    items,
     note,
   },
 } = checkout;
@@ -53,6 +54,7 @@ const initialValues = {
   [repeat.name]: "",
   [discountType.name]: "",
   [note.name]: "",
+  [items.name]: [],
 };
 
 export default initialValues;

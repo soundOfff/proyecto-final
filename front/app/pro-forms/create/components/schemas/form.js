@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// Ver nombre de campos porque todavia no tengo las tablas
+// TODO: Ver nombre de campos porque todavia no tengo las tablas
 
 const form = {
   formId: "new-expense",
@@ -92,6 +92,11 @@ const form = {
       name: "note",
       label: "Notas del admin",
       type: "text",
+    },
+    items: {
+      name: "items",
+      label: "Items",
+      errorMsg: "Debe seleccionar al menos un item",
     },
   },
 };

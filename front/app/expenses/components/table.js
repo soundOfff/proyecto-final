@@ -2,7 +2,6 @@
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import Modal from "/components/Modal";
 import ModalContent from "./modal-content";

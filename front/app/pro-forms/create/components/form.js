@@ -27,10 +27,10 @@ const steps = [
 
 export default function FormComponent({
   partners,
-  currencies,
-  taxes,
-  paymentMethods,
   repeats,
+  taxes,
+  groupIds,
+  items,
 }) {
   const [activeStep, setActiveStep] = useState(2);
   const currentValidation = validations[activeStep];
@@ -76,7 +76,16 @@ export default function FormComponent({
           />
         );
       case 2:
-        return <Third formData={formData} {...{}} />;
+        return (
+          <Third
+            formData={formData}
+            {...{
+              items,
+              taxes,
+              groupIds,
+            }}
+          />
+        );
       default:
         return null;
     }

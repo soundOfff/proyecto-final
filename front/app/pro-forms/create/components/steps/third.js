@@ -2,19 +2,21 @@
 
 import { Autocomplete, Grid } from "@mui/material";
 import { ErrorMessage } from "formik";
+import { useState } from "react";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import Icon from "@mui/material/Icon";
 import MDButton from "/components/MDButton";
 import Modal from "/components/Modal";
-import { useState } from "react";
-import ModalContentForm from "../../../../../components/ModalContent/Item/form";
+import ModalContentForm from "/components/ModalContent/Item/form";
+import ItemTable from "/components/ItemTable";
 
 export default function Third({ formData, taxes, groupIds, items: itemsData }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { items } = formField;
   const [isOpen, setOpen] = useState(false);
+  const [itemRows, setItemRows] = useState([])
 
   const handleClose = () => {
     setOpen(false);
@@ -76,6 +78,7 @@ export default function Third({ formData, taxes, groupIds, items: itemsData }) {
           &nbsp;add new article
         </MDButton>
       </Grid>
+      <ItemTable rows={itemRows} />
       {isOpen && (
         <Modal open={open} onClose={handleClose} width="30%">
           <ModalContentForm taxes={taxes} groupIds={groupIds} />

@@ -8,6 +8,8 @@ use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemGroupController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProjectBillingTypeController;
@@ -51,6 +53,12 @@ Route::get('/currencies', [CurrencyController::class, 'index']);
 Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
 
 Route::get('/taxes', [TaxController::class, 'index']);
+
+Route::get('/groups', [ItemGroupController::class, 'index']);
+Route::post('/groups', [ItemGroupController::class, 'store']);
+
+Route::get('/items', [ItemController::class, 'index']);
+Route::post('/items', [ItemController::class, 'store']);
 
 Route::get('/partners', [PartnerController::class, 'index']);
 Route::get('/partners/{partner}', [PartnerController::class, 'show']);

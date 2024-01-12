@@ -16,7 +16,7 @@ export default function Third({ formData, taxes, groupIds, items: itemsData }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { items } = formField;
   const [isOpen, setOpen] = useState(false);
-  const [itemRows, setItemRows] = useState([])
+  const [itemRows, setItemRows] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
@@ -26,9 +26,7 @@ export default function Third({ formData, taxes, groupIds, items: itemsData }) {
     <Grid container spacing={5} p={5}>
       <Grid item xs={8}>
         <Autocomplete
-          // onChange={(e, selectedTax) =>
-          //   setFieldValue(tax.name, selectedTax?.id)
-          // }
+          onChange={(e, selectedItem) => setItemRows([selectedItem])}
           options={itemsData}
           getOptionLabel={(option) => `${option.description}`}
           renderOption={(props, option) => (

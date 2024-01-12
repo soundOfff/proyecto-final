@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Estimate extends Model
 {
@@ -91,5 +92,10 @@ class Estimate extends Model
     public function shippingCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'shipping_country_id');
+    }
+
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

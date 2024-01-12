@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Model
 {
@@ -11,7 +10,12 @@ class Tag extends Model
         'name',
     ];
 
-    public function projects(): MorphToMany
+    public function estimates()
+    {
+        return $this->morphedByMany(Estimate::class, 'taggable');
+    }
+
+    public function projects()
     {
         return $this->morphedByMany(Project::class, 'taggable');
     }

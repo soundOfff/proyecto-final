@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('taggables', function (Blueprint $table) {
             $table->id();
             $table->morphs('taggable');
+            $table->foreignId('tag_id')->constrained();
             $table->string('tag_order');
 
             $table->timestamps();

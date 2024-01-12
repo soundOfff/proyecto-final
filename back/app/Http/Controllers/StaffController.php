@@ -11,7 +11,7 @@ class StaffController extends Controller
 {
     public function select()
     {
-        $staffs = Staff::all();
+        $staffs = Staff::where('active', true)->get();
 
         return new StaffSelectResourceCollection($staffs);
     }

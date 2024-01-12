@@ -18,6 +18,7 @@ import checkout from "./form";
 const {
   formField: {
     partner,
+    project,
     number,
     dateFrom,
     dateTo,
@@ -39,15 +40,16 @@ const {
 
 const initialValues = {
   [partner.name]: "",
+  [project.name]: "",
   [number.name]: "",
   [dateFrom.name]: "",
   [dateTo.name]: "",
   [serviceType.name]: "",
-  [retainingAgent.name]: "",
+  [retainingAgent.name]: false,
   [subServiceType.name]: "",
   [stopPendingRemainder.name]: false,
   [labels.name]: "",
-  [currency.name]: "",
+  [currency.name]: "USD $",
   [state.name]: "",
   [reference.name]: "",
   [agent.name]: "",

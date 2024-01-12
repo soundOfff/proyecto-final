@@ -13,6 +13,7 @@ import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import Select from "/components/Select";
 
 export default function Second({
   formData,
@@ -127,31 +128,13 @@ export default function Second({
         </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, selectedAgent) =>
-            setFieldValue(agent.name, selectedAgent?.id)
-          }
+        <Select
           options={agents}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={agent.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel="name"
+          fieldName={agent.name}
+          inputLabel={agent.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={agent.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12}>
         <FormField

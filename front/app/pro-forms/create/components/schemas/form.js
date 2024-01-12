@@ -23,6 +23,11 @@ const form = {
       label: "Cliente",
       errorMsg: "Debe seleccionar un cliente",
     },
+    project: {
+      name: "project_id",
+      label: "Caso",
+      errorMsg: "Debe seleccionar un caso",
+    },
     number: {
       name: "number",
       label: "Número de Proforma",

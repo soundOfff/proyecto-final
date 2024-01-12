@@ -2,11 +2,10 @@
 
 import {
   Autocomplete,
-  Checkbox,
-  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
+  Switch,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDTypography from "/components/MDTypography";
@@ -15,22 +14,23 @@ import MDInput from "/components/MDInput";
 import MDDatePicker from "/components/MDDatePicker";
 import moment from "moment";
 import { ErrorMessage } from "formik";
-
-// TODO: import serviceType, subServiceType
+import Select from "/components/Select";
+import { useEffect, useState } from "react";
+import { getSelect as getProjectSelect } from "/actions/projects";
 
 export default function First({
   formData,
   partners,
   serviceTypes,
-  retainingAgents,
   subServiceTypes,
   labelsData,
+  currencies,
   states,
-  discountTypes,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
     partner,
+    project,
     number,
     dateFrom,
     dateTo,
@@ -39,39 +39,21 @@ export default function First({
     subServiceType,
     labels,
     currency,
+    state,
   } = formField;
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    if (values.partner_id) {
+      getProjectSelect(values.partner_id).then((projects) =>
+        setProjects(projects)
+      );
+    }
+  }, [values.partner_id]);
 
   return (
     <Grid container spacing={5}>
-      <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, partnerSelected) =>
-            setFieldValue(partner.name, partnerSelected?.id)
-          }
-          options={partners}
-          getOptionLabel={(option) => option.company}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={partner.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={partner.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <FormField
           name={number.name}
           label={number.label}
@@ -80,6 +62,27 @@ export default function First({
           error={errors.number && touched.number}
           success={number.length > 0 && !errors.number}
         />
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <Select
+          options={partners}
+          optionLabel="company"
+          fieldName={partner.name}
+          inputLabel={partner.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        {projects.length > 0 && (
+          <Select
+            options={projects}
+            optionLabel="name"
+            fieldName={project.name}
+            inputLabel={project.label}
+            setFieldValue={setFieldValue}
+          />
+        )}
       </Grid>
       <Grid item xs={12} sm={6}>
         <MDDatePicker
@@ -128,62 +131,15 @@ export default function First({
         </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, serviceTypeSelected) =>
-            setFieldValue(serviceType.name, serviceTypeSelected?.id)
-          }
+        <Select
           options={serviceTypes}
-          getOptionLabel={(option) => option.company}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={serviceType.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel="label"
+          fieldName={serviceType.name}
+          inputLabel={serviceType.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={serviceType.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, retainingAgentSelected) =>
-            setFieldValue(retainingAgent.name, retainingAgentSelected?.id)
-          }
-          options={retainingAgents}
-          getOptionLabel={(option) => option.company}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={retainingAgent.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={retainingAgent.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <Autocomplete
           multiple
           onChange={(e, selectedLabel) =>
@@ -212,38 +168,24 @@ export default function First({
         </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, subServiceTypeSelected) =>
-            setFieldValue(subServiceType.name, subServiceTypeSelected?.id)
-          }
+        <Select
           options={subServiceTypes}
-          getOptionLabel={(option) => option.company}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={subServiceType.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          inputLabel={subServiceType.label}
+          optionLabel="label"
+          fieldName={subServiceType.name}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={subServiceType.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
         <Autocomplete
-          defaultValue=" USD $"
-          options={[" USD $"]}
-          disabled
+          onChange={(e, currencySelected) =>
+            setFieldValue(
+              currency.name,
+              currencySelected ? currencySelected.id : null
+            )
+          }
+          options={currencies}
+          getOptionLabel={(option) => `${option.symbol} ${option.name}`}
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -265,7 +207,29 @@ export default function First({
           </MDTypography>
         </MDBox>
       </Grid>
-     
+      <Grid item xs={12}>
+        <Select
+          options={states}
+          optionLabel="label"
+          fieldName={state.name}
+          inputLabel={state.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                onChange={(e) =>
+                  setFieldValue(retainingAgent.name, e.target.checked)
+                }
+              />
+            }
+            label={retainingAgent.label}
+          />
+        </FormGroup>
+      </Grid>
     </Grid>
   );
 }

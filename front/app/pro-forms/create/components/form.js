@@ -31,8 +31,11 @@ export default function FormComponent({
   taxes,
   groupIds,
   items,
+  serviceTypes,
+  agents,
+  currencies,
 }) {
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
@@ -41,20 +44,20 @@ export default function FormComponent({
     switch (stepIndex) {
       case 0:
         return (
-          // TODO: get the correct data
           <First
             formData={formData}
             {...{
               partners,
-              serviceTypes: [],
-              retainingAgents: [],
-              subServiceTypes: [],
-              labelsData: [
-                "Black Fridayyy",
-                "Expired",
-                "Out of Stock",
-                "In Stock",
-                "Sale",
+              serviceTypes,
+              subServiceTypes: [{ id: 1, label: "Subtipo1" }],
+              currencies,
+              labelsData: ["Expired", "Out of Stock", "In Stock", "Sale"],
+              states: [
+                { id: 1, label: "No Enviada" },
+                { id: 2, label: "Enviada" },
+                { id: 3, label: "Expirado" },
+                { id: 4, label: "Rechazado" },
+                { id: 5, label: "Aceptado" },
               ],
             }}
           />
@@ -71,7 +74,7 @@ export default function FormComponent({
                 "Despues del impuesto",
               ],
               repeats,
-              agents: [],
+              agents,
             }}
           />
         );

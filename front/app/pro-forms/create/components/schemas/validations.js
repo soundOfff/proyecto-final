@@ -41,7 +41,6 @@ const {
 const validations = [
   Yup.object().shape({
     [partner.name]: Yup.string().required(partner.errorMsg),
-    [number.name]: Yup.string().required(number.errorMsg),
     [dateFrom.name]: Yup.date().required(dateFrom.errorMsg),
     [dateTo.name]: Yup.date().required(dateTo.errorMsg),
     [serviceType.name]: Yup.string().required(serviceType.errorMsg),
@@ -51,6 +50,14 @@ const validations = [
     [labels.name]: Yup.string(),
     [currency.name]: Yup.string().required(currency.errorMsg),
     [state.name]: Yup.string().required(state.errorMsg),
+    [reference.name]: Yup.string(),
+    [repeat.name]: Yup.string(),
+    [discountType.name]: Yup.string(),
+    [note.name]: Yup.string(),
+  }),
+  Yup.object().shape({
+    [stopPendingRemainder.name]: Yup.boolean(),
+    [labels.name]: Yup.string(),
     [reference.name]: Yup.string(),
     [agent.name]: Yup.string().required(agent.errorMsg),
     [repeat.name]: Yup.string(),

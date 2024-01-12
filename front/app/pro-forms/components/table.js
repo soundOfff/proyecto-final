@@ -74,7 +74,7 @@ export default function Table({ rows }) {
   return (
     <MDBox>
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href="/expenses/create">
+        <Link href="/pro-forms/create">
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Proforma
           </MDButton>

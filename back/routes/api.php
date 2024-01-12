@@ -39,6 +39,7 @@ Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'inde
 Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/projects-select/{defendant}', [ProjectController::class, 'select']);
 Route::post('/projects', [ProjectController::class, 'store']);
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
 Route::get('/projects/{project}', [ProjectController::class, 'show']);

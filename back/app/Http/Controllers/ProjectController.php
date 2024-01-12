@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
+use App\Http\Resources\ProjectSelectResourceCollection;
+use App\Models\Partner;
 use App\Models\Project;
 use App\Models\ProjectMember;
 use Illuminate\Http\Request;
@@ -14,6 +16,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
+    public function select(Partner $defendant)
+    {
+        $projects = Project::where('defendant_id', $defendant->id)
+            ->select('id', 'name')
+            ->get();
+
+        return new ProjectSelectResourceCollection($projects);
+    }
+
     /**
      * Display a listing of the resource.
      */

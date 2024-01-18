@@ -142,9 +142,7 @@ export default function First({
       <Grid item xs={6}>
         <Autocomplete
           multiple
-          onChange={(e, tagSelected) =>
-            setFieldValue(tags.name, tagSelected?.id)
-          }
+          onChange={(e, tagsSelected) => setFieldValue(tags.name, tagsSelected)}
           options={tagsData}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
@@ -207,15 +205,6 @@ export default function First({
             <ErrorMessage name={currency.name} />
           </MDTypography>
         </MDBox>
-      </Grid>
-      <Grid item xs={12}>
-        <Select
-          options={states}
-          optionLabel="label"
-          fieldName={state.name}
-          inputLabel={state.label}
-          setFieldValue={setFieldValue}
-        />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormGroup>

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->morphs('taggable');
             $table->foreignId('tag_id')->constrained();
-            $table->string('tag_order');
+            $table->string('tag_order')->nullable();
 
             $table->timestamps();
         });

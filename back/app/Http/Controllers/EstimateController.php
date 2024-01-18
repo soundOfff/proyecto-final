@@ -6,6 +6,7 @@ use App\Http\Requests\EstimateRequest;
 use App\Http\Resources\EstimateResourceCollection;
 use App\Models\Estimate;
 use App\Models\LineItem;
+use App\Models\Taggable;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -41,8 +42,16 @@ class EstimateController extends Controller
     {
         $newEstimate = $request->validated();
         $items = $newEstimate['items'];
+        $tags = $newEstimate['tags'];
 
         $estimate = Estimate::create($newEstimate);
+
+        foreach ($tags as $tag) {
+            $tag['taggable_id'] = $estimate->id;
+            $tag['taggable_type'] = 'estimates';
+            $tag['tag_id'] = $tag['id'];
+            Taggable::create($tag);
+        }
 
         foreach ($items as $item) {
             $item['line_itemable_id'] = $estimate->id;

@@ -45,6 +45,7 @@ class EstimateRequest extends FormRequest
             'items.*.quantity' => 'required|numeric',
             'items.*.rate' => 'required|numeric',
             'items.*.discount' => 'nullable|numeric',
+            'items.*.unit' => 'nullable|string',
             'subtotal' => 'required|numeric',
             'total_tax' => 'required|numeric',
             'total' => 'required|numeric',

@@ -6,11 +6,17 @@ import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import { ErrorMessage, useFormik } from "formik";
+import { useFormik } from "formik";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import * as Yup from "yup";
 import { useEffect } from "react";
 
 export default function ItemForm({ formData, item, taxesData, types }) {
+  const units = ["Cantidad", "Horas", "Cantidad/Horas"];
   const {
     values: externalValues,
     formField,
@@ -24,6 +30,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
     taxes,
     discount,
     type,
+    unit,
     items,
   } = formField;
 
@@ -50,6 +57,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       [rate.name]: "",
       [discount.name]: "",
       [type.name]: "",
+      [unit.name]: "",
       [taxes.name]: [],
     },
     validationSchema: addItemValidationSchema,
@@ -64,6 +72,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           rate: values[rate.name],
           taxes: values[taxes.name],
           discount: values[discount.name],
+          unit: values[unit.name],
         },
       ]);
       setFieldValue(description.name, "");
@@ -73,6 +82,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       setFieldValue(type.name, "");
       setFieldValue(taxes.name, []);
       setFieldValue(discount.name, "");
+      setFieldValue(unit.name, "");
     },
   });
 
@@ -86,6 +96,32 @@ export default function ItemForm({ formData, item, taxesData, types }) {
 
   return (
     <>
+      <Grid item xs={4}>
+        <MDBox display="flex" justifyContent="end">
+          <FormControl>
+            <FormLabel>{unit.label}</FormLabel>
+            <RadioGroup row name={unit.name}>
+              {units.map((unit) => (
+                <FormControlLabel
+                  key={unit}
+                  value={unit}
+                  control={
+                    <Radio
+                      onChange={(e) => {
+                        setFieldValueExternal(
+                          formField.unit.name,
+                          e.target.value
+                        );
+                      }}
+                    />
+                  }
+                  label={unit}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
+        </MDBox>
+      </Grid>
       <Grid item xs={12} sm={2}>
         <FormField
           name={description.name}

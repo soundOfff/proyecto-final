@@ -32,7 +32,7 @@ export default function Third({
 
   return (
     <Grid container spacing={5} p={3}>
-      <Grid item xs={10}>
+      <Grid item xs={6}>
         <Autocomplete
           onChange={(e, selectedItem) => {
             if (selectedItem) setItem(selectedItem);
@@ -75,7 +75,7 @@ export default function Third({
           </MDTypography>
         </MDBox>
       </Grid>
-      <Grid item>
+      <Grid xs={2} item>
         <MDButton
           variant="gradient"
           color="dark"

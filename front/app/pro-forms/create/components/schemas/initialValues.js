@@ -33,18 +33,12 @@ const {
     agent,
     repeat,
     discountType,
-    description,
-    discount,
-    longDescription,
-    quantity,
-    rate,
-    taxes,
-    type,
     items,
     adminNote,
     clientNote,
     terms,
     adjustment,
+    unit,
   },
 } = checkout;
 
@@ -70,6 +64,7 @@ const initialValues = {
   [terms.name]: "",
   [items.name]: [],
   [adjustment.name]: "",
+  [unit.name]: "Cantidad",
 };
 
 export default initialValues;

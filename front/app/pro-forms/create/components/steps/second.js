@@ -79,6 +79,10 @@ export default function Second({
           onChange={(e, selectedDiscountType) =>
             setFieldValue(discountType.name, selectedDiscountType?.id)
           }
+          isOptionEqualToValue={(option) =>
+            option.id === values[discountType.name]
+          }
+          getOptionLabel={(option) => option.label}
           options={discountTypes}
           renderInput={(params) => (
             <MDInput

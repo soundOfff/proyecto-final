@@ -150,6 +150,10 @@ const form = {
       placeholder: "USD",
       type: "number",
     },
+    unit: {
+      name: "unit",
+      label: "Mostrar la cantidad como:",
+    },
     items: {
       name: "items",
       label: "Articulos",

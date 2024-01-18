@@ -17,6 +17,11 @@ import form from "./schemas/form";
 import { store as storeEstimate } from "/actions/estimates";
 
 import { useState } from "react";
+import {
+  AFTER_TAX,
+  BEFORE_TAX,
+  WITHOUT_DISCOUNT,
+} from "/utils/constants/discountTypes";
 
 const steps = [
   "Nueva proforma",
@@ -69,9 +74,9 @@ export default function FormComponent({
             {...{
               states: ["Borrador", "Pendiente", "Pagado"],
               discountTypes: [
-                "Sin descuento",
-                "Antes del impuesto",
-                "Despues del impuesto",
+                { id: WITHOUT_DISCOUNT, label: "Sin descuento" },
+                { id: BEFORE_TAX, label: "Antes del impuesto" },
+                { id: AFTER_TAX, label: "Después del impuesto" },
               ],
               repeats,
               agents,

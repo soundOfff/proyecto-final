@@ -8,7 +8,7 @@ import numberFormat from "/utils/numberFormat";
 import { Grid } from "@mui/material";
 
 export default function Table({ formData }) {
-  const { values, setFieldValue } = formData;
+  const { values, setFieldValue, formField } = formData;
   const columns = [
     {
       Header: "Articulo",
@@ -23,7 +23,7 @@ export default function Table({ formData }) {
       accessor: "type",
     },
     {
-      Header: "Cantidad",
+      Header: () => values[formField.unit.name],
       accessor: "quantity",
     },
     {

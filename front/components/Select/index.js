@@ -8,6 +8,7 @@ import MDBox from "/components/MDBox";
 export default function Select({
   options,
   optionLabel,
+  customOptionLabel,
   fieldName,
   inputLabel,
   defaultValue,

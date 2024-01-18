@@ -6,6 +6,7 @@ import { getAll as getAllGroups } from "/actions/groups";
 import { getAll as getAllItems } from "/actions/items";
 import { getAll as getAllServiceTypes } from "/actions/project-service-types";
 import { getAll as getAllCurrencies } from "/actions/currencies";
+import { getAll as getAllTags } from "/actions/tags";
 
 import Form from "./components/form";
 
@@ -19,15 +20,17 @@ export default async function NewProject() {
     serviceTypes,
     agents,
     currencies,
+    tags,
   ] = await Promise.all([
     getPartnerSelect(),
     getAllTaxes(),
     getAllRepeats(),
     getAllGroups(),
-    getAllItems(),
+    getAllItems({ include: ["tax"] }),
     getAllServiceTypes(),
     getStaffSelect(),
     getAllCurrencies(),
+    getAllTags(),
   ]);
 
   return (
@@ -41,6 +44,7 @@ export default async function NewProject() {
         serviceTypes,
         agents,
         currencies,
+        tags,
       }}
     />
   );

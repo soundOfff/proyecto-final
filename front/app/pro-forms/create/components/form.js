@@ -14,7 +14,7 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
 
-import { store as storeExpense } from "/actions/expenses";
+import { store as storeEstimate } from "/actions/estimates";
 
 import { useState } from "react";
 
@@ -22,7 +22,6 @@ const steps = [
   "Nueva proforma",
   "Opcionales de proforma",
   "Detalles de articulos",
-  "Terminos y condiciones",
 ];
 
 export default function FormComponent({
@@ -34,8 +33,9 @@ export default function FormComponent({
   serviceTypes,
   agents,
   currencies,
+  tags,
 }) {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
@@ -51,7 +51,7 @@ export default function FormComponent({
               serviceTypes,
               subServiceTypes: [{ id: 1, label: "Subtipo1" }],
               currencies,
-              labelsData: ["Expired", "Out of Stock", "In Stock", "Sale"],
+              tagsData: tags,
               states: [
                 { id: 1, label: "No Enviada" },
                 { id: 2, label: "Enviada" },
@@ -84,6 +84,10 @@ export default function FormComponent({
             formData={formData}
             {...{
               items,
+              lineTypes: [
+                { id: 1, label: "Honorarios" },
+                { id: 2, label: "Gastos" },
+              ],
               taxes,
               groupIds,
             }}
@@ -97,7 +101,7 @@ export default function FormComponent({
   const handleBack = () => setActiveStep(activeStep - 1);
 
   const submitForm = async (values, actions) => {
-    await storeExpense(values);
+    await storeEstimate(values);
   };
 
   const handleSubmit = (values, actions) => {
@@ -111,20 +115,23 @@ export default function FormComponent({
   };
 
   return (
-    <MDBox py={3} mb={20} height="65vh">
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        sx={{ height: "100%", mt: 8 }}
-      >
-        <Grid item xs={12} lg={8}>
+    <MDBox py={3} mb={20}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={12} lg={11}>
           <Formik
             initialValues={initialValues}
             validationSchema={currentValidation}
             onSubmit={handleSubmit}
           >
-            {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+            {({
+              values,
+              errors,
+              touched,
+              isSubmitting,
+              setFieldValue,
+              setFieldTouched,
+              setFieldError,
+            }) => (
               <Form id={formId} autoComplete="off">
                 <Card sx={{ height: "100%" }}>
                   <MDBox mx={2} mt={-3}>
@@ -144,6 +151,8 @@ export default function FormComponent({
                         formField,
                         errors,
                         setFieldValue,
+                        setFieldTouched,
+                        setFieldError,
                       })}
                       <MDBox
                         mt={2}

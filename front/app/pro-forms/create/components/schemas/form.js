@@ -34,12 +34,12 @@ const form = {
       errorMsg: "Debe ingresar un numero de proforma",
     },
     dateFrom: {
-      name: "date_from",
+      name: "date",
       label: "Fecha desde",
       errorMsg: "La fecha desde es requerida",
     },
     dateTo: {
-      name: "date_to",
+      name: "expiry_date",
       label: "Fecha hasta",
       errorMsg: "La fecha hasta es requerida",
     },
@@ -51,7 +51,6 @@ const form = {
     retainingAgent: {
       name: "agent_id",
       label: "Agente retenedor",
-      errorMsg: "El agente es requerido",
     },
     subServiceType: {
       name: "sub_service_id",
@@ -62,8 +61,8 @@ const form = {
       name: "stop_pending_remainder",
       label: "Impedir el envío de recordatorios pendientes para esta factura",
     },
-    labels: {
-      name: "labels",
+    tags: {
+      name: "tags",
       label: "Etiquetas",
     },
     currency: {
@@ -93,14 +92,67 @@ const form = {
       name: "discount_type",
       label: "Tipo de descuento",
     },
-    note: {
-      name: "note",
+    adminNote: {
+      name: "admin_note",
       label: "Notas del admin",
       type: "text",
     },
+    clientNote: {
+      name: "client_note",
+      label: "Notas del cliente",
+      type: "text",
+    },
+    terms: {
+      name: "terms",
+      label: "Términos y Condiciones",
+      type: "text",
+    },
+    description: {
+      name: "description",
+      label: "Artículo",
+      type: "text",
+      errorMsg: "El artículo es requerido",
+    },
+    longDescription: {
+      name: "long_description",
+      label: "Descripción larga",
+      type: "text",
+    },
+    type: {
+      name: "item_type",
+      label: "Tipo de articulo",
+    },
+    quantity: {
+      name: "quantity",
+      label: "Cantidad",
+      type: "number",
+      errorMsg: "La cantidad es requerida",
+    },
+    rate: {
+      name: "rate",
+      label: "Precio",
+      type: "number",
+      errorMsg: "El precio es requerido",
+    },
+    taxes: {
+      name: "taxes",
+      label: "Impuestos",
+    },
+    discount: {
+      name: "item_discount",
+      label: "Descuento",
+      placeholder: "USD",
+      type: "number",
+    },
+    adjustment: {
+      name: "item_adjustment",
+      label: "Ajuste",
+      placeholder: "USD",
+      type: "number",
+    },
     items: {
       name: "items",
-      label: "Items",
+      label: "Articulos",
       errorMsg: "Debe seleccionar al menos un item",
     },
   },

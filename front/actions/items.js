@@ -25,7 +25,6 @@ export async function getAll(params) {
   return data.items;
 }
 
-// TODO: make the post method in the back
 export async function store(data) {
   const res = await fetch(`${process.env.API_URL}/items`, {
     method: "POST",

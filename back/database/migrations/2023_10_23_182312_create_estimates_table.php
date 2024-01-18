@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,7 +27,7 @@ return new class extends Migration {
             $table->string('prefix', 50)->nullable();
             $table->integer('number_format')->default(0);
             $table->string('hash', 32)->nullable();
-            $table->date('date');
+            $table->date('date')->default(Carbon::now());
             $table->date('expiry_date')->nullable();
             $table->decimal('subtotal', 15, 2)->nullable();
             $table->decimal('total_tax', 15, 2)->default(0.00);

@@ -18,6 +18,7 @@ use App\Http\Controllers\ProjectNoteController;
 use App\Http\Controllers\ProjectServiceTypeController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +76,9 @@ Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
 
 Route::get('/estimates', [EstimateController::class, 'index']);
+Route::post('/estimates', [EstimateController::class, 'store']);
+
+Route::get('/tags', [TagController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
 

@@ -11,24 +11,35 @@ import MDButton from "/components/MDButton";
 import Modal from "/components/Modal";
 import ModalContentForm from "/components/ModalContent/Item/form";
 import ItemTable from "/components/ItemTable";
+import ItemForm from "/components/ItemForm";
+import ItemTotals from "/components/ItemTotals";
 
-export default function Third({ formData, taxes, groupIds, items: itemsData }) {
-  const { formField, values, errors, touched, setFieldValue } = formData;
+export default function Third({
+  formData,
+  lineTypes,
+  taxes,
+  groupIds,
+  items: itemsData,
+}) {
+  const { formField, setFieldValue } = formData;
   const { items } = formField;
   const [isOpen, setOpen] = useState(false);
-  const [itemRows, setItemRows] = useState([]);
+  const [item, setItem] = useState(null);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    <Grid container spacing={5} p={5}>
-      <Grid item xs={8}>
+    <Grid container spacing={5} p={3}>
+      <Grid item xs={10}>
         <Autocomplete
-          onChange={(e, selectedItem) => setItemRows([selectedItem])}
+          onChange={(e, selectedItem) => {
+            if (selectedItem) setItem(selectedItem);
+          }}
           options={itemsData}
           getOptionLabel={(option) => `${option.description}`}
+          isOptionEqualToValue={(option, value) => option === value}
           renderOption={(props, option) => (
             <MDBox {...props}>
               <MDTypography
@@ -72,16 +83,25 @@ export default function Third({ formData, taxes, groupIds, items: itemsData }) {
             setOpen(true);
           }}
         >
-          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-          &nbsp;add new article
+          <Icon sx={{ fontWeight: "bold", mr: 1 }}>add</Icon>
+          Crear Item
         </MDButton>
+        {isOpen && (
+          <Modal open={open} onClose={handleClose} width="30%">
+            <ModalContentForm taxes={taxes} groupIds={groupIds} />
+          </Modal>
+        )}
       </Grid>
-      <ItemTable rows={itemRows} />
-      {isOpen && (
-        <Modal open={open} onClose={handleClose} width="30%">
-          <ModalContentForm taxes={taxes} groupIds={groupIds} />
-        </Modal>
-      )}
+      <ItemForm
+        formData={formData}
+        item={item}
+        taxesData={taxes}
+        types={lineTypes}
+      />
+      <Grid item xs={12}>
+        <ItemTable formData={formData} />
+      </Grid>
+      <ItemTotals formData={formData} />
     </Grid>
   );
 }

@@ -23,7 +23,7 @@ export default function First({
   partners,
   serviceTypes,
   subServiceTypes,
-  labelsData,
+  tagsData,
   currencies,
   states,
 }) {
@@ -37,7 +37,7 @@ export default function First({
     serviceType,
     retainingAgent,
     subServiceType,
-    labels,
+    tags,
     currency,
     state,
   } = formField;
@@ -142,15 +142,16 @@ export default function First({
       <Grid item xs={6}>
         <Autocomplete
           multiple
-          onChange={(e, selectedLabel) =>
-            setFieldValue(selectedLabel.name, selectedLabel?.id)
+          onChange={(e, tagSelected) =>
+            setFieldValue(tags.name, tagSelected?.id)
           }
-          options={labelsData}
+          options={tagsData}
+          getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <MDInput
               {...params}
               variant="standard"
-              label={labels.label}
+              label={tags.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
             />
@@ -163,7 +164,7 @@ export default function First({
             color="error"
             fontWeight="regular"
           >
-            <ErrorMessage name={labels.name} />
+            <ErrorMessage name={tags.name} />
           </MDTypography>
         </MDBox>
       </Grid>

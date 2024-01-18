@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EstimateRequest;
 use App\Http\Resources\EstimateResourceCollection;
 use App\Models\Estimate;
+use App\Models\LineItem;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -35,8 +37,20 @@ class EstimateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EstimateRequest $request)
     {
+        $newEstimate = $request->validated();
+        $items = $newEstimate['items'];
+
+        $estimate = Estimate::create($newEstimate);
+
+        foreach ($items as $item) {
+            $item['line_itemable_id'] = $estimate->id;
+            $item['line_itemable_type'] = 'estimates';
+            LineItem::create($item);
+        }
+
+        return response()->json(null, 201);
     }
 
     /**

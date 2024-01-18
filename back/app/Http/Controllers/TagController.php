@@ -3,33 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemRequest;
-use App\Http\Resources\ItemResourceCollection;
-use App\Models\Item;
+use App\Http\Resources\TagResourceCollection;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ItemController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $query = QueryBuilder::for(Item::class)
-            ->allowedIncludes(['tax'])
-            ->orderBy('id', 'desc');
+        $query = QueryBuilder::for(Tag::class);
 
-        $expense = request()->has('perPage')
+        $tags = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
             : $query->get();
 
-        return new ItemResourceCollection($expense);
+        return new TagResourceCollection($tags);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -39,16 +37,13 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $request)
     {
-        $newItem = $request->validated();
-        $item = Item::create($newItem);
-
-        return response()->json($item, 201);
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Item $item)
+    public function show(Tag $tag)
     {
         //
     }
@@ -56,7 +51,7 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $item)
+    public function edit(Tag $tag)
     {
         //
     }
@@ -64,7 +59,7 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, Tag $tag)
     {
         //
     }
@@ -72,7 +67,7 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $item)
+    public function destroy(Tag $tag)
     {
         //
     }

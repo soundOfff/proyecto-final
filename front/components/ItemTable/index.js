@@ -2,125 +2,109 @@
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
-import { Icon, Tooltip } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import MDButton from "/components/MDButton";
+import { DeleteOutline } from "@mui/icons-material";
+import numberFormat from "../../utils/numberFormat";
+import { Grid } from "@mui/material";
 
-export default function Table({ rows }) {
+const getAmount = (row) => {
+  return row.rate * row.quantity - (row.discount ?? 0);
+};
+
+const getTotal = (row) => {
+  return (
+    getAmount(row) *
+    (1 +
+      row.taxes.map((tax) => Number(tax.taxRate)).reduce((a, b) => a + b, 0) /
+        100)
+  );
+};
+
+export default function Table({ formData }) {
+  const { values, setFieldValue } = formData;
   const columns = [
     {
       Header: "Articulo",
       accessor: "description",
-      Cell: ({ value, row }) => {
-        return (
-          <FormField
-            name="Descripcion"
-            label=""
-            type="text"
-            value={value}
-            placeholder="Articulo"
-            multiline
-            rows={4}
-          />
-        );
-      },
     },
     {
-      Header: "Descripcion",
-      accessor: "long_description",
-      Cell: ({ value, row }) => {
-        return (
-          <FormField
-            name="long_description"
-            label=""
-            type="text"
-            value={value}
-            placeholder="Descripcion"
-            multiline
-            rows={4}
-          />
-        );
-      },
+      Header: "Descripción",
+      accessor: "longDescription",
     },
     {
       Header: "Tipo de articulo",
       accessor: "type",
-      // Render if a item is checked
     },
     {
       Header: "Cantidad",
       accessor: "quantity",
-      Cell: ({ value, row }) => {
-        return (
-          <FormField
-            name="long_description"
-            label=""
-            value={value}
-            type="text"
-            placeholder="cantidad"
-          />
-        );
-      },
     },
     {
       Header: "Precio",
       accessor: "rate",
-      id: "rate",
-      Cell: ({ value, row }) => {
-        return (
-          <FormField
-            name="rate"
-            label=""
-            type="text"
-            value={value}
-            placeholder="Precio"
-          />
-        );
-      },
     },
     {
       Header: "Impuestos",
       accessor: "taxes",
+      Cell: ({ value }) =>
+        value
+          ? value.map((tax) => `${tax.name} ${tax.taxRate}%`).join(" | ")
+          : null,
     },
     {
-      Header: "Descuentos",
-      accessor: "item_discount",
-      // Render if a item is checked
+      Header: "Descuento",
+      accessor: "discount",
     },
     {
+      id: "amount",
       Header: "Importe",
-      accessor: "rate",
-      id: "read-only-rate",
+      Cell: ({ row }) => {
+        if (row.original.tax) {
+          return numberFormat(getTotal(row.original));
+        }
+
+        return numberFormat(getAmount(row.original));
+      },
     },
     {
-      Header: "Acciones",
-      accessor: "actions",
-      Cell: ({ value, row }) => {
+      id: "add-item",
+      Cell: ({ row }) => {
         return (
-          <MDBox lineHeight={0} color={"dark"}>
-            <Tooltip title="Agregar item" placement="top">
-              <CheckIcon
-                sx={{ cursor: "pointer" }}
-                fontSize="medium"
-              ></CheckIcon>
-            </Tooltip>
+          <MDBox lineHeight={0} color="dark">
+            <MDButton
+              iconOnly
+              size="large"
+              onClick={() => {
+                setFieldValue(
+                  "items",
+                  values.items.filter((_, index) => index != row.id)
+                );
+              }}
+            >
+              <DeleteOutline color="error" />
+            </MDButton>
           </MDBox>
         );
       },
     },
   ];
 
-  const table = { columns, rows };
+  const table = {
+    columns,
+    rows: values.items,
+  };
 
   return (
-    <MDBox sx={{ maxWidth: "100%" }}>
-      <DataTable
-        table={table}
-        entriesPerPage={false}
-        showTotalEntries={false}
-        isSorted={true}
-        noEndBorder
-      />
-    </MDBox>
+    <Grid item xs={12}>
+      <MDBox sx={{ maxWidth: "100%" }}>
+        <DataTable
+          table={table}
+          entriesPerPage={false}
+          showTotalEntries={false}
+          isSorted={false}
+          noEndBorder
+        />
+      </MDBox>
+    </Grid>
   );
 }

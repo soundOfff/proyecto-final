@@ -30,7 +30,9 @@ export default function Second({
     agent,
     repeat,
     discountType,
-    note,
+    adminNote,
+    clientNote,
+    terms,
   } = formField;
 
   return (
@@ -138,13 +140,39 @@ export default function Second({
       </Grid>
       <Grid item xs={12}>
         <FormField
-          name={note.name}
-          label={note.label}
-          type={note.type}
-          placeholder={note.placeholder}
-          value={values[note.name]}
-          error={errors.note && touched.note}
-          success={note.length > 0 && !errors.note}
+          name={adminNote.name}
+          label={adminNote.label}
+          type={adminNote.type}
+          placeholder={adminNote.placeholder}
+          value={values[adminNote.name]}
+          error={errors.adminNote && touched.adminNote}
+          success={adminNote.length > 0 && !errors.adminNote}
+          multiline
+          rows={4}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          name={clientNote.name}
+          label={clientNote.label}
+          type={clientNote.type}
+          placeholder={clientNote.placeholder}
+          value={values[clientNote.name]}
+          error={errors.clientNote && touched.clientNote}
+          success={clientNote.length > 0 && !errors.clientNote}
+          multiline
+          rows={4}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          name={terms.name}
+          label={terms.label}
+          type={terms.type}
+          placeholder={terms.placeholder}
+          value={values[terms.name]}
+          error={errors.terms && touched.terms}
+          success={terms.length > 0 && !errors.terms}
           multiline
           rows={4}
         />

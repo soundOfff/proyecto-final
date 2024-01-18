@@ -9,8 +9,8 @@ class LineItem extends Model
 {
     protected $fillable = [
         'id',
-        'rel_id',
-        'rel_type',
+        'line_itemable_id',
+        'line_itemable_type',
         'description',
         'long_description',
         'quantity',

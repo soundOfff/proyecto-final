@@ -32,7 +32,7 @@ class EstimateRequest extends FormRequest
             'sub_service_id' => 'nullable|numeric',
             'stop_pending_remainder' => 'required|boolean',
             'currency_id' => 'nullable|numeric|exists:currencies,id',
-            'reference_number' => 'nullable|string',
+            'reference_no' => 'nullable|string',
             'repeat_id' => 'nullable',
             'admin_note' => 'nullable|string',
             'client_note' => 'nullable|string',
@@ -45,6 +45,9 @@ class EstimateRequest extends FormRequest
             'items.*.quantity' => 'required|numeric',
             'items.*.rate' => 'required|numeric',
             'items.*.discount' => 'nullable|numeric',
+            'subtotal' => 'required|numeric',
+            'total_tax' => 'required|numeric',
+            'total' => 'required|numeric',
         ];
     }
 }

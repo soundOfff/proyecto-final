@@ -76,8 +76,8 @@ const form = {
       errorMsg: "Debe seleccionar un estado",
     },
     reference: {
-      name: "reference_number",
-      label: "Referencia #",
+      name: "reference_no",
+      label: "Referencia",
     },
     agent: {
       name: "agent_id",
@@ -154,6 +154,15 @@ const form = {
       name: "items",
       label: "Articulos",
       errorMsg: "Debe seleccionar al menos un item",
+    },
+    subtotal: {
+      name: "subtotal",
+    },
+    totalTax: {
+      name: "total_tax",
+    },
+    total: {
+      name: "total",
     },
   },
 };

@@ -8,31 +8,15 @@ import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import { ITBMS_TAX_ID, RETAINING_TAX_ID } from "/utils/constants/taxes";
 
-const getTotalWithTaxes = (items) => {
-  return items.reduce((acc, item) => acc + getItemTotalWithTaxes(item), 0);
-};
-
-const getItemTotalWithTaxes = (item) => {
-  return item.taxes.length > 0
-    ? item.quantity * item.rate -
-        (item.discount ?? 0) *
-          (1 +
-            item.taxes
-              .map((tax) => Number(tax.taxRate))
-              .reduce((a, b) => a + b, 0) /
-              100)
-    : item.quantity * item.rate - (item.discount ?? 0);
+const getSubtotal = (items) => {
+  return items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
 };
 
 const getTaxes = (items, type) => {
-  return items.reduce(
-    (acc, item) =>
-      acc +
-      item.quantity *
-        item.rate *
-        (item.taxes.find((tax) => tax.id === type)?.taxRate ?? 0 / 100),
-    0
-  );
+  return items.reduce((acc, item) => {
+    const taxRate = item.taxes.find((tax) => tax.id === type)?.taxRate;
+    return acc + item.quantity * item.rate * (taxRate ? taxRate / 100 : 0);
+  }, 0);
 };
 
 const getTotalDiscount = (items) => {
@@ -40,38 +24,37 @@ const getTotalDiscount = (items) => {
 };
 
 export default function Totals({ formData }) {
-  const { values, formField } = formData;
+  const { values, formField, setFieldValue } = formData;
   const { adjustment } = formField;
   const { items } = values;
+  const [subtotal, setSubtotal] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
-  const [totalWithTaxes, setTotalWithTaxes] = useState(0);
   const [itbmsTotalTax, setItbmsTotalTax] = useState(0);
   const [retainingTotalTax, setRetainingTotalTax] = useState(0);
   const [total, setTotal] = useState(0);
   const adjustmentValue = values[adjustment.name];
 
   useEffect(() => {
-    setTotalWithTaxes(getTotalWithTaxes(items));
-    setTotalDiscount(getTotalDiscount(items));
-    setItbmsTotalTax(getTaxes(items, ITBMS_TAX_ID));
-    setRetainingTotalTax(getTaxes(items, RETAINING_TAX_ID));
-  }, [items]);
-
-  useEffect(() => {
-    setTotal(
+    const subtotal = getSubtotal(items);
+    const totalDiscount = getTotalDiscount(items);
+    const itbmsTotalTax = getTaxes(items, ITBMS_TAX_ID);
+    const retainingTotalTax = getTaxes(items, RETAINING_TAX_ID);
+    const total =
+      subtotal +
       totalDiscount +
-        totalWithTaxes +
-        itbmsTotalTax +
-        retainingTotalTax +
-        adjustmentValue
-    );
-  }, [
-    totalDiscount,
-    totalWithTaxes,
-    itbmsTotalTax,
-    retainingTotalTax,
-    adjustmentValue,
-  ]);
+      itbmsTotalTax +
+      retainingTotalTax +
+      adjustmentValue;
+
+    setSubtotal(subtotal);
+    setTotalDiscount(totalDiscount);
+    setItbmsTotalTax(itbmsTotalTax);
+    setRetainingTotalTax(retainingTotalTax);
+    setTotal(total);
+    setFieldValue(formField.subtotal.name, subtotal);
+    setFieldValue(formField.totalTax.name, itbmsTotalTax + retainingTotalTax);
+    setFieldValue(formField.total.name, total);
+  }, [items, adjustmentValue, setFieldValue, formField]);
 
   return (
     <Grid container columnSpacing={5} rowSpacing={1} my={5}>
@@ -80,9 +63,7 @@ export default function Totals({ formData }) {
         <MDTypography variant="h6">Total Neto:</MDTypography>
       </Grid>
       <Grid item xs={12} sm={2}>
-        <MDTypography variant="body">
-          ${numberFormat(totalWithTaxes)}
-        </MDTypography>
+        <MDTypography variant="body">${numberFormat(subtotal)}</MDTypography>
       </Grid>
 
       <Grid item xs={12} sm={7} />

@@ -4,21 +4,8 @@ import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import { DeleteOutline } from "@mui/icons-material";
-import numberFormat from "../../utils/numberFormat";
+import numberFormat from "/utils/numberFormat";
 import { Grid } from "@mui/material";
-
-const getAmount = (row) => {
-  return row.rate * row.quantity - (row.discount ?? 0);
-};
-
-const getTotal = (row) => {
-  return (
-    getAmount(row) *
-    (1 +
-      row.taxes.map((tax) => Number(tax.taxRate)).reduce((a, b) => a + b, 0) /
-        100)
-  );
-};
 
 export default function Table({ formData }) {
   const { values, setFieldValue } = formData;
@@ -58,13 +45,8 @@ export default function Table({ formData }) {
     {
       id: "amount",
       Header: "Importe",
-      Cell: ({ row }) => {
-        if (row.original.tax) {
-          return numberFormat(getTotal(row.original));
-        }
-
-        return numberFormat(getAmount(row.original));
-      },
+      Cell: ({ row }) =>
+        numberFormat(row.original.quantity * row.original.rate),
     },
     {
       id: "add-item",

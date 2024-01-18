@@ -54,7 +54,6 @@ const validations = [
     [stopPendingRemainder.name]: Yup.boolean(),
     [tags.name]: Yup.array(),
     [currency.name]: Yup.string().required(currency.errorMsg),
-    [state.name]: Yup.string().required(state.errorMsg),
     [reference.name]: Yup.string(),
     [repeat.name]: Yup.string(),
     [discountType.name]: Yup.string(),

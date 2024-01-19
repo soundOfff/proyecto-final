@@ -57,13 +57,6 @@ export default function FormComponent({
               subServiceTypes: [{ id: 1, label: "Subtipo1" }],
               currencies,
               tagsData: tags,
-              states: [
-                { id: 1, label: "No Enviada" },
-                { id: 2, label: "Enviada" },
-                { id: 3, label: "Expirado" },
-                { id: 4, label: "Rechazado" },
-                { id: 5, label: "Aceptado" },
-              ],
             }}
           />
         );
@@ -72,7 +65,13 @@ export default function FormComponent({
           <Second
             formData={formData}
             {...{
-              states: ["Borrador", "Pendiente", "Pagado"],
+              states: [
+                { id: 1, label: "No Enviada" },
+                { id: 2, label: "Enviada" },
+                { id: 3, label: "Expirado" },
+                { id: 4, label: "Rechazado" },
+                { id: 5, label: "Aceptado" },
+              ],
               discountTypes: [
                 { id: WITHOUT_DISCOUNT, label: "Sin descuento" },
                 { id: BEFORE_TAX, label: "Antes del impuesto" },

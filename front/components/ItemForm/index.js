@@ -36,7 +36,9 @@ export default function ItemForm({ formData, item, taxesData, types }) {
 
   const addItemValidationSchema = Yup.object().shape({
     [description.name]: Yup.string().required(description.errorMsg),
-    [quantity.name]: Yup.number().required(quantity.errorMsg),
+    [quantity.name]: Yup.number()
+      .min(1, "Debe ser mayor que 0")
+      .required(quantity.errorMsg),
     [rate.name]: Yup.number().required(rate.errorMsg),
     [longDescription.name]: Yup.string(),
     [type.name]: Yup.string(),

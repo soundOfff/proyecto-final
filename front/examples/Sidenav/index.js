@@ -115,29 +115,17 @@ function Sidenav({
 
   // Render all the nested collapse items from the routes.js
   const renderNestedCollapse = (collapse) => {
-    const template = collapse.map(({ name, route, key, href }) =>
-      href ? (
-        <MuiLink
-          key={key}
-          href={href}
-          target="_blank"
-          rel="noreferrer"
-          sx={{ textDecoration: "none" }}
-        >
-          <SidenavItem name={name} nested />
-        </MuiLink>
-      ) : (
-        <Link href={route} key={key} sx={{ textDecoration: "none" }}>
-          <SidenavItem name={name} active={route === pathname} nested />
-        </Link>
-      )
-    );
+    const template = collapse.map(({ name, route, key }) => (
+      <MuiLink href={route} key={key} sx={{ textDecoration: "none" }}>
+        <SidenavItem name={name} active={route === pathname} nested />
+      </MuiLink>
+    ));
 
     return template;
   };
   // Render the all the collpases from the routes.js
   const renderCollapse = (collapses) =>
-    collapses.map(({ name, collapse, route, href, key }) => {
+    collapses.map(({ name, collapse, route, key }) => {
       let returnValue;
 
       if (collapse) {
@@ -159,25 +147,17 @@ function Sidenav({
           </SidenavItem>
         );
       } else {
-        returnValue = href ? (
-          <MuiLink
-            href={href}
-            key={key}
-            target="_blank"
-            rel="noreferrer"
-            sx={{ textDecoration: "none" }}
-          >
-            <SidenavItem color={color} name={name} active={key === itemName} />
-          </MuiLink>
-        ) : (
-          <Link
-            href={route}
-            key={key}
-            sx={{ textDecoration: "none" }}
-            onClick={() => signOut()}
-          >
+        returnValue = route ? (
+          <Link href={route} key={key} sx={{ textDecoration: "none" }}>
             <SidenavItem color={color} name={name} active={key === itemName} />
           </Link>
+        ) : (
+          <SidenavItem
+            color={color}
+            name={name}
+            active={key === itemName}
+            onClick={() => signOut()}
+          />
         );
       }
 
@@ -186,28 +166,11 @@ function Sidenav({
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
-    ({ type, name, icon, title, collapse, noCollapse, key, href, route }) => {
+    ({ type, name, icon, title, collapse, noCollapse, key, route }) => {
       let returnValue;
 
       if (type === "collapse") {
-        if (href) {
-          returnValue = (
-            <MuiLink
-              href={href}
-              key={key}
-              target="_blank"
-              rel="noreferrer"
-              sx={{ textDecoration: "none" }}
-            >
-              <SidenavCollapse
-                name={name}
-                icon={icon}
-                active={key === collapseName}
-                noCollapse={noCollapse}
-              />
-            </MuiLink>
-          );
-        } else if (noCollapse && route) {
+        if (noCollapse && route) {
           returnValue = (
             <Link href={route} key={key} passHref>
               <SidenavCollapse

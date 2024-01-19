@@ -63,7 +63,6 @@ const routes = [
       {
         name: "Logout",
         key: "logout",
-        route: "/dashboard/sales",
       },
     ],
   },

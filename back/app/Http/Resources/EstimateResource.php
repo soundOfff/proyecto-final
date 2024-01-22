@@ -68,6 +68,7 @@ class EstimateResource extends JsonResource
             'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
             'billingCountry' => CountryResource::make($this->whenLoaded('billingCountry')),
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
+            'items' => LineItemResource::collection($this->whenLoaded('lineItems')),
         ];
     }
 }

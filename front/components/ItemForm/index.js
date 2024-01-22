@@ -45,7 +45,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
     [taxes.name]: Yup.array().of(
       Yup.object().shape({
         name: Yup.string(),
-        taxRate: Yup.number(),
+        rate: Yup.number(),
       })
     ),
     [discount.name]: Yup.number().nullable(),
@@ -200,11 +200,11 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           multiple
           onChange={(e, selected) => setFieldValue(taxes.name, selected)}
           options={taxesData}
-          getOptionLabel={(option) => `${option.taxRate}% | ${option.name}`}
+          getOptionLabel={(option) => `${option.rate}% | ${option.name}`}
           renderOption={(props, option) => (
             <MDBox {...props}>
               <MDTypography variant="body" display="inline">
-                {option.taxRate}%
+                {option.rate}%
               </MDTypography>
               <MDTypography
                 variant="caption"

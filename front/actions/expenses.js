@@ -46,7 +46,6 @@ export async function show(id, params) {
 }
 
 export async function store(data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/expenses`, {
     method: "POST",
     body: JSON.stringify(data),

@@ -76,6 +76,7 @@ Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
 
 Route::get('/estimates', [EstimateController::class, 'index']);
+Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
 Route::post('/estimates', [EstimateController::class, 'store']);
 
 Route::get('/tags', [TagController::class, 'index']);

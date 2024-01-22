@@ -10,10 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('item_taxes', function (Blueprint $table) {
+        Schema::create('line_item_taxes', function (Blueprint $table) {
             $table->id();
-            $table->morphs('item_taxable');
-            $table->foreignId('item_id')->constrained();
+            $table->foreignId('line_item_id')->nullable()->constrained();
+
+            $table->unsignedBigInteger('line_item_taxable_id');
+            $table->string('line_item_taxable_type');
+            $table->index(['id', 'line_item_taxable_id', 'line_item_taxable_type'], 'line_item_taxable_index');
 
             $table->string('name');
             $table->decimal('rate');
@@ -27,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_taxes');
+        Schema::dropIfExists('line_item_taxes');
     }
 };

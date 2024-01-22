@@ -1,10 +1,11 @@
 "use client";
+
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import moneyFormat from "/utils/moneyFormat";
-import Link from "next/link";
 import { useMaterialUIController } from "/context";
+import Link from "next/link";
 
 export default function Table({ rows }) {
   const [controller] = useMaterialUIController();
@@ -14,6 +15,14 @@ export default function Table({ rows }) {
     {
       Header: "Proforma #",
       accessor: "id",
+      Cell: ({ value }) => (
+        <Link
+          href={`/pro-forms/${value}`}
+          sx={{ cursor: "pointer", color: "info" }}
+        >
+          {value}
+        </Link>
+      ),
     },
     {
       Header: "Importe",

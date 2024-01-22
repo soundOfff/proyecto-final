@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ItemGroupSeeder::class);
         $this->call(ItemSeeder::class);
         $this->call(LineItemSeeder::class);
+        $this->call(LineItemTaxSeeder::class);
         $this->call(TagSeeder::class);
         $this->call(TaggableSeeder::class);
     }

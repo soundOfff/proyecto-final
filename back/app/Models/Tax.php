@@ -10,7 +10,7 @@ class Tax extends Model
     protected $fillable = [
         'id',
         'name',
-        'tax_rate',
+        'rate',
     ];
 
     public function expenses(): HasMany

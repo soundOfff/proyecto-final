@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EstimateRequest;
+use App\Http\Resources\EstimateResource;
 use App\Http\Resources\EstimateResourceCollection;
 use App\Models\Estimate;
 use App\Models\LineItem;
+use App\Models\LineItemTax;
 use App\Models\Taggable;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -25,6 +27,7 @@ class EstimateController extends Controller
             'invoice',
             'billingCountry',
             'shippingCountry',
+            'tags',
         ])
         ->orderBy('id', 'desc');
 
@@ -56,7 +59,15 @@ class EstimateController extends Controller
         foreach ($items as $item) {
             $item['line_itemable_id'] = $estimate->id;
             $item['line_itemable_type'] = 'estimates';
-            LineItem::create($item);
+            $itemTaxes = $item['taxes'];
+            $lineItem = LineItem::create($item);
+
+            foreach ($itemTaxes as $itemTax) {
+                $itemTax['line_item_id'] = $lineItem->id;
+                $itemTax['line_item_taxable_id'] = $estimate->id;
+                $itemTax['line_item_taxable_type'] = 'estimates';
+                LineItemTax::create($itemTax);
+            }
         }
 
         return response()->json(null, 201);
@@ -67,6 +78,20 @@ class EstimateController extends Controller
      */
     public function show(Estimate $estimate)
     {
+        $estimate = QueryBuilder::for(Estimate::class)
+            ->allowedIncludes([
+                'partner',
+                'project.serviceType',
+                'currency',
+                'invoice',
+                'billingCountry',
+                'shippingCountry',
+                'tags',
+                'lineItems.taxes',
+            ])
+            ->find($estimate->id);
+
+        return new EstimateResource($estimate);
     }
 
     /**

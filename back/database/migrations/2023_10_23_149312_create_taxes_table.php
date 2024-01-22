@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('tax_rate');
+            $table->decimal('rate');
 
             $table->timestamps();
         });

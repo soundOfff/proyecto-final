@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class LineItem extends Model
@@ -24,5 +25,10 @@ class LineItem extends Model
     public function lineItemable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function taxes(): HasMany
+    {
+        return $this->hasMany(LineItemTax::class);
     }
 }

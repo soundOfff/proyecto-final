@@ -44,35 +44,41 @@ export default function Header({ estimate }) {
           </MDBox>
         </Grid>
         <Grid item xs={12} md={6}>
-          <MDTypography variant="h6" fontWeight="medium">
-            {estimate.partner.billingStreet}
-          </MDTypography>
-          <MDTypography variant="h6" fontWeight="medium">
-            {estimate.partner.billingCity
-              ? `${estimate.partner.billingCity}, `
-              : null}
-            {estimate.partner.billingState
-              ? estimate.partner.billingState
-              : null}
-            {estimate.partner.billingCountry
-              ? `, ${estimate.partner.billingCountry.name}`
-              : null}
-          </MDTypography>
-          <MDBox mt={1} mb={2}>
-            <MDTypography
-              display="block"
-              variant="body2"
-              color={darkMode ? "text" : "secondary"}
-            >
-              teléfono: {estimate.partner.phoneNumber}
-            </MDTypography>
-          </MDBox>
+          {estimate.partner && (
+            <MDBox>
+              <MDTypography variant="h6" fontWeight="medium">
+                {estimate.partner.billingStreet}
+              </MDTypography>
+              <MDTypography variant="h6" fontWeight="medium">
+                {estimate.partner.billingCity
+                  ? `${estimate.partner.billingCity}, `
+                  : null}
+                {estimate.partner.billingState
+                  ? estimate.partner.billingState
+                  : null}
+                {estimate.partner.billingCountry
+                  ? `, ${estimate.partner.billingCountry.name}`
+                  : null}
+              </MDTypography>
+              <MDBox mt={1} mb={2}>
+                <MDTypography
+                  display="block"
+                  variant="body2"
+                  color={darkMode ? "text" : "secondary"}
+                >
+                  {estimate.partner.phoneNumber
+                    ? `teléfono: ${estimate.partner.phoneNumber}`
+                    : null}
+                </MDTypography>
+              </MDBox>
+            </MDBox>
+          )}
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
           <MDBox width="100%" textAlign={{ xs: "left", md: "right" }}>
             <MDBox mt={1}>
               <MDTypography variant="h6" fontWeight="medium">
-                Para: {estimate.partner.company}
+                Para: {estimate.partner.company ?? "---"}
               </MDTypography>
             </MDBox>
             <MDBox mb={1}>
@@ -88,23 +94,25 @@ export default function Header({ estimate }) {
           </MDBox>
         </Grid>
         <Grid item xs={12}>
-          <MDBox mt={5}>
-            <MDTypography
-              display="inline"
-              variant="h6"
-              fontWeight="medium"
-              mr={1}
-            >
-              Caso:
-            </MDTypography>
-            <MDTypography
-              display="inline"
-              variant="body2"
-              color={darkMode ? "text" : "secondary"}
-            >
-              {estimate.project.name}
-            </MDTypography>
-          </MDBox>
+          {estimate.project && (
+            <MDBox mt={5}>
+              <MDTypography
+                display="inline"
+                variant="h6"
+                fontWeight="medium"
+                mr={1}
+              >
+                Caso:
+              </MDTypography>
+              <MDTypography
+                display="inline"
+                variant="body2"
+                color={darkMode ? "text" : "secondary"}
+              >
+                {estimate.project.name}
+              </MDTypography>
+            </MDBox>
+          )}
         </Grid>
       </Grid>
     </MDBox>

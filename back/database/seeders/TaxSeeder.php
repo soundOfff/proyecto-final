@@ -15,8 +15,8 @@ class TaxSeeder extends Seeder
     public function run()
     {
         $taxes = [
-            ['id' => 1, 'name' => 'I.T.B.M.S', 'tax_rate' => 7],
-            ['id' => 2, 'name' => 'Agente Retenedor', 'tax_rate' => -3.5],
+            ['id' => 1, 'name' => 'I.T.B.M.S', 'rate' => 7],
+            ['id' => 2, 'name' => 'Agente Retenedor', 'rate' => -3.5],
         ];
 
         foreach ($taxes as $tax) {

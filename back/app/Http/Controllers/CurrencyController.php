@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\CurrencyResourceCollection;
 use App\Models\Currency;
 use Illuminate\Http\Request;
@@ -9,6 +10,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class CurrencyController extends Controller
 {
+    public function defaultCurrency()
+    {
+        $defaultCurrency = Currency::where('is_default', 1)->first();
+
+        return new CurrencyResource($defaultCurrency);
+    }
+
     /**
      * Display a listing of the resource.
      */

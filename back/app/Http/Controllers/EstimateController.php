@@ -14,6 +14,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class EstimateController extends Controller
 {
+    public function maxId()
+    {
+        $maxId = Estimate::max('id');
+
+        return response()->json($maxId);
+    }
+
     /**
      * Display a listing of the resource.
      */

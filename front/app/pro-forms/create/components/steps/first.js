@@ -25,7 +25,7 @@ export default function First({
   subServiceTypes,
   tagsData,
   currencies,
-  states,
+  defaultCurrency,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
@@ -39,7 +39,6 @@ export default function First({
     subServiceType,
     tags,
     currency,
-    state,
   } = formField;
   const [projects, setProjects] = useState([]);
 
@@ -53,7 +52,7 @@ export default function First({
 
   return (
     <Grid container spacing={5}>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={6}>
         <FormField
           name={number.name}
           label={number.label}
@@ -62,6 +61,93 @@ export default function First({
           error={errors.number && touched.number}
           success={number.length > 0 && !errors.number}
         />
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <Autocomplete
+          defaultValue={currencies.find(
+            (currency) => currency.id === defaultCurrency.id
+          )}
+          onChange={(e, currencySelected) =>
+            setFieldValue(
+              currency.name,
+              currencySelected ? currencySelected.id : null
+            )
+          }
+          options={currencies}
+          getOptionLabel={(option) => `${option.symbol} ${option.name}`}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={currency.label}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={currency.name} />
+          </MDTypography>
+        </MDBox>
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <MDDatePicker
+          input={{
+            variant: "standard",
+            fullWidth: true,
+            placeholder: "Fecha desde proforma",
+            InputLabelProps: { shrink: true },
+          }}
+          format="DD/MM/YYYY"
+          value={values[dateFrom.name]}
+          onChange={(value) =>
+            setFieldValue(dateFrom.name, moment(value[0]).format("YYYY-MM-DD"))
+          }
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={dateFrom.name} />
+          </MDTypography>
+        </MDBox>
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <MDDatePicker
+          input={{
+            variant: "standard",
+            fullWidth: true,
+            placeholder: "Fecha de caducidad",
+            InputLabelProps: { shrink: true },
+          }}
+          format="DD/MM/YYYY"
+          value={values[dateTo.name]}
+          onChange={(value) =>
+            setFieldValue(dateTo.name, moment(value[0]).format("YYYY-MM-DD"))
+          }
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={dateTo.name} />
+          </MDTypography>
+        </MDBox>
       </Grid>
 
       <Grid item xs={12} sm={6}>
@@ -84,52 +170,7 @@ export default function First({
           />
         )}
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <MDDatePicker
-          input={{
-            variant: "standard",
-            fullWidth: true,
-            placeholder: "Fecha desde proforma",
-            InputLabelProps: { shrink: true },
-          }}
-          onChange={(value) =>
-            setFieldValue(dateFrom.name, moment(value[0]).format("YYYY-MM-DD"))
-          }
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={dateFrom.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <MDDatePicker
-          input={{
-            variant: "standard",
-            fullWidth: true,
-            placeholder: "Fecha de caducidad",
-            InputLabelProps: { shrink: true },
-          }}
-          onChange={(value) =>
-            setFieldValue(dateTo.name, moment(value[0]).format("YYYY-MM-DD"))
-          }
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={dateTo.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
+
       <Grid item xs={12} sm={6}>
         <Select
           options={serviceTypes}
@@ -175,37 +216,7 @@ export default function First({
           setFieldValue={setFieldValue}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, currencySelected) =>
-            setFieldValue(
-              currency.name,
-              currencySelected ? currencySelected.id : null
-            )
-          }
-          options={currencies}
-          getOptionLabel={(option) => `${option.symbol} ${option.name}`}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={currency.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={currency.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
+
       <Grid item xs={12} sm={6}>
         <FormGroup>
           <FormControlLabel

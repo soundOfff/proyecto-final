@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import moment from "moment";
 import checkout from "./form";
 
 const {
@@ -46,14 +47,14 @@ const initialValues = {
   [partner.name]: "",
   [project.name]: "",
   [number.name]: "",
-  [dateFrom.name]: "",
-  [dateTo.name]: "",
+  [dateFrom.name]: moment().format("YYYY/MM/DD"),
+  [dateTo.name]: moment().add(1, "week").format("YYYY/MM/DD"),
   [serviceType.name]: "",
   [retainingAgent.name]: false,
   [subServiceType.name]: "",
   [stopPendingRemainder.name]: false,
   [tags.name]: [],
-  [currency.name]: "USD $",
+  [currency.name]: "",
   [state.name]: "",
   [reference.name]: "",
   [agent.name]: "",

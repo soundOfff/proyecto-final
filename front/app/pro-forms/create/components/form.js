@@ -16,7 +16,7 @@ import form from "./schemas/form";
 
 import { store as storeEstimate } from "/actions/estimates";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AFTER_TAX,
   BEFORE_TAX,
@@ -39,11 +39,15 @@ export default function FormComponent({
   agents,
   currencies,
   tags,
+  maxEstimateId,
+  defaultCurrency,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
+  const { id: currencyId } = defaultCurrency;
+  initialValues.number = `00${Number(maxEstimateId) + 1}`;
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -57,6 +61,7 @@ export default function FormComponent({
               subServiceTypes: [{ id: 1, label: "Subtipo1" }],
               currencies,
               tagsData: tags,
+              defaultCurrency,
             }}
           />
         );

@@ -51,6 +51,7 @@ Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
 Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);
 
 Route::get('/currencies', [CurrencyController::class, 'index']);
+Route::get('/default-currency', [CurrencyController::class, 'defaultCurrency']);
 
 Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
 
@@ -76,6 +77,7 @@ Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
 
 Route::get('/estimates', [EstimateController::class, 'index']);
+Route::get('/estimates-max-id', [EstimateController::class, 'maxId']);
 Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
 Route::post('/estimates', [EstimateController::class, 'store']);
 

@@ -25,7 +25,6 @@ class LineItemTaxSeeder extends Seeder
         $itemTaxes = $this->utils->csvToArray(database_path('imports/line_item_taxes.csv'));
 
         foreach ($itemTaxes as $item) {
-            dump($item);
             LineItemTax::updateOrCreate(['id' => $item['id']], $item);
         }
     }

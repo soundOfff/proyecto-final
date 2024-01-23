@@ -58,21 +58,21 @@ class EstimateController extends Controller
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $estimate->id;
-            $tag['taggable_type'] = 'estimates';
+            $tag['taggable_type'] = 'estimate';
             $tag['tag_id'] = $tag['id'];
             Taggable::create($tag);
         }
 
         foreach ($items as $item) {
             $item['line_itemable_id'] = $estimate->id;
-            $item['line_itemable_type'] = 'estimates';
+            $item['line_itemable_type'] = 'estimate';
             $itemTaxes = $item['taxes'];
             $lineItem = LineItem::create($item);
 
             foreach ($itemTaxes as $itemTax) {
                 $itemTax['line_item_id'] = $lineItem->id;
                 $itemTax['line_item_taxable_id'] = $estimate->id;
-                $itemTax['line_item_taxable_type'] = 'estimates';
+                $itemTax['line_item_taxable_type'] = 'estimate';
                 LineItemTax::create($itemTax);
             }
         }

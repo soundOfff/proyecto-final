@@ -40,7 +40,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       .min(1, "Debe ser mayor que 0")
       .required(quantity.errorMsg),
     [rate.name]: Yup.number().required(rate.errorMsg),
-    [longDescription.name]: Yup.string(),
+    [longDescription.name]: Yup.string().nullable(),
     [type.name]: Yup.string(),
     [taxes.name]: Yup.array().of(
       Yup.object().shape({

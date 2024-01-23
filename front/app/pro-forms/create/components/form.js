@@ -42,7 +42,7 @@ export default function FormComponent({
   maxEstimateId,
   defaultCurrency,
 }) {
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;

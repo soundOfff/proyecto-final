@@ -53,7 +53,7 @@ const validations = [
     [subServiceType.name]: Yup.string().required(subServiceType.errorMsg),
     [stopPendingRemainder.name]: Yup.boolean(),
     [tags.name]: Yup.array(),
-    [currency.name]: Yup.string().required(currency.errorMsg),
+    [currency.name]: Yup.number().required(currency.errorMsg),
     [reference.name]: Yup.string(),
     [repeat.name]: Yup.string(),
     [discountType.name]: Yup.string(),
@@ -80,7 +80,7 @@ const validations = [
           taxes: Yup.array().of(
             Yup.object().shape({
               name: Yup.string(),
-              taxRate: Yup.number(),
+              rate: Yup.number(),
             })
           ),
           discount: Yup.number(),

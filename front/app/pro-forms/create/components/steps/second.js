@@ -14,6 +14,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
+import { useMemo } from "react";
 
 export default function Second({
   formData,
@@ -35,24 +36,27 @@ export default function Second({
     terms,
   } = formField;
 
+  const defaultState = useMemo(
+    () => states.find((v) => v.id == values[state.name]),
+    [states, values, state]
+  );
+
+  const defaultDiscountType = useMemo(
+    () => discountTypes.find((v) => v.id == values[discountType.name]),
+    [discountTypes, values, discountType]
+  );
+
   return (
     <Grid container spacing={5}>
-      <Grid item xs={12} mt={2}>
-        <FormField
-          name={reference.name}
-          label={reference.label}
-          type={reference.type}
-          placeholder={reference.placeholder}
-          error={errors.reference && touched.reference}
-          success={reference.length > 0 && !errors.reference}
-        />
-      </Grid>
       <Grid item xs={12} sm={6}>
         <Autocomplete
+          value={defaultState}
           onChange={(e, selectedState) =>
-            setFieldValue(state.name, selectedState?.id)
+            setFieldValue(state.name, selectedState ? selectedState.id : null)
           }
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           options={states}
+          getOptionLabel={(option) => option.label}
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -74,8 +78,10 @@ export default function Second({
           </MDTypography>
         </MDBox>
       </Grid>
+
       <Grid item xs={12} sm={6}>
         <Autocomplete
+          value={defaultDiscountType}
           onChange={(e, selectedDiscountType) =>
             setFieldValue(discountType.name, selectedDiscountType?.id)
           }
@@ -133,6 +139,7 @@ export default function Second({
           </MDTypography>
         </MDBox>
       </Grid>
+
       <Grid item xs={12} sm={6}>
         <Select
           options={agents}
@@ -142,6 +149,18 @@ export default function Second({
           setFieldValue={setFieldValue}
         />
       </Grid>
+
+      <Grid item xs={12}>
+        <FormField
+          name={reference.name}
+          label={reference.label}
+          type={reference.type}
+          placeholder={reference.placeholder}
+          error={errors.reference && touched.reference}
+          success={reference.length > 0 && !errors.reference}
+        />
+      </Grid>
+
       <Grid item xs={12}>
         <FormField
           name={adminNote.name}

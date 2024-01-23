@@ -98,12 +98,12 @@ export default function ModalContentForm({
                   }
                   options={taxes}
                   getOptionLabel={(option) =>
-                    `${option.name} | ${option.taxRate}%`
+                    `${option.name} | ${option.rate}%`
                   }
                   renderOption={(props, option) => (
                     <MDBox {...props}>
                       <MDTypography variant="body" display="inline">
-                        {option.taxRate}%
+                        {option.rate}%
                       </MDTypography>
                       <MDTypography
                         variant="caption"
@@ -141,12 +141,12 @@ export default function ModalContentForm({
                   onChange={(e, tax) => setFieldValue(tax2.name, tax?.id)}
                   options={taxes}
                   getOptionLabel={(option) =>
-                    `${option.name} | ${option.taxRate}%`
+                    `${option.name} | ${option.rate}%`
                   }
                   renderOption={(props, option) => (
                     <MDBox {...props}>
                       <MDTypography variant="body" display="inline">
-                        {option.taxRate}%
+                        {option.rate}%
                       </MDTypography>
                       <MDTypography
                         variant="caption"

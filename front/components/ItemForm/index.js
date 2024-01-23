@@ -1,19 +1,19 @@
 "use client";
 
+import { useFormik } from "formik";
 import { Autocomplete, Grid } from "@mui/material";
+import { useEffect, useMemo } from "react";
 import FormField from "./FormField";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import { useFormik } from "formik";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import * as Yup from "yup";
-import { useEffect } from "react";
 
 export default function ItemForm({ formData, item, taxesData, types }) {
   const units = ["Cantidad", "Horas", "Cantidad/Horas"];
@@ -96,6 +96,20 @@ export default function ItemForm({ formData, item, taxesData, types }) {
     }
   }, [item, description, longDescription, rate, setFieldValue]);
 
+  useEffect(() => {
+    if (item) {
+      let defaultTaxes = [];
+      if (item) {
+        if (item.tax) {
+          defaultTaxes = [item.tax];
+        } else if (item.tax && item.tax2) {
+          defaultTaxes = [item.tax, item.tax2];
+        }
+      }
+      setFieldValue(taxes.name, defaultTaxes);
+    }
+  }, [item, taxes, setFieldValue]);
+
   return (
     <>
       <Grid item xs={4}>
@@ -103,12 +117,13 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           <FormControl>
             <FormLabel>{unit.label}</FormLabel>
             <RadioGroup row name={unit.name}>
-              {units.map((unit) => (
+              {units.map((unit, index) => (
                 <FormControlLabel
                   key={unit}
                   value={unit}
                   control={
                     <Radio
+                      checked={index === 0}
                       onChange={(e) => {
                         setFieldValueExternal(
                           formField.unit.name,
@@ -198,9 +213,13 @@ export default function ItemForm({ formData, item, taxesData, types }) {
         <Autocomplete
           key={`${externalValues.items.length}-taxes`}
           multiple
+          value={values[taxes.name]}
           onChange={(e, selected) => setFieldValue(taxes.name, selected)}
           options={taxesData}
-          getOptionLabel={(option) => `${option.rate}% | ${option.name}`}
+          getOptionLabel={(option) =>
+            option ? `${option.rate}% | ${option.name}` : null
+          }
+          isOptionEqualToValue={(option, value) => option.id === value?.id}
           renderOption={(props, option) => (
             <MDBox {...props}>
               <MDTypography variant="body" display="inline">

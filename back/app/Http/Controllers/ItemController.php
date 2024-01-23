@@ -16,14 +16,13 @@ class ItemController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Item::class)
-            ->allowedIncludes(['tax'])
-            ->orderBy('id', 'desc');
+            ->allowedIncludes(['tax', 'itemGroup']);
 
-        $expense = request()->has('perPage')
+        $item = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
             : $query->get();
 
-        return new ItemResourceCollection($expense);
+        return new ItemResourceCollection($item);
     }
 
     /**

@@ -35,7 +35,7 @@ export default function Table({ formData }) {
       accessor: "taxes",
       Cell: ({ value }) =>
         value
-          ? value.map((tax) => `${tax.name} ${tax.taxRate}%`).join(" | ")
+          ? value.map((tax) => `${tax.name} ${tax.rate}%`).join(" | ")
           : null,
     },
     {

@@ -31,17 +31,15 @@ export default function Totals({ formData }) {
   useEffect(() => {
     const getTaxes = (items, type) => {
       return items.reduce((acc, item) => {
-        const taxRate = item.taxes.find((tax) => tax.id === type)?.taxRate;
+        const rate = item.taxes.find((tax) => tax.id === type)?.rate;
         if (discountType === BEFORE_TAX) {
           return (
             acc +
             (item.quantity * item.rate - item.discount) *
-              (taxRate ? taxRate / 100 : 0)
+              (rate ? rate / 100 : 0)
           );
         } else {
-          return (
-            acc + item.quantity * item.rate * (taxRate ? taxRate / 100 : 0)
-          );
+          return acc + item.quantity * item.rate * (rate ? rate / 100 : 0);
         }
       }, 0);
     };

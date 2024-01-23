@@ -30,7 +30,7 @@ export default async function NewProject() {
     getAllTaxes(),
     getAllRepeats(),
     getAllGroups(),
-    getAllItems({ include: ["tax"] }),
+    getAllItems({ include: ["tax", "itemGroup"] }),
     getAllServiceTypes(),
     getStaffSelect(),
     getAllCurrencies(),

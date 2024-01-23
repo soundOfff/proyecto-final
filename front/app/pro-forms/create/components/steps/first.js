@@ -50,6 +50,10 @@ export default function First({
     }
   }, [values.partner_id]);
 
+  useEffect(() => {
+    setFieldValue(currency.name, defaultCurrency.id);
+  }, [setFieldValue, defaultCurrency, currency]);
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
@@ -65,9 +69,7 @@ export default function First({
 
       <Grid item xs={12} sm={6}>
         <Autocomplete
-          defaultValue={currencies.find(
-            (currency) => currency.id === defaultCurrency.id
-          )}
+          defaultValue={defaultCurrency}
           onChange={(e, currencySelected) =>
             setFieldValue(
               currency.name,

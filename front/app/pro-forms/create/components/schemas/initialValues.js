@@ -15,6 +15,8 @@ Coded by www.creative-tim.com
 
 import moment from "moment";
 import checkout from "./form";
+import { WITHOUT_DISCOUNT } from "/utils/constants/discountTypes";
+import { NO_SENT } from "/utils/constants/estimateStatus";
 
 const {
   formField: {
@@ -40,6 +42,7 @@ const {
     terms,
     adjustment,
     unit,
+    taxes,
   },
 } = checkout;
 
@@ -55,17 +58,18 @@ const initialValues = {
   [stopPendingRemainder.name]: false,
   [tags.name]: [],
   [currency.name]: "",
-  [state.name]: "",
+  [state.name]: NO_SENT,
+  [discountType.name]: WITHOUT_DISCOUNT,
   [reference.name]: "",
   [agent.name]: "",
   [repeat.name]: "",
-  [discountType.name]: "",
   [adminNote.name]: "",
   [clientNote.name]: "",
   [terms.name]: "",
   [items.name]: [],
   [adjustment.name]: "",
   [unit.name]: "Cantidad",
+  [taxes.name]: [],
 };
 
 export default initialValues;

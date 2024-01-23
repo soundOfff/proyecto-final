@@ -21,7 +21,7 @@ export default function Third({
   groupIds,
   items: itemsData,
 }) {
-  const { formField, setFieldValue } = formData;
+  const { formField } = formData;
   const { items } = formField;
   const [isOpen, setOpen] = useState(false);
   const [item, setItem] = useState(null);
@@ -37,8 +37,21 @@ export default function Third({
           onChange={(e, selectedItem) => {
             if (selectedItem) setItem(selectedItem);
           }}
-          options={itemsData}
-          getOptionLabel={(option) => `${option.description}`}
+          groupBy={(option) =>
+            option.itemGroup ? option.itemGroup.name : null
+          }
+          options={itemsData.sort((a, b) => {
+            if (a.itemGroup && b.itemGroup) {
+              return a.itemGroup.name[0] < b.itemGroup.name[0] ? -1 : 1;
+            } else if (a.itemGroup) {
+              return 1;
+            } else if (b.itemGroup) {
+              return -1;
+            } else {
+              return 0;
+            }
+          })}
+          getOptionLabel={(option) => `($${option.rate}) ${option.description}`}
           isOptionEqualToValue={(option, value) => option === value}
           renderOption={(props, option) => (
             <MDBox {...props}>

@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('project_id')->nullable()->constrained();
             $table->foreignId('partner_id')->nullable()->constrained();
+            $table->foreignId('currency_id')->nullable()->constrained();
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
-            $table->foreignId('currency_id')->nullable()->constrained();
 
             $table->integer('added_from');
             $table->decimal('adjustment');

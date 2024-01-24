@@ -63,6 +63,8 @@ export default function Totals({ formData }) {
     setFieldValue(formField.subtotal.name, subtotal);
     setFieldValue(formField.totalTax.name, itbmsTotalTax + retainingTotalTax);
     setFieldValue(formField.total.name, total);
+    setFieldValue(formField.totalDiscount.name, totalDiscount);
+    setFieldValue(formField.adjustment.name, adjustmentValue);
   }, [items, adjustmentValue, setFieldValue, formField, discountType]);
 
   return (

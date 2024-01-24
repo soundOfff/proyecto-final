@@ -6,6 +6,7 @@ use App\Http\Requests\EstimateRequest;
 use App\Http\Resources\EstimateResource;
 use App\Http\Resources\EstimateResourceCollection;
 use App\Models\Estimate;
+use App\Models\Invoice;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
 use App\Models\Taggable;
@@ -14,6 +15,43 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class EstimateController extends Controller
 {
+    public function toInvoice(Estimate $estimate)
+    {
+        $estimate->load('lineItems.taxes');
+        $newInvoice = $estimate->toArray();
+        $newInvoice['prefix'] = 'INVOICE-';
+        $newInvoice['estimate_id'] = $estimate->id;
+        $newInvoice['show_shipping_on_invoice'] = $estimate->show_shipping_on_estimate;
+        $newInvoice['items'] = $estimate->lineItems->toArray();
+        $newInvoice['tags'] = $estimate->tags->toArray();
+
+        $invoice = Invoice::create($newInvoice);
+        $estimate->update(['invoice_id' => $invoice->id]);
+
+        foreach ($newInvoice['tags'] as $tag) {
+            $tag['taggable_id'] = $invoice->id;
+            $tag['taggable_type'] = 'invoice';
+            $tag['tag_id'] = $tag['id'];
+            Taggable::create($tag);
+        }
+
+        foreach ($newInvoice['items'] as $item) {
+            $item['line_itemable_id'] = $invoice->id;
+            $item['line_itemable_type'] = 'invoice';
+            $itemTaxes = $item['taxes'];
+            $lineItem = LineItem::create($item);
+
+            foreach ($itemTaxes as $itemTax) {
+                $itemTax['line_item_id'] = $lineItem->id;
+                $itemTax['line_item_taxable_id'] = $invoice->id;
+                $itemTax['line_item_taxable_type'] = 'invoice';
+                LineItemTax::create($itemTax);
+            }
+        }
+
+        return response()->json(null, 201);
+    }
+
     public function maxId()
     {
         $maxId = Estimate::max('id');

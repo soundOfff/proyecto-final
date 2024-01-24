@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class LineItem extends Model
 {
     protected $fillable = [
-        'id',
         'line_itemable_id',
         'line_itemable_type',
         'description',
@@ -18,7 +17,7 @@ class LineItem extends Model
         'rate',
         'unit',
         'item_order',
-        'item_discount',
+        'discount',
         'type',
     ];
 

@@ -16,6 +16,7 @@ class EstimateResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'invoiceId' => $this->invoice_id,
             'sent' => $this->sent,
             'dateSend' => $this->date_send,
             'deletedCustomerName' => $this->deleted_customer_name,

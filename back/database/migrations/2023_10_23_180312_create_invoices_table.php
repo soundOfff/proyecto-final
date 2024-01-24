@@ -13,24 +13,24 @@ return new class extends Migration {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->nullable()->constrained();
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('partner_id')->nullable()->constrained();
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
+            $table->foreignId('currency_id')->nullable()->constrained();
 
             $table->integer('added_from');
             $table->decimal('adjustment');
             $table->text('admin_note')->nullable();
-            $table->mediumText('allowed_payment_modes');
+            $table->mediumText('allowed_payment_modes')->nullable();
             $table->string('billing_city')->nullable();
             $table->string('billing_state')->nullable();
             $table->string('billing_street')->nullable();
             $table->string('billing_zip')->nullable();
             $table->integer('cancel_overdue_reminders')->nullable();
             $table->text('client_note')->nullable();
-            $table->integer('currency');
             $table->boolean('custom_recurring')->nullable()->default(false);
-            $table->integer('cycles');
-            $table->date('date');
+            $table->integer('cycles')->default(0);
+            $table->date('date')->default(now());
             $table->dateTime('date_send')->nullable();
             $table->dateTime('date_created')->nullable();
             $table->string('deleted_customer_name')->nullable();
@@ -58,7 +58,7 @@ return new class extends Migration {
             $table->integer('show_quantity_as');
             $table->boolean('show_shipping_on_invoice');
             $table->integer('status');
-            $table->integer('subscription_id');
+            $table->integer('subscription_id')->nullable();
             $table->decimal('subtotal');
             $table->text('terms')->nullable();
             $table->mediumText('token')->nullable();

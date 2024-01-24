@@ -8,6 +8,7 @@ import { ITBMS_TAX_NAME, RETAINING_TAX_NAME } from "/utils/constants/taxes";
 import { BEFORE_TAX } from "/utils/constants/discountTypes";
 import numberFormat from "/utils/numberFormat";
 import { useEffect, useState } from "react";
+import { toInvoice } from "/actions/estimates";
 
 const getSubtotal = (items) => {
   return items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
@@ -34,16 +35,10 @@ const getTaxes = (items, type, discountType) => {
 };
 
 export default function Footer({ estimate }) {
-  const [subtotal, setSubtotal] = useState(0);
-  const [totalDiscount, setTotalDiscount] = useState(0);
-  const [adjustment, setAdjustment] = useState(0);
   const [itbmsTotalTax, setItbmsTotalTax] = useState(0);
   const [retainingTotalTax, setRetainingTotalTax] = useState(0);
-  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const subtotal = getSubtotal(estimate.items);
-    const totalDiscount = getTotalDiscount(estimate.items);
     const itbmsTotalTax = getTaxes(
       estimate.items,
       ITBMS_TAX_NAME,
@@ -54,16 +49,14 @@ export default function Footer({ estimate }) {
       RETAINING_TAX_NAME,
       estimate.discountType
     );
-    const adjustment = Number(estimate.adjustment);
 
-    setSubtotal(subtotal);
-    setTotalDiscount(totalDiscount);
     setItbmsTotalTax(itbmsTotalTax);
     setRetainingTotalTax(retainingTotalTax);
-    setTotal(
-      subtotal + totalDiscount + itbmsTotalTax + retainingTotalTax + adjustment
-    );
   }, [estimate]);
+
+  const handleToInvoice = async () => {
+    await toInvoice(estimate.id);
+  };
 
   return (
     <MDBox p={3}>
@@ -77,7 +70,7 @@ export default function Footer({ estimate }) {
               </Grid>
               <Grid item xs={12} sm={2}>
                 <MDTypography variant="body">
-                  ${numberFormat(subtotal)}
+                  ${numberFormat(estimate.subtotal)}
                 </MDTypography>
               </Grid>
 
@@ -87,7 +80,7 @@ export default function Footer({ estimate }) {
               </Grid>
               <Grid item xs={12} sm={2}>
                 <MDTypography variant="body">
-                  ${numberFormat(totalDiscount)}
+                  ${numberFormat(estimate.discountTotal)}
                 </MDTypography>
               </Grid>
 
@@ -97,7 +90,7 @@ export default function Footer({ estimate }) {
               </Grid>
               <Grid item xs={12} sm={2}>
                 <MDTypography variant="body">
-                  ${numberFormat(adjustment)}
+                  ${numberFormat(estimate.adjustment)}
                 </MDTypography>
               </Grid>
 
@@ -137,7 +130,7 @@ export default function Footer({ estimate }) {
               </Grid>
               <Grid item xs={12} sm={2}>
                 <MDTypography variant="body">
-                  ${numberFormat(total)}
+                  ${numberFormat(estimate.total)}
                 </MDTypography>
               </Grid>
             </Grid>
@@ -153,12 +146,22 @@ export default function Footer({ estimate }) {
             alignItems="flex-end"
             mt={{ xs: 2, md: 0 }}
           >
+            {!estimate.invoiceId && (
+              <MDButton
+                variant="gradient"
+                color="success"
+                onClick={handleToInvoice}
+                sx={{ mr: 2 }}
+              >
+                Convertir a Factura
+              </MDButton>
+            )}
             <MDButton
               variant="gradient"
               color="dark"
               onClick={() => window.print(this)}
             >
-              print
+              Imprimir
             </MDButton>
           </MDBox>
         </Grid>

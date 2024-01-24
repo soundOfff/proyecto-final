@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->morphs('line_itemable');
 
             $table->mediumText('description')->nullable();
-            $table->decimal('item_discount')->nullable();
+            $table->decimal('discount')->nullable();
             $table->integer('item_order')->nullable();
             $table->mediumText('long_description')->nullable();
             $table->decimal('quantity');

@@ -68,6 +68,32 @@ export async function show(id, params) {
   return estimate;
 }
 
+export async function toInvoice(invoiceId, params) {
+  const url = new URL(
+    `${process.env.API_URL}/estimates-to-invoice/${invoiceId}`
+  );
+  url.search = new URLSearchParams(params);
+
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(data);
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  // TODO when show invoice is ready, send to invoice show page
+
+  // revalidatePath(`/invoices/${invoiceId}`);
+
+  // redirect(`/invoices/${invoiceId}`);
+}
+
 export async function getMaxId() {
   const url = new URL(`${process.env.API_URL}/estimates-max-id`);
 

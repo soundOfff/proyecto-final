@@ -37,7 +37,7 @@ class EstimateRequest extends FormRequest
             'admin_note' => 'nullable|string',
             'client_note' => 'nullable|string',
             'terms' => 'nullable|string',
-            'item_adjustment' => 'nullable|numeric',
+            'adjustment' => 'nullable|numeric',
             'tags' => 'nullable|array',
             'tags.*.id' => 'nullable|numeric|exists:tags,id',
             'items' => 'required|array',

@@ -11,18 +11,18 @@ class Invoice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
         'added_from',
         'adjustment',
         'admin_note',
         'allowed_payment_modes',
+        'billing_country_id',
         'billing_city',
         'billing_state',
         'billing_street',
         'billing_zip',
         'cancel_overdue_reminders',
         'client_note',
-        'currency',
+        'currency_id',
         'custom_recurring',
         'cycles',
         'date',
@@ -42,10 +42,13 @@ class Invoice extends Model
         'number',
         'number_format',
         'prefix',
+        'partner_id',
+        'project_id',
         'recurring',
         'recurring_type',
         'sale_agent',
         'sent',
+        'shipping_country_id',
         'shipping_city',
         'shipping_state',
         'shipping_street',
@@ -63,9 +66,9 @@ class Invoice extends Model
         'created_at',
     ];
 
-    public function user(): BelongsTo
+    public function partner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Partner::class);
     }
 
     public function project(): BelongsTo

@@ -13,8 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// TODO: Ver nombre de campos porque todavia no tengo las tablas
-
 const form = {
   formId: "new-expense",
   formField: {
@@ -139,13 +137,13 @@ const form = {
       label: "Impuestos",
     },
     discount: {
-      name: "item_discount",
+      name: "discount",
       label: "Descuento",
       placeholder: "USD",
       type: "number",
     },
     adjustment: {
-      name: "item_adjustment",
+      name: "adjustment",
       label: "Ajuste",
       placeholder: "USD",
       type: "number",
@@ -158,6 +156,9 @@ const form = {
       name: "items",
       label: "Articulos",
       errorMsg: "Debe seleccionar al menos un item",
+    },
+    totalDiscount: {
+      name: "total_discount",
     },
     subtotal: {
       name: "subtotal",

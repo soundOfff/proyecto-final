@@ -64,10 +64,14 @@ class InvoiceResource extends JsonResource
             'totalCycles' => $this->total_cycles,
             'totalTax' => $this->total_tax,
             'createdAt' => $this->created_at,
-            'user' => UserResource::make($this->whenLoaded('user')),
+            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'project' => ProjectResource::make($this->whenLoaded('project')),
+            'currency' => CurrencyResource::make($this->whenLoaded('currency')),
+            'estimate' => EstimateResource::make($this->whenLoaded('estimate')),
             'billingCountry' => CountryResource::make($this->whenLoaded('billingCountry')),
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
+            'items' => LineItemResource::collection($this->whenLoaded('lineItems')),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
     }
 }

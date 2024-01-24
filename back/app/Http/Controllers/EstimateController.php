@@ -24,6 +24,7 @@ class EstimateController extends Controller
         $newInvoice['show_shipping_on_invoice'] = $estimate->show_shipping_on_estimate;
         $newInvoice['items'] = $estimate->lineItems->toArray();
         $newInvoice['tags'] = $estimate->tags->toArray();
+        $newInvoice['number'] = Invoice::getNextNumber();
 
         $invoice = Invoice::create($newInvoice);
         $estimate->update(['invoice_id' => $invoice->id]);
@@ -38,9 +39,10 @@ class EstimateController extends Controller
         foreach ($newInvoice['items'] as $item) {
             $item['line_itemable_id'] = $invoice->id;
             $item['line_itemable_type'] = 'invoice';
-            $itemTaxes = $item['taxes'];
             $lineItem = LineItem::create($item);
+            dump($lineItem);
 
+            $itemTaxes = $item['taxes'];
             foreach ($itemTaxes as $itemTax) {
                 $itemTax['line_item_id'] = $lineItem->id;
                 $itemTax['line_item_taxable_id'] = $invoice->id;
@@ -49,7 +51,7 @@ class EstimateController extends Controller
             }
         }
 
-        return response()->json(null, 201);
+        return response()->json($invoice->id, 201);
     }
 
     public function maxId()

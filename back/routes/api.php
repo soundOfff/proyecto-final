@@ -86,7 +86,9 @@ Route::get('/tags', [TagController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
 
+Route::get('/invoices', [InvoiceController::class, 'index']);
 Route::get('/invoices-select', [InvoiceController::class, 'select']);
+Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
 
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 

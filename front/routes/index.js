@@ -121,7 +121,7 @@ const routes = [
         key: "proposals",
         route: "/proposals",
       },
-      { name: "Proformas", key: "pro-forms", route: "/pro-forms" },
+      { name: "Proformas", key: "estimates", route: "/estimates" },
       {
         name: "Facturas",
         key: "invoices",

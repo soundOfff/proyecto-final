@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Invoice extends Model
 {
@@ -76,6 +78,16 @@ class Invoice extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    public function estimate(): BelongsTo
+    {
+        return $this->belongsTo(Estimate::class);
+    }
+
     public function billingCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'billing_country_id', 'id', 'billingCountry');
@@ -84,5 +96,26 @@ class Invoice extends Model
     public function shippingCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'shipping_country_id', 'id', 'shippingCountry');
+    }
+
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function lineItems(): MorphMany
+    {
+        return $this->morphMany(LineItem::class, 'line_itemable');
+    }
+
+    public static function getNextNumber()
+    {
+        $lastInvoice = self::orderBy('id', 'desc')->first();
+        $lastInvoiceNumber = $lastInvoice->number;
+        $lastInvoiceNumber = intval($lastInvoiceNumber);
+        $lastInvoiceNumber++;
+        $lastInvoiceNumber = str_pad($lastInvoiceNumber, 6, '0', STR_PAD_LEFT);
+
+        return $lastInvoiceNumber;
     }
 }

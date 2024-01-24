@@ -41,7 +41,7 @@ export async function store(data) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  revalidatePath("/pro-forms/create");
+  revalidatePath("/estimates/create");
 
-  redirect("/pro-forms/create");
+  redirect("/estimates/create");
 }

@@ -41,9 +41,9 @@ export async function store(data) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  revalidatePath("/pro-forms");
+  revalidatePath("/estimates");
 
-  redirect("/pro-forms");
+  redirect("/estimates");
 }
 
 export async function show(id, params) {
@@ -68,9 +68,9 @@ export async function show(id, params) {
   return estimate;
 }
 
-export async function toInvoice(invoiceId, params) {
+export async function toInvoice(estimateId, params) {
   const url = new URL(
-    `${process.env.API_URL}/estimates-to-invoice/${invoiceId}`
+    `${process.env.API_URL}/estimates-to-invoice/${estimateId}`
   );
   url.search = new URLSearchParams(params);
 
@@ -87,11 +87,12 @@ export async function toInvoice(invoiceId, params) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  // TODO when show invoice is ready, send to invoice show page
+  const invoiceId = await res.json();
 
-  // revalidatePath(`/invoices/${invoiceId}`);
+  revalidatePath(`/invoices/${invoiceId}`);
+  revalidatePath(`/estimates/${estimateId}`);
 
-  // redirect(`/invoices/${invoiceId}`);
+  redirect(`/invoices/${invoiceId}`);
 }
 
 export async function getMaxId() {

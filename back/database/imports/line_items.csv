@@ -22699,9 +22699,6 @@ Recuperación de Activos","Honorarios Legales correspondientes al 33% en concept
 39731,2236,estimate,"Pagos a Terceros","Pago ante la Dirección General de Ingresos de Panamá de Tasa Unica de sociedad anónima.",1.00,300.00,,2,0.00,Gastos
 39732,2236,estimate,"Debida Diligencia",,1.00,100.00,,3,0.00,Gastos
 39733,2236,estimate,"Honorarios Legales - Departamento Corporativo","Honorarios Legales en concepto de actualización de NIT ante la Dirección General de Ingresos",1.00,25.00,,4,0.00,Honorarios
-39738,6325,invoice,"Gastos Administrativos","Gastos iniciales del Proceso Ejecutivo Simple con Acción de Secuestro interpuesto por BANESCO (PANAMA), S.A. vs JOSE BERNARDO CERRUD GUERRA",1.00,175.00,,1,0.00,Gastos
-39739,6325,invoice,"Pagos a Terceros","Certificado de finca en Registro Público por acción de secuestro",1.00,40.00,,2,0.00,Gastos
-39740,6325,invoice,"Pagos a Terceros","Certificado vehicular ante la ATT",1.00,10.00,,3,0.00,Gastos
 39743,2237,estimate,"Debida Diligencia",,1.00,50.00,,1,0.00,Gastos
 39745,2238,estimate,"Atención a:","Ekatherina De León Zorita",1.00,0.00,,1,0.00,Honorarios
 39746,2238,estimate,"Pagos a Terceros","Gastos iniciales dentro del Proceso Ejecutivo Hipotecario de Bien Inmueble interpuesto por BANCO GENERAL, S.A. vs. Bey Narciso Miranda Castillo  (Finca No. 196112)",1.00,175.00,,2,0.00,Gastos
@@ -22711,15 +22708,6 @@ Recuperación de Activos","Honorarios Legales correspondientes al 33% en concept
 39754,2232,estimate,"Honorarios Legales - Departamento Corporativo","Honorarios Legales en concepto de Agente Residente de FUNDACIÓN ARMONIA",1.00,100.00,,3,0.00,Honorarios
 39757,2240,estimate,"Honorarios Legales - Departamento Corporativo","Honorarios Legales en concepto de Agente Residente de Katarama International S.A.",1.00,250.00,,1,0.00,Honorarios
 39758,2240,estimate,"Debida Diligencia",,1.00,100.00,,2,0.00,Honorarios
-39760,6326,invoice,"Gastos Administrativos","Gastos iniciales del Proceso Ejecutivo Simple con Acción de Secuestro interpuesto por BANESCO (PANAMA), S.A. vs XIAOMI MI STORE PANAMÁ, S.A.",1.00,175.00,,1,0.00,Gastos
-39761,6326,invoice,"Pagos a Terceros","Certificado de la sociedad XIAOMI MI STORE PANAMÁ, S.A.",1.00,40.00,,2,0.00,Gastos
-39762,6327,invoice,"Honorarios Legales - Departamento Corporativo","Honorarios Legales en concepto de Agente Residente de BLAKE INVESTMENTS, S.A.",1.00,100.00,,1,0.00,Honorarios
-39763,6327,invoice,"Honorarios Legales - Departamento Corporativo","Honorarios Legales en concepto de Agente Residente de LAFABO, S.A.",1.00,100.00,,2,0.00,Honorarios
-39764,6327,invoice,"Honorarios Legales - Departamento Corporativo","Honorarios Legales en concepto de Agente Residente de FUNDACIÓN ARMONIA",1.00,100.00,,3,0.00,Honorarios
-39765,6327,invoice,"Debida Diligencia",,3.00,50.00,,4,0.00,Gastos
-39766,6328,invoice,"Legal Fees - Corporate Department","Resignation as Agent Resident of Panajimmy Inc.",1.00,200.00,,1,0.00,Honorarios
-39767,6328,invoice,"Third Party Payments","Notary expenses",1.00,68.00,,2,0.00,Honorarios
-39768,6328,invoice,"Administrative Expenses",,1.00,16.50,,3,0.00,Honorarios
 39817,2241,estimate,"Honorarios Legales - Departamento Corporativo","Asesoría Legal en el proceso de Compraventa de Acciones de la sociedad KEENESYEA, S.A. y de Levantamiento de Capital mediante la Suscripción de Acciones no emitidas.<br />  <br />  Este proceso incluye:<br />  1. Revisión y Modificación de Contrato de Compraventa de Acciones.<br />  2. Revisión y Modificación de Contratos Accesorios como Contrato de Prenda y Contrato de Suscripción de Acciones.<br />  3. Elaboración de documentos entregables para el cierre de la transacción como: autorizaciones corporativas, registro de accionistas actualizado.<br />  4. Elaboración y Protocolización de Acta de Junta de Accionistas por medio se modifica la Junta Directiva y se modifican los Poderes actuales.<br />  5. Elaboración de Acta de Junta Directiva mediante la cual se autoriza la emisión de nuevos certificados.<br />  6. Emisión de Nuevos Certificados.",0.50,3000.00,,1,0.00,Honorarios
 39829,2242,estimate,"Legal Fees - Department of Technology and Innovation","Legal fees for legal opinion regarding crypto and blockchain regulation in Panama and Stasis AML policy, addressed to Kraken",1.00,2500.00,,1,0.00,Honorarios
 39830,2243,estimate,"Honorarios Legales - Departamento Judicial","Honorarios Legales de éxito por demanda Contencioso Administrativa de Plena Jurisdicción contra el Ministerio de Obras Públicas (MOP) por los intereses moratorios generados por pagos atrasados en el proyecto David - Boquete AL-1-69-10, en el que se obtuvo un pago de US$ 307,526.79. <br />  Los honorarios totales equivalen al 5% del monto ganado para Constructora Urbana, S.A.<br />  <br />  Nota: el cliente había realizado un pago por US$ 3,750 con la presentación de la demanda",1.00,11626.34,,1,0.00,Honorarios
@@ -23139,4 +23127,4 @@ Recuperación de Activos","Honorarios Legales correspondientes al 33% en concept
 41452,2012,estimate,"Cargos Bancarios",,1.00,30.37,,7,0.00,Honorarios
 41539,2348,estimate,"Pagos a Terceros","Certificación de Placa Única Vehicular  de vehículo con placa No. AS0194, propiedad de SHASBIR SORAYA BATISTA GIRON, a fin de conocer si mantiene bienes sin gravamen",1.00,10.00,,4,0.00,Gastos
 41540,2348,estimate,"Gastos Administrativos",,1.00,37.50,,6,0.00,Gastos
-41639,2348,estimate,"Pagos a Terceros","Certificado de Registro Público del Banco Davivienda (Panamá), S.A.",1.00,40.00,,5,0.00,Gastos
+41639,2348,estimate,"Pagos a Terceros","Certificado de Registro Público del Banco Davivienda (Panamá), S.A.",1.00,50.00,,5,0.00,Gastos

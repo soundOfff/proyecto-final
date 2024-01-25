@@ -9817,10 +9817,6 @@ id,line_item_id,line_item_taxable_id,line_item_taxable_type,rate,name
 16477,39753,2232,estimate,7.00,I.T.B.M.S
 16478,39754,2232,estimate,7.00,I.T.B.M.S
 16480,39757,2240,estimate,7.00,I.T.B.M.S
-16482,39762,6327,invoice,7.00,I.T.B.M.S
-16483,39763,6327,invoice,7.00,I.T.B.M.S
-16484,39764,6327,invoice,7.00,I.T.B.M.S
-16485,39766,6328,invoice,7.00,I.T.B.M.S
 16506,39817,2241,estimate,7.00,I.T.B.M.S
 16512,39829,2242,estimate,7.00,I.T.B.M.S
 16513,39830,2243,estimate,-3.50,Agente Retenedor

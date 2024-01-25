@@ -63,7 +63,7 @@ return new class extends Migration {
             $table->text('terms')->nullable();
             $table->mediumText('token')->nullable();
             $table->decimal('total');
-            $table->integer('total_cycles');
+            $table->integer('total_cycles')->default(0);
             $table->decimal('total_tax');
 
             $table->timestamps();

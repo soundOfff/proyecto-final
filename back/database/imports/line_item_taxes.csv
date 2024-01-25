@@ -635,7 +635,7 @@ id,line_item_id,line_item_taxable_id,line_item_taxable_type,rate,name
 988,2862,408,invoice,7.00,I.T.B.M.S
 990,2869,272,estimate,7.00,I.T.B.M.S
 991,2870,409,invoice,7.00,I.T.B.M.S
-992,991,409,invoice,7.00,I.T.B.M.S
+992,,409,invoice,7.00,I.T.B.M.S
 993,992,409,invoice,7.00,I.T.B.M.S
 994,2872,409,invoice,7.00,I.T.B.M.S
 995,2874,409,invoice,7.00,I.T.B.M.S

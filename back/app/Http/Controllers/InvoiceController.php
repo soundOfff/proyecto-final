@@ -22,8 +22,22 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        $invoices = QueryBuilder::for(Invoice::class)
-            ->allowedIncludes(['lineItems.taxes', 'tags']);
+        $query = QueryBuilder::for(Invoice::class)
+            ->allowedIncludes([
+                'partner',
+                'project.serviceType',
+                'currency',
+                'estimate',
+                'billingCountry',
+                'shippingCountry',
+                'lineItems.taxes',
+                'tags',
+            ])
+            ->orderBy('id', 'desc');
+
+        $invoices = request()->has('perPage')
+            ? $query->paginate((int) request('perPage'))
+            : $query->get();
 
         return new InvoiceResourceCollection($invoices);
     }

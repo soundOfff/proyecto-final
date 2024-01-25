@@ -2,25 +2,20 @@
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import MDButton from "/components/MDButton";
 import moneyFormat from "/utils/moneyFormat";
-import { useMaterialUIController } from "/context";
 import Link from "next/link";
 
 export default function Table({ rows }) {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
-
   const columns = [
     {
-      Header: "Proforma #",
+      Header: "Factura #",
       accessor: "id",
-      Cell: ({ value }) => (
+      Cell: ({ row }) => (
         <Link
-          href={`/estimates/${value}`}
+          href={`/invoices/${row.original.id}`}
           sx={{ cursor: "pointer", color: "info" }}
         >
-          {value}
+          {row.original.number}
         </Link>
       ),
     },
@@ -69,6 +64,14 @@ export default function Table({ rows }) {
       accessor: "expiryDate",
     },
     {
+      Header: "Proforma",
+      accessor: "estimate",
+      Cell: ({ value }) =>
+        value ? (
+          <Link href={`/estimates/${value.id}`}>{value.number}</Link>
+        ) : null,
+    },
+    {
       Header: "Referencia #",
       accessor: "referenceNo",
     },
@@ -82,13 +85,6 @@ export default function Table({ rows }) {
 
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href="/estimates/create">
-          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Registrar Proforma
-          </MDButton>
-        </Link>
-      </MDBox>
       <DataTable
         table={table}
         entriesPerPage={false}

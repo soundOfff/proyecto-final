@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('currency_id')->nullable()->constrained();
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
+            $table->foreignId('estimate_id')->nullable();
 
             $table->integer('added_from');
             $table->decimal('adjustment');
@@ -38,7 +39,6 @@ return new class extends Migration {
             $table->decimal('discount_total');
             $table->string('discount_type')->nullable();
             $table->date('due_date')->nullable();
-            $table->integer('estimate_id')->nullable();
             $table->string('hash');
             $table->boolean('include_shipping');
             $table->integer('is_recurring_from')->nullable();

@@ -18,7 +18,7 @@ class Utils
                     $header = $row;
                 } else {
                     $row = array_map(function ($value) {
-                        return $value === '' || $value === 'null' ? null : $value;
+                        return $value == '' || $value == 'null' || $value == 'NULL' ? null : $value;
                     }, $row);
                     $data[] = array_combine($header, $row);
                 }

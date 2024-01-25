@@ -40,7 +40,6 @@ class EstimateController extends Controller
             $item['line_itemable_id'] = $invoice->id;
             $item['line_itemable_type'] = 'invoice';
             $lineItem = LineItem::create($item);
-            dump($lineItem);
 
             $itemTaxes = $item['taxes'];
             foreach ($itemTaxes as $itemTax) {

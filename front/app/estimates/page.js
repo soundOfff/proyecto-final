@@ -4,7 +4,9 @@ import MDBox from "/components/MDBox";
 import Table from "./components/table";
 import { getAll } from "/actions/estimates";
 
-export default async function Estimates() {
+export default async function Estimates({
+  searchParams: { perPage = 10, page = 1 },
+}) {
   const include = [
     "project.serviceType",
     "partner",
@@ -12,14 +14,17 @@ export default async function Estimates() {
     "shippingCountry",
     "billingCountry",
   ];
-  const estimates = await getAll({ include });
+  const {
+    data: { estimates },
+    meta,
+  } = await getAll({ include, perPage, page });
 
   return (
     <MDBox mb={3}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Table rows={estimates} />
+            <Table rows={estimates} meta={meta} />
           </Grid>
         </Grid>
       </Card>

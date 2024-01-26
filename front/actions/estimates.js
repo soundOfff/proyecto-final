@@ -20,9 +20,9 @@ export async function getAll(params) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  const { data } = await res.json();
+  const data = await res.json();
 
-  return data.estimates;
+  return data;
 }
 
 export async function store(data) {

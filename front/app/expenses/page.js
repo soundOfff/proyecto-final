@@ -4,9 +4,16 @@ import MDBox from "/components/MDBox";
 import { getAll as getAllExpenses } from "/actions/expenses";
 import Table from "./components/table";
 
-export default async function Expenses() {
-  const expenses = await getAllExpenses({
+export default async function Expenses({
+  searchParams: { perPage = 10, page = 1 },
+}) {
+  const {
+    data: { expenses },
+    meta,
+  } = await getAllExpenses({
     include: ["category", "project", "invoice", "user.partners"],
+    perPage,
+    page,
   });
 
   return (
@@ -14,7 +21,7 @@ export default async function Expenses() {
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Table rows={expenses} />
+            <Table rows={expenses} meta={meta} />
           </Grid>
         </Grid>
       </Card>

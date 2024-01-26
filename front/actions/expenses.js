@@ -20,9 +20,9 @@ export async function getAll(params) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  const { data } = await res.json();
+  const data = await res.json();
 
-  return data.expenses;
+  return data;
 }
 
 export async function show(id, params) {

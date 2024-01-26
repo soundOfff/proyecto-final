@@ -1,6 +1,6 @@
 "use client";
 
-import DataTable from "/examples/Tables/DataTable";
+import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import Modal from "/components/Modal";
@@ -13,7 +13,7 @@ import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import { FlashOnOutlined } from "@mui/icons-material";
 
-export default function Table({ rows }) {
+export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [expenseIdShow, setExpenseIdShow] = useState(0);
@@ -128,7 +128,7 @@ export default function Table({ rows }) {
       </MDBox>
       <DataTable
         table={table}
-        entriesPerPage={false}
+        meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder

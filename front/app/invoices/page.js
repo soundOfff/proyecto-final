@@ -4,7 +4,11 @@ import MDBox from "/components/MDBox";
 import Table from "./components/table";
 import { getAll as getAllInvoices } from "/actions/invoices";
 
-export default async function Invoices() {
+export const dynamic = "force-dynamic";
+
+export default async function Invoices({
+  searchParams: { perPage = 10, page = 1 },
+}) {
   const include = [
     "project.serviceType",
     "partner",
@@ -12,14 +16,21 @@ export default async function Invoices() {
     "shippingCountry",
     "billingCountry",
   ];
-  const invoices = await getAllInvoices({ include });
+  const {
+    data: { invoices },
+    meta,
+  } = await getAllInvoices({
+    include,
+    perPage,
+    page,
+  });
 
   return (
     <MDBox mb={3}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Table rows={invoices} />
+            <Table rows={invoices} meta={meta} />
           </Grid>
         </Grid>
       </Card>

@@ -1,11 +1,11 @@
 "use client";
 
-import DataTable from "/examples/Tables/DataTable";
+import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import moneyFormat from "/utils/moneyFormat";
 import Link from "next/link";
 
-export default function Table({ rows }) {
+export default function Table({ rows, meta }) {
   const columns = [
     {
       Header: "Factura #",
@@ -87,7 +87,7 @@ export default function Table({ rows }) {
     <MDBox>
       <DataTable
         table={table}
-        entriesPerPage={false}
+        meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ContactResourceCollection;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ContactController extends Controller
 {
@@ -25,7 +27,19 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        $query = QueryBuilder::for(Contact::class)
+        ->allowedIncludes([
+            'user.partners',
+            'staff',
+        ])
+        ->allowedFilters('user_id')
+        ->orderBy('id', 'desc');
+
+        $contacts = request()->has('perPage')
+            ? $query->paginate((int) request('perPage'))
+            : $query->get();
+
+        return new ContactResourceCollection($contacts);
     }
 
     /**
@@ -39,7 +53,7 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Contact $contact)
     {
         //
     }
@@ -47,7 +61,7 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Contact $contact)
     {
         //
     }
@@ -55,7 +69,7 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Contact $contact)
     {
         //
     }

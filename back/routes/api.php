@@ -90,6 +90,7 @@ Route::get('/invoices', [InvoiceController::class, 'index']);
 Route::get('/invoices-select', [InvoiceController::class, 'select']);
 Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
 
+Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);

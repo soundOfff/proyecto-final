@@ -15,6 +15,7 @@ class ContactResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'active' => $this->active,
             'contractEmails' => $this->contract_emails,
             'creditNoteEmails' => $this->credit_note_emails,
@@ -30,6 +31,7 @@ class ContactResource extends JsonResource
             'lastLogin' => $this->last_login,
             'lastPasswordChange' => $this->last_password_change,
             'lastName' => $this->last_name,
+            'name' => $this->first_name.' '.$this->last_name,
             'newPassKey' => $this->new_pass_key,
             'newPassKeyRequested' => $this->new_pass_key_requested,
             'phoneNumber' => $this->phone_number,

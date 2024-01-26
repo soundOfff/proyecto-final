@@ -24,6 +24,7 @@ class ExpenseController extends Controller
             'project',
             'invoice',
         ])
+        ->allowedFilters('partner_id')
         ->orderBy('id', 'desc');
 
         $expense = request()->has('perPage')

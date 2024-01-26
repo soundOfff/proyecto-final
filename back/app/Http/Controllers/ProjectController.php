@@ -34,6 +34,7 @@ class ProjectController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('status', 'status.id'),
                 AllowedFilter::scope('search'),
+                AllowedFilter::exact('defendant_id'),
             ])
             ->allowedIncludes([
                 'stages',

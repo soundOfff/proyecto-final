@@ -33,6 +33,7 @@ class InvoiceController extends Controller
                 'lineItems.taxes',
                 'tags',
             ])
+            ->allowedFilters('partner_id')
             ->orderBy('id', 'desc');
 
         $invoices = request()->has('perPage')

@@ -68,6 +68,27 @@ export async function show(id, params) {
   return partner;
 }
 
+export async function store(data) {
+  const res = await fetch(`${process.env.API_URL}/partners`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(data);
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  revalidatePath("/partners");
+
+  redirect("/partners");
+}
+
 export async function update(id, data) {
   const res = await fetch(`${process.env.API_URL}/partners/${id}`, {
     method: "PUT",

@@ -14,10 +14,19 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from "yup";
-import invoiceForm from "./invoice-form";
+import form from "./form";
 
 const {
   formField: {
+    company,
+    state,
+    country,
+    zip,
+    phone,
+    address,
+    ruc,
+    city,
+    consolidator,
     shippingCity,
     shippingCountry,
     shippingState,
@@ -29,19 +38,28 @@ const {
     billingZip,
     billingStreet,
   },
-} = invoiceForm;
+} = form;
 
-const invoiceValidations = Yup.object().shape({
+const validations = Yup.object().shape({
+  [company.name]: Yup.string().required(company.errorMsg),
+  [state.name]: Yup.string().nullable(),
+  [country.name]: Yup.number().nullable(),
+  [zip.name]: Yup.string().nullable(),
+  [address.name]: Yup.string().nullable(),
+  [ruc.name]: Yup.string().nullable(),
+  [city.name]: Yup.string().nullable(),
+  [phone.name]: Yup.string().nullable(),
+  [consolidator.name]: Yup.number().required(consolidator.errorMsg),
   [shippingCity.name]: Yup.string().nullable(),
   [shippingState.name]: Yup.string().nullable(),
   [shippingZip.name]: Yup.string().nullable(),
   [shippingStreet.name]: Yup.string().nullable(),
-  [shippingCountry.name]: Yup.object().nullable(),
+  [shippingCountry.name]: Yup.number().nullable(),
   [billingCity.name]: Yup.string().nullable(),
   [billingState.name]: Yup.string().nullable(),
   [billingZip.name]: Yup.string().nullable(),
   [billingStreet.name]: Yup.string().nullable(),
-  [billingCountry.name]: Yup.object().nullable(),
+  [billingCountry.name]: Yup.number().nullable(),
 });
 
-export default invoiceValidations;
+export default validations;

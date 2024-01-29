@@ -64,6 +64,7 @@ Route::get('/items', [ItemController::class, 'index']);
 Route::post('/items', [ItemController::class, 'store']);
 
 Route::get('/partners', [PartnerController::class, 'index']);
+Route::post('/partners', [PartnerController::class, 'store']);
 Route::get('/partners/{partner}', [PartnerController::class, 'show']);
 Route::put('/partners/{partner}', [PartnerController::class, 'update']);
 Route::get('/partner-stats', [PartnerController::class, 'stats']);

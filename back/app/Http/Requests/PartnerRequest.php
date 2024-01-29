@@ -25,6 +25,8 @@ class PartnerRequest extends FormRequest
             'company' => 'required|string',
             'country_id' => 'required|numeric|exists:countries,id',
             'consolidator_id' => 'required|numeric|exists:partners,id',
+            'billing_country_id' => 'nullable|numeric|exists:countries,id',
+            'shipping_country_id' => 'nullable|numeric|exists:countries,id',
             'website' => 'nullable|string',
             'city' => 'nullable|string',
             'state' => 'nullable|string',
@@ -32,6 +34,15 @@ class PartnerRequest extends FormRequest
             'is_consolidator' => 'nullable|boolean',
             'zip' => 'nullable|string',
             'phone_number' => 'nullable|string',
+            'language' => 'nullable|string',
+            'billing_city' => 'nullable|string',
+            'billing_state' => 'nullable|string',
+            'billing_street' => 'nullable|string',
+            'billing_zip' => 'nullable|string',
+            'shipping_city' => 'nullable|string',
+            'shipping_state' => 'nullable|string',
+            'shipping_street' => 'nullable|string',
+            'shipping_zip' => 'nullable|string',
         ];
     }
 }

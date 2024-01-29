@@ -8,7 +8,7 @@ export default async function Layout({ children, params: { id } }) {
   const partner = await show(id, {
     include: ["user.contacts", "country", "consolidator"],
   });
-  const primaryContact = partner.user.contacts.find(
+  const primaryContact = partner.user?.contacts.find(
     (contact) => contact?.isPrimary == true
   );
   return (
@@ -21,7 +21,7 @@ export default async function Layout({ children, params: { id } }) {
           <MDBox mb={3}>
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <Header contact={primaryContact} />
+                {primaryContact && <Header contact={primaryContact} />}
                 {children}
               </Grid>
             </Grid>

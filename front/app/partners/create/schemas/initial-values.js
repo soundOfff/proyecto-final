@@ -13,30 +13,40 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import checkout from "./detail-form";
+import form from "./form";
 
 const {
   formField: {
-    address,
-    city,
     company,
-    consolidator,
+    state,
     country,
+    zip,
+    phone,
+    address,
+    ruc,
+    city,
     isConsolidator,
     language,
-    phone,
-    ruc,
-    state,
     website,
-    zip,
+    consolidator,
+    shippingCity,
+    shippingCountry,
+    shippingState,
+    shippingZip,
+    shippingStreet,
+    billingCity,
+    billingCountry,
+    billingState,
+    billingZip,
+    billingStreet,
   },
-} = checkout;
+} = form;
 
-const InitialDetailValues = {
+const initialValues = {
   [address.name]: "",
   [city.name]: "",
-  [company.name]: null,
-  [consolidator.name]: "",
+  [company.name]: "",
+  [consolidator.name]: null,
   [country.name]: null,
   [isConsolidator.name]: "",
   [language.name]: "",
@@ -45,6 +55,16 @@ const InitialDetailValues = {
   [state.name]: "",
   [website.name]: "",
   [zip.name]: "",
+  [billingCity.name]: "",
+  [billingCountry.name]: "",
+  [billingState.name]: "",
+  [billingStreet.name]: "",
+  [billingZip.name]: "",
+  [shippingCity.name]: "",
+  [shippingCountry.name]: "",
+  [shippingState.name]: "",
+  [shippingStreet.name]: "",
+  [shippingZip.name]: "",
 };
 
-export default InitialDetailValues;
+export default initialValues;

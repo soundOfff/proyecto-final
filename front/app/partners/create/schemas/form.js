@@ -44,7 +44,7 @@ const detailForm = {
       type: "text",
     },
     country: {
-      name: "country",
+      name: "country_id",
       label: "País",
     },
     zip: {
@@ -53,7 +53,7 @@ const detailForm = {
       type: "text",
     },
     phone: {
-      name: "phoneNumber",
+      name: "phone_number",
       label: "Teléfono",
       type: "text",
     },
@@ -67,13 +67,61 @@ const detailForm = {
       label: "Consolidador",
     },
     consolidator: {
-      name: "consolidator",
+      name: "consolidator_id",
       label: "Cliente Consolidador",
       errorMsg: "Debe seleccionar un consolidador",
     },
     language: {
       name: "language",
       label: "Idioma Predeterminado",
+    },
+    billingStreet: {
+      name: "billing_street",
+      label: "Calle",
+      type: "text",
+    },
+    billingCity: {
+      name: "billing_city",
+      label: "Localidad",
+      type: "text",
+    },
+    billingState: {
+      name: "billing_state",
+      label: "Departamento",
+      type: "text",
+    },
+    billingZip: {
+      name: "billing_zip",
+      label: "Código Postal",
+      type: "text",
+    },
+    billingCountry: {
+      name: "billing_country_id",
+      label: "País",
+    },
+    shippingStreet: {
+      name: "shipping_street",
+      label: "Calle",
+      type: "text",
+    },
+    shippingCity: {
+      name: "shipping_city",
+      label: "Localidad",
+      type: "text",
+    },
+    shippingState: {
+      name: "shipping_state",
+      label: "Departamento",
+      type: "text",
+    },
+    shippingZip: {
+      name: "shipping_zip",
+      label: "Código Postal",
+      type: "text",
+    },
+    shippingCountry: {
+      name: "shipping_country_id",
+      label: "País",
     },
   },
 };

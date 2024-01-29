@@ -23,14 +23,15 @@ class ExpenseRequest extends FormRequest
     {
         return [
             'expense_category_id' => 'required|numeric|exists:expense_categories,id',
+            'project_id' => 'nullable|numeric|exists:projects,id',
             'billable' => 'required|boolean',
             'currency_id' => 'required|numeric|exists:currencies,id',
             'date' => 'required|date',
             'amount' => 'required|numeric',
             'partner_id' => 'required|numeric|exists:partners,id',
-            'create_invoice_billable' => 'required|boolean',
-            'send_invoice_to_customer' => 'required|boolean',
-            'is_infinite' => 'required|boolean',
+            'create_invoice_billable' => 'nullable|boolean',
+            'send_invoice_to_customer' => 'nullable|boolean',
+            'is_infinite' => 'nullable|boolean',
             'total_cycles' => 'required_if:is_infinite,false',
             'name' => 'nullable|string',
             'note' => 'nullable|string',

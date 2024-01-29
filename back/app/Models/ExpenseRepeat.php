@@ -23,7 +23,7 @@ class ExpenseRepeat extends Model
         return $this->hasMany(Expense::class);
     }
 
-    public static function isCustom(int $id): bool
+    public static function isCustom(int|null $id): bool
     {
         return self::find(self::CUSTOM)->id === $id;
     }

@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->integer('added_from')->default(0);
             $table->decimal('amount');
             $table->integer('billable');
-            $table->boolean('create_invoice_billable');
+            $table->boolean('create_invoice_billable')->default(false);
             $table->integer('custom_recurring')->nullable();
             $table->integer('cycles')->nullable();
             $table->date('date');
@@ -38,7 +38,7 @@ return new class extends Migration {
             $table->string('recurring_type')->nullable();
             $table->boolean('is_infinite')->default(false);
             $table->string('reference_no')->nullable();
-            $table->boolean('send_invoice_to_customer');
+            $table->boolean('send_invoice_to_customer')->default(false);
             $table->integer('total_cycles')->nullable();
 
             $table->timestamps();

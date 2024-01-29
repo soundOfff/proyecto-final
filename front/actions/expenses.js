@@ -57,11 +57,11 @@ export async function store(data) {
 
   if (!res.ok) {
     const data = await res.json();
-
+    console.log(data);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  revalidatePath("/expense");
+  revalidatePath("/expenses");
 
   redirect("/expenses");
 }

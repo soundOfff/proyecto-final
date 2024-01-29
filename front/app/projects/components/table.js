@@ -18,6 +18,8 @@ import { useEffect, useState } from "react";
 import { show, destroy } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
+import { Icon } from "@mui/material";
+import { DescriptionOutlined } from "@mui/icons-material";
 
 export default function Table({ rows }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
@@ -103,10 +105,7 @@ export default function Table({ rows }) {
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
-          <Link
-            key={row.original.id}
-            href={`/projects/create-notes/${row.original.id}`}
-          >
+          <Link href={`/projects/create-notes/${row.original.id}`}>
             <Tooltip title="Agregar Notas">
               <EditNoteIcon color="warning" fontSize="medium" />
             </Tooltip>
@@ -121,6 +120,15 @@ export default function Table({ rows }) {
               sx={{ ml: 3, cursor: "pointer" }}
             />
           </Tooltip>
+          <Link href={`/projects/create-expenses/${row.original.id}`}>
+            <Tooltip title="Registrar Gasto">
+              <DescriptionOutlined
+                color="success"
+                fontSize="medium"
+                sx={{ ml: 3, cursor: "pointer" }}
+              />
+            </Tooltip>
+          </Link>
         </>
       ),
     },

@@ -28,7 +28,7 @@ import MDTypography from "/components/MDTypography";
 import typography from "/assets/theme/base/typography";
 
 function Footer({
-  company = { href: "#", name: "Velo legal" },
+  company = { href: "#", name: "BrandFactors" },
   links = [
     { href: "#", name: "About Us" },
     { href: "#", name: "Blog" },

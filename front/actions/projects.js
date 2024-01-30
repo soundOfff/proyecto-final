@@ -44,7 +44,7 @@ export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/projects/${id}`);
   url.search = new URLSearchParams(params);
 
-  const res = await fetch(url);
+  const res = await fetch(url, { cache: "no-store" });
 
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);

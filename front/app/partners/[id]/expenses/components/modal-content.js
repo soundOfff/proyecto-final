@@ -55,8 +55,8 @@ export default function ModalContent({ expense }) {
             color="dark"
             title="Cliente"
             description={
-              expense.user && expense.user.partners.length > 0
-                ? expense.user.partners[0].company ?? "Sin Nombre"
+              expense.partner > 0
+                ? expense.partner.company ?? "Sin Nombre"
                 : "Sin cliente"
             }
           />

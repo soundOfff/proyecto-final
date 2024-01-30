@@ -7,7 +7,7 @@ export default async function PartnerExpenses({ params: { id } }) {
   const {
     data: { expenses },
   } = await getAll({
-    include: ["category", "project", "invoice", "user.partners"],
+    include: ["category", "project", "invoice", "partner"],
     "filter[partner_id]": id,
   });
 

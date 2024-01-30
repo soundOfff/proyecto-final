@@ -24,7 +24,7 @@ export default function Table({ rows, meta }) {
     const fetchExpense = async () => {
       setExpense(
         await show(expenseIdShow, {
-          include: ["category", "project", "invoice", "user.partners"],
+          include: ["category", "project", "invoice", "partner"],
         })
       );
     };

@@ -8,13 +8,9 @@ import {
   FormGroup,
   Grid,
 } from "@mui/material";
-import { ErrorMessage } from "formik";
-import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
-import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
-import { useMemo } from "react";
 
 export default function Second({
   formData,
@@ -36,112 +32,43 @@ export default function Second({
     terms,
   } = formField;
 
-  const defaultState = useMemo(
-    () => states.find((v) => v.id == values[state.name]),
-    [states, values, state]
-  );
-
-  const defaultDiscountType = useMemo(
-    () => discountTypes.find((v) => v.id == values[discountType.name]),
-    [discountTypes, values, discountType]
-  );
-
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          value={defaultState}
-          onChange={(e, selectedState) =>
-            setFieldValue(state.name, selectedState ? selectedState.id : null)
-          }
-          isOptionEqualToValue={(option, value) => option.id === value.id}
+        <Select
+          value={values[state.name]}
           options={states}
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={state.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel="label"
+          fieldName={state.name}
+          inputLabel={state.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={state.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
-        <Autocomplete
-          value={defaultDiscountType}
-          onChange={(e, selectedDiscountType) =>
-            setFieldValue(discountType.name, selectedDiscountType?.id)
-          }
-          isOptionEqualToValue={(option) =>
-            option.id === values[discountType.name]
-          }
-          getOptionLabel={(option) => option.label}
-          options={discountTypes}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={discountType.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={discountType.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, repeatSelected) =>
-            setFieldValue(repeat.name, repeatSelected?.id)
-          }
-          options={repeats}
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={repeat.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={repeat.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <Select
+          value={values[discountType.name]}
+          options={discountTypes}
+          optionLabel="label"
+          fieldName={discountType.name}
+          inputLabel={discountType.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[repeat.name]}
+          options={repeats}
+          optionLabel="label"
+          fieldName={repeat.name}
+          inputLabel={repeat.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[agent.name]}
           options={agents}
           optionLabel="name"
           fieldName={agent.name}
@@ -207,6 +134,7 @@ export default function Second({
               <FormControlLabel
                 control={
                   <Checkbox
+                    checked={values[stopPendingRemainder.name]}
                     onChange={(e) =>
                       setFieldValue(stopPendingRemainder.name, e.target.checked)
                     }

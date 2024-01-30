@@ -25,7 +25,6 @@ export default function First({
   subServiceTypes,
   tagsData,
   currencies,
-  defaultCurrency,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
@@ -35,7 +34,7 @@ export default function First({
     dateFrom,
     dateTo,
     serviceType,
-    retainingAgent,
+    hasRetainingAgent,
     subServiceType,
     tags,
     currency,
@@ -49,10 +48,6 @@ export default function First({
       );
     }
   }, [values.partner_id]);
-
-  useEffect(() => {
-    setFieldValue(currency.name, defaultCurrency.id);
-  }, [setFieldValue, defaultCurrency, currency]);
 
   return (
     <Grid container spacing={5}>
@@ -69,7 +64,7 @@ export default function First({
 
       <Grid item xs={12} sm={6}>
         <Autocomplete
-          defaultValue={defaultCurrency}
+          value={currencies.find((c) => c.id === values[currency.name])}
           onChange={(e, currencySelected) =>
             setFieldValue(
               currency.name,
@@ -77,7 +72,9 @@ export default function First({
             )
           }
           options={currencies}
-          getOptionLabel={(option) => `${option.symbol} ${option.name}`}
+          getOptionLabel={(option) =>
+            option ? `${option.symbol} ${option.name}` : ""
+          }
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -154,6 +151,7 @@ export default function First({
 
       <Grid item xs={12} sm={6}>
         <Select
+          value={values[partner.name]}
           options={partners}
           optionLabel="company"
           fieldName={partner.name}
@@ -164,6 +162,7 @@ export default function First({
       <Grid item xs={12} sm={6}>
         {projects.length > 0 && (
           <Select
+            value={values[project.name]}
             options={projects}
             optionLabel="name"
             fieldName={project.name}
@@ -175,6 +174,7 @@ export default function First({
 
       <Grid item xs={12} sm={6}>
         <Select
+          value={values[serviceType.name]}
           options={serviceTypes}
           optionLabel="label"
           fieldName={serviceType.name}
@@ -185,6 +185,7 @@ export default function First({
       <Grid item xs={6}>
         <Autocomplete
           multiple
+          value={values[tags.name]}
           onChange={(e, tagsSelected) => setFieldValue(tags.name, tagsSelected)}
           options={tagsData}
           getOptionLabel={(option) => option.name}
@@ -211,6 +212,7 @@ export default function First({
       </Grid>
       <Grid item xs={12} sm={6}>
         <Select
+          value={values[subServiceType.name]}
           options={subServiceTypes}
           inputLabel={subServiceType.label}
           optionLabel="label"
@@ -224,12 +226,13 @@ export default function First({
           <FormControlLabel
             control={
               <Switch
+                checked={values[hasRetainingAgent.name]}
                 onChange={(e) =>
-                  setFieldValue(retainingAgent.name, e.target.checked)
+                  setFieldValue(hasRetainingAgent.name, e.target.checked)
                 }
               />
             }
-            label={retainingAgent.label}
+            label={hasRetainingAgent.label}
           />
         </FormGroup>
       </Grid>

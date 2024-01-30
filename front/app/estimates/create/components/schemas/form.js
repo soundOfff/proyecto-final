@@ -46,17 +46,13 @@ const form = {
       label: "Tipo de servicio",
       errorMsg: "El tipo de servicio es requerido",
     },
-    retainingAgent: {
-      name: "agent_id",
-      label: "Agente retenedor",
-    },
     subServiceType: {
       name: "sub_service_id",
       label: "Sub tipo de servicio",
       errorMsg: "El sub tipo de servicio es requerido",
     },
     stopPendingRemainder: {
-      name: "stop_pending_remainder",
+      name: "cancel_overdue_remainder",
       label: "Impedir el envío de recordatorios pendientes para esta factura",
     },
     tags: {
@@ -77,8 +73,12 @@ const form = {
       name: "reference_no",
       label: "Referencia",
     },
+    hasRetainingAgent: {
+      name: "has_retaining_agent",
+      label: "Agente retenedor",
+    },
     agent: {
-      name: "agent_id",
+      name: "sale_agent",
       label: "Agente",
       errorMsg: "Debe seleccionar un agente",
     },

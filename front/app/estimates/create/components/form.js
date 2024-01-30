@@ -46,7 +46,9 @@ export default function FormComponent({
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
-  initialValues.number = `00${Number(maxEstimateId) + 1}`;
+  const { number, currency } = formField;
+  initialValues[number.name] = `00${Number(maxEstimateId) + 1}`;
+  initialValues[currency.name] = defaultCurrency.id;
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -60,7 +62,6 @@ export default function FormComponent({
               subServiceTypes: [{ id: 1, label: "Subtipo1" }],
               currencies,
               tagsData: tags,
-              defaultCurrency,
             }}
           />
         );

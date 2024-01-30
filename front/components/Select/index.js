@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Autocomplete } from "@mui/material";
 import { ErrorMessage } from "formik";
 import MDInput from "/components/MDInput";
@@ -11,19 +11,24 @@ export default function Select({
   customOptionLabel,
   fieldName,
   inputLabel,
-  defaultValue,
+  value,
   setFieldValue,
   ...rest
 }) {
+  const valueMemoized = useMemo(
+    () => options.find((option) => option.id === value),
+    [options, value]
+  );
+
   return (
     <MDBox>
       <Autocomplete
         {...rest}
-        onChange={(_, value) => setFieldValue(fieldName, value?.id ?? "")}
+        value={valueMemoized ?? null}
+        onChange={(_, newValue) => setFieldValue(fieldName, newValue?.id ?? "")}
         options={options}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         getOptionLabel={(option) => option[optionLabel]}
-        value={defaultValue}
         renderInput={(params) => (
           <>
             <MDInput

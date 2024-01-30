@@ -63,7 +63,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       [taxes.name]: [],
     },
     validationSchema: addItemValidationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, actions) => {
       setFieldValueExternal(items.name, [
         ...externalValues.items,
         {
@@ -85,6 +85,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       setFieldValue(taxes.name, []);
       setFieldValue(discount.name, "");
       setFieldValue(unit.name, "");
+      actions.setTouched({});
     },
   });
 
@@ -93,8 +94,9 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       setFieldValue(description.name, item.description);
       setFieldValue(longDescription.name, item.long_description);
       setFieldValue(rate.name, item.rate);
+      setFieldValue(quantity.name, 1);
     }
-  }, [item, description, longDescription, rate, setFieldValue]);
+  }, [item, description, longDescription, rate, quantity, setFieldValue]);
 
   useEffect(() => {
     if (item) {

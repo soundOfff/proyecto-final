@@ -11,7 +11,7 @@ export default async function Expenses({
     data: { expenses },
     meta,
   } = await getAllExpenses({
-    include: ["category", "project", "invoice", "user.partners"],
+    include: ["category", "project", "invoice", "partner"],
     perPage,
     page,
   });

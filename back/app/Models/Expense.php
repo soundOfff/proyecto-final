@@ -44,9 +44,9 @@ class Expense extends Model
         'added_from',
     ];
 
-    public function user(): BelongsTo
+    public function partner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Partner::class);
     }
 
     public function category(): BelongsTo

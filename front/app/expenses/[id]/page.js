@@ -7,7 +7,7 @@ import moneyFormat from "/utils/moneyFormat";
 
 export default async function Page({ params: { id } }) {
   const expense = await showExpense(id, {
-    include: ["category", "project", "invoice", "user.partners"],
+    include: ["category", "project", "invoice", "partner"],
   });
 
   return (

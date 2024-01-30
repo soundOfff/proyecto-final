@@ -19,7 +19,7 @@ class ExpenseController extends Controller
     {
         $query = QueryBuilder::for(Expense::class)
         ->allowedIncludes([
-            'user.partners',
+            'partner',
             'category',
             'project',
             'invoice',
@@ -59,7 +59,7 @@ class ExpenseController extends Controller
     {
         $expense = QueryBuilder::for(Expense::class)
         ->allowedIncludes([
-            'user.partners',
+            'partner',
             'category',
             'project',
             'invoice',

@@ -75,12 +75,10 @@ export default function Table({ rows, meta }) {
     },
     {
       Header: "Cliente",
-      accessor: "user",
+      accessor: "partner",
       Cell: ({ value }) =>
-        value && value.partners ? (
-          <Link href={`/partners/${value.partners[0].id}/profile`}>
-            {value.partners[0].company}
-          </Link>
+        value ? (
+          <Link href={`/partners/${value.id}/profile`}>{value.company}</Link>
         ) : null,
     },
     {

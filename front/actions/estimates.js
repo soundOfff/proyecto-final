@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/estimates`);
   url.search = new URLSearchParams(params);
+  console.log(url.toString());
 
   const res = await fetch(url, {
     headers: {

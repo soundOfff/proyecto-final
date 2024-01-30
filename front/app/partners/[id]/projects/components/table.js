@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { show, destroy } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
+import { DescriptionOutlined } from "@mui/icons-material";
 
 export default function Table({ rows }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
@@ -53,7 +54,7 @@ export default function Table({ rows }) {
       accessor: "name",
       Cell: ({ value, row }) => {
         return (
-          <MaterialLink href={`projects/${row.original.id}`} color="info">
+          <MaterialLink href={`/projects/${row.original.id}`} color="info">
             {value}
           </MaterialLink>
         );
@@ -121,6 +122,15 @@ export default function Table({ rows }) {
               sx={{ ml: 3, cursor: "pointer" }}
             />
           </Tooltip>
+          <Link href={`/projects/create-expenses/${row.original.id}`}>
+            <Tooltip title="Registrar Gasto">
+              <DescriptionOutlined
+                color="success"
+                fontSize="medium"
+                sx={{ ml: 3, cursor: "pointer" }}
+              />
+            </Tooltip>
+          </Link>
         </>
       ),
     },

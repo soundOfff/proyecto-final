@@ -54,8 +54,9 @@ export async function show(id, params) {
   return project;
 }
 
-export async function getCountByStatuses() {
+export async function getCountByStatuses(params) {
   const url = new URL(`${process.env.API_URL}/projects/counts/status`);
+  url.search = new URLSearchParams(params);
 
   const res = await fetch(url);
 

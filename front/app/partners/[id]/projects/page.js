@@ -32,7 +32,7 @@ export default async function PartnerProjects({
 
   const projects = await getAllProjects(params);
   const statuses = await getAllStatuses();
-  const countByStatuses = await getCountByStatuses();
+  const countByStatuses = await getCountByStatuses({ partner_id: id });
 
   return (
     <MDBox my={3}>

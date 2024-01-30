@@ -75,6 +75,7 @@ class EstimateController extends Controller
             'shippingCountry',
             'tags',
         ])
+        ->allowedFilters('partner_id')
         ->orderBy('id', 'desc');
 
         $estimates = request()->has('perPage')

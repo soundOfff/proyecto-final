@@ -110,12 +110,20 @@ class ProjectController extends Controller
         return response()->json(null, 204);
     }
 
-    public function countByStatuses()
+    public function countByStatuses(Request $request)
     {
+        $partnerId = $request->input('partner_id');
+
         $countByStatuses = DB::table('project_statuses')
-            ->selectRaw('label, count(projects.project_status_id) as count')
+            ->when($partnerId, function ($query, $partnerId) {
+                return $query->selectRaw("label, COUNT(IF(defendant_id = $partnerId, 1, NULL)) as count");
+            },
+                function ($query) {
+                    return $query->selectRaw('label, COUNT(project_status_id) as count');
+                })
+
             ->leftJoin('projects', 'projects.project_status_id', '=', 'project_statuses.id')
-            ->groupBy('label', 'project_statuses.id')
+            ->groupBy('label')
             ->get();
 
         return response()->json($countByStatuses);

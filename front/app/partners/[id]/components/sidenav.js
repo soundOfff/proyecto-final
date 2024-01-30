@@ -24,7 +24,7 @@ export default function Sidenav() {
     { icon: "trending_up", label: "Pagos", href: "payments" },
     { icon: "description", label: "Propuestas", href: "proposals" },
     { icon: "note", label: "Notas de Crédito", href: "credit-notes" },
-    { icon: "content_paste", label: "Proformas", href: "documents" },
+    { icon: "content_paste", label: "Proformas", href: "estimates" },
     { icon: "refresh", label: "Suscripciones", href: "subscriptions" },
     { icon: "text_snippet", label: "Gastos", href: "expenses" },
     { icon: "article", label: "Contratos", href: "contracts" },

@@ -17,51 +17,51 @@ const invoiceForm = {
   formId: "partner",
   formField: {
     billingStreet: {
-      name: "billingStreet",
+      name: "billing_street",
       label: "Calle",
       type: "text",
     },
     billingCity: {
-      name: "billingCity",
+      name: "billing_city",
       label: "Localidad",
       type: "text",
     },
     billingState: {
-      name: "billingState",
+      name: "billing_state",
       label: "Departamento",
       type: "text",
     },
     billingZip: {
-      name: "billingZip",
+      name: "billing_zip",
       label: "Código Postal",
       type: "text",
     },
     billingCountry: {
-      name: "billingCountry",
+      name: "billing_country_id",
       label: "País",
     },
     shippingStreet: {
-      name: "shippingStreet",
+      name: "shipping_street",
       label: "Calle",
       type: "text",
     },
     shippingCity: {
-      name: "shippingCity",
+      name: "shipping_city",
       label: "Localidad",
       type: "text",
     },
     shippingState: {
-      name: "shippingState",
+      name: "shipping_state",
       label: "Departamento",
       type: "text",
     },
     shippingZip: {
-      name: "shippingZip",
+      name: "shipping_zip",
       label: "Código Postal",
       type: "text",
     },
     shippingCountry: {
-      name: "shippingCountry",
+      name: "shipping_country_id",
       label: "País",
     },
   },

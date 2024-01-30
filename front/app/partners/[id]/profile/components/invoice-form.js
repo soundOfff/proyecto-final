@@ -1,26 +1,18 @@
 "use client";
 
-import {
-  Autocomplete,
-  Card,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Switch,
-} from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
+import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
-import { ErrorMessage, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
+import { update as updatePartner } from "/actions/partners";
 
 import invoiceForm from "../schemas/invoice-form";
 import invoiceValidations from "../schemas/invoice-validations";
 
 export default function InvoiceFormComponent({ partner, countries }) {
-  const initialValues = partner;
-
   const {
     formId,
     formField: {
@@ -36,6 +28,22 @@ export default function InvoiceFormComponent({ partner, countries }) {
       billingStreet,
     },
   } = invoiceForm;
+
+  const initialValues = {
+    country_id: partner.countryId,
+    company: partner.company,
+    consolidator_id: partner.consolidatorId,
+    [shippingCity.name]: partner.shippingCity,
+    [shippingCountry.name]: partner.shippingCountryId,
+    [shippingState.name]: partner.shippingState,
+    [shippingZip.name]: partner.shippingZip,
+    [shippingStreet.name]: partner.shippingStreet,
+    [billingCity.name]: partner.billingCity,
+    [billingCountry.name]: partner.billingCountryId,
+    [billingState.name]: partner.billingState,
+    [billingZip.name]: partner.billingZip,
+    [billingStreet.name]: partner.billingStreet,
+  };
 
   const submitForm = async (values, actions) => {
     await updatePartner(partner.id, values);
@@ -149,88 +157,24 @@ export default function InvoiceFormComponent({ partner, countries }) {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <Autocomplete
-                    onChange={(e, countrySelected) =>
-                      setFieldValue(billingCountry.name, countrySelected)
-                    }
+                  <Select
+                    value={values[billingCountry.name]}
                     options={countries}
-                    isOptionEqualToValue={(option, value) =>
-                      option.id === value.id
-                    }
-                    getOptionLabel={(option) => option.shortName}
-                    value={
-                      values.billingCountry
-                        ? {
-                            id: values.billingCountry.id,
-                            shortName: values.billingCountry.shortName,
-                          }
-                        : null
-                    }
-                    renderInput={(params) => (
-                      <>
-                        <MDInput
-                          {...params}
-                          variant="standard"
-                          label={billingCountry.label}
-                          fullWidth
-                          InputLabelProps={{ shrink: true }}
-                          inputProps={{ ...params.inputProps }}
-                        />
-                      </>
-                    )}
+                    optionLabel="shortName"
+                    fieldName={billingCountry.name}
+                    inputLabel={billingCountry.label}
+                    setFieldValue={setFieldValue}
                   />
-                  <MDBox mt={0.75}>
-                    <MDTypography
-                      component="div"
-                      variant="caption"
-                      color="error"
-                      fontWeight="regular"
-                    >
-                      <ErrorMessage name={billingCountry.name} />
-                    </MDTypography>
-                  </MDBox>
                 </Grid>
                 <Grid item xs={6}>
-                  <Autocomplete
-                    onChange={(e, countrySelected) =>
-                      setFieldValue(shippingCountry.name, countrySelected)
-                    }
+                  <Select
+                    value={values[shippingCountry.name]}
                     options={countries}
-                    isOptionEqualToValue={(option, value) =>
-                      option.id === value.id
-                    }
-                    getOptionLabel={(option) => option.shortName}
-                    value={
-                      values.shippingCountry
-                        ? {
-                            id: values.shippingCountry.id,
-                            shortName: values.shippingCountry.shortName,
-                          }
-                        : null
-                    }
-                    renderInput={(params) => (
-                      <>
-                        <MDInput
-                          {...params}
-                          variant="standard"
-                          label={shippingCountry.label}
-                          fullWidth
-                          InputLabelProps={{ shrink: true }}
-                          inputProps={{ ...params.inputProps }}
-                        />
-                      </>
-                    )}
+                    optionLabel="shortName"
+                    fieldName={shippingCountry.name}
+                    inputLabel={shippingCountry.label}
+                    setFieldValue={setFieldValue}
                   />
-                  <MDBox mt={0.75}>
-                    <MDTypography
-                      component="div"
-                      variant="caption"
-                      color="error"
-                      fontWeight="regular"
-                    >
-                      <ErrorMessage name={shippingCountry.name} />
-                    </MDTypography>
-                  </MDBox>
                 </Grid>
                 <Grid item xs={12}>
                   <MDBox display="flex" justifyContent="end">

@@ -46,7 +46,8 @@ class PartnerController extends Controller
             'user.contacts',
             'country',
             'consolidator',
-        ]);
+        ])
+        ->orderBy('id', 'desc');
 
         $partners = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -83,7 +84,7 @@ class PartnerController extends Controller
         ])
         ->find($partner->id);
 
-    return new PartnerResource($partner);
+        return new PartnerResource($partner);
     }
 
     /**
@@ -91,7 +92,7 @@ class PartnerController extends Controller
      */
     public function update(PartnerRequest $request, Partner $partner)
     {
-        $partnerUpdate = $request->validated();
+        $partnerUpdate = $request->all();
 
         Partner::find($partner->id)->update($partnerUpdate);
 

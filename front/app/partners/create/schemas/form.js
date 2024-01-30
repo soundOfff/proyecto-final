@@ -46,6 +46,7 @@ const detailForm = {
     country: {
       name: "country_id",
       label: "País",
+      errorMsg: "Debe seleccionar un país",
     },
     zip: {
       name: "zip",

@@ -33,13 +33,13 @@ const {
 const detailValidations = Yup.object().shape({
   [company.name]: Yup.string().required(company.errorMsg),
   [state.name]: Yup.string().nullable(),
-  [country.name]: Yup.object().nullable(),
+  [country.name]: Yup.number().nullable(),
   [zip.name]: Yup.string().nullable(),
   [address.name]: Yup.string().nullable(),
   [ruc.name]: Yup.string().nullable(),
   [city.name]: Yup.string().nullable(),
   [phone.name]: Yup.string().nullable(),
-  [consolidator.name]: Yup.object().required(consolidator.errorMsg),
+  [consolidator.name]: Yup.number().required(consolidator.errorMsg),
 });
 
 export default detailValidations;

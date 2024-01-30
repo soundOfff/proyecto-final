@@ -20,6 +20,7 @@ class PartnerResource extends JsonResource
             'active' => $this->active,
             'addedFrom' => $this->added_from,
             'address' => $this->address,
+            'countryId' => $this->country_id,
             'billingCity' => $this->billing_city,
             'billingCountryId' => $this->billing_country_id,
             'billingState' => $this->billing_state,

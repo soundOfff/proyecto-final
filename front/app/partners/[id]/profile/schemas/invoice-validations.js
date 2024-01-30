@@ -36,12 +36,12 @@ const invoiceValidations = Yup.object().shape({
   [shippingState.name]: Yup.string().nullable(),
   [shippingZip.name]: Yup.string().nullable(),
   [shippingStreet.name]: Yup.string().nullable(),
-  [shippingCountry.name]: Yup.object().nullable(),
+  [shippingCountry.name]: Yup.number().nullable(),
   [billingCity.name]: Yup.string().nullable(),
   [billingState.name]: Yup.string().nullable(),
   [billingZip.name]: Yup.string().nullable(),
   [billingStreet.name]: Yup.string().nullable(),
-  [billingCountry.name]: Yup.object().nullable(),
+  [billingCountry.name]: Yup.number().nullable(),
 });
 
 export default invoiceValidations;

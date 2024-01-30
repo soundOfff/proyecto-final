@@ -74,16 +74,6 @@ export default function Table({ rows }) {
       },
     },
     {
-      Header: "Cliente",
-      accessor: "user",
-      Cell: ({ value }) =>
-        value && value.partners ? (
-          <Link href={`/partners/${value.partners[0].id}/profile`}>
-            {value.partners[0].company}
-          </Link>
-        ) : null,
-    },
-    {
       Header: "Factura",
       accessor: "invoice.id",
     },

@@ -153,6 +153,16 @@ export default function DetailFormComponent({
                     </>
                   )}
                 />
+                <MDBox mt={0.75}>
+                  <MDTypography
+                    component="div"
+                    variant="caption"
+                    color="error"
+                    fontWeight="regular"
+                  >
+                    <ErrorMessage name={country.name} />
+                  </MDTypography>
+                </MDBox>
               </Grid>
               <Grid
                 item

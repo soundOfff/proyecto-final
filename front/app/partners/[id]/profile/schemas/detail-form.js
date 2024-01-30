@@ -44,7 +44,7 @@ const detailForm = {
       type: "text",
     },
     country: {
-      name: "country",
+      name: "country_id",
       label: "País",
     },
     zip: {
@@ -53,8 +53,8 @@ const detailForm = {
       type: "text",
     },
     phone: {
-      name: "phoneNumber",
-      label: "Teléfono",
+      name: "phone_number",
+      label: "Telénono",
       type: "text",
     },
     website: {
@@ -63,11 +63,11 @@ const detailForm = {
       errorMsg: "Debe seleccionar un tipo de servicio",
     },
     isConsolidator: {
-      name: "isConsolidator",
+      name: "is_consolidator",
       label: "Consolidador",
     },
     consolidator: {
-      name: "consolidator",
+      name: "consolidator_id",
       label: "Cliente Consolidador",
       errorMsg: "Debe seleccionar un consolidador",
     },

@@ -3,21 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-function map(data) {
-  return {
-    ...data,
-    is_consolidator: data.isConsolidator,
-    consolidator_id: data.consolidator.id,
-    phone_number: data.phoneNumber,
-    country_id: data.country.id,
-  };
-}
-
 export async function getSelect(params) {
   const url = new URL(`${process.env.API_URL}/partners-select`);
   url.search = new URLSearchParams(params);
 
-  const res = await fetch(url);
+  const res = await fetch(url, { cache: "no-store" });
 
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
@@ -57,6 +47,7 @@ export async function show(id, params) {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -90,9 +81,10 @@ export async function store(data) {
 }
 
 export async function update(id, data) {
+  console.log(data);
   const res = await fetch(`${process.env.API_URL}/partners/${id}`, {
     method: "PUT",
-    body: JSON.stringify(map(data)),
+    body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

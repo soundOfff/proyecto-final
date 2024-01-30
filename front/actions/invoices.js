@@ -3,7 +3,7 @@
 export async function getSelect() {
   const url = new URL(`${process.env.API_URL}/invoices-select`);
 
-  const res = await fetch(url);
+  const res = await fetch(url, { cache: "no-store" });
 
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);

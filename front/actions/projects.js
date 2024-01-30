@@ -11,6 +11,7 @@ export async function getSelect(partnerId, params) {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {

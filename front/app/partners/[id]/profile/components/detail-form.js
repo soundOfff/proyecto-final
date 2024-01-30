@@ -12,6 +12,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
+import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { ErrorMessage, Form, Formik } from "formik";
 import { update as updatePartner } from "/actions/partners";
@@ -24,8 +25,6 @@ export default function DetailFormComponent({
   consolidators,
   countries,
 }) {
-  const initialValues = partner;
-
   const {
     formId,
     formField: {
@@ -41,6 +40,13 @@ export default function DetailFormComponent({
       zip,
     },
   } = detailForm;
+
+  const initialValues = {
+    ...partner,
+    [country.name]: partner.countryId,
+    [isConsolidator.name]: partner.isConsolidator,
+    [consolidator.name]: partner.consolidatorId,
+  };
 
   const submitForm = async (values, actions) => {
     await updatePartner(partner.id, values);
@@ -107,73 +113,25 @@ export default function DetailFormComponent({
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
-                      <Autocomplete
-                        onChange={(e, consolidatorSelected) =>
-                          setFieldValue(consolidator.name, consolidatorSelected)
-                        }
+                      <Select
+                        value={values[consolidator.name]}
                         options={consolidators.filter(
                           (consolidator) => consolidator.id !== partner.id
                         )}
-                        getOptionLabel={(option) => option.company}
-                        isOptionEqualToValue={(option, value) =>
-                          option.id === value.id
-                        }
-                        value={
-                          values.consolidator
-                            ? {
-                                id: values.consolidator.id,
-                                company: values.consolidator.company,
-                              }
-                            : null
-                        }
-                        renderInput={(params) => (
-                          <MDInput
-                            {...params}
-                            variant="standard"
-                            label={consolidator.label}
-                            fullWidth
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{ ...params.inputProps }}
-                          />
-                        )}
+                        optionLabel="company"
+                        fieldName={consolidator.name}
+                        inputLabel={consolidator.label}
+                        setFieldValue={setFieldValue}
                       />
-                      <MDBox mt={0.75}>
-                        <MDTypography
-                          component="div"
-                          variant="caption"
-                          color="error"
-                          fontWeight="regular"
-                        >
-                          <ErrorMessage name={consolidator.name} />
-                        </MDTypography>
-                      </MDBox>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                      <Autocomplete
-                        onChange={(e, countrySelected) =>
-                          setFieldValue(country.name, countrySelected)
-                        }
+                      <Select
+                        value={values[country.name]}
                         options={countries}
-                        isOptionEqualToValue={(option, value) =>
-                          option.id === value.id
-                        }
-                        getOptionLabel={(option) => option.shortName}
-                        value={{
-                          id: values.country.id,
-                          shortName: values.country.shortName,
-                        }}
-                        renderInput={(params) => (
-                          <>
-                            <MDInput
-                              {...params}
-                              variant="standard"
-                              label={country.label}
-                              fullWidth
-                              InputLabelProps={{ shrink: true }}
-                              inputProps={{ ...params.inputProps }}
-                            />
-                          </>
-                        )}
+                        optionLabel="shortName"
+                        fieldName={country.name}
+                        inputLabel={country.label}
+                        setFieldValue={setFieldValue}
                       />
                     </Grid>
                     <Grid
@@ -188,7 +146,7 @@ export default function DetailFormComponent({
                         <FormControlLabel
                           control={
                             <Switch
-                              defaultValue={values.isConsolidator}
+                              checked={values[isConsolidator.name]}
                               onChange={(e) =>
                                 setFieldValue(
                                   isConsolidator.name,

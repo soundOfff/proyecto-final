@@ -54,10 +54,6 @@ export default function Footer({ invoice }) {
     setRetainingTotalTax(retainingTotalTax);
   }, [invoice]);
 
-  const handleToInvoice = async () => {
-    await toInvoice(invoice.id);
-  };
-
   return (
     <MDBox p={3} className="footer-print">
       <Grid container>

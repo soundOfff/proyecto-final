@@ -158,7 +158,7 @@ const form = {
       errorMsg: "Debe seleccionar al menos un item",
     },
     totalDiscount: {
-      name: "total_discount",
+      name: "discount_total",
     },
     subtotal: {
       name: "subtotal",

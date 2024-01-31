@@ -56,7 +56,7 @@ export default function Totals({ formData }) {
       adjustmentValue;
 
     setSubtotal(subtotal);
-    setTotalDiscount(totalDiscount);
+    setTotalDiscount(-totalDiscount);
     setItbmsTotalTax(itbmsTotalTax);
     setRetainingTotalTax(retainingTotalTax);
     setTotal(total);

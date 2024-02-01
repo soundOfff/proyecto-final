@@ -27,7 +27,7 @@ export default async function Show({ params: { id } }) {
     <MDBox mt={2} mb={4}>
       <Grid container justifyContent="center">
         <Grid item xs={12} sm={10} md={8}>
-          <Card>
+          <Card className="container-print">
             <Header invoice={invoice} />
             <Table invoice={invoice} />
             <Footer invoice={invoice} />

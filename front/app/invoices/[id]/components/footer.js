@@ -59,7 +59,7 @@ export default function Footer({ invoice }) {
   };
 
   return (
-    <MDBox p={3}>
+    <MDBox p={3} className="footer-print">
       <Grid container>
         <Grid item xs={12}>
           <Grid container>

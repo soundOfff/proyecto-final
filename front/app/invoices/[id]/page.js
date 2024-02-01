@@ -24,10 +24,10 @@ export default async function Show({ params: { id } }) {
   });
 
   return (
-    <MDBox mt={2} mb={4}>
-      <Grid container justifyContent="center">
-        <Grid item xs={12} sm={10} md={8}>
-          <Card className="container-print">
+    <MDBox mt={2} mb={4} className="container-print">
+      <Grid container justifyContent="center" className="card-container-print">
+        <Grid item xs={12} sm={10} md={8} className="card-container-print">
+          <Card className="card-container-print">
             <Header invoice={invoice} />
             <Table invoice={invoice} />
             <Footer invoice={invoice} />

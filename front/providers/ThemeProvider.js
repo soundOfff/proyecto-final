@@ -96,7 +96,7 @@ export default function Theme(props) {
       bottom="2rem"
       zIndex={99}
       color="dark"
-      sx={{ cursor: "pointer" }}
+      sx={{ cursor: "pointer", displayPrint: "none" }}
       onClick={handleConfiguratorOpen}
     >
       <Icon fontSize="small" color="inherit">

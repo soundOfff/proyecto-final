@@ -40,8 +40,8 @@ export default async function Show({ params: { id } }) {
   return (
     <MDBox mt={2} mb={4}>
       <Grid container justifyContent="center">
-        <Grid item xs={12} sm={10} md={8}>
-          <Card>
+        <Grid item xs={12} sm={10} md={8} className="container-print">
+          <Card className="container-print">
             <Header estimate={estimate} />
             <Table estimate={estimate} />
             <Footer estimate={estimate} />

@@ -56,6 +56,7 @@ function Footer({
       flexDirection={{ xs: "column", lg: "row" }}
       justifyContent="space-between"
       alignItems="center"
+      sx={{ displayPrint: "none" }}
       px={1.5}
     >
       <MDBox

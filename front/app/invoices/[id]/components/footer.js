@@ -150,6 +150,7 @@ export default function Footer({ invoice }) {
               variant="gradient"
               color="dark"
               onClick={() => window.print(this)}
+              sx={{ displayPrint: "none" }}
             >
               Imprimir
             </MDButton>

@@ -59,7 +59,7 @@ export default function Footer({ estimate }) {
   };
 
   return (
-    <MDBox p={3}>
+    <MDBox p={3} className="footer-print">
       <Grid container>
         <Grid item xs={12}>
           <Grid container>
@@ -151,7 +151,7 @@ export default function Footer({ estimate }) {
                 variant="gradient"
                 color="success"
                 onClick={handleToInvoice}
-                sx={{ mr: 2 }}
+                sx={{ mr: 2, displayPrint: "none" }}
               >
                 Convertir a Factura
               </MDButton>
@@ -160,6 +160,7 @@ export default function Footer({ estimate }) {
               variant="gradient"
               color="dark"
               onClick={() => window.print(this)}
+              sx={{ displayPrint: "none" }}
             >
               Imprimir
             </MDButton>

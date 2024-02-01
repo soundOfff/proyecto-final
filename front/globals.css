@@ -1,3 +1,69 @@
 /* @tailwind base; */
 @tailwind components;
 @tailwind utilities;
+
+.navbar-print {
+    @media print {
+        display: none !important;
+    }
+}
+
+.container-print {
+    @media print {
+        @page {
+            size: portrait;
+            margin: 0;
+            padding: 0;
+        }
+
+        table,
+        th,
+        td {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        body {
+            background-color: white !important;
+            transform: scale(0.8);
+            margin: -50px -73px 0;
+            width: 100%;
+        }
+
+        p {
+            white-space: normal;
+            width: 170px px;
+            word-break: break-word;
+        }
+    }
+}
+
+.table-print {
+    @media print {
+        width: min-content;
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+}
+
+.footer-print {
+    @media print {
+        float:none;
+        min-width: 100%;
+        min-height: min-content;
+        font-size: small;
+        justify-content: center;
+        align-items: center;
+        page-break-before: always;
+
+        button {
+            display: none;
+        }
+    }
+}

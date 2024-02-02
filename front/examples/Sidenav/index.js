@@ -286,6 +286,7 @@ function Sidenav({
       {...rest}
       variant="permanent"
       ownerState={{ transparentSidenav, whiteSidenav, miniSidenav, darkMode }}
+      sx={{ displayPrint: "none" }}
     >
       <MDBox pt={3} pb={1} px={4} textAlign="center">
         <MDBox

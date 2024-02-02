@@ -64,7 +64,7 @@ const headers = [
 
 export default function TableComponent({ invoice }) {
   return (
-    <MDBox p={3}>
+    <MDBox p={3} className="table-print">
       <MDBox width="100%" overflow="auto">
         <Table sx={{ minWidth: "32rem" }}>
           <MDBox component="thead">

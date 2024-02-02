@@ -149,9 +149,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
     <AppBar
       position={absolute ? "absolute" : navbarType}
       color="inherit"
-      sx={(theme) =>
-        navbar(theme, { transparentNavbar, absolute, light, darkMode })
+      sx={
+        ...(theme) =>
+          navbar(theme, { transparentNavbar, absolute, light, darkMode })
       }
+      className="navbar-print"
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <MDBox

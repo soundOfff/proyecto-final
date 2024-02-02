@@ -16,12 +16,7 @@ import form from "./schemas/form";
 
 import { store as storeEstimate } from "/actions/estimates";
 
-import { useEffect, useState } from "react";
-import {
-  AFTER_TAX,
-  BEFORE_TAX,
-  WITHOUT_DISCOUNT,
-} from "/utils/constants/discountTypes";
+import { useState } from "react";
 
 const steps = [
   "Nueva proforma",
@@ -31,14 +26,18 @@ const steps = [
 
 export default function FormComponent({
   partners,
-  repeats,
   taxes,
+  recurrings,
   groupIds,
   items,
   serviceTypes,
   agents,
   currencies,
   tags,
+  statuses,
+  itemTypes,
+  discountTypes,
+  subServiceTypes,
   maxEstimateId,
   defaultCurrency,
 }) {
@@ -59,9 +58,9 @@ export default function FormComponent({
             {...{
               partners,
               serviceTypes,
-              subServiceTypes: [{ id: 1, label: "Subtipo1" }],
+              subServiceTypes,
               currencies,
-              tagsData: tags,
+              tags,
             }}
           />
         );
@@ -70,19 +69,9 @@ export default function FormComponent({
           <Second
             formData={formData}
             {...{
-              states: [
-                { id: 1, label: "No Enviada" },
-                { id: 2, label: "Enviada" },
-                { id: 3, label: "Expirado" },
-                { id: 4, label: "Rechazado" },
-                { id: 5, label: "Aceptado" },
-              ],
-              discountTypes: [
-                { id: WITHOUT_DISCOUNT, label: "Sin descuento" },
-                { id: BEFORE_TAX, label: "Antes del impuesto" },
-                { id: AFTER_TAX, label: "Después del impuesto" },
-              ],
-              repeats,
+              statuses,
+              discountTypes,
+              recurrings,
               agents,
             }}
           />
@@ -93,10 +82,7 @@ export default function FormComponent({
             formData={formData}
             {...{
               items,
-              lineTypes: [
-                { id: 1, label: "Honorarios" },
-                { id: 2, label: "Gastos" },
-              ],
+              itemTypes,
               taxes,
               groupIds,
             }}

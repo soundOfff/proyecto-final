@@ -23,7 +23,7 @@ export default function First({
   partners,
   serviceTypes,
   subServiceTypes,
-  tagsData,
+  tags: tagsData,
   currencies,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
@@ -153,7 +153,7 @@ export default function First({
         <Select
           value={values[partner.name]}
           options={partners}
-          optionLabel="company"
+          optionLabel={(option) => option.company}
           fieldName={partner.name}
           inputLabel={partner.label}
           setFieldValue={setFieldValue}
@@ -164,7 +164,7 @@ export default function First({
           <Select
             value={values[project.name]}
             options={projects}
-            optionLabel="name"
+            optionLabel={(option) => option.name}
             fieldName={project.name}
             inputLabel={project.label}
             setFieldValue={setFieldValue}
@@ -176,7 +176,7 @@ export default function First({
         <Select
           value={values[serviceType.name]}
           options={serviceTypes}
-          optionLabel="label"
+          optionLabel={(option) => option.label}
           fieldName={serviceType.name}
           inputLabel={serviceType.label}
           setFieldValue={setFieldValue}
@@ -215,7 +215,7 @@ export default function First({
           value={values[subServiceType.name]}
           options={subServiceTypes}
           inputLabel={subServiceType.label}
-          optionLabel="label"
+          optionLabel={(option) => option.label}
           fieldName={subServiceType.name}
           setFieldValue={setFieldValue}
         />

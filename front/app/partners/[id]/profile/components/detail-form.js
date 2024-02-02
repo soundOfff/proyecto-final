@@ -118,7 +118,7 @@ export default function DetailFormComponent({
                         options={consolidators.filter(
                           (consolidator) => consolidator.id !== partner.id
                         )}
-                        optionLabel="company"
+                        optionLabel={(option) => option.company}
                         fieldName={consolidator.name}
                         inputLabel={consolidator.label}
                         setFieldValue={setFieldValue}
@@ -128,7 +128,7 @@ export default function DetailFormComponent({
                       <Select
                         value={values[country.name]}
                         options={countries}
-                        optionLabel="shortName"
+                        optionLabel={(option) => option.shortName}
                         fieldName={country.name}
                         inputLabel={country.label}
                         setFieldValue={setFieldValue}

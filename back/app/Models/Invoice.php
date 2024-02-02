@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Invoice extends Model
 {
-    use HasFactory;
+    public const TO_PAY = 1;
 
     protected $fillable = [
         'added_from',
@@ -46,9 +46,9 @@ class Invoice extends Model
         'prefix',
         'partner_id',
         'project_id',
-        'recurring',
+        'recurring_id',
         'recurring_type',
-        'sale_agent',
+        'sale_agent_id',
         'sent',
         'shipping_country_id',
         'shipping_city',
@@ -57,7 +57,7 @@ class Invoice extends Model
         'shipping_zip',
         'show_quantity_as',
         'show_shipping_on_invoice',
-        'status',
+        'invoice_status_id',
         'subscription_id',
         'subtotal',
         'terms',
@@ -86,6 +86,11 @@ class Invoice extends Model
     public function estimate(): BelongsTo
     {
         return $this->belongsTo(Estimate::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(InvoiceStatus::class);
     }
 
     public function billingCountry(): BelongsTo

@@ -17,6 +17,11 @@ class Estimate extends Model
         'invoice_id',
         'billing_country_id',
         'shipping_country_id',
+        'estimate_status_id',
+        'recurring_id',
+        'discount_type_id',
+        'sub_service_type_id',
+        'sale_agent_id',
         'sent',
         'date_send',
         'deleted_customer_name',
@@ -24,6 +29,7 @@ class Estimate extends Model
         'prefix',
         'number_format',
         'hash',
+        'has_retaining_agent',
         'date',
         'expiry_date',
         'subtotal',
@@ -31,16 +37,13 @@ class Estimate extends Model
         'total',
         'adjustment',
         'added_from',
-        'status',
         'client_note',
         'admin_note',
         'discount_percent',
         'discount_total',
-        'discount_type',
         'invoiced_date',
         'terms',
         'reference_no',
-        'sale_agent',
         'billing_street',
         'billing_city',
         'billing_state',
@@ -61,7 +64,6 @@ class Estimate extends Model
         'acceptance_ip',
         'signature',
         'cancel_overdue_reminders',
-        'recurring',
         'created_at',
     ];
 
@@ -93,6 +95,31 @@ class Estimate extends Model
     public function shippingCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'shipping_country_id');
+    }
+
+    public function subServiceType(): BelongsTo
+    {
+        return $this->belongsTo(SubServiceType::class);
+    }
+
+    public function discountType(): BelongsTo
+    {
+        return $this->belongsTo(DiscountType::class);
+    }
+
+    public function saleAgent(): BelongsTo
+    {
+        return $this->belongsTo(Partner::class, 'sale_agent_id');
+    }
+
+    public function recurring(): BelongsTo
+    {
+        return $this->belongsTo(Recurring::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(EstimateStatus::class, 'estimate_status_id');
     }
 
     public function tags(): MorphToMany

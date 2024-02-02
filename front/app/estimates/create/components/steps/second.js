@@ -14,18 +14,18 @@ import Select from "/components/Select";
 
 export default function Second({
   formData,
-  states,
+  statuses,
   discountTypes,
-  repeats,
+  recurrings,
   agents,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
     stopPendingRemainder,
-    state,
+    status,
     reference,
     agent,
-    repeat,
+    recurring,
     discountType,
     adminNote,
     clientNote,
@@ -36,11 +36,11 @@ export default function Second({
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <Select
-          value={values[state.name]}
-          options={states}
-          optionLabel="label"
-          fieldName={state.name}
-          inputLabel={state.label}
+          value={values[status.name]}
+          options={statuses}
+          optionLabel={(option) => option.label}
+          fieldName={status.name}
+          inputLabel={status.label}
           setFieldValue={setFieldValue}
         />
       </Grid>
@@ -49,7 +49,7 @@ export default function Second({
         <Select
           value={values[discountType.name]}
           options={discountTypes}
-          optionLabel="label"
+          optionLabel={(option) => option.label}
           fieldName={discountType.name}
           inputLabel={discountType.label}
           setFieldValue={setFieldValue}
@@ -57,11 +57,11 @@ export default function Second({
       </Grid>
       <Grid item xs={12} sm={6}>
         <Select
-          value={values[repeat.name]}
-          options={repeats}
-          optionLabel="label"
-          fieldName={repeat.name}
-          inputLabel={repeat.label}
+          value={values[recurring.name]}
+          options={recurrings}
+          optionLabel={(option) => option.label}
+          fieldName={recurring.name}
+          inputLabel={recurring.label}
           setFieldValue={setFieldValue}
         />
       </Grid>
@@ -70,7 +70,7 @@ export default function Second({
         <Select
           value={values[agent.name]}
           options={agents}
-          optionLabel="name"
+          optionLabel={(option) => option.name}
           fieldName={agent.name}
           inputLabel={agent.label}
           setFieldValue={setFieldValue}

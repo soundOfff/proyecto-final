@@ -81,7 +81,6 @@ export async function store(data) {
 }
 
 export async function update(id, data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/partners/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),

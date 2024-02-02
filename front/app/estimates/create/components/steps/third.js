@@ -16,7 +16,7 @@ import ItemTotals from "/components/ItemTotals";
 
 export default function Third({
   formData,
-  lineTypes,
+  itemTypes,
   taxes,
   groupIds,
   items: itemsData,
@@ -109,10 +109,10 @@ export default function Third({
         formData={formData}
         item={item}
         taxesData={taxes}
-        types={lineTypes}
+        types={itemTypes}
       />
       <Grid item xs={12}>
-        <ItemTable formData={formData} />
+        <ItemTable formData={formData} types={itemTypes} />
       </Grid>
       <ItemTotals formData={formData} />
     </Grid>

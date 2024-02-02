@@ -40,7 +40,7 @@ export default function FormComponent({
   discountTypes,
   subServiceTypes,
 }) {
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
@@ -105,6 +105,7 @@ export default function FormComponent({
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
+      actions.setFieldValue("items", estimate.items);
     }
   };
 

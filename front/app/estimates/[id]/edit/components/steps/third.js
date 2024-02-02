@@ -22,19 +22,14 @@ export default function Third({
   items: itemsData,
   estimate,
 }) {
-  const { formField, setFieldValue, values } = formData;
+  const { formField, setFieldValue } = formData;
   const { items, adjustment } = formField;
   const [isOpen, setOpen] = useState(false);
   const [item, setItem] = useState(null);
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (count == 0) {
-      setFieldValue(adjustment.name, estimate.adjustment);
-      setFieldValue(items.name, estimate.items);
-    }
-    setCount(1);
-  }, [estimate, items, adjustment, setFieldValue, count]);
+    setFieldValue(adjustment.name, estimate.adjustment);
+  }, [estimate, adjustment, setFieldValue]);
 
   const handleClose = () => {
     setOpen(false);

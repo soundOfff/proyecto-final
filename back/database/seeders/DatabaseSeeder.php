@@ -29,9 +29,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectSeeder::class);
         $this->call(ExpenseCategorySeeder::class);
         $this->call(CurrencySeeder::class);
+        $this->call(RecurringSeeder::class);
+        $this->call(InvoiceStatusSeeder::class);
         $this->call(InvoiceSeeder::class);
         $this->call(EstimateStatusSeeder::class);
-        $this->call(RecurringSeeder::class);
         $this->call(SubServiceTypeSeeder::class);
         $this->call(DiscountTypeSeeder::class);
         $this->call(EstimateSeeder::class);

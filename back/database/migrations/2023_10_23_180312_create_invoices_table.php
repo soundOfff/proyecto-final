@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('currency_id')->nullable()->constrained();
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
-            $table->foreignId('estimate_id')->nullable()->constrained();
+            $table->foreignId('estimate_id')->nullable()->unique();
             $table->foreignId('sale_agent_id')->nullable()->constrained('partners');
             $table->foreignId('recurring_id')->nullable()->constrained();
             $table->foreignId('invoice_status_id')->constrained();

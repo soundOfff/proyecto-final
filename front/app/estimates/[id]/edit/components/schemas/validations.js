@@ -67,24 +67,7 @@ const validations = [
     [terms.name]: Yup.string().nullable(),
   }),
   Yup.object().shape({
-    [items.name]: Yup.array()
-      .of(
-        Yup.object().shape({
-          description: Yup.string(),
-          longDescription: Yup.string(),
-          type: Yup.number(),
-          quantity: Yup.number(),
-          rate: Yup.number(),
-          taxes: Yup.array().of(
-            Yup.object().shape({
-              name: Yup.string(),
-              rate: Yup.number(),
-            })
-          ),
-          discount: Yup.number(),
-        })
-      )
-      .min(1, "Debe agregar al menos un item"),
+    [items.name]: Yup.array().min(1, "Debe agregar al menos un item"),
   }),
 ];
 export default validations;

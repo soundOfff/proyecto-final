@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\LineItemType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -39,6 +38,11 @@ class DatabaseSeeder extends Seeder
         $this->call(TaxSeeder::class);
         $this->call(PaymentMethodSeeder::class);
         $this->call(ExpenseRepeatSeeder::class);
+        $this->call(ExpenseSeeder::class);
+        $this->call(ProposalStatusSeeder::class);
+        $this->call(ProposalSeeder::class);
+        $this->call(ProposalCommentSeeder::class);
+        $this->call(ExpenseSeeder::class);
         $this->call(ExpenseSeeder::class);
         $this->call(ProjectNoteSeeder::class);
         $this->call(ProjectMemberSeeder::class);

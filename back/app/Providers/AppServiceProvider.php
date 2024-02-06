@@ -24,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
             'project' => 'App\Models\Project',
             'estimate' => 'App\Models\Estimate',
             'invoice' => 'App\Models\Invoice',
+            'proposal' => 'App\Models\Proposal',
+            'customer' => 'App\Models\Partner',
+            'lead' => 'App\Models\Lead',
         ]);
     }
 }

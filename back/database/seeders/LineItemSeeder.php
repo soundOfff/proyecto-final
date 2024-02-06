@@ -25,6 +25,7 @@ class LineItemSeeder extends Seeder
         $lineItems = $this->utils->csvToArray(database_path('imports/line_items.csv'));
 
         foreach ($lineItems as $lineItem) {
+            dump($lineItem);
             LineItem::updateOrCreate(['id' => $lineItem['id']], $lineItem);
         }
     }

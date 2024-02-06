@@ -71,8 +71,6 @@ class EstimateResource extends JsonResource
             'status' => EstimateStatusResource::make($this->whenLoaded('status')),
             'billingCountry' => CountryResource::make($this->whenLoaded('billingCountry')),
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
-            'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
-            'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
             'subServiceType' => SubServiceTypeResource::make($this->whenLoaded('subServiceType')),
             'discountType' => DiscountTypeResource::make($this->whenLoaded('discountType')),
             'items' => LineItemResource::collection($this->whenLoaded('lineItems')),

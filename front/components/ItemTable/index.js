@@ -17,7 +17,7 @@ export default function Table({ formData, types }) {
     },
     {
       Header: "Descripción",
-      accessor: "longDescription",
+      accessor: "long_description",
     },
     {
       Header: "Tipo de articulo",

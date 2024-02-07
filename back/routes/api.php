@@ -21,6 +21,7 @@ use App\Http\Controllers\ProjectNoteController;
 use App\Http\Controllers\ProjectServiceTypeController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\ProposalStatusController;
 use App\Http\Controllers\RecurringController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SubServiceTypeController;
@@ -95,6 +96,8 @@ Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 
 Route::get('/proposals', [ProposalController::class, 'index']);
+Route::post('/proposals', [ProposalController::class, 'store']);
+Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 
 Route::get('/tags', [TagController::class, 'index']);
 

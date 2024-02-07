@@ -3,10 +3,15 @@
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
+import MDButton from "/components/MDButton";
 import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
+import { useMaterialUIController } from "/context";
 
 export default function Table({ rows, meta }) {
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
+
   const columns = [
     {
       Header: "Propuesta #",
@@ -82,6 +87,13 @@ export default function Table({ rows, meta }) {
 
   return (
     <MDBox>
+      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+        <Link href="/proposals/create">
+          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+            Registrar Propuesta
+          </MDButton>
+        </Link>
+      </MDBox>
       <DataTable
         table={table}
         meta={meta}

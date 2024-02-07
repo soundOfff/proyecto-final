@@ -17,6 +17,7 @@ class PartnerResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'countryId' => $this->country_id,
             'active' => $this->active,
             'addedFrom' => $this->added_from,
             'address' => $this->address,

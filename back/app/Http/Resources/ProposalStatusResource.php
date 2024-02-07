@@ -16,7 +16,7 @@ class ProposalStatusResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'label' => $this->name,
+            'label' => $this->label,
         ];
     }
 }

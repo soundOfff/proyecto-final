@@ -85,8 +85,11 @@ class ProposalController extends Controller
             'currency',
             'estimate',
             'invoice',
+            'status',
             'lineItems.taxes',
             'tags',
+            'proposable',
+            'comments',
         ])
         ->find($proposal->id);
 

@@ -56,6 +56,8 @@ class ProposalResource extends JsonResource
             'total' => $this->total,
             'totalTax' => $this->total_tax,
             'zip' => $this->zip,
+            'proposableId' => $this->proposable_id,
+            'proposableType' => $this->proposable_type,
             'createdAt' => Carbon::parse($this->created_at)->format('d/m/Y g:i A'),
             'staffAssigned' => StaffResource::make($this->whenLoaded('staffAssigned')),
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),

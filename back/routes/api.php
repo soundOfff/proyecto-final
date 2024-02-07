@@ -97,6 +97,7 @@ Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toIn
 
 Route::get('/proposals', [ProposalController::class, 'index']);
 Route::post('/proposals', [ProposalController::class, 'store']);
+Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
 Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 
 Route::get('/tags', [TagController::class, 'index']);

@@ -18,6 +18,7 @@ class Proposal extends Model
         'currency_id',
         'country_id',
         'proposal_status_id',
+        'staff_assigned_id',
         'proposable_id',
         'proposable_type',
         'acceptance_date',

@@ -83,12 +83,13 @@ class ProposalController extends Controller
         $proposal = QueryBuilder::for(Proposal::class)
         ->allowedIncludes([
             'currency',
+            'discountType',
             'estimate',
             'invoice',
             'status',
             'lineItems.taxes',
             'tags',
-            'proposable',
+            'proposable.primaryContact',
             'comments',
         ])
         ->find($proposal->id);
@@ -99,9 +100,41 @@ class ProposalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proposal $proposal)
+    public function update(ProposalRequest $request, Proposal $proposal)
     {
-        //
+        $updatedProposal = $request->validated();
+        $proposal->lineItems->each(function ($item) {
+            $item->taxes()->delete();
+        });
+        $proposal->lineItems()->delete();
+        $proposal->tags()->detach();
+        $items = $updatedProposal['items'];
+        $tags = $updatedProposal['tags'];
+
+        $proposal->update($updatedProposal);
+
+        foreach ($tags as $tag) {
+            $tag['taggable_id'] = $proposal->id;
+            $tag['taggable_type'] = 'proposal';
+            $tag['tag_id'] = $tag['id'];
+            Taggable::create($tag);
+        }
+
+        foreach ($items as $item) {
+            $item['line_itemable_id'] = $proposal->id;
+            $item['line_itemable_type'] = 'proposal';
+            $itemTaxes = $item['taxes'];
+            $lineItem = LineItem::create($item);
+
+            foreach ($itemTaxes as $itemTax) {
+                $itemTax['line_item_id'] = $lineItem->id;
+                $itemTax['line_item_taxable_id'] = $proposal->id;
+                $itemTax['line_item_taxable_type'] = 'proposal';
+                LineItemTax::create($itemTax);
+            }
+        }
+
+        return response()->json(null, 201);
     }
 
     /**

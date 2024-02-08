@@ -81,6 +81,7 @@ class PartnerController extends Controller
             'billingCountry',
             'user.contacts',
             'consolidator',
+            'primaryContact',
         ])
         ->find($partner->id);
 

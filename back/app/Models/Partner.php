@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Partner extends Model
@@ -59,6 +60,18 @@ class Partner extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function primaryContact(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Contact::class,
+            User::class,
+            'id',
+            'user_id',
+            'user_id',
+            'id'
+        )->where('is_primary', true);
     }
 
     public function consolidator(): BelongsTo

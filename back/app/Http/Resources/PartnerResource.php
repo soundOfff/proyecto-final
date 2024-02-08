@@ -57,6 +57,7 @@ class PartnerResource extends JsonResource
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
             'consolidator' => static::make($this->whenLoaded('consolidator')),
             'user' => UserResource::make($this->whenLoaded('user')),
+            'primaryContact' => ContactResource::make($this->whenLoaded('primaryContact')),
         ];
     }
 }

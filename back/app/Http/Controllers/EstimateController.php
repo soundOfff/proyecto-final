@@ -191,7 +191,7 @@ class EstimateController extends Controller
             }
         }
 
-        return response()->json(null, 201);
+        return response()->json(null, 204);
     }
 
     /**

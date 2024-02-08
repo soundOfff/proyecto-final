@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('country_id')->nullable()->constrained();
             $table->foreignId('proposal_status_id')->constrained();
             $table->foreignId('discount_type_id')->nullable()->constrained();
-            $table->foreignId('staff_assigned')->nullable()->constrained('staff');
+            $table->foreignId('staff_assigned_id')->nullable()->constrained('staff');
             $table->morphs('proposable');
 
             $table->dateTime('acceptance_date')->nullable();

@@ -7,6 +7,8 @@ import MDButton from "/components/MDButton";
 import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
 import { useMaterialUIController } from "/context";
+import { Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -80,6 +82,20 @@ export default function Table({ rows, meta }) {
         value.length
           ? value.map((comment) => comment.content).join(", ")
           : null,
+    },
+    {
+      id: "actions",
+      Header: "Acciones",
+      Cell: ({ row }) => (
+        <Link
+          href={`/proposals/${row.original.id}/edit`}
+          sx={{ cursor: "pointer", color: "info" }}
+        >
+          <Tooltip title="Editar" placement="top">
+            <EditIcon fontSize="medium" color="warning" />
+          </Tooltip>
+        </Link>
+      ),
     },
   ];
 

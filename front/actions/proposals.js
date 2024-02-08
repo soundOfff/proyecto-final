@@ -46,6 +46,28 @@ export async function store(data) {
   redirect("/proposals");
 }
 
+export async function update(id, data) {
+  console.log(data);
+  const res = await fetch(`${process.env.API_URL}/proposals/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(data);
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  revalidatePath("/proposals");
+
+  redirect("/proposals");
+}
+
 export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/proposals/${id}`);
   url.search = new URLSearchParams(params);

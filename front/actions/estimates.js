@@ -47,7 +47,6 @@ export async function store(data) {
 }
 
 export async function update(id, data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/estimates/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),

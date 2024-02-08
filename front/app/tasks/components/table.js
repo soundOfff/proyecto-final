@@ -150,7 +150,7 @@ export default function Table({ rows, meta }) {
           Crear nueva tarea
         </MDButton>
         {open && (
-          <Modal open={open} onClose={handleClose} width="30%">
+          <Modal open={open} onClose={handleClose} width="40%">
             <ModalContentForm taxes={[]} groupIds={[]} />
           </Modal>
         )}

@@ -12,8 +12,11 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
+import { EditorState } from "draft-js";
 import { Form, Formik, ErrorMessage } from "formik";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
+import { useState } from "react";
+import moment from "moment";
 
 export default function ModalContentForm({
   onClose,
@@ -43,6 +46,10 @@ export default function ModalContentForm({
     description,
   } = formField;
 
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
   const handleSubmit = async (event, values) => {
     event.preventDefault();
     // await storeItem(values); TODO: make the store
@@ -67,14 +74,15 @@ export default function ModalContentForm({
             variant="gradient"
             borderRadius="lg"
             shadow="lg"
+            overflow="auto"
             opacity={1}
             p={2}
           >
             Nueva tarea
           </MDBox>
-          <MDBox sx={{ px: 2, py: 3 }}>
+          <MDBox sx={{ px: 2, pt: 3 }}>
             <Grid container lineHeight={0} spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <FormField
                   name={name.name}
                   label={name.label}
@@ -85,7 +93,7 @@ export default function ModalContentForm({
                   success={name.length > 0 && !errors.name}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <FormField
                   name={hourlyRate.name}
                   label={hourlyRate.label}
@@ -96,25 +104,53 @@ export default function ModalContentForm({
               </Grid>
               <Grid item xs={12} sm={6}>
                 <MDDatePicker
-                  name={startDate.name}
-                  label={startDate.label}
-                  type={startDate.type}
-                  placeholder={startDate.placeholder}
-                  value={values[startDate.name]}
-                  error={errors.startDate && touched.startDate}
-                  success={startDate.length > 0 && !errors.startDate}
+                  input={{
+                    placeholder: "Fecha De Inicio",
+                    variant: "standard",
+                    fullWidth: true,
+                  }}
+                  onChange={(date) =>
+                    setFieldValue(
+                      startDate.name,
+                      moment(date[0]).format("YYYY-MM-DD")
+                    )
+                  }
                 />
+                <MDBox mt={0.75}>
+                  <MDTypography
+                    component="div"
+                    variant="caption"
+                    color="error"
+                    fontWeight="regular"
+                  >
+                    <ErrorMessage name={startDate.name} />
+                  </MDTypography>
+                </MDBox>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <MDDatePicker
-                  name={dueDate.name}
-                  label={dueDate.label}
-                  type={dueDate.type}
-                  placeholder={dueDate.placeholder}
-                  value={values[dueDate.name]}
-                  error={errors.dueDate && touched.dueDate}
-                  success={dueDate.length > 0 && !errors.dueDate}
+                  input={{
+                    placeholder: "Fecha De Cierre",
+                    variant: "standard",
+                    fullWidth: true,
+                  }}
+                  onChange={(date) =>
+                    setFieldValue(
+                      dueDate.name,
+                      moment(date[0]).format("YYYY-MM-DD")
+                    )
+                  }
                 />
+                <MDBox mt={0.75}>
+                  <MDTypography
+                    component="div"
+                    variant="caption"
+                    color="error"
+                    fontWeight="regular"
+                  >
+                    <ErrorMessage name={dueDate.name} />
+                  </MDTypography>
+                </MDBox>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Select
@@ -249,30 +285,29 @@ export default function ModalContentForm({
                 </MDBox>
               </Grid>
               <Grid item xs={12}>
-                <MDBox mb={1} ml={0.5} lineHeight={0} display="flex">
+                <MDTypography variant="body2" color="text">
+                  {description.label}
+                </MDTypography>
+                <MDEditor
+                  editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <MDBox mt={0.75}>
                   <MDTypography
-                    component="label"
-                    variant="button"
+                    component="div"
+                    variant="caption"
+                    color="error"
                     fontWeight="regular"
-                    color="text"
                   >
-                    Description&nbsp;&nbsp;
-                    <MDTypography variant="caption" color="text">
-                      (optional)
-                    </MDTypography>
+                    <ErrorMessage name={description.name} />
                   </MDTypography>
                 </MDBox>
-                <MDEditor />
               </Grid>
             </Grid>
           </MDBox>
           <MDBox p={3}>
-            <MDBox
-              mt={2}
-              width="100%"
-              display="flex"
-              justifyContent="space-between"
-            >
+            <MDBox width="100%" display="flex" justifyContent="space-between">
               <MDButton variant="gradient" color="light" onClick={handleCancel}>
                 Cancelar
               </MDButton>

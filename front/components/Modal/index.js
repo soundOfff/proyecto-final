@@ -10,7 +10,11 @@ function CustomModal({ open, onClose, width = "60%", children, ...rest }) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width,
+    width: { sm: width, xs: "90%" },
+    height: {
+      xs: "90%",
+      sm: "auto",
+    },
     bgcolor: "background.paper",
     border: "2px solid #000",
     borderRadius: "10px",

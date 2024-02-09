@@ -12,7 +12,15 @@ import Link from "next/link";
 import Image from "next/image";
 import ModalContentForm from "../../../components/ModalContent/Task/form";
 
-export default function Table({ rows, meta }) {
+export default function Table({
+  rows,
+  meta,
+  priorities,
+  repeats,
+  taskableTypes,
+  taskeableItems,
+  tagsData,
+}) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [expenseIdShow, setExpenseIdShow] = useState(0);
@@ -117,8 +125,8 @@ export default function Table({ rows, meta }) {
       Header: "Prioridad",
       Cell: ({ row }) => (
         <Select
-          value={0}
-          options={["Alta", "Media", "Baja"]}
+          value={priorities.indexOf(row.original.priority)}
+          options={priorities}
           optionLabel={(option) => option}
         />
       ),
@@ -151,7 +159,13 @@ export default function Table({ rows, meta }) {
         </MDButton>
         {open && (
           <Modal open={open} onClose={handleClose} width="40%">
-            <ModalContentForm taxes={[]} groupIds={[]} />
+            <ModalContentForm
+              priorities={priorities}
+              repeats={repeats}
+              taskableTypes={taskableTypes}
+              taskeableItems={taskeableItems}
+              tagsData={tagsData}
+            />
           </Modal>
         )}
       </MDBox>

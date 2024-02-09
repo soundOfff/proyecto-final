@@ -48,9 +48,9 @@ const initialValues = {
   [repeat.name]: "",
   [recurring.name]: "",
   [recurringType.name]: "",
-  [isInfinite.name]: false,
+  [isInfinite.name]: true,
   [totalCycles.name]: "",
-  [taskableType.name]: "",
+  [taskableType.name]: "Caso",
   [taskableId.name]: "",
   [tags.name]: [],
 };

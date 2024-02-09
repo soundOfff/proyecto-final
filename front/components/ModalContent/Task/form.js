@@ -1,5 +1,12 @@
 "use client";
-import { Grid, Autocomplete } from "@mui/material";
+import {
+  Grid,
+  Autocomplete,
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  FormGroup,
+} from "@mui/material";
 
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
@@ -13,18 +20,19 @@ import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import { EditorState } from "draft-js";
-import { Form, Formik, ErrorMessage } from "formik";
+import { Form, Formik, ErrorMessage, useFormikContext } from "formik";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
+import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { useState } from "react";
 import moment from "moment";
+import { store as storeItem } from "../../../actions/tasks";
 
 export default function ModalContentForm({
   onClose,
-  priorities = [],
-  repeats = [],
-  taskableTypes = [],
-  taskeableItems = [],
-  tagsData = [],
+  priorities,
+  repeats,
+  taskableTypes,
+  tagsData,
 }) {
   const { formField, formId } = form;
   const {
@@ -40,8 +48,8 @@ export default function ModalContentForm({
     recurringType,
     isInfinite,
     totalCycles,
-    taskableType,
     taskableId,
+    taskableType,
     tags,
     description,
   } = formField;
@@ -49,16 +57,30 @@ export default function ModalContentForm({
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [taskableItems, setTaskableItems] = useState([]);
 
-  const handleSubmit = async (event, values) => {
-    event.preventDefault();
-    // await storeItem(values); TODO: make the store
+  const handleSubmit = async (values, _) => {
+    values.description = editorState.getCurrentContent().getPlainText(); // kk
+    await storeItem(values);
     onClose();
   };
 
-  const handleCancel = () => {
-    onClose();
+  const debounce = (func, delay) => {
+    let debounceTimeout;
+    return function (...args) {
+      const context = this;
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => func.apply(context, args), delay);
+    };
   };
+
+  const handleSearch = async (value = "") => {
+    if (value.length <= 2) return setTaskableItems([]);
+    const items = await getAllTaskableTypes({ search: value });
+    setTaskableItems(items);
+  };
+
+  const debouncedHandleSearch = debounce(handleSearch, 200);
 
   return (
     <Formik
@@ -82,7 +104,47 @@ export default function ModalContentForm({
           </MDBox>
           <MDBox sx={{ px: 2, pt: 3 }}>
             <Grid container lineHeight={0} spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
+                <MDBox
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <FormControl
+                    component="fieldset"
+                    variant="standard"
+                    sx={{ width: "100%" }}
+                  >
+                    <FormGroup sx={{ display: "flex", flexDirection: "row" }}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={values[billable.name]}
+                            onChange={(e) =>
+                              setFieldValue(billable.name, e.target.checked)
+                            }
+                            name={billable.name}
+                          />
+                        }
+                        label={billable.label}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={values[isPublic.name]}
+                            onChange={(e) =>
+                              setFieldValue(isPublic.name, e.target.checked)
+                            }
+                            name={isPublic.name}
+                          />
+                        }
+                        label={isPublic.label}
+                      />
+                    </FormGroup>
+                  </FormControl>
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} sm={8}>
                 <FormField
                   name={name.name}
                   label={name.label}
@@ -93,7 +155,7 @@ export default function ModalContentForm({
                   success={name.length > 0 && !errors.name}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <FormField
                   name={hourlyRate.name}
                   label={hourlyRate.label}
@@ -156,9 +218,10 @@ export default function ModalContentForm({
                 <Select
                   value={values[priority.name]}
                   options={priorities}
-                  optionLabel={(option) => option.label}
+                  optionLabel="name"
                   fieldName={priority.name}
                   inputLabel={priority.label}
+                  customOptionLabel="name"
                   setFieldValue={setFieldValue}
                 />
               </Grid>
@@ -166,7 +229,7 @@ export default function ModalContentForm({
                 <Select
                   value={values[repeat.name]}
                   options={repeats}
-                  optionLabel={(option) => option.label}
+                  optionLabel="label"
                   fieldName={repeat.name}
                   inputLabel={repeat.label}
                   setFieldValue={setFieldValue}
@@ -234,9 +297,9 @@ export default function ModalContentForm({
               )}
               <Grid item xs={12} sm={6}>
                 <Select
-                  value={values[taskableType.name]}
+                  value={0}
                   options={taskableTypes}
-                  optionLabel={(option) => option.label}
+                  optionLabel="label"
                   fieldName={taskableType.name}
                   inputLabel={taskableType.label}
                   setFieldValue={setFieldValue}
@@ -245,10 +308,11 @@ export default function ModalContentForm({
               <Grid item xs={12} sm={6}>
                 <Select
                   value={values[taskableId.name]}
-                  options={taskeableItems}
-                  optionLabel={(option) => option.label}
+                  options={taskableItems}
+                  optionLabel="name"
                   fieldName={taskableId.name}
                   inputLabel={taskableId.label}
+                  onInputChange={debouncedHandleSearch}
                   setFieldValue={setFieldValue}
                 />
               </Grid>
@@ -308,12 +372,11 @@ export default function ModalContentForm({
           </MDBox>
           <MDBox p={3}>
             <MDBox width="100%" display="flex" justifyContent="space-between">
-              <MDButton variant="gradient" color="light" onClick={handleCancel}>
+              <MDButton variant="gradient" color="light" onClick={onClose}>
                 Cancelar
               </MDButton>
               <MDButton
                 disabled={isSubmitting}
-                onClick={(e) => handleSubmit(e, values, errors)}
                 type="submit"
                 variant="gradient"
                 color="dark"

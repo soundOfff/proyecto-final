@@ -38,7 +38,7 @@ const {
 } = checkout;
 
 const validations = Yup.object().shape({
-  [description.name]: Yup.string().required(description.errorMsg),
+  [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),
   [name.name]: Yup.string().required(name.errorMsg),

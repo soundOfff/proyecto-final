@@ -2,10 +2,12 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import MDBox from "/components/MDBox";
 import Table from "./components/table";
-import Stats from "./components/stats";
-
-import { getCountByStatuses } from "/actions/tasks";
+import { TASKABLE_TYPES } from "../../utils/constants/taskableTypes";
+import { getAll as getAllTags } from "/actions/tags";
 import { getAll as getAllTasks } from "/actions/tasks";
+import { getAll as getAllRepeats } from "/actions/expense-repeats";
+import { getTaskPriorities } from "/actions/tasks";
+import { getAll as getAllTaskableTypes } from "/actions/projects";
 
 export default async function Expenses({
   searchParams: { perPage = 10, page = 1 },
@@ -14,7 +16,10 @@ export default async function Expenses({
     data: { tasks },
     meta,
   } = await getAllTasks({ perPage, page });
-  const countByStatuses = await getCountByStatuses();
+  const tagsData = await getAllTags();
+  const repeats = await getAllRepeats();
+  const priorities = await getTaskPriorities();
+  const taskeableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
 
   return (
     <MDBox mb={3}>
@@ -22,7 +27,15 @@ export default async function Expenses({
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
             {/* <Stats countByStatuses={countByStatuses} /> */}
-            <Table rows={[]} meta={{ per_page: "5" }} />
+            <Table
+              rows={[]}
+              meta={{ per_page: "5" }}
+              priorities={priorities}
+              repeats={repeats}
+              taskableTypes={TASKABLE_TYPES}
+              taskeableItems={taskeableItems}
+              tagsData={tagsData}
+            />
           </Grid>
         </Grid>
       </Card>

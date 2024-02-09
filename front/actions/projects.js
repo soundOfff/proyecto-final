@@ -36,7 +36,6 @@ export async function getAll(params) {
   }
 
   const { data } = await res.json();
-
   return data.projects;
 }
 

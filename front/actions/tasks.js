@@ -1,4 +1,8 @@
 "use server";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
 // TODO: make the endpoints
 export async function getAll(params) {
   return {
@@ -28,34 +32,32 @@ export async function getAll(params) {
   return data;
 }
 
-export async function getCountByStatuses(params) {
-  return [];
-  const url = new URL(`${process.env.API_URL}/tasks/counts/status`);
-  url.search = new URLSearchParams(params);
-
+export async function getTaskPriorities() {
+  const url = new URL(`${process.env.API_URL}/tasks-priorities`);
   const res = await fetch(url);
-
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
-
-  const countByStatuses = await res.json();
-
-  return countByStatuses;
+  const { data } = await res.json();
+  return data?.priorities;
 }
 
-export async function getStatuses(params) {
-  return [];
-  const url = new URL(`${process.env.API_URL}/tasks/statuses`);
-  url.search = new URLSearchParams(params);
-
-  const res = await fetch(url);
+export async function store(data) {
+  console.log(data);
+  const res = await fetch(`${process.env.API_URL}/tasks`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
 
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
-  const statuses = await res.json();
+  revalidatePath("/tasks");
 
-  return statuses;
+  redirect("/tasks");
 }

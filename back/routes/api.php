@@ -19,6 +19,7 @@ use App\Http\Controllers\ProjectServiceTypeController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TaskPriorityController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -82,6 +83,8 @@ Route::post('/estimates', [EstimateController::class, 'store']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 Route::get('/estimates-max-id', [EstimateController::class, 'maxId']);
 Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
+
+Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
 
 Route::get('/tags', [TagController::class, 'index']);
 

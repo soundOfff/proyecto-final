@@ -41,5 +41,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LineItemTaxSeeder::class);
         $this->call(TagSeeder::class);
         $this->call(TaggableSeeder::class);
+        $this->call(TaskPrioritySeeder::class);
     }
 }

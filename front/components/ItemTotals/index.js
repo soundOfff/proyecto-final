@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
-import { ITBMS_TAX_ID, RETAINING_TAX_ID } from "/utils/constants/taxes";
+import { ITBMS_TAX_NAME, RETAINING_TAX_NAME } from "/utils/constants/taxes";
 import { BEFORE_TAX } from "/utils/constants/discountTypes";
 
 export default function Totals({ formData }) {
@@ -18,20 +18,20 @@ export default function Totals({ formData }) {
   const [itbmsTotalTax, setItbmsTotalTax] = useState(0);
   const [retainingTotalTax, setRetainingTotalTax] = useState(0);
   const [total, setTotal] = useState(0);
-  const adjustmentValue = values[adjustment.name];
-
-  const getSubtotal = (items) => {
-    return items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
-  };
-
-  const getTotalDiscount = (items) => {
-    return items.reduce((acc, item) => acc - item.discount, 0);
-  };
+  const adjustmentValue = Number(values[adjustment.name]);
 
   useEffect(() => {
+    const getSubtotal = (items) => {
+      return items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
+    };
+
+    const getTotalDiscount = (items) => {
+      return items.reduce((acc, item) => acc - item.discount, 0);
+    };
+
     const getTaxes = (items, type) => {
       return items.reduce((acc, item) => {
-        const rate = item.taxes.find((tax) => tax.id === type)?.rate;
+        const rate = item.taxes.find((tax) => tax.name === type)?.rate;
         if (discountType === BEFORE_TAX) {
           return (
             acc +
@@ -46,8 +46,8 @@ export default function Totals({ formData }) {
 
     const subtotal = getSubtotal(items);
     const totalDiscount = getTotalDiscount(items);
-    const itbmsTotalTax = getTaxes(items, ITBMS_TAX_ID);
-    const retainingTotalTax = getTaxes(items, RETAINING_TAX_ID);
+    const itbmsTotalTax = getTaxes(items, ITBMS_TAX_NAME);
+    const retainingTotalTax = getTaxes(items, RETAINING_TAX_NAME);
     const total =
       subtotal +
       totalDiscount +

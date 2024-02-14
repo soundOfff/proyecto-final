@@ -17,6 +17,7 @@ class PartnerResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'countryId' => $this->country_id,
             'active' => $this->active,
             'addedFrom' => $this->added_from,
             'address' => $this->address,
@@ -56,6 +57,7 @@ class PartnerResource extends JsonResource
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
             'consolidator' => static::make($this->whenLoaded('consolidator')),
             'user' => UserResource::make($this->whenLoaded('user')),
+            'primaryContact' => ContactResource::make($this->whenLoaded('primaryContact')),
         ];
     }
 }

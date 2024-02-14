@@ -10,7 +10,6 @@ use App\Models\Invoice;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
 use App\Models\Taggable;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class EstimateController extends Controller
@@ -20,6 +19,8 @@ class EstimateController extends Controller
         $estimate->load('lineItems.taxes');
         $newInvoice = $estimate->toArray();
         $newInvoice['prefix'] = 'INVOICE-';
+        $newInvoice['include_shipping'] = false;
+        $newInvoice['invoice_status_id'] = Invoice::TO_PAY;
         $newInvoice['estimate_id'] = $estimate->id;
         $newInvoice['show_shipping_on_invoice'] = $estimate->show_shipping_on_estimate;
         $newInvoice['items'] = $estimate->lineItems->toArray();
@@ -96,6 +97,9 @@ class EstimateController extends Controller
 
         $estimate = Estimate::create($newEstimate);
 
+        $estimate->project->project_service_type_id = $newEstimate['service_id'];
+        $estimate->project->save();
+
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $estimate->id;
             $tag['taggable_type'] = 'estimate';
@@ -135,6 +139,12 @@ class EstimateController extends Controller
                 'shippingCountry',
                 'tags',
                 'lineItems.taxes',
+                'lineItems.type',
+                'status',
+                'subServiceType',
+                'discountType',
+                'saleAgent',
+                'recurring',
             ])
             ->find($estimate->id);
 
@@ -144,8 +154,44 @@ class EstimateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Estimate $estimate)
+    public function update(EstimateRequest $request, Estimate $estimate)
     {
+        $updatedEstimate = $request->validated();
+        $estimate->lineItems->each(function ($item) {
+            $item->taxes()->delete();
+        });
+        $estimate->lineItems()->delete();
+        $estimate->tags()->detach();
+        $items = $updatedEstimate['items'];
+        $tags = $updatedEstimate['tags'];
+
+        $estimate->update($updatedEstimate);
+
+        $estimate->project->project_service_type_id = $updatedEstimate['service_id'];
+        $estimate->project->save();
+
+        foreach ($tags as $tag) {
+            $tag['taggable_id'] = $estimate->id;
+            $tag['taggable_type'] = 'estimate';
+            $tag['tag_id'] = $tag['id'];
+            Taggable::create($tag);
+        }
+
+        foreach ($items as $item) {
+            $item['line_itemable_id'] = $estimate->id;
+            $item['line_itemable_type'] = 'estimate';
+            $itemTaxes = $item['taxes'];
+            $lineItem = LineItem::create($item);
+
+            foreach ($itemTaxes as $itemTax) {
+                $itemTax['line_item_id'] = $lineItem->id;
+                $itemTax['line_item_taxable_id'] = $estimate->id;
+                $itemTax['line_item_taxable_type'] = 'estimate';
+                LineItemTax::create($itemTax);
+            }
+        }
+
+        return response()->json(null, 204);
     }
 
     /**

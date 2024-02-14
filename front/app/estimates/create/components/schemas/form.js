@@ -47,7 +47,7 @@ const form = {
       errorMsg: "El tipo de servicio es requerido",
     },
     subServiceType: {
-      name: "sub_service_id",
+      name: "sub_service_type_id",
       label: "Sub tipo de servicio",
       errorMsg: "El sub tipo de servicio es requerido",
     },
@@ -64,8 +64,8 @@ const form = {
       label: "Moneda",
       errorMsg: "Debe seleccionar una Moneda",
     },
-    state: {
-      name: "state_id",
+    status: {
+      name: "status_id",
       label: "Estado",
       errorMsg: "Debe seleccionar un estado",
     },
@@ -78,16 +78,16 @@ const form = {
       label: "Agente retenedor",
     },
     agent: {
-      name: "sale_agent",
+      name: "sale_agent_id",
       label: "Agente",
       errorMsg: "Debe seleccionar un agente",
     },
-    repeat: {
-      name: "repeat_id",
+    recurring: {
+      name: "recurring_id",
       label: "Facturas recurrentes?",
     },
     discountType: {
-      name: "discount_type",
+      name: "discount_type_id",
       label: "Tipo de descuento",
     },
     adminNote: {
@@ -117,7 +117,7 @@ const form = {
       type: "text",
     },
     type: {
-      name: "item_type",
+      name: "line_item_type_id",
       label: "Tipo de articulo",
     },
     quantity: {

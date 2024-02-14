@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('line_items', function (Blueprint $table) {
             $table->id();
             $table->morphs('line_itemable');
+            $table->foreignId('line_item_type_id')->nullable()->constrained();
 
             $table->mediumText('description')->nullable();
             $table->decimal('discount')->nullable();
@@ -20,7 +21,6 @@ return new class extends Migration {
             $table->mediumText('long_description')->nullable();
             $table->decimal('quantity');
             $table->decimal('rate');
-            $table->string('type')->nullable();
             $table->string('unit')->nullable();
 
             $table->timestamps();

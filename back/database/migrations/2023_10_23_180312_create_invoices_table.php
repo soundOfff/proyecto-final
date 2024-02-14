@@ -17,7 +17,10 @@ return new class extends Migration {
             $table->foreignId('currency_id')->nullable()->constrained();
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
-            $table->foreignId('estimate_id')->nullable();
+            $table->foreignId('estimate_id')->nullable()->unique();
+            $table->foreignId('sale_agent_id')->nullable()->constrained('partners');
+            $table->foreignId('recurring_id')->nullable()->constrained();
+            $table->foreignId('invoice_status_id')->constrained();
 
             $table->integer('added_from')->nullable();
             $table->decimal('adjustment');
@@ -47,9 +50,7 @@ return new class extends Migration {
             $table->integer('number');
             $table->integer('number_format');
             $table->string('prefix')->nullable();
-            $table->integer('recurring')->nullable();
             $table->string('recurring_type')->nullable();
-            $table->integer('sale_agent')->nullable();
             $table->boolean('sent');
             $table->string('shipping_city')->nullable();
             $table->string('shipping_state')->nullable();
@@ -57,7 +58,6 @@ return new class extends Migration {
             $table->string('shipping_zip')->nullable();
             $table->integer('show_quantity_as');
             $table->boolean('show_shipping_on_invoice');
-            $table->integer('status');
             $table->integer('subscription_id')->nullable();
             $table->decimal('subtotal');
             $table->text('terms')->nullable();

@@ -51,6 +51,8 @@ export async function show(id, params) {
   });
 
   if (!res.ok) {
+    const data = await res.json();
+    console.log(data);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
@@ -81,7 +83,6 @@ export async function store(data) {
 }
 
 export async function update(id, data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/partners/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),

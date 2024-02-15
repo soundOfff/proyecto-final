@@ -94,7 +94,7 @@ export default function FormComponent({
   const handleBack = () => setActiveStep(activeStep - 1);
 
   const submitForm = async (values, actions) => {
-    await updateProposal(values);
+    await updateProposal(proposal.id, values);
   };
 
   const handleSubmit = (values, actions) => {
@@ -104,7 +104,14 @@ export default function FormComponent({
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
-      actions.setFieldValue("items", proposal.items);
+      actions.setFieldValue(
+        "items",
+        proposal.items.map((item) => ({
+          ...item,
+          long_description: item.longDescription || "",
+          discount: item.discount || "",
+        }))
+      );
     }
   };
 

@@ -47,16 +47,28 @@ export default function First({
 
   useEffect(() => {
     getPartner(values[partner.name]).then((partner) => {
-      setFieldValue(proposalTo.name, partner.company);
-      setFieldValue(country.name, partner.countryId);
-      setFieldValue(address.name, partner.address);
-      setFieldValue(city.name, partner.city);
-      setFieldValue(state.name, partner.state);
-      setFieldValue(zip.name, partner.zip);
-      setFieldValue(email.name, partner.email);
-      setFieldValue(phone.name, partner.phoneNumber);
+      setFieldValue(proposalTo.name, partner.company ?? "");
+      setFieldValue(country.name, partner.countryId ?? "");
+      setFieldValue(address.name, partner.address ?? "");
+      setFieldValue(city.name, partner.city ?? "");
+      setFieldValue(state.name, partner.state ?? "");
+      setFieldValue(zip.name, partner.zip ?? "");
+      setFieldValue(email.name, partner.email ?? "");
+      setFieldValue(phone.name, partner.phoneNumber ?? "");
     });
-  }, [values[partner.name]]);
+  }, [
+    values,
+    partner,
+    setFieldValue,
+    proposalTo,
+    country,
+    address,
+    city,
+    state,
+    zip,
+    email,
+    phone,
+  ]);
 
   return (
     <Grid container spacing={5}>

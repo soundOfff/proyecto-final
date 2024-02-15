@@ -49,17 +49,29 @@ export default function First({
   useEffect(() => {
     getPartner(values[partner.name], { include: ["primaryContact"] }).then(
       (partner) => {
-        setFieldValue(proposalTo.name, partner.company);
-        setFieldValue(country.name, partner.countryId);
-        setFieldValue(address.name, partner.address);
-        setFieldValue(city.name, partner.city);
-        setFieldValue(state.name, partner.state);
-        setFieldValue(zip.name, partner.zip);
-        setFieldValue(email.name, partner.primaryContact?.email);
-        setFieldValue(phone.name, partner.phoneNumber);
+        setFieldValue(proposalTo.name, partner.company ?? "");
+        setFieldValue(country.name, partner.countryId ?? "");
+        setFieldValue(address.name, partner.address ?? "");
+        setFieldValue(city.name, partner.city ?? "");
+        setFieldValue(state.name, partner.state ?? "");
+        setFieldValue(zip.name, partner.zip ?? "");
+        setFieldValue(email.name, partner.primaryContact?.email ?? "");
+        setFieldValue(phone.name, partner.phoneNumber ?? "");
       }
     );
-  }, [values[partner.name]]);
+  }, [
+    values,
+    proposalTo,
+    country,
+    address,
+    state,
+    city,
+    zip,
+    email,
+    phone,
+    partner,
+    setFieldValue,
+  ]);
 
   useEffect(() => {
     setFieldValue(subject.name, proposal.subject);
@@ -76,7 +88,18 @@ export default function First({
     setFieldValue(discountType.name, proposal.discountType?.id);
     setFieldValue(allowComments.name, proposal.allowComments);
     setFieldValue(tags.name, proposal.tags);
-  }, [proposal]);
+  }, [
+    proposal,
+    setFieldValue,
+    subject,
+    partner,
+    date,
+    openTill,
+    currency,
+    discountType,
+    allowComments,
+    tags,
+  ]);
 
   return (
     <Grid container spacing={5}>

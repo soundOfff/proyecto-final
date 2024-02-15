@@ -56,10 +56,10 @@ const validations = [
     [staffAssigned.name]: Yup.number().required(staffAssigned.errorMsg),
     [proposalTo.name]: Yup.string().required(proposalTo.errorMsg),
     [country.name]: Yup.number(),
-    [address.name]: Yup.string().nullable(),
-    [state.name]: Yup.string().nullable(),
-    [city.name]: Yup.string().nullable(),
-    [zip.name]: Yup.string().nullable(),
+    [address.name]: Yup.string(),
+    [state.name]: Yup.string(),
+    [city.name]: Yup.string(),
+    [zip.name]: Yup.string(),
     [email.name]: Yup.string().email().required(email.errorMsg),
     [phone.name]: Yup.string(),
   }),
@@ -68,8 +68,8 @@ const validations = [
       .of(
         Yup.object().shape({
           description: Yup.string(),
-          longDescription: Yup.string(),
-          type: Yup.number(),
+          longDescription: Yup.string().nullable(),
+          type: Yup.number().nullable(),
           quantity: Yup.number(),
           rate: Yup.number(),
           taxes: Yup.array().of(
@@ -78,7 +78,7 @@ const validations = [
               rate: Yup.number(),
             })
           ),
-          discount: Yup.number(),
+          discount: Yup.number().nullable(),
         })
       )
       .min(1, "Debe agregar al menos un item"),

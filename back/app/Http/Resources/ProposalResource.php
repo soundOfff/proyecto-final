@@ -42,7 +42,7 @@ class ProposalResource extends JsonResource
             'dateSend' => $this->date_send,
             'discountPercent' => $this->discount_percent,
             'discountTotal' => $this->discount_total,
-            'discountType' => $this->discount_type,
+            'discountTypeId' => $this->discount_type_id,
             'email' => $this->email,
             'hash' => $this->hash,
             'isExpiryNotified' => $this->is_expiry_notified,

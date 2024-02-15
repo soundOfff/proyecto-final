@@ -8,14 +8,7 @@ import { ITBMS_TAX_NAME, RETAINING_TAX_NAME } from "/utils/constants/taxes";
 import { BEFORE_TAX } from "/utils/constants/discountTypes";
 import numberFormat from "/utils/numberFormat";
 import { useEffect, useState } from "react";
-
-const getSubtotal = (items) => {
-  return items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
-};
-
-const getTotalDiscount = (items) => {
-  return items.reduce((acc, item) => acc - item.discount, 0);
-};
+import { useRouter } from "next/navigation";
 
 const getTaxes = (items, type, discountType) => {
   return items.reduce((acc, item) => {
@@ -36,6 +29,7 @@ const getTaxes = (items, type, discountType) => {
 export default function Footer({ proposal }) {
   const [itbmsTotalTax, setItbmsTotalTax] = useState(0);
   const [retainingTotalTax, setRetainingTotalTax] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const itbmsTotalTax = getTaxes(
@@ -52,6 +46,10 @@ export default function Footer({ proposal }) {
     setItbmsTotalTax(itbmsTotalTax);
     setRetainingTotalTax(retainingTotalTax);
   }, [proposal]);
+
+  const handleToEstimate = () => {
+    router.push(`/estimates/create/${proposal.id}`);
+  };
 
   return (
     <MDBox p={3} className="footer-print">
@@ -141,6 +139,14 @@ export default function Footer({ proposal }) {
             alignItems="flex-end"
             mt={{ xs: 2, md: 0 }}
           >
+            <MDButton
+              variant="gradient"
+              color="success"
+              onClick={handleToEstimate}
+              sx={{ mr: 2, displayPrint: "none" }}
+            >
+              Convertir a Proforma
+            </MDButton>
             <MDButton
               variant="gradient"
               color="dark"

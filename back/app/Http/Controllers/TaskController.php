@@ -6,13 +6,19 @@ use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResourceCollection;
 use App\Models\Taggable;
 use App\Models\Task;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
     
     public function index()
     {
-        $tasks = Task::all();
+        $query = QueryBuilder::for(Task::class);
+
+        $tasks = request()->has('perPage')
+            ? $query->paginate((int) request('perPage'))
+            : $query->get();
+
         return new TaskResourceCollection($tasks);
     }
 
@@ -21,7 +27,6 @@ class TaskController extends Controller
         $newTask = $request->validated();
         $tags = $newTask['tags'];
         $task = Task::create($newTask);
-        dd($task); 
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $task->id;

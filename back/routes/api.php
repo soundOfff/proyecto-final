@@ -29,6 +29,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPriorityController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\TicketStatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -104,6 +105,8 @@ Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
 Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 
 Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
+Route::get('/tasks-status', [TicketStatusController::class, 'index']);
+
 
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'store']);

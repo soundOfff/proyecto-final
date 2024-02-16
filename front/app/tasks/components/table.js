@@ -6,11 +6,13 @@ import { useMaterialUIController } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import MDBadge from "/components/MDBadge";
+import MDInput from "/components/MDInput";
 import Modal from "/components/Modal";
 import ModalContent from "./modal-content";
 import Link from "next/link";
-import Image from "next/image";
 import ModalContentForm from "../../../components/ModalContent/Task/form";
+import { Autocomplete, Grid } from "@mui/material";
 
 export default function Table({
   rows,
@@ -20,6 +22,7 @@ export default function Table({
   taskableTypes,
   taskeableItems,
   tagsData,
+  statuses,
 }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
@@ -64,70 +67,64 @@ export default function Table({
     {
       Header: "Estado",
       accessor: "status",
+      Cell: ({ row }) => (
+        <Autocomplete
+          value={row.original.status}
+          options={statuses}
+          sx={{ width: "12rem" }}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <MDInput {...params} variant="standard" fullWidth />
+          )}
+        />
+      ),
     },
     {
       Header: "Fecha de inicio",
-      accessor: "date_from",
+      accessor: "start_date",
     },
     {
       Header: "Fecha de vencimiento",
-      accessor: "date_to",
+      accessor: "due_date",
     },
     {
       // TODO: make accessor works
       Header: "Asignar a",
       accessor: "",
-      Cell: ({ value, row }) => {
-        return row.original.project ? (
-          <Link
-            href={`/admin/profile/${row.original.project?.id}`}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            {row.original.project?.user?.first_name}
-            {row.original.project?.user?.profile_picture?.url && (
-              <Image
-                src={row.original.project?.user?.profile_picture?.url}
-                alt="user"
-                width={30}
-                height={30}
-              />
-            )}
-          </Link>
-        ) : null;
-      },
+      Cell: ({ row }) => null,
     },
     {
       Header: "Etiquetas",
       accessor: "labels",
-      Cell: ({ value }) =>
-        value ? (
-          <Link href={`/partners/${value.id}/profile`}>
-            {value.map((label) => (
-              <MDBox
-                key={label.id}
-                display="inline-block"
-                mr={1}
-                color="info"
-                sx={{
-                  cursor: "pointer",
-                  "&:hover": {
-                    textDecoration: "underline",
-                  },
-                }}
-              >
-                {label.name}
-              </MDBox>
-            ))}
-          </Link>
-        ) : null,
+      Cell: ({ row }) =>
+        row.original.tags &&
+        row.original.tags.map((tag) => (
+          <Grid key={tag.id}>
+            <MDBadge
+              variant="contained"
+              color="info"
+              size="md"
+              badgeContent={tag.name}
+            />
+          </Grid>
+        )),
     },
     {
       Header: "Prioridad",
+      accessor: "priority",
       Cell: ({ row }) => (
-        <Select
-          value={priorities.indexOf(row.original.priority)}
+        <Autocomplete
+          value={row.original.priority}
           options={priorities}
-          optionLabel={(option) => option}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         />
       ),
     },

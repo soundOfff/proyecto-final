@@ -7,6 +7,7 @@ import { getAll as getAllTags } from "/actions/tags";
 import { getAll as getAllTasks } from "/actions/tasks";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
 import { getTaskPriorities } from "/actions/tasks";
+import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 
 export default async function Expenses({
@@ -20,6 +21,7 @@ export default async function Expenses({
   const repeats = await getAllRepeats();
   const priorities = await getTaskPriorities();
   const taskeableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
+  const statuses = await getTaskStatus();
 
   return (
     <MDBox mb={3}>
@@ -28,13 +30,14 @@ export default async function Expenses({
           <Grid item xs={12}>
             {/* <Stats countByStatuses={countByStatuses} /> */}
             <Table
-              rows={[]}
+              rows={tasks}
               meta={{ per_page: "5" }}
               priorities={priorities}
               repeats={repeats}
               taskableTypes={TASKABLE_TYPES}
               taskeableItems={taskeableItems}
               tagsData={tagsData}
+              statuses={statuses}
             />
           </Grid>
         </Grid>

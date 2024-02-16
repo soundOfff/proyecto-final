@@ -12,12 +12,15 @@ return new class extends Migration {
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('invoice_id')->nullable();
+            $table->foreignId('task_priority_id');
+            $table->foreignId('repeat_id')->nullable();
+            $table->foreignId('ticket_status_id');
             $table->morphs('taskable');
 
             $table->integer('added_from')->nullable();
-            $table->boolean('billable');
-            $table->boolean('billed');
+            $table->boolean('billable')->default(false);
+            $table->boolean('billed')->default(false);
             $table->boolean('custom_recurring')->nullable();
             $table->integer('cycles')->nullable();
             $table->dateTime('date_added')->nullable();
@@ -35,12 +38,10 @@ return new class extends Migration {
             $table->integer('milestone')->nullable();
             $table->integer('milestone_order')->nullable();
             $table->mediumText('name');
-            $table->integer('priority');
-            $table->integer('recurring');
+            $table->integer('recurring')->nullable();
             $table->string('recurring_type')->nullable();
             $table->integer('repeat_every')->nullable();
             $table->date('start_date');
-            $table->integer('status');
             $table->integer('total_cycles')->nullable();
             $table->boolean('visible_to_client')->default(false);
 

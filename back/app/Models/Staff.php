@@ -55,4 +55,9 @@ class Staff extends Model
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
 }

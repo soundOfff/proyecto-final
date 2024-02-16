@@ -5,12 +5,6 @@ import { redirect } from "next/navigation";
 
 // TODO: make the endpoints
 export async function getAll(params) {
-  return {
-    data: {
-      tasks: [],
-    },
-    meta: {},
-  };
   const url = new URL(`${process.env.API_URL}/tasks`);
   url.search = new URLSearchParams(params);
 
@@ -32,6 +26,16 @@ export async function getAll(params) {
   return data;
 }
 
+export async function getTaskStatus() {
+  const url = new URL(`${process.env.API_URL}/tasks-status`);
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+  const { data } = await res.json();
+  return data?.statuses;
+}
+
 export async function getTaskPriorities() {
   const url = new URL(`${process.env.API_URL}/tasks-priorities`);
   const res = await fetch(url);
@@ -43,7 +47,6 @@ export async function getTaskPriorities() {
 }
 
 export async function store(data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks`, {
     method: "POST",
     body: JSON.stringify(data),

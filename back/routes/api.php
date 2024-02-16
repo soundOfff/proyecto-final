@@ -9,6 +9,7 @@ use App\Http\Controllers\EstimateStatusController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemGroupController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SubServiceTypeController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaxController;
+use Faker\Core\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -119,6 +121,8 @@ Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
 
 Route::get('/recurrings', [RecurringController::class, 'index']);
+
+Route::get('/drive-test', [FileController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

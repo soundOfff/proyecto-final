@@ -122,7 +122,8 @@ Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
 
 Route::get('/recurrings', [RecurringController::class, 'index']);
 
-Route::get('/drive-test', [FileController::class, 'index']);
+Route::get('/files/{file}', [FileController::class, 'show']);
+Route::post('/files', [FileController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

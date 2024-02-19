@@ -8,24 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class File extends Model
 {
     protected $fillable = [
-        'id',
         'invoice_id',
         'contact_id',
         'staff_id',
         'fileable_id',
         'fileable_type',
-        'attachment_key',
-        'date_added',
-        'external',
-        'external_link',
-        'name',
-        'type',
-        'last_activity',
+        'url',
         'subject',
-        'thumbnail_link',
         'visible_to_customer',
-        'created_at',
-        'updated_at',
     ];
 
     public function invoice(): BelongsTo

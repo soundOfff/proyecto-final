@@ -44,6 +44,7 @@ export default function Table({ formData, types }) {
     {
       Header: "Descuento",
       accessor: "discount",
+      Cell: ({ value }) => value ?? "0",
     },
     {
       id: "amount",

@@ -47,7 +47,6 @@ export async function show(id, params) {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    cache: "no-store",
   });
 
   if (!res.ok) {

@@ -15,166 +15,75 @@ import MDDatePicker from "/components/MDDatePicker";
 import moment from "moment";
 import { ErrorMessage } from "formik";
 import Select from "/components/Select";
-import { useEffect } from "react";
-import { show as getPartner } from "/actions/partners";
+import { useEffect, useState } from "react";
+import { getSelect as getProjectSelect } from "/actions/projects";
 
 export default function First({
   formData,
-  proposal,
   partners,
-  discountTypes,
+  serviceTypes,
+  subServiceTypes,
   tags: tagsData,
   currencies,
+  proposal,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
-    subject,
     partner,
-    date,
-    openTill,
-    currency,
-    discountType,
+    project,
+    number,
+    dateFrom,
+    dateTo,
+    serviceType,
+    hasRetainingAgent,
+    subServiceType,
     tags,
-    allowComments,
-    proposalTo,
-    country,
-    address,
-    state,
-    city,
-    zip,
-    email,
-    phone,
+    currency,
   } = formField;
 
   useEffect(() => {
-    getPartner(values[partner.name], { include: ["primaryContact"] }).then(
-      (partner) => {
-        setFieldValue(proposalTo.name, partner.company ?? "");
-        setFieldValue(country.name, partner.countryId ?? "");
-        setFieldValue(address.name, partner.address ?? "");
-        setFieldValue(city.name, partner.city ?? "");
-        setFieldValue(state.name, partner.state ?? "");
-        setFieldValue(zip.name, partner.zip ?? "");
-        setFieldValue(email.name, partner.primaryContact?.email ?? "");
-        setFieldValue(phone.name, partner.phoneNumber ?? "");
-      }
-    );
-  }, [
-    values,
-    proposalTo,
-    country,
-    address,
-    state,
-    city,
-    zip,
-    email,
-    phone,
-    partner,
-    setFieldValue,
-  ]);
-
-  useEffect(() => {
-    setFieldValue(subject.name, proposal.subject);
+    setFieldValue(currency.name, proposal.currency.id);
     setFieldValue(
       partner.name,
-      proposal.proposableType == "customer" ? proposal.proposableId : null
+      proposal.proposableType === "customer" ? proposal.proposableId : null
     );
-    setFieldValue(date.name, moment(proposal.date).format("YYYY-MM-DD"));
-    setFieldValue(
-      openTill.name,
-      moment(proposal.openTill).format("YYYY-MM-DD")
-    );
-    setFieldValue(currency.name, proposal.currencyId);
-    setFieldValue(discountType.name, proposal.discountType?.id);
-    setFieldValue(allowComments.name, proposal.allowComments);
     setFieldValue(tags.name, proposal.tags);
   }, [
     proposal,
-    setFieldValue,
-    subject,
     partner,
-    date,
-    openTill,
-    currency,
-    discountType,
-    allowComments,
+    project,
+    number,
+    dateFrom,
+    dateTo,
+    serviceType,
+    hasRetainingAgent,
+    subServiceType,
     tags,
+    currency,
+    setFieldValue,
   ]);
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    if (values.partner_id) {
+      getProjectSelect(values.partner_id).then((projects) =>
+        setProjects(projects)
+      );
+    }
+  }, [values.partner_id]);
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <FormField
-          name={subject.name}
-          label={subject.label}
-          type={subject.type}
-          placeholder={subject.placeholder}
-          error={errors.subject && touched.subject}
-          success={subject.length > 0 && !errors.subject}
+          name={number.name}
+          label={number.label}
+          type={number.type}
+          placeholder={number.placeholder}
+          error={errors.number && touched.number}
+          success={number.length > 0 && !errors.number}
         />
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[partner.name]}
-          options={partners}
-          optionLabel={(option) => option.company}
-          fieldName={partner.name}
-          inputLabel={partner.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
-        <MDDatePicker
-          input={{
-            variant: "standard",
-            fullWidth: true,
-            placeholder: date.label,
-            InputLabelProps: { shrink: true },
-          }}
-          format="DD/MM/YYYY"
-          value={values[date.name]}
-          onChange={(value) =>
-            setFieldValue(date.name, moment(value[0]).format("YYYY-MM-DD"))
-          }
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={date.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
-        <MDDatePicker
-          input={{
-            variant: "standard",
-            fullWidth: true,
-            placeholder: openTill.label,
-            InputLabelProps: { shrink: true },
-          }}
-          format="DD/MM/YYYY"
-          value={values[openTill.name]}
-          onChange={(value) =>
-            setFieldValue(openTill.name, moment(value[0]).format("YYYY-MM-DD"))
-          }
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={openTill.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
 
       <Grid item xs={12} sm={6}>
@@ -189,12 +98,87 @@ export default function First({
       </Grid>
 
       <Grid item xs={12} sm={6}>
+        <MDDatePicker
+          input={{
+            variant: "standard",
+            fullWidth: true,
+            placeholder: "Fecha desde proforma",
+            InputLabelProps: { shrink: true },
+          }}
+          format="DD/MM/YYYY"
+          value={values[dateFrom.name]}
+          onChange={(value) =>
+            setFieldValue(dateFrom.name, moment(value[0]).format("YYYY-MM-DD"))
+          }
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={dateFrom.name} />
+          </MDTypography>
+        </MDBox>
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <MDDatePicker
+          input={{
+            variant: "standard",
+            fullWidth: true,
+            placeholder: "Fecha de caducidad",
+            InputLabelProps: { shrink: true },
+          }}
+          format="DD/MM/YYYY"
+          value={values[dateTo.name]}
+          onChange={(value) =>
+            setFieldValue(dateTo.name, moment(value[0]).format("YYYY-MM-DD"))
+          }
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={dateTo.name} />
+          </MDTypography>
+        </MDBox>
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
         <Select
-          value={values[discountType.name]}
-          options={discountTypes}
+          value={values[partner.name]}
+          options={partners}
+          optionLabel={(option) => option.company}
+          fieldName={partner.name}
+          inputLabel={partner.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        {projects.length > 0 && (
+          <Select
+            value={values[project.name]}
+            options={projects}
+            optionLabel={(option) => option.name}
+            fieldName={project.name}
+            inputLabel={project.label}
+            setFieldValue={setFieldValue}
+          />
+        )}
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[serviceType.name]}
+          options={serviceTypes}
           optionLabel={(option) => option.label}
-          fieldName={discountType.name}
-          inputLabel={discountType.label}
+          fieldName={serviceType.name}
+          inputLabel={serviceType.label}
           setFieldValue={setFieldValue}
         />
       </Grid>
@@ -226,19 +210,29 @@ export default function First({
           </MDTypography>
         </MDBox>
       </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[subServiceType.name]}
+          options={subServiceTypes}
+          inputLabel={subServiceType.label}
+          optionLabel={(option) => option.label}
+          fieldName={subServiceType.name}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
 
       <Grid item xs={12} sm={6}>
         <FormGroup>
           <FormControlLabel
             control={
               <Switch
-                checked={values[allowComments.name]}
+                checked={values[hasRetainingAgent.name]}
                 onChange={(e) =>
-                  setFieldValue(allowComments.name, e.target.checked)
+                  setFieldValue(hasRetainingAgent.name, e.target.checked)
                 }
               />
             }
-            label={allowComments.label}
+            label={hasRetainingAgent.label}
           />
         </FormGroup>
       </Grid>

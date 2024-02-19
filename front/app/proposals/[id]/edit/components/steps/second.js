@@ -29,7 +29,7 @@ export default function Second({
   useEffect(() => {
     setFieldValue(status.name, proposal.statusId);
     setFieldValue(staffAssigned.name, proposal.staffAssignedId);
-  }, [proposal]);
+  }, [proposal, status, staffAssigned, setFieldValue]);
 
   return (
     <Grid container spacing={5}>

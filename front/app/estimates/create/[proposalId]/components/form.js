@@ -14,36 +14,40 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
 
-import { update as updateProposal } from "/actions/proposals";
+import { store as createEstimate } from "/actions/estimates";
 
 import { useState } from "react";
 
 const steps = [
-  "Nueva Propuesta",
-  "Información Del Cliente",
-  "Detalles de Artículos",
+  "Nueva proforma",
+  "Opcionales de proforma",
+  "Detalles de articulos",
 ];
 
 export default function FormComponent({
   proposal,
   partners,
+  taxes,
+  recurrings,
+  groupIds,
+  items,
+  serviceTypes,
+  agents,
   currencies,
   tags,
   statuses,
-  discountTypes,
-  staffs,
-  countries,
-  taxes,
-  groupIds,
-  items,
   itemTypes,
+  discountTypes,
+  subServiceTypes,
+  maxEstimateId,
   defaultCurrency,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
-  const { currency } = formField;
+  const { number, currency } = formField;
+  initialValues[number.name] = `00${Number(maxEstimateId) + 1}`;
   initialValues[currency.name] = defaultCurrency.id;
 
   const getStepContent = (stepIndex, formData) => {
@@ -53,11 +57,12 @@ export default function FormComponent({
           <First
             formData={formData}
             {...{
-              proposal,
               partners,
+              serviceTypes,
+              subServiceTypes,
               currencies,
               tags,
-              discountTypes,
+              proposal,
             }}
           />
         );
@@ -66,10 +71,11 @@ export default function FormComponent({
           <Second
             formData={formData}
             {...{
-              proposal,
               statuses,
-              staffs,
-              countries,
+              discountTypes,
+              recurrings,
+              agents,
+              proposal,
             }}
           />
         );
@@ -78,11 +84,11 @@ export default function FormComponent({
           <Third
             formData={formData}
             {...{
-              proposal,
               items,
               itemTypes,
               taxes,
               groupIds,
+              proposal,
             }}
           />
         );
@@ -94,7 +100,7 @@ export default function FormComponent({
   const handleBack = () => setActiveStep(activeStep - 1);
 
   const submitForm = async (values, actions) => {
-    await updateProposal(proposal.id, values);
+    await createEstimate(values);
   };
 
   const handleSubmit = (values, actions) => {

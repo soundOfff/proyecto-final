@@ -9,7 +9,6 @@ use App\Models\LineItem;
 use App\Models\LineItemTax;
 use App\Models\Proposal;
 use App\Models\Taggable;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ProposalController extends Controller
@@ -91,6 +90,7 @@ class ProposalController extends Controller
             'tags',
             'proposable.primaryContact',
             'comments',
+            'saleAgent',
         ])
         ->find($proposal->id);
 

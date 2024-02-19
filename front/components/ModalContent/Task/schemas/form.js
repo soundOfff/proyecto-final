@@ -42,9 +42,13 @@ const form = {
       name: "due_date",
       label: "Fecha de vencimiento",
     },
-    priority: {
-      name: "priority",
+    task_priority_id: {
+      name: "task_priority_id",
       label: "Prioridad",
+    },
+    ticket_status_id: {
+      name: "status",
+      label: "Estado",
     },
     repeat: {
       name: "repeat_id",

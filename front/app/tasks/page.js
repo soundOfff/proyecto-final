@@ -16,7 +16,7 @@ export default async function Expenses({
   const {
     data: { tasks },
     meta,
-  } = await getAllTasks({ perPage, page });
+  } = await getAllTasks({ perPage, page, include: ["staff", "tags"] });
   const tagsData = await getAllTags();
   const repeats = await getAllRepeats();
   const priorities = await getTaskPriorities();

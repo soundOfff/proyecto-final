@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskResourceCollection;
 use App\Models\Taggable;
 use App\Models\Task;
+use App\Models\TicketStatus;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
@@ -26,6 +28,7 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = $newTask['tags'];
+        $newTask['ticket_status_id'] = TicketStatus::getInProgress()->id;
         $task = Task::create($newTask);
 
         foreach ($tags as $tag) {
@@ -37,4 +40,14 @@ class TaskController extends Controller
 
         return response()->json(null, 201);
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Task $task)
+    {
+        $task = QueryBuilder::for(Task::class)->find($task->id);
+        return new TaskResource($task);
+    }
+
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { show } from "/actions/expenses";
+import { show } from "/actions/tasks";
 import { useEffect, useState } from "react";
 import { useMaterialUIController } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
@@ -9,10 +9,14 @@ import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
 import Modal from "/components/Modal";
-import ModalContent from "./modal-content";
+
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+
 import Link from "next/link";
 import ModalContentForm from "../../../components/ModalContent/Task/form";
-import { Autocomplete, Grid } from "@mui/material";
+import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
 export default function Table({
   rows,
@@ -26,8 +30,8 @@ export default function Table({
 }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const [expenseIdShow, setExpenseIdShow] = useState(0);
-  const [expense, setExpense] = useState(null);
+  const [taskId, setTaskId] = useState(null);
+  const [task, setTask] = useState(null);
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -35,17 +39,17 @@ export default function Table({
   };
 
   useEffect(() => {
-    const fetchExpense = async () => {
-      setExpense(
-        await show(expenseIdShow, {
-          include: ["category", "project", "invoice", "partner"],
+    const fetchTask = async () => {
+      setTask(
+        await show(taskId, {
+          include: ["staff", "tags", "priority", "status"],
         })
       );
     };
-    if (expenseIdShow) {
-      fetchExpense();
+    if (taskId) {
+      fetchTask();
     }
-  }, [expenseIdShow]);
+  }, [taskId]);
 
   const columns = [
     {
@@ -91,7 +95,16 @@ export default function Table({
       // TODO: make accessor works
       Header: "Asignar a",
       accessor: "",
-      Cell: ({ row }) => null,
+      Cell: ({ row }) => {
+        return row.original.staff?.map((staff) => (
+          <Link
+            href={`/partners/${staff.id}`}
+            sx={{ cursor: "pointer", color: "info" }}
+          >
+            {staff.first_name} {staff.last_name}
+          </Link>
+        ));
+      },
     },
     {
       Header: "Etiquetas",
@@ -128,22 +141,47 @@ export default function Table({
         />
       ),
     },
+    {
+      Header: "Acciones",
+      accessor: "",
+      Cell: ({ row }) => (
+        <>
+          <Tooltip title="Vista Rápida">
+            <FlashOnIcon
+              color="info"
+              fontSize="medium"
+              onClick={() => {
+                setOpen(true);
+              }}
+              sx={{ mr: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Editar tarea">
+            <EditNoteIcon
+              color="warning"
+              onClick={() => setTaskId(row.original.id)}
+              fontSize="medium"
+            />
+          </Tooltip>
+          <Tooltip title="Eliminar tarea">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                // setProjectIdDelete(row.original.id);
+              }}
+              sx={{ ml: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </>
+      ),
+    },
   ];
 
   const table = { columns, rows };
 
   return (
     <MDBox>
-      {expense && (
-        <Modal
-          open={open}
-          onClose={() => {
-            setOpen(false);
-          }}
-        >
-          <ModalContent expense={expense} />
-        </Modal>
-      )}
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
         <MDButton
           variant="gradient"

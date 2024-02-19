@@ -42,7 +42,7 @@ export default function ModalContentForm({
     hourlyRate,
     startDate,
     dueDate,
-    priority,
+    task_priority_id,
     repeat,
     recurring,
     recurringType,
@@ -216,11 +216,11 @@ export default function ModalContentForm({
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Select
-                  value={values[priority.name]}
+                  value={values[task_priority_id.name]}
                   options={priorities}
                   optionLabel="name"
-                  fieldName={priority.name}
-                  inputLabel={priority.label}
+                  fieldName={task_priority_id.name}
+                  inputLabel={task_priority_id.label}
                   customOptionLabel="name"
                   setFieldValue={setFieldValue}
                 />
@@ -319,11 +319,8 @@ export default function ModalContentForm({
               <Grid item xs={12}>
                 <Autocomplete
                   multiple
-                  onChange={(e, tagsData) =>
-                    setFieldValue(
-                      tags.name,
-                      tagsData.map((tag) => tag.id)
-                    )
+                  onChange={(e, selectedTag) =>
+                    setFieldValue(tags.name, selectedTag)
                   }
                   options={tagsData}
                   getOptionLabel={(option) => option.name}

@@ -55,7 +55,6 @@ export async function store(data) {
       Accept: "application/json",
     },
   });
-
   if (!res.ok) {
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
@@ -63,4 +62,19 @@ export async function store(data) {
   revalidatePath("/tasks");
 
   redirect("/tasks");
+}
+
+export async function show(id, params) {
+  const url = new URL(`${process.env.API_URL}/tasks/${id}`);
+  url.search = new URLSearchParams(params);
+
+  const res = await fetch(url, { cache: "no-store" });
+
+  if (!res.ok) {
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  const { data: task } = await res.json();
+
+  return task;
 }

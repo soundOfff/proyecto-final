@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Task extends Model
 {
@@ -27,9 +28,9 @@ class Task extends Model
         return $this->belongsTo(TicketStatus::class, 'ticket_status_id');
     }
 
-    public function staff()
+    public function staff(): BelongsToMany
     {
-        return $this->hasMany(Staff::class);
+        return $this->belongsToMany(Staff::class, 'task_assigned');
     }
 
 }

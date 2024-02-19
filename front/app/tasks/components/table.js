@@ -46,7 +46,7 @@ export default function Table({
         })
       );
     };
-    if (taskId) {
+    if (taskId && !task) {
       fetchTask();
     }
   }, [taskId]);
@@ -151,6 +151,7 @@ export default function Table({
               color="info"
               fontSize="medium"
               onClick={() => {
+                setTaskId(row.original.id);
                 setOpen(true);
               }}
               sx={{ mr: 3, cursor: "pointer" }}
@@ -159,7 +160,10 @@ export default function Table({
           <Tooltip title="Editar tarea">
             <EditNoteIcon
               color="warning"
-              onClick={() => setTaskId(row.original.id)}
+              onClick={() => {
+                setTaskId(row.original.id);
+                setOpen(true);
+              }}
               fontSize="medium"
             />
           </Tooltip>
@@ -200,6 +204,7 @@ export default function Table({
               taskableTypes={taskableTypes}
               taskeableItems={taskeableItems}
               tagsData={tagsData}
+              task={task}
             />
           </Modal>
         )}

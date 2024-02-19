@@ -24,8 +24,8 @@ class LineItemResource extends JsonResource
             'rate' => $this->rate,
             'unit' => $this->unit,
             'itemOrder' => $this->item_order,
-            'discount' => $this->item_discount,
-            'type' => $this->type,
+            'discount' => $this->discount,
+            'type' => LineItemTypeResource::make($this->whenLoaded('type')),
             'taxes' => LineItemTaxResource::collection($this->whenLoaded('taxes')),
         ];
     }

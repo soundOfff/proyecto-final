@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Partner extends Model
 {
@@ -60,16 +62,35 @@ class Partner extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function primaryContact(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Contact::class,
+            User::class,
+            'id',
+            'user_id',
+            'user_id',
+            'id'
+        )->where('is_primary', true);
+    }
+
     public function consolidator(): BelongsTo
     {
         return $this->belongsTo(self::class, 'consolidator_id', 'id', 'consolidator');
     }
 
-    public function billingCountry(): BelongsTo {
+    public function billingCountry(): BelongsTo
+    {
         return $this->belongsTo(Country::class, 'billing_country_id', 'id', 'billingCountry');
     }
 
-    public function shippingCountry(): BelongsTo {
+    public function shippingCountry(): BelongsTo
+    {
         return $this->belongsTo(Country::class, 'shipping_country_id', 'id', 'shippingCountry');
+    }
+
+    public function proposals(): MorphMany
+    {
+        return $this->morphMany(Proposal::class, 'proposable');
     }
 }

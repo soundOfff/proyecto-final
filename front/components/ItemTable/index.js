@@ -7,8 +7,9 @@ import { DeleteOutline } from "@mui/icons-material";
 import numberFormat from "/utils/numberFormat";
 import { Grid } from "@mui/material";
 
-export default function Table({ formData }) {
+export default function Table({ formData, types }) {
   const { values, setFieldValue, formField } = formData;
+
   const columns = [
     {
       Header: "Articulo",
@@ -16,11 +17,13 @@ export default function Table({ formData }) {
     },
     {
       Header: "Descripción",
-      accessor: "longDescription",
+      accessor: "long_description",
     },
     {
       Header: "Tipo de articulo",
       accessor: "type",
+      Cell: ({ value }) =>
+        value ? types.find((type) => type.id === value)?.label : null,
     },
     {
       Header: () => values[formField.unit.name],
@@ -41,6 +44,7 @@ export default function Table({ formData }) {
     {
       Header: "Descuento",
       accessor: "discount",
+      Cell: ({ value }) => value ?? "0",
     },
     {
       id: "amount",
@@ -49,7 +53,7 @@ export default function Table({ formData }) {
         numberFormat(row.original.quantity * row.original.rate),
     },
     {
-      id: "add-item",
+      id: "remove-item",
       Cell: ({ row }) => {
         return (
           <MDBox lineHeight={0} color="dark">

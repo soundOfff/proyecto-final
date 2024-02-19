@@ -19,6 +19,11 @@ return new class extends Migration {
             $table->foreignId('invoice_id')->nullable()->constrained();
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');
+            $table->foreignId('sub_service_type_id')->nullable()->constrained();
+            $table->foreignId('estimate_status_id')->nullable()->constrained();
+            $table->foreignId('discount_type_id')->nullable()->constrained();
+            $table->foreignId('sale_agent_id')->nullable()->constrained('partners');
+            $table->foreignId('recurring_id')->nullable()->constrained('recurrings');
 
             $table->boolean('sent')->default(0);
             $table->dateTime('date_send')->nullable();
@@ -34,7 +39,6 @@ return new class extends Migration {
             $table->decimal('total', 15, 2)->nullable();
             $table->decimal('adjustment', 15, 2)->nullable();
             $table->integer('added_from')->nullable();
-            $table->integer('status')->default(1);
             $table->text('client_note')->nullable();
             $table->text('admin_note')->nullable();
             $table->decimal('discount_percent', 15, 2)->default(0.00);
@@ -43,7 +47,6 @@ return new class extends Migration {
             $table->dateTime('invoiced_date')->nullable();
             $table->text('terms')->nullable();
             $table->string('reference_no', 100)->nullable();
-            $table->integer('sale_agent')->default(0);
             $table->string('billing_street', 200)->nullable();
             $table->string('billing_city', 100)->nullable();
             $table->string('billing_state', 100)->nullable();
@@ -56,15 +59,15 @@ return new class extends Migration {
             $table->boolean('show_shipping_on_estimate')->default(1);
             $table->integer('show_quantity_as')->default(1);
             $table->integer('pipeline_order')->default(0);
-            $table->integer('is_expiry_notified')->default(0);
+            $table->boolean('is_expiry_notified')->default(false);
             $table->string('acceptance_firstname', 50)->nullable();
             $table->string('acceptance_lastname', 50)->nullable();
             $table->string('acceptance_email', 100)->nullable();
             $table->dateTime('acceptance_date')->nullable();
             $table->string('acceptance_ip', 40)->nullable();
             $table->string('signature', 40)->nullable();
-            $table->integer('cancel_overdue_reminders')->default(0);
-            $table->integer('recurring')->default(0);
+            $table->integer('cancel_overdue_reminders')->nullable()->default(0);
+            $table->boolean('has_retaining_agent')->default(false);
 
             $table->timestamps();
         });

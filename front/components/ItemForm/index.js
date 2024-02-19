@@ -2,7 +2,7 @@
 
 import { useFormik } from "formik";
 import { Autocomplete, Grid } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import FormField from "./FormField";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
@@ -40,7 +40,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       .min(1, "Debe ser mayor que 0")
       .required(quantity.errorMsg),
     [rate.name]: Yup.number().required(rate.errorMsg),
-    [longDescription.name]: Yup.string().nullable(),
+    [longDescription.name]: Yup.string(),
     [type.name]: Yup.string(),
     [taxes.name]: Yup.array().of(
       Yup.object().shape({
@@ -143,28 +143,28 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       </Grid>
       <Grid item xs={12} sm={2}>
         <FormField
+          value={values[description.name]}
+          onChange={(e) => setFieldValue(description.name, e.target.value)}
           name={description.name}
           label={description.label}
           type={description.type}
           errors={errors}
           touched={touched}
           success={description.length > 0 && !errors.description}
-          value={values[description.name]}
-          onChange={(e) => setFieldValue(description.name, e.target.value)}
           multiline
           rows={4}
         />
       </Grid>
       <Grid item xs={12} sm={2}>
         <FormField
+          value={values[longDescription.name]}
+          onChange={(e) => setFieldValue(longDescription.name, e.target.value)}
           name={longDescription.name}
           label={longDescription.label}
           type={longDescription.type}
           errors={errors}
           touched={touched}
           success={longDescription.length > 0 && !errors.longDescription}
-          value={values[longDescription.name]}
-          onChange={(e) => setFieldValue(longDescription.name, e.target.value)}
           multiline
           rows={4}
         />
@@ -173,7 +173,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
         <Autocomplete
           key={`${externalValues.items.length}-types`}
           onChange={(e, typeSelected) =>
-            setFieldValue(type.name, typeSelected?.label)
+            setFieldValue(type.name, typeSelected?.id ?? null)
           }
           options={types}
           renderInput={(params) => (

@@ -6,6 +6,8 @@ import MDButton from "/components/MDButton";
 import moneyFormat from "/utils/moneyFormat";
 import { useMaterialUIController } from "/context";
 import Link from "next/link";
+import EditIcon from "@mui/icons-material/Edit";
+import { Tooltip } from "@mui/material";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -75,6 +77,20 @@ export default function Table({ rows, meta }) {
     {
       Header: "Tipo de Servicio",
       accessor: "project.serviceType.label",
+    },
+    {
+      id: "actions",
+      Header: "Acciones",
+      Cell: ({ row }) => (
+        <Link
+          href={`/estimates/${row.original.id}/edit`}
+          sx={{ cursor: "pointer", color: "info" }}
+        >
+          <Tooltip title="Editar" placement="top">
+            <EditIcon fontSize="medium" color="warning" />
+          </Tooltip>
+        </Link>
+      ),
     },
   ];
 

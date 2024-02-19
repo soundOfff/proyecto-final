@@ -160,7 +160,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                   <Select
                     value={values[billingCountry.name]}
                     options={countries}
-                    optionLabel="shortName"
+                    optionLabel={(option) => option.shortName}
                     fieldName={billingCountry.name}
                     inputLabel={billingCountry.label}
                     setFieldValue={setFieldValue}
@@ -170,7 +170,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                   <Select
                     value={values[shippingCountry.name]}
                     options={countries}
-                    optionLabel="shortName"
+                    optionLabel={(option) => option.shortName}
                     fieldName={shippingCountry.name}
                     inputLabel={shippingCountry.label}
                     setFieldValue={setFieldValue}

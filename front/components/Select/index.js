@@ -28,7 +28,7 @@ export default function Select({
         onChange={(_, newValue) => setFieldValue(fieldName, newValue?.id ?? "")}
         options={options}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        getOptionLabel={(option) => option[optionLabel]}
+        getOptionLabel={optionLabel}
         renderInput={(params) => (
           <>
             <MDInput

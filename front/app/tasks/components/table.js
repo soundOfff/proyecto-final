@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 
 import Link from "next/link";
-import ModalContentForm from "../../../components/ModalContent/Task/form";
+import ModalContentForm from "../../../components/ModalContent/Task/index";
 import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
 export default function Table({

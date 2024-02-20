@@ -29,6 +29,7 @@ export default function Select({
         options={options}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         getOptionLabel={(option) => option[optionLabel]}
+        key={(option) => option?.id}
         onInputChange={(_, newInputValue) => onInputChange(newInputValue)}
         renderInput={(params) => (
           <>

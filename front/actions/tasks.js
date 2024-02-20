@@ -17,7 +17,6 @@ export async function getAll(params) {
 
   if (!res.ok) {
     const data = await res.json();
-    console.log(data);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
@@ -47,6 +46,7 @@ export async function getTaskPriorities() {
 }
 
 export async function store(data) {
+  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks`, {
     method: "POST",
     body: JSON.stringify(data),

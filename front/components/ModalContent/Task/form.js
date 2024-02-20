@@ -19,17 +19,17 @@ import moment from "moment";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import { EditorState } from "draft-js";
-import { useFormik, useFormikContext } from "formik";
-import form from "./schemas/form";
+import { ErrorMessage } from "formik";
 
 export default function TaskForm({
   priorities,
+  formData,
   repeats,
   taskableTypes,
   tagsData,
   task = null,
 }) {
-  //   const { values, touched, errors, setFieldValue } = useFormik();
+  const { values, errors, touched, setFieldValue, formField } = formData;
   const {
     isPublic,
     billable,
@@ -307,6 +307,7 @@ export default function TaskForm({
                 <MDInput
                   {...params}
                   variant="standard"
+                  key={tags.id}
                   label={tags.label}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
@@ -345,21 +346,6 @@ export default function TaskForm({
             </MDBox>
           </Grid>
         </Grid>
-      </MDBox>
-      <MDBox p={3}>
-        <MDBox width="100%" display="flex" justifyContent="space-between">
-          <MDButton variant="gradient" color="light" onClick={onClose}>
-            Cancelar
-          </MDButton>
-          <MDButton
-            disabled={isSubmitting}
-            type="submit"
-            variant="gradient"
-            color="dark"
-          >
-            Guardar
-          </MDButton>
-        </MDBox>
       </MDBox>
     </>
   );

@@ -107,13 +107,12 @@ Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
 Route::get('/tasks-status', [TicketStatusController::class, 'index']);
 
-
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'store']);
+Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
 
 Route::get('/tags', [TagController::class, 'index']);
-
 
 Route::get('/countries-select', [CountryController::class, 'select']);
 

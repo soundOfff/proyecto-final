@@ -10,7 +10,6 @@ import { useState } from "react";
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
-import MDButton from "/components/MDButton";
 import MDEditor from "/components/MDEditor";
 import MDDatePicker from "/components/MDDatePicker";
 import Select from "/components/Select";
@@ -48,10 +47,17 @@ export default function TaskForm({
     tags,
     description,
   } = formField;
-  const [taskableItems, setTaskableItems] = useState([]);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [taskableItems, setTaskableItems] = useState([]);
+
+  const handleSubmit = async (values, _) => {
+    values.description = editorState.getCurrentContent().getPlainText(); // kk
+    values.taskable_type = "projects";
+    await storeItem(values);
+    onClose();
+  };
 
   const debounce = (func, delay) => {
     let debounceTimeout;

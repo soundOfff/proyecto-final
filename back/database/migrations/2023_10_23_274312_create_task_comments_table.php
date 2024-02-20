@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->foreignId('contact_id')->constrained();
 
             $table->text('content');
-            $table->dateTime('date_added');
 
             $table->timestamps();
         });

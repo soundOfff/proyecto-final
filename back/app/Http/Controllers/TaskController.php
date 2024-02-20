@@ -14,7 +14,8 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $query = QueryBuilder::for(Task::class);
+        $query = QueryBuilder::for(Task::class)
+            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers']);
 
         $tasks = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -46,7 +47,8 @@ class TaskController extends Controller
         $tags = $newTask['tags'];
         $comments = $newTask['comments'];
         $checklistItems = $newTask['checklist_items'];
-        $staffId = $newTask['staff_id'];
+        $assigneds = $newTask['assigneds'];
+        $followers = $newTask['followers'];
         $newTask['ticket_status_id'] = TicketStatus::getInProgress()->id;
         $task->update($newTask);
 
@@ -55,11 +57,18 @@ class TaskController extends Controller
         }
 
         if ($checklistItems) {
+            $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
         }
 
-        if ($staffId) {
-            $task->followers()->create(['staff_id' => $staffId]);
+        if ($assigneds) {
+            $assignedIds = array_column($assigneds, 'id');
+            $task->assigneds()->sync($assignedIds);
+        }
+
+        if ($followers) {
+            $followerIds = array_column($followers, 'id');
+            $task->followers()->sync($followerIds);
         }
 
         foreach ($tags as $tag) {
@@ -77,7 +86,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task = QueryBuilder::for(Task::class)->find($task->id);
+        $task = QueryBuilder::for(Task::class)
+            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers'])
+            ->find($task->id);
 
         return new TaskResource($task);
     }

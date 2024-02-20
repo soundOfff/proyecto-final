@@ -61,6 +61,7 @@ export default function ModalContentForm({
 
   const handleSubmit = async (values, _) => {
     values.description = editorState.getCurrentContent().getPlainText(); // kk
+    values.taskable_type = "projects";
     await storeItem(values);
     onClose();
   };
@@ -297,7 +298,7 @@ export default function ModalContentForm({
               )}
               <Grid item xs={12} sm={6}>
                 <Select
-                  value={0}
+                  value={""}
                   options={taskableTypes}
                   optionLabel="label"
                   fieldName={taskableType.name}

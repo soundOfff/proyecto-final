@@ -10,13 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('task_assigned', function (Blueprint $table) {
+        Schema::create('staff_assigned', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained();
             $table->foreignId('staff_id')->constrained();
 
-            $table->integer('assigned_from');
-            $table->boolean('is_assigned_from_contact');
+            $table->integer('assigned_from')->nullable();
+            $table->boolean('is_assigned_from_contact')->default(false);
 
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_assigned');
+        Schema::dropIfExists('staff_assigned');
     }
 };

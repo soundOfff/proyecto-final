@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model
 {
@@ -12,7 +13,6 @@ class Task extends Model
     /**
      * Get all of the owning taskable models.
      */
-
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
@@ -28,9 +28,23 @@ class Task extends Model
         return $this->belongsTo(TicketStatus::class, 'ticket_status_id');
     }
 
-    public function staff(): BelongsToMany
+    public function comments()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
+    public function checklistItems(): HasMany
+    {
+        return $this->hasMany(TaskChecklistItem::class);
+    }
+
+    public function assigneds(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class, 'task_assigned');
     }
 
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(Staff::class, 'task_followers');
+    }
 }

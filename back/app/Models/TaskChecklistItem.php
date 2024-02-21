@@ -9,7 +9,7 @@ class TaskChecklistItem extends Model
 {
     protected $fillable = ['task_id', 'added_from', 'description', 'finished', 'finished_from', 'list_order'];
 
-    public function tasks(): BelongsTo
+    public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
     }

@@ -1,4 +1,4 @@
- <?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -44,12 +44,11 @@ class TaskController extends Controller
     public function update(Task $task, TaskRequest $request)
     {
         $newTask = $request->validated();
-        $tags = $newTask['tags'];
-        $comments = $newTask['comments'];
-        $checklistItems = $newTask['checklist_items'];
-        $assigneds = $newTask['assigneds'];
-        $followers = $newTask['followers'];
-        $newTask['ticket_status_id'] = TicketStatus::getInProgress()->id;
+        $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
+        $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
+        $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
+        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
+        $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $task->update($newTask);
 
         if ($comments) {
@@ -71,11 +70,14 @@ class TaskController extends Controller
             $task->followers()->sync($followerIds);
         }
 
-        foreach ($tags as $tag) {
-            $tag['taggable_id'] = $task->id;
-            $tag['taggable_type'] = 'task';
-            $tag['tag_id'] = $tag['id'];
-            Taggable::create($tag);
+        if ($tags) {
+            $task->tags()->detach();
+            foreach ($tags as $tag) {
+                $tag['taggable_id'] = $task->id;
+                $tag['taggable_type'] = 'task';
+                $tag['tag_id'] = $tag['id'];
+                Taggable::create($tag);
+            }
         }
 
         return response()->json(null, 204);
@@ -91,5 +93,12 @@ class TaskController extends Controller
             ->find($task->id);
 
         return new TaskResource($task);
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return response()->json(null, 204);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\TaskPriority;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,12 +28,17 @@ class TaskResource extends JsonResource
             'is_infinite' => $this->is_infinite,
             'billable' => $this->billable,
             'total_cycles' => $this->total_cycles,
-            'taskable_type' => $this->taskable_type,
-            'status' => $this->status,
             'taskable_id' => $this->taskable_id,
-            'tags' => $this->tags,
+            'taskable_type' => $this->taskable_type,
+            'statusId' => $this->ticket_status_id,
             'description' => $this->description,
-            'staff' => $this->staff,
+            'priority' => TaskPriorityResource::make($this->whenLoaded('priority')),
+            'status' => TicketStatusResource::make($this->whenLoaded('status')),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
+            'comments' => TaskCommentResource::collection($this->whenLoaded('comments')),
+            'checklistItems' => TaskChecklistItemResource::collection($this->whenLoaded('checklistItems')),
+            'assigneds' => StaffResource::collection($this->whenLoaded('assigneds')),
+            'followers' => StaffResource::collection($this->whenLoaded('followers')),
         ];
     }
 }

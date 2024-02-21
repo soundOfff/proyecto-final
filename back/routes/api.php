@@ -111,6 +111,7 @@ Route::get('/tasks', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'store']);
 Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
+Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 
 Route::get('/tags', [TagController::class, 'index']);
 

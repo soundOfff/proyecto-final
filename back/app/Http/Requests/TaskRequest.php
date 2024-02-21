@@ -22,8 +22,8 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'hourly_rate' => 'required|numeric',
+            'name' => 'sometimes|required|string',
+            'hourly_rate' => 'sometimes|required|numeric',
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date',
             'repeat_id' => 'nullable|exists:expense_repeats,id',
@@ -40,9 +40,9 @@ class TaskRequest extends FormRequest
             'tags' => 'nullable|array',
             'tags.*.id' => 'nullable|numeric|exists:tags,id',
             'assigneds' => 'nullable|array',
-            // 'assigneds.*.id' => 'nullable|numeric|exists:staff,id',
+            'assigneds.*.id' => 'nullable|numeric|exists:staff,id',
             'followers' => 'nullable|array',
-            // 'followers.*.id' => 'nullable|numeric|exists:staff,id',
+            'followers.*.id' => 'nullable|numeric|exists:staff,id',
             'comments' => 'nullable|array',
             'comments.*.task_id' => 'nullable|numeric|exists:tasks,id',
             'comments.*.staff_id' => 'nullable|numeric|exists:staff,id',

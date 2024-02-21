@@ -18,6 +18,8 @@ import Link from "next/link";
 import ModalContentForm from "../../../components/ModalContent/Task/index";
 import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
+import { update } from "/actions/tasks";
+
 export default function Table({
   rows,
   meta,
@@ -38,6 +40,14 @@ export default function Table({
     setOpen(false);
   };
 
+  const handleStatusChange = async (taskId, statusId) => {
+    await update(taskId, { ticket_status_id: statusId });
+  };
+
+  const handlePriorityChange = async (taskId, priorityId) => {
+    await update(taskId, { task_priority_id: priorityId });
+  };
+
   useEffect(() => {
     const fetchTask = async () => {
       setTask(
@@ -49,7 +59,7 @@ export default function Table({
     if (taskId && !task) {
       fetchTask();
     }
-  }, [taskId]);
+  }, [taskId, task]);
 
   const columns = [
     {
@@ -74,6 +84,9 @@ export default function Table({
       Cell: ({ row }) => (
         <Autocomplete
           value={row.original.status}
+          onChange={(e, status) => {
+            handleStatusChange(row.original.id, status.id);
+          }}
           options={statuses}
           sx={{ width: "12rem" }}
           getOptionLabel={(option) => option.name}
@@ -98,6 +111,7 @@ export default function Table({
       Cell: ({ row }) => {
         return row.original.staff?.map((staff) => (
           <Link
+            key={staff.id}
             href={`/partners/${staff.id}`}
             sx={{ cursor: "pointer", color: "info" }}
           >
@@ -114,8 +128,8 @@ export default function Table({
         row.original.tags.map((tag) => (
           <Grid key={tag.id}>
             <MDBadge
-              variant="contained"
-              color="info"
+              variant="gradient"
+              color="dark"
               size="md"
               badgeContent={tag.name}
             />
@@ -128,6 +142,9 @@ export default function Table({
       Cell: ({ row }) => (
         <Autocomplete
           value={row.original.priority}
+          onChange={(e, priority) => {
+            handlePriorityChange(row.original.id, priority.id);
+          }}
           options={priorities}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
@@ -172,7 +189,7 @@ export default function Table({
               color="error"
               fontSize="medium"
               onClick={() => {
-                // setProjectIdDelete(row.original.id);
+                // setTaskIdDelete(row.original.id);
               }}
               sx={{ ml: 3, cursor: "pointer" }}
             />

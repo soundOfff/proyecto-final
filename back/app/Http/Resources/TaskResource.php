@@ -18,7 +18,7 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'hourly_price' => $this->hourly_price,
+            'hourly_rate' => $this->hourly_rate,
             'start_date' => $this->start_date,
             'due_date' => $this->due_date,
             'priority' => $this->priority,
@@ -39,6 +39,11 @@ class TaskResource extends JsonResource
             'checklistItems' => TaskChecklistItemResource::collection($this->whenLoaded('checklistItems')),
             'assigneds' => StaffResource::collection($this->whenLoaded('assigneds')),
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
+            'taskable' => $this->whenLoaded('taskable', function () {
+                return $this->taskable_type === 'project'
+                    ? ProjectResource::make($this->whenLoaded('taskable'))
+                    : null;
+            }),
         ];
     }
 }

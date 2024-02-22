@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('task_priority_id');
             $table->foreignId('repeat_id')->nullable();
             $table->foreignId('ticket_status_id');
+            $table->morphs('taskable');
 
             $table->integer('added_from')->nullable();
             $table->boolean('billable')->default(false);

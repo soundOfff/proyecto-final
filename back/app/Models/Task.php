@@ -10,9 +10,11 @@ class Task extends Model
 {
     protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'task_priority_id', 'ticket_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
 
-    /**
-     * Get all of the owning taskable models.
-     */
+    public function taskable()
+    {
+        return $this->morphTo();
+    }
+
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');

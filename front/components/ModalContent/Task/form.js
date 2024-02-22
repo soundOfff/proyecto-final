@@ -86,14 +86,6 @@ export default function TaskForm({
       setFieldValue(isPublic.name, task.is_public || false);
       setFieldValue(description.name, task.description || "");
       setTaskableItems([task.taskable]);
-      console.log(task.description);
-      const contentBlock = JSON.parse(task.description);
-      console.log("contentBlock", contentBlock);
-      const contentState = ContentState.createFromBlockArray(contentBlock);
-      console.log("contentState", contentState);
-      const editorState = EditorState.createWithContent(contentState);
-      console.log("editorState", editorState);
-      setEditorState(editorState);
     }
   }, [task]);
 

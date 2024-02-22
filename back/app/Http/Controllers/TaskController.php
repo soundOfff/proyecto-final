@@ -52,6 +52,7 @@ class TaskController extends Controller
         $task->update($newTask);
 
         if ($comments) {
+            $task->comments()->delete();
             $task->comments()->createMany($comments);
         }
 
@@ -89,7 +90,7 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $task = QueryBuilder::for(Task::class)
-            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers'])
+            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers', 'taskable'])
             ->find($task->id);
 
         return new TaskResource($task);

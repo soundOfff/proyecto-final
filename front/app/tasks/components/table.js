@@ -8,17 +8,18 @@ import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
+import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 
-import Link from "next/link";
 import ModalContentForm from "../../../components/ModalContent/Task/index";
-import { Autocomplete, Grid, Tooltip } from "@mui/material";
+import { Autocomplete, Button, Grid, Link, Tooltip } from "@mui/material";
 
 import { update } from "/actions/tasks";
+import Show from "./show";
 
 export default function Table({
   rows,
@@ -34,11 +35,38 @@ export default function Table({
   const { darkMode } = controller;
   const [taskId, setTaskId] = useState(null);
   const [task, setTask] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openShowModal, setOpenShowModal] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
   };
+
+  const handleCloseShowModal = () => {
+    setOpenShowModal(false);
+  };
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      setTask(
+        await show(taskId, {
+          include: [
+            "tags",
+            "priority",
+            "status",
+            "comments",
+            "checklistItems",
+            "assigneds",
+            "followers",
+            "taskable",
+          ],
+        })
+      );
+    };
+    if (taskId && !task) {
+      fetchTask();
+    }
+  }, [taskId, task]);
 
   const handleStatusChange = async (taskId, statusId) => {
     await update(taskId, { ticket_status_id: statusId });
@@ -47,19 +75,6 @@ export default function Table({
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
   };
-
-  useEffect(() => {
-    const fetchTask = async () => {
-      setTask(
-        await show(taskId, {
-          include: ["staff", "tags", "priority", "status"],
-        })
-      );
-    };
-    if (taskId && !task) {
-      fetchTask();
-    }
-  }, [taskId, task]);
 
   const columns = [
     {
@@ -70,12 +85,17 @@ export default function Table({
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (
-        <Link
-          href={`/tasks/${row.original.id}`}
-          sx={{ cursor: "pointer", color: "info" }}
+        <MDTypography
+          variant="body2"
+          color="info"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            setTaskId(row.original.id);
+            setOpenShowModal(true);
+          }}
         >
           {row.original.name}
-        </Link>
+        </MDTypography>
       ),
     },
     {
@@ -169,19 +189,9 @@ export default function Table({
               fontSize="medium"
               onClick={() => {
                 setTaskId(row.original.id);
-                setOpen(true);
+                setOpenEditModal(true);
               }}
               sx={{ mr: 3, cursor: "pointer" }}
-            />
-          </Tooltip>
-          <Tooltip title="Editar tarea">
-            <EditNoteIcon
-              color="warning"
-              onClick={() => {
-                setTaskId(row.original.id);
-                setOpen(true);
-              }}
-              fontSize="medium"
             />
           </Tooltip>
           <Tooltip title="Eliminar tarea">
@@ -208,13 +218,17 @@ export default function Table({
           variant="gradient"
           color={darkMode ? "light" : "dark"}
           onClick={() => {
-            setOpen(true);
+            setOpenEditModal(true);
           }}
         >
           Crear nueva tarea
         </MDButton>
-        {open && (
-          <Modal open={open} onClose={handleClose} width="40%">
+        {openEditModal && (
+          <Modal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            width="40%"
+          >
             <ModalContentForm
               priorities={priorities}
               repeats={repeats}
@@ -226,6 +240,16 @@ export default function Table({
           </Modal>
         )}
       </MDBox>
+      {openShowModal && (
+        <Modal
+          open={openShowModal}
+          onClose={handleCloseShowModal}
+          px={0}
+          py={0}
+        >
+          {task && <Show task={task} />}
+        </Modal>
+      )}
       <DataTable
         table={table}
         meta={meta}

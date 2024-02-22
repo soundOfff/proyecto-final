@@ -4,7 +4,15 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import React from "react";
 
-function CustomModal({ open, onClose, width = "60%", children, ...rest }) {
+function CustomModal({
+  open,
+  onClose,
+  width = "60%",
+  px = { xxl: 4, xs: 4 },
+  py = 2,
+  children,
+  ...rest
+}) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -20,9 +28,8 @@ function CustomModal({ open, onClose, width = "60%", children, ...rest }) {
     borderRadius: "10px",
     boxShadow: 24,
     overflow: "auto",
-    py: 2,
-    px: { xxl: 4, xs: 4 },
-    pb: 1,
+    py: py,
+    px: px,
   };
 
   const renderChildren = () => {

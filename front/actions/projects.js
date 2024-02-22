@@ -92,11 +92,17 @@ export async function store(data) {
 export async function destroy(projectId) {
   const request = new Request(`${process.env.API_URL}/projects/${projectId}`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
   });
 
   const res = await fetch(request);
 
   if (!res.ok) {
+    const data = await res.json();
+    console.log(data);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 

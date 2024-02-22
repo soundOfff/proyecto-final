@@ -21,6 +21,7 @@ export default function ModalContentForm({
   const { formId, formField } = form;
 
   const handleSubmit = async (values, actions) => {
+    console.log(values);
     await storeItem(values);
     onClose();
     actions.resetForm();

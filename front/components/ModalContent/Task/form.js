@@ -61,13 +61,6 @@ export default function TaskForm({
   const [taskableItems, setTaskableItems] = useState([]);
 
   useEffect(() => {
-    setFieldValue(
-      "description",
-      editorState.getCurrentContent().getPlainText()
-    );
-  }, [editorState, setFieldValue]);
-
-  useEffect(() => {
     if (task && mode === MODAL_TYPES.EDIT) {
       setFieldValue(name.name, task.name);
       setFieldValue(hourlyRate.name, task.hourly_rate || "0");
@@ -86,6 +79,10 @@ export default function TaskForm({
       setFieldValue(isPublic.name, task.is_public || false);
       setFieldValue(description.name, task.description || "");
       setTaskableItems([task.taskable]);
+      const block = JSON.parse(task.description);
+      const contentState = convertFromRaw(block);
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);
     }
   }, [task]);
 
@@ -100,9 +97,7 @@ export default function TaskForm({
 
   const handleChange = useCallback((editorState) => {
     const raw = convertToRaw(editorState.getCurrentContent());
-    const data = JSON.stringify(raw);
-    values[description.name] = data;
-    console.log(values[description.name]);
+    setFieldValue(description.name, JSON.stringify(raw));
     setEditorState(editorState);
   }, []);
 

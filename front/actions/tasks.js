@@ -48,6 +48,7 @@ export async function getTaskPriorities() {
 }
 
 export async function store(data) {
+  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks`, {
     method: "POST",
     body: JSON.stringify(data),

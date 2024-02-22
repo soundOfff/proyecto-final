@@ -52,7 +52,7 @@ const initialValues = {
   [recurringType.name]: "",
   [isInfinite.name]: true,
   [totalCycles.name]: "",
-  [taskableType.name]: "Caso",
+  [taskableType.name]: "project",
   [taskableId.name]: "",
   [tags.name]: [],
 };

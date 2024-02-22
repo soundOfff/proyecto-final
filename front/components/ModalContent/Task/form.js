@@ -6,7 +6,7 @@ import {
   FormControl,
   FormGroup,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
@@ -17,8 +17,10 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import moment from "moment";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
-import { EditorState } from "draft-js";
 import { ErrorMessage } from "formik";
+import { ContentState, EditorState, convertFromRaw } from "draft-js";
+import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
+import { convertToHTML } from "draft-convert";
 
 export default function TaskForm({
   priorities,
@@ -27,6 +29,7 @@ export default function TaskForm({
   taskableTypes,
   tagsData,
   task = null,
+  mode,
 }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
   const {
@@ -52,12 +55,36 @@ export default function TaskForm({
   );
   const [taskableItems, setTaskableItems] = useState([]);
 
-  const handleSubmit = async (values, _) => {
-    values.description = editorState.getCurrentContent().getPlainText(); // kk
-    values.taskable_type = "projects";
-    await storeItem(values);
-    onClose();
-  };
+  useEffect(() => {
+    setFieldValue(
+      "description",
+      editorState.getCurrentContent().getPlainText()
+    );
+  }, [editorState, setFieldValue]);
+
+  useEffect(() => {
+    if (task && mode === MODAL_TYPES.EDIT) {
+      setFieldValue(name.name, task.name);
+      setFieldValue(hourlyRate.name, task.hourly_rate || "0");
+      setFieldValue(startDate.name, task.start_date);
+      setFieldValue(dueDate.name, task.due_date || "");
+      setFieldValue(task_priority_id.name, task.priority.id);
+      setFieldValue(repeat.name, task.repeat_id);
+      setFieldValue(recurring.name, task.recurring || "");
+      setFieldValue(recurringType.name, task.recurring_type || "");
+      setFieldValue(isInfinite.name, task.is_infinite || false);
+      setFieldValue(totalCycles.name, task.total_cycles || "");
+      setFieldValue(taskableType.name, task.taskable_type || "");
+      setFieldValue(tags.name, task.tags || []);
+      setFieldValue(taskableId.name, task.taskable.id || "");
+      setTaskableItems([task.taskable]);
+      const contentBlock = convertToHTML(task.description ?? "");
+      if (contentBlock) {
+        const contentState = ContentState.createFromBlockArray(contentBlock);
+        setEditorState(EditorState.createWithContent(contentState));
+      }
+    }
+  }, [task]);
 
   const debounce = (func, delay) => {
     let debounceTimeout;
@@ -159,6 +186,7 @@ export default function TaskForm({
                 variant: "standard",
                 fullWidth: true,
               }}
+              value={values[startDate.name]}
               onChange={(date) =>
                 setFieldValue(
                   startDate.name,
@@ -184,6 +212,7 @@ export default function TaskForm({
                 variant: "standard",
                 fullWidth: true,
               }}
+              value={values[dueDate.name]}
               onChange={(date) =>
                 setFieldValue(
                   dueDate.name,
@@ -281,14 +310,35 @@ export default function TaskForm({
             </Grid>
           )}
           <Grid item xs={12} sm={6}>
-            <Select
-              value={0}
+            <Autocomplete
+              onChange={(e, typeSelected) =>
+                setFieldValue(taskableType.name, typeSelected.value)
+              }
+              value={
+                taskableTypes.findIndex((type) => type.value === "project").id
+              }
               options={taskableTypes}
-              optionLabel="label"
-              fieldName={taskableType.name}
-              inputLabel={taskableType.label}
-              setFieldValue={setFieldValue}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  label={taskableType.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
             />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={taskableType.name} />
+              </MDTypography>
+            </MDBox>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Select
@@ -307,6 +357,7 @@ export default function TaskForm({
               onChange={(e, selectedTag) =>
                 setFieldValue(tags.name, selectedTag)
               }
+              value={values[tags.name]}
               options={tagsData}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
@@ -339,6 +390,7 @@ export default function TaskForm({
               editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
               editorState={editorState}
               setEditorState={setEditorState}
+              value={values[description.name]}
             />
             <MDBox mt={0.75}>
               <MDTypography

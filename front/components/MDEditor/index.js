@@ -49,6 +49,7 @@ function MDEditor({
         editorState={editorState}
         editorStyle={editorStyle}
         onEditorStateChange={setEditorState}
+        value={value}
       />
     </MDEditorRoot>
   );

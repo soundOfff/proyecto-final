@@ -19,6 +19,8 @@ import ModalContentForm from "../../../components/ModalContent/Task/index";
 import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
 import { update } from "/actions/tasks";
+import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
+import { destroy } from "../../../actions/tasks";
 
 export default function Table({
   rows,
@@ -26,7 +28,7 @@ export default function Table({
   priorities,
   repeats,
   taskableTypes,
-  taskeableItems,
+  taskableItems,
   tagsData,
   statuses,
 }) {
@@ -38,6 +40,8 @@ export default function Table({
 
   const handleClose = () => {
     setOpen(false);
+    setTaskId(null);
+    setTask(null);
   };
 
   const handleStatusChange = async (taskId, statusId) => {
@@ -52,7 +56,7 @@ export default function Table({
     const fetchTask = async () => {
       setTask(
         await show(taskId, {
-          include: ["staff", "tags", "priority", "status"],
+          include: ["assigneds", "tags", "priority", "status", "taskable"],
         })
       );
     };
@@ -189,7 +193,7 @@ export default function Table({
               color="error"
               fontSize="medium"
               onClick={() => {
-                // setTaskIdDelete(row.original.id);
+                destroy(row.original.id);
               }}
               sx={{ ml: 3, cursor: "pointer" }}
             />
@@ -219,9 +223,10 @@ export default function Table({
               priorities={priorities}
               repeats={repeats}
               taskableTypes={taskableTypes}
-              taskeableItems={taskeableItems}
+              taskableItems={taskableItems}
               tagsData={tagsData}
               task={task}
+              mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
             />
           </Modal>
         )}

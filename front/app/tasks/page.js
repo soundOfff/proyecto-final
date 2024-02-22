@@ -24,7 +24,7 @@ export default async function Expenses({
   const tagsData = await getAllTags();
   const repeats = await getAllRepeats();
   const priorities = await getTaskPriorities();
-  const taskeableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
+  const taskableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
   const statuses = await getTaskStatus();
 
   return (
@@ -39,7 +39,7 @@ export default async function Expenses({
               priorities={priorities}
               repeats={repeats}
               taskableTypes={TASKABLE_TYPES}
-              taskeableItems={taskeableItems}
+              taskableItems={taskableItems}
               tagsData={tagsData}
               statuses={statuses}
             />

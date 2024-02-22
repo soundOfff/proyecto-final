@@ -30,6 +30,7 @@ class TaskResource extends JsonResource
             'total_cycles' => $this->total_cycles,
             'taskable_id' => $this->taskable_id,
             'taskable_type' => $this->taskable_type,
+            'taskable' => $this->taskable,
             'statusId' => $this->ticket_status_id,
             'description' => $this->description,
             'priority' => TaskPriorityResource::make($this->whenLoaded('priority')),

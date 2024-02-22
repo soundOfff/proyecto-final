@@ -17,7 +17,6 @@ export async function getAll(params) {
 
   if (!res.ok) {
     const data = await res.json();
-    console.log(data);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
@@ -49,7 +48,6 @@ export async function getTaskPriorities() {
 }
 
 export async function store(data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -59,6 +57,8 @@ export async function store(data) {
     },
   });
   if (!res.ok) {
+    const s = await res.json();
+    console.log({ s });
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
@@ -94,6 +94,7 @@ export async function show(id, params) {
   const res = await fetch(url, { cache: "no-store" });
 
   if (!res.ok) {
+    console.log(res);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
@@ -103,7 +104,7 @@ export async function show(id, params) {
 }
 
 export async function destroy(taskId) {
-  const request = new Request(`${process.env.API_URL}/projects/${taskId}`, {
+  const request = new Request(`${process.env.API_URL}/tasks/${taskId}`, {
     method: "DELETE",
   });
 

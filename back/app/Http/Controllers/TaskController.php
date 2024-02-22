@@ -89,7 +89,7 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $task = QueryBuilder::for(Task::class)
-            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers'])
+        ->allowedIncludes(['tags', 'priority', 'status', 'taskable' ,'comments', 'checklistItems', 'assigneds', 'followers'])
             ->find($task->id);
 
         return new TaskResource($task);

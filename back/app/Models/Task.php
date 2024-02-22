@@ -18,6 +18,11 @@ class Task extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+    public function taskable()
+    {
+        return $this->morphTo();
+    }
+
     public function priority()
     {
         return $this->belongsTo(TaskPriority::class, 'task_priority_id');

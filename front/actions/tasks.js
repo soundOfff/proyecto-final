@@ -57,8 +57,6 @@ export async function store(data) {
     },
   });
   if (!res.ok) {
-    const s = await res.json();
-    console.log({ s });
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 

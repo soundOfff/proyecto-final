@@ -6,7 +6,7 @@ import {
   FormControl,
   FormGroup,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
@@ -18,7 +18,12 @@ import moment from "moment";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import { ErrorMessage } from "formik";
-import { ContentState, EditorState, convertFromRaw } from "draft-js";
+import {
+  ContentState,
+  EditorState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
 import { convertToHTML } from "draft-convert";
 
@@ -74,15 +79,21 @@ export default function TaskForm({
       setFieldValue(recurringType.name, task.recurring_type || "");
       setFieldValue(isInfinite.name, task.is_infinite || false);
       setFieldValue(totalCycles.name, task.total_cycles || "");
-      setFieldValue(taskableType.name, task.taskable_type || "");
+      setFieldValue(taskableType.name, task.taskable_type || 0);
       setFieldValue(tags.name, task.tags || []);
       setFieldValue(taskableId.name, task.taskable.id || "");
+      setFieldValue(billable.name, task.billable || false);
+      setFieldValue(isPublic.name, task.is_public || false);
+      setFieldValue(description.name, task.description || "");
       setTaskableItems([task.taskable]);
-      const contentBlock = convertToHTML(task.description ?? "");
-      if (contentBlock) {
-        const contentState = ContentState.createFromBlockArray(contentBlock);
-        setEditorState(EditorState.createWithContent(contentState));
-      }
+      console.log(task.description);
+      const contentBlock = JSON.parse(task.description);
+      console.log("contentBlock", contentBlock);
+      const contentState = ContentState.createFromBlockArray(contentBlock);
+      console.log("contentState", contentState);
+      const editorState = EditorState.createWithContent(contentState);
+      console.log("editorState", editorState);
+      setEditorState(editorState);
     }
   }, [task]);
 
@@ -94,6 +105,14 @@ export default function TaskForm({
       debounceTimeout = setTimeout(() => func.apply(context, args), delay);
     };
   };
+
+  const handleChange = useCallback((editorState) => {
+    const raw = convertToRaw(editorState.getCurrentContent());
+    const data = JSON.stringify(raw);
+    values[description.name] = data;
+    console.log(values[description.name]);
+    setEditorState(editorState);
+  }, []);
 
   const handleSearch = async (value = "") => {
     if (value.length <= 2) return setTaskableItems([]);
@@ -309,38 +328,7 @@ export default function TaskForm({
               </MDBox>
             </Grid>
           )}
-          <Grid item xs={12} sm={6}>
-            <Autocomplete
-              onChange={(e, typeSelected) =>
-                setFieldValue(taskableType.name, typeSelected.value)
-              }
-              value={
-                taskableTypes.findIndex((type) => type.value === "project").id
-              }
-              options={taskableTypes}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  label={taskableType.label}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
-              )}
-            />
-            <MDBox mt={0.75}>
-              <MDTypography
-                component="div"
-                variant="caption"
-                color="error"
-                fontWeight="regular"
-              >
-                <ErrorMessage name={taskableType.name} />
-              </MDTypography>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <Select
               value={values[taskableId.name]}
               options={taskableItems}
@@ -389,8 +377,7 @@ export default function TaskForm({
             <MDEditor
               editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
               editorState={editorState}
-              setEditorState={setEditorState}
-              value={values[description.name]}
+              setEditorState={handleChange}
             />
             <MDBox mt={0.75}>
               <MDTypography

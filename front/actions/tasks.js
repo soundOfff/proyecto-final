@@ -69,6 +69,7 @@ export async function store(data) {
 }
 
 export async function update(taskId, data) {
+  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks/${taskId}`, {
     method: "PUT",
     body: JSON.stringify(data),

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Task;
 use App\Models\TaskPriority;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -40,6 +41,7 @@ class TaskResource extends JsonResource
             'checklistItems' => TaskChecklistItemResource::collection($this->whenLoaded('checklistItems')),
             'assigneds' => StaffResource::collection($this->whenLoaded('assigneds')),
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
+            'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
             'taskable' => $this->whenLoaded('taskable', function () {
                 return $this->taskable_type === 'project'
                     ? ProjectResource::make($this->whenLoaded('taskable'))

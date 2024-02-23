@@ -78,7 +78,28 @@ export default function TaskForm({
       setTaskableItems([task.taskable]);
       initializeEditorState(task.description);
     }
-  }, [task]);
+  }, [
+    task,
+    mode,
+    setFieldValue,
+    description.name,
+    taskableId.name,
+    taskableType.name,
+    recurring.name,
+    recurringType.name,
+    repeat.name,
+    startDate.name,
+    dueDate.name,
+    task_priority_id.name,
+    hourlyRate.name,
+    name.name,
+    billable.name,
+    isPublic.name,
+    isInfinite.name,
+    totalCycles.name,
+    partner_id.name,
+    tags.name,
+  ]);
 
   useEffect(() => {
     if (values.partner_id) {
@@ -106,11 +127,14 @@ export default function TaskForm({
     setEditorState(editorState);
   };
 
-  const handleChange = useCallback((editorState) => {
-    const raw = convertToRaw(editorState.getCurrentContent());
-    setFieldValue(description.name, JSON.stringify(raw));
-    setEditorState(editorState);
-  }, []);
+  const handleChange = useCallback(
+    (editorState) => {
+      const raw = convertToRaw(editorState.getCurrentContent());
+      setFieldValue(description.name, JSON.stringify(raw));
+      setEditorState(editorState);
+    },
+    [description, setFieldValue]
+  );
 
   return (
     <>

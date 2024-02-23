@@ -1,3 +1,5 @@
+"use server";
+
 export async function select() {
   const url = new URL(`${process.env.API_URL}/staffs-select`);
 

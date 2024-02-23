@@ -1,9 +1,16 @@
+"use client";
+
 import { Divider, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
+import { update } from "/actions/tasks";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Content({ task }) {
+  const [description, setDescription] = useState(task.description);
+
   return (
     <Grid item xs={8} wrap="nowrap">
       <MDBox px={5} py={2}>
@@ -27,9 +34,13 @@ export default function Content({ task }) {
           <MDTypography variant="body2" fontWeight="bold">
             Descripción
           </MDTypography>
-          <MDTypography variant="body2" display="inline">
-            {task.description}
-          </MDTypography>
+          <FormField
+            value={description}
+            type="text"
+            onChange={(e) => setDescription(e.target.value)}
+            onBlur={() => update(task.id, { description: description })}
+            sx={{ ml: 1, width: "100%" }}
+          />
         </MDBox>
 
         <Divider />

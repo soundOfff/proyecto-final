@@ -15,7 +15,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import ModalContentForm from "../../../components/ModalContent/Task/index";
-import { Autocomplete, Button, Grid, Link, Tooltip } from "@mui/material";
+import { Autocomplete, Grid, Link, Tooltip } from "@mui/material";
 
 import { update } from "/actions/tasks";
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
@@ -65,6 +65,7 @@ export default function Table({
             "assigneds",
             "followers",
             "taskable",
+            "reminders",
           ],
         })
       );

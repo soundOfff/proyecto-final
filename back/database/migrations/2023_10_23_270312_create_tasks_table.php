@@ -15,7 +15,7 @@ return new class extends Migration {
             // TODO: Change nullable
             $table->foreignId('invoice_id')->nullable()->constrained();
             $table->foreignId('task_priority_id')->constrained();
-            $table->foreignId('repeat_id')->constrained();
+            $table->foreignId('repeat_id')->constrained('expense_repeats');
             $table->foreignId('task_status_id')->constrained();
             $table->foreignId('partner_id')->constrained();
             $table->morphs('taskable');

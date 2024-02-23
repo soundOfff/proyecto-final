@@ -61,32 +61,32 @@ class TaskController extends Controller
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $task->update($newTask);
 
-        if ($comments) {
+        if (isset($comments)) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
         }
 
-        if ($checklistItems) {
+        if (isset($checklistItems)) {
             $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
         }
 
-        if ($assigneds) {
+        if (isset($assigneds)) {
             $assignedIds = array_column($assigneds, 'id');
             $task->assigneds()->sync($assignedIds);
         }
 
-        if ($followers) {
+        if (isset($followers)) {
             $followerIds = array_column($followers, 'id');
             $task->followers()->sync($followerIds);
         }
 
-        if ($reminders) {
+        if (isset($reminders)) {
             $task->reminders()->delete();
             $task->reminders()->createMany($reminders);
         }
 
-        if ($tags) {
+        if (isset($tags)) {
             $task->tags()->detach();
             foreach ($tags as $tag) {
                 $tag['taggable_id'] = $task->id;

@@ -69,7 +69,6 @@ export async function store(data) {
 }
 
 export async function update(taskId, data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks/${taskId}`, {
     method: "PUT",
     body: JSON.stringify(data),
@@ -100,6 +99,8 @@ export async function show(id, params) {
   });
 
   if (!res.ok) {
+    const error = await res.json();
+    console.log(error);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 

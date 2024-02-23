@@ -15,6 +15,7 @@ import {
   AccessTime,
   Add,
   CalendarToday,
+  Clear,
   CreditCard,
   Event,
   FlashOn,
@@ -57,7 +58,17 @@ export default function Aside({ task }) {
   const [reminderDescription, setReminderDescription] = useState("");
   const [reminderDate, setReminderDate] = useState("");
 
-  const handleReminderSave = async () => {
+  const handleReminderDelete = (taskId, reminderId) => {
+    const updatedReminders = reminders.filter(
+      (reminder) => reminder.id !== reminderId
+    );
+    setReminders(updatedReminders);
+    update(taskId, {
+      reminders: updatedReminders,
+    });
+  };
+
+  const handleReminderSave = () => {
     setShowReminderForm(false);
     setReminders([
       ...reminders,
@@ -69,7 +80,7 @@ export default function Aside({ task }) {
         staff_id: reminderStaffId,
       },
     ]);
-    await update(task.id, {
+    update(task.id, {
       reminders: [
         ...reminders,
         {
@@ -291,6 +302,11 @@ export default function Aside({ task }) {
                 <MDTypography key={reminder.id} variant="body2" ml={2}>
                   {reminder.description}
                 </MDTypography>
+                <Clear
+                  color="error"
+                  sx={{ cursor: "pointer", ml: 1 }}
+                  onClick={() => handleReminderDelete(task.id, reminder.id)}
+                />
               </MDBox>
             ))}
           {showReminderForm && (
@@ -322,8 +338,8 @@ export default function Aside({ task }) {
                 key="reminderDate"
                 options={{ enableTime: true }}
                 value={reminderDate}
-                placeholder="Fecha a Notificar"
                 sx={{ height: "40px" }}
+                input={{ placeholder: "Fecha de Recordatorio" }}
                 onChange={(date) =>
                   setReminderDate(moment(date[0]).format("YYYY-MM-DD HH:mm:ss"))
                 }

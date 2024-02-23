@@ -102,7 +102,6 @@ export default function TaskForm({
     const raw = convertToRaw(editorState.getCurrentContent());
     const data = JSON.stringify(raw);
     values[description.name] = data;
-    console.log(values[description.name]);
     setEditorState(editorState);
   }, []);
 

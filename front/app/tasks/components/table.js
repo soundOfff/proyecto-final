@@ -13,10 +13,9 @@ import Modal from "/components/Modal";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FlashOnIcon from "@mui/icons-material/FlashOn";
 
 import ModalContentForm from "../../../components/ModalContent/Task/index";
-import { Autocomplete, Button, Grid, Link, Tooltip } from "@mui/material";
+import { Autocomplete, Grid, Link, Tooltip } from "@mui/material";
 
 import { update } from "/actions/tasks";
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
@@ -65,6 +64,7 @@ export default function Table({
             "assigneds",
             "followers",
             "taskable",
+            "reminders",
           ],
         })
       );
@@ -81,19 +81,6 @@ export default function Table({
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
   };
-
-  useEffect(() => {
-    const fetchTask = async () => {
-      setTask(
-        await show(taskId, {
-          include: ["assigneds", "tags", "priority", "status", "taskable"],
-        })
-      );
-    };
-    if (taskId && !task) {
-      fetchTask();
-    }
-  }, [taskId, task]);
 
   const columns = [
     {

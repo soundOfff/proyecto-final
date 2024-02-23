@@ -66,6 +66,7 @@ export async function store(data) {
 }
 
 export async function update(taskId, data) {
+  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks/${taskId}`, {
     method: "PUT",
     body: JSON.stringify(data),
@@ -81,8 +82,6 @@ export async function update(taskId, data) {
   }
 
   revalidatePath("/tasks");
-
-  redirect("/tasks");
 }
 
 export async function show(id, params) {
@@ -94,7 +93,7 @@ export async function show(id, params) {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    cache: "no-store",
+    cache: "no-cache",
   });
 
   if (!res.ok) {

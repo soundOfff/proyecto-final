@@ -15,7 +15,16 @@ class TaskController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Task::class)
-            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers']);
+            ->allowedIncludes([
+                'tags',
+                'priority',
+                'status',
+                'comments',
+                'checklistItems',
+                'assigneds',
+                'followers',
+                'reminders',
+            ]);
 
         $tasks = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -49,6 +58,7 @@ class TaskController extends Controller
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
         $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
+        $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $task->update($newTask);
 
         if ($comments) {
@@ -71,6 +81,11 @@ class TaskController extends Controller
             $task->followers()->sync($followerIds);
         }
 
+        if ($reminders) {
+            $task->reminders()->delete();
+            $task->reminders()->createMany($reminders);
+        }
+
         if ($tags) {
             $task->tags()->detach();
             foreach ($tags as $tag) {
@@ -90,7 +105,17 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $task = QueryBuilder::for(Task::class)
-            ->allowedIncludes(['tags', 'priority', 'status', 'comments', 'checklistItems', 'assigneds', 'followers', 'taskable'])
+            ->allowedIncludes([
+                'tags',
+                'priority',
+                'status',
+                'comments',
+                'checklistItems',
+                'assigneds',
+                'followers',
+                'taskable',
+                'reminders',
+            ])
             ->find($task->id);
 
         return new TaskResource($task);

@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Reminder extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'id',
         'staff_id',
@@ -21,8 +19,8 @@ class Reminder extends Model
         'reminderable_type',
     ];
 
-    public function estimates(): HasMany
+    public function reminderable(): MorphTo
     {
-        return $this->hasMany(Estimate::class);
+        return $this->morphTo();
     }
 }

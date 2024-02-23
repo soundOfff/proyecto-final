@@ -49,4 +49,9 @@ class Task extends Model
     {
         return $this->belongsToMany(Staff::class, 'task_followers');
     }
+
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(Reminder::class, 'reminderable_id');
+    }
 }

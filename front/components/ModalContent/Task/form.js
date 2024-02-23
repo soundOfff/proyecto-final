@@ -20,6 +20,7 @@ import { ErrorMessage } from "formik";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
 import { getSelect as getProjectSelect } from "/actions/projects";
+import { parseEditorState } from "../../../utils/parseEditorState";
 
 export default function TaskForm({
   priorities,
@@ -57,7 +58,6 @@ export default function TaskForm({
 
   useEffect(() => {
     if (task && mode === MODAL_TYPES.EDIT) {
-      console.log({ task });
       setFieldValue(name.name, task.name);
       setFieldValue(hourlyRate.name, task.hourly_rate || "0");
       setFieldValue(startDate.name, task.start_date);
@@ -74,9 +74,9 @@ export default function TaskForm({
       setFieldValue(billable.name, getBoolean(task.billable) || false);
       setFieldValue(isPublic.name, getBoolean(task.is_public) || false);
       setFieldValue(isInfinite.name, getBoolean(task.is_infinite) || false);
-      setFieldValue(description.name, task.description || "");
       setTaskableItems([task.taskable]);
-      initializeEditorState(task.description);
+      const parsedDescription = parseEditorState(task.description ?? "");
+      setEditorState(parsedDescription);
     }
   }, [
     task,
@@ -111,30 +111,11 @@ export default function TaskForm({
 
   const getBoolean = (value) => (value === 1 ? true : false);
 
-  const initializeEditorState = (description) => {
-    if (
-      description &&
-      description.length === 0 &&
-      description == "{}" &&
-      description == "null"
-    ) {
-      setEditorState(EditorState.createEmpty());
-      return;
-    }
-    const block = JSON.parse(task.description);
-    const contentState = convertFromRaw(block);
-    const editorState = EditorState.createWithContent(contentState);
+  const handleChange = useCallback((editorState) => {
+    const raw = convertToRaw(editorState.getCurrentContent());
+    setFieldValue(description.name, JSON.stringify(raw));
     setEditorState(editorState);
-  };
-
-  const handleChange = useCallback(
-    (editorState) => {
-      const raw = convertToRaw(editorState.getCurrentContent());
-      setFieldValue(description.name, JSON.stringify(raw));
-      setEditorState(editorState);
-    },
-    [description, setFieldValue]
-  );
+  }, []);
 
   return (
     <>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model
 {
-    protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'task_priority_id', 'ticket_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
+    protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
 
     public function taskable()
     {
@@ -27,7 +27,7 @@ class Task extends Model
 
     public function status()
     {
-        return $this->belongsTo(TicketStatus::class, 'ticket_status_id');
+        return $this->belongsTo(TaskStatus::class, 'task_status_id');
     }
 
     public function comments()
@@ -42,7 +42,7 @@ class Task extends Model
 
     public function assigneds(): BelongsToMany
     {
-        return $this->belongsToMany(Staff::class, 'task_assigned');
+        return $this->belongsToMany(Staff::class, 'staff_assigned');
     }
 
     public function followers(): BelongsToMany

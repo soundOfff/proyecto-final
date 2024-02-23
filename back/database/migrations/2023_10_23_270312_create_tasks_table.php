@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->nullable();
-            $table->foreignId('task_priority_id');
-            $table->foreignId('repeat_id')->nullable();
-            $table->foreignId('ticket_status_id');
+            // TODO: Change nullable
+            $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('task_priority_id')->constrained();
+            $table->foreignId('repeat_id')->constrained();
+            $table->foreignId('task_status_id')->constrained();
+            $table->foreignId('partner_id')->constrained();
             $table->morphs('taskable');
 
             $table->integer('added_from')->nullable();

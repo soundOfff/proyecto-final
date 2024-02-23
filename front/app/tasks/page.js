@@ -9,6 +9,7 @@ import { getAll as getAllRepeats } from "/actions/expense-repeats";
 import { getTaskPriorities } from "/actions/tasks";
 import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
+import { getAll as getAllPartners } from "/actions/partners";
 
 export default async function Expenses({
   searchParams: { perPage = 10, page = 1 },
@@ -26,13 +27,13 @@ export default async function Expenses({
   const priorities = await getTaskPriorities();
   const taskableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
   const statuses = await getTaskStatus();
+  const partners = await getAllPartners();
 
   return (
     <MDBox mb={3}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            {/* <Stats countByStatuses={countByStatuses} /> */}
             <Table
               rows={tasks}
               meta={{ per_page: "5" }}
@@ -41,6 +42,7 @@ export default async function Expenses({
               taskableTypes={TASKABLE_TYPES}
               taskableItems={taskableItems}
               tagsData={tagsData}
+              partners={partners}
               statuses={statuses}
             />
           </Grid>

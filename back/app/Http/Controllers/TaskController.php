@@ -7,7 +7,7 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskResourceCollection;
 use App\Models\Taggable;
 use App\Models\Task;
-use App\Models\TicketStatus;
+use App\Models\TaskStatus;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
@@ -28,7 +28,7 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = $newTask['tags'];
-        $newTask['ticket_status_id'] = TicketStatus::getInProgress()->id;
+        $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
         $task = Task::create($newTask);
 
         foreach ($tags as $tag) {

@@ -13,7 +13,6 @@ import Modal from "/components/Modal";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FlashOnIcon from "@mui/icons-material/FlashOn";
 
 import ModalContentForm from "../../../components/ModalContent/Task/index";
 import { Autocomplete, Button, Grid, Link, Tooltip } from "@mui/material";
@@ -32,6 +31,7 @@ export default function Table({
   taskableItems,
   tagsData,
   statuses,
+  partners,
 }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
@@ -75,25 +75,12 @@ export default function Table({
   }, [taskId, task]);
 
   const handleStatusChange = async (taskId, statusId) => {
-    await update(taskId, { ticket_status_id: statusId });
+    await update(taskId, { task_status_id: statusId });
   };
 
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
   };
-
-  useEffect(() => {
-    const fetchTask = async () => {
-      setTask(
-        await show(taskId, {
-          include: ["assigneds", "tags", "priority", "status", "taskable"],
-        })
-      );
-    };
-    if (taskId && !task) {
-      fetchTask();
-    }
-  }, [taskId, task]);
 
   const columns = [
     {
@@ -122,7 +109,9 @@ export default function Table({
       accessor: "status",
       Cell: ({ row }) => (
         <Autocomplete
-          value={row.original.status}
+          value={statuses?.find(
+            (status) => status.id === row.original.status.id
+          )}
           onChange={(e, status) => {
             handleStatusChange(row.original.id, status.id);
           }}
@@ -180,7 +169,9 @@ export default function Table({
       accessor: "priority",
       Cell: ({ row }) => (
         <Autocomplete
-          value={row.original.priority}
+          value={priorities.find(
+            (priority) => priority.id === row.original.priority.id
+          )}
           onChange={(e, priority) => {
             handlePriorityChange(row.original.id, priority.id);
           }}
@@ -254,6 +245,7 @@ export default function Table({
               taskableTypes={taskableTypes}
               taskableItems={taskableItems}
               tagsData={tagsData}
+              partners={partners}
               task={task}
               mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
             />

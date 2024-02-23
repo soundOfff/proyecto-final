@@ -15,13 +15,13 @@ export default function ModalContentForm({
   repeats,
   taskableTypes,
   tagsData,
+  partners,
   task = null,
   mode = MODAL_TYPES.CREATE,
 }) {
   const { formId, formField } = form;
 
   const handleSubmit = async (values, actions) => {
-    console.log(values);
     await storeItem(values);
     onClose();
     actions.resetForm();
@@ -57,6 +57,7 @@ export default function ModalContentForm({
               setFieldValue,
               formField,
             }}
+            partners={partners}
             repeats={repeats}
             taskableTypes={taskableTypes}
             tagsData={tagsData}

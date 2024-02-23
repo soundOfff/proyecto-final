@@ -15,23 +15,17 @@ import MDDatePicker from "/components/MDDatePicker";
 import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import moment from "moment";
-import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import { ErrorMessage } from "formik";
-import {
-  ContentState,
-  EditorState,
-  convertFromRaw,
-  convertToRaw,
-} from "draft-js";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
-import { convertToHTML } from "draft-convert";
+import { getSelect as getProjectSelect } from "/actions/projects";
 
 export default function TaskForm({
   priorities,
   formData,
   repeats,
-  taskableTypes,
+  partners,
   tagsData,
   task = null,
   mode,
@@ -51,6 +45,7 @@ export default function TaskForm({
     isInfinite,
     totalCycles,
     taskableId,
+    partner_id,
     taskableType,
     tags,
     description,
@@ -62,6 +57,7 @@ export default function TaskForm({
 
   useEffect(() => {
     if (task && mode === MODAL_TYPES.EDIT) {
+      console.log({ task });
       setFieldValue(name.name, task.name);
       setFieldValue(hourlyRate.name, task.hourly_rate || "0");
       setFieldValue(startDate.name, task.start_date);
@@ -70,29 +66,44 @@ export default function TaskForm({
       setFieldValue(repeat.name, task.repeat_id);
       setFieldValue(recurring.name, task.recurring || "");
       setFieldValue(recurringType.name, task.recurring_type || "");
-      setFieldValue(isInfinite.name, task.is_infinite || false);
       setFieldValue(totalCycles.name, task.total_cycles || "");
       setFieldValue(taskableType.name, task.taskable_type || 0);
       setFieldValue(tags.name, task.tags || []);
+      setFieldValue(partner_id.name, task.partner_id || "");
       setFieldValue(taskableId.name, task.taskable.id || "");
-      setFieldValue(billable.name, task.billable || false);
-      setFieldValue(isPublic.name, task.is_public || false);
+      setFieldValue(billable.name, getBoolean(task.billable) || false);
+      setFieldValue(isPublic.name, getBoolean(task.is_public) || false);
+      setFieldValue(isInfinite.name, getBoolean(task.is_infinite) || false);
       setFieldValue(description.name, task.description || "");
       setTaskableItems([task.taskable]);
-      const block = JSON.parse(task.description);
-      const contentState = convertFromRaw(block);
-      const editorState = EditorState.createWithContent(contentState);
-      setEditorState(editorState);
+      initializeEditorState(task.description);
     }
   }, [task]);
 
-  const debounce = (func, delay) => {
-    let debounceTimeout;
-    return function (...args) {
-      const context = this;
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => func.apply(context, args), delay);
-    };
+  useEffect(() => {
+    if (values.partner_id) {
+      getProjectSelect(values.partner_id).then((projects) =>
+        setTaskableItems(projects)
+      );
+    }
+  }, [values.partner_id]);
+
+  const getBoolean = (value) => (value === 1 ? true : false);
+
+  const initializeEditorState = (description) => {
+    if (
+      description &&
+      description.length === 0 &&
+      description == "{}" &&
+      description == "null"
+    ) {
+      setEditorState(EditorState.createEmpty());
+      return;
+    }
+    const block = JSON.parse(task.description);
+    const contentState = convertFromRaw(block);
+    const editorState = EditorState.createWithContent(contentState);
+    setEditorState(editorState);
   };
 
   const handleChange = useCallback((editorState) => {
@@ -100,14 +111,6 @@ export default function TaskForm({
     setFieldValue(description.name, JSON.stringify(raw));
     setEditorState(editorState);
   }, []);
-
-  const handleSearch = async (value = "") => {
-    if (value.length <= 2) return setTaskableItems([]);
-    const items = await getAllTaskableTypes({ search: value });
-    setTaskableItems(items);
-  };
-
-  const debouncedHandleSearch = debounce(handleSearch, 100);
 
   return (
     <>
@@ -315,14 +318,23 @@ export default function TaskForm({
               </MDBox>
             </Grid>
           )}
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
+            <Select
+              value={values[partner_id.name]}
+              options={partners}
+              optionLabel="company"
+              fieldName={partner_id.name}
+              inputLabel={partner_id.label}
+              setFieldValue={setFieldValue}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <Select
               value={values[taskableId.name]}
               options={taskableItems}
               optionLabel="name"
               fieldName={taskableId.name}
               inputLabel={taskableId.label}
-              onInputChange={debouncedHandleSearch}
               setFieldValue={setFieldValue}
             />
           </Grid>
@@ -334,6 +346,7 @@ export default function TaskForm({
               }
               value={values[tags.name]}
               options={tagsData}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <MDInput

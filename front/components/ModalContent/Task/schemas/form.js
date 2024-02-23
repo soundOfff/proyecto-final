@@ -46,9 +46,14 @@ const form = {
       name: "task_priority_id",
       label: "Prioridad",
     },
-    ticket_status_id: {
+    task_status_id: {
       name: "status",
       label: "Estado",
+    },
+    partner_id: {
+      name: "partner_id",
+      label: "Cliente",
+      errorMsg: "Debe asignar a un cliente",
     },
     repeat: {
       name: "repeat_id",

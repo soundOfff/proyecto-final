@@ -3,13 +3,17 @@
 import { Divider, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { update } from "/actions/tasks";
+import MDEditor from "/components/MDEditor";
 import Link from "next/link";
 import { useState } from "react";
+import { parseEditorState } from "../../../../utils/parseEditorState";
+import { convertToRaw } from "draft-js";
 
 export default function Content({ task }) {
-  const [description, setDescription] = useState(task.description);
+  const [description, setDescription] = useState(
+    parseEditorState(task.description)
+  );
 
   return (
     <Grid item xs={8} wrap="nowrap">
@@ -31,15 +35,20 @@ export default function Content({ task }) {
         <Divider />
 
         <MDBox py={2}>
-          <MDTypography variant="body2" fontWeight="bold">
-            Descripción
-          </MDTypography>
-          <FormField
-            value={description}
-            type="text"
-            onChange={(e) => setDescription(e.target.value)}
-            onBlur={() => update(task.id, { description: description })}
-            sx={{ ml: 1, width: "100%" }}
+          <MDBox display="flex">
+            <MDTypography variant="body2" fontWeight="bold" mb={2}>
+              Descripción
+            </MDTypography>
+          </MDBox>
+          <MDEditor
+            editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
+            editorState={description}
+            setEditorState={setDescription}
+            onBlur={() => {
+              const raw = convertToRaw(description.getCurrentContent());
+              const strDescription = JSON.stringify(raw);
+              update(task.id, { description: strDescription });
+            }}
           />
         </MDBox>
 

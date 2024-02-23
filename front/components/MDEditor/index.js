@@ -36,6 +36,7 @@ import { useMaterialUIController } from "/context";
 
 function MDEditor({
   value = () => {},
+  onBlur = () => {},
   editorStyle,
   editorState,
   setEditorState,
@@ -50,6 +51,7 @@ function MDEditor({
         editorStyle={editorStyle}
         onEditorStateChange={setEditorState}
         value={value}
+        onBlur={onBlur}
       />
     </MDEditorRoot>
   );

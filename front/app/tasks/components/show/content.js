@@ -18,7 +18,7 @@ export default function Content({ task }) {
   const [description, setDescription] = useState(
     parseEditorState(task.description)
   );
-  const [items, setItems] = useState(task.checklist_items || []);
+  const [items, setItems] = useState(task.checklistItems || []);
   const [comments, setComments] = useState(task.comments || []);
   const [commentContent, setCommentContent] = useState("");
   const [progress, setProgress] = useState(0);
@@ -60,9 +60,8 @@ export default function Content({ task }) {
   };
 
   useEffect(() => {
-    update(task.id, { checklist_items: items });
     getCurrentProgress();
-  }, [items, task.id]);
+  }, [items]);
 
   const getCurrentProgress = () => {
     const total = items.length;

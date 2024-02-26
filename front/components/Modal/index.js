@@ -15,7 +15,7 @@ function CustomModal({
 }) {
   const style = {
     position: "absolute",
-    top: "50%",
+    top: "600px",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: { sm: width, xs: "90%" },

@@ -5,17 +5,21 @@ import MDBox from "/components/MDBox";
 import { update } from "/actions/tasks";
 import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
+import MDButton from "/components/MDButton";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { parseEditorState } from "../../../../utils/parseEditorState";
 import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
+import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 
 export default function Content({ task }) {
   const [description, setDescription] = useState(
     parseEditorState(task.description)
   );
-  const [items, setItems] = useState(task.checklist_items ?? []);
+  const [items, setItems] = useState(task.checklist_items || []);
+  const [comments, setComments] = useState(task.comments || []);
+  const [commentContent, setCommentContent] = useState("");
 
   const addNewTask = () => {
     const newTask = {
@@ -40,9 +44,19 @@ export default function Content({ task }) {
     setItems(newitems);
   };
 
+  const handleCommentUpdate = async () => {
+    setComments([...comments, { taskId: task.id, content: commentContent }]);
+    await update(task.id, {
+      comments: [
+        ...task.comments,
+        { taskId: task.id, content: commentContent },
+      ],
+    });
+  };
+
   useEffect(() => {
     update(task.id, { checklist_items: items });
-  }, [items]);
+  }, [items, task.id]);
 
   return (
     <Grid item xs={8} wrap="nowrap">
@@ -103,11 +117,27 @@ export default function Content({ task }) {
           <MDTypography variant="body2" fontWeight="bold">
             Comentarios
           </MDTypography>
-          {task.comments.map((comment) => (
-            <MDTypography key={comment.id} variant="body2" display="inline">
+          {comments.map((comment) => (
+            <MDTypography key={comment.id} variant="body2" my={2}>
               {comment.content}
             </MDTypography>
           ))}
+          <FormField
+            value={commentContent}
+            type="text"
+            placeholder="Comentario..."
+            onChange={(e) => setCommentContent(e.target.value)}
+            sx={{ mb: 2, width: "100%" }}
+          />
+          <MDBox display="flex" justifyContent="end">
+            <MDButton
+              variant="gradient"
+              color="dark"
+              onClick={handleCommentUpdate}
+            >
+              Agregar
+            </MDButton>
+          </MDBox>
         </MDBox>
       </MDBox>
     </Grid>

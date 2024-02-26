@@ -28,22 +28,13 @@ const addTaskButton = (addNewTask) => (
   </ListItem>
 );
 
-export default function ItemList({ items, addNewTask, editTask, removeTask }) {
-  const [checked, setChecked] = useState([0]);
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
+export default function ItemList({
+  items,
+  addNewTask,
+  editTask,
+  removeTask,
+  handleBlur,
+}) {
   return (
     <List
       sx={{
@@ -60,6 +51,7 @@ export default function ItemList({ items, addNewTask, editTask, removeTask }) {
         return (
           <ListItem
             key={value.id}
+            onBlur={() => handleBlur()}
             secondaryAction={
               <Clear
                 edge="end"
@@ -71,23 +63,24 @@ export default function ItemList({ items, addNewTask, editTask, removeTask }) {
             }
             disablePadding
           >
-            <ListItemButton
-              role={undefined}
-              onClick={handleToggle(value.id)}
-              dense
-            >
+            <ListItemButton role={undefined} dense>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={checked.indexOf(value) !== -1}
+                  checked={value.finished}
                   tabIndex={-1}
                   disableRipple
+                  onClick={() =>
+                    editTask(value.id, value.description, !value.finished)
+                  }
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
               <TextField
-                defaultValue={value.content}
-                onChange={(e) => editTask(e, value.id)}
+                defaultValue={value.description}
+                onChange={(e) =>
+                  editTask(value.id, e.target.value, value.finished)
+                }
                 margin="dense"
                 id="name"
                 fullWidth

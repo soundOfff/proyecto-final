@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->integer('added_from')->nullable();
             $table->text('description');
             $table->boolean('finished')->default(false);
-            $table->integer('finished_from');
-            $table->integer('list_order');
+            $table->integer('finished_from')->nullable();
+            $table->integer('list_order')->nullable();
 
             $table->timestamps();
         });

@@ -6,6 +6,7 @@ import { update } from "/actions/tasks";
 import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import MDProgress from "/components/MDProgress";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { parseEditorState } from "../../../../utils/parseEditorState";
@@ -20,28 +21,32 @@ export default function Content({ task }) {
   const [items, setItems] = useState(task.checklist_items || []);
   const [comments, setComments] = useState(task.comments || []);
   const [commentContent, setCommentContent] = useState("");
+  const [progress, setProgress] = useState(0);
 
   const addNewTask = () => {
     const newTask = {
       id: items.length + 1,
-      content: "",
+      description: "",
+      finished: false,
     };
     setItems([...items, newTask]);
   };
 
   const removeTask = (id) => {
-    const newitems = items.filter((task) => task.id !== id);
-    setItems(newitems);
+    const newItems = items.filter((task) => task.id !== id);
+    setItems(newItems);
+    update(task.id, { checklist_items: newItems });
   };
 
-  const editTask = (id, content) => {
-    const newitems = items.map((task) => {
+  const editTask = (id, description, finished = false) => {
+    const newItems = items.map((task) => {
       if (task.id === id) {
-        task.content = content;
+        task.description = description;
+        task.finished = finished;
       }
       return task;
     });
-    setItems(newitems);
+    setItems(newItems);
   };
 
   const handleCommentUpdate = async () => {
@@ -56,7 +61,24 @@ export default function Content({ task }) {
 
   useEffect(() => {
     update(task.id, { checklist_items: items });
+    getCurrentProgress();
   }, [items, task.id]);
+
+  const getCurrentProgress = () => {
+    const total = items.length;
+    const finished = items.filter((item) => item.finished).length;
+    setProgress((finished / total) * 100);
+  };
+
+  const handleBlur = async () => {
+    const filteredItems = items.map((item) => {
+      return {
+        description: item.description,
+        finished: item.finished,
+      };
+    });
+    await update(task.id, { checklist_items: filteredItems });
+  };
 
   return (
     <Grid item xs={8} wrap="nowrap">
@@ -98,16 +120,38 @@ export default function Content({ task }) {
         <Divider />
 
         <MDBox py={2}>
-          <MDBox display="flex">
+          <MDBox display="flex" flexDirection="column">
             <MDTypography variant="body2" fontWeight="bold">
               Lista de Verificación de Artículos
             </MDTypography>
+            <MDBox sx={{ width: "80%", my: 1 }}>
+              {progress > 0 && (
+                <MDBox
+                  sx={{ display: "flex", alignItems: "center", flexGrow: "1" }}
+                >
+                  <MDBox width="100%" mt={0.25}>
+                    <MDProgress
+                      variant="gradient"
+                      color="success"
+                      value={progress}
+                    />
+                  </MDBox>
+                  <MDBox sx={{ minWidth: 40, mx: 2 }}>
+                    <MDTypography
+                      variant="body2"
+                      color="text.secondary"
+                    >{`${Math.round(progress)}%`}</MDTypography>
+                  </MDBox>
+                </MDBox>
+              )}
+            </MDBox>
           </MDBox>
           <ItemList
             items={items}
             addNewTask={addNewTask}
             editTask={editTask}
             removeTask={removeTask}
+            handleBlur={handleBlur}
           />
         </MDBox>
 

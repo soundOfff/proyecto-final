@@ -259,6 +259,7 @@ export default function Table({
           onClose={handleCloseShowModal}
           px={0}
           py={0}
+          sx={{ overflow: "scroll" }}
         >
           {task && <Show task={task} />}
         </Modal>

@@ -57,6 +57,23 @@ export default function Aside({ task }) {
   const [reminderStaffId, setReminderStaffId] = useState(null);
   const [reminderDescription, setReminderDescription] = useState("");
   const [reminderDate, setReminderDate] = useState("");
+  const [assigneds, setAssigneds] = useState(
+    task.assigneds.map((assigned) => {
+      return {
+        ...assigned,
+        first_name: assigned.firstName,
+        last_name: assigned.lastName,
+      };
+    })
+  );
+  const [followers, setFollowers] = useState(
+    task.followers.map((follower) => {
+      return {
+        ...follower,
+        name: follower.firstName + " " + follower.lastName,
+      };
+    })
+  );
 
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(
@@ -135,6 +152,14 @@ export default function Aside({ task }) {
   useEffect(() => {
     update(task.id, { tags: tags });
   }, [tags, task.id]);
+
+  useEffect(() => {
+    update(task.id, { assigneds: assigneds });
+  }, [assigneds, task.id]);
+
+  useEffect(() => {
+    update(task.id, { followers: followers });
+  }, [followers, task.id]);
 
   return (
     <Grid item xs={4}>
@@ -388,6 +413,26 @@ export default function Aside({ task }) {
                 />
               </Tooltip>
             ))}
+          <Autocomplete
+            multiple
+            key="assigneds"
+            value={assigneds}
+            onChange={(_, newValues) => setAssigneds(newValues)}
+            options={task.taskable.members.map((member) => member.staff)}
+            getOptionLabel={(option) =>
+              option.first_name + " " + option.last_name
+            }
+            renderInput={(params) => (
+              <MDInput
+                {...params}
+                variant="standard"
+                label="Asignar a"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ ...params.inputProps }}
+              />
+            )}
+          />
         </MDBox>
         <Divider />
 
@@ -416,6 +461,24 @@ export default function Aside({ task }) {
               </Tooltip>
             ))}
         </MDBox>
+        <Autocomplete
+          multiple
+          key="followers"
+          value={followers}
+          onChange={(_, newValues) => setFollowers(newValues)}
+          options={staffs}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label="Asignar a"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ ...params.inputProps }}
+            />
+          )}
+        />
         <Divider />
       </MDBox>
     </Grid>

@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-// TODO: make the endpoints
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/tasks`);
   url.search = new URLSearchParams(params);

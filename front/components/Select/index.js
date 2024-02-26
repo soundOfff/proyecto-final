@@ -12,6 +12,7 @@ export default function Select({
   fieldName,
   inputLabel,
   value,
+  onInputChange = () => {},
   setFieldValue,
   ...rest
 }) {
@@ -19,7 +20,6 @@ export default function Select({
     () => options.find((option) => option.id === value),
     [options, value]
   );
-
   return (
     <MDBox>
       <Autocomplete
@@ -28,7 +28,9 @@ export default function Select({
         onChange={(_, newValue) => setFieldValue(fieldName, newValue?.id ?? "")}
         options={options}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        getOptionLabel={optionLabel}
+        getOptionLabel={(option) => option[optionLabel]}
+        key={(option) => option?.id}
+        onInputChange={(_, newInputValue) => onInputChange(newInputValue)}
         renderInput={(params) => (
           <>
             <MDInput

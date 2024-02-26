@@ -26,7 +26,11 @@ use App\Http\Controllers\RecurringController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SubServiceTypeController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskPriorityController;
+use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\TicketStatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -101,6 +105,15 @@ Route::put('/proposals/{proposal}', [ProposalController::class, 'update']);
 Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
 Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 
+Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
+Route::get('/tasks-status', [TaskStatusController::class, 'index']);
+
+Route::get('/tasks', [TaskController::class, 'index']);
+Route::post('/tasks', [TaskController::class, 'store']);
+Route::put('/tasks/{task}', [TaskController::class, 'update']);
+Route::get('/tasks/{task}', [TaskController::class, 'show']);
+Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+
 Route::get('/tags', [TagController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
@@ -113,6 +126,7 @@ Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
+Route::get('/staffs', [StaffController::class, 'index']);
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 

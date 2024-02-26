@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('staff_id')->constrained();
 
-            $table->integer('creator');
+            $table->integer('creator')->nullable();
             $table->dateTime('date');
             $table->text('description');
-            $table->boolean('is_notified');
+            $table->boolean('is_notified')->default(false);
             $table->morphs('reminderable');
 
             $table->timestamps();

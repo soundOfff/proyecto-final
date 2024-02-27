@@ -17,6 +17,8 @@ class TaskController extends Controller
         $query = QueryBuilder::for(Task::class)
             ->allowedIncludes([
                 'tags',
+                'currentTimer',
+                'timers',
                 'priority',
                 'status',
                 'comments',

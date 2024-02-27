@@ -25,6 +25,11 @@ class Task extends Model
         return $this->belongsTo(TaskPriority::class, 'task_priority_id');
     }
 
+    public function timers()
+    {
+        return $this->hasMany(TaskTimer::class);
+    }
+
     public function status()
     {
         return $this->belongsTo(TaskStatus::class, 'task_status_id');

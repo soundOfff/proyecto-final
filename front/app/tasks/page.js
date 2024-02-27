@@ -10,6 +10,7 @@ import { getTaskPriorities } from "/actions/tasks";
 import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
+import { getCurrentTimer } from "../../actions/timers";
 
 export default async function Expenses({
   searchParams: { perPage = 10, page = 1 },
@@ -28,6 +29,7 @@ export default async function Expenses({
   const taskableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
   const statuses = await getTaskStatus();
   const partners = await getAllPartners();
+  const currentTimer = await getCurrentTimer(5); // TODO: change it for the real staff_id
 
   return (
     <MDBox mb={3}>
@@ -44,6 +46,7 @@ export default async function Expenses({
               tagsData={tagsData}
               partners={partners}
               statuses={statuses}
+              currentTimer={currentTimer}
             />
           </Grid>
         </Grid>

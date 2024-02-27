@@ -61,4 +61,9 @@ class Staff extends Model
     {
         return $this->belongsToMany(Task::class);
     }
+
+    public function currentTimer()
+    {
+        return $this->hasOne(TaskTimer::class)->whereNull('end_time');
+    }
 }

@@ -93,4 +93,11 @@ class Partner extends Model
     {
         return $this->morphMany(Proposal::class, 'proposable');
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where('company', 'like', "%$search%");
+        });
+    }
 }

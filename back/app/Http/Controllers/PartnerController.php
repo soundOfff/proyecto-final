@@ -47,6 +47,10 @@ class PartnerController extends Controller
             'country',
             'consolidator',
         ])
+        ->allowedFilters([
+            AllowedFilter::scope('search'),
+
+        ])
         ->orderBy('id', 'desc');
 
         $partners = request()->has('perPage')

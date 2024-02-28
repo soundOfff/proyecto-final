@@ -16,64 +16,106 @@ Coded by www.creative-tim.com
 const detailForm = {
   formId: "partner",
   formField: {
-    company: {
-      name: "company",
-      label: "Empresa",
-      type: "text",
-      errorMsg: "El nombre de la Empresa es requerida",
+    juridical: {
+      company: {
+        name: "company",
+        label: "Empresa",
+        type: "text",
+        errorMsg: "El nombre de la Empresa es requerida",
+      },
+      address: {
+        name: "address",
+        label: "Dirección",
+        type: "text",
+      },
+      ruc: {
+        name: "ruc",
+        label: "RUC",
+        type: "text",
+        placeholder: "RUC",
+      },
+      city: {
+        name: "city",
+        label: "Ciudad",
+        type: "text",
+      },
+      state: {
+        name: "state",
+        label: "Provincia",
+        type: "text",
+      },
+      country: {
+        name: "country_id",
+        label: "País",
+        errorMsg: "Debe seleccionar un país",
+      },
+      zip: {
+        name: "zip",
+        label: "Código Postal",
+        type: "text",
+      },
+      phone: {
+        name: "phone_number",
+        label: "Teléfono",
+        type: "text",
+      },
+      website: {
+        name: "website",
+        label: "Website",
+        errorMsg: "Debe seleccionar un tipo de servicio",
+      },
+      isConsolidator: {
+        name: "isConsolidator",
+        label: "Consolidador",
+      },
+      consolidator: {
+        name: "consolidator_id",
+        label: "Cliente Consolidador",
+        errorMsg: "Debe seleccionar un consolidador",
+      },
+      language: {
+        name: "language",
+        label: "Idioma Predeterminado",
+      },
     },
-    address: {
-      name: "address",
-      label: "Dirección",
-      type: "text",
-    },
-    ruc: {
-      name: "ruc",
-      label: "RUC",
-      type: "text",
-      placeholder: "RUC",
-    },
-    city: {
-      name: "city",
-      label: "Ciudad",
-      type: "text",
-    },
-    state: {
-      name: "state",
-      label: "Provincia",
-      type: "text",
-    },
-    country: {
-      name: "country_id",
-      label: "País",
-    },
-    zip: {
-      name: "zip",
-      label: "Código Postal",
-      type: "text",
-    },
-    phone: {
-      name: "phone_number",
-      label: "Telénono",
-      type: "text",
-    },
-    website: {
-      name: "website",
-      label: "Website",
-      errorMsg: "Debe seleccionar un tipo de servicio",
-    },
-    isConsolidator: {
-      name: "is_consolidator",
-      label: "Consolidador",
-    },
-    consolidator: {
-      name: "consolidator_id",
-      label: "Cliente Consolidador",
-      errorMsg: "Debe seleccionar un consolidador",
-    },
-    language: {
-      name: "language",
-      label: "Idioma Predeterminado",
+
+    person: {
+      name: {
+        name: "name",
+        label: "Nombre",
+        type: "text",
+        errorMsg: "El nombre es requerido",
+      },
+      number: {
+        name: "number",
+        label: "Número de Identificación",
+        type: "text",
+        errorMsg: "El número de identificación es requerido",
+      },
+      birthDate: {
+        name: "birth_date",
+        label: "Fecha de Nacimiento",
+        errorMsg: "La fecha de nacimiento es requerida",
+      },
+      expeditionDate: {
+        name: "expedition_date",
+        label: "Fecha de Expedición",
+        errorMsg: "La fecha de expedición es requerido",
+      },
+      expirationDate: {
+        name: "expiration_date",
+        label: "Fecha de Expiración",
+        errorMsg: "La fecha de expiración es requerido",
+      },
+      isMale: {
+        name: "is_male",
+        label: "Mujer/Hombre",
+      },
+      country: {
+        name: "country_id",
+        label: "País",
+        errorMsg: "Debe seleccionar un país",
+      },
     },
   },
 };

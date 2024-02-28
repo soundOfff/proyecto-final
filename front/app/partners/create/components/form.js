@@ -15,6 +15,7 @@ import validations from "../schemas/validations";
 
 export default function FormComponent({ consolidators, countries }) {
   const [tabIndex, setTabIndex] = useState(0);
+  const [isJuridic, setIsJuridic] = useState(true);
   const { formId } = form;
 
   const submitForm = async (values, actions) => {
@@ -25,12 +26,20 @@ export default function FormComponent({ consolidators, countries }) {
     submitForm(values, actions);
   };
 
+  const getCurrentValidation = () => {
+    if (isJuridic) {
+      return validations.juridical;
+    } else {
+      return validations.person;
+    }
+  };
+
   return (
     <MDBox py={5}>
       <Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
       <Formik
         initialValues={initialValues}
-        validationSchema={validations}
+        validationSchema={getCurrentValidation}
         onSubmit={handleSubmit}
       >
         {({ errors, values, touched, isSubmitting, setFieldValue }) => (
@@ -44,6 +53,8 @@ export default function FormComponent({ consolidators, countries }) {
                   values,
                   touched,
                   setFieldValue,
+                  isJuridic,
+                  setIsJuridic,
                 }}
               />
             ) : (

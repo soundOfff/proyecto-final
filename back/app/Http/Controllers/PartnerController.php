@@ -97,7 +97,7 @@ class PartnerController extends Controller
      */
     public function update(PartnerRequest $request, Partner $partner)
     {
-        $partnerUpdate = $request->all();
+        $partnerUpdate = $request->validated();
 
         Partner::find($partner->id)->update($partnerUpdate);
 

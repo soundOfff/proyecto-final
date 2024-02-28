@@ -13,7 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import form from "./form";
+import detailForm from "./detail-form";
+import invoiceForm from "./invoice-form";
 
 const {
   formField: {
@@ -33,21 +34,23 @@ const {
     },
 
     person: { name, birthDate, expeditionDate, expirationDate, isMale, number },
-
-    invoice: {
-      shippingCity,
-      shippingCountry,
-      shippingState,
-      shippingZip,
-      shippingStreet,
-      billingCity,
-      billingCountry,
-      billingState,
-      billingZip,
-      billingStreet,
-    },
   },
-} = form;
+} = detailForm;
+
+const {
+  formField: {
+    shippingCity,
+    shippingCountry,
+    shippingState,
+    shippingZip,
+    shippingStreet,
+    billingCity,
+    billingCountry,
+    billingState,
+    billingZip,
+    billingStreet,
+  },
+} = invoiceForm;
 
 const initialValues = {
   [address.name]: "",
@@ -66,7 +69,7 @@ const initialValues = {
   [birthDate.name]: "",
   [expeditionDate.name]: "",
   [expirationDate.name]: "",
-  [isMale.name]: "",
+  [isMale.name]: false,
   [number.name]: "",
   [billingCity.name]: "",
   [billingCountry.name]: "",

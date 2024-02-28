@@ -18,6 +18,13 @@ return new class extends Migration {
             $table->integer('billing_country_id')->nullable()->constrained('countries');
             $table->integer('shipping_country_id')->nullable()->constrained('countries');
 
+            $table->string('name')->nullable();
+            $table->string('number')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->date('expedition_date')->nullable();
+            $table->date('expiration_date')->nullable();
+            $table->boolean('is_male')->nullable();
+
             $table->integer('lead_id')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('added_from')->default(false);

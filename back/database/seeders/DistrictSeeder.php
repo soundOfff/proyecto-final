@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Jurisdiction;
+use App\Models\District;
 use App\Services\Utils;
 use Illuminate\Database\Seeder;
 
-class JurisdictionSeeder extends Seeder
+class DistrictSeeder extends Seeder
 {
     private $utils;
 
@@ -22,10 +22,10 @@ class JurisdictionSeeder extends Seeder
      */
     public function run()
     {
-        $jurisdictions = $this->utils->csvToArray(database_path('imports/jurisdictions.csv'));
+        $districts = $this->utils->csvToArray(database_path('imports/districts.csv'));
 
-        foreach ($jurisdictions as $jurisdiction) {
-            Jurisdiction::updateOrCreate(['id' => $jurisdiction['id']], $jurisdiction);
+        foreach ($districts as $district) {
+            District::updateOrCreate(['id' => $district['id']], $district);
         }
     }
 }

@@ -10,14 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('processes', function (Blueprint $table) {
+        Schema::create('procedure_statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained();
-
-            $table->integer('step_quantity');
             $table->string('name');
-            $table->string('description');
-            $table->string('department');
 
             $table->timestamps();
         });
@@ -28,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('processes');
+        Schema::dropIfExists('procedure_statuses');
     }
 };

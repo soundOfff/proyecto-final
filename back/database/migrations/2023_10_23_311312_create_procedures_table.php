@@ -17,7 +17,7 @@ return new class extends Migration {
 
             $table->integer('step_number');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
 
             $table->timestamps();
         });

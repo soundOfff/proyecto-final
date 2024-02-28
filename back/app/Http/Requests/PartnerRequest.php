@@ -22,9 +22,9 @@ class PartnerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company' => 'required|string',
+            'company' => 'nullable|string',
             'country_id' => 'required|numeric|exists:countries,id',
-            'consolidator_id' => 'required|numeric|exists:partners,id',
+            'consolidator_id' => 'nullable|numeric|exists:partners,id',
             'billing_country_id' => 'nullable|numeric|exists:countries,id',
             'shipping_country_id' => 'nullable|numeric|exists:countries,id',
             'website' => 'nullable|string',
@@ -35,6 +35,12 @@ class PartnerRequest extends FormRequest
             'zip' => 'nullable|string',
             'phone_number' => 'nullable|string',
             'language' => 'nullable|string',
+            'name' => 'nullable|string',
+            'number' => 'nullable|string',
+            'birth_date' => 'nullable|date',
+            'expedition_date' => 'nullable|date',
+            'expiration_date' => 'nullable|date',
+            'is_male' => 'nullable|boolean',
             'billing_city' => 'nullable|string',
             'billing_state' => 'nullable|string',
             'billing_street' => 'nullable|string',

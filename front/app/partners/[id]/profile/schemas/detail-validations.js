@@ -18,28 +18,46 @@ import detailForm from "./detail-form";
 
 const {
   formField: {
-    company,
-    state,
-    country,
-    zip,
-    phone,
-    address,
-    ruc,
-    city,
-    consolidator,
+    juridical: {
+      company,
+      state,
+      country,
+      zip,
+      phone,
+      address,
+      ruc,
+      city,
+      isConsolidator,
+      language,
+      website,
+      consolidator,
+    },
+
+    person: { name, birthDate, expeditionDate, expirationDate, isMale, number },
   },
 } = detailForm;
 
-const detailValidations = Yup.object().shape({
-  [company.name]: Yup.string().required(company.errorMsg),
-  [state.name]: Yup.string().nullable(),
-  [country.name]: Yup.number().nullable(),
-  [zip.name]: Yup.string().nullable(),
-  [address.name]: Yup.string().nullable(),
-  [ruc.name]: Yup.string().nullable(),
-  [city.name]: Yup.string().nullable(),
-  [phone.name]: Yup.string().nullable(),
-  [consolidator.name]: Yup.number().required(consolidator.errorMsg),
-});
+const detailValidations = {
+  juridical: Yup.object().shape({
+    [company.name]: Yup.string().required(company.errorMsg),
+    [state.name]: Yup.string().nullable(),
+    [country.name]: Yup.number().required(country.errorMsg),
+    [zip.name]: Yup.string().nullable(),
+    [address.name]: Yup.string().nullable(),
+    [ruc.name]: Yup.string().nullable(),
+    [city.name]: Yup.string().nullable(),
+    [phone.name]: Yup.string().nullable(),
+    [consolidator.name]: Yup.number().required(consolidator.errorMsg),
+  }),
+  person: Yup.object().shape({
+    [name.name]: Yup.string().required(name.errorMsg),
+    [country.name]: Yup.number().required(country.errorMsg),
+    [birthDate.name]: Yup.string().required(),
+    [expeditionDate.name]: Yup.string().required(),
+    [expirationDate.name]: Yup.string().required(),
+    [isMale.name]: Yup.boolean().required(),
+    [number.name]: Yup.string().required(),
+  }),
+};
 
 export default detailValidations;

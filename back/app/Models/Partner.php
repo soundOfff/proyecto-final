@@ -45,6 +45,12 @@ class Partner extends Model
         'vat',
         'website',
         'zip',
+        'name',
+        'number',
+        'birth_date',
+        'expedition_date',
+        'expiration_date',
+        'isMale',
     ];
 
     public function projects(): HasMany

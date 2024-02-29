@@ -20,7 +20,14 @@ export default function DetailFormComponent({
   const {
     formId,
     formField: {
-      juridical: { consolidator, isConsolidator, country },
+      juridical: {
+        consolidator,
+        isConsolidator,
+        country,
+        province,
+        district,
+        jurisdiction,
+      },
 
       person: { birthDate, expeditionDate, expirationDate, isMale },
     },
@@ -29,6 +36,9 @@ export default function DetailFormComponent({
   const initialValues = {
     ...partner,
     [country.name]: partner.countryId,
+    [province.name]: partner.provinceId,
+    [district.name]: partner.districtId,
+    [jurisdiction.name]: partner.jurisdictionId,
     [isConsolidator.name]: partner.isConsolidator,
     [consolidator.name]: partner.consolidatorId,
     [birthDate.name]: partner.birthDate,

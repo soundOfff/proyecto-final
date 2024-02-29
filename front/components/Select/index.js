@@ -8,7 +8,6 @@ import MDBox from "/components/MDBox";
 export default function Select({
   options,
   optionLabel,
-  customOptionLabel,
   fieldName,
   inputLabel,
   value,
@@ -28,7 +27,7 @@ export default function Select({
         onChange={(_, newValue) => setFieldValue(fieldName, newValue?.id ?? "")}
         options={options}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        getOptionLabel={(option) => option[optionLabel]}
+        getOptionLabel={optionLabel}
         key={(option) => option?.id}
         onInputChange={(_, newInputValue) => onInputChange(newInputValue)}
         renderInput={(params) => (

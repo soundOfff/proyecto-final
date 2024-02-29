@@ -15,6 +15,9 @@ class Partner extends Model
 
     protected $fillable = [
         'country_id',
+        'province_id',
+        'district_id',
+        'jurisdiction_id',
         'active',
         'added_from',
         'address',
@@ -50,7 +53,7 @@ class Partner extends Model
         'birth_date',
         'expedition_date',
         'expiration_date',
-        'isMale',
+        'is_male',
     ];
 
     public function projects(): HasMany
@@ -61,6 +64,21 @@ class Partner extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function jurisdiction(): BelongsTo
+    {
+        return $this->belongsTo(Jurisdiction::class);
     }
 
     public function user(): BelongsTo

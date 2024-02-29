@@ -34,6 +34,11 @@ const detailForm = {
         type: "text",
         placeholder: "RUC",
       },
+      country: {
+        name: "country_id",
+        label: "País",
+        errorMsg: "Debe seleccionar un país",
+      },
       city: {
         name: "city",
         label: "Ciudad",
@@ -44,10 +49,20 @@ const detailForm = {
         label: "Provincia",
         type: "text",
       },
-      country: {
-        name: "country_id",
-        label: "País",
-        errorMsg: "Debe seleccionar un país",
+      province: {
+        name: "province_id",
+        label: "Provincia",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      district: {
+        name: "district_id",
+        label: "Distrito",
+        errorMsg: "Debe seleccionar un distrito",
+      },
+      jurisdiction: {
+        name: "jurisdiction_id",
+        label: "Jurisdicción",
+        errorMsg: "Debe seleccionar una jurisdicción",
       },
       zip: {
         name: "zip",
@@ -115,6 +130,31 @@ const detailForm = {
         name: "country_id",
         label: "País",
         errorMsg: "Debe seleccionar un país",
+      },
+      city: {
+        name: "city",
+        label: "Ciudad",
+        type: "text",
+      },
+      state: {
+        name: "state",
+        label: "Provincia",
+        type: "text",
+      },
+      province: {
+        name: "province_id",
+        label: "Provincia",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      district: {
+        name: "district_id",
+        label: "Distrito",
+        errorMsg: "Debe seleccionar un distrito",
+      },
+      jurisdiction: {
+        name: "jurisdiction_id",
+        label: "Jurisdicción",
+        errorMsg: "Debe seleccionar una jurisdicción",
       },
     },
 

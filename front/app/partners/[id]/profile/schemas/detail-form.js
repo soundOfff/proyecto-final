@@ -49,6 +49,21 @@ const detailForm = {
         label: "País",
         errorMsg: "Debe seleccionar un país",
       },
+      province: {
+        name: "province_id",
+        label: "Provincia",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      district: {
+        name: "district_id",
+        label: "Distrito",
+        errorMsg: "Debe seleccionar un distrito",
+      },
+      jurisdiction: {
+        name: "jurisdiction_id",
+        label: "Jurisdicción",
+        errorMsg: "Debe seleccionar una jurisdicción",
+      },
       zip: {
         name: "zip",
         label: "Código Postal",
@@ -115,6 +130,31 @@ const detailForm = {
         name: "country_id",
         label: "País",
         errorMsg: "Debe seleccionar un país",
+      },
+      state: {
+        name: "state",
+        label: "Provincia",
+        type: "text",
+      },
+      city: {
+        name: "city",
+        label: "Ciudad",
+        type: "text",
+      },
+      province: {
+        name: "province_id",
+        label: "Provincia",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      district: {
+        name: "district_id",
+        label: "Distrito",
+        errorMsg: "Debe seleccionar un distrito",
+      },
+      jurisdiction: {
+        name: "jurisdiction_id",
+        label: "Jurisdicción",
+        errorMsg: "Debe seleccionar una jurisdicción",
       },
     },
   },

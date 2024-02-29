@@ -13,6 +13,9 @@ return new class extends Migration {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
             $table->foreignId('country_id')->constrained();
+            $table->foreignId('province_id')->nullable()->constrained();
+            $table->foreignId('district_id')->nullable()->constrained();
+            $table->foreignId('jurisdiction_id')->nullable()->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('consolidator_id')->nullable()->constrained('partners');
             $table->integer('billing_country_id')->nullable()->constrained('countries');

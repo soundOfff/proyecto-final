@@ -6,6 +6,7 @@ use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Project;
 use App\Models\Staff;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
@@ -41,6 +42,27 @@ class StaffController extends Controller
     public function show(Project $project)
     {
         //
+    }
+
+    public function stats(Staff $staff) {
+        $weeklyStart = now()->startOfWeek();
+        $weeklyEnd = now()->endOfWeek();
+        $monthlyStart = now()->startOfMonth();
+        $monthlyEnd = now()->endOfMonth();
+
+        $totalTime = $staff->tasks->sum(fn ($task) => $task->getTotalTime());
+
+        $totalWeekTime = $staff->tasks
+            ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
+
+        $totalMonthTime = $staff->tasks
+            ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
+
+        return response()->json([
+            'total_time' => $totalTime,
+            'total_week_time' => $totalWeekTime,
+            'total_month_time' => $totalMonthTime,
+        ], 200);
     }
 
     /**

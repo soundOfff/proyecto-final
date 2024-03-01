@@ -98,6 +98,17 @@ export default function Table({
     await update(taskId, { task_priority_id: priorityId });
   };
 
+  const handleCompleteTask = async (taskId) => {
+    const doneState = statuses.find((status) => status.name === "Done");
+    if (taskId === doneState) {
+      return;
+    }
+    await update(taskId, {
+      task_status_id: statuses.find((status) => status.name === "Done").id,
+    });
+    setOpenShowModal(false);
+  };
+
   const columns = [
     {
       Header: "#",
@@ -235,7 +246,7 @@ export default function Table({
               <LockClockOutlined
                 color="error"
                 fontSize="medium"
-                onClick={() => stopTimer(row.original.currentTimer.id)}
+                onClick={() => stopTimer(currentTimer?.id)}
                 sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>
@@ -245,7 +256,7 @@ export default function Table({
                 color="success"
                 fontSize="medium"
                 // TODO: how get the staff id
-                onClick={() => startTimer(row.original.id, null)}
+                onClick={() => startTimer(row.original.id, 5)} // TODO: change it for a real staff_id
                 sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>
@@ -296,7 +307,16 @@ export default function Table({
           py={0}
           sx={{ overflow: "scroll" }}
         >
-          {task && <Show task={task} />}
+          {task && (
+            <Show
+              task={task}
+              markAsCompleted={handleCompleteTask}
+              isTimerStarted={currentTimer?.task_id === task.id}
+              currentTimerId={currentTimer?.id}
+              stopTimer={stopTimer}
+              startTimer={startTimer}
+            />
+          )}
         </Modal>
       )}
       <DataTable

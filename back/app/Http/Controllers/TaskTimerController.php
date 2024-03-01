@@ -50,7 +50,7 @@ class TaskTimerController extends Controller
      */
     public function getCurrentTimer(Staff $staff)
     {
-        $timer = $staff->currentTimer;
+        $timer = $staff->getCurrentTimer();
         if (is_null($timer)) {
             return response()->json(null, 200);
         }

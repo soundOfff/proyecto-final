@@ -8,6 +8,8 @@ use App\Http\Resources\TaskResourceCollection;
 use App\Models\Taggable;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
@@ -17,16 +19,31 @@ class TaskController extends Controller
         $query = QueryBuilder::for(Task::class)
             ->allowedIncludes([
                 'tags',
-                'currentTimer',
                 'timers',
                 'priority',
                 'status',
                 'comments',
                 'checklistItems',
                 'assigneds',
+                'partner',
                 'followers',
+                'taskable',
                 'reminders',
-            ]);
+            ])
+            ->allowedFilters(
+                [
+                    AllowedFilter::exact('project_id'),
+                    AllowedFilter::exact('task_status_id'),
+                    AllowedFilter::exact('partner_id'),
+                    AllowedFilter::callback(
+                        'period',
+                        fn (Builder $query, $value) =>
+                            $query->whereHas('timers',
+                            fn (Builder $query) =>
+                                $query->whereBetween('start_time', $value))
+                    ),
+                ]
+            );
 
         $tasks = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

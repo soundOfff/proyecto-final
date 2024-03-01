@@ -131,7 +131,9 @@ Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
+Route::get('staffs-stats/{staff}', [StaffController::class, 'stats']);
 Route::get('/staffs', [StaffController::class, 'index']);
+
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 

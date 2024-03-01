@@ -35,3 +35,17 @@ export async function getAll(params) {
 
   return data.staffs;
 }
+
+export async function getStats(staffId) {
+  const url = new URL(`${process.env.API_URL}/staffs-stats/${staffId}`);
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  console.log(data);
+
+  return data;
+}

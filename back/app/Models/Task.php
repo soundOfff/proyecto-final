@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +19,11 @@ class Task extends Model
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
     }
 
     public function priority()
@@ -58,5 +64,25 @@ class Task extends Model
     public function reminders(): HasMany
     {
         return $this->hasMany(Reminder::class, 'reminderable_id');
+    }
+
+    public function getTotalTime($startDate = null, $endDate = null)
+    {
+        if ($startDate && $endDate) {
+            $timers = $this->timers->whereBetween('start_time', [$startDate, $endDate]);
+            return $this->calculateTotalTime($timers);
+        }
+
+        return $this->calculateTotalTime($this->timers);
+    }
+
+    private function calculateTotalTime($timers): float
+    {
+        return $timers->sum(function ($timer) {
+            if (is_null($timer->end_time)) {
+                return 0;
+            }
+            return Carbon::parse($timer->end_time)->floatDiffInRealHours($timer->start_time);
+        });
     }
 }

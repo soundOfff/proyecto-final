@@ -59,11 +59,16 @@ class Staff extends Model
 
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Task::class, 'staff_assigned');
     }
 
-    public function currentTimer()
+    public function timers(): HasMany
     {
-        return $this->hasOne(TaskTimer::class)->whereNull('end_time');
+        return $this->hasMany(TaskTimer::class);
+    }
+
+    public function getCurrentTimer(): TaskTimer | null
+    {
+        return $this->timers->whereNull('end_time')->first();
     }
 }

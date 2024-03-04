@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
             'customer' => 'App\Models\Partner',
             'lead' => 'App\Models\Lead',
             'task' => 'App\Models\Task',
+            'staff' => 'App\Models\Staff',
         ]);
     }
 }

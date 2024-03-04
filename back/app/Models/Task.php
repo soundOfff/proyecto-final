@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model
 {
-    protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
+    protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'owner_id', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
 
     public function taskable()
     {

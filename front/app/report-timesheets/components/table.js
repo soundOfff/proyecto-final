@@ -48,10 +48,24 @@ export default function Table({ rows, meta }) {
       accessor: "note",
     },
     {
+      Header: "Cliente",
+      accessor: "partner",
+      Cell: ({ row }) => {
+        return (
+          <Link
+            href={`partners/${row.original.partner.id}/profile`}
+            color="info"
+          >
+            {row.original.partner.company}
+          </Link>
+        );
+      },
+    },
+    {
       Header: "Relacionado",
       accessor: "taskable",
       Cell: ({ row }) => (
-        <Link href={`tasks/${row.original.taskable.id}`} color="info">
+        <Link href={`projects/${row.original.taskable.id}`} color="info">
           {row.original.taskable.name}
         </Link>
       ),

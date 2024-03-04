@@ -20,12 +20,12 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
           >
-            {numberFormat(totalTime)}
+            {`${numberFormat(totalTime)} hs`}
           </MDTypography>
           <MDBadge
             variant="contained"
-            badgeContent="Total time"
-            color={"info"}
+            badgeContent="Tiempo total registrado"
+            color="info"
             size="xs"
             container
             sx={{
@@ -49,11 +49,11 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
           >
-            {numberFormat(totalMonthTime)}
+            {`${numberFormat(totalMonthTime)} hs`}
           </MDTypography>
           <MDBadge
             variant="contained"
-            badgeContent="Total month time"
+            badgeContent="Tiempo total registrado mes actual"
             color="primary"
             size="xs"
             container
@@ -78,12 +78,12 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
           >
-            {numberFormat(totalWeekTime)}
+            {`${numberFormat(totalWeekTime)} hs`}
           </MDTypography>
           <MDBadge
             variant="contained"
-            badgeContent="Total week time"
-            color="primary"
+            badgeContent="Tiempo total registrado semana actual"
+            color="warning"
             size="xs"
             container
             sx={{

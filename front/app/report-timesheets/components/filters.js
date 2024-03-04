@@ -1,24 +1,22 @@
 "use client";
 
 import {
-  InputLabel,
-  MenuItem,
-  FormControl,
   Grid,
-  Select,
   Autocomplete,
   FormControlLabel,
   FormGroup,
   Switch,
 } from "@mui/material";
-import { PERIODS } from "/utils/constants/periodFilterTypes";
 import MDInput from "/components/MDInput";
-import MDButton from "/components/MDButton";
+import MDDatePicker from "/components/MDDatePicker";
+import MDTypography from "/components/MDTypography";
+import MDBox from "/components/MDBox";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import moment from "moment";
 
 export default function Filters({ partners, projects }) {
-  const [period, setPeriod] = useState(PERIODS[0]);
+  const [period, setPeriod] = useState([]);
   const [partner, setPartner] = useState(null);
   const [project, setProject] = useState(null);
   const [myTasks, setMyTasks] = useState(false);
@@ -30,8 +28,13 @@ export default function Filters({ partners, projects }) {
   useEffect(() => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
 
-    if (period?.value) {
-      params.set("period", period.value);
+    if (period.length > 0) {
+      params.set(
+        "period",
+        `${moment(period[0]).format("YYYY-MM-DD")},${moment(period[1]).format(
+          "YYYY-MM-DD"
+        )}`
+      );
     } else {
       params.delete("period");
     }
@@ -61,41 +64,41 @@ export default function Filters({ partners, projects }) {
   }, [period, partner, project, myTasks, router, pathname, searchParams]);
 
   return (
-    <Grid
-      container
-      spacing={4}
-      my={3}
-      sm={12}
-      sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}
-    >
-      <Grid item xs={12} sm={3}>
-        <FormControl
-          sx={{
-            width: { xs: "100%" },
-            height: "45px",
-            mb: 3,
-          }}
-        >
-          <InputLabel id="status">Periodo</InputLabel>
-          <Select
-            labelId="status"
-            label="Estado"
-            value={period.label}
-            sx={{ height: "100%" }}
+    <Grid spacing={4} my={3} sm={12} container>
+      <Grid
+        item
+        margin="auto"
+        minWidth={{
+          xs: "150px",
+          sm: "160px",
+          md: "20%",
+          paddingBottom: "21px",
+        }}
+      >
+        <MDBox>
+          <MDTypography
+            variant="body"
+            color="secondary"
+            sx={{ fontSize: "small" }}
           >
-            {PERIODS.map((p) => (
-              <MenuItem
-                key={p.value}
-                value={p.label}
-                onClick={() => setPeriod(p)}
-              >
-                {p.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            Fechas
+          </MDTypography>
+        </MDBox>
+        <MDDatePicker
+          options={{ mode: "range" }}
+          format="YYYY/MM/DD"
+          value={period}
+          onChange={(dates) => {
+            setPeriod(dates);
+          }}
+          renderInput={(params) => <MDInput {...params} fullWidth />}
+        />
       </Grid>
-      <Grid item xs={12} sm={3}>
+      <Grid
+        item
+        margin="auto"
+        minWidth={{ xs: "150px", sm: "300px", md: "20%" }}
+      >
         <Autocomplete
           value={partner}
           options={partners}
@@ -112,7 +115,11 @@ export default function Filters({ partners, projects }) {
           )}
         />
       </Grid>
-      <Grid item xs={12} sm={3}>
+      <Grid
+        item
+        margin="auto"
+        minWidth={{ xs: "150px", sm: "160px", md: "20%" }}
+      >
         <Autocomplete
           value={project}
           options={projects}
@@ -129,7 +136,11 @@ export default function Filters({ partners, projects }) {
           )}
         />
       </Grid>
-      <Grid item sm={2}>
+      <Grid
+        item
+        margin="auto"
+        minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
+      >
         <FormGroup>
           <FormControlLabel
             control={
@@ -141,16 +152,6 @@ export default function Filters({ partners, projects }) {
             label="Mis tareas"
           />
         </FormGroup>
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <MDButton
-          variant="gradient"
-          color="dark"
-          onClick={() => handleFilter()}
-          sx={{ mr: 2, displayPrint: "none" }}
-        >
-          Filtrar
-        </MDButton>
       </Grid>
     </Grid>
   );

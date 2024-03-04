@@ -57,9 +57,9 @@ class Staff extends Model
         return $this->hasMany(Contact::class);
     }
 
-    public function tasks(): BelongsToMany
+    public function tasks(): HasMany
     {
-        return $this->belongsToMany(Task::class, 'staff_assigned');
+        return $this->hasMany(Task::class, 'owner_id');
     }
 
     public function timers(): HasMany

@@ -12,14 +12,14 @@ import Filters from "./components/filters";
 
 export const dynamic = "force-dynamic";
 
-const include = ["timers", "status", "assigneds", "taskable"];
+const include = ["timers", "status", "assigneds", "taskable", "partner"];
 
 export default async function Reports({ searchParams }) {
   const { period, projectId, partnerId, myTasks } = searchParams;
 
-  const projectFilter = projectId ? { "filter[project]": projectId } : null;
-  const partnerFilter = partnerId ? { "filter[partner]": partnerId } : null;
-  const myTasksFilter = myTasks ? { "filter[myTasks]": myTasks } : null;
+  const projectFilter = projectId ? { "filter[project_id]": projectId } : null;
+  const partnerFilter = partnerId ? { "filter[partner_id]": partnerId } : null;
+  const myTasksFilter = myTasks ? { "filter[my_tasks]": 5 } : null; // TODO: Set the correct staff_id
   const periodFilter = period ? { "filter[period]": period } : null;
 
   const params = {

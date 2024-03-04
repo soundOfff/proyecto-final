@@ -49,13 +49,14 @@ class StaffController extends Controller
         $weeklyEnd = now()->endOfWeek();
         $monthlyStart = now()->startOfMonth();
         $monthlyEnd = now()->endOfMonth();
+        $tasks = $staff->tasks;
 
-        $totalTime = $staff->tasks->sum(fn ($task) => $task->getTotalTime());
+        $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
 
-        $totalWeekTime = $staff->tasks
+        $totalWeekTime = $tasks
             ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
 
-        $totalMonthTime = $staff->tasks
+        $totalMonthTime = $tasks
             ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
 
         return response()->json([

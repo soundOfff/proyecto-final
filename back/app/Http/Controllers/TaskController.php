@@ -32,9 +32,13 @@ class TaskController extends Controller
             ])
             ->allowedFilters(
                 [
-                    AllowedFilter::exact('project_id'),
+                    AllowedFilter::exact('project_id', 'taskable.id'),
                     AllowedFilter::exact('task_status_id'),
                     AllowedFilter::exact('partner_id'),
+                    AllowedFilter::callback(
+                        'my_tasks',
+                        fn (Builder $query, $value) =>
+                            $query->where('owner_id', $value)),
                     AllowedFilter::callback(
                         'period',
                         fn (Builder $query, $value) =>

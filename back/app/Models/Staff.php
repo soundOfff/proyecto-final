@@ -41,6 +41,7 @@ class Staff extends Authenticatable
         'two_factor_auth_code_requested',
         'two_factor_auth_enabled',
         'role_id',
+        'token',
     ];
 
     /**

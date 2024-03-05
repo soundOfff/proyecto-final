@@ -61,7 +61,6 @@ function Sidenav({
   ...rest
 }) {
   const { data: session, status } = useSession();
-  console.log(session);
   const [openCollapse, setOpenCollapse] = useState(false);
   const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
   const [controller, dispatch] = useMaterialUIController();

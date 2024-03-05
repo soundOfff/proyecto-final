@@ -16,8 +16,6 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log(token);
-      // TODO get current staff from access token
       const url = new URL(`${process.env.API_URL}/login`);
 
       const res = await fetch(url, {

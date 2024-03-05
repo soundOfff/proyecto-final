@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('password')->nullable();
+            $table->string('token')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('admin')->default(false);
             $table->decimal('hourly_rate')->default(0);

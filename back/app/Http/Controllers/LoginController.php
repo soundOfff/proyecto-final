@@ -32,15 +32,15 @@ class LoginController extends Controller
                 'profile_image' => $googleUser->getAvatar(),
                 'last_login' => now(),
                 'last_ip' => $request->ip(),
-                'token' => $token,
             ]);
         } else {
             $staff->update([
                 'last_login' => now(),
                 'last_ip' => $request->ip(),
-                'token' => $token,
             ]);
         }
+
+        $staff->token = $staff->createToken('api')->plainTextToken;
 
         Auth::login($staff);
 

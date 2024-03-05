@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StaffResource;
 use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class StaffController extends Controller
 {
@@ -39,9 +41,14 @@ class StaffController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(string $email)
     {
-        //
+        $staff = QueryBuilder::for(Staff::class)
+            ->allowedIncludes('projects')
+            ->where('email', $email)
+            ->first();
+
+        return new StaffResource($staff);
     }
 
     public function stats(Staff $staff) {

@@ -9,10 +9,12 @@ use App\Http\Controllers\EstimateStatusController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemGroupController;
 use App\Http\Controllers\LineItemTypeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProjectBillingTypeController;
@@ -31,8 +33,8 @@ use App\Http\Controllers\TaskPriorityController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
-use App\Http\Controllers\TicketStatusController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -141,6 +143,11 @@ Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
 
 Route::get('/recurrings', [RecurringController::class, 'index']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::get('/files/{file}', [FileController::class, 'show']);
+Route::post('/files', [FileController::class, 'store']);
+
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();
 });

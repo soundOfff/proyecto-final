@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Project;
 use App\Models\Staff;
@@ -21,7 +22,9 @@ class StaffController extends Controller
      */
     public function index()
     {
-        //
+        $staffs = Staff::all();
+
+        return new StaffResourceCollection($staffs);
     }
 
     /**

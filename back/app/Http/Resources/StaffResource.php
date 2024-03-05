@@ -15,6 +15,7 @@ class StaffResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'active' => $this->active,
             'admin' => $this->admin,
             'default_language' => $this->default_language,
@@ -30,6 +31,7 @@ class StaffResource extends JsonResource
             'lastIp' => $this->last_ip,
             'lastLogin' => $this->last_login,
             'lastName' => $this->last_name,
+            'name' => $this->first_name . ' ' . $this->last_name,
             'lastPasswordChange' => $this->last_password_change,
             'mediaPathSlug' => $this->media_path_slug,
             'newPassKey' => $this->new_pass_key,

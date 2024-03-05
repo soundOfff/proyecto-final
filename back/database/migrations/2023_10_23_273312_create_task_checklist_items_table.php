@@ -14,12 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('task_id')->constrained();
 
-            $table->integer('added_from');
-            $table->dateTime('date_added');
+            $table->integer('added_from')->nullable();
             $table->text('description');
-            $table->integer('finished');
-            $table->integer('finished_from');
-            $table->integer('list_order');
+            $table->boolean('finished')->default(false);
+            $table->integer('finished_from')->nullable();
+            $table->integer('list_order')->nullable();
 
             $table->timestamps();
         });

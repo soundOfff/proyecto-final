@@ -6,6 +6,7 @@ import Table from "./components/table";
 import { getAll as getAllTasks } from "/actions/tasks";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllProjects } from "/actions/projects";
+import { select as getStaffsSelect } from "/actions/staffs";
 import { getStats } from "../../actions/staffs";
 import Stats from "./components/stats";
 import Filters from "./components/filters";
@@ -15,11 +16,12 @@ export const dynamic = "force-dynamic";
 const include = ["timers", "status", "assigneds", "taskable", "partner"];
 
 export default async function Reports({ searchParams }) {
-  const { period, projectId, partnerId, myTasks } = searchParams;
+  const { period, projectId, partnerId, myTasks, staffId } = searchParams;
 
   const projectFilter = projectId ? { "filter[project_id]": projectId } : null;
   const partnerFilter = partnerId ? { "filter[partner_id]": partnerId } : null;
-  const myTasksFilter = myTasks ? { "filter[my_tasks]": 5 } : null; // TODO: Set the correct staff_id
+  const staffFilter = staffId ? { "filter[staff_id]": staffId } : null;
+  const myTasksFilter = myTasks ? { "filter[staff_id]": 5 } : null; // TODO: Set the correct staff_id
   const periodFilter = period ? { "filter[period]": period } : null;
 
   const params = {
@@ -28,6 +30,7 @@ export default async function Reports({ searchParams }) {
     ...partnerFilter,
     ...myTasksFilter,
     ...periodFilter,
+    ...staffFilter,
   };
 
   const {
@@ -35,8 +38,8 @@ export default async function Reports({ searchParams }) {
   } = await getAllTasks(params);
   const partners = await getAllPartners();
   const projects = await getAllProjects();
+  const staffs = await getStaffsSelect();
   const stats = await getStats(5); // TODO: change for real staff_id
-
   return (
     <MDBox mb={3}>
       <Card>
@@ -47,7 +50,7 @@ export default async function Reports({ searchParams }) {
               totalWeekTime={stats?.total_week_time}
               totalMonthTime={stats?.total_month_time}
             />
-            <Filters partners={partners} projects={projects} />
+            <Filters partners={partners} projects={projects} staffs={staffs} />
             <MDBox py={1}>
               <Table rows={tasks} meta={{ per_page: "5" }} />
             </MDBox>

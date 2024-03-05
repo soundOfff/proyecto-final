@@ -1,6 +1,6 @@
 "use client";
 
-import { Divider, Grid, Tooltip } from "@mui/material";
+import { Card, Divider, Grid, Tooltip } from "@mui/material";
 import MDBox from "/components/MDBox";
 import { update } from "/actions/tasks";
 import MDEditor from "/components/MDEditor";
@@ -28,6 +28,10 @@ export default function Content({
   );
   const [items, setItems] = useState(task.checklistItems || []);
   const [comments, setComments] = useState(task.comments || []);
+  const [note, setNote] = useState("");
+  const [isStoppingTimer, setIsStoppingTimer] = useState(
+    isTimerStarted || false
+  );
   const [commentContent, setCommentContent] = useState("");
   const [progress, setProgress] = useState(0);
 
@@ -55,6 +59,12 @@ export default function Content({
       return task;
     });
     setItems(newItems);
+  };
+
+  const handleStopTimer = async () => {
+    await stopTimer(currentTimerId, note);
+    setIsStoppingTimer(false);
+    setNote("");
   };
 
   const handleCommentUpdate = async () => {
@@ -102,13 +112,21 @@ export default function Content({
               {task.taskable.name}
             </Link>
           )}
-          <MDBox container sx={{ gap: "10px", display: "flex" }}>
+          <MDBox
+            sx={{
+              gap: "10px",
+              display: "flex",
+              paddingTop: "10px",
+              alignItems: "start",
+            }}
+          >
             <MDButton
               color="info"
               size="small"
+              sx={{ maxHeight: "50px" }}
               onClick={() => markAsCompleted(task.id)}
             >
-              Completar tarea <Check color="white" fontSize="32px" />
+              Completar tarea
             </MDButton>
 
             {
@@ -117,24 +135,57 @@ export default function Content({
                 <MDButton
                   color="primary"
                   size="small"
-                  onClick={() => stopTimer(currentTimerId)}
+                  sx={{ maxHeight: "50px" }}
+                  onClick={() => setIsStoppingTimer(true)}
                 >
-                  <MDTypography variant="button" color="white">
-                    Detener temporizador
-                  </MDTypography>
+                  Detener temporizador
                 </MDButton>
               ) : (
                 <MDButton
                   color="success"
+                  sx={{ maxHeight: "50px" }}
                   size="small"
                   onClick={() => startTimer(task.id, 5)}
                 >
-                  <MDTypography variant="button" color="white">
-                    Iniciar temporizador
-                  </MDTypography>
+                  Iniciar temporizador
                 </MDButton>
               )
             }
+            <MDBox display="flex" flexDirection="row" width="60%">
+              {(isTimerStarted || isStoppingTimer) && (
+                <>
+                  <Card
+                    variant="outlined"
+                    sx={{
+                      width: "100%",
+                      padding: "20px",
+                      margin: "0",
+                      backgroundColor: "#f5f5f5",
+                    }}
+                  >
+                    <MDTypography variant="body2" fontWeight="bold">
+                      Nota de la tarea
+                    </MDTypography>
+                    <FormField
+                      value={note}
+                      type="text"
+                      placeholder="Nota..."
+                      onChange={(e) => setNote(e.target.value)}
+                      sx={{ mb: 2, width: "100%" }}
+                    />
+                    <MDBox display="flex" justifyContent="end">
+                      <MDButton
+                        variant="gradient"
+                        color="dark"
+                        onClick={handleStopTimer}
+                      >
+                        Guardar
+                      </MDButton>
+                    </MDBox>
+                  </Card>
+                </>
+              )}
+            </MDBox>
           </MDBox>
         </MDBox>
 

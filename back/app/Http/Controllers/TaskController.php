@@ -36,7 +36,7 @@ class TaskController extends Controller
                     AllowedFilter::exact('task_status_id'),
                     AllowedFilter::exact('partner_id'),
                     AllowedFilter::callback(
-                        'my_tasks',
+                        'staff_id',
                         fn (Builder $query, $value) =>
                             $query->where('owner_id', $value)),
                     AllowedFilter::callback(

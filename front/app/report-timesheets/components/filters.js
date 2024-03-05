@@ -15,10 +15,11 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import moment from "moment";
 
-export default function Filters({ partners, projects }) {
+export default function Filters({ partners, projects, staffs }) {
   const [period, setPeriod] = useState([]);
   const [partner, setPartner] = useState(null);
   const [project, setProject] = useState(null);
+  const [staff, setStaff] = useState(null);
   const [myTasks, setMyTasks] = useState(false);
 
   const router = useRouter();
@@ -37,6 +38,12 @@ export default function Filters({ partners, projects }) {
       );
     } else {
       params.delete("period");
+    }
+
+    if (staff?.id) {
+      params.set("staffId", staff.id);
+    } else {
+      params.delete("staffId");
     }
 
     if (partner?.id) {
@@ -61,7 +68,16 @@ export default function Filters({ partners, projects }) {
     const query = queryParams ? `?${queryParams}` : "";
 
     router.push(`${pathname}${query}`);
-  }, [period, partner, project, myTasks, router, pathname, searchParams]);
+  }, [
+    period,
+    partner,
+    staff,
+    project,
+    myTasks,
+    router,
+    pathname,
+    searchParams,
+  ]);
 
   return (
     <Grid spacing={4} my={3} sm={12} container>
@@ -130,6 +146,27 @@ export default function Filters({ partners, projects }) {
               {...params}
               variant="standard"
               label="Casos"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+        />
+      </Grid>
+      <Grid
+        item
+        margin="auto"
+        minWidth={{ xs: "150px", sm: "160px", md: "20%" }}
+      >
+        <Autocomplete
+          value={staff}
+          options={staffs}
+          getOptionLabel={(option) => option.name}
+          onChange={(_, value) => setStaff(value)}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label="Staff"
               fullWidth
               InputLabelProps={{ shrink: true }}
             />

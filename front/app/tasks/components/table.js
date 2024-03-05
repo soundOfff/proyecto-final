@@ -31,16 +31,16 @@ export default function Table({
   meta,
   priorities,
   repeats,
-  taskableTypes,
   taskableItems,
   tagsData,
   statuses,
   partners,
   currentTimer,
+  currentTaskId,
 }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const [taskId, setTaskId] = useState(null);
+  const [taskId, setTaskId] = useState(currentTaskId || null);
   const [task, setTask] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openShowModal, setOpenShowModal] = useState(false);
@@ -57,9 +57,9 @@ export default function Table({
     setTask(null);
   };
 
-  const stopTimer = async (timerId) => {
+  const stopTimer = async (timerId, note = "") => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
-    await updateTimer(timerId, { end_time: date });
+    await updateTimer(timerId, { end_time: date, note });
   };
 
   const startTimer = async (taskId, staffId) => {
@@ -220,7 +220,7 @@ export default function Table({
       accessor: "",
       Cell: ({ row }) => (
         <>
-          <Tooltip title="Vista Rápida">
+          <Tooltip title="Editar tarea">
             <EditNoteIcon
               color="info"
               fontSize="medium"
@@ -289,7 +289,6 @@ export default function Table({
             <ModalContentForm
               priorities={priorities}
               repeats={repeats}
-              taskableTypes={taskableTypes}
               taskableItems={taskableItems}
               tagsData={tagsData}
               partners={partners}

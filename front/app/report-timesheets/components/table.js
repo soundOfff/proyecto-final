@@ -33,7 +33,9 @@ export default function Table({ rows, meta }) {
       accessor: "name",
       Cell: ({ row }) => (
         <MDBox display="flex" flexDirection="row" alignItems="center">
-          <Link href={`/tasks/${row.original.id}`}>{row.original.name}</Link>
+          <Link href={`/tasks?taskId=${row.original.id}`}>
+            {row.original.name}
+          </Link>
           <MDBadge
             variant="gradient"
             color="primary"

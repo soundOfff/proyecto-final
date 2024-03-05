@@ -69,8 +69,18 @@ class Staff extends Authenticatable
         return $this->hasMany(Contact::class);
     }
 
-    public function tasks(): BelongsToMany
+    public function tasks(): HasMany
     {
-        return $this->belongsToMany(Task::class);
+        return $this->hasMany(Task::class, 'owner_id');
+    }
+
+    public function timers(): HasMany
+    {
+        return $this->hasMany(TaskTimer::class);
+    }
+
+    public function getCurrentTimer(): TaskTimer | null
+    {
+        return $this->timers->whereNull('end_time')->first();
     }
 }

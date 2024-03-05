@@ -1,6 +1,6 @@
 "use client";
 
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Tooltip } from "@mui/material";
 import MDBox from "/components/MDBox";
 import { update } from "/actions/tasks";
 import MDEditor from "/components/MDEditor";
@@ -13,8 +13,16 @@ import { parseEditorState } from "../../../../utils/parseEditorState";
 import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
+import { Check } from "@mui/icons-material";
 
-export default function Content({ task }) {
+export default function Content({
+  task,
+  markAsCompleted,
+  stopTimer,
+  startTimer,
+  isTimerStarted,
+  currentTimerId,
+}) {
   const [description, setDescription] = useState(
     parseEditorState(task.description)
   );
@@ -82,7 +90,7 @@ export default function Content({ task }) {
   return (
     <Grid item xs={8} wrap="nowrap">
       <MDBox px={5} py={2}>
-        <MDBox py={2}>
+        <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body1" fontWeight="bold" display="inline">
             Relacionado:
           </MDTypography>{" "}
@@ -94,6 +102,40 @@ export default function Content({ task }) {
               {task.taskable.name}
             </Link>
           )}
+          <MDBox container sx={{ gap: "10px", display: "flex" }}>
+            <MDButton
+              color="info"
+              size="small"
+              onClick={() => markAsCompleted(task.id)}
+            >
+              Completar tarea <Check color="white" fontSize="32px" />
+            </MDButton>
+
+            {
+              // TODO: Change the staff_id
+              isTimerStarted ? (
+                <MDButton
+                  color="primary"
+                  size="small"
+                  onClick={() => stopTimer(currentTimerId)}
+                >
+                  <MDTypography variant="button" color="white">
+                    Detener temporizador
+                  </MDTypography>
+                </MDButton>
+              ) : (
+                <MDButton
+                  color="success"
+                  size="small"
+                  onClick={() => startTimer(task.id, 5)}
+                >
+                  <MDTypography variant="button" color="white">
+                    Iniciar temporizador
+                  </MDTypography>
+                </MDButton>
+              )
+            }
+          </MDBox>
         </MDBox>
 
         <Divider />

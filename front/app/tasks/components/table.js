@@ -18,9 +18,13 @@ import ModalContentForm from "../../../components/ModalContent/Task/index";
 import { Autocomplete, Grid, Link, Tooltip } from "@mui/material";
 
 import { update } from "/actions/tasks";
+import { store as storeTimer, update as updateTimer } from "/actions/timers";
+
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
 import { destroy } from "../../../actions/tasks";
 import Show from "./show";
+import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
+import moment from "moment";
 
 export default function Table({
   rows,
@@ -32,6 +36,7 @@ export default function Table({
   tagsData,
   statuses,
   partners,
+  currentTimer,
 }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
@@ -50,6 +55,16 @@ export default function Table({
     setOpenShowModal(false);
     setTaskId(null);
     setTask(null);
+  };
+
+  const stopTimer = async (timerId) => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await updateTimer(timerId, { end_time: date });
+  };
+
+  const startTimer = async (taskId, staffId) => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await storeTimer({ task_id: taskId, start_time: date, staff_id: staffId });
   };
 
   useEffect(() => {
@@ -81,6 +96,17 @@ export default function Table({
 
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    const doneState = statuses.find((status) => status.name === "Done");
+    if (taskId === doneState) {
+      return;
+    }
+    await update(taskId, {
+      task_status_id: statuses.find((status) => status.name === "Done").id,
+    });
+    setOpenShowModal(false);
   };
 
   const columns = [
@@ -202,7 +228,7 @@ export default function Table({
                 setTaskId(row.original.id);
                 setOpenEditModal(true);
               }}
-              sx={{ mr: 3, cursor: "pointer" }}
+              sx={{ mr: 1, cursor: "pointer" }}
             />
           </Tooltip>
           <Tooltip title="Eliminar tarea">
@@ -212,9 +238,29 @@ export default function Table({
               onClick={() => {
                 destroy(row.original.id);
               }}
-              sx={{ ml: 3, cursor: "pointer" }}
+              sx={{ mx: 1, cursor: "pointer" }}
             />
           </Tooltip>
+          {currentTimer?.task_id === row.original.id ? (
+            <Tooltip title="Detener temporizador">
+              <LockClockOutlined
+                color="error"
+                fontSize="medium"
+                onClick={() => stopTimer(currentTimer?.id)}
+                sx={{ ml: 1, cursor: "pointer" }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Iniciar temporizador">
+              <AccessAlarm
+                color="success"
+                fontSize="medium"
+                // TODO: how get the staff id
+                onClick={() => startTimer(row.original.id, 5)} // TODO: change it for a real staff_id
+                sx={{ ml: 1, cursor: "pointer" }}
+              />
+            </Tooltip>
+          )}
         </>
       ),
     },
@@ -261,7 +307,16 @@ export default function Table({
           py={0}
           sx={{ overflow: "scroll" }}
         >
-          {task && <Show task={task} />}
+          {task && (
+            <Show
+              task={task}
+              markAsCompleted={handleCompleteTask}
+              isTimerStarted={currentTimer?.task_id === task.id}
+              currentTimerId={currentTimer?.id}
+              stopTimer={stopTimer}
+              startTimer={startTimer}
+            />
+          )}
         </Modal>
       )}
       <DataTable

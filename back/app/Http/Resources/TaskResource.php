@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\TaskTimer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,7 +20,6 @@ class TaskResource extends JsonResource
             'name' => $this->name,
             'hourly_rate' => $this->hourly_rate,
             'start_date' => $this->start_date,
-            'partner_id' => $this->partner_id,
             'due_date' => $this->due_date,
             'priority' => $this->priority,
             'repeat_id' => $this->repeat_id,
@@ -32,6 +32,9 @@ class TaskResource extends JsonResource
             'taskable_type' => $this->taskable_type,
             'statusId' => $this->task_status_id,
             'description' => $this->description,
+            'partner' => PartnerResource::make($this->whenLoaded('partner')),
+            'total_time' => $this->getTotalTime(),
+            'timers' => TaskTimerResource::collection($this->whenLoaded('timers')),
             'priority' => TaskPriorityResource::make($this->whenLoaded('priority')),
             'status' => TaskStatusResource::make($this->whenLoaded('status')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),

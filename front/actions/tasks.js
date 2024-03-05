@@ -13,7 +13,6 @@ export async function getAll(params) {
       Accept: "application/json",
     },
   });
-
   if (!res.ok) {
     const data = await res.json();
     console.log(data);
@@ -21,6 +20,7 @@ export async function getAll(params) {
   }
 
   const data = await res.json();
+  console.log(data);
 
   return data;
 }
@@ -48,6 +48,7 @@ export async function getTaskPriorities() {
 }
 
 export async function store(data) {
+  console.log(data);
   const res = await fetch(`${process.env.API_URL}/tasks`, {
     method: "POST",
     body: JSON.stringify(data),

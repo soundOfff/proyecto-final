@@ -31,6 +31,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPriorityController;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,6 +111,10 @@ Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
 Route::get('/tasks-status', [TaskStatusController::class, 'index']);
 
+Route::put('/timers/{timer}', [TaskTimerController::class, 'update']);
+Route::post('/timers', [TaskTimerController::class, 'store']);
+Route::get('/current-timer/{staff}', [TaskTimerController::class, 'getCurrentTimer']);
+
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'store']);
 Route::put('/tasks/{task}', [TaskController::class, 'update']);
@@ -128,7 +133,9 @@ Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
+Route::get('staffs-stats/{staff}', [StaffController::class, 'stats']);
 Route::get('/staffs', [StaffController::class, 'index']);
+
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 

@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->foreignId('repeat_id')->constrained('expense_repeats');
             $table->foreignId('task_status_id')->constrained();
             $table->foreignId('partner_id')->constrained();
+            $table->foreignId('owner_id')->constrained('staff');
             $table->morphs('taskable');
 
             $table->integer('added_from')->nullable();

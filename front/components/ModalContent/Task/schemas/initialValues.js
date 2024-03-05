@@ -28,6 +28,7 @@ const {
     repeat,
     recurring,
     recurringType,
+    owner_id,
     isInfinite,
     totalCycles,
     taskableType,
@@ -55,6 +56,7 @@ const initialValues = {
   [isInfinite.name]: true,
   [totalCycles.name]: "",
   [taskableType.name]: "project",
+  [owner_id.name]: 5,
   [taskableId.name]: "",
   [tags.name]: [],
 };

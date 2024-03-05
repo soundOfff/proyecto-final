@@ -7,6 +7,7 @@ use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Project;
 use App\Models\Staff;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -48,6 +49,28 @@ class StaffController extends Controller
             ->first();
 
         return new StaffResource($staff);
+    }
+
+    public function stats(Staff $staff) {
+        $weeklyStart = now()->startOfWeek();
+        $weeklyEnd = now()->endOfWeek();
+        $monthlyStart = now()->startOfMonth();
+        $monthlyEnd = now()->endOfMonth();
+        $tasks = $staff->tasks;
+
+        $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
+
+        $totalWeekTime = $tasks
+            ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
+
+        $totalMonthTime = $tasks
+            ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
+
+        return response()->json([
+            'total_time' => $totalTime,
+            'total_week_time' => $totalWeekTime,
+            'total_month_time' => $totalMonthTime,
+        ], 200);
     }
 
     /**

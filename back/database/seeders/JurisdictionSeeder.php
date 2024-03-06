@@ -3,10 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\Jurisdiction;
+use App\Services\Utils;
 use Illuminate\Database\Seeder;
 
 class JurisdictionSeeder extends Seeder
 {
+    private $utils;
+
+    public function __construct(Utils $utils = null)
+    {
+        $this->utils = $utils;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -14,6 +22,10 @@ class JurisdictionSeeder extends Seeder
      */
     public function run()
     {
-        Jurisdiction::factory()->count(10)->create();
+        $jurisdictions = $this->utils->csvToArray(database_path('imports/jurisdictions.csv'));
+
+        foreach ($jurisdictions as $jurisdiction) {
+            Jurisdiction::updateOrCreate(['id' => $jurisdiction['id']], $jurisdiction);
+        }
     }
 }

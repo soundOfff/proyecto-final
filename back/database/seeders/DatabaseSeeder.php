@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(ProjectStatusSeeder::class);
         $this->call(CountrySeeder::class);
+        $this->call(ProvinceSeeder::class);
+        $this->call(DistrictSeeder::class);
         $this->call(JurisdictionSeeder::class);
         $this->call(LawFirmSeeder::class);
         $this->call(PartnerSeeder::class);
@@ -54,5 +56,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LineItemTaxSeeder::class);
         $this->call(TagSeeder::class);
         $this->call(TaggableSeeder::class);
+        $this->call(ProcedureStatusSeeder::class);
+        $this->call(ProcessSeeder::class);
+        $this->call(ProcedureSeeder::class);
     }
 }

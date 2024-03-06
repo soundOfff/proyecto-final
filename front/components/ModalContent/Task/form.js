@@ -111,11 +111,14 @@ export default function TaskForm({
 
   const getBoolean = (value) => (value === 1 ? true : false);
 
-  const handleChange = useCallback((editorState) => {
-    const raw = convertToRaw(editorState.getCurrentContent());
-    setFieldValue(description.name, JSON.stringify(raw));
-    setEditorState(editorState);
-  }, []);
+  const handleChange = useCallback(
+    (editorState) => {
+      const raw = convertToRaw(editorState.getCurrentContent());
+      setFieldValue(description.name, JSON.stringify(raw));
+      setEditorState(editorState);
+    },
+    [description.name, setFieldValue]
+  );
 
   return (
     <>
@@ -249,10 +252,9 @@ export default function TaskForm({
             <Select
               value={values[task_priority_id.name]}
               options={priorities}
-              optionLabel="name"
+              optionLabel={(option) => option.name}
               fieldName={task_priority_id.name}
               inputLabel={task_priority_id.label}
-              customOptionLabel="name"
               setFieldValue={setFieldValue}
             />
           </Grid>
@@ -260,7 +262,7 @@ export default function TaskForm({
             <Select
               value={values[repeat.name]}
               options={repeats}
-              optionLabel="label"
+              optionLabel={(option) => option.label}
               fieldName={repeat.name}
               inputLabel={repeat.label}
               setFieldValue={setFieldValue}
@@ -327,7 +329,7 @@ export default function TaskForm({
             <Select
               value={values[partner_id.name]}
               options={partners}
-              optionLabel="company"
+              optionLabel={(option) => option.company}
               fieldName={partner_id.name}
               inputLabel={partner_id.label}
               setFieldValue={setFieldValue}
@@ -337,7 +339,7 @@ export default function TaskForm({
             <Select
               value={values[taskableId.name]}
               options={taskableItems}
-              optionLabel="name"
+              optionLabel={(option) => option.name}
               fieldName={taskableId.name}
               inputLabel={taskableId.label}
               setFieldValue={setFieldValue}

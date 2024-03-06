@@ -37,7 +37,6 @@ export default function TabsComponent({ tabIndex, setTabIndex }) {
         onChange={handleSetTabValue}
       >
         <Tab label="Detalles del cliente" />
-        <Tab label="Campos personalizados" />
         <Tab label="Envío de factura" />
       </Tabs>
     </AppBar>

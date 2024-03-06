@@ -196,6 +196,7 @@ export default function Table({
     {
       Header: "Prioridad",
       accessor: "priority",
+      width: 200,
       Cell: ({ row }) => (
         <Autocomplete
           value={priorities.find(
@@ -214,6 +215,7 @@ export default function Table({
               InputLabelProps={{ shrink: true }}
             />
           )}
+          sx={{ width: "200px" }}
         />
       ),
     },

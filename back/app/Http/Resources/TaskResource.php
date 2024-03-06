@@ -18,6 +18,7 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'note' => $this->note,
             'hourly_rate' => $this->hourly_rate,
             'start_date' => $this->start_date,
             'due_date' => $this->due_date,
@@ -31,7 +32,7 @@ class TaskResource extends JsonResource
             'taskable_id' => $this->taskable_id,
             'taskable_type' => $this->taskable_type,
             'partner_id' => $this->partner_id,
-            'statusId' => $this->task_status_id,
+            'status_id' => $this->task_status_id,
             'description' => $this->description,
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'total_time' => $this->getTotalTime(),

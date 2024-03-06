@@ -14,6 +14,7 @@ import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { useSession } from "next-auth/react";
+import { DONE_ID } from "/utils/constants/taskStatuses";
 
 export default function Content({
   task,
@@ -29,9 +30,7 @@ export default function Content({
   const [items, setItems] = useState(task.checklistItems || []);
   const [comments, setComments] = useState(task.comments || []);
   const [note, setNote] = useState("");
-  const [isStoppingTimer, setIsStoppingTimer] = useState(
-    isTimerStarted || false
-  );
+  const [isStoppingTimer, setIsStoppingTimer] = useState(false);
   const [commentContent, setCommentContent] = useState("");
   const [progress, setProgress] = useState(0);
   const { data: session } = useSession();
@@ -120,14 +119,20 @@ export default function Content({
               alignItems: "start",
             }}
           >
-            <MDButton
-              color="info"
-              size="small"
-              sx={{ maxHeight: "50px" }}
-              onClick={() => markAsCompleted(task.id)}
-            >
-              Completar tarea
-            </MDButton>
+            {task.status_id !== DONE_ID ? (
+              <MDButton
+                color="info"
+                size="small"
+                sx={{ maxHeight: "50px" }}
+                onClick={() => markAsCompleted(task.id)}
+              >
+                Completar tarea
+              </MDButton>
+            ) : (
+              <MDButton color="dark" size="small" sx={{ maxHeight: "50px" }}>
+                Tarea Completada
+              </MDButton>
+            )}
 
             {isTimerStarted ? (
               <MDButton
@@ -149,7 +154,7 @@ export default function Content({
               </MDButton>
             )}
             <MDBox display="flex" flexDirection="row" width="60%">
-              {(isTimerStarted || isStoppingTimer) && (
+              {isStoppingTimer && (
                 <>
                   <Card
                     variant="outlined"

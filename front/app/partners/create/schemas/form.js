@@ -16,113 +16,197 @@ Coded by www.creative-tim.com
 const detailForm = {
   formId: "partner",
   formField: {
-    company: {
-      name: "company",
-      label: "Empresa",
-      type: "text",
-      errorMsg: "El nombre de la Empresa es requerida",
+    juridical: {
+      company: {
+        name: "company",
+        label: "Empresa",
+        type: "text",
+        errorMsg: "El nombre de la Empresa es requerida",
+      },
+      address: {
+        name: "address",
+        label: "Dirección",
+        type: "text",
+      },
+      ruc: {
+        name: "ruc",
+        label: "RUC",
+        type: "text",
+        placeholder: "RUC",
+      },
+      country: {
+        name: "country_id",
+        label: "País",
+        errorMsg: "Debe seleccionar un país",
+      },
+      city: {
+        name: "city",
+        label: "Ciudad",
+        type: "text",
+      },
+      state: {
+        name: "state",
+        label: "Provincia",
+        type: "text",
+      },
+      province: {
+        name: "province_id",
+        label: "Provincia",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      district: {
+        name: "district_id",
+        label: "Distrito",
+        errorMsg: "Debe seleccionar un distrito",
+      },
+      jurisdiction: {
+        name: "jurisdiction_id",
+        label: "Jurisdicción",
+        errorMsg: "Debe seleccionar una jurisdicción",
+      },
+      zip: {
+        name: "zip",
+        label: "Código Postal",
+        type: "text",
+      },
+      phone: {
+        name: "phone_number",
+        label: "Teléfono",
+        type: "text",
+      },
+      website: {
+        name: "website",
+        label: "Website",
+        errorMsg: "Debe seleccionar un tipo de servicio",
+      },
+      isConsolidator: {
+        name: "isConsolidator",
+        label: "Consolidador",
+      },
+      consolidator: {
+        name: "consolidator_id",
+        label: "Cliente Consolidador",
+        errorMsg: "Debe seleccionar un consolidador",
+      },
+      language: {
+        name: "language",
+        label: "Idioma Predeterminado",
+      },
     },
-    address: {
-      name: "address",
-      label: "Dirección",
-      type: "text",
+
+    person: {
+      name: {
+        name: "name",
+        label: "Nombre",
+        type: "text",
+        errorMsg: "El nombre es requerido",
+      },
+      number: {
+        name: "number",
+        label: "Número de Identificación",
+        type: "text",
+        errorMsg: "El número de identificación es requerido",
+      },
+      birthDate: {
+        name: "birth_date",
+        label: "Fecha de Nacimiento",
+        errorMsg: "La fecha de nacimiento es requerida",
+      },
+      expeditionDate: {
+        name: "expedition_date",
+        label: "Fecha de Expedición",
+        errorMsg: "La fecha de expedición es requerido",
+      },
+      expirationDate: {
+        name: "expiration_date",
+        label: "Fecha de Expiración",
+        errorMsg: "La fecha de expiración es requerido",
+      },
+      isMale: {
+        name: "is_male",
+        label: "Hombre/Mujer",
+      },
+      country: {
+        name: "country_id",
+        label: "País",
+        errorMsg: "Debe seleccionar un país",
+      },
+      city: {
+        name: "city",
+        label: "Ciudad",
+        type: "text",
+      },
+      state: {
+        name: "state",
+        label: "Provincia",
+        type: "text",
+      },
+      province: {
+        name: "province_id",
+        label: "Provincia",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      district: {
+        name: "district_id",
+        label: "Distrito",
+        errorMsg: "Debe seleccionar un distrito",
+      },
+      jurisdiction: {
+        name: "jurisdiction_id",
+        label: "Jurisdicción",
+        errorMsg: "Debe seleccionar una jurisdicción",
+      },
     },
-    ruc: {
-      name: "ruc",
-      label: "RUC",
-      type: "text",
-      placeholder: "RUC",
-    },
-    city: {
-      name: "city",
-      label: "Ciudad",
-      type: "text",
-    },
-    state: {
-      name: "state",
-      label: "Provincia",
-      type: "text",
-    },
-    country: {
-      name: "country_id",
-      label: "País",
-      errorMsg: "Debe seleccionar un país",
-    },
-    zip: {
-      name: "zip",
-      label: "Código Postal",
-      type: "text",
-    },
-    phone: {
-      name: "phone_number",
-      label: "Teléfono",
-      type: "text",
-    },
-    website: {
-      name: "website",
-      label: "Website",
-      errorMsg: "Debe seleccionar un tipo de servicio",
-    },
-    isConsolidator: {
-      name: "isConsolidator",
-      label: "Consolidador",
-    },
-    consolidator: {
-      name: "consolidator_id",
-      label: "Cliente Consolidador",
-      errorMsg: "Debe seleccionar un consolidador",
-    },
-    language: {
-      name: "language",
-      label: "Idioma Predeterminado",
-    },
-    billingStreet: {
-      name: "billing_street",
-      label: "Calle",
-      type: "text",
-    },
-    billingCity: {
-      name: "billing_city",
-      label: "Localidad",
-      type: "text",
-    },
-    billingState: {
-      name: "billing_state",
-      label: "Departamento",
-      type: "text",
-    },
-    billingZip: {
-      name: "billing_zip",
-      label: "Código Postal",
-      type: "text",
-    },
-    billingCountry: {
-      name: "billing_country_id",
-      label: "País",
-    },
-    shippingStreet: {
-      name: "shipping_street",
-      label: "Calle",
-      type: "text",
-    },
-    shippingCity: {
-      name: "shipping_city",
-      label: "Localidad",
-      type: "text",
-    },
-    shippingState: {
-      name: "shipping_state",
-      label: "Departamento",
-      type: "text",
-    },
-    shippingZip: {
-      name: "shipping_zip",
-      label: "Código Postal",
-      type: "text",
-    },
-    shippingCountry: {
-      name: "shipping_country_id",
-      label: "País",
+
+    invoice: {
+      billingStreet: {
+        name: "billing_street",
+        label: "Calle",
+        type: "text",
+      },
+      billingCity: {
+        name: "billing_city",
+        label: "Localidad",
+        type: "text",
+      },
+      billingState: {
+        name: "billing_state",
+        label: "Departamento",
+        type: "text",
+      },
+      billingZip: {
+        name: "billing_zip",
+        label: "Código Postal",
+        type: "text",
+      },
+      billingCountry: {
+        name: "billing_country_id",
+        label: "País",
+      },
+      shippingStreet: {
+        name: "shipping_street",
+        label: "Calle",
+        type: "text",
+      },
+      shippingCity: {
+        name: "shipping_city",
+        label: "Localidad",
+        type: "text",
+      },
+      shippingState: {
+        name: "shipping_state",
+        label: "Departamento",
+        type: "text",
+      },
+      shippingZip: {
+        name: "shipping_zip",
+        label: "Código Postal",
+        type: "text",
+      },
+      shippingCountry: {
+        name: "shipping_country_id",
+        label: "País",
+      },
     },
   },
 };

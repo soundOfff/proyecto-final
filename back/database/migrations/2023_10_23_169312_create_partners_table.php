@@ -13,10 +13,20 @@ return new class extends Migration {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
             $table->foreignId('country_id')->constrained();
+            $table->foreignId('province_id')->nullable()->constrained();
+            $table->foreignId('district_id')->nullable()->constrained();
+            $table->foreignId('jurisdiction_id')->nullable()->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('consolidator_id')->nullable()->constrained('partners');
             $table->integer('billing_country_id')->nullable()->constrained('countries');
             $table->integer('shipping_country_id')->nullable()->constrained('countries');
+
+            $table->string('name')->nullable();
+            $table->string('number')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->date('expedition_date')->nullable();
+            $table->date('expiration_date')->nullable();
+            $table->boolean('is_male')->nullable();
 
             $table->integer('lead_id')->nullable();
             $table->boolean('active')->default(true);

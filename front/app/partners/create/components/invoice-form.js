@@ -17,16 +17,18 @@ export default function InvoiceFormComponent({
 }) {
   const {
     formField: {
-      shippingCity,
-      shippingCountry,
-      shippingState,
-      shippingZip,
-      shippingStreet,
-      billingCity,
-      billingCountry,
-      billingState,
-      billingZip,
-      billingStreet,
+      invoice: {
+        shippingCity,
+        shippingCountry,
+        shippingState,
+        shippingZip,
+        shippingStreet,
+        billingCity,
+        billingCountry,
+        billingState,
+        billingZip,
+        billingStreet,
+      },
     },
   } = form;
 

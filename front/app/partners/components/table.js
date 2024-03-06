@@ -11,11 +11,16 @@ export default function Table({ rows }) {
     {
       Header: "Empresa",
       accessor: "company",
-      Cell: ({ value, row }) => (
-        <Link href={`partners/${row.original.id}/profile`} color="info">
-          {value}
-        </Link>
-      ),
+      Cell: ({ row }) =>
+        row.original.name ? (
+          <Link href={`partners/${row.original.id}/profile`} color="info">
+            {row.original.name}
+          </Link>
+        ) : (
+          <Link href={`partners/${row.original.id}/profile`} color="info">
+            {row.original.company}
+          </Link>
+        ),
     },
     {
       id: "contactName",

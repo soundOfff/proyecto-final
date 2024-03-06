@@ -35,6 +35,7 @@ const {
     taskableId,
     tags,
     partner_id,
+    owner_id,
     description,
   },
 } = checkout;
@@ -56,6 +57,7 @@ const validations = Yup.object().shape({
   [isInfinite.name]: Yup.boolean(),
   [totalCycles.name]: Yup.number().nullable(),
   [taskableType.name]: Yup.string(),
+  [owner_id.name]: Yup.number().required(),
   [taskableId.name]: Yup.string().required(taskableId.errorMsg),
   [tags.name]: Yup.array(),
 });

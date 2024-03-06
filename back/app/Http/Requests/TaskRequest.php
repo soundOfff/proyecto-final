@@ -36,6 +36,7 @@ class TaskRequest extends FormRequest
             'total_cycles' => 'required_if:is_infinite,false',
             'taskable_type' => 'nullable|string',
             'taskable_id' => 'nullable|numeric',
+            'owner_id' => 'nullable|numeric|exists:staff,id',
             'task_status_id' => 'sometimes|required|numeric|exists:task_statuses,id',
             'description' => 'nullable|string',
             'tags' => 'nullable|array',

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ProjectMemberResourceCollection extends ResourceCollection
+class FileResourceCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -16,7 +16,7 @@ class ProjectMemberResourceCollection extends ResourceCollection
     {
         return [
             'data' => [
-                'members' => $this->collection,
+                'files' => $this->collection,
             ],
         ];
     }

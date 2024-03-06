@@ -50,11 +50,6 @@ class Project extends Model
         return $this->hasMany(ProjectNote::class);
     }
 
-    public function members(): HasMany
-    {
-        return $this->hasMany(ProjectMember::class);
-    }
-
     public function status(): BelongsTo
     {
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
@@ -100,9 +95,14 @@ class Project extends Model
         return $this->belongsTo(ProjectBillingType::class, 'project_billing_type_id');
     }
 
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(Staff::class, 'project_members');
+    }
+
     public function staffs(): BelongsToMany
     {
-        return $this->belongsToMany(Staff::class);
+        return $this->belongsToMany(Staff::class, 'project_staff');
     }
 
     public function tags(): MorphToMany

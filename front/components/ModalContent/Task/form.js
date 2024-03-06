@@ -111,11 +111,14 @@ export default function TaskForm({
 
   const getBoolean = (value) => (value === 1 ? true : false);
 
-  const handleChange = useCallback((editorState) => {
-    const raw = convertToRaw(editorState.getCurrentContent());
-    setFieldValue(description.name, JSON.stringify(raw));
-    setEditorState(editorState);
-  }, []);
+  const handleChange = useCallback(
+    (editorState) => {
+      const raw = convertToRaw(editorState.getCurrentContent());
+      setFieldValue(description.name, JSON.stringify(raw));
+      setEditorState(editorState);
+    },
+    [description.name, setFieldValue]
+  );
 
   return (
     <>

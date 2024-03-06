@@ -46,6 +46,10 @@ const form = {
       name: "task_priority_id",
       label: "Prioridad",
     },
+    owner_id: {
+      name: "owner_id",
+      label: "Propietario",
+    },
     task_status_id: {
       name: "status",
       label: "Estado",

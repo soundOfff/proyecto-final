@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->string('email');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('token')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('admin')->default(false);
             $table->decimal('hourly_rate')->default(0);
@@ -41,6 +42,7 @@ return new class extends Migration {
             $table->string('two_factor_auth_code')->nullable();
             $table->dateTime('two_factor_auth_code_requested')->nullable();
 
+            $table->rememberToken();
             $table->timestamps();
         });
     }

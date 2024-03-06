@@ -12,20 +12,14 @@ return new class extends Migration {
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained();
-            $table->foreignId('contact_id')->constrained();
-            $table->foreignId('staff_id')->constrained();
-            $table->morphs('fileable');
+            $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('contact_id')->nullable()->constrained();
+            $table->foreignId('staff_id')->nullable()->constrained();
+            $table->unsignedBigInteger('fileable_id')->nullable();
+            $table->string('fileable_type')->nullable();
 
-            $table->string('attachment_key');
-            $table->dateTime('date_added');
-            $table->string('external');
-            $table->text('external_link');
-            $table->string('name');
-            $table->string('type');
-            $table->dateTime('last_activity');
+            $table->string('url');
             $table->string('subject');
-            $table->text('thumbnail_link');
             $table->boolean('visible_to_customer');
 
             $table->timestamps();

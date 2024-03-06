@@ -45,6 +45,7 @@ class ProjectController extends Controller
                 'plaintiff',
                 'responsiblePerson',
                 'lawFirm',
+                'members',
                 'staffs',
             ])->orderBy('id', 'desc');
 
@@ -65,9 +66,7 @@ class ProjectController extends Controller
 
         $project = Project::create($newProject);
 
-        foreach ($ids as $id) {
-            ProjectMember::create(['staff_id' => $id, 'project_id' => $project->id]);
-        }
+        $project->members()->attach($ids);
 
         return response()->json($project, 201);
     }
@@ -85,7 +84,7 @@ class ProjectController extends Controller
                 'billingType',
                 'serviceType',
                 'status',
-                'members.staff',
+                'members',
             ])
             ->find($project->id);
 
@@ -97,7 +96,11 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $ids = $request->get('project_member_ids');
+
+        $project->members()->sync($ids);
+
+        return response()->json($project, 201);
     }
 
     /**

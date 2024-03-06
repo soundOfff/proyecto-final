@@ -18,27 +18,34 @@ import ModalContentForm from "../../../components/ModalContent/Task/index";
 import { Autocomplete, Grid, Link, Tooltip } from "@mui/material";
 
 import { update } from "/actions/tasks";
+import { store as storeTimer, update as updateTimer } from "/actions/timers";
+
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
 import { destroy } from "../../../actions/tasks";
 import Show from "./show";
+import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
+import moment from "moment";
+import { useSession } from "next-auth/react";
 
 export default function Table({
   rows,
   meta,
   priorities,
   repeats,
-  taskableTypes,
   taskableItems,
   tagsData,
   statuses,
   partners,
+  currentTimer,
+  currentTaskId,
 }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const [taskId, setTaskId] = useState(null);
+  const [taskId, setTaskId] = useState(currentTaskId || null);
   const [task, setTask] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openShowModal, setOpenShowModal] = useState(false);
+  const { data: session } = useSession();
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
@@ -50,6 +57,16 @@ export default function Table({
     setOpenShowModal(false);
     setTaskId(null);
     setTask(null);
+  };
+
+  const stopTimer = async (timerId, note = "") => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await updateTimer(timerId, { end_time: date, note });
+  };
+
+  const startTimer = async (taskId, staffId) => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await storeTimer({ task_id: taskId, start_time: date, staff_id: staffId });
   };
 
   useEffect(() => {
@@ -81,6 +98,17 @@ export default function Table({
 
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    const doneState = statuses.find((status) => status.name === "Done");
+    if (taskId === doneState) {
+      return;
+    }
+    await update(taskId, {
+      task_status_id: statuses.find((status) => status.name === "Done").id,
+    });
+    setOpenShowModal(false);
   };
 
   const columns = [
@@ -168,6 +196,7 @@ export default function Table({
     {
       Header: "Prioridad",
       accessor: "priority",
+      width: 200,
       Cell: ({ row }) => (
         <Autocomplete
           value={priorities.find(
@@ -186,6 +215,7 @@ export default function Table({
               InputLabelProps={{ shrink: true }}
             />
           )}
+          sx={{ width: "200px" }}
         />
       ),
     },
@@ -194,7 +224,7 @@ export default function Table({
       accessor: "",
       Cell: ({ row }) => (
         <>
-          <Tooltip title="Vista Rápida">
+          <Tooltip title="Editar tarea">
             <EditNoteIcon
               color="info"
               fontSize="medium"
@@ -202,7 +232,7 @@ export default function Table({
                 setTaskId(row.original.id);
                 setOpenEditModal(true);
               }}
-              sx={{ mr: 3, cursor: "pointer" }}
+              sx={{ mr: 1, cursor: "pointer" }}
             />
           </Tooltip>
           <Tooltip title="Eliminar tarea">
@@ -212,9 +242,28 @@ export default function Table({
               onClick={() => {
                 destroy(row.original.id);
               }}
-              sx={{ ml: 3, cursor: "pointer" }}
+              sx={{ mx: 1, cursor: "pointer" }}
             />
           </Tooltip>
+          {currentTimer?.task_id === row.original.id ? (
+            <Tooltip title="Detener temporizador">
+              <LockClockOutlined
+                color="error"
+                fontSize="medium"
+                onClick={() => stopTimer(currentTimer?.id)}
+                sx={{ ml: 1, cursor: "pointer" }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Iniciar temporizador">
+              <AccessAlarm
+                color="success"
+                fontSize="medium"
+                onClick={() => startTimer(row.original.id, session.staff.id)}
+                sx={{ ml: 1, cursor: "pointer" }}
+              />
+            </Tooltip>
+          )}
         </>
       ),
     },
@@ -243,7 +292,6 @@ export default function Table({
             <ModalContentForm
               priorities={priorities}
               repeats={repeats}
-              taskableTypes={taskableTypes}
               taskableItems={taskableItems}
               tagsData={tagsData}
               partners={partners}
@@ -261,7 +309,16 @@ export default function Table({
           py={0}
           sx={{ overflow: "scroll" }}
         >
-          {task && <Show task={task} />}
+          {task && (
+            <Show
+              task={task}
+              markAsCompleted={handleCompleteTask}
+              isTimerStarted={currentTimer?.task_id === task.id}
+              currentTimerId={currentTimer?.id}
+              stopTimer={stopTimer}
+              startTimer={startTimer}
+            />
+          )}
         </Modal>
       )}
       <DataTable

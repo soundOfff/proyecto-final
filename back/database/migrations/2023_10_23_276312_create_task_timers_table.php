@@ -15,10 +15,11 @@ return new class extends Migration {
             $table->foreignId('task_id')->constrained();
             $table->foreignId('staff_id')->constrained();
 
-            $table->string('start_time');
-            $table->string('end_time');
-            $table->decimal('hourly_rate');
-            $table->text('note');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time')->nullable();
+            
+            $table->decimal('hourly_rate')->nullable();
+            $table->text('note')->nullable();
 
             $table->timestamps();
         });

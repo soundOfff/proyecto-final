@@ -23,10 +23,10 @@ export default async function Reports({ searchParams }) {
 
   const projectFilter = projectId ? { "filter[project_id]": projectId } : null;
   const partnerFilter = partnerId ? { "filter[partner_id]": partnerId } : null;
-  const staffFilter = staffId
-    ? { "filter[staff_id]": staffId }
-    : session.staff.id;
-  const myTasksFilter = myTasks ? { "filter[staff_id]": 5 } : null; // TODO: Set the correct staff_id
+  const staffFilter = staffId ? { "filter[staff_id]": staffId } : null;
+  const myTasksFilter = myTasks
+    ? { "filter[staff_id]": session.staff.id }
+    : null;
   const periodFilter = period ? { "filter[period]": period } : null;
 
   const params = {

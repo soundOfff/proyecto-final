@@ -10,7 +10,7 @@ export async function select() {
   }
 
   const { data } = await res.json();
-  console.log(data);
+
   return data.staffs;
 }
 

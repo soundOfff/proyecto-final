@@ -9,11 +9,12 @@ import MDButton from "/components/MDButton";
 import MDProgress from "/components/MDProgress";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { parseEditorState } from "../../../../utils/parseEditorState";
+import { parseEditorState } from "/utils/parseEditorState";
 import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { Check } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 
 export default function Content({
   task,
@@ -30,6 +31,7 @@ export default function Content({
   const [comments, setComments] = useState(task.comments || []);
   const [commentContent, setCommentContent] = useState("");
   const [progress, setProgress] = useState(0);
+  const { data: session } = useSession();
 
   const addNewTask = () => {
     const newTask = {
@@ -62,20 +64,19 @@ export default function Content({
     await update(task.id, {
       comments: [
         ...task.comments,
-        { taskId: task.id, content: commentContent },
+        {
+          content: commentContent,
+          staff_id: session.staff.id,
+        },
       ],
     });
   };
 
   useEffect(() => {
-    getCurrentProgress();
-  }, [items]);
-
-  const getCurrentProgress = () => {
     const total = items.length;
     const finished = items.filter((item) => item.finished).length;
     setProgress((finished / total) * 100);
-  };
+  }, [items]);
 
   const handleBlur = async () => {
     const filteredItems = items.map((item) => {
@@ -111,30 +112,27 @@ export default function Content({
               Completar tarea <Check color="white" fontSize="32px" />
             </MDButton>
 
-            {
-              // TODO: Change the staff_id
-              isTimerStarted ? (
-                <MDButton
-                  color="primary"
-                  size="small"
-                  onClick={() => stopTimer(currentTimerId)}
-                >
-                  <MDTypography variant="button" color="white">
-                    Detener temporizador
-                  </MDTypography>
-                </MDButton>
-              ) : (
-                <MDButton
-                  color="success"
-                  size="small"
-                  onClick={() => startTimer(task.id, 5)}
-                >
-                  <MDTypography variant="button" color="white">
-                    Iniciar temporizador
-                  </MDTypography>
-                </MDButton>
-              )
-            }
+            {isTimerStarted ? (
+              <MDButton
+                color="primary"
+                size="small"
+                onClick={() => stopTimer(currentTimerId)}
+              >
+                <MDTypography variant="button" color="white">
+                  Detener temporizador
+                </MDTypography>
+              </MDButton>
+            ) : (
+              <MDButton
+                color="success"
+                size="small"
+                onClick={() => startTimer(task.id, session.staff.id)}
+              >
+                <MDTypography variant="button" color="white">
+                  Iniciar temporizador
+                </MDTypography>
+              </MDButton>
+            )}
           </MDBox>
         </MDBox>
 

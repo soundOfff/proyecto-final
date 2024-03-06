@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('task_id')->constrained();
             $table->foreignId('staff_id')->constrained();
             $table->foreignId('file_id')->nullable()->constrained();
-            $table->foreignId('contact_id')->constrained();
+            $table->foreignId('contact_id')->nullable()->constrained();
 
             $table->text('content');
 

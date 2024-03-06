@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function store(data) {
-  console.log(data);
   const res = await fetch(`${process.env.API_URL}/timers`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -58,6 +57,6 @@ export async function getCurrentTimer(staffId) {
   }
 
   const { data } = await res.json();
-  console.log(data);
+
   return data;
 }

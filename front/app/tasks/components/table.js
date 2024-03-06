@@ -25,6 +25,7 @@ import { destroy } from "../../../actions/tasks";
 import Show from "./show";
 import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
 import moment from "moment";
+import { useSession } from "next-auth/react";
 
 export default function Table({
   rows,
@@ -44,6 +45,7 @@ export default function Table({
   const [task, setTask] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openShowModal, setOpenShowModal] = useState(false);
+  const { data: session } = useSession();
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
@@ -255,8 +257,7 @@ export default function Table({
               <AccessAlarm
                 color="success"
                 fontSize="medium"
-                // TODO: how get the staff id
-                onClick={() => startTimer(row.original.id, 5)} // TODO: change it for a real staff_id
+                onClick={() => startTimer(row.original.id, session.staff.id)}
                 sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>

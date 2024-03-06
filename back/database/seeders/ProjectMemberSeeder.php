@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Project;
 use App\Models\ProjectMember;
 use App\Services\Utils;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProjectMemberSeeder extends Seeder
 {
@@ -25,7 +27,7 @@ class ProjectMemberSeeder extends Seeder
         $projectMembers = $this->utils->csvToArray(database_path('imports/project_members.csv'));
 
         foreach ($projectMembers as $member) {
-            ProjectMember::updateOrCreate(['id' => $member['id']], $member);
+            Project::find($member['project_id'])->members()->attach($member['staff_id']);
         }
     }
 }

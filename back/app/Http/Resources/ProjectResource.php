@@ -36,7 +36,7 @@ class ProjectResource extends JsonResource
             'billingType' => ProjectBillingTypeResource::make($this->whenLoaded('billingType')),
             'serviceType' => ProjectServiceTypeResource::make($this->whenLoaded('serviceType')),
             'stages' => ProjectStageResource::collection($this->whenLoaded('stages')),
-            'members' => ProjectMemberResource::collection($this->whenLoaded('members')),
+            'members' => StaffResource::collection($this->whenLoaded('members')),
             'notes' => ProjectNoteResource::collection($this->whenLoaded('notes')),
             'status' => ProjectStatusResource::make($this->whenLoaded('status')),
             'jurisdiction' => JurisdictionResource::make($this->whenLoaded('jurisdiction')),

@@ -43,9 +43,17 @@ export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/projects/${id}`);
   url.search = new URLSearchParams(params);
 
-  const res = await fetch(url, { cache: "no-store" });
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    cache: "no-store",
+  });
 
   if (!res.ok) {
+    const error = await res.json();
+    console.log(error);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 
@@ -81,6 +89,27 @@ export async function store(data) {
 
   if (!res.ok) {
     const data = await res.json();
+    throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+  }
+
+  revalidatePath("/projects");
+
+  redirect("/projects");
+}
+
+export async function update(id, data) {
+  const res = await fetch(`${process.env.API_URL}/projects/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(data);
     throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
   }
 

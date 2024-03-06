@@ -59,6 +59,6 @@ export async function getCurrentTimer(staffId) {
   }
 
   const { data } = await res.json();
-  console.log(data);
+
   return data;
 }

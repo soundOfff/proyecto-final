@@ -10,6 +10,8 @@ import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getCurrentTimer } from "../../actions/timers";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "/pages/api/auth/[...nextauth]";
 
 export default async function Tasks({ searchParams }) {
   const {
@@ -20,13 +22,14 @@ export default async function Tasks({ searchParams }) {
     page: 1,
     include: ["assigneds", "tags", "status"],
   });
+  const session = await getServerSession(authOptions);
   const tagsData = await getAllTags();
   const repeats = await getAllRepeats();
   const priorities = await getTaskPriorities();
   const taskableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
   const statuses = await getTaskStatus();
   const partners = await getAllPartners();
-  const currentTimer = await getCurrentTimer(5); // TODO: change it for the real staff_id
+  const currentTimer = await getCurrentTimer(session.staff.id);
 
   return (
     <MDBox mb={3}>

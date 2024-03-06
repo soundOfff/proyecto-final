@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Divider, Grid, Tooltip } from "@mui/material";
+import { Card, Divider, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import { update } from "/actions/tasks";
 import MDEditor from "/components/MDEditor";
@@ -9,11 +9,11 @@ import MDButton from "/components/MDButton";
 import MDProgress from "/components/MDProgress";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { parseEditorState } from "../../../../utils/parseEditorState";
+import { parseEditorState } from "/utils/parseEditorState";
 import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
-import { Check } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 
 export default function Content({
   task,
@@ -34,6 +34,7 @@ export default function Content({
   );
   const [commentContent, setCommentContent] = useState("");
   const [progress, setProgress] = useState(0);
+  const { data: session } = useSession();
 
   const addNewTask = () => {
     const newTask = {
@@ -72,20 +73,19 @@ export default function Content({
     await update(task.id, {
       comments: [
         ...task.comments,
-        { taskId: task.id, content: commentContent },
+        {
+          content: commentContent,
+          staff_id: session.staff.id,
+        },
       ],
     });
   };
 
   useEffect(() => {
-    getCurrentProgress();
-  }, [items]);
-
-  const getCurrentProgress = () => {
     const total = items.length;
     const finished = items.filter((item) => item.finished).length;
     setProgress((finished / total) * 100);
-  };
+  }, [items]);
 
   const handleBlur = async () => {
     const filteredItems = items.map((item) => {
@@ -129,28 +129,25 @@ export default function Content({
               Completar tarea
             </MDButton>
 
-            {
-              // TODO: Change the staff_id
-              isTimerStarted ? (
-                <MDButton
-                  color="primary"
-                  size="small"
-                  sx={{ maxHeight: "50px" }}
-                  onClick={() => setIsStoppingTimer(true)}
-                >
-                  Detener temporizador
-                </MDButton>
-              ) : (
-                <MDButton
-                  color="success"
-                  sx={{ maxHeight: "50px" }}
-                  size="small"
-                  onClick={() => startTimer(task.id, 5)}
-                >
-                  Iniciar temporizador
-                </MDButton>
-              )
-            }
+            {isTimerStarted ? (
+              <MDButton
+                color="primary"
+                size="small"
+                sx={{ maxHeight: "50px" }}
+                onClick={() => setIsStoppingTimer(true)}
+              >
+                Detener temporizador
+              </MDButton>
+            ) : (
+              <MDButton
+                color="success"
+                sx={{ maxHeight: "50px" }}
+                size="small"
+                onClick={() => startTimer(task.id, session.staff.id)}
+              >
+                Iniciar temporizador
+              </MDButton>
+            )}
             <MDBox display="flex" flexDirection="row" width="60%">
               {(isTimerStarted || isStoppingTimer) && (
                 <>

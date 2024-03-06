@@ -46,7 +46,7 @@ class TaskResource extends JsonResource
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
             'taskable' => $this->whenLoaded('taskable', function () {
                 return $this->taskable_type === 'project'
-                    ? ProjectResource::make($this->whenLoaded('taskable'))->load('members.staff')
+                    ? ProjectResource::make($this->whenLoaded('taskable'))->load('members')
                     : null;
             }),
         ];

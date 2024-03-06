@@ -15,14 +15,11 @@ function CustomModal({
 }) {
   const style = {
     position: "absolute",
-    top: "600px",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: { sm: width, xs: "90%" },
-    height: {
-      xs: "90%",
-      sm: "auto",
-    },
+    height: "90%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     borderRadius: "10px",

@@ -30,6 +30,7 @@ class TaskResource extends JsonResource
             'total_cycles' => $this->total_cycles,
             'taskable_id' => $this->taskable_id,
             'taskable_type' => $this->taskable_type,
+            'partner_id' => $this->partner_id,
             'statusId' => $this->task_status_id,
             'description' => $this->description,
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
@@ -45,7 +46,7 @@ class TaskResource extends JsonResource
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
             'taskable' => $this->whenLoaded('taskable', function () {
                 return $this->taskable_type === 'project'
-                    ? ProjectResource::make($this->whenLoaded('taskable'))->load('members.staff')
+                    ? ProjectResource::make($this->whenLoaded('taskable'))->load('members')
                     : null;
             }),
         ];

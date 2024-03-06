@@ -27,8 +27,8 @@ class TaskTimerController extends Controller
     public function store(TaskTimerRequest $request)
     {
         $newTimer = $request->validated();
-        $currentTimer = Staff::find($newTimer['staff_id'])->currentTimer;
-
+        $currentTimer = Staff::find($newTimer['staff_id'])->getCurrentTimer();
+        
         if ($currentTimer) {
             $currentTimer->update(['end_time' => now()]);
         }

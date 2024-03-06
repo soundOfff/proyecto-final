@@ -13,7 +13,6 @@ export default function ModalContentForm({
   onClose,
   priorities,
   repeats,
-  taskableTypes,
   tagsData,
   partners,
   task = null,
@@ -59,7 +58,6 @@ export default function ModalContentForm({
             }}
             partners={partners}
             repeats={repeats}
-            taskableTypes={taskableTypes}
             tagsData={tagsData}
             task={task}
             onClose={onClose}

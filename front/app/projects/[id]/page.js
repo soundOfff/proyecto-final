@@ -14,6 +14,9 @@ import { setColor } from "/utils/project-state-colors";
 
 import moneyFormat from "/utils/moneyFormat";
 
+import { select as staffSelect } from "/actions/staffs";
+import UpdateMembers from "./components/update-members";
+
 const include = [
   "staffs",
   "defendant",
@@ -21,11 +24,12 @@ const include = [
   "billingType",
   "serviceType",
   "status",
-  "members.staff",
+  "members",
 ];
 
 export default async function Show({ params }) {
   const project = await show(params.id, { include });
+  const staffs = await staffSelect();
 
   return (
     <Card sx={{ px: 10, py: 5 }}>
@@ -207,9 +211,9 @@ export default async function Show({ params }) {
           </MDBox>
           {project.members.map((member) => (
             <MDBox key={member.id} display="inline-block" mr={2}>
-              {member.staff.profileImage && (
+              {member.profileImage && (
                 <MDAvatar
-                  src={`/images/staff/${member.staff.profileImage}`}
+                  src={`/images/staff/${member.profileImage}`}
                   alt="profile-image"
                   size="md"
                   shadow="sm"
@@ -227,10 +231,11 @@ export default async function Show({ params }) {
                 color="text"
                 mr={2}
               >
-                {member.staff.firstName + " " + member.staff.lastName}
+                {member.firstName + " " + member.lastName}
               </MDTypography>
             </MDBox>
           ))}
+          <UpdateMembers projectId={params.id} staffs={staffs} />
         </Grid>
       </Grid>
     </Card>

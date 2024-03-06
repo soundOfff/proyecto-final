@@ -13,8 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// TODO: Ver nombre de campos porque todavia no tengo las tablas
-
 const form = {
   formId: "new-item",
   formField: {

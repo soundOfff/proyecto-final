@@ -51,7 +51,8 @@ class StaffController extends Controller
         return new StaffResource($staff);
     }
 
-    public function stats(Staff $staff) {
+    public function stats(Staff $staff)
+    {
         $weeklyStart = now()->startOfWeek();
         $weeklyEnd = now()->endOfWeek();
         $monthlyStart = now()->startOfMonth();

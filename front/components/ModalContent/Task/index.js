@@ -8,6 +8,7 @@ import { store as storeItem, update } from "../../../actions/tasks";
 import TaskForm from "./form";
 import form from "./schemas/form";
 import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
+import { useSession } from "next-auth/react";
 
 export default function ModalContentForm({
   onClose,
@@ -19,6 +20,8 @@ export default function ModalContentForm({
   mode = MODAL_TYPES.CREATE,
 }) {
   const { formId, formField } = form;
+  const { data: session } = useSession();
+  initialValues.owner_id = session.staff.id;
 
   const handleSubmit = async (values, actions) => {
     await storeItem(values);

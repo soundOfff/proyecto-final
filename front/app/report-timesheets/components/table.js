@@ -24,7 +24,9 @@ export default function Table({ rows, meta }) {
           );
         }
         return assigneds.map((assigned) => (
-          <MDTypography variant="body2">{assigned.name}</MDTypography>
+          <MDTypography key={assigned.id} variant="body2">
+            {assigned.name}
+          </MDTypography>
         ));
       },
     },
@@ -48,6 +50,11 @@ export default function Table({ rows, meta }) {
     {
       Header: "Nota",
       accessor: "note",
+      Cell: ({ row }) => {
+        return row.original.timers.length
+          ? row.original.timers[0].note
+          : "Sin notas";
+      },
     },
     {
       Header: "Cliente",
@@ -99,7 +106,7 @@ export default function Table({ rows, meta }) {
       accessor: "start_time",
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
-          <MDTypography variant="body2" fontSize="small">
+          <MDTypography key={timer.id} variant="body2" fontSize="small">
             {moment(timer.start_time).format("HH:mm:SS")}
           </MDTypography>
         ));
@@ -110,7 +117,7 @@ export default function Table({ rows, meta }) {
       accessor: "end_time",
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
-          <MDBox container>
+          <MDBox key={timer.id} container>
             <MDTypography variant="body2" fontSize="small">
               {timer.end_time
                 ? moment(timer.end_time).format("HH:mm:SS")

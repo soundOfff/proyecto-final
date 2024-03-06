@@ -56,7 +56,7 @@ const initialValues = {
   [isInfinite.name]: true,
   [totalCycles.name]: "",
   [taskableType.name]: "project",
-  [owner_id.name]: 5,
+  [owner_id.name]: "",
   [taskableId.name]: "",
   [tags.name]: [],
 };

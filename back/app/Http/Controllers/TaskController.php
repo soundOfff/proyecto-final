@@ -37,14 +37,24 @@ class TaskController extends Controller
                     AllowedFilter::exact('partner_id'),
                     AllowedFilter::callback(
                         'staff_id',
-                        fn (Builder $query, $value) =>
-                            $query->where('owner_id', $value)),
+                        function (Builder $query, $value) {
+                            $query
+                                ->where('owner_id', $value)
+                                ->orWhereHas(
+                                    'assigneds',
+                                    fn (Builder $query) =>
+                                    $query->where('staff_id', $value)
+                                );
+                        }
+                    ),
                     AllowedFilter::callback(
                         'period',
                         fn (Builder $query, $value) =>
-                            $query->whereHas('timers',
+                        $query->whereHas(
+                            'timers',
                             fn (Builder $query) =>
-                                $query->whereBetween('start_time', $value))
+                            $query->whereBetween('start_time', $value)
+                        )
                     ),
                 ]
             );

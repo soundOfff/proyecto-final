@@ -8,7 +8,7 @@ use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
 use App\Models\Project;
-use App\Models\ProjectMember;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -35,6 +35,17 @@ class ProjectController extends Controller
                 AllowedFilter::exact('status', 'status.id'),
                 AllowedFilter::scope('search'),
                 AllowedFilter::exact('defendant_id'),
+                AllowedFilter::callback(
+                    'staff_id',
+                    function (Builder $query, $value) {
+                        $query
+                            ->whereHas(
+                                'members',
+                                fn (Builder $query) =>
+                                $query->where('staff_id', $value)
+                            );
+                    }
+                )
             ])
             ->allowedIncludes([
                 'stages',

@@ -91,7 +91,7 @@ function Sales() {
       keepMounted
       disableAutoFocusItem
     >
-      <MenuItem onClick={close}>Last 7 days</MenuItem>
+      <MenuItem onClick={close}>Ultima semana</MenuItem>
       <MenuItem onClick={close}>Last week</MenuItem>
       <MenuItem onClick={close}>Last 30 days</MenuItem>
     </Menu>
@@ -105,12 +105,12 @@ function Sales() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={4}>
               <DefaultStatisticsCard
-                title="sales"
-                count="$230,220"
+                title="Tiempo total registrado"
+                count="120hs"
                 percentage={{
                   color: "success",
-                  value: "+55%",
-                  label: "since last month",
+                  value: "+5%",
+                  label: "desde el ultimo mes",
                 }}
                 dropdown={{
                   action: openSalesDropdown,

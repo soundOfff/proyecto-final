@@ -57,20 +57,42 @@ class StaffController extends Controller
         $weeklyEnd = now()->endOfWeek();
         $monthlyStart = now()->startOfMonth();
         $monthlyEnd = now()->endOfMonth();
+
+        $lastWeeklyStart = now()->subWeek()->startOfWeek();
+        $lastWeeklyEnd = now()->subWeek()->endOfWeek();
+        $lastMonthlyStart = now()->subMonth()->startOfMonth();
+        $lastMonthlyEnd = now()->subMonth()->endOfMonth();
+        
         $tasks = $staff->tasks;
 
         $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
 
         $totalWeekTime = $tasks
             ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
+        
+        $totalLastWeekTime = $tasks
+            ->sum(fn ($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
 
         $totalMonthTime = $tasks
             ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
+
+        $totalLastMonthTime = $tasks
+            ->sum(fn ($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
+
+        $monthlyPercentage = $totalLastMonthTime
+            ? (($totalMonthTime - $totalLastMonthTime) / $totalLastMonthTime) * 100
+            : $totalMonthTime;
+        
+        $weeklyPercentage = $totalLastWeekTime
+            ? (($totalWeekTime - $totalLastWeekTime) / $totalLastWeekTime) * 100
+            : $totalWeekTime;
 
         return response()->json([
             'total_time' => $totalTime,
             'total_week_time' => $totalWeekTime,
             'total_month_time' => $totalMonthTime,
+            'monthly_percentage' => $monthlyPercentage,
+            'weekly_percentage' => $weeklyPercentage,
         ], 200);
     }
 

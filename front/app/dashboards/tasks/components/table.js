@@ -100,7 +100,7 @@ export default function Table({ rows, meta }) {
           <MDBox key={member.id} display="inline-block" mr={2}>
             {member.profileImage && (
               <MDAvatar
-                src={`/images/staff/${member.profileImage}`}
+                src={member?.profileImage}
                 alt="profile-image"
                 size="md"
                 shadow="sm"
@@ -109,6 +109,8 @@ export default function Table({ rows, meta }) {
                   verticalAlign: "middle",
                   marginRight: "0.5rem",
                   marginBottom: "0.5rem",
+                  height: "2rem",
+                  width: "2rem",
                 }}
               />
             )}

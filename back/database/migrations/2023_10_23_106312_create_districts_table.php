@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('province_id')->constrained();
 
-            $table->string('code');
             $table->string('name');
             $table->timestamps();
         });

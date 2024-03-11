@@ -1,6 +1,12 @@
 "use client";
 
-import { FormControlLabel, FormGroup, Grid, Switch } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select as MuiSelect,
+} from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "../schemas/form";
 import MDDatePicker from "/components/MDDatePicker";
@@ -32,11 +38,18 @@ export default function PersonForm({
         isMale,
         number,
         country,
+        nationality,
+        birthPlace,
         state,
         city,
         district,
         jurisdiction,
         province,
+        address,
+        phone,
+        email,
+        isResidential,
+        buildingNumber,
       },
     },
   } = form;
@@ -132,7 +145,7 @@ export default function PersonForm({
             placeholder: "Fecha de Expedición",
             InputLabelProps: { shrink: true },
           }}
-          format="DD/MM/YYYY"
+          options={{ maxDate: moment().format("YYYY-MM-DD") }}
           value={values[expeditionDate.name]}
           onChange={(value) =>
             setFieldValue(
@@ -159,8 +172,9 @@ export default function PersonForm({
             fullWidth: true,
             placeholder: "Fecha de Expiración",
             InputLabelProps: { shrink: true },
+            sx: { mt: 4.4 },
           }}
-          format="DD/MM/YYYY"
+          options={{ minDate: moment().format("YYYY-MM-DD") }}
           value={values[expirationDate.name]}
           onChange={(value) =>
             setFieldValue(
@@ -180,20 +194,49 @@ export default function PersonForm({
           </MDTypography>
         </MDBox>
       </Grid>
-      <Grid item xs={12} sm={6} display="flex" alignItems="end">
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={values[isMale.name] || false}
-                onChange={(e) =>
-                  setFieldValue(isMale.name, e.currentTarget.checked)
-                }
-              />
-            }
-            label={isMale.label}
-          />
-        </FormGroup>
+      <Grid item xs={12} sm={6}>
+        <FormControl variant="standard" fullWidth>
+          <InputLabel>Género</InputLabel>
+          <MuiSelect
+            value={values[isMale.name]}
+            label="Género"
+            onChange={(e) => setFieldValue(isMale.name, e.target.value)}
+            sx={{ height: "3rem" }}
+          >
+            <MenuItem value={true}>Masculino</MenuItem>
+            <MenuItem value={false}>Femenino</MenuItem>
+          </MuiSelect>
+          <MDBox mt={0.75}>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={isMale.name} />
+            </MDTypography>
+          </MDBox>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[nationality.name]}
+          options={countries}
+          optionLabel={(option) => option.shortName}
+          fieldName={nationality.name}
+          inputLabel={nationality.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[birthPlace.name]}
+          options={countries}
+          optionLabel={(option) => option.shortName}
+          fieldName={birthPlace.name}
+          inputLabel={birthPlace.label}
+          setFieldValue={setFieldValue}
+        />
       </Grid>
       <Grid item xs={12}>
         <Select
@@ -262,6 +305,73 @@ export default function PersonForm({
           </Grid>
         </>
       )}
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={address.label}
+          placeholder={address.placeholder}
+          name={address.name}
+          type={address.type}
+          error={errors.name && touched.name}
+          success={address.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={phone.label}
+          placeholder={phone.placeholder}
+          name={phone.name}
+          type={phone.type}
+          value={values[phone.name]}
+          error={errors.name && touched.name}
+          success={phone.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={email.label}
+          placeholder={email.placeholder}
+          name={email.name}
+          type={email.type}
+          value={values[email.name]}
+          error={errors.name && touched.name}
+          success={email.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={buildingNumber.label}
+          placeholder={buildingNumber.placeholder}
+          name={buildingNumber.name}
+          type={buildingNumber.type}
+          value={values[buildingNumber.name]}
+          error={errors.name && touched.name}
+          success={buildingNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl variant="standard" sx={{ mt: -2.3 }} fullWidth>
+          <InputLabel>{isResidential.label}</InputLabel>
+          <MuiSelect
+            value={values[isResidential.name]}
+            label={isResidential.label}
+            onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
+            sx={{ height: "3rem" }}
+          >
+            <MenuItem value={true}>Residencial</MenuItem>
+            <MenuItem value={false}>Edificio</MenuItem>
+          </MuiSelect>
+          <MDBox mt={0.75}>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={isResidential.name} />
+            </MDTypography>
+          </MDBox>
+        </FormControl>
+      </Grid>
     </Grid>
   );
 }

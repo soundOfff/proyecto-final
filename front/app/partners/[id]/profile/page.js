@@ -10,6 +10,7 @@ export default async function Profile({ params: { id } }) {
       "consolidator",
       "shippingCountry",
       "billingCountry",
+      "jurisdiction.district.province",
     ],
   });
 

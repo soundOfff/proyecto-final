@@ -23,11 +23,6 @@ const detailForm = {
         type: "text",
         errorMsg: "El nombre de la Empresa es requerida",
       },
-      address: {
-        name: "address",
-        label: "Dirección",
-        type: "text",
-      },
       ruc: {
         name: "ruc",
         label: "RUC",
@@ -92,6 +87,56 @@ const detailForm = {
         name: "language",
         label: "Idioma Predeterminado",
       },
+      address: {
+        name: "address",
+        label: "Dirección",
+        type: "text",
+      },
+      email: {
+        name: "email",
+        label: "Email",
+        type: "email",
+      },
+      isResidential: {
+        name: "is_residential",
+        label: "Tipo",
+      },
+      buildingNumber: {
+        name: "building_number",
+        label: "Número de casa/apartamento/edificio",
+      },
+      fileNumber: {
+        name: "file_number",
+        label: "Número de Archivo",
+        type: "text",
+      },
+      rollNumber: {
+        name: "roll_number",
+        label: "Número de Rollo",
+        type: "text",
+      },
+      imageNumber: {
+        name: "image_number",
+        label: "Número de Imagen",
+        type: "text",
+      },
+      president: {
+        name: "president_id",
+        label: "Presidente",
+      },
+      secretary: {
+        name: "secretary_id",
+        label: "Secretario",
+      },
+      treasurer: {
+        name: "treasurer_id",
+        label: "Tesorero",
+      },
+      dv: {
+        name: "dv",
+        label: "DV",
+        type: "text",
+      },
     },
 
     person: {
@@ -126,6 +171,16 @@ const detailForm = {
         name: "is_male",
         label: "Hombre/Mujer",
       },
+      nationality: {
+        name: "nationality_id",
+        label: "Nacionalidad",
+        errorMsg: "Debe seleccionar un país",
+      },
+      birthPlace: {
+        name: "birth_place_id",
+        label: "Lugar de Nacimiento",
+        errorMsg: "Debe seleccionar un país",
+      },
       country: {
         name: "country_id",
         label: "País",
@@ -153,8 +208,32 @@ const detailForm = {
       },
       jurisdiction: {
         name: "jurisdiction_id",
-        label: "Jurisdicción",
-        errorMsg: "Debe seleccionar una jurisdicción",
+        label: "Corregimiento",
+        errorMsg: "Debe seleccionar un corregimiento",
+      },
+      phone: {
+        name: "phone_number",
+        label: "Teléfono",
+        type: "text",
+      },
+      address: {
+        name: "address",
+        label: "Dirección",
+        type: "text",
+      },
+      email: {
+        name: "email",
+        label: "Email",
+        type: "email",
+      },
+      isResidential: {
+        name: "is_residential",
+        label: "Tipo",
+      },
+      buildingNumber: {
+        name: "building_number",
+        label: "Número de casa/apartamento/edificio",
+        type: "text",
       },
     },
 

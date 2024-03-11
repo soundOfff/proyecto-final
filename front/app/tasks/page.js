@@ -14,10 +14,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
 
 export default async function Tasks({ searchParams }) {
-  const {
-    data: { tasks },
-    meta,
-  } = await getAllTasks({
+  const tasks = await getAllTasks({
     perPage: 5,
     page: 1,
     include: ["assigneds", "tags", "status"],

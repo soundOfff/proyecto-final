@@ -38,9 +38,7 @@ export default async function Reports({ searchParams }) {
     ...staffFilter,
   };
 
-  const {
-    data: { tasks },
-  } = await getAllTasks(params);
+  const tasks = await getAllTasks(params);
   const partners = await getAllPartners();
   const projects = await getAllProjects();
   const staffs = await getStaffsSelect();

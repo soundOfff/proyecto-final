@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->foreignId('responsible_person_id')->nullable()->constrained(table: 'partners', indexName: 'projects_responsible_person_id_foreign');
             $table->foreignId('defendant_id')->constrained(table: 'partners', indexName: 'projects_defendant_id_foreign');
             $table->foreignId('plaintiff_id')->nullable()->constrained(table: 'partners', indexName: 'projects_plaintiff_id_foreign');
-            $table->integer('law_firm_id')->nullable()->constrained();
 
+            $table->integer('law_firm_id')->nullable();
             $table->integer('added_from')->nullable();
             $table->date('date_finished')->nullable();
             $table->date('deadline')->nullable();

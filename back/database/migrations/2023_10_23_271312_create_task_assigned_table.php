@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('staff_assigned', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained();
-            $table->foreignId('staff_id')->constrained();
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
+            $table->foreignId('staff_id')->constrained()->onDelete('cascade');
 
             $table->integer('assigned_from')->nullable();
             $table->boolean('is_assigned_from_contact')->default(false);

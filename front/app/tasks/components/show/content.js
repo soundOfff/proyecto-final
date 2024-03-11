@@ -87,12 +87,14 @@ export default function Content({
   }, [items]);
 
   const handleBlur = async () => {
-    const filteredItems = items.map((item) => {
-      return {
-        description: item.description,
-        finished: item.finished,
-      };
-    });
+    const filteredItems = items
+      .filter((item) => item.description != "")
+      .map((item) => {
+        return {
+          description: item.description,
+          finished: item.finished,
+        };
+      });
     await update(task.id, { checklist_items: filteredItems });
   };
 

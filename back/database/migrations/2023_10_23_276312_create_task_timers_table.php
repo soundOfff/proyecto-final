@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('task_timers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained();
-            $table->foreignId('staff_id')->constrained();
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
+            $table->foreignId('staff_id')->constrained()->onDelete('cascade');
 
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();

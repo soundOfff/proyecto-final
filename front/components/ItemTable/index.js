@@ -21,7 +21,7 @@ export default function Table({ formData, types }) {
     },
     {
       Header: "Tipo de articulo",
-      accessor: "type",
+      accessor: "line_item_type_id",
       Cell: ({ value }) =>
         value ? types.find((type) => type.id === value)?.label : null,
     },

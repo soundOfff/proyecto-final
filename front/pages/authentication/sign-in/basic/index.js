@@ -16,30 +16,22 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 
-import Link from "next/link";
-
 // @mui material components
-import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
-
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
 
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 
 // Authentication layout components
 import BasicLayout from "/pagesComponents/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "/assets/images/bg-sign-in-basic.jpeg";
+import logoWhite from "/assets/logo/White/asset-29.svg";
+
+import google from "/assets/logo/google.svg";
+import Image from "next/image";
 
 export async function getStaticProps() {
   return { props: { NEXTAUTH_URL: process.env.NEXTAUTH_URL } };
@@ -50,90 +42,54 @@ function Basic({ NEXTAUTH_URL }) {
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   return (
-    <BasicLayout image={bgImage}>
-      <Card>
-        <MDBox
-          variant="gradient"
-          bgColor="dark"
-          borderRadius="lg"
-          coloredShadow="dark"
-          mx={2}
-          mt={-3}
-          p={2}
-          mb={1}
-          textAlign="center"
+    <BasicLayout>
+      <MDBox
+        variant="gradient"
+        bgColor="dark"
+        display="flex"
+        alignContent="center"
+        justifyContent="center"
+        flexDirection="column"
+        borderRadius="lg"
+        coloredShadow="dark"
+        mx={2}
+        mt={2}
+        p={2}
+        mb={1}
+        textAlign="center"
+      >
+        <Image
+          height={180}
+          width={180}
+          src={logoWhite}
+          style={{
+            borderRadius: "50%",
+            width: "80%",
+            margin: "auto",
+          }}
+        />
+        <MDButton
+          onClick={() =>
+            signIn("google", {
+              callbackUrl: NEXTAUTH_URL,
+            })
+          }
         >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Sign in
-          </MDTypography>
-          <Grid
-            container
-            spacing={3}
+          <MDTypography
+            component={MuiLink}
+            href="#"
+            variant="body2"
+            color="dark"
+            display="flex"
+            alignItems="center"
             justifyContent="center"
-            sx={{ mt: 1, mb: 2 }}
+            gap={1}
           >
-            <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-              >
-                <GoogleIcon
-                  onClick={() =>
-                    signIn("google", {
-                      callbackUrl: NEXTAUTH_URL,
-                    })
-                  }
-                  color="inherit"
-                />
-              </MDTypography>
-            </Grid>
-          </Grid>
-        </MDBox>
-        {/* <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
-            <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
-            </MDBox>
-            <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
-            </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-              <MDTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-              >
-                &nbsp;&nbsp;Remember me
-              </MDTypography>
-            </MDBox>
-            <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="dark" fullWidth>
-                sign in
-              </MDButton>
-            </MDBox>
-            <MDBox mt={3} mb={1} textAlign="center">
-              <MDTypography variant="button" color="text">
-                Don&apos;t have an account?{" "}
-                <Link href="/authentication/sign-up/cover">
-                  <MDTypography
-                    variant="button"
-                    color="dark"
-                    fontWeight="medium"
-                    textGradient
-                  >
-                    Sign up
-                  </MDTypography>
-                </Link>
-              </MDTypography>
-            </MDBox>
-          </MDBox>
-        </MDBox> */}
-      </Card>
+            <span>Continuar con Google</span>
+            <Image src={google} height={20} width={20} />
+          </MDTypography>
+        </MDButton>
+      </MDBox>
     </BasicLayout>
   );
 }

@@ -177,8 +177,7 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                       </MDBox>
                       {col.collapse.map((item) =>
                         item.route ? (
-                          (<Link key={item.name} href={item.route}>
-
+                          <Link key={item.name} href={item.route}>
                             <MDTypography
                               minWidth="11.25rem"
                               display="block"
@@ -204,8 +203,7 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                             >
                               {item.name}
                             </MDTypography>
-
-                          </Link>)
+                          </Link>
                         ) : (
                           <MDTypography
                             key={item.name}
@@ -576,7 +574,6 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
           alignItems="center"
         >
           <Link href="/">
-
             <MDBox
               py={transparent ? 1.5 : 0.75}
               lineHeight={1}
@@ -590,7 +587,6 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                 {brand}
               </MDTypography>
             </MDBox>
-
           </Link>
           <MDBox
             color="inherit"
@@ -604,7 +600,6 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
             (action.type === "internal" ? (
               <MDBox display={{ xs: "none", lg: "inline-block" }}>
                 <Link href={action.route}>
-
                   <MDButton
                     variant="gradient"
                     color={action.color ? action.color : "dark"}
@@ -613,7 +608,6 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                   >
                     {action.label}
                   </MDButton>
-
                 </Link>
               </MDBox>
             ) : (
@@ -663,7 +657,7 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
 
 // Declaring default props for DefaultNavbar
 DefaultNavbar.defaultProps = {
-  brand: "Material Dashboard PRO",
+  brand: "",
   transparent: false,
   light: false,
   action: false,

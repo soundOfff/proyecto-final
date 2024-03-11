@@ -15,9 +15,12 @@ class Partner extends Model
 
     protected $fillable = [
         'country_id',
-        'province_id',
-        'district_id',
         'jurisdiction_id',
+        'nationality_id',
+        'birth_place_id',
+        'president_id',
+        'secretary_id',
+        'treasurer_id',
         'active',
         'added_from',
         'address',
@@ -36,6 +39,9 @@ class Partner extends Model
         'latitude',
         'longitude',
         'phone_number',
+        'email',
+        'building_number',
+        'is_residential',
         'registration_confirmed',
         'shipping_city',
         'shipping_country_id',
@@ -54,6 +60,10 @@ class Partner extends Model
         'expedition_date',
         'expiration_date',
         'is_male',
+        'file_number',
+        'roll_number',
+        'image_number',
+        'ruc',
     ];
 
     public function projects(): HasMany
@@ -64,16 +74,6 @@ class Partner extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
-    }
-
-    public function province(): BelongsTo
-    {
-        return $this->belongsTo(Province::class);
-    }
-
-    public function district(): BelongsTo
-    {
-        return $this->belongsTo(District::class);
     }
 
     public function jurisdiction(): BelongsTo
@@ -103,6 +103,21 @@ class Partner extends Model
         return $this->belongsTo(self::class, 'consolidator_id', 'id', 'consolidator');
     }
 
+    public function president(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'president_id', 'id', 'president');
+    }
+
+    public function secretary(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'secretary_id', 'id', 'secretary');
+    }
+
+    public function treasurer(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'treasurer_id', 'id', 'treasurer');
+    }
+
     public function billingCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'billing_country_id', 'id', 'billingCountry');
@@ -111,6 +126,16 @@ class Partner extends Model
     public function shippingCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'shipping_country_id', 'id', 'shippingCountry');
+    }
+
+    public function nationality(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'nationality_id', 'id', 'nationality');
+    }
+
+    public function birthPlace(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'birth_place_id', 'id', 'birthPlace');
     }
 
     public function proposals(): MorphMany

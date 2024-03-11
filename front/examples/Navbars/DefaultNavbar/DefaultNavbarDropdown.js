@@ -51,7 +51,7 @@ function DefaultNavbarDropdown({
 
   const template = (
     <MDBox display="flex" alignItems="baseline">
-      {icon && (
+      {/* {icon && (
         <MDTypography
           variant="body2"
           lineHeight={1}
@@ -74,7 +74,7 @@ function DefaultNavbarDropdown({
         <Icon sx={{ fontWeight: "normal", verticalAlign: "middle" }}>
           {collapse && "keyboard_arrow_down"}
         </Icon>
-      </MDTypography>
+      </MDTypography> */}
     </MDBox>
   );
 

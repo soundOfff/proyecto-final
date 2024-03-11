@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 import Link from "next/link";
 
@@ -79,26 +79,6 @@ function Basic({ NEXTAUTH_URL }) {
                 variant="body1"
                 color="white"
               >
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-              >
-                <GitHubIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-              >
                 <GoogleIcon
                   onClick={() =>
                     signIn("google", {
@@ -111,7 +91,7 @@ function Basic({ NEXTAUTH_URL }) {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
+        {/* <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
               <MDInput type="email" label="Email" fullWidth />
@@ -152,7 +132,7 @@ function Basic({ NEXTAUTH_URL }) {
               </MDTypography>
             </MDBox>
           </MDBox>
-        </MDBox>
+        </MDBox> */}
       </Card>
     </BasicLayout>
   );

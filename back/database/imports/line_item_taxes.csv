@@ -15225,7 +15225,6 @@ id,line_item_id,line_item_taxable_id,line_item_taxable_type,rate,name
 16978,40922,3219,proposal,7.00,I.T.B.M.S
 16984,40928,3220,proposal,7.00,I.T.B.M.S
 16985,40929,2368,estimate,7.00,I.T.B.M.S
-16987,40935,2369,estimate,7.00,I.T.B.M.S
 16989,40941,3222,proposal,7.00,I.T.B.M.S
 16990,40944,3223,proposal,7.00,I.T.B.M.S
 16991,40945,3223,proposal,7.00,I.T.B.M.S
@@ -15403,8 +15402,3 @@ id,line_item_id,line_item_taxable_id,line_item_taxable_type,rate,name
 17540,42196,3323,proposal,7.00,I.T.B.M.S
 17554,42241,3324,proposal,7.00,I.T.B.M.S
 17555,42242,3324,proposal,7.00,I.T.B.M.S
-17556,42249,3325,proposal,7.00,I.T.B.M.S
-17557,42253,3325,proposal,7.00,I.T.B.M.S
-17558,42254,3325,proposal,7.00,I.T.B.M.S
-17559,42256,3325,proposal,7.00,I.T.B.M.S
-17560,42261,3326,proposal,7.00,I.T.B.M.S

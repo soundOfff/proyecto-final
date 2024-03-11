@@ -18,7 +18,7 @@ module.exports = {
       return [
         {
           source: "/",
-          destination: "/dashboards/analytics",
+          destination: "/dashboards/tasks",
           permanent: true,
         },
       ];

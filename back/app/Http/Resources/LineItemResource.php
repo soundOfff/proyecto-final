@@ -18,6 +18,7 @@ class LineItemResource extends JsonResource
             'id' => $this->id,
             'lineItemableId' => $this->line_itemable_id,
             'lineItemableType' => $this->line_itemable_type,
+            'line_item_type_id' => $this->line_item_type_id,
             'description' => $this->description,
             'longDescription' => $this->long_description,
             'quantity' => $this->quantity,

@@ -41,11 +41,10 @@ class ProjectController extends Controller
                         $query
                             ->whereHas(
                                 'members',
-                                fn (Builder $query) =>
-                                $query->where('staff_id', $value)
+                                fn (Builder $query) => $query->where('staff_id', $value)
                             );
                     }
-                )
+                ),
             ])
             ->allowedIncludes([
                 'stages',

@@ -69,7 +69,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
         {
           description: values[description.name],
           long_description: values[longDescription.name],
-          type: values[type.name],
+          line_item_type_id: values[type.name],
           quantity: values[quantity.name],
           rate: values[rate.name],
           taxes: values[taxes.name],

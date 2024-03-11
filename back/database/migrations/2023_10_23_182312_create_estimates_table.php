@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('partner_id')->nullable()->constrained();
             $table->foreignId('currency_id')->nullable()->constrained();
-            $table->foreignId('project_id')->nullable()->constrained();
+            $table->foreignId('project_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('invoice_id')->nullable()->constrained();
             $table->foreignId('billing_country_id')->nullable()->constrained('countries');
             $table->foreignId('shipping_country_id')->nullable()->constrained('countries');

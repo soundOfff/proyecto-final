@@ -1,6 +1,15 @@
 "use client";
 
-import { FormControlLabel, FormGroup, Grid, Switch } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Switch,
+  Select as MuiSelect,
+} from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "../schemas/form";
 import Select from "/components/Select";
@@ -22,7 +31,6 @@ export default function JuridicalForm({
     formField: {
       juridical: {
         company,
-        address,
         state,
         city,
         consolidator,
@@ -31,9 +39,21 @@ export default function JuridicalForm({
         district,
         jurisdiction,
         province,
-        phone,
         website,
         zip,
+        email,
+        address,
+        isResidential,
+        phone,
+        buildingNumber,
+        fileNumber,
+        imageNumber,
+        rollNumber,
+        ruc,
+        president,
+        secretary,
+        treasurer,
+        dv,
       },
     },
   } = form;
@@ -201,6 +221,133 @@ export default function JuridicalForm({
           value={values.phoneNumber}
           error={errors.name && touched.name}
           success={phone.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={email.label}
+          placeholder={email.placeholder}
+          name={email.name}
+          type={email.type}
+          value={values[email.name]}
+          error={errors.name && touched.name}
+          success={email.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={buildingNumber.label}
+          placeholder={buildingNumber.placeholder}
+          name={buildingNumber.name}
+          type={buildingNumber.type}
+          value={values[buildingNumber.name]}
+          error={errors.name && touched.name}
+          success={buildingNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl variant="standard" fullWidth sx={{ mt: -2.3 }}>
+          <InputLabel>{isResidential.label}</InputLabel>
+          <MuiSelect
+            value={values[isResidential.name]}
+            label={isResidential.label}
+            onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
+            sx={{ height: "3rem" }}
+          >
+            <MenuItem value={true}>Residencial</MenuItem>
+            <MenuItem value={false}>Edificio</MenuItem>
+          </MuiSelect>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={fileNumber.label}
+          placeholder={fileNumber.placeholder}
+          name={fileNumber.name}
+          type={fileNumber.type}
+          value={values[fileNumber.name]}
+          error={errors.name && touched.name}
+          success={fileNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={rollNumber.label}
+          placeholder={rollNumber.placeholder}
+          name={rollNumber.name}
+          type={rollNumber.type}
+          value={values[rollNumber.name]}
+          error={errors.name && touched.name}
+          success={rollNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={imageNumber.label}
+          placeholder={imageNumber.placeholder}
+          name={imageNumber.name}
+          type={imageNumber.type}
+          value={values[imageNumber.name]}
+          error={errors.name && touched.name}
+          success={imageNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={ruc.label}
+          placeholder={ruc.placeholder}
+          name={ruc.name}
+          type={ruc.type}
+          value={values[ruc.name]}
+          error={errors.name && touched.name}
+          success={ruc.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={dv.label}
+          placeholder={dv.placeholder}
+          name={dv.name}
+          type={dv.type}
+          value={values[dv.name]}
+          error={errors.name && touched.name}
+          success={dv.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[president.name]}
+          options={consolidators}
+          optionLabel={(option) =>
+            option.company ? option.company : option.name
+          }
+          fieldName={president.name}
+          inputLabel={president.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[secretary.name]}
+          options={consolidators}
+          optionLabel={(option) =>
+            option.company ? option.company : option.name
+          }
+          fieldName={secretary.name}
+          inputLabel={secretary.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[treasurer.name]}
+          options={consolidators}
+          optionLabel={(option) =>
+            option.company ? option.company : option.name
+          }
+          fieldName={treasurer.name}
+          inputLabel={treasurer.label}
+          setFieldValue={setFieldValue}
         />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="center">

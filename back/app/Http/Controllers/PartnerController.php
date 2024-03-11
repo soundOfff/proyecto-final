@@ -86,6 +86,7 @@ class PartnerController extends Controller
             'user.contacts',
             'consolidator',
             'primaryContact',
+            'jurisdiction.district.province',
         ])
         ->find($partner->id);
 
@@ -99,7 +100,7 @@ class PartnerController extends Controller
     {
         $partnerUpdate = $request->validated();
 
-        Partner::find($partner->id)->update($partnerUpdate);
+        $partner->update($partnerUpdate);
 
         return response()->json(null, 204);
     }

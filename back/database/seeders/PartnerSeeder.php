@@ -27,7 +27,6 @@ class PartnerSeeder extends Seeder
 
         foreach ($partners as $partner) {
             unset($partner['consolidator_id']);
-
             Partner::updateOrCreate(['id' => $partner['user_id']], $partner);
         }
 

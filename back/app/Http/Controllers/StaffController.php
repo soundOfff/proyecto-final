@@ -53,6 +53,9 @@ class StaffController extends Controller
 
     public function stats(Staff $staff)
     {
+        $dayStart = now()->startOfDay();
+        $dayEnd = now()->endOfDay();
+
         $weeklyStart = now()->startOfWeek();
         $weeklyEnd = now()->endOfWeek();
         $monthlyStart = now()->startOfMonth();
@@ -66,6 +69,9 @@ class StaffController extends Controller
         $tasks = $staff->tasks;
 
         $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
+
+        $totalDayTime = $tasks
+            ->sum(fn ($task) => $task->getTotalTime($dayStart, $dayEnd));
 
         $totalWeekTime = $tasks
             ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
@@ -91,6 +97,7 @@ class StaffController extends Controller
             'total_time' => $totalTime,
             'total_week_time' => $totalWeekTime,
             'total_month_time' => $totalMonthTime,
+            'total_day_time' => $totalDayTime,
             'monthly_percentage' => $monthlyPercentage,
             'weekly_percentage' => $weeklyPercentage,
         ], 200);

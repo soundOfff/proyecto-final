@@ -21,8 +21,8 @@ export default function Stats({ data }) {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <DefaultStatisticsCard
-            title="Tiempo total"
-            count={`${numberFormat(data.total_time)} hs`}
+            title="Tiempo total registrado en el dia"
+            count={`${numberFormat(data.total_day_time)} hs`}
           />
         </Grid>
         <Grid item xs={12} sm={4}>

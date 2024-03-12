@@ -38,7 +38,6 @@ async function refreshAccessToken(token) {
       throw refreshedTokens;
     }
 
-    console.log("refreshedTokens", refreshedTokens);
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
@@ -67,7 +66,7 @@ export const authOptions = {
     async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token;
-        token.accessTokenExpires = Date.now() + 30000; // TODO: make this dynamic with expires_at value
+        token.accessTokenExpires = account.expires_at;
         token.refreshToken = account.refresh_token;
         return token;
       }
@@ -81,7 +80,6 @@ export const authOptions = {
       return refreshAccessToken(token);
     },
     async session({ session, token }) {
-      console.log({ token });
       const url = new URL(`${process.env.API_URL}/login`);
 
       const res = await fetch(url, {

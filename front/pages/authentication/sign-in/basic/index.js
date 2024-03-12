@@ -79,6 +79,7 @@ function Basic({ NEXTAUTH_URL }) {
               Recordar sesión
             </MDTypography>
           }
+          sx={{ mb: 2 }}
         />
         <MDButton
           onClick={() =>

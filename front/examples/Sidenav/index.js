@@ -82,6 +82,13 @@ function Sidenav({
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
+  // Check if the session is expired and force sign in
+  useEffect(() => {
+    if (session?.error === "RefreshAccessTokenError") {
+      signIn();
+    }
+  }, [session]);
+
   useEffect(() => {
     setOpenCollapse(collapseName);
     setOpenNestedCollapse(itemParentName);

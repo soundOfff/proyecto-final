@@ -32,6 +32,7 @@ import logoWhite from "/assets/logo/White/asset-29.svg";
 
 import google from "/assets/logo/google.svg";
 import Image from "next/image";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 export async function getStaticProps() {
   return { props: { NEXTAUTH_URL: process.env.NEXTAUTH_URL } };
@@ -39,7 +40,6 @@ export async function getStaticProps() {
 
 function Basic({ NEXTAUTH_URL }) {
   const [rememberMe, setRememberMe] = useState(false);
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   return (
     <BasicLayout>
@@ -53,9 +53,7 @@ function Basic({ NEXTAUTH_URL }) {
         borderRadius="lg"
         coloredShadow="dark"
         mx={2}
-        mt={2}
-        p={2}
-        mb={1}
+        sx={{ padding: "20px 40px" }}
         textAlign="center"
       >
         <Image
@@ -67,6 +65,20 @@ function Basic({ NEXTAUTH_URL }) {
             width: "80%",
             margin: "auto",
           }}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              name="rememberMe"
+            />
+          }
+          label={
+            <MDTypography variant="body2" color="white">
+              Recordar sesión
+            </MDTypography>
+          }
         />
         <MDButton
           onClick={() =>

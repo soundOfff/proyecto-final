@@ -4,55 +4,15 @@ import { Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import { ITBMS_TAX_NAME, RETAINING_TAX_NAME } from "/utils/constants/taxes";
-import { BEFORE_TAX } from "/utils/constants/discountTypes";
 import numberFormat from "/utils/numberFormat";
-import { useEffect, useState } from "react";
 import { toInvoice } from "/actions/estimates";
-
-const getSubtotal = (items) => {
-  return items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
-};
-
-const getTotalDiscount = (items) => {
-  return items.reduce((acc, item) => acc - item.discount, 0);
-};
-
-const getTaxes = (items, type, discountType) => {
-  return items.reduce((acc, item) => {
-    const rate = item.taxes
-      ? item.taxes.find((tax) => tax.name == type)?.rate
-      : 0;
-    if (discountType === BEFORE_TAX) {
-      return (
-        acc +
-        (item.quantity * item.rate - item.discount) * (rate ? rate / 100 : 0)
-      );
-    } else {
-      return acc + item.quantity * item.rate * (rate ? rate / 100 : 0);
-    }
-  }, 0);
-};
+import { useItemTotals } from "/hooks/useItemTotals";
 
 export default function Footer({ estimate }) {
-  const [itbmsTotalTax, setItbmsTotalTax] = useState(0);
-  const [retainingTotalTax, setRetainingTotalTax] = useState(0);
-
-  useEffect(() => {
-    const itbmsTotalTax = getTaxes(
-      estimate.items,
-      ITBMS_TAX_NAME,
-      estimate.discountType
-    );
-    const retainingTotalTax = getTaxes(
-      estimate.items,
-      RETAINING_TAX_NAME,
-      estimate.discountType
-    );
-
-    setItbmsTotalTax(itbmsTotalTax);
-    setRetainingTotalTax(retainingTotalTax);
-  }, [estimate]);
+  const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
+    items: estimate.items,
+    discountType: estimate.discountType,
+  });
 
   const handleToInvoice = async () => {
     await toInvoice(estimate.id);

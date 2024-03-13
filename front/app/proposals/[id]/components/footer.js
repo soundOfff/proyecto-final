@@ -9,43 +9,14 @@ import { BEFORE_TAX } from "/utils/constants/discountTypes";
 import numberFormat from "/utils/numberFormat";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-const getTaxes = (items, type, discountType) => {
-  return items.reduce((acc, item) => {
-    const rate = item.taxes
-      ? item.taxes.find((tax) => tax.name == type)?.rate
-      : 0;
-    if (discountType === BEFORE_TAX) {
-      return (
-        acc +
-        (item.quantity * item.rate - item.discount) * (rate ? rate / 100 : 0)
-      );
-    } else {
-      return acc + item.quantity * item.rate * (rate ? rate / 100 : 0);
-    }
-  }, 0);
-};
+import { useItemTotals } from "/hooks/useItemTotals";
 
 export default function Footer({ proposal }) {
-  const [itbmsTotalTax, setItbmsTotalTax] = useState(0);
-  const [retainingTotalTax, setRetainingTotalTax] = useState(0);
   const router = useRouter();
-
-  useEffect(() => {
-    const itbmsTotalTax = getTaxes(
-      proposal.items,
-      ITBMS_TAX_NAME,
-      proposal.discountType
-    );
-    const retainingTotalTax = getTaxes(
-      proposal.items,
-      RETAINING_TAX_NAME,
-      proposal.discountType
-    );
-
-    setItbmsTotalTax(itbmsTotalTax);
-    setRetainingTotalTax(retainingTotalTax);
-  }, [proposal]);
+  const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
+    items: proposal.items,
+    discountType: proposal.discountType,
+  });
 
   const handleToEstimate = () => {
     router.push(`/estimates/create/${proposal.id}`);

@@ -37,12 +37,7 @@ function DefaultStatisticsCard({ title, count, percentage, dropdown }) {
         <Grid container>
           <Grid item xs={7}>
             <MDBox mb={0.5} lineHeight={1}>
-              <MDTypography
-                variant="button"
-                fontWeight="medium"
-                color="text"
-                textTransform="capitalize"
-              >
+              <MDTypography variant="button" fontWeight="medium" color="text">
                 {title}
               </MDTypography>
             </MDBox>

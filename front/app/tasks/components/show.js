@@ -10,7 +10,7 @@ export default function Show({
   isTimerStarted,
   stopTimer,
   currentTimerId,
-  startTimer, // TODO: continue from here
+  startTimer,
 }) {
   return (
     <MDBox>

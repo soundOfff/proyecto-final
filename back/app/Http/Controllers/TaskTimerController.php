@@ -28,12 +28,13 @@ class TaskTimerController extends Controller
     {
         $newTimer = $request->validated();
         $currentTimer = Staff::find($newTimer['staff_id'])->getCurrentTimer();
-        
+
         if ($currentTimer) {
             $currentTimer->update(['end_time' => now()]);
         }
 
         TaskTimer::create($newTimer);
+
         return response()->json(null, 201);
     }
 
@@ -50,11 +51,13 @@ class TaskTimerController extends Controller
      */
     public function getCurrentTimer(Staff $staff)
     {
-        $timer = $staff->getCurrentTimer();
-        if (is_null($timer)) {
-            return response()->json(null, 200);
-        }
-        return new TaskTimerResource($timer);
+        $timer = QueryBuilder::for(TaskTimer::class)
+            ->allowedIncludes(['task'])
+            ->where('staff_id', $staff->id)
+            ->whereNull('end_time')
+            ->first();
+
+        return $timer ? new TaskTimerResource($timer) : response()->json(null);
     }
 
     /**
@@ -64,6 +67,7 @@ class TaskTimerController extends Controller
     {
         $newTimer = $request->validated();
         $timer->update($newTimer);
+
         return response()->json(null, 204);
     }
 

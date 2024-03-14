@@ -72,11 +72,9 @@ export const authOptions = {
       }
 
       if (Date.now() < token.accessTokenExpires) {
-        console.log("token not expired yet", { token, now: Date.now() });
         return token;
       }
 
-      console.log("token is refreshed", { token });
       return refreshAccessToken(token);
     },
     async session({ session, token }) {

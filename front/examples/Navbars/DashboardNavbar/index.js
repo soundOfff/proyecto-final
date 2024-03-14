@@ -31,6 +31,8 @@ import Icon from "@mui/material/Icon";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
+import MDButton from "/components/MDButton";
+import MDTypography from "/components/MDTypography";
 
 // NextJS Material Dashboard 2 PRO examples
 import Breadcrumbs from "/examples/Breadcrumbs";
@@ -52,10 +54,16 @@ import {
   setTransparentNavbar,
   setMiniSidenav,
   setOpenConfigurator,
+  setCurrentTimer,
 } from "/context";
 import { usePathname } from "next/navigation";
+import { getCurrentTimer } from "/actions/timers";
+import { useSession } from "next-auth/react";
+import moment from "moment/moment";
+import numberFormat from "/utils/numberFormat";
+import { update as updateTimer } from "/actions/timers";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+export default function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -64,6 +72,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     fixedNavbar,
     openConfigurator,
     darkMode,
+    currentTimer,
   } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
@@ -103,6 +112,24 @@ function DashboardNavbar({ absolute, light, isMini }) {
     setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const { data: session } = useSession();
+
+  const getTimeTaken = () => {
+    if (currentTimer) {
+      return numberFormat(
+        moment.duration(moment().diff(currentTimer.start_time)).asHours()
+      );
+    }
+  };
+
+  const stopTimer = async () => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await updateTimer(currentTimer.id, { end_time: date });
+    const refetchCurrentTimer = await getCurrentTimer(session.staff.id, {
+      include: "task",
+    });
+    setCurrentTimer(dispatch, refetchCurrentTimer);
+  };
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -117,15 +144,35 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem
-        icon={<Icon>podcasts</Icon>}
-        title="Manage Podcast sessions"
-      />
-      <NotificationItem
-        icon={<Icon>shopping_cart</Icon>}
-        title="Payment successfully completed"
-      />
+      {currentTimer ? (
+        <MDBox p={2} lineHeight={1}>
+          <MDBox mb={2}>
+            <MDTypography variant="h6" fontWeight="medium">
+              Tarea:{" "}
+              <Link href={`/tasks?${currentTimer.task.id}`}>
+                {currentTimer.task.name}
+              </Link>
+            </MDTypography>
+            <MDTypography
+              variant="h6"
+              fontWeight="medium"
+              display="inline"
+              mr={1}
+            >
+              Tiempo Transcurrido:
+            </MDTypography>
+            <MDTypography variant="body2" display="inline">
+              {getTimeTaken()} Horas
+            </MDTypography>
+          </MDBox>
+          <MDButton variant="gradient" color="error" onClick={stopTimer}>
+            Detener Temporizador
+          </MDButton>
+          )
+        </MDBox>
+      ) : (
+        <NotificationItem title="No se encontraron temporizadores corriendo" />
+      )}
     </Menu>
   );
 
@@ -149,9 +196,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
     <AppBar
       position={absolute ? "absolute" : navbarType}
       color="inherit"
-      sx={
-        ...(theme) =>
-          navbar(theme, { transparentNavbar, absolute, light, darkMode })
+      sx={(theme) =>
+        navbar(theme, { transparentNavbar, absolute, light, darkMode })
       }
       className="navbar-print"
     >
@@ -220,8 +266,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <MDBadge badgeContent={9} color="error" size="xs" circular>
-                  <Icon sx={iconsStyle}>notifications</Icon>
+                <MDBadge
+                  badgeContent={currentTimer ? 1 : 0}
+                  color="error"
+                  size="xs"
+                  circular
+                >
+                  <Icon sx={iconsStyle}>access_time</Icon>
                 </MDBadge>
               </IconButton>
               {renderMenu()}
@@ -239,5 +290,3 @@ DashboardNavbar.propTypes = {
   light: PropTypes.bool,
   isMini: PropTypes.bool,
 };
-
-export default DashboardNavbar;

@@ -34,12 +34,12 @@ export default function Content({
   const [commentContent, setCommentContent] = useState("");
   const {
     items,
-    filteredItems,
     progress,
-    createTask,
+    getFilteredItems,
+    createItem,
     toggleChecked,
-    removeTask,
-    editTask,
+    removeItem,
+    editItem,
   } = useTodo(task.checklistItems);
   const { data: session } = useSession();
 
@@ -62,8 +62,13 @@ export default function Content({
     });
   };
 
-  const handleSubmitItems = async () => {
-    await update(task.id, { checklist_items: filteredItems });
+  const handleSaveItems = async () => {
+    await update(task.id, { checklist_items: getFilteredItems() });
+  };
+  const handleDeleteItem = async (id) => {
+    const newItems = items.filter((item) => item.id !== id); // Server update
+    removeItem(id); // UI update
+    await update(task.id, { checklist_items: newItems });
   };
 
   return (
@@ -212,11 +217,12 @@ export default function Content({
           </MDBox>
           <ItemList
             items={items}
-            createTask={createTask}
-            editTask={editTask}
+            taskId={task.id}
+            createItem={createItem}
+            editItem={editItem}
             toggleChecked={toggleChecked}
-            removeTask={removeTask}
-            handleBlur={handleSubmitItems}
+            saveItems={handleSaveItems}
+            removeItem={handleDeleteItem}
           />
         </MDBox>
 

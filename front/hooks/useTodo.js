@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { update } from "/actions/tasks";
 
 export default function useTodo(checklistItems) {
   const [items, setItems] = useState(checklistItems || []);
   const [progress, setProgress] = useState(0);
 
-  const createTask = () => {
+  const createItem = () => {
     setItems((prev) => [
       ...prev,
       {
@@ -15,11 +16,12 @@ export default function useTodo(checklistItems) {
     ]);
   };
 
-  const removeTask = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+  const removeItem = (id) => {
+    setItems((prev) => prev.filter((item) => item.id != id));
+    return items;
   };
 
-  const editTask = (id, description) => {
+  const editItem = (id, description) => {
     setItems((prev) =>
       prev.map((item) => {
         if (item.id === id) {
@@ -59,11 +61,11 @@ export default function useTodo(checklistItems) {
 
   return {
     items,
-    filteredItems: getFilteredItems(),
+    getFilteredItems,
     setItems,
-    createTask,
-    removeTask,
-    editTask,
+    createItem,
+    removeItem,
+    editItem,
     toggleChecked,
     progress,
   };

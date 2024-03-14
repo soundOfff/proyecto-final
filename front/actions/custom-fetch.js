@@ -18,5 +18,9 @@ export async function customFetch(url, options = {}) {
     throw new Error(`Code: ${response.status}, Error: ${response.statusText}}`);
   }
 
+  if (response.status === 204) {
+    return null;
+  }
+
   return response.json();
 }

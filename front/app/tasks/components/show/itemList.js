@@ -6,8 +6,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import { Add, Clear } from "@mui/icons-material";
 import { TextField } from "@mui/material";
+import { update } from "/actions/tasks";
 
-const addTaskButton = (createTask) => (
+const addTaskButton = (createItem) => (
   <ListItem
     key="add-item"
     secondaryAction={
@@ -15,7 +16,7 @@ const addTaskButton = (createTask) => (
     }
     sx={{ height: "40px" }}
     disablePadding
-    onClick={() => createTask()}
+    onClick={() => createItem()}
   >
     <ListItemButton dense>
       <ListItemText
@@ -29,11 +30,12 @@ const addTaskButton = (createTask) => (
 
 export default function ItemList({
   items,
-  createTask,
-  editTask,
+  taskId,
+  createItem,
+  editItem,
   toggleChecked,
-  removeTask,
-  handleBlur,
+  removeItem,
+  saveItems,
 }) {
   return (
     <List
@@ -51,14 +53,14 @@ export default function ItemList({
         return (
           <ListItem
             key={value.id}
-            onBlur={() => handleBlur()}
+            onBlur={() => saveItems()}
             secondaryAction={
               <Clear
                 edge="end"
                 color="error"
                 aria-label="comments"
                 sx={{ cursor: "pointer", mx: 2 }}
-                onClick={() => removeTask(value.id)}
+                onClick={() => removeItem(value.id)}
               />
             }
             disablePadding
@@ -76,7 +78,7 @@ export default function ItemList({
               </ListItemIcon>
               <TextField
                 defaultValue={value.description}
-                onChange={(e) => editTask(value.id, e.target.value)}
+                onChange={(e) => editItem(value.id, e.target.value)}
                 margin="dense"
                 id="name"
                 fullWidth
@@ -85,7 +87,7 @@ export default function ItemList({
           </ListItem>
         );
       })}
-      {addTaskButton(createTask)}
+      {addTaskButton(createItem)}
     </List>
   );
 }

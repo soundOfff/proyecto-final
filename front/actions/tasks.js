@@ -56,7 +56,7 @@ export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/tasks/${id}`);
   url.search = new URLSearchParams(params);
 
-  const { data: task } = await customFetch(url, { cache: "no-cache" });
+  const { data: task } = await customFetch(url, { cache: "no-store" });
 
   return task;
 }

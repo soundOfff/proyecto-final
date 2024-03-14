@@ -1,9 +1,9 @@
-export async function customFetch(url, options = {}) {
-  const defaultHeaders = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  };
+const defaultHeaders = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+};
 
+export async function customFetch(url, options = {}) {
   const response = await fetch(url, {
     ...options,
     headers: {
@@ -14,8 +14,12 @@ export async function customFetch(url, options = {}) {
 
   if (!response.ok) {
     const error = await response.json();
-    console.error(error);
+    console.log(error);
     throw new Error(`Code: ${response.status}, Error: ${response.statusText}}`);
+  }
+
+  if (response.status === 204) {
+    return null;
   }
 
   return response.json();

@@ -5,10 +5,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import { Add, Clear } from "@mui/icons-material";
-import { useState } from "react";
 import { TextField } from "@mui/material";
+import { update } from "/actions/tasks";
 
-const addTaskButton = (addNewTask) => (
+const addTaskButton = (createItem) => (
   <ListItem
     key="add-item"
     secondaryAction={
@@ -16,7 +16,7 @@ const addTaskButton = (addNewTask) => (
     }
     sx={{ height: "40px" }}
     disablePadding
-    onClick={() => addNewTask()}
+    onClick={() => createItem()}
   >
     <ListItemButton dense>
       <ListItemText
@@ -30,10 +30,12 @@ const addTaskButton = (addNewTask) => (
 
 export default function ItemList({
   items,
-  addNewTask,
-  editTask,
-  removeTask,
-  handleBlur,
+  taskId,
+  createItem,
+  editItem,
+  toggleChecked,
+  removeItem,
+  saveItems,
 }) {
   return (
     <List
@@ -51,36 +53,32 @@ export default function ItemList({
         return (
           <ListItem
             key={value.id}
-            onBlur={() => handleBlur()}
+            onBlur={() => saveItems()}
             secondaryAction={
               <Clear
                 edge="end"
                 color="error"
                 aria-label="comments"
                 sx={{ cursor: "pointer", mx: 2 }}
-                onClick={() => removeTask(value.id)}
+                onClick={() => removeItem(value.id)}
               />
             }
             disablePadding
           >
-            <ListItemButton role={undefined} dense>
+            <ListItemButton dense>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
                   checked={value.finished}
                   tabIndex={-1}
                   disableRipple
-                  onClick={() =>
-                    editTask(value.id, value.description, !value.finished)
-                  }
+                  onClick={() => toggleChecked(value.id, !value.finished)}
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
               <TextField
                 defaultValue={value.description}
-                onChange={(e) =>
-                  editTask(value.id, e.target.value, value.finished)
-                }
+                onChange={(e) => editItem(value.id, e.target.value)}
                 margin="dense"
                 id="name"
                 fullWidth
@@ -89,7 +87,7 @@ export default function ItemList({
           </ListItem>
         );
       })}
-      {addTaskButton(addNewTask)}
+      {addTaskButton(createItem)}
     </List>
   );
 }

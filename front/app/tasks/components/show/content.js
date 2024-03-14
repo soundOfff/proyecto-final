@@ -15,6 +15,7 @@ import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { useSession } from "next-auth/react";
 import { DONE_ID } from "/utils/constants/taskStatuses";
+import useTodo from "../../../../hooks/useTodo";
 
 export default function Content({
   task,
@@ -27,39 +28,20 @@ export default function Content({
   const [description, setDescription] = useState(
     parseEditorState(task.description)
   );
-  const [items, setItems] = useState(task.checklistItems || []);
   const [comments, setComments] = useState(task.comments || []);
   const [note, setNote] = useState("");
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
   const [commentContent, setCommentContent] = useState("");
-  const [progress, setProgress] = useState(0);
+  const {
+    items,
+    progress,
+    getFilteredItems,
+    createItem,
+    toggleChecked,
+    removeItem,
+    editItem,
+  } = useTodo(task.checklistItems);
   const { data: session } = useSession();
-
-  const addNewTask = () => {
-    const newTask = {
-      id: items.length + 1,
-      description: "",
-      finished: false,
-    };
-    setItems([...items, newTask]);
-  };
-
-  const removeTask = (id) => {
-    const newItems = items.filter((task) => task.id !== id);
-    setItems(newItems);
-    update(task.id, { checklist_items: newItems });
-  };
-
-  const editTask = (id, description, finished = false) => {
-    const newItems = items.map((task) => {
-      if (task.id === id) {
-        task.description = description;
-        task.finished = finished;
-      }
-      return task;
-    });
-    setItems(newItems);
-  };
 
   const handleStopTimer = async () => {
     await stopTimer(currentTimerId, note);
@@ -80,22 +62,13 @@ export default function Content({
     });
   };
 
-  useEffect(() => {
-    const total = items.length;
-    const finished = items.filter((item) => item.finished).length;
-    setProgress((finished / total) * 100);
-  }, [items]);
-
-  const handleBlur = async () => {
-    const filteredItems = items
-      .filter((item) => item.description != "")
-      .map((item) => {
-        return {
-          description: item.description,
-          finished: item.finished,
-        };
-      });
-    await update(task.id, { checklist_items: filteredItems });
+  const handleSaveItems = async () => {
+    await update(task.id, { checklist_items: getFilteredItems() });
+  };
+  const handleDeleteItem = async (id) => {
+    const newItems = items.filter((item) => item.id !== id); // Server update
+    removeItem(id); // UI update
+    await update(task.id, { checklist_items: newItems });
   };
 
   return (
@@ -244,10 +217,12 @@ export default function Content({
           </MDBox>
           <ItemList
             items={items}
-            addNewTask={addNewTask}
-            editTask={editTask}
-            removeTask={removeTask}
-            handleBlur={handleBlur}
+            taskId={task.id}
+            createItem={createItem}
+            editItem={editItem}
+            toggleChecked={toggleChecked}
+            saveItems={handleSaveItems}
+            removeItem={handleDeleteItem}
           />
         </MDBox>
 

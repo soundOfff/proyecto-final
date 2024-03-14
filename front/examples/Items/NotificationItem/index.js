@@ -38,9 +38,11 @@ const NotificationItem = forwardRef(({ icon, title, ...rest }, ref) => (
       alignItems="center"
       lineHeight={1}
     >
-      <MDTypography variant="body1" color="secondary" lineHeight={0.75}>
-        {icon}
-      </MDTypography>
+      {icon && (
+        <MDTypography variant="body1" color="secondary" lineHeight={0.75}>
+          {icon}
+        </MDTypography>
+      )}
       <MDTypography variant="button" fontWeight="regular" sx={{ ml: 1 }}>
         {title}
       </MDTypography>

@@ -35,7 +35,6 @@ export default function ItemList({
   removeTask,
   handleBlur,
 }) {
-  console.log(items);
   return (
     <List
       sx={{

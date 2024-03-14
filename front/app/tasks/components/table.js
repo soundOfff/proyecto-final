@@ -2,7 +2,7 @@
 
 import { show } from "/actions/tasks";
 import { useEffect, useState } from "react";
-import { useMaterialUIController } from "/context";
+import { useMaterialUIController, setCurrentTimer } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
@@ -26,6 +26,7 @@ import Show from "./show";
 import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
 import moment from "moment";
 import { useSession } from "next-auth/react";
+import { getCurrentTimer } from "/actions/timers";
 
 export default function Table({
   rows,
@@ -39,7 +40,7 @@ export default function Table({
   currentTimer,
   currentTaskId,
 }) {
-  const [controller] = useMaterialUIController();
+  const [controller, dispatch] = useMaterialUIController();
   const { darkMode } = controller;
   const [taskId, setTaskId] = useState(currentTaskId || null);
   const [task, setTask] = useState(null);
@@ -62,11 +63,16 @@ export default function Table({
   const stopTimer = async (timerId, note = "") => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
     await updateTimer(timerId, { end_time: date, note });
+    setCurrentTimer(dispatch, null);
   };
 
   const startTimer = async (taskId, staffId) => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
     await storeTimer({ task_id: taskId, start_time: date, staff_id: staffId });
+    const currentTimer = await getCurrentTimer(staffId, {
+      include: "task",
+    });
+    setCurrentTimer(dispatch, currentTimer);
   };
 
   useEffect(() => {

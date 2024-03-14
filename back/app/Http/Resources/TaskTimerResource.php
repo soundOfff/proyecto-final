@@ -22,6 +22,7 @@ class TaskTimerResource extends JsonResource
             'end_time' => $this->end_time,
             'hourly_rate' => $this->hourly_rate,
             'note' => $this->note,
+            'task' => TaskResource::make($this->whenLoaded('task')),
         ];
     }
 }

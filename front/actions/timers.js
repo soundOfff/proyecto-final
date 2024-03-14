@@ -27,10 +27,12 @@ export async function update(timerId, data) {
   revalidatePath("/tasks");
   redirect("/tasks");
 }
-export async function getCurrentTimer(staffId) {
-  const url = new URL(`${process.env.API_URL}/current-timer/${staffId}`);
 
-  const { data } = await customFetch(url, { cache: "no-cache" });
+export async function getCurrentTimer(staffId, params) {
+  const url = new URL(`${process.env.API_URL}/current-timer/${staffId}`);
+  url.search = new URLSearchParams(params);
+
+  const { data } = await customFetch(url, { cache: "no-store" });
 
   return data;
 }

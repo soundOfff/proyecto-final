@@ -50,16 +50,16 @@ const routes = [
     key: "profile-user",
     icon: <MDAvatar src={profilePicture.src} alt="Brooklyn Alice" size="sm" />,
     collapse: [
-      {
-        name: "My Profile",
-        key: "my-profile",
-        route: "/pages/profile/profile-overview",
-      },
-      {
-        name: "Settings",
-        key: "profile-settings",
-        route: "/pages/account/settings",
-      },
+      // {
+      //   name: "My Profile",
+      //   key: "my-profile",
+      //   route: "/pages/profile/profile-overview",
+      // },
+      // {
+      //   name: "Settings",
+      //   key: "profile-settings",
+      //   route: "/pages/account/settings",
+      // },
       {
         name: "Logout",
         key: "logout",

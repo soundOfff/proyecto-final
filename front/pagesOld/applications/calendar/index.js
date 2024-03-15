@@ -40,7 +40,7 @@ import calendarEventsData from "/pagesComponents/applications/calendar/data/cale
 function Calendar() {
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      {/* <DashboardNavbar /> */}
       <MDBox pt={3}>
         <MDBox display="flex" justifyContent="flex-end" mt={1} mb={4} mx={2}>
           <Header />

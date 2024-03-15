@@ -56,10 +56,11 @@ import {
   setOpenConfigurator,
   setCurrentTimer,
 } from "/context";
+
 import { usePathname } from "next/navigation";
 import { getCurrentTimer } from "/actions/timers";
 import { useSession } from "next-auth/react";
-import moment from "moment/moment";
+import moment from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 

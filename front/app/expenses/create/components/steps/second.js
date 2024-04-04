@@ -14,6 +14,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
+import { useEffect } from "react";
 
 export default function Second({
   formData,
@@ -22,7 +23,8 @@ export default function Second({
   paymentMethods,
   repeats,
 }) {
-  const { formField, values, errors, touched, setFieldValue } = formData;
+  const { formField, values, errors, touched, setFieldValue, setFieldTouched } =
+    formData;
   const {
     currency,
     tax,
@@ -158,7 +160,7 @@ export default function Second({
       <Grid item xs={12} sm={6}>
         <Autocomplete
           onChange={(e, method) =>
-            setFieldValue(paymentMethod.name, method ? method.id : "")
+            setFieldValue(paymentMethod.name, method ? method.id : null)
           }
           options={paymentMethods}
           getOptionLabel={(option) => option.label}

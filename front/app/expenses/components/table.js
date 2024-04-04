@@ -11,7 +11,9 @@ import { show } from "/actions/expenses";
 import { useEffect, useState } from "react";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
-import { FlashOnOutlined } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+import { destroy } from "../../../actions/expenses";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -88,17 +90,29 @@ export default function Table({ rows, meta }) {
     {
       Header: "Acciones",
       Cell: ({ row }) => (
-        <Tooltip title="Vista Rápida">
-          <FlashOnOutlined
-            color="info"
-            fontSize="medium"
-            onClick={() => {
-              setExpenseIdShow(row.original.id);
-              setOpen(true);
-            }}
-            sx={{ mr: 3, cursor: "pointer" }}
-          />
-        </Tooltip>
+        <>
+          <Tooltip title="Vista Rápida">
+            <FlashOnIcon
+              color="info"
+              fontSize="medium"
+              onClick={() => {
+                setExpenseIdShow(row.original.id);
+                setOpen(true);
+              }}
+              sx={{ mr: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Eliminar gasto">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                destroy(row.original.id);
+              }}
+              sx={{ mx: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </>
       ),
     },
   ];
@@ -109,6 +123,7 @@ export default function Table({ rows, meta }) {
     <MDBox>
       {expense && (
         <Modal
+          height="60%"
           open={open}
           onClose={() => {
             setOpen(false);

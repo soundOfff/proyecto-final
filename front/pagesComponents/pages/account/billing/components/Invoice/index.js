@@ -16,14 +16,13 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-// @mui material components
-import Icon from "@mui/material/Icon";
+import PaidIcon from "@mui/icons-material/Paid";
 
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
-function Invoice({ date, id, price, noGutter }) {
+function Invoice({ date, id, price, noGutter, currency }) {
   return (
     <MDBox
       component="li"
@@ -46,16 +45,10 @@ function Invoice({ date, id, price, noGutter }) {
         <MDTypography variant="button" fontWeight="regular" color="text">
           {price}
         </MDTypography>
-        <MDBox
-          display="flex"
-          alignItems="center"
-          lineHeight={1}
-          ml={3}
-          sx={{ cursor: "pointer" }}
-        >
-          <Icon fontSize="small">picture_as_pdf</Icon>
-          <MDTypography variant="button" fontWeight="bold">
-            &nbsp;PDF
+        <MDBox display="flex" alignItems="center" lineHeight={1} ml={3}>
+          <PaidIcon fontSize="small" color="dark" />
+          <MDTypography variant="button" fontWeight="bold" ml={1}>
+            {currency}
           </MDTypography>
         </MDBox>
       </MDBox>

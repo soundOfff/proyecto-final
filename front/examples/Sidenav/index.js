@@ -69,9 +69,8 @@ function Sidenav({
   const pathname = usePathname();
   const collapseName = pathname.split("/").slice(1)[0];
   const items = pathname.split("/").slice(1);
-  const itemParentName = items[1];
+  const itemParentName = items[0];
   const itemName = items[items.length - 1];
-
   let textColor = "white";
 
   if (transparentSidenav || (whiteSidenav && !darkMode)) {
@@ -79,6 +78,9 @@ function Sidenav({
   } else if (whiteSidenav && darkMode) {
     textColor = "inherit";
   }
+
+  const isChildSectionOpen = (collapse = []) =>
+    collapse.some((item) => item.key === itemName);
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -134,7 +136,6 @@ function Sidenav({
   const renderCollapse = (collapses) =>
     collapses.map(({ name, collapse, route, key }) => {
       let returnValue;
-
       if (collapse) {
         returnValue = (
           <SidenavItem
@@ -175,7 +176,6 @@ function Sidenav({
   const renderRoutes = routes.map(
     ({ type, name, icon, title, collapse, noCollapse, key, route }) => {
       let returnValue;
-
       if (type === "collapse") {
         if (noCollapse && route) {
           returnValue = (
@@ -242,8 +242,8 @@ function Sidenav({
                 key={key}
                 name={name}
                 icon={icon}
-                active={key === collapseName}
-                open={openCollapse === key}
+                active={key === collapseName && !isChildSectionOpen(collapse)}
+                open={openCollapse === key || isChildSectionOpen(collapse)}
                 onClick={() =>
                   openCollapse === key
                     ? setOpenCollapse(false)
@@ -283,7 +283,6 @@ function Sidenav({
           />
         );
       }
-
       return returnValue;
     }
   );

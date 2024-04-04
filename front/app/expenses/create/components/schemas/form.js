@@ -70,7 +70,7 @@ const form = {
     paymentMethod: {
       name: "payment_method_id",
       label: "Forma de Pago",
-      errorMsg: "Debe seleccionar modo de pago",
+      errorMsg: "Debe seleccionar un modo de pago",
     },
     reference: {
       name: "reference_no",

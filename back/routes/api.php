@@ -96,6 +96,8 @@ Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
 Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
+Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);
+
 
 Route::get('/estimate-statuses', [EstimateStatusController::class, 'index']);
 

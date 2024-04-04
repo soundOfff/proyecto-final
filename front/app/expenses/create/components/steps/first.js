@@ -7,10 +7,13 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  Icon,
+  Tooltip,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDTypography from "/components/MDTypography";
 import MDBox from "/components/MDBox";
+import MDButton from "/components/MDButton";
 import MDInput from "/components/MDInput";
 import MDDatePicker from "/components/MDDatePicker";
 import moment from "moment";
@@ -22,7 +25,7 @@ export default function First({ formData, partners, categories, invoices }) {
     formField;
 
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={4}>
       <Grid item xs={12}>
         <FormField
           name={name.name}
@@ -37,7 +40,26 @@ export default function First({ formData, partners, categories, invoices }) {
       <Grid item xs={12}>
         <FormField
           name={note.name}
-          label={note.label}
+          label={
+            <MDBox lineHeight={0}>
+              {note.label}
+              <Tooltip
+                sx={{ marginLeft: "15px" }}
+                title="Para uso personal - Si se puede facturar, se puede agregar a Nombre a la descripción larga de 2la factura."
+                placement="right-end"
+              >
+                <MDButton
+                  variant="outlined"
+                  color="secondary"
+                  size="xs"
+                  iconOnly
+                  circular
+                >
+                  <Icon sx={{ cursor: "pointer" }}>priority_high</Icon>
+                </MDButton>
+              </Tooltip>
+            </MDBox>
+          }
           type={note.type}
           placeholder={note.placeholder}
           value={values[note.name]}
@@ -55,13 +77,15 @@ export default function First({ formData, partners, categories, invoices }) {
           options={categories}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={category.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
+            <MDBox mt={0.75} container display="flex" alignContent="center">
+              <MDInput
+                {...params}
+                variant="standard"
+                label={category.label}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+              />
+            </MDBox>
           )}
         />
         <MDBox mt={0.75}>

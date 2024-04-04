@@ -257,6 +257,9 @@ export default styled(Button)(({ theme, ownerState }) => {
     // width, height, minWidth and minHeight values
     let sizeValue = pxToRem(38);
 
+    if (size === "xs") {
+      sizeValue = pxToRem(12.5);
+    }
     if (size === "small") {
       sizeValue = pxToRem(25.4);
     } else if (size === "large") {

@@ -84,7 +84,10 @@ function MaterialUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
-    darkMode: false,
+    darkMode:
+      typeof window !== "undefined"
+        ? JSON.parse(window.localStorage.getItem("darkMode"))
+        : false,
     currentTimer: null,
   };
 

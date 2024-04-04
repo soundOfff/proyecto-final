@@ -45,7 +45,7 @@ export default function First({ formData, partners, categories, invoices }) {
               {note.label}
               <Tooltip
                 sx={{ marginLeft: "15px" }}
-                title="Para uso personal - Si se puede facturar, se puede agregar a Nombre a la descripción larga de 2la factura."
+                title="Para uso personal - Si se puede facturar, se puede agregar a Nombre a la descripción larga de la factura."
                 placement="right-end"
               >
                 <MDButton

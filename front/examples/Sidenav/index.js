@@ -242,7 +242,7 @@ function Sidenav({
                 key={key}
                 name={name}
                 icon={icon}
-                active={key === collapseName && !isChildSectionOpen(collapse)}
+                active={key === collapseName || isChildSectionOpen(collapse)}
                 open={openCollapse === key || isChildSectionOpen(collapse)}
                 onClick={() =>
                   openCollapse === key

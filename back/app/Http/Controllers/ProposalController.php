@@ -9,6 +9,9 @@ use App\Models\LineItem;
 use App\Models\LineItemTax;
 use App\Models\Proposal;
 use App\Models\Taggable;
+use App\Sorts\ProposablePartnerSort;
+use App\Sorts\ProposalStatusSort;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ProposalController extends Controller
@@ -19,6 +22,7 @@ class ProposalController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Proposal::class)
+        ->selectRaw('proposals.*')
         ->allowedIncludes([
             'currency',
             'estimate',
@@ -28,6 +32,13 @@ class ProposalController extends Controller
             'tags',
             'proposable',
             'comments',
+        ])
+        ->allowedSorts([
+            'id', 'subject', 'total', 'date',
+            AllowedSort::field('openTill', 'open_till'),
+            AllowedSort::field('createdAt', 'created_at'),
+            AllowedSort::custom('proposable', new ProposablePartnerSort(), 'partner_name'),
+            AllowedSort::custom('status', new ProposalStatusSort(), 'label'),
         ])
         ->orderBy('id', 'desc');
 

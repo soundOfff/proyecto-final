@@ -30,6 +30,7 @@ export default function Table({ rows, meta }) {
       Cell: ({ value }) => moneyFormat(value),
     },
     {
+      id: "partner",
       Header: "Nombre",
       accessor: "partner.company",
       Cell: ({ row }) => (
@@ -37,11 +38,12 @@ export default function Table({ rows, meta }) {
           href={`/partners/${row.original.id}`}
           sx={{ cursor: "pointer", color: "info" }}
         >
-          {row.original.partner?.company}
+          {row.original.partner?.company ?? row.original.partner?.name}
         </Link>
       ),
     },
     {
+      id: "project",
       Header: "Caso",
       accessor: "project.name",
       Cell: ({ row }) => {
@@ -61,7 +63,7 @@ export default function Table({ rows, meta }) {
     },
     {
       Header: "Fecha De Caducidad",
-      accessor: "expiryDate",
+      accessor: "dueDate",
     },
     {
       Header: "Proforma",
@@ -72,10 +74,7 @@ export default function Table({ rows, meta }) {
         ) : null,
     },
     {
-      Header: "Referencia #",
-      accessor: "referenceNo",
-    },
-    {
+      id: "serviceType",
       Header: "Tipo de Servicio",
       accessor: "project.serviceType.label",
     },

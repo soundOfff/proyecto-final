@@ -37,18 +37,19 @@ export default function Table({ rows, meta }) {
       Cell: ({ value }) => moneyFormat(value),
     },
     {
-      id: "partner_name",
+      id: "partner",
       Header: "Nombre",
       Cell: ({ row }) => (
         <Link
           href={`/partners/${row.original.partner?.id}/profile`}
           sx={{ cursor: "pointer", color: "info" }}
         >
-          {row.original.partner?.company}
+          {row.original.partner?.company ?? row.original.partner?.name}
         </Link>
       ),
     },
     {
+      id: "project",
       Header: "Caso",
       accessor: "project.name",
       Cell: ({ row }) => {
@@ -75,8 +76,10 @@ export default function Table({ rows, meta }) {
       accessor: "referenceNo",
     },
     {
+      id: "serviceType",
       Header: "Tipo de Servicio",
-      accessor: "project.serviceType.label",
+      accessor: "project.serviceType",
+      Cell: ({ row }) => row.original.project?.serviceType?.label,
     },
     {
       id: "actions",

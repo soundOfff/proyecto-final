@@ -7,7 +7,12 @@ use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
 use App\Models\ExpenseRepeat;
+use App\Sorts\ExpenseCategorySort;
+use App\Sorts\ExpenseInvoiceSort;
+use App\Sorts\ExpensePartnerSort;
+use App\Sorts\ExpenseProjectSort;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ExpenseController extends Controller
@@ -18,6 +23,7 @@ class ExpenseController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Expense::class)
+        ->selectRaw('expenses.*')
         ->allowedIncludes([
             'partner',
             'category',
@@ -25,7 +31,14 @@ class ExpenseController extends Controller
             'invoice',
         ])
         ->allowedFilters('partner_id')
-        ->orderBy('id', 'desc');
+        ->defaultSort('-id')
+        ->allowedSorts([
+            'id', 'name', 'amount', 'date',
+            AllowedSort::custom('partner', new ExpensePartnerSort(), 'partner_name'),
+            AllowedSort::custom('category.name', new ExpenseCategorySort(), 'name'),
+            AllowedSort::custom('project.name', new ExpenseProjectSort(), 'name'),
+            AllowedSort::custom('invoice.id', new ExpenseInvoiceSort(), 'id'),
+        ]);
 
         $expense = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

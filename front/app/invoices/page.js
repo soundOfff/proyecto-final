@@ -7,7 +7,7 @@ import { getAll as getAllInvoices } from "/actions/invoices";
 export const dynamic = "force-dynamic";
 
 export default async function Invoices({
-  searchParams: { perPage = 10, page = 1 },
+  searchParams: { perPage = 10, page = 1, sort = "-id" },
 }) {
   const include = [
     "project.serviceType",
@@ -23,6 +23,7 @@ export default async function Invoices({
     include,
     perPage,
     page,
+    sort,
   });
 
   return (

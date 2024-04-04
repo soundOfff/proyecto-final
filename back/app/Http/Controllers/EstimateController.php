@@ -10,6 +10,10 @@ use App\Models\Invoice;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
 use App\Models\Taggable;
+use App\Sorts\EstimatePartnerSort;
+use App\Sorts\EstimateProjectServiceTypeSort;
+use App\Sorts\EstimateProjectSort;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class EstimateController extends Controller
@@ -67,6 +71,7 @@ class EstimateController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Estimate::class)
+        ->selectRaw('estimates.*')
         ->allowedIncludes([
             'partner',
             'project.serviceType',
@@ -75,6 +80,15 @@ class EstimateController extends Controller
             'billingCountry',
             'shippingCountry',
             'tags',
+        ])
+        ->allowedSorts([
+            'id', 'total', 'date',
+            AllowedSort::field('totalTax', 'total_tax'),
+            AllowedSort::field('expiryDate', 'expiry_date'),
+            AllowedSort::field('referenceNo', 'reference_no'),
+            AllowedSort::custom('partner', new EstimatePartnerSort(), 'partner_name'),
+            AllowedSort::custom('project', new EstimateProjectSort(), 'name'),
+            AllowedSort::custom('serviceType', new EstimateProjectServiceTypeSort(), 'label'),
         ])
         ->allowedFilters('partner_id')
         ->orderBy('id', 'desc');

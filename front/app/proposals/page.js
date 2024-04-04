@@ -7,7 +7,7 @@ import { getAll as getAllProposals } from "/actions/proposals";
 export const dynamic = "force-dynamic";
 
 export default async function Proposals({
-  searchParams: { perPage = 10, page = 1 },
+  searchParams: { perPage = 10, page = 1, sort = "-id" },
 }) {
   const include = [
     "currency",
@@ -22,6 +22,7 @@ export default async function Proposals({
     data: { proposals },
     meta,
   } = await getAllProposals({
+    sort,
     include,
     perPage,
     page,

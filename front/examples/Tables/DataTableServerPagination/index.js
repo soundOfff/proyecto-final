@@ -130,6 +130,23 @@ function DataTable({
     </MDPagination>
   ));
 
+  const setSort = (column) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (params.get("sort") == null) {
+      params.set("sort", column.id);
+    } else if (column.id === params.get("sort")) {
+      params.set("sort", `-${column.id}`);
+    } else if (params.get("sort") === `-${column.id}`) {
+      params.delete("sort");
+    } else {
+      params.set("sort", column.id);
+    }
+    params.delete("page");
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <TableContainer sx={{ boxShadow: "none" }} className={className}>
       {entries || canSearch ? (
@@ -172,6 +189,7 @@ function DataTable({
                   {...column.getHeaderProps()}
                   width={column.width ? column.width : "auto"}
                   align={column.align ? column.align : "left"}
+                  onClick={() => setSort(column)}
                 >
                   {column.render("Header")}
                 </DataTableHeadCell>

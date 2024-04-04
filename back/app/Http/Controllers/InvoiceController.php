@@ -6,6 +6,11 @@ use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\InvoiceResourceCollection;
 use App\Http\Resources\InvoiceSelectResourceCollection;
 use App\Models\Invoice;
+use App\Sorts\InvoiceEstimateSort;
+use App\Sorts\InvoicePartnerSort;
+use App\Sorts\InvoiceProjectServiceTypeSort;
+use App\Sorts\InvoiceProjectSort;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class InvoiceController extends Controller
@@ -23,6 +28,7 @@ class InvoiceController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Invoice::class)
+            ->selectRaw('invoices.*')
             ->allowedIncludes([
                 'partner',
                 'project.serviceType',
@@ -34,7 +40,15 @@ class InvoiceController extends Controller
                 'tags',
             ])
             ->allowedFilters('partner_id')
-            ->orderBy('id', 'desc');
+            ->allowedSorts([
+                'id', 'total', 'date', 'tags',
+                AllowedSort::field('totalTax', 'total_tax'),
+                AllowedSort::field('dueDate', 'due_date'),
+                AllowedSort::custom('partner', new InvoicePartnerSort(), 'partner_name'),
+                AllowedSort::custom('project', new InvoiceProjectSort(), 'name'),
+                AllowedSort::custom('estimate', new InvoiceEstimateSort(), 'number'),
+                AllowedSort::custom('serviceType', new InvoiceProjectServiceTypeSort(), 'label'),
+            ]);
 
         $invoices = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

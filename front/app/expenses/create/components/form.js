@@ -81,7 +81,15 @@ export default function FormComponent({
             validationSchema={currentValidation}
             onSubmit={handleSubmit}
           >
-            {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+            {({
+              values,
+              errors,
+              touched,
+              isSubmitting,
+              setFieldValue,
+              setFieldTouched,
+              setFieldError,
+            }) => (
               <Form id={formId} autoComplete="off">
                 <Card sx={{ height: "100%" }}>
                   <MDBox mx={2} mt={-3}>
@@ -101,6 +109,8 @@ export default function FormComponent({
                         formField,
                         errors,
                         setFieldValue,
+                        setFieldTouched,
+                        setFieldError,
                       })}
                       <MDBox
                         mt={2}

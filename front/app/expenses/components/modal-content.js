@@ -3,10 +3,18 @@ import MDTypography from "/components/MDTypography";
 import MDBox from "/components/MDBox";
 import DefaultItem from "/examples/Items/DefaultItem";
 import moneyFormat from "/utils/moneyFormat";
+import Invoice from "../../../pagesComponents/pages/account/billing/components/Invoice";
 
 export default function ModalContent({ expense }) {
   return (
-    <MDBox sx={{ p: 5 }}>
+    <MDBox
+      sx={{ padding: "0px 10px" }}
+      display="flex"
+      justifyContent="center"
+      flexDirection="column"
+      height="100%"
+      alignContent="center"
+    >
       <Grid container lineHeight={0} ml={2}>
         <Grid item xs={12} md={6}>
           <MDTypography variant="h4" mr={5} mb={1}>
@@ -62,11 +70,15 @@ export default function ModalContent({ expense }) {
           />
         </Grid>
         <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Factura"
-            description={expense.invoice?.id}
-          />
+          <DefaultItem color="dark" title="Factura" />
+          <MDBox ml={2}>
+            <Invoice
+              date={expense?.invoice.date}
+              id={`# ${expense?.invoice.id}`}
+              key={expense?.invoice.id}
+              currency={expense?.invoice.currency.name}
+            />
+          </MDBox>
         </Grid>
 
         <Divider variant="left" sx={{ width: "70%" }} />
@@ -82,7 +94,8 @@ export default function ModalContent({ expense }) {
               color="text"
               textAlign="center"
             >
-              {expense.project?.name}
+              {expense.project?.name ??
+                "No hay descripcion del caso disponible"}
             </MDTypography>
           </MDBox>
         </Grid>

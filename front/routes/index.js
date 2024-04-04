@@ -50,16 +50,6 @@ const routes = [
     key: "profile-user",
     icon: <MDAvatar src={profilePicture.src} alt="Brooklyn Alice" size="sm" />,
     collapse: [
-      // {
-      //   name: "My Profile",
-      //   key: "my-profile",
-      //   route: "/pages/profile/profile-overview",
-      // },
-      // {
-      //   name: "Settings",
-      //   key: "profile-settings",
-      //   route: "/pages/account/settings",
-      // },
       {
         name: "Logout",
         key: "logout",
@@ -75,19 +65,9 @@ const routes = [
     collapse: [
       {
         name: "Tareas",
-        key: "dashboard-task",
+        key: "dashboard-tasks",
         route: "/dashboards/tasks",
       },
-      // {
-      //   name: "Analytics",
-      //   key: "analytics",
-      //   route: "/dashboards/analytics",
-      // },
-      // {
-      //   name: "Sales",
-      //   key: "dashboard-sales",
-      //   route: "/dashboards/sales",
-      // },
     ],
   },
   { type: "divider", key: "divider-1" },
@@ -102,7 +82,7 @@ const routes = [
   {
     type: "collapse",
     name: "Clientes",
-    key: "clients",
+    key: "partners",
     route: "/partners",
     icon: <Icon fontSize="medium">person</Icon>,
     noCollapse: true,
@@ -132,31 +112,8 @@ const routes = [
         key: "invoices",
         route: "/invoices",
       },
-      // {
-      //   name: "Cobros",
-      //   key: "payments",
-      //   route: "/payments",
-      // },
-      // {
-      //   name: "Notas de Crédito",
-      //   key: "credit-notes",
-      //   route: "/credit-notes",
-      // },
-      // {
-      //   name: "Articulos",
-      //   key: "articles",
-      //   route: "/articles",
-      // },
     ],
   },
-  // {
-  //   type: "collapse",
-  //   name: "Suscripciones",
-  //   key: "subscriptions",
-  //   route: "/subscriptions",
-  //   icon: <Icon fontSize="medium">refresh</Icon>,
-  //   noCollapse: true,
-  // },
   {
     type: "collapse",
     name: "Tareas",
@@ -165,240 +122,19 @@ const routes = [
     icon: <Icon fontSize="medium">list</Icon>,
     noCollapse: true,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Soporte",
-  //   key: "supports",
-  //   route: "/supports",
-  //   icon: <Icon fontSize="medium">book_online</Icon>,
-  //   noCollapse: true,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Clientes Potenciales",
-  //   key: "leads",
-  //   route: "/leads",
-  //   icon: <Icon fontSize="medium">wifi_calling_3</Icon>,
-  //   noCollapse: true,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Base De Conocimiento",
-  //   key: "knowledge-bases",
-  //   route: "/knowledge-bases",
-  //   icon: <Icon fontSize="medium">folder</Icon>,
-  //   noCollapse: true,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Utilidades",
-  //   key: "utilities",
-  //   icon: <Icon fontSize="medium">balance</Icon>,
-  //   collapse: [
-  //     {
-  //       name: "Multimedia",
-  //       key: "multimedia",
-  //       route: "/multimedia",
-  //     },
-  //     {
-  //       name: "Exportador en masa PDF",
-  //       key: "export-pdf",
-  //       route: "/export-pdf",
-  //     },
-  //     {
-  //       name: "Calendario",
-  //       key: "calendary",
-  //       route: "/calendary",
-  //     },
-  //     {
-  //       name: "Metas",
-  //       key: "goals",
-  //       route: "/goals",
-  //     },
-  //     {
-  //       name: "Encuestas",
-  //       key: "surveys",
-  //       route: "/surveys",
-  //     },
-  //   ],
-  // },
   {
     type: "collapse",
     name: "Informes",
     key: "reports",
     icon: <Icon fontSize="medium">leaderboard</Icon>,
     collapse: [
-      // {
-      //   name: "Ventas",
-      //   key: "report-sales",
-      //   route: "/report-sales",
-      // },
-      // {
-      //   name: "Gastos",
-      //   key: "report-expenses",
-      //   route: "/report-expenses",
-      // },
-      // {
-      //   name: "Gastos vs Ingresos",
-      //   key: "expenses_vs_income",
-      //   route: "/report-expenses-vs-income",
-      // },
-      // {
-      //   name: "Metas",
-      //   key: "report-goals",
-      //   route: "/report-goals",
-      // },
-      // {
-      //   name: "Encuestas",
-      //   key: "report-leads",
-      //   route: "/report-leads",
-      // },
       {
         name: "Resumen de Tabla de Tiempos",
         key: "report-timesheets",
         route: "/report-timesheets",
       },
-      // {
-      //   name: "Articulos De Conocimiento",
-      //   key: "knowledge-base-articles",
-      //   route: "/report-knowledge-base-articles",
-      // },
     ],
   },
-  // {
-  //   type: "collapse",
-  //   name: "Configuracion",
-  //   key: "settings",
-  //   route: "/settings",
-  //   icon: <Icon fontSize="medium">settings</Icon>,
-  //   noCollapse: true,
-  // },
-  // { type: "divider", key: "divider-0" },
-  // { type: "title", title: "Vistas", key: "title-projects" },
-  // {
-  //   type: "collapse",
-  //   name: "Applications",
-  //   key: "applications",
-  //   icon: <Icon fontSize="medium">apps</Icon>,
-  //   collapse: [
-  //     {
-  //       name: "Kanban",
-  //       key: "kanban",
-  //       route: "/applications/kanban",
-  //     },
-  //     {
-  //       name: "Wizard",
-  //       key: "wizard",
-  //       route: "/applications/wizard",
-  //     },
-  //     {
-  //       name: "Data Tables",
-  //       key: "data-tables",
-  //       route: "/applications/data-tables",
-  //     },
-  //     {
-  //       name: "Calendar",
-  //       key: "calendar",
-  //       route: "/applications/calendar",
-  //     },
-  //   ],
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Ecommerce",
-  //   key: "ecommerce",
-  //   icon: <Icon fontSize="medium">shopping_basket</Icon>,
-  //   collapse: [
-  //     {
-  //       name: "Products",
-  //       key: "products",
-  //       collapse: [
-  //         {
-  //           name: "New Product",
-  //           key: "new-product",
-  //           route: "/ecommerce/products/new-product",
-  //         },
-  //         {
-  //           name: "Edit Product",
-  //           key: "edit-product",
-  //           route: "/ecommerce/products/edit-product",
-  //         },
-  //         {
-  //           name: "Product Page",
-  //           key: "product-page",
-  //           route: "/ecommerce/products/product-page",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       name: "Orders",
-  //       key: "orders",
-  //       collapse: [
-  //         {
-  //           name: "Order List",
-  //           key: "order-list",
-  //           route: "/ecommerce/orders/order-list",
-  //         },
-  //         {
-  //           name: "Order Details",
-  //           key: "order-details",
-  //           route: "/ecommerce/orders/order-details",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Authentication",
-  //   key: "authentication",
-  //   icon: <Icon fontSize="medium">content_paste</Icon>,
-  //   collapse: [
-  //     {
-  //       name: "Sign In",
-  //       key: "sign-in",
-  //       collapse: [
-  //         {
-  //           name: "Basic",
-  //           key: "basic",
-  //           route: "/authentication/sign-in/basic",
-  //         },
-  //         {
-  //           name: "Cover",
-  //           key: "cover",
-  //           route: "/authentication/sign-in/cover",
-  //         },
-  //         {
-  //           name: "Illustration",
-  //           key: "illustration",
-  //           route: "/authentication/sign-in/illustration",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       name: "Sign Up",
-  //       key: "sign-up",
-  //       collapse: [
-  //         {
-  //           name: "Cover",
-  //           key: "cover",
-  //           route: "/authentication/sign-up/cover",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       name: "Reset Password",
-  //       key: "reset-password",
-  //       collapse: [
-  //         {
-  //           name: "Cover",
-  //           key: "cover",
-  //           route: "/authentication/reset-password/cover",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
 ];
 
 export default routes;

@@ -32,3 +32,13 @@ export async function store(data) {
   revalidatePath("/expenses");
   redirect("/expenses");
 }
+
+export async function destroy(expenseId) {
+  const url = new URL(`${process.env.API_URL}/expenses/${expenseId}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/expenses");
+}

@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 import { show, destroy } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
-import { Icon } from "@mui/material";
 import { DescriptionOutlined } from "@mui/icons-material";
 
 export default function Table({ rows }) {

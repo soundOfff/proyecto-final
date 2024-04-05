@@ -45,6 +45,7 @@ class PartnerController extends Controller
         ->allowedIncludes([
             'user.contacts',
             'country',
+            'files',
             'consolidator',
         ])
         ->allowedFilters([
@@ -84,6 +85,7 @@ class PartnerController extends Controller
             'shippingCountry',
             'billingCountry',
             'user.contacts',
+            'files',
             'consolidator',
             'primaryContact',
             'jurisdiction.district.province',

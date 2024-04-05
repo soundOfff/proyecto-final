@@ -36,7 +36,7 @@ class FileController extends Controller
 
 
     public function destroy(File $file) {
-        Storage::disk('google')->delete($file->url);
+        Storage::disk('google')->delete($file->url); 
         $file->delete();
         return response()->json(null, 204);
     }

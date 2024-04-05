@@ -14,6 +14,7 @@ import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import { destroy } from "../../../actions/expenses";
+import { destroy as destroyFile } from "../../../actions/files";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -21,6 +22,10 @@ export default function Table({ rows, meta }) {
   const [expenseIdShow, setExpenseIdShow] = useState(0);
   const [expense, setExpense] = useState(null);
   const [open, setOpen] = useState(false);
+
+  const handleDeleteFile = async (fileId) => {
+    await destroyFile(fileId);
+  };
 
   useEffect(() => {
     const fetchExpense = async () => {
@@ -86,6 +91,56 @@ export default function Table({ rows, meta }) {
     {
       Header: "Factura",
       accessor: "invoice.id",
+    },
+    {
+      Header: "Archivos",
+      accessor: "files",
+      width: "20%",
+      textAlign: "center",
+      Cell: ({ row }) => {
+        return (
+          <MDBox
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            sx={{ gap: 1, width: "100%" }}
+          >
+            {row.original.files.map((file) => (
+              <MDBox
+                borderRadius="lg"
+                display="flex"
+                alignItems="center"
+                width="100%"
+                justifyContent="between"
+                p={0.75}
+                sx={{
+                  border: ({ borders: { borderWidth, borderColor } }) =>
+                    `${borderWidth[1]} solid ${borderColor}`,
+                  gap: 1,
+                }}
+              >
+                <DescriptionOutlined fontSize="medium" color="dark" />
+                <Link href={file.publicUrl}>
+                  <MDTypography
+                    variant="button"
+                    fontWeight="regular"
+                    color="dark"
+                  >
+                    {file.subject.length > 10
+                      ? file.subject.substring(0, 10) + "..."
+                      : file.subject}
+                  </MDTypography>
+                </Link>
+                <CancelIcon
+                  color="error"
+                  onClick={() => handleDeleteFile(file.id)}
+                  sx={{ cursor: "pointer" }}
+                />
+              </MDBox>
+            ))}
+          </MDBox>
+        );
+      },
     },
     {
       Header: "Acciones",

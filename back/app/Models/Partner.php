@@ -143,6 +143,11 @@ class Partner extends Model
         return $this->morphMany(Proposal::class, 'proposable');
     }
 
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
     public function scopeSearch($query, $search)
     {
         return $query->when($search, function ($query) use ($search) {

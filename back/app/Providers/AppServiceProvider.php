@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'project' => 'App\Models\Project',
             'estimate' => 'App\Models\Estimate',
+            'partner' => 'App\Models\Partner',
+            'expense' => 'App\Models\Expense',
             'invoice' => 'App\Models\Invoice',
             'proposal' => 'App\Models\Proposal',
             'customer' => 'App\Models\Partner',

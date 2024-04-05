@@ -20,6 +20,7 @@ class ExpenseResource extends JsonResource
             'name' => $this->name,
             'name' => $this->name,
             'date' => $this->date,
+            'files' => FileResource::collection($this->whenLoaded('files')),
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'category' => ExpenseCategoryResource::make($this->whenLoaded('category')),
             'partner' => PartnerResource::make($this->whenLoaded('partner')),

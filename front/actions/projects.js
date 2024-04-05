@@ -71,13 +71,3 @@ export async function destroy(projectId) {
 
   revalidatePath("/projects");
 }
-
-export async function destroyFile(fileId) {
-  const url = new URL(`${process.env.API_URL}/files/${fileId}`);
-
-  await customFetch(url, {
-    method: "DELETE",
-  });
-
-  revalidatePath("/projects");
-}

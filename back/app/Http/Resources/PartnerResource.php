@@ -71,6 +71,7 @@ class PartnerResource extends JsonResource
             'rollNumber' => $this->roll_number,
             'ruc' => $this->ruc,
             'dv' => $this->dv,
+            'files' => FileResource::collection($this->whenLoaded('files')),
             'createdAt' => Carbon::parse($this->created_at)->format('m/d/Y g:i A'),
             'country' => CountryResource::make($this->whenLoaded('country')),
             'nationality' => CountryResource::make($this->whenLoaded('nationality')),

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Expense extends Model
 {
@@ -32,6 +33,7 @@ class Expense extends Model
         'recurring_type',
         'repeat_id',
         'recurring',
+        'files',
         'cycles',
         'total_cycles',
         'custom_recurring',
@@ -82,5 +84,10 @@ class Expense extends Model
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 }

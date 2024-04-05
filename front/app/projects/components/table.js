@@ -17,7 +17,8 @@ import FlashOnIcon from "@mui/icons-material/FlashOn";
 import Tooltip from "@mui/material/Tooltip";
 
 import { useEffect, useState } from "react";
-import { show, destroy, destroyFile } from "/actions/projects";
+import { show, destroy } from "/actions/projects";
+import { destroy as destroyFile } from "/actions/files";
 
 import { setColor } from "/utils/project-state-colors";
 

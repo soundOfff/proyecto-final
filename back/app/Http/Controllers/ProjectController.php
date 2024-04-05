@@ -93,6 +93,7 @@ class ProjectController extends Controller
                 'defendant',
                 'plaintiff',
                 'billingType',
+                'files',
                 'serviceType',
                 'status',
                 'members',

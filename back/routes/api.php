@@ -152,6 +152,7 @@ Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
 Route::get('/recurrings', [RecurringController::class, 'index']);
 
 Route::get('/files/{file}', [FileController::class, 'show']);
+Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
 
 Route::post('/login', [LoginController::class, 'login']);

@@ -52,6 +52,7 @@ export default function Table({ rows }) {
     { id: "clientType", Header: "Tipo de Cliente", accessor: "" },
     { Header: "Fecha de Creación", accessor: "createdAt" },
     { id: "industry", Header: "Industria", accessor: "" },
+    { id: "files", Header: "Archivos", accessor: "files" },
   ];
 
   const table = { columns, rows };

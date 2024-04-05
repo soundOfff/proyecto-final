@@ -32,6 +32,7 @@ class ProjectResource extends JsonResource
             'amount' => $this->amount,
             'juryNumber' => $this->jury_number,
             'onSchedule' => $this->on_schedule,
+            'files' => FileResource::collection($this->whenLoaded('files')),
             'createdAt' => Carbon::parse($this->created_at)->format('d-m-Y'),
             'billingType' => ProjectBillingTypeResource::make($this->whenLoaded('billingType')),
             'serviceType' => ProjectServiceTypeResource::make($this->whenLoaded('serviceType')),

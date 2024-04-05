@@ -54,6 +54,7 @@ class ProjectController extends Controller
                 'defendant',
                 'plaintiff',
                 'responsiblePerson',
+                'files',
                 'lawFirm',
                 'members',
                 'staffs',

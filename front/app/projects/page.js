@@ -10,7 +10,7 @@ import Table from "./components/table";
 import Filters from "./components/filters";
 import Stats from "./components/stats";
 
-const include = ["notes", "status"];
+const include = ["notes", "status", "files"];
 
 export const dynamic = "force-dynamic";
 

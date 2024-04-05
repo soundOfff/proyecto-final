@@ -13,7 +13,7 @@ class FileController extends Controller
     public function show(File $file)
     {
         $file = QueryBuilder::for(File::class)
-            ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable'])
+            ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable', 'files'])
             ->find($file->id);
 
         return new FileResource($file);
@@ -32,5 +32,12 @@ class FileController extends Controller
         File::create($data);
 
         return response()->json(null, 201);
+    }
+
+
+    public function destroy(File $file) {
+        Storage::disk('google')->delete($file->url);
+        $file->delete();
+        return response()->json(null, 204);
     }
 }

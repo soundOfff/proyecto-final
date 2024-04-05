@@ -8,16 +8,19 @@ import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
+import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import Tooltip from "@mui/material/Tooltip";
 
 import { useEffect, useState } from "react";
-import { show, destroy } from "/actions/projects";
+import { show, destroy, destroyFile } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
+
 import { DescriptionOutlined } from "@mui/icons-material";
 
 export default function Table({ rows }) {
@@ -47,6 +50,10 @@ export default function Table({ rows }) {
       deleteProject();
     }
   }, [projectIdDelete]);
+
+  const handleDeleteFile = async (fileId) => {
+    await destroyFile(fileId);
+  };
 
   const columns = [
     {
@@ -85,7 +92,57 @@ export default function Table({ rows }) {
       Cell: ({ value }) => {
         return value.length > 0 ? value.at(-1).content : null;
       },
-      width: "50%",
+      width: "40%",
+    },
+    {
+      Header: "Archivos",
+      accessor: "files",
+      width: "20%",
+      textAlign: "center",
+      Cell: ({ row }) => {
+        return (
+          <MDBox
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            sx={{ gap: 1, width: "100%" }}
+          >
+            {row.original.files.map((file) => (
+              <MDBox
+                borderRadius="lg"
+                display="flex"
+                alignItems="center"
+                width="100%"
+                justifyContent="between"
+                p={0.75}
+                sx={{
+                  border: ({ borders: { borderWidth, borderColor } }) =>
+                    `${borderWidth[1]} solid ${borderColor}`,
+                  gap: 1,
+                }}
+              >
+                <DescriptionOutlined fontSize="medium" color="dark" />
+                <Link href={file.publicUrl}>
+                  <MDTypography
+                    variant="button"
+                    fontWeight="regular"
+                    color="dark"
+                  >
+                    {file.subject.length > 10
+                      ? file.subject.substring(0, 10) + "..."
+                      : file.subject}
+                  </MDTypography>
+                </Link>
+                <CancelIcon
+                  color="error"
+                  onClick={() => handleDeleteFile(file.id)}
+                  sx={{ cursor: "pointer" }}
+                />
+              </MDBox>
+            ))}
+          </MDBox>
+        );
+      },
     },
     {
       Header: "Acciones",

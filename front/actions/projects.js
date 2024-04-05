@@ -18,7 +18,6 @@ export async function getAll(params) {
   url.search = new URLSearchParams(params);
 
   const { data } = await customFetch(url);
-
   return data.projects;
 }
 
@@ -65,6 +64,16 @@ export async function update(id, data) {
 
 export async function destroy(projectId) {
   const url = new URL(`${process.env.API_URL}/projects/${projectId}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/projects");
+}
+
+export async function destroyFile(fileId) {
+  const url = new URL(`${process.env.API_URL}/files/${fileId}`);
 
   await customFetch(url, {
     method: "DELETE",

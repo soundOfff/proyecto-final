@@ -33,7 +33,6 @@ class Expense extends Model
         'recurring_type',
         'repeat_id',
         'recurring',
-        'files',
         'cycles',
         'total_cycles',
         'custom_recurring',

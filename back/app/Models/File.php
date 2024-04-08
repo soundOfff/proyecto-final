@@ -28,6 +28,21 @@ class File extends Model
         return $this->belongsTo(Contact::class);
     }
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function partner(): BelongsTo
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
+    public function expense(): BelongsTo
+    {
+        return $this->belongsTo(Expense::class);
+    }
+
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);

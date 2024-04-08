@@ -18,7 +18,6 @@ export async function getAll(params) {
   url.search = new URLSearchParams(params);
 
   const { data } = await customFetch(url);
-
   return data.projects;
 }
 

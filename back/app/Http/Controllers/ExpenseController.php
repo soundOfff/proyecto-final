@@ -28,6 +28,7 @@ class ExpenseController extends Controller
             'partner',
             'category',
             'project',
+            'files',
             'invoice',
         ])
         ->allowedFilters('partner_id')
@@ -74,6 +75,7 @@ class ExpenseController extends Controller
         ->allowedIncludes([
             'partner',
             'category',
+            'files',
             'project',
             'invoice',
         ])

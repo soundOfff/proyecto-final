@@ -12,7 +12,7 @@ export default async function Expenses({
     meta,
   } = await getAllExpenses({
     sort,
-    include: ["category", "project", "invoice", "partner"],
+    include: ["category", "project", "invoice", "partner", "files"],
     perPage,
     page,
   });

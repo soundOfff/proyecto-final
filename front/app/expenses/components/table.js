@@ -3,18 +3,19 @@
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
 import ModalContent from "./modal-content";
 import moneyFormat from "/utils/moneyFormat";
 import Link from "next/link";
-import { show } from "/actions/expenses";
+import { show, destroy } from "/actions/expenses";
 import { useEffect, useState } from "react";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
-import { destroy } from "../../../actions/expenses";
-import { destroy as destroyFile } from "../../../actions/files";
+import { destroy as destroyFile } from "/actions/files";
+import { DescriptionOutlined, CancelIcon } from "@mui/icons-material";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -107,6 +108,7 @@ export default function Table({ rows, meta }) {
           >
             {row.original.files.map((file) => (
               <MDBox
+                key={file.id}
                 borderRadius="lg"
                 display="flex"
                 alignItems="center"

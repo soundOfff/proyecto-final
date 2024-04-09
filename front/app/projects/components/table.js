@@ -110,6 +110,7 @@ export default function Table({ rows }) {
           >
             {row.original.files.map((file) => (
               <MDBox
+                key={file.id}
                 borderRadius="lg"
                 display="flex"
                 alignItems="center"

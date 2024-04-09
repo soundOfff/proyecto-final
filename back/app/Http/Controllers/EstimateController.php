@@ -213,6 +213,13 @@ class EstimateController extends Controller
      */
     public function destroy(Estimate $estimate)
     {
-        //
+        $estimate->lineItems->each(function ($item) {
+            $item->taxes()->delete();
+        });
+        $estimate->lineItems()->delete();
+        $estimate->tags()->detach();
+        $estimate->delete();
+
+        return response()->json(null, 204);
     }
 }

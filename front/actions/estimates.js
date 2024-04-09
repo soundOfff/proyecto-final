@@ -65,3 +65,13 @@ export async function getMaxId() {
 
   return maxId;
 }
+
+export async function destroy(id) {
+  const url = new URL(`${process.env.API_URL}/estimates/${id}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/estimates");
+}

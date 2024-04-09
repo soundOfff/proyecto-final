@@ -98,7 +98,6 @@ Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
 Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);
 
-
 Route::get('/estimate-statuses', [EstimateStatusController::class, 'index']);
 
 Route::get('/estimates-max-id', [EstimateController::class, 'maxId']);
@@ -106,6 +105,7 @@ Route::get('/estimates', [EstimateController::class, 'index']);
 Route::post('/estimates', [EstimateController::class, 'store']);
 Route::put('/estimates/{estimate}', [EstimateController::class, 'update']);
 Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
+Route::delete('/estimates/{estimate}', [EstimateController::class, 'destroy']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 
 Route::get('/proposals', [ProposalController::class, 'index']);

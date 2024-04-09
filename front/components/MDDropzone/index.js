@@ -1,22 +1,6 @@
-/**
-=========================================================
-* NextJS Material Dashboard 2 PRO - v2.2.0
-=========================================================
+"use client";
 
-* Product Page: https://www.creative-tim.com/product/nextjs-material-dashboard-pro
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useEffect, useRef } from "react";
-
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+import { useEffect, useMemo, useRef } from "react";
 
 // Dropzone styles
 import "dropzone/dist/dropzone.css";
@@ -30,11 +14,14 @@ import MDDropzoneRoot from "/components/MDDropzone/MDDropzoneRoot";
 // NextJS Material Dashboard 2 PRO context
 import { useMaterialUIController } from "/context";
 
-function MDDropzone({ options }) {
+function MDDropzone({ options, setFieldValue, multiple = false }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
   const dropzoneRef = useRef();
+  const dropzoneInstance = useRef();
+
+  const memoizedOptions = useMemo(() => options, [options]);
 
   useEffect(() => {
     async function createDropzone() {
@@ -42,37 +29,43 @@ function MDDropzone({ options }) {
 
       Dropzone.autoDiscover = false;
 
-      return new Dropzone(dropzoneRef.current, { ...options });
+      if (dropzoneInstance.current) {
+        dropzoneInstance.current.destroy();
+      }
+
+      dropzoneInstance.current = new Dropzone(dropzoneRef.current, {
+        ...memoizedOptions,
+      });
+
+      dropzoneInstance.current.on("addedfile", (file) =>
+        setFieldValue("file", file)
+      );
+
+      return dropzoneInstance.current;
     }
 
     function removeDropzone() {
-      if (Dropzone.instances.length > 0)
-        Dropzone.instances.forEach((dz) => dz.destroy());
+      if (dropzoneInstance.current) {
+        dropzoneInstance.current.destroy();
+      }
     }
 
     createDropzone();
 
     return () => removeDropzone();
-  }, [options]);
+  }, [memoizedOptions, setFieldValue]);
 
   return (
     <MDDropzoneRoot
-      component="form"
-      action="/file-upload"
       ref={dropzoneRef}
       className="form-control dropzone"
       ownerState={{ darkMode }}
     >
       <MDBox className="fallback" bgColor="transparent">
-        <MDBox component="input" name="file" type="file" multiple />
+        <MDBox component="input" name="file" type="file" multiple={multiple} />
       </MDBox>
     </MDDropzoneRoot>
   );
 }
-
-// Typechecking props for the MDDropzone
-MDDropzone.propTypes = {
-  options: PropTypes.objectOf(PropTypes.any).isRequired,
-};
 
 export default MDDropzone;

@@ -4,16 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
+use App\Http\Resources\FileResourceCollection;
 use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class FileController extends Controller
 {
+    public function index()
+    {
+        $query = QueryBuilder::for(File::class)
+            ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable']);
+
+        $files = request()->has('perPage')
+            ? $query->paginate((int) request('perPage'))
+            : $query->get();
+
+        return new FileResourceCollection($files);
+    }
+
     public function show(File $file)
     {
         $file = QueryBuilder::for(File::class)
-            ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable', 'files'])
+            ->allowedIncludes(['fileable', 'files'])
             ->find($file->id);
 
         return new FileResource($file);
@@ -28,16 +41,18 @@ class FileController extends Controller
 
         Storage::disk('google')->put($fileName, file_get_contents($file));
         $data['url'] = Storage::disk('google')->path($fileName);
+        $data['subject'] = $fileName;
 
         File::create($data);
 
         return response()->json(null, 201);
     }
 
-
-    public function destroy(File $file) {
-        Storage::disk('google')->delete($file->url); 
+    public function destroy(File $file)
+    {
+        Storage::disk('google')->delete($file->url);
         $file->delete();
+
         return response()->json(null, 204);
     }
 }

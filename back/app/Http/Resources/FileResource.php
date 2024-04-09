@@ -28,11 +28,8 @@ class FileResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'invoiceId' => $this->invoice_id,
-            'contactId' => $this->contact_id,
-            'staffId' => $this->staff_id,
             'fileableId' => $this->fileable_id,
-            'fileable_type' => $this->fileable_type,
+            'fileableType' => $this->fileable_type,
             'url' => $this->url,
             'publicUrl' => $this->getPublicUrl(),
             'subject' => $this->subject,

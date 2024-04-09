@@ -124,6 +124,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Archivos",
+    key: "files",
+    route: "/files",
+    icon: <Icon fontSize="medium">insert_drive_file</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
     name: "Informes",
     key: "reports",
     icon: <Icon fontSize="medium">leaderboard</Icon>,

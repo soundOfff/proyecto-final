@@ -4,13 +4,15 @@ const defaultHeaders = {
 };
 
 export async function customFetch(url, options = {}) {
-  const response = await fetch(url, {
+  const allOptions = {
     ...options,
     headers: {
       ...defaultHeaders,
       ...options.headers,
     },
-  });
+  };
+
+  const response = await fetch(url, allOptions);
 
   if (!response.ok) {
     const error = await response.json();

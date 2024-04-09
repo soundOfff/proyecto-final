@@ -22,15 +22,10 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file',
-            'invoice_id' => 'nullable|exists:invoices,id',
-            'contact_id' => 'nullable|exists:contacts,id',
-            'staff_id' => 'nullable|exists:staff,id',
-            'fileable_id' => 'nullable|integer',
-            'fileable_type' => 'nullable|string',
-            'url' => 'nullable|string',
-            'subject' => 'required|string',
-            'visible_to_customer' => 'required|boolean',
+            'file' => 'nullable|file',
+            'fileable_id' => 'required|integer',
+            'fileable_type' => 'required|string',
+            'visible_to_customer' => 'nullable|boolean',
         ];
     }
 }

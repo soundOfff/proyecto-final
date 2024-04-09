@@ -12,15 +12,12 @@ return new class extends Migration {
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->nullable()->constrained();
-            $table->foreignId('contact_id')->nullable()->constrained();
-            $table->foreignId('staff_id')->nullable()->constrained();
             $table->unsignedBigInteger('fileable_id')->nullable();
             $table->string('fileable_type')->nullable();
 
             $table->string('url');
             $table->string('subject');
-            $table->boolean('visible_to_customer');
+            $table->boolean('visible_to_customer')->default(false);
 
             $table->timestamps();
         });

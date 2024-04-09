@@ -31,16 +31,14 @@ export default function Select({
         key={(option) => option?.id}
         onInputChange={(_, newInputValue) => onInputChange(newInputValue)}
         renderInput={(params) => (
-          <>
-            <MDInput
-              {...params}
-              variant="standard"
-              label={inputLabel}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ ...params.inputProps }}
-            />
-          </>
+          <MDInput
+            {...params}
+            variant="standard"
+            label={inputLabel}
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ ...params.inputProps }}
+          />
         )}
       />
       <MDBox mt={0.75}>

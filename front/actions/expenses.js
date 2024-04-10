@@ -22,6 +22,17 @@ export async function show(id, params) {
   return partner;
 }
 
+export async function update(id, data) {
+  const url = new URL(`${process.env.API_URL}/expenses/${id}`);
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/expenses");
+  redirect("/expenses");
+}
+
 export async function store(data) {
   const url = new URL(`${process.env.API_URL}/expenses`);
   await customFetch(url, {

@@ -94,6 +94,7 @@ Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
+Route::put('/expenses/{expense}', [ExpenseController::class, 'update']);
 Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
 Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
 Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);

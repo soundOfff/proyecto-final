@@ -13,9 +13,11 @@ import { useEffect, useState } from "react";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
-import { destroy as destroyFile } from "/actions/files";
-import { DescriptionOutlined, CancelIcon } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import { destroy as destroyFile } from "../../../actions/files";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -156,9 +158,17 @@ export default function Table({ rows, meta }) {
                 setExpenseIdShow(row.original.id);
                 setOpen(true);
               }}
-              sx={{ mr: 3, cursor: "pointer" }}
+              sx={{ mr: 1, cursor: "pointer" }}
             />
           </Tooltip>
+          <Link
+            href={`/expenses/${row.original.id}/edit`}
+            sx={{ cursor: "pointer", color: "info", ml: 1 }}
+          >
+            <Tooltip title="Editar gasto" placement="top">
+              <EditIcon fontSize="medium" color="warning" />
+            </Tooltip>
+          </Link>
           <Tooltip title="Eliminar gasto">
             <DeleteIcon
               color="error"

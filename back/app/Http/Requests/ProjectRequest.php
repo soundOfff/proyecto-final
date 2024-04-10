@@ -34,8 +34,8 @@ class ProjectRequest extends FormRequest
             'plaintiff_id' => 'nullable|numeric|exists:partners,id',
             'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',
             'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
-            'project_member_ids' => 'required|array',
-            'project_member_ids.*' => 'required|numeric|exists:staff,id',
+            'project_members' => 'required|array',
+            'project_members.*.id' => 'required|numeric|exists:staff,id',
         ];
     }
 }

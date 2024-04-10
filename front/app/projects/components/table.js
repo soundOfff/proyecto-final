@@ -11,10 +11,12 @@ import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import EditIcon from "@mui/icons-material/Edit";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
-import Tooltip from "@mui/material/Tooltip";
+import { Tooltip } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { show, destroy } from "/actions/projects";
@@ -163,9 +165,22 @@ export default function Table({ rows }) {
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
+          <Link href={`/projects/${row.original.id}/edit`}>
+            <Tooltip title="Editar">
+              <EditIcon
+                color="secondary"
+                fontSize="medium"
+                sx={{ mr: 3, cursor: "pointer" }}
+              />
+            </Tooltip>
+          </Link>
           <Link href={`/projects/create-notes/${row.original.id}`}>
             <Tooltip title="Agregar Notas">
-              <EditNoteIcon color="warning" fontSize="medium" />
+              <EditNoteIcon
+                color="warning"
+                fontSize="medium"
+                sx={{ mr: 3, cursor: "pointer" }}
+              />
             </Tooltip>
           </Link>
           <Tooltip title="Eliminar">
@@ -175,15 +190,15 @@ export default function Table({ rows }) {
               onClick={() => {
                 setProjectIdDelete(row.original.id);
               }}
-              sx={{ ml: 3, cursor: "pointer" }}
+              sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
           <Link href={`/projects/create-expenses/${row.original.id}`}>
             <Tooltip title="Registrar Gasto">
-              <DescriptionOutlined
+              <DescriptionOutlinedIcon
                 color="success"
                 fontSize="medium"
-                sx={{ ml: 3, cursor: "pointer" }}
+                sx={{ mr: 3, cursor: "pointer" }}
               />
             </Tooltip>
           </Link>

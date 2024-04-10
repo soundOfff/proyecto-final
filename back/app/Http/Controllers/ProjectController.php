@@ -106,11 +106,14 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
-        $ids = $request->get('project_member_ids');
+        $data = $request->validated();
 
+        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($ids);
+
+        $project->update($data);
 
         return response()->json($project, 201);
     }

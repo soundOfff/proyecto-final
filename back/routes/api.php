@@ -112,6 +112,7 @@ Route::get('/proposals', [ProposalController::class, 'index']);
 Route::post('/proposals', [ProposalController::class, 'store']);
 Route::put('/proposals/{proposal}', [ProposalController::class, 'update']);
 Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
+Route::delete('/proposals/{proposal}', [ProposalController::class, 'destroy']);
 Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 
 Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);

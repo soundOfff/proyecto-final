@@ -4,15 +4,26 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDButton from "/components/MDButton";
+import MDSnackbar from "/components/MDSnackbar";
 import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
+import { destroy } from "/actions/proposals";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  const [errorSB, setErrorSB] = useState(false);
+
+  const handleDelete = async (id) => {
+    await destroy(id);
+
+    setErrorSB(true);
+  };
 
   const columns = [
     {
@@ -87,14 +98,28 @@ export default function Table({ rows, meta }) {
       id: "actions",
       Header: "Acciones",
       Cell: ({ row }) => (
-        <Link
-          href={`/proposals/${row.original.id}/edit`}
-          sx={{ cursor: "pointer", color: "info" }}
-        >
-          <Tooltip title="Editar" placement="top">
-            <EditIcon fontSize="medium" color="warning" />
-          </Tooltip>
-        </Link>
+        <>
+          <Link
+            href={`/proposals/${row.original.id}/edit`}
+            sx={{ cursor: "pointer", color: "info" }}
+          >
+            <Tooltip title="Editar" placement="top">
+              <EditIcon fontSize="medium" color="warning" />
+            </Tooltip>
+          </Link>
+          {!row.original.invoiceId && (
+            <Tooltip title="Eliminar">
+              <DeleteIcon
+                color="error"
+                fontSize="medium"
+                onClick={() => {
+                  handleDelete(row.original.id);
+                }}
+                sx={{ ml: 3, cursor: "pointer" }}
+              />
+            </Tooltip>
+          )}
+        </>
       ),
     },
   ];
@@ -110,6 +135,16 @@ export default function Table({ rows, meta }) {
           </MDButton>
         </Link>
       </MDBox>
+      <MDSnackbar
+        color="error"
+        icon="warning"
+        title="Propuesta Eliminada"
+        content="Se ha eliminado la propuesta correctamente"
+        open={errorSB}
+        onClose={() => setErrorSB(false)}
+        close={() => setErrorSB(false)}
+        bgWhite
+      />
       <DataTable
         table={table}
         meta={meta}

@@ -153,6 +153,13 @@ class ProposalController extends Controller
      */
     public function destroy(Proposal $proposal)
     {
-        //
+        $proposal->lineItems->each(function ($item) {
+            $item->taxes()->delete();
+        });
+        $proposal->lineItems()->delete();
+        $proposal->tags()->detach();
+        $proposal->delete();
+
+        return response()->json(null, 204);
     }
 }

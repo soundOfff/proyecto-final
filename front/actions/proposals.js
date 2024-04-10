@@ -45,3 +45,13 @@ export async function show(id, params) {
 
   return proposal;
 }
+
+export async function destroy(id) {
+  const url = new URL(`${process.env.API_URL}/proposals/${id}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/proposals");
+}

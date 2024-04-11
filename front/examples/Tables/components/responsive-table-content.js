@@ -13,9 +13,7 @@ export default function ResponsiveTableContent({ row }) {
               <MDTypography variant="body2">{cell.column.Header}</MDTypography>
             </Grid>
             <Grid item xs={6}>
-              {typeof cell.value !== "object"
-                ? cell.value
-                : cell.render("Cell")}
+              {cell.render("Cell")}
             </Grid>
           </>
         );

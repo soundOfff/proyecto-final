@@ -45,10 +45,9 @@ import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import MDPagination from "/components/MDPagination";
 
-// NextJS Material Dashboard 2 PRO examples
-import DataTableHeadCell from "/examples/Tables/DataTable/DataTableHeadCell";
-import DataTableBodyCell from "/examples/Tables/DataTable/DataTableBodyCell";
-import ResponsiveTableContent from "/app/projects/components/responsive-table-content";
+import DataTableHeadCell from "/examples/Tables/components/DataTableHeadCell";
+import DataTableBodyCell from "/examples/Tables/components/DataTableBodyCell";
+import ResponsiveTableContent from "/examples/Tables/components/responsive-table-content";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 function DataTable({

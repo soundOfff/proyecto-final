@@ -69,17 +69,19 @@ export default function ModalContent({ expense }) {
             }
           />
         </Grid>
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem color="dark" title="Factura" />
-          <MDBox ml={2}>
-            <Invoice
-              date={expense?.invoice.date}
-              id={`# ${expense?.invoice.id}`}
-              key={expense?.invoice.id}
-              currency={expense?.invoice.currency.name}
-            />
-          </MDBox>
-        </Grid>
+        {expense.invoice && (
+          <Grid xs={12} md={6} mt={3}>
+            <DefaultItem color="dark" title="Factura" />
+            <MDBox ml={2}>
+              <Invoice
+                key={expense.invoice.id}
+                date={expense.invoice.date}
+                id={`# ${expense.invoice.id}`}
+                currency={expense.invoice.currency.name}
+              />
+            </MDBox>
+          </Grid>
+        )}
 
         <Divider variant="left" sx={{ width: "70%" }} />
 

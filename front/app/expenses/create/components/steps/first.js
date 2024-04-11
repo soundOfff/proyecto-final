@@ -17,12 +17,21 @@ import MDButton from "/components/MDButton";
 import MDInput from "/components/MDInput";
 import MDDatePicker from "/components/MDDatePicker";
 import moment from "moment";
+import Select from "/components/Select";
 import { ErrorMessage } from "formik";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function First({ formData, partners, categories, invoices }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { name, note, category, date, amount, partner, invoice, billable } =
     formField;
+  const searchParams = useSearchParams();
+  const partnerId = searchParams.get("partnerId");
+
+  useEffect(() => {
+    setFieldValue(partner.name, Number(partnerId));
+  }, [partnerId, setFieldValue, partner]);
 
   return (
     <Grid container spacing={4}>
@@ -100,32 +109,14 @@ export default function First({ formData, partners, categories, invoices }) {
         </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, partnerSelected) =>
-            setFieldValue(partner.name, partnerSelected?.id)
-          }
+        <Select
+          value={values[partner.name]}
           options={partners}
-          getOptionLabel={(option) => option.company}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={partner.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel={(option) => option.company ?? option.name}
+          fieldName={partner.name}
+          inputLabel={partner.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={partner.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField

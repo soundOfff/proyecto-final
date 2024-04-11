@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
         <link rel="shortcut icon" href={favicon.src} />
         <link rel="apple-touch-icon" sizes="76x76" href={appleIcon.src} />
         <meta charSet="utf-8" />
-        <meta name="theme-color" content="#1A73E8" />
+        {/* <meta name="theme-color" content="#1A73E8" /> */}
         <link
           href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap"
           rel="stylesheet"

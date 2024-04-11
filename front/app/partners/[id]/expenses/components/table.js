@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import { FlashOnOutlined } from "@mui/icons-material";
+import { useParams } from "next/navigation";
 
 export default function Table({ rows }) {
   const [controller] = useMaterialUIController();
@@ -19,6 +20,7 @@ export default function Table({ rows }) {
   const [expenseIdShow, setExpenseIdShow] = useState(0);
   const [expense, setExpense] = useState(null);
   const [open, setOpen] = useState(false);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchExpense = async () => {
@@ -110,7 +112,7 @@ export default function Table({ rows }) {
         </Modal>
       )}
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href="/expenses/create">
+        <Link href={`/expenses/create?partnerId=${id}`}>
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Gasto
           </MDButton>

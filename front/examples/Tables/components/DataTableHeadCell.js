@@ -59,35 +59,33 @@ function DataTableHeadCell({
           userSelect: sorted && "none",
         })}
       >
-        {children}
-        {sorted && (
-          <MDBox
-            position="absolute"
-            top={0}
-            right={align !== "right" ? "16px" : 0}
-            left={align === "right" ? "-5px" : "unset"}
-            sx={({ typography: { size } }) => ({
-              fontSize: size.lg,
-            })}
-          >
+        <MDBox display="flex">
+          <MDBox>{children}</MDBox>
+          {sorted && (
             <MDBox
-              position="absolute"
-              top={-6}
-              color={sorted === "asce" ? "text" : "secondary"}
-              opacity={sorted === "asce" ? 1 : 0.5}
+              sx={({ typography: { size } }) => ({
+                fontSize: size.lg,
+              })}
             >
-              <Icon>arrow_drop_up</Icon>
+              <MDBox
+                position="absolute"
+                top={-6}
+                color={sorted === "asce" ? "text" : "secondary"}
+                opacity={sorted === "asce" ? 1 : 0.5}
+              >
+                <Icon>arrow_drop_up</Icon>
+              </MDBox>
+              <MDBox
+                position="absolute"
+                top={0}
+                color={sorted === "desc" ? "text" : "secondary"}
+                opacity={sorted === "desc" ? 1 : 0.5}
+              >
+                <Icon>arrow_drop_down</Icon>
+              </MDBox>
             </MDBox>
-            <MDBox
-              position="absolute"
-              top={0}
-              color={sorted === "desc" ? "text" : "secondary"}
-              opacity={sorted === "desc" ? 1 : 0.5}
-            >
-              <Icon>arrow_drop_down</Icon>
-            </MDBox>
-          </MDBox>
-        )}
+          )}
+        </MDBox>
       </MDBox>
     </MDBox>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import MaterialLink from "@mui/material/Link";
 import DataTable from "/examples/Tables/DataTable";
 import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
@@ -62,14 +61,16 @@ export default function Table({ rows }) {
     {
       Header: "Nombre",
       accessor: "name",
+      width: "30%",
       Cell: ({ value, row }) => {
         return (
-          <MaterialLink href={`projects/${row.original.id}`} color="info">
-            {value}
-          </MaterialLink>
+          <MDBox display="flex">
+            <Link href={`projects/${row.original.id}`} color="info">
+              {value}
+            </Link>
+          </MDBox>
         );
       },
-      width: "30%",
     },
     {
       Header: "Estado",
@@ -87,7 +88,6 @@ export default function Table({ rows }) {
           />
         );
       },
-      width: "15%",
     },
     {
       Header: "Última Nota",
@@ -95,12 +95,10 @@ export default function Table({ rows }) {
       Cell: ({ value }) => {
         return value.length > 0 ? value.at(-1).content : null;
       },
-      width: "40%",
     },
     {
       Header: "Archivos",
       accessor: "files",
-      width: "20%",
       textAlign: "center",
       Cell: ({ row }) => {
         return (
@@ -153,7 +151,7 @@ export default function Table({ rows }) {
       accessor: "actions",
       textAlign: "center",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex">
           <Tooltip title="Vista Rápida">
             <FlashOnIcon
               color="info"
@@ -202,7 +200,7 @@ export default function Table({ rows }) {
               />
             </Tooltip>
           </Link>
-        </>
+        </MDBox>
       ),
     },
   ];

@@ -72,6 +72,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Caso",
       accessor: "project.name",
+      width: "25%",
       Cell: ({ value, row }) => {
         return row.original.project ? (
           <Link
@@ -149,7 +150,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Acciones",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex">
           <Tooltip title="Vista Rápida">
             <FlashOnIcon
               color="info"
@@ -179,7 +180,7 @@ export default function Table({ rows, meta }) {
               sx={{ mx: 1, cursor: "pointer" }}
             />
           </Tooltip>
-        </>
+        </MDBox>
       ),
     },
   ];

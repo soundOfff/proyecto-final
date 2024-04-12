@@ -178,7 +178,7 @@ function DataTable({
       <Table {...getTableProps()}>
         <MDBox
           component="thead"
-          sx={{ display: { md: "table-header-group", xs: "none" } }}
+          sx={{ display: { lg: "table-header-group", xs: "none" } }}
         >
           {headerGroups.map((headerGroup, key) => (
             <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
@@ -198,7 +198,7 @@ function DataTable({
         </MDBox>
         <TableBody
           {...getTableBodyProps()}
-          sx={{ display: { md: "table-row-group", xs: "none" } }}
+          sx={{ display: { lg: "table-row-group", xs: "none" } }}
         >
           {rows.map((row, key) => {
             prepareRow(row);
@@ -220,7 +220,7 @@ function DataTable({
         </TableBody>
         <TableBody
           {...getTableBodyProps()}
-          sx={{ display: { md: "none", xs: "table-row-group" } }}
+          sx={{ display: { lg: "none", xs: "table-row-group" } }}
         >
           {rows.map((row, key) => {
             prepareRow(row);

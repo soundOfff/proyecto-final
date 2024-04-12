@@ -99,14 +99,14 @@ function Sidenav({
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
     function handleMiniSidenav() {
-      setMiniSidenav(dispatch, window.innerWidth < 1200);
+      setMiniSidenav(dispatch, window.innerWidth < 1400);
       setTransparentSidenav(
         dispatch,
-        window.innerWidth < 1200 ? false : transparentSidenav
+        window.innerWidth < 1400 ? false : transparentSidenav
       );
       setWhiteSidenav(
         dispatch,
-        window.innerWidth < 1200 ? false : whiteSidenav
+        window.innerWidth < 1400 ? false : whiteSidenav
       );
     }
 

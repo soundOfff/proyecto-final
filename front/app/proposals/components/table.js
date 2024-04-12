@@ -27,7 +27,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
-      Header: "Propuesta #",
+      Header: "id",
       accessor: "id",
       Cell: ({ value }) => (
         <Link
@@ -98,7 +98,7 @@ export default function Table({ rows, meta }) {
       id: "actions",
       Header: "Acciones",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex">
           <Link
             href={`/proposals/${row.original.id}/edit`}
             sx={{ cursor: "pointer", color: "info" }}
@@ -115,11 +115,11 @@ export default function Table({ rows, meta }) {
                 onClick={() => {
                   handleDelete(row.original.id);
                 }}
-                sx={{ ml: 3, cursor: "pointer" }}
+                sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>
           )}
-        </>
+        </MDBox>
       ),
     },
   ];

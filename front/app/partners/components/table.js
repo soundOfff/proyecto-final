@@ -56,9 +56,7 @@ export default function Table({ rows }) {
         return <Switch {...label} checked={Boolean(value)} />;
       },
     },
-    { id: "clientType", Header: "Tipo de Cliente", accessor: "" },
     { Header: "Fecha de Creación", accessor: "createdAt" },
-    { id: "industry", Header: "Industria", accessor: "" },
     {
       Header: "Archivos",
       accessor: "files",

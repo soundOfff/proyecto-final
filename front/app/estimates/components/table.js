@@ -26,7 +26,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
-      Header: "Proforma #",
+      Header: "id",
       accessor: "id",
       Cell: ({ value }) => (
         <Link
@@ -96,7 +96,7 @@ export default function Table({ rows, meta }) {
       id: "actions",
       Header: "Acciones",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex">
           <Link
             href={`/estimates/${row.original.id}/edit`}
             sx={{ cursor: "pointer", color: "info" }}
@@ -115,7 +115,7 @@ export default function Table({ rows, meta }) {
               sx={{ ml: 3, cursor: "pointer" }}
             />
           </Tooltip>
-        </>
+        </MDBox>
       ),
     },
   ];

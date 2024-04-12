@@ -151,7 +151,7 @@ export default function Table({
             handleStatusChange(row.original.id, status.id);
           }}
           options={statuses}
-          sx={{ width: "12rem" }}
+          sx={{ width: "150px" }}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <MDInput {...params} variant="standard" fullWidth />
@@ -221,7 +221,7 @@ export default function Table({
               InputLabelProps={{ shrink: true }}
             />
           )}
-          sx={{ width: "200px" }}
+          sx={{ width: "150px" }}
         />
       ),
     },
@@ -229,7 +229,7 @@ export default function Table({
       Header: "Acciones",
       accessor: "",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex">
           <Tooltip title="Editar tarea">
             <EditNoteIcon
               color="info"
@@ -270,7 +270,7 @@ export default function Table({
               />
             </Tooltip>
           )}
-        </>
+        </MDBox>
       ),
     },
   ];

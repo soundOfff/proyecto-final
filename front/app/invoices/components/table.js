@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Table({ rows, meta }) {
   const columns = [
     {
-      Header: "Factura #",
+      Header: "id",
       accessor: "id",
       Cell: ({ row }) => (
         <Link

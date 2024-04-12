@@ -83,11 +83,7 @@ export default function Table({ rows, meta }) {
       Header: "Nro del caso",
       accessor: "",
       Cell: ({ row }) => (
-        <MDTypography
-          variant="body2"
-          fontSize="medium"
-          sx={{ textAlign: "center" }}
-        >
+        <MDTypography variant="body2" fontSize="medium">
           {row.original.taskable.id}
         </MDTypography>
       ),

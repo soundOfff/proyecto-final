@@ -13,7 +13,7 @@ import { Divider } from "@mui/material";
 import HandIcon from "/assets/logo/Black/hand.svg";
 import Image from "next/image";
 
-export default function ModalComponent({ project }) {
+export default function Detail({ project }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

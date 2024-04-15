@@ -27,6 +27,8 @@ import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import { getCurrentTimer } from "/actions/timers";
+import DeleteRow from "/components/DeleteRow";
+import useDeleteRow from "/hooks/useDeleteRow";
 
 export default function Table({
   rows,
@@ -47,6 +49,14 @@ export default function Table({
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openShowModal, setOpenShowModal] = useState(false);
   const { data: session } = useSession();
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
@@ -246,7 +256,7 @@ export default function Table({
               color="error"
               fontSize="medium"
               onClick={() => {
-                destroy(row.original.id);
+                handleDelete(row.original.id);
               }}
               sx={{ mx: 1, cursor: "pointer" }}
             />
@@ -333,6 +343,15 @@ export default function Table({
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

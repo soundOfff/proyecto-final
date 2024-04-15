@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('invoice_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('partner_id')->nullable()->constrained();
             $table->foreignId('expense_category_id')->constrained();

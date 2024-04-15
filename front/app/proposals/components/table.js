@@ -4,26 +4,27 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
-import { useState } from "react";
 import { destroy } from "/actions/proposals";
+import useDeleteRow from "/hooks/useDeleteRow";
+import DeleteRow from "../../../components/DeleteRow";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const [errorSB, setErrorSB] = useState(false);
-
-  const handleDelete = async (id) => {
-    await destroy(id);
-
-    setErrorSB(true);
-  };
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const columns = [
     {
@@ -135,22 +136,21 @@ export default function Table({ rows, meta }) {
           </MDButton>
         </Link>
       </MDBox>
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Propuesta Eliminada"
-        content="Se ha eliminado la propuesta correctamente"
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <DataTable
         table={table}
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

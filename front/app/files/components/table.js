@@ -3,6 +3,11 @@
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import Link from "next/link";
+import Tooltip from "@mui/material/Tooltip";
+import DeleteIcon from "@mui/icons-material/Delete";
+import useDeleteRow from "/hooks/useDeleteRow";
+import DeleteRow from "/components/DeleteRow";
+import { destroy } from "/actions/files";
 
 export default function Table({ rows, meta }) {
   const getFileableUrl = (row) => {
@@ -15,6 +20,14 @@ export default function Table({ rows, meta }) {
         return "/";
     }
   };
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const columns = [
     {
@@ -39,6 +52,22 @@ export default function Table({ rows, meta }) {
         </Link>
       ),
     },
+    {
+      id: "acciones",
+      Header: "Acciones",
+      Cell: ({ row }) => (
+        <Tooltip title="Eliminar Archivo">
+          <DeleteIcon
+            color="error"
+            fontSize="medium"
+            onClick={() => {
+              handleDelete(row.original.id);
+            }}
+            sx={{ mx: 1, cursor: "pointer" }}
+          />
+        </Tooltip>
+      ),
+    },
   ];
 
   const table = { columns, rows };
@@ -51,6 +80,15 @@ export default function Table({ rows, meta }) {
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

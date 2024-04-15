@@ -18,6 +18,8 @@ import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import EditIcon from "@mui/icons-material/Edit";
 import { destroy as destroyFile } from "../../../actions/files";
+import DeleteRow from "../../../components/DeleteRow";
+import useDeleteRow from "../../../hooks/useDeleteRow";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -25,6 +27,14 @@ export default function Table({ rows, meta }) {
   const [expenseIdShow, setExpenseIdShow] = useState(0);
   const [expense, setExpense] = useState(null);
   const [open, setOpen] = useState(false);
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const handleDeleteFile = async (fileId) => {
     await destroyFile(fileId);
@@ -175,7 +185,7 @@ export default function Table({ rows, meta }) {
               color="error"
               fontSize="medium"
               onClick={() => {
-                destroy(row.original.id);
+                handleDelete(row.original.id);
               }}
               sx={{ mx: 1, cursor: "pointer" }}
             />
@@ -213,6 +223,15 @@ export default function Table({ rows, meta }) {
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

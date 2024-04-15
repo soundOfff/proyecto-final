@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import DataTable from "/examples/Tables/DataTable";
-import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
-import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
 
@@ -24,13 +22,22 @@ import { destroy as destroyFile } from "/actions/files";
 import { setColor } from "/utils/project-state-colors";
 
 import { DescriptionOutlined } from "@mui/icons-material";
+import Detail from "./detail";
+import DeleteRow from "/components/DeleteRow";
+import useDeleteRow from "/hooks/useDeleteRow";
 
 export default function Table({ rows }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
-  const [projectIdDelete, setProjectIdDelete] = useState(0);
   const [project, setProject] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
+  const [openShow, setOpenShow] = useState(false);
+  const {
+    openDeleteConfirmation,
+    errorSB,
+    handleDelete,
+    setDeleteConfirmed,
+    setOpenDeleteConfirmation,
+    setErrorSB,
+  } = useDeleteRow(destroy);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -43,15 +50,10 @@ export default function Table({ rows }) {
     }
   }, [projectIdShow]);
 
-  useEffect(() => {
-    const deleteProject = async () => {
-      await destroy(projectIdDelete);
-      setErrorSB(true);
-    };
-    if (projectIdDelete) {
-      deleteProject();
-    }
-  }, [projectIdDelete]);
+  const handleShow = (row) => {
+    setProjectIdShow(row.original.id);
+    setOpen(true);
+  };
 
   const handleDeleteFile = async (fileId) => {
     await destroyFile(fileId);
@@ -156,10 +158,7 @@ export default function Table({ rows }) {
             <FlashOnIcon
               color="info"
               fontSize="medium"
-              onClick={() => {
-                setProjectIdShow(row.original.id);
-                setOpen(true);
-              }}
+              onClick={() => handleShow(row)}
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
@@ -185,9 +184,7 @@ export default function Table({ rows }) {
             <DeleteIcon
               color="error"
               fontSize="medium"
-              onClick={() => {
-                setProjectIdDelete(row.original.id);
-              }}
+              onClick={() => handleDelete(row.original.id)}
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
@@ -211,30 +208,29 @@ export default function Table({ rows }) {
     <MDBox>
       {project && (
         <Modal
-          open={open}
+          open={openShow}
           onClose={() => {
-            setOpen(false);
+            setOpenShow(false);
           }}
         >
-          <ModalContent project={project} />
+          <Detail project={project} />
         </Modal>
       )}
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Proyecto Eliminado"
-        content="Se ha eliminado el proyecto correctamente"
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <DataTable
         table={table}
         entriesPerPage={false}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

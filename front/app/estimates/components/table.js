@@ -3,7 +3,6 @@
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 import moneyFormat from "/utils/moneyFormat";
 import { useMaterialUIController } from "/context";
 import Link from "next/link";
@@ -11,18 +10,20 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { destroy } from "/actions/estimates";
-import { useState } from "react";
+import DeleteRow from "/components/DeleteRow";
+import useDeleteRow from "/hooks/useDeleteRow";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const [errorSB, setErrorSB] = useState(false);
-
-  const handleDelete = async (id) => {
-    await destroy(id);
-
-    setErrorSB(true);
-  };
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const columns = [
     {
@@ -131,22 +132,21 @@ export default function Table({ rows, meta }) {
           </MDButton>
         </Link>
       </MDBox>
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Proforma Eliminada"
-        content="Se ha eliminado la proforma correctamente"
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <DataTable
         table={table}
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

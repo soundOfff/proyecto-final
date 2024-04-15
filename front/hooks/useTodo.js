@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { update } from "/actions/tasks";
 
 export default function useTodo(checklistItems) {
   const [items, setItems] = useState(checklistItems || []);

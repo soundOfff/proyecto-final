@@ -14,7 +14,9 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
+import Select from "/components/Select";
 import { useEffect } from "react";
+import { getDefaultCurrency } from "/actions/currencies";
 
 export default function Second({
   formData,
@@ -40,38 +42,23 @@ export default function Second({
     sendInvoiceToCustomer,
   } = formField;
 
+  useEffect(() => {
+    getDefaultCurrency().then((defaultCurrency) => {
+      setFieldValue(currency.name, defaultCurrency.id);
+    });
+  }, [currency.name, setFieldValue]);
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12}>
-        <Autocomplete
-          onChange={(e, currencySelected) =>
-            setFieldValue(
-              currency.name,
-              currencySelected ? currencySelected.id : null
-            )
-          }
+        <Select
+          value={values[currency.name]}
           options={currencies}
-          getOptionLabel={(option) => `${option.symbol} ${option.name}`}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={currency.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel={(option) => `${option.symbol} ${option.name}`}
+          fieldName={currency.name}
+          inputLabel={currency.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={currency.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
         <Autocomplete

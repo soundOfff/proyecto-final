@@ -16,6 +16,7 @@ export default async function NewProject() {
     currencies,
     paymentMethods,
     repeats,
+    defaultCurrency,
   ] = await Promise.all([
     getPartnerSelect(),
     getAllCategories(),

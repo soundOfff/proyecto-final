@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Contact extends Model
 {
@@ -19,6 +20,7 @@ class Contact extends Model
         'email_verification_key',
         'email_verification_sent_at',
         'email_verified_at',
+        'estimate_emails',
         'first_name',
         'invoice_emails',
         'is_primary',
@@ -28,6 +30,7 @@ class Contact extends Model
         'last_name',
         'new_pass_key',
         'new_pass_key_requested',
+        'partner_id',
         'password',
         'phone_number',
         'profile_image',
@@ -37,13 +40,18 @@ class Contact extends Model
         'title',
     ];
 
-    public function user(): BelongsTo
+    public function partner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Partner::class);
     }
 
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class);
     }
 }

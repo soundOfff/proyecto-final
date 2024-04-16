@@ -6,9 +6,10 @@ import { show } from "/actions/partners";
 
 export default async function Layout({ children, params: { id } }) {
   const partner = await show(id, {
-    include: ["user.contacts", "country", "consolidator"],
+    include: ["contacts", "country", "consolidator"],
   });
-  const primaryContact = partner.user?.contacts.find(
+
+  const primaryContact = partner.contacts.find(
     (contact) => contact?.isPrimary == true
   );
   return (

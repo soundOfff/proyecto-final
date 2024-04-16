@@ -19,6 +19,7 @@ use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProjectBillingTypeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectNoteController;
@@ -141,6 +142,7 @@ Route::get('/invoices-select', [InvoiceController::class, 'select']);
 Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
 
 Route::get('/contacts', [ContactController::class, 'index']);
+Route::post('/contacts', [ContactController::class, 'store']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
@@ -159,6 +161,8 @@ Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
 
 Route::post('/login', [LoginController::class, 'login']);
+
+Route::get('/permissions', [PermissionController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

@@ -5,7 +5,7 @@ import Form from "./components/form";
 export default async function Profile({ params: { id } }) {
   const partner = await show(id, {
     include: [
-      "user.contacts",
+      "contacts",
       "country",
       "consolidator",
       "shippingCountry",

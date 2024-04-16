@@ -4,7 +4,7 @@ import MDBox from "/components/MDBox";
 import Table from "./components/table";
 
 export default async function Contacts({ params: { id } }) {
-  const contacts = await getAll({ "filter[user_id]": id });
+  const contacts = await getAll({ "filter[partner_id]": id });
 
   return (
     <MDBox my={3}>

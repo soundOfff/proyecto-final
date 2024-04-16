@@ -13,7 +13,7 @@ import Table from "./components/table";
 import Stats from "./components/stats";
 import Search from "./components/search";
 
-const include = ["user.contacts", "files"];
+const include = ["contacts", "files"];
 
 export const dynamic = "force-dynamic";
 

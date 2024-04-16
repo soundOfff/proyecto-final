@@ -43,7 +43,7 @@ class PartnerController extends Controller
     {
         $query = QueryBuilder::for(Partner::class)
         ->allowedIncludes([
-            'user.contacts',
+            'contacts',
             'country',
             'files',
             'consolidator',
@@ -84,7 +84,7 @@ class PartnerController extends Controller
             'country',
             'shippingCountry',
             'billingCountry',
-            'user.contacts',
+            'contacts',
             'files',
             'consolidator',
             'primaryContact',

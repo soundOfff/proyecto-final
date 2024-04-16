@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Http\Resources\ContactResourceCollection;
 use App\Models\Contact;
 use Illuminate\Http\Request;
@@ -29,10 +30,10 @@ class ContactController extends Controller
     {
         $query = QueryBuilder::for(Contact::class)
         ->allowedIncludes([
-            'user.partners',
+            'partner',
             'staff',
         ])
-        ->allowedFilters('user_id')
+        ->allowedFilters('partner_id')
         ->orderBy('id', 'desc');
 
         $contacts = request()->has('perPage')
@@ -45,9 +46,17 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
-        //
+        $newContact = $request->validated();
+
+        $contact = Contact::create($newContact);
+
+        $permissionIds = array_map(fn ($permission) => $permission['id'], $newContact['permissions']);
+
+        $contact->permissions()->sync($permissionIds);
+
+        return response()->json(null, 201);
     }
 
     /**

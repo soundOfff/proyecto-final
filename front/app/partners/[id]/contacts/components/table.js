@@ -4,8 +4,16 @@ import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDAvatar from "/components/MDAvatar";
 import MDTypography from "/components/MDTypography";
+import MDButton from "/components/MDButton";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Table({ rows }) {
+  const router = useRouter();
+  const path = usePathname();
+  const handleAddContact = () => {
+    router.push(`${path}/create`);
+  };
+
   const columns = [
     {
       Header: "Nombre Completo",
@@ -48,6 +56,11 @@ export default function Table({ rows }) {
 
   return (
     <MDBox>
+      <MDBox display="flex" justifyContent="end" mb={4}>
+        <MDButton variant="contained" color="dark" onClick={handleAddContact}>
+          Agregar Contacto
+        </MDButton>
+      </MDBox>
       <DataTable
         table={table}
         entriesPerPage={false}

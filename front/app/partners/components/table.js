@@ -32,7 +32,7 @@ export default function Table({ rows }) {
     {
       id: "contactName",
       Header: "Contacto Principal",
-      accessor: "user.contacts",
+      accessor: "contacts",
       Cell: ({ value }) => {
         return value && value[0]
           ? `${value[0].firstName} ${value[0].lastName}`
@@ -42,7 +42,7 @@ export default function Table({ rows }) {
     {
       id: "contactEmail",
       Header: "Email principal",
-      accessor: "user.contacts",
+      accessor: "contacts",
       Cell: ({ value }) => {
         return value && value[0] ? value[0].email : null;
       },

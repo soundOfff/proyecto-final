@@ -84,7 +84,7 @@ class PartnerResource extends JsonResource
             'president' => static::make($this->whenLoaded('president')),
             'secretary' => static::make($this->whenLoaded('secretary')),
             'treasurer' => static::make($this->whenLoaded('treasurer')),
-            'user' => UserResource::make($this->whenLoaded('user')),
+            'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
             'primaryContact' => ContactResource::make($this->whenLoaded('primaryContact')),
         ];
     }

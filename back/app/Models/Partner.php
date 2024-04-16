@@ -81,21 +81,9 @@ class Partner extends Model
         return $this->belongsTo(Jurisdiction::class);
     }
 
-    public function user(): BelongsTo
+    public function contacts(): HasMany
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function primaryContact(): HasOneThrough
-    {
-        return $this->hasOneThrough(
-            Contact::class,
-            User::class,
-            'id',
-            'user_id',
-            'user_id',
-            'id'
-        )->where('is_primary', true);
+        return $this->hasMany(Contact::class);
     }
 
     public function consolidator(): BelongsTo

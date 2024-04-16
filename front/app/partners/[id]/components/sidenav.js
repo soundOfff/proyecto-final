@@ -10,10 +10,12 @@ import MDTypography from "/components/MDTypography";
 
 // NextJS Material Dashboard 2 PRO context
 import { useMaterialUIController } from "/context";
+import { useParams, usePathname } from "next/navigation";
 
 export default function Sidenav() {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  const { id } = useParams();
 
   const sidenavItems = [
     { icon: "person", label: "Perfil", href: `profile` },
@@ -44,7 +46,7 @@ export default function Sidenav() {
       <MDBox key={itemKey} component="li" pt={key === 0 ? 0 : 1}>
         <MDTypography
           component="a"
-          href={`${href}`}
+          href={`/partners/${id}/${href}`}
           variant="button"
           fontWeight="regular"
           textTransform="capitalize"

@@ -229,7 +229,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? "white" : "inherit"}>
               <Link
-                href="/authentication/sign-in/basic"
+                href="/profile"
                 passHref
                 legacyBehavior
               >

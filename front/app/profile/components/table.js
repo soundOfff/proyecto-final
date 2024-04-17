@@ -22,6 +22,7 @@ import { destroy as destroyFile } from "/actions/files";
 import { setColor } from "/utils/project-state-colors";
 
 import { DescriptionOutlined } from "@mui/icons-material";
+import { Card } from "@mui/material";
 import Detail from "./detail";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
@@ -205,33 +206,40 @@ export default function Table({ rows }) {
   const table = { columns, rows };
 
   return (
-    <MDBox>
-      {project && (
-        <Modal
-          open={openShow}
-          onClose={() => {
-            setOpenShow(false);
-          }}
-        >
-          <Detail project={project} />
-        </Modal>
-      )}
-      <DataTable
-        table={table}
-        entriesPerPage={false}
-        showTotalEntries={true}
-        isSorted={true}
-        noEndBorder
-      />
-      <DeleteRow
-        {...{
-          setOpenDeleteConfirmation,
-          errorSB,
-          setErrorSB,
-          openDeleteConfirmation,
-          setDeleteConfirmed,
-        }}
-      />
+    <MDBox my={3}>
+      <Card>
+        <MDBox p={2}>
+          <MDTypography variant="h5" fontWeight="medium" p={2}>
+            Proyectos
+          </MDTypography>
+          {project && (
+            <Modal
+              open={openShow}
+              onClose={() => {
+                setOpenShow(false);
+              }}
+            >
+              <Detail project={project} />
+            </Modal>
+          )}
+          <DataTable
+            table={table}
+            entriesPerPage={false}
+            showTotalEntries={true}
+            isSorted={true}
+            noEndBorder
+          />
+          <DeleteRow
+            {...{
+              setOpenDeleteConfirmation,
+              errorSB,
+              setErrorSB,
+              openDeleteConfirmation,
+              setDeleteConfirmed,
+            }}
+          />
+        </MDBox>
+      </Card>
     </MDBox>
   );
 }

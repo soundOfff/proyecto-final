@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectMemberRequest;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
@@ -145,5 +146,18 @@ class ProjectController extends Controller
             ->get();
 
         return response()->json($countByStatuses);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateMembers(ProjectMemberRequest $request, Project $project)
+    {
+        $request->validated();
+
+        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $project->members()->sync($ids);
+
+        return response()->json($project, 201);
     }
 }

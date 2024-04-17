@@ -9,8 +9,8 @@ import { authOptions } from "/pages/api/auth/[...nextauth]";
 
 import { getAll as getAllTasks } from "/actions/tasks";
 import { getAll as getAllProjects } from "/actions/projects";
-import { getStats } from "/actions/staffs";
 import { Suspense } from "react";
+import { getStats } from "/actions/staffs";
 import Stats from "./components/stats";
 
 const tasksInclude = ["timers", "status", "assigneds", "taskable", "partner"];
@@ -42,7 +42,7 @@ export default async function Tasks({ searchParams }) {
               <MDBox pt={3} px={3}>
                 <MDTypography variant="h6" fontWeight="medium">
                   {type === "myProjects"
-                    ? "Projectos en los que participo"
+                    ? "Proyectos en los que participo"
                     : "Mis tareas / Asignadas por mi"}
                 </MDTypography>
               </MDBox>

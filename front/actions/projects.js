@@ -62,6 +62,17 @@ export async function update(id, data) {
   redirect("/projects");
 }
 
+export async function updateMembers(id, data) {
+  const url = new URL(`${process.env.API_URL}/project-members/${id}`);
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/projects");
+  redirect("/projects");
+}
+
 export async function destroy(projectId) {
   const url = new URL(`${process.env.API_URL}/projects/${projectId}`);
 

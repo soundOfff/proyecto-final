@@ -5,14 +5,14 @@ import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import { useState } from "react";
-import { update } from "/actions/projects";
+import { updateMembers } from "/actions/projects";
 
-export default function UpdateMembers({ projectId, staffs }) {
+export default function UpdateMembersComponent({ projectId, staffs }) {
   const [members, setMembers] = useState([]);
 
   const handleUpdate = () => {
-    update(projectId, {
-      project_member_ids: members.map((member) => member.id),
+    updateMembers(projectId, {
+      project_members: members,
     });
   };
 

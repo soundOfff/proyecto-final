@@ -63,6 +63,7 @@ Route::post('/projects', [ProjectController::class, 'store']);
 Route::put('/projects/{project}', [ProjectController::class, 'update']);
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
 Route::get('/projects/{project}', [ProjectController::class, 'show']);
+Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
 
 Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 

@@ -33,7 +33,7 @@ class ExpenseController extends Controller
             'currency',
             'paymentMethod',
         ])
-        ->allowedFilters('partner_id')
+        ->allowedFilters(['partner_id', 'project_id'])
         ->defaultSort('-id')
         ->allowedSorts([
             'id', 'name', 'amount', 'date',
@@ -95,6 +95,7 @@ class ExpenseController extends Controller
     {
         $updatedExpense = $request->validated();
         $expense->update($updatedExpense);
+
         return response()->json($expense, 201);
     }
 

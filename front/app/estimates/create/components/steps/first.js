@@ -16,7 +16,11 @@ import moment from "moment";
 import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import { useEffect, useState } from "react";
-import { getSelect as getProjectSelect } from "/actions/projects";
+import {
+  getSelect as getProjectSelect,
+  show as showProject,
+} from "/actions/projects";
+import { useSearchParams } from "next/navigation";
 
 export default function First({
   formData,
@@ -40,6 +44,7 @@ export default function First({
     currency,
   } = formField;
   const [projects, setProjects] = useState([]);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (values.partner_id) {
@@ -48,6 +53,15 @@ export default function First({
       );
     }
   }, [values.partner_id]);
+
+  useEffect(() => {
+    if (searchParams.get("projectId")) {
+      showProject(searchParams.get("projectId")).then((data) => {
+        setFieldValue(partner.name, data.defendantId);
+        setFieldValue(project.name, data.id);
+      });
+    }
+  }, [searchParams, setFieldValue, project, partner]);
 
   return (
     <Grid container spacing={5}>

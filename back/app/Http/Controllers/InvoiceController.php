@@ -39,7 +39,7 @@ class InvoiceController extends Controller
                 'lineItems.taxes',
                 'tags',
             ])
-            ->allowedFilters('partner_id')
+            ->allowedFilters(['partner_id', 'project_id'])
             ->allowedSorts([
                 'id', 'total', 'date', 'tags',
                 AllowedSort::field('totalTax', 'total_tax'),

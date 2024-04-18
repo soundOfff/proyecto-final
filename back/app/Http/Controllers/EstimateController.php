@@ -90,7 +90,7 @@ class EstimateController extends Controller
             AllowedSort::custom('project', new EstimateProjectSort(), 'name'),
             AllowedSort::custom('serviceType', new EstimateProjectServiceTypeSort(), 'label'),
         ])
-        ->allowedFilters('partner_id')
+        ->allowedFilters(['partner_id', 'project_id'])
         ->orderBy('id', 'desc');
 
         $estimates = request()->has('perPage')

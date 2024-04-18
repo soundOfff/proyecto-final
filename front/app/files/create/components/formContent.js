@@ -13,11 +13,13 @@ import { Autocomplete, Grid } from "@mui/material";
 import { getAll as getAllProjects } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllExpenses } from "/actions/expenses";
+import { useSearchParams } from "next/navigation";
 
 export default function FormContent({ values, setFieldValue }) {
   const { formField } = form;
   const { file: fileField, fileableType, fileableId } = formField;
   const [relations, setRelations] = useState([]);
+  const searchParams = useSearchParams();
 
   const getOptionLabel = (option) => {
     if (option?.company) return option.company;
@@ -42,6 +44,21 @@ export default function FormContent({ values, setFieldValue }) {
       getRelation(values[fileableType.name]);
     }
   }, [values, fileableType]);
+
+  useEffect(() => {
+    if (searchParams.get("projectId")) {
+      setFieldValue(fileableType.name, "project");
+      setFieldValue(fileableId.name, Number(searchParams.get("projectId")));
+    }
+    if (searchParams.get("partnerId")) {
+      setFieldValue(fileableType.name, "customer");
+      setFieldValue(fileableId.name, searchParams.get("partnerId"));
+    }
+    if (searchParams.get("expenseId")) {
+      setFieldValue(fileableType.name, "expense");
+      setFieldValue(fileableId.name, searchParams.get("expenseId"));
+    }
+  }, [searchParams, fileableId, fileableType, setFieldValue]);
 
   const options = useMemo(
     () => ({

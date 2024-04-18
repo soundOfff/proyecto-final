@@ -13,17 +13,22 @@ import { getCurrentTimer } from "../../actions/timers";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
 
-export default async function Tasks({ searchParams }) {
+export default async function Tasks({
+  searchParams: { perPage = 10, page = 1 },
+}) {
   const tasks = await getAllTasks({
-    perPage: 5,
-    page: 1,
+    perPage: perPage,
+    page: page,
     include: ["assigneds", "tags", "status"],
   });
   const session = await getServerSession(authOptions);
   const tagsData = await getAllTags();
   const repeats = await getAllRepeats();
   const priorities = await getTaskPriorities();
-  const taskableItems = await getAllTaskableTypes({ perPage: 20, page: 1 });
+  const taskableItems = await getAllTaskableTypes({
+    perPage: perPage,
+    page: page,
+  });
   const statuses = await getTaskStatus();
   const partners = await getAllPartners();
   const currentTimer = await getCurrentTimer(session.staff.id);

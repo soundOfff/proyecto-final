@@ -14,7 +14,8 @@ class FileController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(File::class)
-            ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable']);
+            ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable'])
+            ->allowedFilters(['fileable_id', 'fileable_type']);
 
         $files = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

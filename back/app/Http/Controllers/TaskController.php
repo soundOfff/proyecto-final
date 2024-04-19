@@ -9,6 +9,8 @@ use App\Models\Taggable;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -35,6 +37,8 @@ class TaskController extends Controller
                     AllowedFilter::exact('project_id', 'taskable.id'),
                     AllowedFilter::exact('task_status_id'),
                     AllowedFilter::exact('partner_id'),
+                    AllowedFilter::exact('taskable_type'),
+                    AllowedFilter::exact('taskable_id'),
                     AllowedFilter::callback(
                         'staff_id',
                         function (Builder $query, $value) {
@@ -130,6 +134,27 @@ class TaskController extends Controller
         }
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * Counting rows by status.
+     */
+    public function countByStatuses(Request $request)
+    {
+        $projectId = $request->input('project_id');
+        $countByStatuses = DB::table('task_statuses')
+            ->when($projectId, function ($query, $projectId) {
+                return $query->selectRaw("task_statuses.id, task_statuses.name, SUM(IF(tasks.taskable_id = $projectId AND tasks.taskable_type = 'project', 1, 0)) as count");
+            },
+                function ($query) {
+                    return $query->selectRaw('task_statuses.id, task_statuses.name, COUNT(task_status_id) as count');
+                })
+
+            ->leftJoin('tasks', 'tasks.task_status_id', '=', 'task_statuses.id')
+            ->groupBy('task_statuses.id', 'task_statuses.name')
+            ->get();
+
+        return response()->json($countByStatuses);
     }
 
     /**

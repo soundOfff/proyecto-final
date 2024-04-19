@@ -8,8 +8,10 @@ import DefaultItem from "/examples/Items/DefaultItem";
 import { Divider, Grid } from "@mui/material";
 
 import moneyFormat from "/utils/moneyFormat";
+import { useDataProvider } from "/providers/DataProvider";
 
-export default function Details({ project, staffs }) {
+export default function Details() {
+  const { project, staffs } = useDataProvider();
   return (
     <>
       <Grid container ml={2}>

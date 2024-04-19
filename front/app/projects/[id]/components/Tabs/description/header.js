@@ -2,8 +2,10 @@ import { Grid } from "@mui/material";
 import { setColor } from "/utils/project-state-colors";
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
+import { useDataProvider } from "/providers/DataProvider";
 
-export default function Header({ project }) {
+export default function Header() {
+  const { project } = useDataProvider();
   return (
     <Grid container mt={3} mb={5} lineHeight={0}>
       <Grid item xs={12} md={6}>

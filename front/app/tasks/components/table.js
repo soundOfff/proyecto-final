@@ -24,11 +24,11 @@ import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
 import { destroy } from "../../../actions/tasks";
 import Show from "./show";
 import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
-import moment from "moment";
 import { useSession } from "next-auth/react";
 import { getCurrentTimer } from "/actions/timers";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
+import moment from "moment";
 
 export default function Table({
   rows,

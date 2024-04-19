@@ -18,9 +18,10 @@ class TaskStatusSeeder extends Seeder
             ['id' => 1, 'name' => 'New Issues'],
             ['id' => 2, 'name' => 'Icebox'],
             ['id' => 3, 'name' => 'Sprint backlog'],
-            ['id' => 4, 'name' => 'In progress'],
-            ['id' => 5, 'name' => 'Review'],
-            ['id' => 6, 'name' => 'Done'],
+            ['id' => 4, 'name' => 'Product backlog'],
+            ['id' => 5, 'name' => 'In progress'],
+            ['id' => 6, 'name' => 'Review'],
+            ['id' => 7, 'name' => 'Done'],
         ];
 
         foreach ($statuses as $status) {

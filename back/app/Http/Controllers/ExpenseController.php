@@ -25,13 +25,11 @@ class ExpenseController extends Controller
         $query = QueryBuilder::for(Expense::class)
         ->selectRaw('expenses.*')
         ->allowedIncludes([
-            'files',
-            'project',
-            'category',
             'partner',
+            'category',
+            'project',
+            'files',
             'invoice',
-            'currency',
-            'paymentMethod',
         ])
         ->allowedFilters(['partner_id', 'project_id'])
         ->defaultSort('-id')
@@ -75,13 +73,11 @@ class ExpenseController extends Controller
     {
         $expense = QueryBuilder::for(Expense::class)
         ->allowedIncludes([
+            'partner',
+            'category',
             'files',
             'project',
-            'category',
-            'partner',
             'invoice',
-            'currency',
-            'paymentMethod',
         ])
         ->find($expense->id);
 
@@ -91,7 +87,7 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ExpenseRequest $request, Expense $expense)
+    public function update(Request $request, Expense $expense)
     {
         $updatedExpense = $request->validated();
         $expense->update($updatedExpense);

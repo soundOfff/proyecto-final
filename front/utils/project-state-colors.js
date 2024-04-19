@@ -6,6 +6,8 @@ import {
   FINALIZED,
 } from "/utils/constants/projectStatusLabels";
 
+const COLORS = ["info", "primary", "warning", "error", "success", "dark"];
+
 export function setColor(label) {
   if (label === NOT_STARTED) {
     return "primary";
@@ -20,4 +22,9 @@ export function setColor(label) {
   } else {
     return "dark";
   }
+}
+
+// TODO: make cyclic array of colors sending an id.
+export function getColor(id = 0) {
+  return COLORS[id % COLORS.length];
 }

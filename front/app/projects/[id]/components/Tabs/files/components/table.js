@@ -9,9 +9,11 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 import { destroy, getAll } from "/actions/files";
 import { useEffect, useState } from "react";
+import Loader from "../../components/loader";
 
 export default function Table({ project }) {
   const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getFileableUrl = (row) => {
     switch (row.original.fileableType) {
@@ -37,7 +39,10 @@ export default function Table({ project }) {
     getAll({
       "filter[fileable_id]": project.id,
       "filter[fileable_type]": "project",
-    }).then((data) => setRows(data.data.files));
+    }).then((data) => {
+      setRows(data.data.files);
+      setIsLoading(false);
+    });
   }, [project]);
 
   const columns = [
@@ -83,7 +88,9 @@ export default function Table({ project }) {
 
   const table = { columns, rows };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <MDBox>
       <DataTable
         table={table}

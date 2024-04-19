@@ -6,15 +6,20 @@ import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import { getAll } from "/actions/estimates";
 import Link from "next/link";
+import Loader from "../components/loader";
 
 export default function Estimates({ project }) {
   const [estimates, setEstimates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getAll({
       "filter[project_id]": project.id,
       include: ["project", "partner"],
-    }).then((data) => setEstimates(data.data.estimates));
+    }).then((data) => {
+      setEstimates(data.data.estimates);
+      setIsLoading(false);
+    });
   }, [project]);
 
   return (
@@ -31,7 +36,7 @@ export default function Estimates({ project }) {
           </MDButton>
         </Link>
       </MDBox>
-      <Table rows={estimates} />
+      {isLoading ? <Loader /> : <Table rows={estimates} />}
     </MDBox>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import { Card, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Table from "./components/table";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import Link from "next/link";
+import Loader from "../components/loader";
 
 export default function Files({ project }) {
   return (

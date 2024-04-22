@@ -130,6 +130,7 @@ Route::post('/tasks', [TaskController::class, 'store']);
 Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+Route::get('/task-stats', [TaskController::class, 'stats']);
 
 Route::get('/tags', [TagController::class, 'index']);
 
@@ -147,7 +148,6 @@ Route::post('/contacts', [ContactController::class, 'store']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
-Route::get('staffs-stats/{staff}', [StaffController::class, 'stats']);
 Route::get('/staffs', [StaffController::class, 'index']);
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);

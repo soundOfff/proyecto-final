@@ -4,7 +4,7 @@ import MDBox from "/components/MDBox";
 import { getAll as getAllProjects } from "/actions/projects";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
-import { getStats } from "/actions/staffs";
+import { getStats } from "/actions/tasks";
 import Stats from "./components/stats";
 
 export default async function Profile() {
@@ -12,7 +12,7 @@ export default async function Profile() {
   const session = await getServerSession(authOptions);
   const filter = { "filter[staff_id]": session.staff.id };
   const params = { include, ...filter };
-  const stats = await getStats(session.staff.id);
+  const stats = await getStats({ ownerId: session.staff.id });
 
   const projects = await getAllProjects(params);
   return (

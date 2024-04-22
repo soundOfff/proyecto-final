@@ -10,7 +10,7 @@ import { authOptions } from "/pages/api/auth/[...nextauth]";
 import { getAll as getAllTasks } from "/actions/tasks";
 import { getAll as getAllProjects } from "/actions/projects";
 import { Suspense } from "react";
-import { getStats } from "/actions/staffs";
+import { getStats } from "/actions/tasks";
 import Stats from "./components/stats";
 
 const tasksInclude = ["timers", "status", "assigneds", "taskable", "partner"];
@@ -30,7 +30,7 @@ export default async function Tasks({ searchParams }) {
     type === "myProjects"
       ? await getAllProjects(params)
       : await getAllTasks(params);
-  const stats = await getStats(session.staff.id);
+  const stats = await getStats({ ownerId: session.staff.id });
 
   return (
     <MDBox py={3}>

@@ -70,3 +70,12 @@ export async function destroy(taskId) {
 
   revalidatePath("/tasks");
 }
+
+export async function getStats(params) {
+  const url = new URL(`${process.env.API_URL}/task-stats`);
+  url.search = new URLSearchParams(params);
+
+  const data = await customFetch(url);
+
+  return data;
+}

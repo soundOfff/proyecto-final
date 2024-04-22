@@ -7,7 +7,7 @@ import { getAll as getAllTasks } from "/actions/tasks";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllProjects } from "/actions/projects";
 import { select as getStaffsSelect } from "/actions/staffs";
-import { getStats } from "../../actions/staffs";
+import { getStats } from "/actions/tasks";
 import Stats from "./components/stats";
 import Filters from "./components/filters";
 import { getServerSession } from "next-auth/next";
@@ -42,7 +42,7 @@ export default async function Reports({ searchParams }) {
   const partners = await getAllPartners();
   const projects = await getAllProjects();
   const staffs = await getStaffsSelect();
-  const stats = await getStats(session.staff.id);
+  const stats = await getStats({ ownerId: session.staff.id });
 
   return (
     <MDBox mb={3}>

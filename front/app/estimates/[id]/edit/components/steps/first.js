@@ -17,7 +17,6 @@ import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import { useEffect, useState } from "react";
 import { getSelect as getProjectSelect } from "/actions/projects";
-import initialValues from "../schemas/initialValues";
 
 export default function First({
   formData,

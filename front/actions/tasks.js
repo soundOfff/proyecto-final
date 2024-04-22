@@ -79,3 +79,12 @@ export async function getCountByStatuses(params) {
 
   return countByStatuses;
 }
+
+export async function getStats(params) {
+  const url = new URL(`${process.env.API_URL}/task-stats`);
+  url.search = new URLSearchParams(params);
+  task - stats;
+  const data = await customFetch(url);
+
+  return data;
+}

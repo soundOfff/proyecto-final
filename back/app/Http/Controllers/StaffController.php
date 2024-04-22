@@ -51,58 +51,6 @@ class StaffController extends Controller
         return new StaffResource($staff);
     }
 
-    public function stats(Staff $staff)
-    {
-        $dayStart = now()->startOfDay();
-        $dayEnd = now()->endOfDay();
-
-        $weeklyStart = now()->startOfWeek();
-        $weeklyEnd = now()->endOfWeek();
-        $monthlyStart = now()->startOfMonth();
-        $monthlyEnd = now()->endOfMonth();
-
-        $lastWeeklyStart = now()->subWeek()->startOfWeek();
-        $lastWeeklyEnd = now()->subWeek()->endOfWeek();
-        $lastMonthlyStart = now()->subMonth()->startOfMonth();
-        $lastMonthlyEnd = now()->subMonth()->endOfMonth();
-        
-        $tasks = $staff->tasks;
-
-        $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
-
-        $totalDayTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($dayStart, $dayEnd));
-
-        $totalWeekTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
-        
-        $totalLastWeekTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
-
-        $totalMonthTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
-
-        $totalLastMonthTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
-
-        $monthlyPercentage = $totalLastMonthTime
-            ? (($totalMonthTime - $totalLastMonthTime) / $totalLastMonthTime) * 100
-            : $totalMonthTime;
-        
-        $weeklyPercentage = $totalLastWeekTime
-            ? (($totalWeekTime - $totalLastWeekTime) / $totalLastWeekTime) * 100
-            : $totalWeekTime;
-
-        return response()->json([
-            'total_time' => $totalTime,
-            'total_week_time' => $totalWeekTime,
-            'total_month_time' => $totalMonthTime,
-            'total_day_time' => $totalDayTime,
-            'monthly_percentage' => $monthlyPercentage,
-            'weekly_percentage' => $weeklyPercentage,
-        ], 200);
-    }
-
     /**
      * Update the specified resource in storage.
      */

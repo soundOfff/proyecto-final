@@ -18,11 +18,3 @@ export async function getAll(params) {
 
   return data.staffs;
 }
-
-export async function getStats(staffId) {
-  const url = new URL(`${process.env.API_URL}/staffs-stats/${staffId}`);
-
-  const data = await customFetch(url);
-
-  return data;
-}

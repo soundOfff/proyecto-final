@@ -1,46 +1,23 @@
 "use client";
 
-import { Formik, Form } from "formik";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import { Form, Formik } from "formik";
+import FormContent from "./form-content";
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
-import FormContent from "./formContent";
-import { useRouter } from "next/navigation";
+import { store } from "/actions/timers";
 
-export default function FormComponent({ apiUrl }) {
+export default function FormComponent({ taskId, project }) {
   const { formId } = form;
-  const router = useRouter();
-
-  const submitForm = async (values, actions) => {
-    const formData = new FormData();
-
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
-
-    try {
-      await fetch(`${apiUrl}/files`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      router.push("/files");
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const handleSubmit = (values, actions) => {
-    submitForm(values, actions);
+    store(values);
   };
 
   return (
-    <MDBox>
+    <MDBox p={5}>
       <Formik
         initialValues={initialValues}
         validationSchema={validations}
@@ -57,15 +34,7 @@ export default function FormComponent({ apiUrl }) {
         }) => (
           <Form id={formId} autoComplete="off">
             <FormContent
-              {...{
-                values,
-                errors,
-                touched,
-                isSubmitting,
-                setFieldValue,
-                setFieldTouched,
-                setFieldError,
-              }}
+              {...{ values, errors, touched, setFieldValue, project, taskId }}
             />
             <MDBox mt={5} display="flex" justifyContent="end">
               <MDButton

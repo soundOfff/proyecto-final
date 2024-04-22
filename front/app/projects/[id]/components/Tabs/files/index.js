@@ -1,13 +1,14 @@
 "use client";
 
+import { useDataProvider } from "/providers/DataProvider";
 import { Grid } from "@mui/material";
 import Table from "./components/table";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import Link from "next/link";
-import Loader from "../components/loader";
 
-export default function Files({ project }) {
+export default function Files() {
+  const { project } = useDataProvider();
   return (
     <MDBox mb={1}>
       <Grid container spacing={1} p={1}>

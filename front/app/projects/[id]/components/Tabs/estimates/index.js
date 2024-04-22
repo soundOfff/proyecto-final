@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useDataProvider } from "/providers/DataProvider";
 import Table from "./components/table";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
@@ -8,9 +9,10 @@ import { getAll } from "/actions/estimates";
 import Link from "next/link";
 import Loader from "../components/loader";
 
-export default function Estimates({ project }) {
+export default function Estimates() {
   const [estimates, setEstimates] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { project } = useDataProvider();
 
   useEffect(() => {
     getAll({

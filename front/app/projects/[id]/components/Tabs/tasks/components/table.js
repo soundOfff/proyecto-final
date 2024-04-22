@@ -16,6 +16,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import MDBadge from "/components/MDBadge";
+import Loader from "../../components/loader";
 
 import { useDataProvider } from "/providers/DataProvider";
 
@@ -34,6 +35,7 @@ export default function Table() {
   const { currentTimer } = controller;
 
   const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     setOpenDeleteConfirmation,
@@ -74,7 +76,10 @@ export default function Table() {
     getAll({
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
-    }).then((data) => setRows(data));
+    }).then((data) => {
+      setRows(data);
+      setIsLoading(false);
+    });
   }, [project]);
 
   const columns = [
@@ -226,7 +231,9 @@ export default function Table() {
 
   const table = { columns, rows };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <MDBox>
       <DataTable
         table={table}

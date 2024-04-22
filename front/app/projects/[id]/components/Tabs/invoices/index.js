@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { getAll } from "/actions/invoices";
+import { useDataProvider } from "/providers/DataProvider";
 import Table from "./components/table";
-import { Skeleton } from "@mui/material";
 import Loader from "../components/loader";
 
-export default function Invoices({ project }) {
+export default function Invoices() {
   const [invoices, setInvoices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { project } = useDataProvider();
 
   useEffect(() => {
     getAll({

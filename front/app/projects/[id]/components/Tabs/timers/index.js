@@ -2,10 +2,10 @@
 
 import Grid from "@mui/material/Grid";
 import MDBox from "/components/MDBox";
-import MDButton from "/components/MDButton";
 import Table from "./components/table";
 
 import { getAll as getAllTasks } from "/actions/tasks";
+import { useDataProvider } from "/providers/DataProvider";
 import { getStats } from "/actions/tasks";
 import Stats from "./components/stats";
 import { useEffect, useState } from "react";
@@ -13,10 +13,12 @@ import Loader from "../components/loader";
 
 const include = ["timers", "status", "assigneds", "taskable", "partner"];
 
-export default function Timers({ project }) {
+export default function Timers() {
   const [tasks, setTasks] = useState([]);
   const [stats, setStats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { project } = useDataProvider();
 
   useEffect(() => {
     const params = {

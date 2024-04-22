@@ -61,7 +61,7 @@ export default async function Page({ params: { id } }) {
             title="Cliente"
             description={
               expense.partner
-                ? expense.partner.company ?? "Sin Nombre"
+                ? expense.partner.company ?? expense.partner.name
                 : "Sin cliente"
             }
           />
@@ -76,21 +76,27 @@ export default async function Page({ params: { id } }) {
 
         <Divider variant="left" sx={{ width: "70%" }} />
 
-        <Grid xs={12} mt={3}>
-          <MDBox ml={2} mt={0.5} lineHeight={1.4}>
-            <MDTypography display="block" variant="button" fontWeight="medium">
-              Caso
-            </MDTypography>
-            <MDTypography
-              variant="button"
-              fontWeight="regular"
-              color="text"
-              textAlign="center"
-            >
-              {expense.project.name}
-            </MDTypography>
-          </MDBox>
-        </Grid>
+        {expense.project && (
+          <Grid xs={12} mt={3}>
+            <MDBox ml={2} mt={0.5} lineHeight={1.4}>
+              <MDTypography
+                display="block"
+                variant="button"
+                fontWeight="medium"
+              >
+                Caso
+              </MDTypography>
+              <MDTypography
+                variant="button"
+                fontWeight="regular"
+                color="text"
+                textAlign="center"
+              >
+                {expense.project.name}
+              </MDTypography>
+            </MDBox>
+          </Grid>
+        )}
       </Grid>
     </Card>
   );

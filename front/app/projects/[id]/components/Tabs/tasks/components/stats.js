@@ -15,7 +15,7 @@ export default function Stats() {
 
   useEffect(() => {
     getCountByStatuses({
-      "filter[taskable_id]": project.id,
+      project_id: project.id,
     }).then((data) => setStats(data));
   }, [project]);
 

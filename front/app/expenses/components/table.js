@@ -10,6 +10,7 @@ import moneyFormat from "/utils/moneyFormat";
 import Link from "next/link";
 import { show, destroy } from "/actions/expenses";
 import { useEffect, useState } from "react";
+import { destroy as destroyFile } from "/actions/files";
 import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,9 +18,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import EditIcon from "@mui/icons-material/Edit";
-import { destroy as destroyFile } from "../../../actions/files";
-import DeleteRow from "../../../components/DeleteRow";
-import useDeleteRow from "../../../hooks/useDeleteRow";
+import DeleteRow from "/components/DeleteRow";
+import useDeleteRow from "/hooks/useDeleteRow";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -83,7 +83,7 @@ export default function Table({ rows, meta }) {
       Header: "Caso",
       accessor: "project.name",
       width: "25%",
-      Cell: ({ value, row }) => {
+      Cell: ({ row }) => {
         return row.original.project ? (
           <Link
             href={`/projects/${row.original.project?.id}`}

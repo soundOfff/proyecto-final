@@ -50,6 +50,7 @@ export async function update(taskId, data) {
   });
 
   revalidatePath("/tasks");
+  revalidatePath("/projects");
 }
 
 export async function show(id, params) {
@@ -74,9 +75,7 @@ export async function destroy(taskId) {
 export async function getCountByStatuses(params) {
   const url = new URL(`${process.env.API_URL}/tasks/counts/status`);
   url.search = new URLSearchParams(params);
-
   const countByStatuses = await customFetch(url);
-
   return countByStatuses;
 }
 

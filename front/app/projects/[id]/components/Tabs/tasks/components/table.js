@@ -9,7 +9,6 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 
 import Grid from "@mui/material/Grid";
-import EditNoteIcon from "@mui/icons-material/EditNote";
 import AccessAlarm from "@mui/icons-material/AccessAlarm";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -21,10 +20,21 @@ import MDBadge from "/components/MDBadge";
 import { useDataProvider } from "/providers/DataProvider";
 
 import { destroy, getAll } from "/actions/tasks";
+import { update } from "/actions/tasks";
+import { store as storeTimer, update as updateTimer } from "/actions/timers";
+import { getCurrentTimer } from "/actions/timers";
+import { setCurrentTimer, useMaterialUIController } from "/context";
+
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import moment from "moment";
 
 export default function Table() {
+  const [controller] = useMaterialUIController();
+  const { currentTimer } = controller;
+
   const [rows, setRows] = useState([]);
+
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -35,6 +45,30 @@ export default function Table() {
   } = useDeleteRow(destroy);
 
   const { statuses, priorities, project } = useDataProvider();
+  const { data: session } = useSession();
+
+  const handleStatusChange = async (taskId, statusId) => {
+    await update(taskId, { task_status_id: statusId });
+  };
+
+  const handlePriorityChange = async (taskId, priorityId) => {
+    await update(taskId, { task_priority_id: priorityId });
+  };
+
+  const stopTimer = async (timerId, note = "") => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await updateTimer(timerId, { end_time: date, note });
+    setCurrentTimer(dispatch, null);
+  };
+
+  const startTimer = async (taskId, staffId) => {
+    const date = moment().format("YYYY-MM-DD HH:mm:ss");
+    await storeTimer({ task_id: taskId, start_time: date, staff_id: staffId });
+    const currentTimer = await getCurrentTimer(staffId, {
+      include: "task",
+    });
+    setCurrentTimer(dispatch, currentTimer);
+  };
 
   useEffect(() => {
     getAll({
@@ -70,7 +104,9 @@ export default function Table() {
       accessor: "status",
       Cell: ({ row }) => (
         <Autocomplete
-          value={statuses?.find((status) => status.id === 1)}
+          value={statuses?.find(
+            (status) => status.id === row.original.status_id
+          )}
           onChange={(e, status) => {
             handleStatusChange(row.original.id, status.id);
           }}
@@ -132,7 +168,7 @@ export default function Table() {
           value={priorities.find(
             (priority) => priority.id === row.original.priority.id
           )}
-          onChange={(e, priority) => {
+          onChange={(priority) => {
             handlePriorityChange(row.original.id, priority.id);
           }}
           options={priorities}
@@ -154,17 +190,6 @@ export default function Table() {
       accessor: "",
       Cell: ({ row }) => (
         <MDBox display="flex">
-          <Tooltip title="Editar tarea">
-            <EditNoteIcon
-              color="info"
-              fontSize="medium"
-              onClick={() => {
-                setTaskId(row.original.id);
-                setOpenEditModal(true);
-              }}
-              sx={{ mr: 1, cursor: "pointer" }}
-            />
-          </Tooltip>
           <Tooltip title="Eliminar tarea">
             <DeleteIcon
               color="error"
@@ -175,12 +200,12 @@ export default function Table() {
               sx={{ mx: 1, cursor: "pointer" }}
             />
           </Tooltip>
-          {false ? ( // TODO: currentTimer?.task_id === row.original.id
+          {currentTimer?.task_id === row.original.id ? (
             <Tooltip title="Detener temporizador">
               <LockClockOutlined
                 color="error"
                 fontSize="medium"
-                onClick={() => console.log("stop timer")}
+                onClick={() => stopTimer(currentTimer.id)}
                 sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>
@@ -189,7 +214,7 @@ export default function Table() {
               <AccessAlarm
                 color="success"
                 fontSize="medium"
-                onClick={() => console.log("start timer")}
+                onClick={() => startTimer(row.original.id, session.staff.id)}
                 sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>

@@ -33,7 +33,7 @@ class Task extends Model
 
     public function timers()
     {
-        return $this->hasMany(TaskTimer::class);
+        return $this->hasMany(TaskTimer::class)->orderBy('start_time', 'ASC');
     }
 
     public function status()

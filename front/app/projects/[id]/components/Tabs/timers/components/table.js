@@ -107,10 +107,11 @@ export default function Table({ rows, project }) {
     {
       Header: "Hora de inicio",
       accessor: "start_time",
+      width: 200,
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
           <MDTypography key={timer.id} variant="body2" fontSize="small">
-            {moment(timer.start_time).format("HH:mm:SS")}
+            {moment(timer.start_time).format("DD-MM HH:mm:SS")}
           </MDTypography>
         ));
       },
@@ -118,12 +119,13 @@ export default function Table({ rows, project }) {
     {
       Header: "Hora de Fin",
       accessor: "end_time",
+      width: 200,
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
           <MDBox key={timer.id} container>
             <MDTypography variant="body2" fontSize="small">
               {timer.end_time
-                ? moment(timer.end_time).format("HH:mm:SS")
+                ? moment(timer.end_time).format("DD-MM HH:mm:SS")
                 : "Sin finalizar"}
             </MDTypography>
           </MDBox>
@@ -168,7 +170,11 @@ export default function Table({ rows, project }) {
           setOpen(false);
         }}
       >
-        <Form taskId={taskId} project={project} />
+        <Form
+          taskId={taskId}
+          project={project}
+          onClose={() => setOpen(false)}
+        />
       </Modal>
       <DataTable
         table={table}

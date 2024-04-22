@@ -9,11 +9,12 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import { store } from "/actions/timers";
 
-export default function FormComponent({ taskId, project }) {
+export default function FormComponent({ taskId, project, onClose }) {
   const { formId } = form;
 
   const handleSubmit = (values, actions) => {
     store(values);
+    onClose();
   };
 
   return (

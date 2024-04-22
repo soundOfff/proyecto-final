@@ -13,7 +13,6 @@ export async function store(data) {
   });
 
   revalidatePath("/tasks");
-  redirect("/tasks");
 }
 
 export async function update(timerId, data) {

@@ -10,17 +10,17 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('invoice_payment_records', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id')->constrained();
+            $table->foreignId('payment_method_id')->constrained();
 
             $table->decimal('amount');
             $table->date('date');
-            $table->dateTime('date_recorded');
+            $table->dateTime('date_recorded')->nullable();
             $table->text('note');
-            $table->string('payment_method');
-            $table->string('payment_mode');
-            $table->mediumText('transaction_id');
+            $table->string('payment_mode')->nullable();
+            $table->mediumText('transaction_id')->nullable();
 
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoice_payment_records');
+        Schema::dropIfExists('payments');
     }
 };

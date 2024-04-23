@@ -15,11 +15,11 @@ return new class extends Migration {
             $table->string('name');
             $table->string('label');
             $table->text('description')->nullable();
-            $table->boolean('show_on_pdf');
-            $table->boolean('invoices_only');
-            $table->boolean('expenses_only');
-            $table->boolean('selected_by_default');
-            $table->boolean('active');
+            $table->boolean('show_on_pdf')->default(false);
+            $table->boolean('invoices_only')->default(false);
+            $table->boolean('expenses_only')->default(false);
+            $table->boolean('selected_by_default')->default(false);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

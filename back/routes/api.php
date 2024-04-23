@@ -18,6 +18,7 @@ use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProjectBillingTypeController;
@@ -134,7 +135,6 @@ Route::get('/task-stats', [TaskController::class, 'stats']);
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
-
 Route::get('/tags', [TagController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
@@ -167,6 +167,9 @@ Route::post('/files', [FileController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/permissions', [PermissionController::class, 'index']);
+
+Route::get('/payments', [PaymentController::class, 'index']);
+Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

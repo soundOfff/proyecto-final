@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 import { destroy } from "/actions/payments";
+import numberFormat from "/utils/numberFormat";
 
 export default function Table({ rows }) {
   const {
@@ -28,6 +29,17 @@ export default function Table({ rows }) {
       id: "paymentMethod",
       Header: "Modo de Cobro",
       Cell: ({ row }) => row.original.paymentMethod.label,
+    },
+    {
+      id: "date",
+      Header: "Fecha",
+      accessor: "date",
+    },
+    {
+      id: "amount",
+      Header: "Importe",
+      accessor: "amount",
+      Cell: ({ value }) => <>$ {numberFormat(value)}</>,
     },
     {
       id: "acciones",

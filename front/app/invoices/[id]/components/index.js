@@ -7,6 +7,7 @@ import { useState } from "react";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 import Detail from "./detail/index";
+import Payments from "./payments/index";
 import { DataProvider } from "/providers/DataProvider";
 
 export default function IndexComponent({ invoice }) {
@@ -22,7 +23,9 @@ export default function IndexComponent({ invoice }) {
           <TabPanel value="detail">
             <Detail />
           </TabPanel>
-          <TabPanel value="payments">{/* TODO payments */}</TabPanel>
+          <TabPanel value="payments">
+            <Payments />
+          </TabPanel>
           <TabPanel value="credit_notes">{/* TODO credit notes */}</TabPanel>
           <TabPanel value="tasks">{/* TODO tasks */}</TabPanel>
         </TabContext>

@@ -15,6 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
+import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
 import Loader from "../../components/loader";
 
@@ -26,16 +27,16 @@ import { store as storeTimer, update as updateTimer } from "/actions/timers";
 import { getCurrentTimer } from "/actions/timers";
 import { setCurrentTimer, useMaterialUIController } from "/context";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import moment from "moment";
 import ModalContentForm from "/components/ModalContent/Task";
 import Modal from "/components/Modal";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Table() {
-  const [controller] = useMaterialUIController();
-  const { currentTimer } = controller;
+  const [controller, dispatch] = useMaterialUIController();
+  const { currentTimer, darkMode } = controller;
 
   const [rows, setRows] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function Table() {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
-  const { statuses, priorities, project, repeats, tagsData } =
+  const { statuses, priorities, project, repeats, tagsData, partners } =
     useDataProvider();
   const { data: session } = useSession();
 
@@ -242,26 +243,33 @@ export default function Table() {
   return isLoading ? (
     <Loader />
   ) : (
-    <MDBox>
-      <MDButton
-        variant="gradient"
-        color={darkMode ? "light" : "dark"}
-        onClick={handleModalOpen}
-      >
-        Crear nueva tarea
-      </MDButton>
-      {isModalOpen && (
-        <Modal open={handleModalOpen} onClose={handleModalClose} width="40%">
-          <ModalContentForm
-            priorities={priorities}
-            repeats={repeats}
-            taskableItems={[]}
-            tagsData={tagsData}
-            partners={partners}
-            mode={MODAL_TYPES.CREATE}
-          />
-        </Modal>
-      )}
+    <MDBox width="100%">
+      <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
+        <MDButton
+          variant="gradient"
+          color={darkMode ? "light" : "dark"}
+          onClick={handleModalOpen}
+        >
+          Crear nueva tarea
+        </MDButton>
+        {isModalOpen && (
+          <Modal open={handleModalOpen} onClose={handleModalClose} width="40%">
+            <ModalContentForm
+              priorities={priorities}
+              repeats={repeats}
+              taskableItems={[]}
+              tagsData={tagsData}
+              partners={partners}
+              task={{
+                taskable: { id: project.id },
+                taskable_type: "project",
+                partner_id: project.defendant.id,
+              }}
+              mode={MODAL_TYPES.CREATE}
+            />
+          </Modal>
+        )}
+      </MDBox>
       <DataTable
         table={table}
         showTotalEntries={true}

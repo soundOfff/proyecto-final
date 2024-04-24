@@ -16,20 +16,11 @@ import Invoices from "./Tabs/invoices";
 import Expenses from "./Tabs/expenses";
 import { DataProvider } from "/providers/DataProvider";
 
-export default function IndexComponent({
-  project,
-  staffs,
-  priorities,
-  statuses,
-  repeats,
-  tagsData,
-}) {
+export default function IndexComponent(props) {
   const [tab, setTab] = useState("description");
 
   return (
-    <DataProvider
-      value={{ project, staffs, priorities, statuses, repeats, tagsData }}
-    >
+    <DataProvider value={{ ...props }}>
       <MDBox>
         <TabContext value={tab}>
           <MDBox my={2}>

@@ -57,25 +57,26 @@ export default function TaskForm({
   const [taskableItems, setTaskableItems] = useState([]);
 
   useEffect(() => {
-    if (task && mode === MODAL_TYPES.EDIT) {
+    if (task) {
+      console.log(task);
       setFieldValue(name.name, task.name);
       setFieldValue(hourlyRate.name, task.hourly_rate || "0");
       setFieldValue(startDate.name, task.start_date);
       setFieldValue(dueDate.name, task.due_date || "");
-      setFieldValue(task_priority_id.name, task.priority.id);
-      setFieldValue(repeat.name, task.repeat_id);
-      setFieldValue(recurring.name, task.recurring || "");
-      setFieldValue(recurringType.name, task.recurring_type || "");
-      setFieldValue(totalCycles.name, task.total_cycles || "");
-      setFieldValue(taskableType.name, task.taskable_type || 0);
-      setFieldValue(tags.name, task.tags || []);
-      setFieldValue(partner_id.name, task.partner_id || "");
-      setFieldValue(taskableId.name, task.taskable.id || "");
-      setFieldValue(billable.name, getBoolean(task.billable) || false);
-      setFieldValue(isPublic.name, getBoolean(task.is_public) || false);
-      setFieldValue(isInfinite.name, getBoolean(task.is_infinite) || false);
-      setTaskableItems([task.taskable]);
-      const parsedDescription = parseEditorState(task.description ?? "");
+      setFieldValue(task_priority_id.name, task?.priority?.id);
+      setFieldValue(repeat.name, task?.repeat_id || null);
+      setFieldValue(recurring.name, task?.recurring || "");
+      setFieldValue(recurringType.name, task?.recurring_type || "");
+      setFieldValue(totalCycles.name, task?.total_cycles || "");
+      setFieldValue(taskableType.name, task?.taskable_type || 0);
+      setFieldValue(tags.name, task?.tags || []);
+      setFieldValue(partner_id.name, task?.partner_id || "");
+      setFieldValue(taskableId.name, task?.taskable?.id || "");
+      setFieldValue(billable.name, getBoolean(task?.billable));
+      setFieldValue(isPublic.name, getBoolean(task?.is_public));
+      setFieldValue(isInfinite.name, getBoolean(task?.is_infinite));
+      setTaskableItems(task.taskable ? [task?.taskable] : []);
+      const parsedDescription = parseEditorState(task?.description ?? "");
       setEditorState(parsedDescription);
     }
   }, [
@@ -109,7 +110,7 @@ export default function TaskForm({
     }
   }, [values.partner_id]);
 
-  const getBoolean = (value) => (value === 1 ? true : false);
+  const getBoolean = (value) => (value === 0 || !value ? false : true);
 
   const handleChange = useCallback(
     (editorState) => {

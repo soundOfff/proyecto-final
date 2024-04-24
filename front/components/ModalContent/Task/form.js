@@ -72,9 +72,9 @@ export default function TaskForm({
       setFieldValue(tags.name, task?.tags || []);
       setFieldValue(partner_id.name, task?.partner_id || "");
       setFieldValue(taskableId.name, task?.taskable?.id || "");
-      setFieldValue(billable.name, getBoolean(task?.billable));
-      setFieldValue(isPublic.name, getBoolean(task?.is_public));
-      setFieldValue(isInfinite.name, getBoolean(task?.is_infinite));
+      setFieldValue(billable.name, Boolean(task?.billable));
+      setFieldValue(isPublic.name, Boolean(task?.is_public));
+      setFieldValue(isInfinite.name, Boolean(task?.is_infinite));
       setTaskableItems(task.taskable ? [task?.taskable] : []);
       const parsedDescription = parseEditorState(task?.description ?? "");
       setEditorState(parsedDescription);
@@ -109,8 +109,6 @@ export default function TaskForm({
       );
     }
   }, [values.partner_id]);
-
-  const getBoolean = (value) => (value === 0 || !value ? false : true);
 
   const handleChange = useCallback(
     (editorState) => {

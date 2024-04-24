@@ -31,7 +31,7 @@ export default function TabsComponent({ setTabIndex }) {
   const handleSetTabValue = (event, newValue) => setTabIndex(newValue);
 
   return (
-    <AppBar position="static" className="navbar-print">
+    <AppBar position="static" className="display-hidden-print">
       <TabList orientation={tabsOrientation} onChange={handleSetTabValue}>
         <Tab label="Detalle" value="detail" />
         <Tab label="Cobros" value="payments" />

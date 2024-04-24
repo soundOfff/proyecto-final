@@ -2,6 +2,9 @@ import { show } from "/actions/projects";
 
 import { select as staffSelect } from "/actions/staffs";
 import { getTaskStatus, getTaskPriorities } from "/actions/tasks";
+import { getAll as getAllRepeats } from "/actions/expense-repeats";
+import { getAll as getAllTags } from "/actions/tags";
+
 import Index from "./components/index";
 
 const include = [
@@ -19,6 +22,8 @@ export default async function Show({ params }) {
   const staffs = await staffSelect();
   const statuses = await getTaskStatus();
   const priorities = await getTaskPriorities();
+  const repeats = await getAllRepeats();
+  const tagsData = await getAllTags();
 
   return (
     <Index
@@ -26,6 +31,7 @@ export default async function Show({ params }) {
       staffs={staffs}
       statuses={statuses}
       priorities={priorities}
+      repeats={repeats}
     />
   );
 }

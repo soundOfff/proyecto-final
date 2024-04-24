@@ -21,11 +21,15 @@ export default function IndexComponent({
   staffs,
   priorities,
   statuses,
+  repeats,
+  tagsData,
 }) {
   const [tab, setTab] = useState("description");
 
   return (
-    <DataProvider value={{ project, staffs, priorities, statuses }}>
+    <DataProvider
+      value={{ project, staffs, priorities, statuses, repeats, tagsData }}
+    >
       <MDBox>
         <TabContext value={tab}>
           <MDBox my={2}>

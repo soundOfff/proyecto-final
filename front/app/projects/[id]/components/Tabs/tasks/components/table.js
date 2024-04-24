@@ -29,12 +29,16 @@ import { setCurrentTimer, useMaterialUIController } from "/context";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import moment from "moment";
+import ModalContentForm from "/components/ModalContent/Task";
+import Modal from "/components/Modal";
+import { MODAL_TYPES } from "/utils/constants/modalTypes";
 
 export default function Table() {
   const [controller] = useMaterialUIController();
   const { currentTimer } = controller;
 
   const [rows, setRows] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const {
@@ -46,7 +50,8 @@ export default function Table() {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
-  const { statuses, priorities, project } = useDataProvider();
+  const { statuses, priorities, project, repeats, tagsData } =
+    useDataProvider();
   const { data: session } = useSession();
 
   const handleStatusChange = async (taskId, statusId) => {
@@ -56,6 +61,9 @@ export default function Table() {
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
   };
+
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
 
   const stopTimer = async (timerId, note = "") => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -235,6 +243,25 @@ export default function Table() {
     <Loader />
   ) : (
     <MDBox>
+      <MDButton
+        variant="gradient"
+        color={darkMode ? "light" : "dark"}
+        onClick={handleModalOpen}
+      >
+        Crear nueva tarea
+      </MDButton>
+      {isModalOpen && (
+        <Modal open={handleModalOpen} onClose={handleModalClose} width="40%">
+          <ModalContentForm
+            priorities={priorities}
+            repeats={repeats}
+            taskableItems={[]}
+            tagsData={tagsData}
+            partners={partners}
+            mode={MODAL_TYPES.CREATE}
+          />
+        </Modal>
+      )}
       <DataTable
         table={table}
         showTotalEntries={true}

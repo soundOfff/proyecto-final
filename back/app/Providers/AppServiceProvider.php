@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             'lead' => 'App\Models\Lead',
             'task' => 'App\Models\Task',
             'staff' => 'App\Models\Staff',
+            'credit_note' => 'App\Models\CreditNote',
         ]);
 
         try {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DiscountTypeController;
 use App\Http\Controllers\DistrictController;
@@ -170,6 +171,9 @@ Route::get('/permissions', [PermissionController::class, 'index']);
 
 Route::get('/payments', [PaymentController::class, 'index']);
 Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
+
+Route::get('/credit-notes', [CreditNoteController::class, 'index']);
+Route::post('/credit-notes', [CreditNoteController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

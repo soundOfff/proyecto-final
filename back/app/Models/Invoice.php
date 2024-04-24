@@ -109,6 +109,11 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function credits(): HasMany
+    {
+        return $this->hasMany(Credit::class);
+    }
+
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');

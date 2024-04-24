@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_priorities', function (Blueprint $table) {
+        Schema::create('payment_invoice', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table->foreignId('payment_id')->constrained()->onDelete('cascade');
+            $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount');
+
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_priorities');
+        Schema::dropIfExists('payment_invoice');
     }
 };

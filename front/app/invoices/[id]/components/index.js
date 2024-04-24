@@ -1,14 +1,13 @@
 "use client";
 
-import { Card } from "@mui/material";
-import MDBox from "/components/MDBox";
-import Tabs from "./tabs";
-import { useState } from "react";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
+import MDBox from "/components/MDBox";
 import Detail from "./detail/index";
 import Payments from "./payments/index";
+import Tabs from "./tabs";
 import { DataProvider } from "/providers/DataProvider";
+import { useState } from "react";
 
 export default function IndexComponent({ invoice }) {
   const [tab, setTab] = useState("detail");

@@ -38,7 +38,7 @@ export async function store(data) {
   });
 
   revalidatePath("/tasks");
-  redirect("/tasks");
+  revalidatePath("/projects");
 }
 
 export async function update(taskId, data) {

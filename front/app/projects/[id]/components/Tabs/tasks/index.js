@@ -8,7 +8,7 @@ import Stats from "./components/stats";
 export default function Tasks() {
   return (
     <MDBox py={3}>
-      <Stats totalTime={12} totalWeekTime={12} totalMonthTime={12} />
+      <Stats />
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MDBox py={1}>

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.navbar-print {
+.display-hidden-print {
     @media print {
         display: none !important;
     }

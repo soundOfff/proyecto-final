@@ -112,6 +112,7 @@ const routes = [
         key: "invoices",
         route: "/invoices",
       },
+      { name: "Notas de Crédito", key: "credit_notes", route: "/credit-notes" },
     ],
   },
   {

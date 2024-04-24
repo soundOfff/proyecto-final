@@ -10,15 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('credits', function (Blueprint $table) {
+        Schema::create('credit_note_statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained();
-            $table->foreignId('credit_note_id')->constrained();
-            $table->foreignId('staff_id')->constrained();
-
-            $table->decimal('amount');
-            $table->date('date');
-            $table->dateTime('date_applied')->nullable();
+            $table->string('label');
 
             $table->timestamps();
         });
@@ -29,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('credits');
+        Schema::dropIfExists('credit_note_statuses');
     }
 };

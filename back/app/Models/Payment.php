@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,6 +23,15 @@ class Payment extends Model
         'transaction_id',
     ];
 
+    protected $appends = ['partial_total_paid'];
+
+    protected function partialTotalPaid(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->amount - $this->invoices->sum('pivot.amount')
+        );
+    }
+
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
@@ -34,7 +44,7 @@ class Payment extends Model
 
     public function invoices(): BelongsToMany
     {
-        return $this->belongsToMany(Invoice::class, 'payment_invoice', 'payment_id', 'invoice_id');
+        return $this->belongsToMany(Invoice::class, 'payment_invoice', 'payment_id', 'invoice_id')->withPivot('amount');
     }
 
     public function scopeSearch($query, $search)

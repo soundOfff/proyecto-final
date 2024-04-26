@@ -11,7 +11,6 @@ export async function customFetch(url, options = {}) {
       ...options.headers,
     },
   };
-
   const response = await fetch(url, allOptions);
 
   if (!response.ok) {

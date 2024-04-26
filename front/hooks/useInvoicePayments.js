@@ -49,7 +49,7 @@ export default function useInvoicePayments(total, partnerId) {
       "filter[partner_id]": partnerId,
       "filter[to_pay]": true,
     };
-    getAllInvoices(params).then((response) => {
+    getAllInvoices(params, { cache: "force" }).then((response) => {
       setInvoices(response.data.invoices);
     });
   }, [partnerId]);

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -72,7 +73,7 @@ class Invoice extends Model
     protected function pendingToPay(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->total - $this->credits->sum('amount')
+            get: fn () => $this->total - $this->credits->sum('amount') - $this->payments->sum('pivot.amount')
         );
     }
 
@@ -111,9 +112,9 @@ class Invoice extends Model
         return $this->belongsTo(Country::class, 'shipping_country_id', 'id', 'shippingCountry');
     }
 
-    public function payments(): HasMany
+    public function payments(): BelongsToMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->belongsToMany(Payment::class, 'payment_invoice', 'invoice_id', 'payment_id')->withPivot('amount');
     }
 
     public function credits(): HasMany

@@ -33,6 +33,7 @@ class InvoiceController extends Controller
             ->selectRaw('invoices.*')
             ->allowedIncludes([
                 'partner',
+                'payments',
                 'project.serviceType',
                 'currency',
                 'estimate',
@@ -45,6 +46,14 @@ class InvoiceController extends Controller
                 'partner_id',
                 'project_id',
                 AllowedFilter::custom('to_pay', new InvoiceToPayFilter),
+                AllowedFilter::callback('payments', function ($query, $value) {
+                    if (!is_array($value)) {
+                        $value = [$value];
+                    } 
+                    $query->whereHas('payments', function ($query) use ($value) {
+                        $query->whereIn('payments.id', $value);
+                    });         
+                }),
             ])
             ->allowedSorts([
                 'id', 'total', 'date', 'tags',
@@ -70,6 +79,8 @@ class InvoiceController extends Controller
                 'partner',
                 'project.serviceType',
                 'currency',
+                'payments',
+                'payments.paymentMethod',
                 'estimate',
                 'billingCountry',
                 'shippingCountry',

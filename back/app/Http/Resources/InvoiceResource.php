@@ -73,6 +73,8 @@ class InvoiceResource extends JsonResource
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
             'items' => LineItemResource::collection($this->whenLoaded('lineItems')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
+            'payments' => PaymentResource::collection($this->whenLoaded('payments')),
+            'parcial_amount' => is_null($this->pivot) ? null : $this->pivot->amount,
         ];
     }
 }

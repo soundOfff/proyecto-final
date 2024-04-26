@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PartnerRequest;
-use App\Http\Resources\PartnerResource;
-use App\Http\Resources\PartnerResourceCollection;
-use App\Http\Resources\PartnerSelectResourceCollection;
+use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentResourceCollection;
-use App\Models\Partner;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -22,12 +18,15 @@ class PaymentController extends Controller
     {
         $query = QueryBuilder::for(Payment::class)
         ->allowedIncludes([
-            'invoice',
+            'invoices',
             'paymentMethod',
+            'partner',
         ])
+        ->select("payments.*")
         ->allowedFilters([
             AllowedFilter::exact('invoice_id'),
-
+            AllowedFilter::exact('partner_id'),
+            AllowedFilter::scope('search')
         ])
         ->orderBy('id', 'desc');
 
@@ -41,9 +40,11 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(PaymentRequest $request)
+    {   
+        $newPayment = $request->validated();
+        $payment = Payment::create($newPayment);
+        return response()->json($payment, 201);
     }
 
     /**

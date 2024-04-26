@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreditNoteRequest;
+use App\Http\Resources\CreditNoteResource;
 use App\Http\Resources\CreditNoteResourceCollection;
 use App\Models\CreditNote;
 use App\Models\CreditNoteStatus;
@@ -61,7 +62,20 @@ class CreditNoteController extends Controller
      */
     public function show(CreditNote $creditNote)
     {
-        //
+        $creditNote = QueryBuilder::for(CreditNote::class)
+        ->allowedIncludes([
+            'status',
+            'partner',
+            'project',
+            'credits',
+            'billingCountry',
+            'shippingCountry',
+            'lineItems.taxes',
+            'lineItems.type',
+        ])
+        ->find($creditNote->id);
+
+        return new CreditNoteResource($creditNote);
     }
 
     /**

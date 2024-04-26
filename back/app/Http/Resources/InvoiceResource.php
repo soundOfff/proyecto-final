@@ -64,6 +64,7 @@ class InvoiceResource extends JsonResource
             'totalCycles' => $this->total_cycles,
             'totalTax' => $this->total_tax,
             'createdAt' => $this->created_at,
+            'pendingToPay' => $this->pending_to_pay,
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),

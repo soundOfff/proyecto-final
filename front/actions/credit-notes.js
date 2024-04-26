@@ -14,7 +14,6 @@ export async function getAll(params) {
 }
 
 export async function store(data) {
-  console.log(data);
   const url = new URL(`${process.env.API_URL}/credit-notes`);
   await customFetch(url, {
     method: "POST",
@@ -23,4 +22,13 @@ export async function store(data) {
 
   revalidatePath("/credit-notes");
   redirect("/credit-notes");
+}
+
+export async function show(id, params) {
+  const url = new URL(`${process.env.API_URL}/credit-notes/${id}`);
+  url.search = new URLSearchParams(params);
+
+  const { data: creditNote } = await customFetch(url, { cache: "no-store" });
+
+  return creditNote;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\InvoiceToPayFilter;
 use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\InvoiceResourceCollection;
 use App\Http\Resources\InvoiceSelectResourceCollection;
@@ -10,6 +11,7 @@ use App\Sorts\InvoiceEstimateSort;
 use App\Sorts\InvoicePartnerSort;
 use App\Sorts\InvoiceProjectServiceTypeSort;
 use App\Sorts\InvoiceProjectSort;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -39,7 +41,11 @@ class InvoiceController extends Controller
                 'lineItems.taxes',
                 'tags',
             ])
-            ->allowedFilters(['partner_id', 'project_id'])
+            ->allowedFilters([
+                'partner_id',
+                'project_id',
+                AllowedFilter::custom('to_pay', new InvoiceToPayFilter),
+            ])
             ->allowedSorts([
                 'id', 'total', 'date', 'tags',
                 AllowedSort::field('totalTax', 'total_tax'),

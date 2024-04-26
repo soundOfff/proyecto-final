@@ -24,7 +24,14 @@ class PaymentController extends Controller
         ])
         ->select("payments.*")
         ->allowedFilters([
-            AllowedFilter::exact('invoice_id'),
+            AllowedFilter::callback('invoices', function ($query, $value) {
+                if (!is_array($value)) {
+                    $value = [$value];
+                } 
+                $query->whereHas('invoices', function ($query) use ($value) {
+                    $query->whereIn('invoices.id', $value);
+                });         
+            }),
             AllowedFilter::exact('partner_id'),
             AllowedFilter::scope('search')
         ])

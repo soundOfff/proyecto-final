@@ -24,7 +24,8 @@ class PaymentResource extends JsonResource
             'note' => $this->note,
             'payment_mode' => $this->payment_mode,
             'transaction_id' => $this->transaction_id,
-            'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
+            'invoices' => InvoiceResource::collection($this->whenLoaded('invoices')),
+            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'paymentMethod' => PaymentMethodResource::make($this->whenLoaded('paymentMethod')),
         ];
     }

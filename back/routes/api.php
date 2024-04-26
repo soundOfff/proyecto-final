@@ -171,6 +171,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/permissions', [PermissionController::class, 'index']);
 
 Route::get('/payments', [PaymentController::class, 'index']);
+Route::post('/payments', [PaymentController::class, 'store']);
 Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
 
 Route::get('/credit-notes', [CreditNoteController::class, 'index']);

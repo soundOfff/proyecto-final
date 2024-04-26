@@ -14,10 +14,12 @@ return new class extends Migration {
             $table->id();
             
             $table->foreignId('payment_method_id')->constrained();
+            $table->foreignId('partner_id')->constrained()->onDelete('cascade');
             $table->decimal('amount');
+            $table->decimal('expenses_amount');
             $table->date('date');
             $table->dateTime('date_recorded')->nullable();
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->string('payment_mode')->nullable();
             $table->mediumText('transaction_id')->nullable();
 

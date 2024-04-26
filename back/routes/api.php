@@ -179,6 +179,8 @@ Route::post('/credit-notes', [CreditNoteController::class, 'store']);
 
 Route::post('/credits', [CreditController::class, 'attach']);
 
+Route::post('/credit-notes', [CreditNoteController::class, 'store']);
+
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();
 });

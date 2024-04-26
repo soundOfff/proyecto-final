@@ -12,9 +12,8 @@ return new class extends Migration {
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained();
+            
             $table->foreignId('payment_method_id')->constrained();
-
             $table->decimal('amount');
             $table->date('date');
             $table->dateTime('date_recorded')->nullable();

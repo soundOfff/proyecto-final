@@ -2,6 +2,8 @@
 
 import MDBox from "/components/MDBox";
 import Table from "./table";
+import Modal from "/components/Modal";
+import ModalContent from "./components/modal";
 import { useEffect, useState } from "react";
 import { useDataProvider } from "/providers/DataProvider";
 import { show } from "/actions/invoices";

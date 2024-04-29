@@ -65,11 +65,19 @@ const headers = [
   },
 ];
 
+<<<<<<< HEAD
 export default function ModalContent({ payment, setOpenModal }) {
   const { partialTotalPaid, partner_id } = payment;
 
   const { invoices, payments, totalPaid, handleAmountChanges, isValid } =
     useInvoicePayments(partialTotalPaid, partner_id);
+=======
+export default function ModalContent({ creditNote, setOpenModal }) {
+  const { invoices, payments, totalPaid, handleAmountChanges, isValid } =
+    useInvoicePayments(creditNote.pendingCredits, creditNote.partner.id);
+
+  const { data: session } = useSession();
+>>>>>>> d829e24e64276ddc44788f79adb9352b10b21c84
 
   const handleCreditApply = () => {
     const data = {
@@ -117,16 +125,27 @@ export default function ModalContent({ payment, setOpenModal }) {
       </Table>
       <MDBox display="flex" justifyContent="end" my={5}>
         <MDTypography variant="h6" color="text" fontWeight="medium">
+<<<<<<< HEAD
           Importe a Crédito: ${partialTotalPaid}
+=======
+          Importe a Crédito: ${totalPaid}
+>>>>>>> d829e24e64276ddc44788f79adb9352b10b21c84
         </MDTypography>
       </MDBox>
       <MDBox display="flex" justifyContent="end" my={5}>
         <MDTypography
           variant="h6"
+<<<<<<< HEAD
           color={partialTotalPaid >= totalPaid ? "text" : "error"}
           fontWeight="medium"
         >
           Importe Pendiente: ${partialTotalPaid - totalPaid}
+=======
+          color={creditNote.pendingCredits >= totalPaid ? "text" : "error"}
+          fontWeight="medium"
+        >
+          Importe Pendiente: ${creditNote.pendingCredits - totalPaid}
+>>>>>>> d829e24e64276ddc44788f79adb9352b10b21c84
         </MDTypography>
       </MDBox>
       <MDBox display="flex" justifyContent="end" mt={5}>

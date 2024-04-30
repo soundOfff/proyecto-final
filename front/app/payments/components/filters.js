@@ -64,6 +64,32 @@ export default function Filters({ paymentMethods, partners }) {
           <MDInput label="Buscar" onChange={handleSearch} />
         </FormControl>
       </Grid>
+      <Grid item xs={12} sm={6} display="flex" justifyContent="end">
+        <MDButton
+          variant="gradient"
+          onClick={() => setIsModalOpen(true)}
+          color={darkMode ? "light" : "dark"}
+          style={{ width: "auto", height: "40px" }}
+        >
+          Agregar nuevo cobro
+        </MDButton>
+        {isModalOpen && (
+          <Modal
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            px={0}
+            py={0}
+            width="40%"
+            height="60%"
+            sx={{ overflow: "scroll" }}
+          >
+            <ModalContentForm
+              paymentMethods={paymentMethods}
+              partners={partners}
+            />
+          </Modal>
+        )}
+      </Grid>
     </Grid>
   );
 }

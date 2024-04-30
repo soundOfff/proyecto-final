@@ -69,7 +69,7 @@ export default function Table({ rows }) {
       id: "acciones",
       Header: "Acciones",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex" alignContent="center">
           <Tooltip title="Eliminar Cobro">
             <DeleteIcon
               color="error"
@@ -88,7 +88,7 @@ export default function Table({ rows }) {
               sx={{ mx: 1, cursor: "pointer" }}
             />
           </Tooltip>
-        </>
+        </MDBox>
       ),
     },
   ];

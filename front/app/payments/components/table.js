@@ -9,12 +9,24 @@ import Modal from "/components/Modal";
 import ModalContent from "./modal/content";
 import Tooltip from "@mui/material/Tooltip";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteRow from "/components/DeleteRow";
 
+import useDeleteRow from "/hooks/useDeleteRow";
+import { destroy } from "/actions/payments";
 import { useState } from "react";
 
 export default function Table({ rows }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const columns = [
     {
@@ -93,14 +105,26 @@ export default function Table({ rows }) {
       id: "acciones",
       Header: "Acciones",
       Cell: ({ row }) => (
-        <Tooltip title="Asignar un pago">
-          <PaymentsOutlinedIcon
-            color="info"
-            fontSize="medium"
-            onClick={() => handleOpenModal(row.original)}
-            sx={{ mx: 1, cursor: "pointer" }}
-          />
-        </Tooltip>
+        <MDBox display="flex" alignContent="center">
+          <Tooltip title="Asignar un pago">
+            <PaymentsOutlinedIcon
+              color="info"
+              fontSize="medium"
+              onClick={() => handleOpenModal(row.original)}
+              sx={{ mx: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Eliminar un pago">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{ mx: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </MDBox>
       ),
     },
   ];
@@ -125,13 +149,21 @@ export default function Table({ rows }) {
           </Modal>
         )}
       </MDBox>
-
       <DataTable
         table={table}
         showTotalEntries={true}
         isSorted={true}
         entriesPerPage={false}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </MDBox>
   );

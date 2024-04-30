@@ -20,3 +20,24 @@ export async function store(data) {
 
   revalidatePath("/payments");
 }
+
+export async function attach(data) {
+  const url = new URL(`${process.env.API_URL}/partial-payments-attach`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/invoices");
+}
+export async function detach(data) {
+  const url = new URL(`${process.env.API_URL}/partial-payments-detach`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/invoices");
+}

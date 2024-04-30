@@ -2,7 +2,6 @@
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import MDButton from "/components/MDButton";
 import Modal from "/components/Modal";
 import ModalContent from "../payments/components/modal/content";
 import Tooltip from "@mui/material/Tooltip";
@@ -10,7 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
-import { destroy } from "/actions/payments";
+import { detach } from "/actions/payments";
 import numberFormat from "/utils/numberFormat";
 import { useState } from "react";
 
@@ -21,14 +20,22 @@ export default function Table({ rows }) {
     setOpenDeleteConfirmation,
     errorSB,
     setErrorSB,
-    handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
-  } = useDeleteRow(destroy);
+  } = useDeleteRow(() => {});
 
   const handleOpenModal = (payment) => {
     setIsModalOpen(true);
     setSelectedRow(payment);
+  };
+
+  const handleDelete = async (partialPayment) => {
+    const data = {
+      payment_id: partialPayment.id,
+      invoice_id: partialPayment.pivot?.invoice_id,
+    };
+    await detach(data);
+    setDeleteConfirmed(true);
   };
 
   const handleCloseModal = () => {
@@ -68,7 +75,7 @@ export default function Table({ rows }) {
               color="error"
               fontSize="medium"
               onClick={() => {
-                handleDelete(row.original.id);
+                handleDelete(row.original);
               }}
               sx={{ mx: 1, cursor: "pointer" }}
             />
@@ -85,7 +92,7 @@ export default function Table({ rows }) {
       ),
     },
   ];
-  console.log(rows);
+
   const table = { columns, rows };
 
   return (
@@ -93,10 +100,7 @@ export default function Table({ rows }) {
       <MDBox display="flex" justifyContent="end" my={3}>
         {isModalOpen && (
           <Modal open={isModalOpen} onClose={handleCloseModal}>
-            <ModalContent
-              setOpenModal={handleOpenModal}
-              payment={selectedRow}
-            />
+            <ModalContent setOpenModal={setIsModalOpen} payment={selectedRow} />
           </Modal>
         )}
       </MDBox>

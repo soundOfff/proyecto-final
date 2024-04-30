@@ -33,7 +33,6 @@ export default function First({
     formField;
 
   useEffect(() => {
-    console.log("expense", expense);
     setFieldValue(name.name, expense.name);
     setFieldValue(note.name, expense.note);
     setFieldValue(category.name, expense.category?.id ?? null);

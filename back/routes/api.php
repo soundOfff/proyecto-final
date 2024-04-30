@@ -174,6 +174,9 @@ Route::get('/payments', [PaymentController::class, 'index']);
 Route::post('/payments', [PaymentController::class, 'store']);
 Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
 
+Route::post('/partial-payments-attach', [PaymentController::class, 'attach']);
+Route::post('/partial-payments-detach', [PaymentController::class, 'detach']);
+
 Route::get('/credit-notes', [CreditNoteController::class, 'index']);
 Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
 Route::post('/credit-notes', [CreditNoteController::class, 'store']);

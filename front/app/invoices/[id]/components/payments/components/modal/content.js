@@ -5,7 +5,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import TableRowComponent from "./table-row-component";
-import { store as storeCredits } from "/actions/credits";
+import { attach, detach } from "/actions/payments";
 import useInvoicePayments from "/hooks/useInvoicePayments";
 
 const borderBottom = {
@@ -65,27 +65,18 @@ const headers = [
   },
 ];
 
-<<<<<<< HEAD
 export default function ModalContent({ payment, setOpenModal }) {
-  const { partialTotalPaid, partner_id } = payment;
+  const { id: paymentId, partialTotalPaid, partner_id } = payment;
 
   const { invoices, payments, totalPaid, handleAmountChanges, isValid } =
     useInvoicePayments(partialTotalPaid, partner_id);
-=======
-export default function ModalContent({ creditNote, setOpenModal }) {
-  const { invoices, payments, totalPaid, handleAmountChanges, isValid } =
-    useInvoicePayments(creditNote.pendingCredits, creditNote.partner.id);
 
-  const { data: session } = useSession();
->>>>>>> d829e24e64276ddc44788f79adb9352b10b21c84
-
-  const handleCreditApply = () => {
+  const handlePartialPaymentApply = () => {
     const data = {
       payments: payments,
-      credit_note_id: creditNote.id,
-      staff_id: session.staff.id,
+      payment_id: paymentId,
     };
-    storeCredits(data).then(() => {
+    attach(data).then(() => {
       setOpenModal(false);
     });
   };
@@ -125,34 +116,23 @@ export default function ModalContent({ creditNote, setOpenModal }) {
       </Table>
       <MDBox display="flex" justifyContent="end" my={5}>
         <MDTypography variant="h6" color="text" fontWeight="medium">
-<<<<<<< HEAD
-          Importe a Crédito: ${partialTotalPaid}
-=======
           Importe a Crédito: ${totalPaid}
->>>>>>> d829e24e64276ddc44788f79adb9352b10b21c84
         </MDTypography>
       </MDBox>
       <MDBox display="flex" justifyContent="end" my={5}>
         <MDTypography
           variant="h6"
-<<<<<<< HEAD
           color={partialTotalPaid >= totalPaid ? "text" : "error"}
           fontWeight="medium"
         >
           Importe Pendiente: ${partialTotalPaid - totalPaid}
-=======
-          color={creditNote.pendingCredits >= totalPaid ? "text" : "error"}
-          fontWeight="medium"
-        >
-          Importe Pendiente: ${creditNote.pendingCredits - totalPaid}
->>>>>>> d829e24e64276ddc44788f79adb9352b10b21c84
         </MDTypography>
       </MDBox>
       <MDBox display="flex" justifyContent="end" mt={5}>
         <MDButton
           variant="gradient"
           color="success"
-          onClick={handleCreditApply}
+          onClick={handlePartialPaymentApply}
           disabled={!isValid()}
         >
           Guardar

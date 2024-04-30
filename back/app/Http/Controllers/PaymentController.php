@@ -54,6 +54,28 @@ class PaymentController extends Controller
         return response()->json($payment, 201);
     }
 
+    public function attach(Request $request)
+    {
+        $partialPays = $request->get('payments');
+        $payment = Payment::findOrFail($request->get('payment_id'));
+
+        foreach ($partialPays as $partialPay) {
+            $payment->invoices()->attach($partialPay['invoice_id'], [
+                'amount' => $partialPay['amount'],
+            ]);
+        }
+
+        return response()->json(null, 201);
+    }
+
+    public function detach(Request $request)
+    {
+        $payment = Payment::findOrFail($request->get('payment_id'));
+        $payment->invoices()->detach($request->get('invoice_id'));
+
+        return response()->json(null, 204);
+    }
+
     /**
      * Display the specified resource.
      */

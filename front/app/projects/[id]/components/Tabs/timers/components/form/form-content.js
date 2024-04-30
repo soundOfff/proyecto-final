@@ -116,7 +116,6 @@ export default function FormContent({
           onChange={(e, tagsSelected) => setFieldValue(tags.name, tagsSelected)}
           options={tagsData}
           getOptionLabel={(option) => {
-            console.log(option);
             return option.name;
           }}
           renderInput={(params) => (

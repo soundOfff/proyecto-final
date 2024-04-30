@@ -35,7 +35,6 @@ export default function ModalContentForm({
 
   const handleSubmit = async (event, values) => {
     event.preventDefault();
-    console.log(values);
     await storeItem(values);
     onClose();
   };

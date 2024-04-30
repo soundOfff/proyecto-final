@@ -29,6 +29,7 @@ class PaymentResource extends JsonResource
             'paymentMethod' => PaymentMethodResource::make($this->whenLoaded('paymentMethod')),
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
             'parcial_amount' => is_null($this->pivot) ? null : $this->pivot->amount,
+            'pivot' => $this->pivot,
             'partialTotalPaid' => $this->partial_total_paid,
         ];
     }

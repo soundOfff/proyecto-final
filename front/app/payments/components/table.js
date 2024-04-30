@@ -5,8 +5,17 @@ import DataTable from "/examples/Tables/DataTable";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import Modal from "/components/Modal";
+import ModalContent from "./modal/content";
+import Tooltip from "@mui/material/Tooltip";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+
+import { useState } from "react";
 
 export default function Table({ rows }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
   const columns = [
     {
       Header: "Cobro nº",
@@ -80,11 +89,43 @@ export default function Table({ rows }) {
       Header: "Fecha",
       accessor: "createdAt",
     },
+    {
+      id: "acciones",
+      Header: "Acciones",
+      Cell: ({ row }) => (
+        <Tooltip title="Asignar un pago">
+          <PaymentsOutlinedIcon
+            color="info"
+            fontSize="medium"
+            onClick={() => handleOpenModal(row.original)}
+            sx={{ mx: 1, cursor: "pointer" }}
+          />
+        </Tooltip>
+      ),
+    },
   ];
+
+  const handleOpenModal = (payment) => {
+    setIsModalOpen(true);
+    setSelectedRow(payment);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRow(null);
+  };
 
   const table = { columns, rows };
   return (
     <MDBox>
+      <MDBox display="flex" justifyContent="end" my={3}>
+        {isModalOpen && (
+          <Modal open={isModalOpen} onClose={handleCloseModal}>
+            <ModalContent setOpenModal={setIsModalOpen} payment={selectedRow} />
+          </Modal>
+        )}
+      </MDBox>
+
       <DataTable
         table={table}
         showTotalEntries={true}

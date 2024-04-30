@@ -177,9 +177,9 @@ Route::get('/credit-notes', [CreditNoteController::class, 'index']);
 Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
 Route::post('/credit-notes', [CreditNoteController::class, 'store']);
 
+Route::get('/credits', [CreditController::class, 'index']);
 Route::post('/credits', [CreditController::class, 'attach']);
-
-Route::post('/credit-notes', [CreditNoteController::class, 'store']);
+Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

@@ -34,6 +34,7 @@ class InvoiceController extends Controller
             ->allowedIncludes([
                 'partner',
                 'project.serviceType',
+                'project.defendant',
                 'currency',
                 'estimate',
                 'billingCountry',
@@ -69,6 +70,7 @@ class InvoiceController extends Controller
             ->allowedIncludes([
                 'partner',
                 'project.serviceType',
+                'project.defendant',
                 'currency',
                 'estimate',
                 'billingCountry',

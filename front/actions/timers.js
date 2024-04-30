@@ -24,7 +24,6 @@ export async function update(timerId, data) {
   });
 
   revalidatePath("/tasks");
-  redirect("/tasks");
 }
 
 export async function getCurrentTimer(staffId, params) {

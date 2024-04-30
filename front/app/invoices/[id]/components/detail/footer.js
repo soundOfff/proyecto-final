@@ -88,6 +88,15 @@ export default function Footer({ invoice }) {
                   ${numberFormat(invoice.total)}
                 </MDTypography>
               </Grid>
+              <Grid item xs={12} sm={7} />
+              <Grid item xs={12} sm={3}>
+                <MDTypography variant="h6">Importe a Pagar:</MDTypography>
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <MDTypography variant="body">
+                  ${numberFormat(invoice.pendingToPay)}
+                </MDTypography>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

@@ -7,6 +7,7 @@ use App\Http\Resources\EstimateResource;
 use App\Http\Resources\EstimateResourceCollection;
 use App\Models\Estimate;
 use App\Models\Invoice;
+use App\Models\InvoiceStatus;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
 use App\Models\Taggable;
@@ -24,7 +25,7 @@ class EstimateController extends Controller
         $newInvoice = $estimate->toArray();
         $newInvoice['prefix'] = 'INVOICE-';
         $newInvoice['include_shipping'] = false;
-        $newInvoice['invoice_status_id'] = Invoice::TO_PAY;
+        $newInvoice['invoice_status_id'] = InvoiceStatus::TO_PAY;
         $newInvoice['estimate_id'] = $estimate->id;
         $newInvoice['show_shipping_on_invoice'] = $estimate->show_shipping_on_estimate;
         $newInvoice['items'] = $estimate->lineItems->toArray();

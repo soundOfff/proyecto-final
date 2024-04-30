@@ -200,7 +200,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
       sx={(theme) =>
         navbar(theme, { transparentNavbar, absolute, light, darkMode })
       }
-      className="navbar-print"
+      className="display-hidden-print"
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <MDBox
@@ -228,11 +228,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link
-                href="/profile"
-                passHref
-                legacyBehavior
-              >
+              <Link href="/profile" passHref legacyBehavior>
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>

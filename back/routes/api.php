@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CreditController;
+use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DiscountTypeController;
 use App\Http\Controllers\DistrictController;
@@ -18,6 +20,7 @@ use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProjectBillingTypeController;
@@ -134,7 +137,6 @@ Route::get('/task-stats', [TaskController::class, 'stats']);
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
-
 Route::get('/tags', [TagController::class, 'index']);
 
 Route::get('/countries-select', [CountryController::class, 'select']);
@@ -167,6 +169,25 @@ Route::post('/files', [FileController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/permissions', [PermissionController::class, 'index']);
+
+Route::get('/payments', [PaymentController::class, 'index']);
+Route::post('/payments', [PaymentController::class, 'store']);
+Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
+
+Route::post('/partial-payments-attach', [PaymentController::class, 'attach']);
+Route::post('/partial-payments-detach', [PaymentController::class, 'detach']);
+
+Route::get('/credit-notes', [CreditNoteController::class, 'index']);
+Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
+Route::post('/credit-notes', [CreditNoteController::class, 'store']);
+
+Route::post('/credits', [CreditController::class, 'attach']);
+
+Route::post('/credit-notes', [CreditNoteController::class, 'store']);
+
+Route::get('/credits', [CreditController::class, 'index']);
+Route::post('/credits', [CreditController::class, 'attach']);
+Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

@@ -1,19 +1,17 @@
-// @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import MDBox from "/components/MDBox";
-
-import Header from "./components/header";
-import Table from "./components/table";
-import Footer from "./components/footer";
-
+import Index from "./components/index";
 import { show } from "/actions/invoices";
+import { select as staffSelect } from "/actions/staffs";
+import { getTaskStatus, getTaskPriorities } from "/actions/tasks";
+import { getAll as getAllRepeats } from "/actions/expense-repeats";
+import { getAll as getAllTags } from "/actions/tags";
+import { getAll as getAllPartners } from "/actions/partners";
 
 export default async function Show({ params: { id } }) {
   const invoice = await show(id, {
     include: [
       "partner",
       "project.serviceType",
+      "project.defendant",
       "currency",
       "estimate",
       "billingCountry",
@@ -22,18 +20,22 @@ export default async function Show({ params: { id } }) {
       "lineItems.taxes",
     ],
   });
+  const staffs = await staffSelect();
+  const statuses = await getTaskStatus();
+  const priorities = await getTaskPriorities();
+  const repeats = await getAllRepeats();
+  const tagsData = await getAllTags();
+  const partners = await getAllPartners();
 
   return (
-    <MDBox mt={2} mb={4} className="container-print">
-      <Grid container justifyContent="center" className="card-container-print">
-        <Grid item xs={12} sm={10} md={8} className="card-container-print">
-          <Card className="card-container-print">
-            <Header invoice={invoice} />
-            <Table invoice={invoice} />
-            <Footer invoice={invoice} />
-          </Card>
-        </Grid>
-      </Grid>
-    </MDBox>
+    <Index
+      invoice={invoice}
+      staffs={staffs}
+      statuses={statuses}
+      priorities={priorities}
+      repeats={repeats}
+      tagsData={tagsData}
+      partners={partners}
+    />
   );
 }

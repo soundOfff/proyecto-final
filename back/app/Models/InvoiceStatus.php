@@ -15,6 +15,10 @@ class InvoiceStatus extends Model
         'label',
     ];
 
+    public const TO_PAY = 1;
+
+    public const PARTIALLY_PAID = 3;
+
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);

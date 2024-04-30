@@ -13,20 +13,12 @@ return new class extends Migration {
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id')->constrained();
+            $table->foreignId('credit_note_id')->constrained();
             $table->foreignId('staff_id')->constrained();
 
             $table->decimal('amount');
             $table->date('date');
-            $table->dateTime('date_applied');
-            $table->string('billing_city');
-            $table->integer('billing_country');
-            $table->string('billing_state');
-            $table->string('billing_street');
-            $table->string('billing_zip');
-            $table->string('city');
-            $table->string('company');
-            $table->boolean('consolidator')->default(false);
-            $table->integer('consolidator_id')->nullable();
+            $table->dateTime('date_applied')->nullable();
 
             $table->timestamps();
         });

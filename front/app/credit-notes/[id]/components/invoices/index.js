@@ -13,7 +13,7 @@ export default function Credits() {
 
   useEffect(() => {
     getAll({
-      "filter[invoice_id]": creditNote.id,
+      "filter[credit_note_id]": creditNote.id,
       include: ["invoice", "creditNote", "staff"],
     }).then((data) => setCredits(data.data.credits));
   }, [creditNote]);

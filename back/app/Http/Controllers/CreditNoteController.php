@@ -36,7 +36,7 @@ class CreditNoteController extends Controller
     {
         $newCreditNote = $request->validated();
         $newCreditNote['credit_note_status_id'] = CreditNoteStatus::OPEN;
-        $newCreditNote['credit_note_status_id'] = 'CN-';
+        $newCreditNote['prefix'] = 'CN-';
 
         $creditNote = CreditNote::create($newCreditNote);
 

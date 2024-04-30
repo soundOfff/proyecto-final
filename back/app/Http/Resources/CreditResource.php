@@ -22,6 +22,9 @@ class CreditResource extends JsonResource
             'amount' => $this->amount,
             'date' => $this->date,
             'dateApplied' => $this->date_applied,
+            'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
+            'creditNote' => CreditNoteResource::make($this->whenLoaded('creditNote')),
+            'staff' => StaffResource::make($this->whenLoaded('staff')),
         ];
     }
 }

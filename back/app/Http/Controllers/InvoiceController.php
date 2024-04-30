@@ -35,6 +35,7 @@ class InvoiceController extends Controller
                 'partner',
                 'payments',
                 'project.serviceType',
+                'project.defendant',
                 'currency',
                 'estimate',
                 'billingCountry',
@@ -47,13 +48,14 @@ class InvoiceController extends Controller
                 'project_id',
                 AllowedFilter::custom('to_pay', new InvoiceToPayFilter),
                 AllowedFilter::callback('payments', function ($query, $value) {
-                    if (!is_array($value)) {
+                    if (! is_array($value)) {
                         $value = [$value];
-                    } 
+                    }
                     $query->whereHas('payments', function ($query) use ($value) {
                         $query->whereIn('payments.id', $value);
-                    });         
+                    });
                 }),
+
             ])
             ->allowedSorts([
                 'id', 'total', 'date', 'tags',
@@ -78,6 +80,7 @@ class InvoiceController extends Controller
             ->allowedIncludes([
                 'partner',
                 'project.serviceType',
+                'project.defendant',
                 'currency',
                 'payments',
                 'payments.paymentMethod',

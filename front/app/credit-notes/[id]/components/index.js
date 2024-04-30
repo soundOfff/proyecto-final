@@ -5,17 +5,15 @@ import TabPanel from "@mui/lab/TabPanel";
 import Tabs from "./tabs";
 import MDBox from "/components/MDBox";
 import Detail from "./detail/index";
-import Payments from "./payments/index";
-import Credits from "./credits/index";
-import Tasks from "./tasks/index";
+import Invoices from "./invoices/index";
 import { DataProvider } from "/providers/DataProvider";
 import { useState } from "react";
 
-export default function IndexComponent(props) {
+export default function IndexComponent({ creditNote }) {
   const [tab, setTab] = useState("detail");
 
   return (
-    <DataProvider value={{ ...props }}>
+    <DataProvider value={{ creditNote }}>
       <MDBox>
         <TabContext value={tab}>
           <MDBox my={2}>
@@ -24,14 +22,8 @@ export default function IndexComponent(props) {
           <TabPanel value="detail">
             <Detail />
           </TabPanel>
-          <TabPanel value="payments">
-            <Payments />
-          </TabPanel>
-          <TabPanel value="credits">
-            <Credits />
-          </TabPanel>
-          <TabPanel value="tasks">
-            <Tasks />
+          <TabPanel value="invoices">
+            <Invoices />
           </TabPanel>
         </TabContext>
       </MDBox>

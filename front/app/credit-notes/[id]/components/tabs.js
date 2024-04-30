@@ -34,9 +34,7 @@ export default function TabsComponent({ setTabIndex }) {
     <AppBar position="static" className="display-hidden-print">
       <TabList orientation={tabsOrientation} onChange={handleSetTabValue}>
         <Tab label="Detalle" value="detail" />
-        <Tab label="Cobros" value="payments" />
-        <Tab label="Créditos Asignados" value="credits" />
-        <Tab label="Tareas" value="tasks" />
+        <Tab label="Facturas Acreditadas" value="invoices" />
       </TabList>
     </AppBar>
   );

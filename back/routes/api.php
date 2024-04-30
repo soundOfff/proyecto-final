@@ -185,6 +185,10 @@ Route::post('/credits', [CreditController::class, 'attach']);
 
 Route::post('/credit-notes', [CreditNoteController::class, 'store']);
 
+Route::get('/credits', [CreditController::class, 'index']);
+Route::post('/credits', [CreditController::class, 'attach']);
+Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
+
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();
 });

@@ -113,6 +113,7 @@ const routes = [
         route: "/invoices",
       },
       { name: "Notas de Crédito", key: "credit_notes", route: "/credit-notes" },
+      { name: "Cobros", key: "payments", route: "/payments" },
     ],
   },
   {

@@ -59,7 +59,6 @@ export default function Table({ rows }) {
           </MaterialLink>
         );
       },
-      width: "30%",
     },
     {
       Header: "Estado",
@@ -77,7 +76,6 @@ export default function Table({ rows }) {
           />
         );
       },
-      width: "15%",
     },
     {
       Header: "Última Nota",
@@ -85,14 +83,13 @@ export default function Table({ rows }) {
       Cell: ({ value }) => {
         return value.length > 0 ? value.at(-1).content : null;
       },
-      width: "50%",
     },
     {
       Header: "Acciones",
       accessor: "actions",
       textAlign: "center",
       Cell: ({ row }) => (
-        <>
+        <MDBox display="flex">
           <Tooltip title="Vista Rápida">
             <FlashOnIcon
               color="info"
@@ -131,7 +128,7 @@ export default function Table({ rows }) {
               />
             </Tooltip>
           </Link>
-        </>
+        </MDBox>
       ),
     },
   ];

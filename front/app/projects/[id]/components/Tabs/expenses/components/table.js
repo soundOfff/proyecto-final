@@ -21,7 +21,7 @@ import { destroy as destroyFile } from "/actions/files";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 
-export default function Table({ rows }) {
+export default function Table({ rows, project }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [expenseIdShow, setExpenseIdShow] = useState(0);
@@ -211,7 +211,7 @@ export default function Table({ rows }) {
         </Modal>
       )}
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href="/expenses/create">
+        <Link href={`/projects/create-expenses/${project.id}`}>
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Gasto
           </MDButton>

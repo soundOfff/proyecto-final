@@ -55,10 +55,6 @@ export default function Table({ rows }) {
     setOpenShow(true);
   };
 
-  const handleDeleteFile = async (fileId) => {
-    await destroyFile(fileId);
-  };
-
   const columns = [
     {
       Header: "Nombre",
@@ -96,56 +92,6 @@ export default function Table({ rows }) {
       accessor: "notes",
       Cell: ({ value }) => {
         return value.length > 0 ? value.at(-1).content : null;
-      },
-    },
-    {
-      Header: "Archivos",
-      accessor: "files",
-      textAlign: "center",
-      Cell: ({ row }) => {
-        return (
-          <MDBox
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            sx={{ gap: 1, width: "100%" }}
-          >
-            {row.original.files.map((file) => (
-              <MDBox
-                key={file.id}
-                borderRadius="lg"
-                display="flex"
-                alignItems="center"
-                width="100%"
-                justifyContent="between"
-                p={0.75}
-                sx={{
-                  border: ({ borders: { borderWidth, borderColor } }) =>
-                    `${borderWidth[1]} solid ${borderColor}`,
-                  gap: 1,
-                }}
-              >
-                <DescriptionOutlined fontSize="medium" color="dark" />
-                <Link href={file.publicUrl}>
-                  <MDTypography
-                    variant="button"
-                    fontWeight="regular"
-                    color="dark"
-                  >
-                    {file.subject.length > 10
-                      ? file.subject.substring(0, 10) + "..."
-                      : file.subject}
-                  </MDTypography>
-                </Link>
-                <CancelIcon
-                  color="error"
-                  onClick={() => handleDeleteFile(file.id)}
-                  sx={{ cursor: "pointer" }}
-                />
-              </MDBox>
-            ))}
-          </MDBox>
-        );
       },
     },
     {

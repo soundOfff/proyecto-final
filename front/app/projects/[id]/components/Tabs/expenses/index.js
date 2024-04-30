@@ -21,5 +21,5 @@ export default function Expenses() {
     });
   }, [project]);
 
-  return isLoading ? <Loader /> : <Table rows={expenses} />;
+  return isLoading ? <Loader /> : <Table rows={expenses} project={project} />;
 }

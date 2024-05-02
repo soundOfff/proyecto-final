@@ -39,13 +39,13 @@ return new class extends Migration {
             $table->string('ruc')->nullable();
             $table->string('website')->nullable();
             $table->string('zip')->nullable();
-            $table->boolean('is_consolidator')->default(false);
+            $table->boolean('is_consolidator')->nullable();
 
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->string('phone_number')->nullable();
-            $table->boolean('is_residential')->default(false);
+            $table->boolean('is_residential')->nullable();
             $table->string('building_number')->nullable();
             $table->string('email')->nullable();
 
@@ -59,16 +59,16 @@ return new class extends Migration {
             $table->string('shipping_zip')->nullable();
 
             $table->integer('lead_id')->nullable();
-            $table->boolean('active')->default(true);
-            $table->boolean('added_from')->default(false);
-            $table->boolean('default_currency')->default(false);
+            $table->boolean('active')->nullable();
+            $table->boolean('added_from')->nullable();
+            $table->boolean('default_currency')->nullable();
             $table->string('default_language')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('stripe_id')->nullable();
             $table->string('vat')->nullable();
-            $table->boolean('show_primary_contact')->default(false);
-            $table->boolean('registration_confirmed')->default(true);
+            $table->boolean('show_primary_contact')->nullable();
+            $table->boolean('registration_confirmed')->nullable();
 
             $table->timestamps();
         });

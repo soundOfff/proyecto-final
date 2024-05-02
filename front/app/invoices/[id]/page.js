@@ -18,6 +18,7 @@ export default async function Show({ params: { id } }) {
       "shippingCountry",
       "tags",
       "lineItems.taxes",
+      "status",
     ],
   });
   const staffs = await staffSelect();

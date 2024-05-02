@@ -42,6 +42,17 @@ export default function Header({ invoice }) {
             <MDTypography variant="h5" fontWeight="medium">
               #{invoice.number}
             </MDTypography>
+            <MDTypography
+              variant="h6"
+              color={darkMode ? "text" : "secondary"}
+              fontWeight="regular"
+              mr={1}
+            >
+              Estado:
+            </MDTypography>
+            <MDTypography variant="h5" fontWeight="medium">
+              {invoice.status.label}
+            </MDTypography>
           </MDBox>
         </Grid>
         <Grid item xs={12} md={6}>

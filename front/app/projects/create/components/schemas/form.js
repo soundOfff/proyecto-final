@@ -71,7 +71,7 @@ const form = {
       errorMsg: "Debe seleccionar un tipo de facturación",
     },
     selectedMembers: {
-      name: "project_member_ids",
+      name: "project_members",
       label: "Miembros Del Caso",
       errorMsg: "Debe seleccionar al menos un miembro",
     },

@@ -17,6 +17,8 @@ class InvoiceStatus extends Model
 
     public const TO_PAY = 1;
 
+    public const PAID = 2;
+
     public const PARTIALLY_PAID = 3;
 
     public function invoices(): HasMany

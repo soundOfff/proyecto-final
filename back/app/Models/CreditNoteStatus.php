@@ -14,6 +14,8 @@ class CreditNoteStatus extends Model
 
     public const OPEN = 1;
 
+    public const CLOSED = 2;
+
     public function creditNotes(): HasMany
     {
         return $this->hasMany(CreditNote::class);

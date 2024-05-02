@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentResourceCollection;
+use App\Models\Invoice;
+use App\Models\InvoiceStatus;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -22,18 +24,18 @@ class PaymentController extends Controller
             'partner',
             'invoices',
         ])
-        ->select("payments.*")
+        ->select('payments.*')
         ->allowedFilters([
             AllowedFilter::callback('invoices', function ($query, $value) {
-                if (!is_array($value)) {
+                if (! is_array($value)) {
                     $value = [$value];
-                } 
+                }
                 $query->whereHas('invoices', function ($query) use ($value) {
                     $query->whereIn('invoices.id', $value);
                 });
             }),
             AllowedFilter::exact('partner_id'),
-            AllowedFilter::scope('search')
+            AllowedFilter::scope('search'),
         ])
         ->orderBy('id', 'desc');
 
@@ -48,9 +50,10 @@ class PaymentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(PaymentRequest $request)
-    {   
+    {
         $newPayment = $request->validated();
         $payment = Payment::create($newPayment);
+
         return response()->json($payment, 201);
     }
 
@@ -63,6 +66,11 @@ class PaymentController extends Controller
             $payment->invoices()->attach($partialPay['invoice_id'], [
                 'amount' => $partialPay['amount'],
             ]);
+
+            $invoice = Invoice::find($partialPay['invoice_id']);
+            if ($invoice->pending_to_pay == 0) {
+                $invoice->update(['invoice_status_id' => InvoiceStatus::PAID]);
+            }
         }
 
         return response()->json(null, 201);

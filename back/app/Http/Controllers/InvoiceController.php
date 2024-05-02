@@ -89,6 +89,7 @@ class InvoiceController extends Controller
                 'shippingCountry',
                 'lineItems.taxes',
                 'tags',
+                'status',
             ])
             ->find($invoice->id);
 

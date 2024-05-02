@@ -71,6 +71,7 @@ class InvoiceResource extends JsonResource
             'estimate' => EstimateResource::make($this->whenLoaded('estimate')),
             'billingCountry' => CountryResource::make($this->whenLoaded('billingCountry')),
             'shippingCountry' => CountryResource::make($this->whenLoaded('shippingCountry')),
+            'status' => InvoiceStatusResource::make($this->whenLoaded('status')),
             'items' => LineItemResource::collection($this->whenLoaded('lineItems')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),

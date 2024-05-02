@@ -78,6 +78,8 @@ class ExpenseController extends Controller
             'files',
             'project',
             'invoice',
+            'paymentMethod',
+            'currency',
         ])
         ->find($expense->id);
 

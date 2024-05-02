@@ -99,7 +99,7 @@ class Invoice extends Model
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(InvoiceStatus::class);
+        return $this->belongsTo(InvoiceStatus::class, 'invoice_status_id', 'id', 'invoice_statuses');
     }
 
     public function billingCountry(): BelongsTo

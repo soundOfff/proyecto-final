@@ -8,6 +8,8 @@ import logoBlack from "/assets/logo/Black/asset-27.svg";
 import logoWhite from "/assets/logo/White/asset-29.svg";
 import { useMaterialUIController } from "/context";
 import Link from "next/link";
+import MDBadge from "/components/MDBadge";
+import { getColor } from "/utils/state-colors";
 
 export default function Header({ invoice }) {
   const [controller] = useMaterialUIController();
@@ -42,17 +44,17 @@ export default function Header({ invoice }) {
             <MDTypography variant="h5" fontWeight="medium">
               #{invoice.number}
             </MDTypography>
-            <MDTypography
-              variant="h6"
-              color={darkMode ? "text" : "secondary"}
-              fontWeight="regular"
-              mr={1}
-            >
-              Estado:
-            </MDTypography>
-            <MDTypography variant="h5" fontWeight="medium">
-              {invoice.status.label}
-            </MDTypography>
+          </MDBox>
+          <MDBox p={1} display="flex" justifyContent="end">
+            {" "}
+            <MDBadge
+              variant="contained"
+              badgeContent={invoice.status.label}
+              color={getColor(invoice.status.id)}
+              size="xs"
+              container
+              sx={{ height: "2rem" }}
+            />
           </MDBox>
         </Grid>
         <Grid item xs={12} md={6}>

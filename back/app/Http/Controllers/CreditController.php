@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CreditResourceCollection;
 use App\Models\Credit;
 use App\Models\CreditNote;
+use App\Models\CreditNoteStatus;
+use App\Models\Invoice;
+use App\Models\InvoiceStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -36,6 +39,15 @@ class CreditController extends Controller
                 'staff_id' => $request->get('staff_id'),
                 'date' => Carbon::now(),
             ]);
+
+            $invoice = Invoice::find($payment['invoice_id']);
+            if ($invoice->pending_to_pay == 0) {
+                $invoice->update(['invoice_status_id' => InvoiceStatus::PAID]);
+            }
+        }
+
+        if ($creditNote->pending_credits == 0) {
+            $creditNote->update(['credit_note_status_id' => CreditNoteStatus::CLOSED]);
         }
 
         return response()->json(null, 201);

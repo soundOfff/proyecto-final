@@ -25,12 +25,12 @@ return new class extends Migration {
             $table->date('date_finished')->nullable();
             $table->date('deadline')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('estimated_hours');
+            $table->decimal('estimated_hours')->nullable();
             $table->string('name');
             $table->string('expedient')->nullable();
             $table->integer('progress')->nullable();
             $table->integer('progress_from_tasks')->nullable();
-            $table->decimal('cost');
+            $table->decimal('cost')->nullable();
             $table->decimal('rate_per_hour')->nullable();
             $table->date('start_date')->nullable();
             $table->float('amount')->nullable();

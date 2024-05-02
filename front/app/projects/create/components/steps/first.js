@@ -81,7 +81,7 @@ export default function First({ formData }) {
           {description.label}
         </MDTypography>
         <MDEditor
-          editorStyle={{ minHeight: "20vh" }}
+          editorStyle={{ minHeight: "20vh", fontSize: "18px" }}
           editorState={editorState}
           setEditorState={setEditorState}
         />

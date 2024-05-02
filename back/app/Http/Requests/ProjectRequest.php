@@ -23,10 +23,10 @@ class ProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'expedient' => 'required|string',
+            'expedient' => 'nullable|string',
             'deadline' => 'required|date',
-            'description' => 'required|string',
-            'estimated_hours' => 'required|numeric',
+            'description' => 'nullable|string',
+            'estimated_hours' => 'nullable|numeric',
             'cost' => 'required|numeric',
             'start_date' => 'required|date',
             'project_status_id' => 'required|numeric|exists:project_statuses,id',

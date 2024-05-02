@@ -117,15 +117,17 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       <Grid item xs={4}>
         <MDBox display="flex" justifyContent="end">
           <FormControl>
-            <FormLabel>{unit.label}</FormLabel>
+            <FormLabel sx={{ fontSize: "18px" }} color="dark">
+              {unit.label}
+            </FormLabel>
             <RadioGroup row name={unit.name}>
-              {units.map((unit, index) => (
+              {units.map((optionUnit) => (
                 <FormControlLabel
-                  key={unit}
-                  value={unit}
+                  key={optionUnit}
+                  value={optionUnit}
                   control={
                     <Radio
-                      checked={index === 0}
+                      checked={optionUnit == externalValues[unit.name]}
                       onChange={(e) => {
                         setFieldValueExternal(
                           formField.unit.name,
@@ -134,7 +136,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
                       }}
                     />
                   }
-                  label={unit}
+                  label={optionUnit}
                 />
               ))}
             </RadioGroup>
@@ -274,7 +276,9 @@ export default function ItemForm({ formData, item, taxesData, types }) {
         />
       </Grid>
       <Grid item xs={12} sm={1}>
-        <MDButton onClick={handleSubmit}>Agregar</MDButton>
+        <MDButton onClick={handleSubmit} size="small" color="success">
+          Agregar
+        </MDButton>
       </Grid>
     </>
   );

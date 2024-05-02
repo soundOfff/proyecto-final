@@ -82,6 +82,16 @@ export default function Second({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
+        <Select
+          value={values[responsiblePersonId.name]}
+          options={members}
+          optionLabel={(option) => option.name}
+          fieldName={responsiblePersonId.name}
+          inputLabel={responsiblePersonId.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12}>
         <Autocomplete
           multiple
           value={values[selectedMembers.name]}

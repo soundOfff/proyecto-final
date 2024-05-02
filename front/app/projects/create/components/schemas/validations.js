@@ -22,6 +22,7 @@ const {
     cost,
     estimatedHours,
     expedient,
+    responsiblePersonId,
     description,
     partner,
     status,
@@ -52,6 +53,9 @@ const validations = [
   }),
   Yup.object().shape({
     [partner.name]: Yup.string().required(partner.errorMsg),
+    [responsiblePersonId.name]: Yup.string().required(
+      responsiblePersonId.errorMsg
+    ),
     [status.name]: Yup.string().required(status.errorMsg),
     [serviceType.name]: Yup.string().required(serviceType.errorMsg),
     [billingType.name]: Yup.string().required(billingType.errorMsg),

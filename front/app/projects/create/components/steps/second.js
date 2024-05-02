@@ -5,6 +5,7 @@ import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import { ErrorMessage } from "formik";
+import Select from "/components/Select";
 
 export default function Second({
   formData,
@@ -14,121 +15,69 @@ export default function Second({
   billingTypes,
   members,
 }) {
-  const { formField, values, errors, touched, setFieldValue } = formData;
-  const { partner, status, serviceType, billingType, selectedMembers } =
-    formField;
+  const { formField, values, setFieldValue } = formData;
+  const {
+    partner,
+    status,
+    serviceType,
+    responsiblePersonId,
+    billingType,
+    selectedMembers,
+  } = formField;
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={4}>
-        <Autocomplete
-          onChange={(e, partnerSelected) =>
-            setFieldValue(partner.name, partnerSelected.id)
-          }
+        <Select
+          value={values[partner.name]}
           options={partners}
-          getOptionLabel={(option) => option.company}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={partner.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel={(option) => option.company}
+          fieldName={partner.name}
+          inputLabel={partner.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={partner.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={4}>
-        <Autocomplete
-          onChange={(e, statusSelected) =>
-            setFieldValue(status.name, statusSelected.id)
-          }
+        <Select
+          value={values[status.name]}
           options={statuses}
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={status.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel={(option) => option.label}
+          fieldName={status.name}
+          inputLabel={status.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={status.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={4}>
-        <Autocomplete
-          onChange={(e, type) => setFieldValue(serviceType.name, type.id)}
+        <Select
+          value={values[serviceType.name]}
           options={serviceTypes}
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={serviceType.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel={(option) => option.label}
+          fieldName={serviceType.name}
+          inputLabel={serviceType.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={serviceType.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, type) => setFieldValue(billingType.name, type.id)}
+        <Select
+          value={values[billingType.name]}
           options={billingTypes}
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={billingType.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
+          optionLabel={(option) => option.label}
+          fieldName={billingType.name}
+          inputLabel={billingType.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={billingType.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
+        <Select
+          value={values[responsiblePersonId.name]}
+          options={members}
+          optionLabel={(option) => option.name}
+          fieldName={responsiblePersonId.name}
+          inputLabel={responsiblePersonId.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12}>
         <Autocomplete
           multiple
           onChange={(e, members) =>

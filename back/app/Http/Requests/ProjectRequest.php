@@ -30,6 +30,7 @@ class ProjectRequest extends FormRequest
             'cost' => 'required|numeric',
             'start_date' => 'required|date',
             'project_status_id' => 'required|numeric|exists:project_statuses,id',
+            'responsible_person_id' => 'required|numeric|exists:staff,id',
             'defendant_id' => 'required|numeric|exists:partners,id',
             'plaintiff_id' => 'nullable|numeric|exists:partners,id',
             'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',

@@ -78,7 +78,7 @@ class Project extends Model
 
     public function responsiblePerson(): BelongsTo
     {
-        return $this->belongsTo(Partner::class, 'responsible_person_id');
+        return $this->belongsTo(Staff::class, 'responsible_person_id');
     }
 
     public function lawFirm(): BelongsTo

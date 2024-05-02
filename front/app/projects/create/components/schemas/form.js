@@ -60,6 +60,11 @@ const form = {
       label: "Estado",
       errorMsg: "Debe seleccionar un estado",
     },
+    responsiblePersonId: {
+      name: "responsible_person_id",
+      label: "Persona Responsable",
+      errorMsg: "Debe seleccionar una persona responsable",
+    },
     serviceType: {
       name: "project_service_type_id",
       label: "Tipo de Servicio",

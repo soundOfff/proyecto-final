@@ -8,10 +8,8 @@ import {
   FormGroup,
   Grid,
 } from "@mui/material";
-import { ErrorMessage } from "formik";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
-import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import { useEffect } from "react";
@@ -47,7 +45,7 @@ export default function Second({
     setFieldValue(tax2.name, expense.tax2_id ?? null);
     setFieldValue(paymentMethod.name, expense.paymentMethod?.id ?? null);
     setFieldValue(reference.name, expense.reference);
-    setFieldValue(repeat.name, expense.repeat_id);
+    setFieldValue(repeat.name, expense.repeat_id ?? "");
     setFieldValue(recurring.name, expense.recurring);
     setFieldValue(isInfinite.name, expense.is_infinite);
     setFieldValue(totalCycles.name, expense.total_cycles ?? "");
@@ -68,6 +66,7 @@ export default function Second({
     totalCycles,
     createInvoiceBillable,
     sendInvoiceToCustomer,
+    setFieldValue,
   ]);
 
   return (
@@ -148,25 +147,13 @@ export default function Second({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Autocomplete
-              value={RECURRING_TYPES.find(
-                (recurring_type) =>
-                  recurring_type.id === values[recurringType.name]
-              )}
-              onChange={(e, recurringTypeSelected) =>
-                setFieldValue(recurringType.name, recurringTypeSelected.id)
-              }
+            <Select
+              value={values[recurringType.name]}
               options={RECURRING_TYPES}
-              getOptionLabel={(option) => option.label}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
-              )}
+              optionLabel={(option) => option.label}
+              fieldName={recurringType.name}
+              inputLabel={recurringType.label}
+              setFieldValue={setFieldValue}
             />
           </Grid>
         </>

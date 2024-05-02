@@ -64,7 +64,7 @@ class PartnerResource extends JsonResource
             'expirationDate' => $this->expiration_date,
             'isMale' => $this->is_male,
             'email' => $this->email,
-            'isResidencial' => $this->is_residential,
+            'isResidential' => $this->is_residential,
             'buildingNumber' => $this->building_number,
             'fileNumber' => $this->file_number,
             'imageNumber' => $this->image_number,

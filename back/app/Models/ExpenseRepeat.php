@@ -10,7 +10,7 @@ class ExpenseRepeat extends Model
 {
     use HasFactory;
 
-    private const CUSTOM = 8;
+    public const CUSTOM = 8;
 
     protected $fillable = [
         'id',

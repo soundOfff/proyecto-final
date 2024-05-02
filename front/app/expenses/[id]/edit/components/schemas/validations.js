@@ -55,11 +55,14 @@ const validations = [
     [tax2.name]: Yup.string().nullable(),
     [paymentMethod.name]: Yup.string().required(paymentMethod.errorMsg),
     [reference.name]: Yup.string(),
-    [repeat.name]: Yup.string(),
+    [repeat.name]: Yup.number(),
     [recurring.name]: Yup.number().when(repeat.name, {
       is: CUSTOM,
       then: (schema) =>
-        schema.min(1, "Debe ser mayor a 0").required("Este campo es requerido"),
+        schema
+          .min(1, "Debe ser mayor a 0")
+          .required("Este campo es requerido si se selecciono Personalizado"),
+      otherwise: (schema) => schema.nullable(),
     }),
     [recurringType.name]: Yup.number().when(repeat.name, {
       is: CUSTOM,
@@ -67,11 +70,18 @@ const validations = [
         schema.required(
           "Este campo es requerido si se selecciono Personalizado"
         ),
+      otherwise: (schema) => schema.nullable(),
     }),
-    [isInfinite.name]: Yup.boolean(),
-    [totalCycles.name]: Yup.number().when(isInfinite.name, {
-      is: false,
-      then: (schema) => schema.min(1, "Los ciclos totales deben ser mayor a 0"),
+    [isInfinite.name]: Yup.boolean().when(repeat.name, {
+      is: true,
+      then: Yup.boolean().required("Este campo es requerido"),
+    }),
+    [totalCycles.name]: Yup.number().when([repeat.name, isInfinite.name], {
+      is: (repeat_id, is_infinite) => repeat_id && !is_infinite,
+      then: (schema) =>
+        schema
+          .min(1, "Los ciclos totales deben ser mayor a 0")
+          .required('Este campo es requerido si seleccionó "repetir cada"'),
     }),
   }),
 ];

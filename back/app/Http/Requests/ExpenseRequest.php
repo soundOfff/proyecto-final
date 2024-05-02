@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ExpenseRepeat;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class ExpenseRequest extends FormRequest
 {
@@ -31,8 +34,10 @@ class ExpenseRequest extends FormRequest
             'partner_id' => 'required|numeric|exists:partners,id',
             'create_invoice_billable' => 'nullable|boolean',
             'send_invoice_to_customer' => 'nullable|boolean',
-            'is_infinite' => 'nullable|boolean',
-            'total_cycles' => 'required_if:is_infinite,false',
+            'is_infinite' => 'required_with:repeat_id|boolean',
+            'total_cycles' => Rule::requiredIf(
+                fn () => isset(request()->repeat_id) && request()->is_infinite == 0
+            ),
             'name' => 'nullable|string',
             'note' => 'nullable|string',
             'invoice_id' => 'nullable|numeric|exists:invoices,id',
@@ -41,8 +46,8 @@ class ExpenseRequest extends FormRequest
             'repeat_id' => 'nullable|exists:expense_repeats,id',
             'payment_method_id' => 'nullable|numeric|exists:payment_methods,id',
             'reference_no' => 'nullable|string',
-            'recurring_type' => 'nullable|numeric',
-            'recurring' => 'nullable|numeric',
+            'recurring_type' => 'required_if:repeat_id,8',
+            'recurring' => 'required_if:repeat_id,8',
         ];
     }
 }

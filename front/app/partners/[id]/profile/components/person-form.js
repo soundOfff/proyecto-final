@@ -203,8 +203,8 @@ export default function PersonForm({
             onChange={(e) => setFieldValue(isMale.name, e.target.value)}
             sx={{ height: "3rem" }}
           >
-            <MenuItem value={true}>Masculino</MenuItem>
-            <MenuItem value={false}>Femenino</MenuItem>
+            <MenuItem value={1}>Masculino</MenuItem>
+            <MenuItem value={0}>Femenino</MenuItem>
           </MuiSelect>
           <MDBox mt={0.75}>
             <MDTypography
@@ -357,8 +357,8 @@ export default function PersonForm({
             onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
             sx={{ height: "3rem" }}
           >
-            <MenuItem value={true}>Residencial</MenuItem>
-            <MenuItem value={false}>Edificio</MenuItem>
+            <MenuItem value={1}>Residencial</MenuItem>
+            <MenuItem value={0}>Edificio</MenuItem>
           </MuiSelect>
           <MDBox mt={0.75}>
             <MDTypography

@@ -74,7 +74,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $ids = $newProject['project_member_ids'];
+        $ids = $newProject['project_members'];
 
         $project = Project::create($newProject);
 

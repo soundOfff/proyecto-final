@@ -17,12 +17,17 @@ export default async function Profile({ params: { id } }) {
   const consolidators = await getPartnersSelect({
     "filter[is_consolidator]": 1,
   });
+  const notJuridicEntities = await getPartnersSelect({
+    "filter[is_juridic]": false,
+    "filter[is_consolidator]": 1,
+  });
 
   const countries = await getCountriesSelect();
 
   return (
     <Form
       partner={partner}
+      notJuridicEntities={notJuridicEntities}
       consolidators={consolidators}
       countries={countries}
     />

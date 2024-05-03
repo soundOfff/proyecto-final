@@ -13,7 +13,11 @@ import form from "../schemas/form";
 import initialValues from "../schemas/initial-values";
 import validations from "../schemas/validations";
 
-export default function FormComponent({ consolidators, countries }) {
+export default function FormComponent({
+  consolidators,
+  notJuridicEntities,
+  countries,
+}) {
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(true);
   const { formId } = form;
@@ -48,6 +52,7 @@ export default function FormComponent({ consolidators, countries }) {
               <DetailForm
                 {...{
                   consolidators,
+                  notJuridicEntities,
                   countries,
                   errors,
                   values,

@@ -22,6 +22,7 @@ import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
 export default function JuridicalForm({
   countries,
   consolidators,
+  notJuridicEntities,
   errors,
   values,
   touched,
@@ -187,7 +188,7 @@ export default function JuridicalForm({
         <Select
           value={values[consolidator.name]}
           options={consolidators}
-          optionLabel={(option) => option.company ?? ""}
+          optionLabel={(option) => option.company ?? option.name}
           fieldName={consolidator.name}
           inputLabel={consolidator.label}
           setFieldValue={setFieldValue}
@@ -317,10 +318,11 @@ export default function JuridicalForm({
       <Grid item xs={12} sm={6}>
         <Select
           value={values[president.name]}
-          options={consolidators}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
+          options={notJuridicEntities}
+          optionLabel={(option) => {
+            console.log(option);
+            return option.name;
+          }}
           fieldName={president.name}
           inputLabel={president.label}
           setFieldValue={setFieldValue}
@@ -329,10 +331,8 @@ export default function JuridicalForm({
       <Grid item xs={12} sm={6}>
         <Select
           value={values[secretary.name]}
-          options={consolidators}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
+          options={notJuridicEntities}
+          optionLabel={(option) => option.name}
           fieldName={secretary.name}
           inputLabel={secretary.label}
           setFieldValue={setFieldValue}
@@ -341,10 +341,8 @@ export default function JuridicalForm({
       <Grid item xs={12} sm={6}>
         <Select
           value={values[treasurer.name]}
-          options={consolidators}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
+          options={notJuridicEntities}
+          optionLabel={(option) => option.name}
           fieldName={treasurer.name}
           inputLabel={treasurer.label}
           setFieldValue={setFieldValue}

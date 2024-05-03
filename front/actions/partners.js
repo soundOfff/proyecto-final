@@ -26,7 +26,7 @@ export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/partners/${id}`);
   url.search = new URLSearchParams(params);
 
-  const { data: partner } = await customFetch(url);
+  const { data: partner } = await customFetch(url, { cache: "no-store" });
 
   return partner;
 }

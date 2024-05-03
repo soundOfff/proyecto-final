@@ -15,6 +15,7 @@ import JuridicalForm from "./juridical-form";
 export default function DetailFormComponent({
   partner,
   consolidators,
+  notJuridicEntities,
   countries,
 }) {
   const {
@@ -42,13 +43,13 @@ export default function DetailFormComponent({
         birthDate,
         expeditionDate,
         expirationDate,
+        isConsolidator: isConsolidatorPerson,
         isMale,
         birthPlace,
         nationality,
       },
     },
   } = detailForm;
-
   const initialValues = {
     ...partner,
     [country.name]: partner.countryId,
@@ -56,6 +57,7 @@ export default function DetailFormComponent({
     [district.name]: partner.jurisdiction?.district?.id,
     [jurisdiction.name]: partner.jurisdiction?.id,
     [isConsolidator.name]: partner.isConsolidator,
+    [isConsolidatorPerson.name]: partner.isConsolidator,
     [consolidator.name]: partner.consolidatorId,
     [birthDate.name]: partner.birthDate,
     [expeditionDate.name]: partner.expeditionDate,
@@ -114,6 +116,7 @@ export default function DetailFormComponent({
                   {...{
                     countries,
                     consolidators,
+                    notJuridicEntities,
                     errors,
                     values,
                     touched,

@@ -6,7 +6,12 @@ import InvoiceForm from "./invoice-form";
 import Tabs from "./tabs";
 import { useState } from "react";
 
-export default function Form({ partner, consolidators, countries }) {
+export default function Form({
+  partner,
+  consolidators,
+  notJuridicEntities,
+  countries,
+}) {
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
@@ -15,6 +20,7 @@ export default function Form({ partner, consolidators, countries }) {
       {tabIndex === 0 ? (
         <DetailForm
           partner={partner}
+          notJuridicEntities={notJuridicEntities}
           consolidators={consolidators}
           countries={countries}
         />

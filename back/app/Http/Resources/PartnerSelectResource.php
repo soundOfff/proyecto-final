@@ -17,6 +17,7 @@ class PartnerSelectResource extends JsonResource
         return [
             'id' => $this->id,
             'company' => $this->company,
+            'name' => $this->name,
         ];
     }
 }

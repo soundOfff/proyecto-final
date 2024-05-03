@@ -9,6 +9,7 @@ import JuridicalForm from "./juridical-form";
 export default function DetailFormComponent({
   consolidators,
   countries,
+  notJuridicEntities,
   errors,
   values,
   touched,
@@ -38,6 +39,7 @@ export default function DetailFormComponent({
             {...{
               countries,
               consolidators,
+              notJuridicEntities,
               errors,
               values,
               touched,

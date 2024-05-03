@@ -320,7 +320,6 @@ export default function JuridicalForm({
           value={values[president.name]}
           options={notJuridicEntities}
           optionLabel={(option) => {
-            console.log(option);
             return option.name;
           }}
           fieldName={president.name}

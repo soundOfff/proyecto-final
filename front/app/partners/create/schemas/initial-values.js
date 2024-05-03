@@ -76,7 +76,7 @@ const initialValues = {
   [company.name]: "",
   [consolidator.name]: null,
   [country.name]: null,
-  [isConsolidator.name]: "",
+  [isConsolidator.name]: 0,
   [language.name]: "",
   [phone.name]: "",
   [ruc.name]: "",

@@ -2,10 +2,13 @@
 
 import {
   FormControl,
+  FormControlLabel,
+  FormGroup,
   Grid,
   InputLabel,
   MenuItem,
   Select as MuiSelect,
+  Switch,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "../schemas/form";
@@ -46,6 +49,7 @@ export default function PersonForm({
         jurisdiction,
         province,
         address,
+        isConsolidator,
         phone,
         email,
         isResidential,
@@ -371,6 +375,21 @@ export default function PersonForm({
             </MDTypography>
           </MDBox>
         </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6} display="flex" alignItems="center">
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={values[isConsolidator.name]}
+                onChange={(e) =>
+                  setFieldValue(isConsolidator.name, e.currentTarget.checked)
+                }
+              />
+            }
+            label={isConsolidator.label}
+          />
+        </FormGroup>
       </Grid>
     </Grid>
   );

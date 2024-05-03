@@ -16,9 +16,12 @@ class PartnerController extends Controller
     public function select()
     {
         $partners = QueryBuilder::for(Partner::class)
-        ->allowedFilters([
-            AllowedFilter::exact('is_consolidator'),
-        ])->get();
+            ->allowedFilters([
+                AllowedFilter::exact('is_consolidator'),
+                AllowedFilter::callback('is_juridic', function ($query, $value) {
+                    return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? $query->whereNotNull('company') : $query->whereNotNull('name');
+                }),
+            ])->get();
 
         return new PartnerSelectResourceCollection($partners);
     }
@@ -42,17 +45,17 @@ class PartnerController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Partner::class)
-        ->allowedIncludes([
-            'contacts',
-            'country',
-            'files',
-            'consolidator',
-        ])
-        ->allowedFilters([
-            AllowedFilter::scope('search'),
+            ->allowedIncludes([
+                'contacts',
+                'country',
+                'files',
+                'consolidator',
+            ])
+            ->allowedFilters([
+                AllowedFilter::scope('search'),
 
-        ])
-        ->orderBy('id', 'desc');
+            ])
+            ->orderBy('id', 'desc');
 
         $partners = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -79,18 +82,18 @@ class PartnerController extends Controller
     public function show(Partner $partner)
     {
         $partner = QueryBuilder::for(Partner::class)
-        ->allowedIncludes([
-            'projects',
-            'country',
-            'shippingCountry',
-            'billingCountry',
-            'contacts',
-            'files',
-            'consolidator',
-            'primaryContact',
-            'jurisdiction.district.province',
-        ])
-        ->find($partner->id);
+            ->allowedIncludes([
+                'projects',
+                'country',
+                'shippingCountry',
+                'billingCountry',
+                'contacts',
+                'files',
+                'consolidator',
+                'primaryContact',
+                'jurisdiction.district.province',
+            ])
+            ->find($partner->id);
 
         return new PartnerResource($partner);
     }

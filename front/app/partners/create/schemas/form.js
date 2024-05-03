@@ -75,7 +75,7 @@ const detailForm = {
         errorMsg: "Debe seleccionar un tipo de servicio",
       },
       isConsolidator: {
-        name: "isConsolidator",
+        name: "is_consolidator",
         label: "Consolidador",
       },
       consolidator: {
@@ -152,6 +152,10 @@ const detailForm = {
         type: "text",
         errorMsg: "El número de identificación es requerido",
       },
+      isConsolidator: {
+        name: "is_consolidator",
+        label: "Cliente Consolidador",
+      },
       birthDate: {
         name: "birth_date",
         label: "Fecha de Nacimiento",
@@ -170,6 +174,7 @@ const detailForm = {
       isMale: {
         name: "is_male",
         label: "Hombre/Mujer",
+        errorMsg: "Debe seleccionar un género",
       },
       nationality: {
         name: "nationality_id",
@@ -220,11 +225,13 @@ const detailForm = {
         name: "address",
         label: "Dirección",
         type: "text",
+        errorMsg: "La dirección es requerida",
       },
       email: {
         name: "email",
         label: "Email",
         type: "email",
+        errorMsg: "El email es requerido",
       },
       isResidential: {
         name: "is_residential",

@@ -75,7 +75,7 @@ const detailForm = {
         errorMsg: "Debe seleccionar un tipo de servicio",
       },
       isConsolidator: {
-        name: "isConsolidator",
+        name: "is_consolidator",
         label: "Consolidador",
       },
       consolidator: {
@@ -166,6 +166,10 @@ const detailForm = {
         name: "expiration_date",
         label: "Fecha de Expiración",
         errorMsg: "La fecha de expiración es requerido",
+      },
+      isConsolidator: {
+        name: "is_consolidator",
+        label: "Cliente Consolidador",
       },
       isMale: {
         name: "is_male",

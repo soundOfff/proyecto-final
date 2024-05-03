@@ -27,7 +27,7 @@ class ProjectRequest extends FormRequest
             'deadline' => 'required|date',
             'description' => 'nullable|string',
             'estimated_hours' => 'nullable|numeric',
-            'cost' => 'required|numeric',
+            'cost' => 'nullable|numeric',
             'start_date' => 'required|date',
             'project_status_id' => 'required|numeric|exists:project_statuses,id',
             'responsible_person_id' => 'required|numeric|exists:staff,id',

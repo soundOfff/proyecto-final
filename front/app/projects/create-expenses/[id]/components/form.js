@@ -119,6 +119,7 @@ export default function FormComponent({
                             InputLabelProps: { shrink: true },
                             mt: 5,
                           }}
+                          value={values[date.name]}
                           onChange={(value) =>
                             setFieldValue(
                               date.name,

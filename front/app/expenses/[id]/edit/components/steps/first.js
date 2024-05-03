@@ -29,8 +29,7 @@ export default function First({
   invoices,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { name, note, category, date, amount, partner, invoice, billable } =
-    formField;
+  const { name, note, category, date, amount, partner, billable } = formField;
 
   useEffect(() => {
     setFieldValue(name.name, expense.name);
@@ -38,10 +37,19 @@ export default function First({
     setFieldValue(category.name, expense.category?.id ?? null);
     setFieldValue(partner.name, expense.partner?.id ?? null);
     setFieldValue(amount.name, expense.amount);
-    setFieldValue(invoice.name, expense.invoice?.id ?? null);
     setFieldValue(date.name, expense.date);
     setFieldValue(billable.name, expense.billable);
-  }, [expense, name, note, category, partner, amount, invoice, date, billable]);
+  }, [
+    expense,
+    name,
+    note,
+    category,
+    partner,
+    amount,
+    date,
+    billable,
+    setFieldValue,
+  ]);
 
   return (
     <Grid container spacing={4}>
@@ -120,22 +128,13 @@ export default function First({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Select
-          value={values[invoice.name]}
-          options={invoices}
-          optionLabel={(option) => String(option.number)}
-          fieldName={invoice.name}
-          inputLabel={invoice.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12}>
         <MDDatePicker
           input={{
             variant: "standard",
             fullWidth: true,
             placeholder: "Fecha de Gastos",
             InputLabelProps: { shrink: true },
+            sx: { mt: 2.3 },
           }}
           value={values[date.name]}
           onChange={(value) =>

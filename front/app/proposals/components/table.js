@@ -75,7 +75,15 @@ export default function Table({ rows, meta }) {
       accessor: "tags",
       Cell: ({ value }) =>
         value.length
-          ? value.map((tag) => <MDBadge key={tag.id}>{tag.label}</MDBadge>)
+          ? value.map((tag) => (
+              <MDBadge
+                key={tag.id}
+                variant="gradient"
+                color="dark"
+                size="md"
+                badgeContent={tag.name}
+              />
+            ))
           : null,
     },
     {

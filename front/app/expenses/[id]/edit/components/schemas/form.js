@@ -50,10 +50,6 @@ const form = {
       label: "Cliente",
       errorMsg: "Debe seleccionar un cliente",
     },
-    invoice: {
-      name: "invoice_id",
-      label: "Factura",
-    },
     currency: {
       name: "currency_id",
       label: "Moneda",

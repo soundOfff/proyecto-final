@@ -45,7 +45,7 @@ const validations = Yup.object().shape({
   [currency.name]: Yup.string().required(currency.errorMsg),
   [tax.name]: Yup.string(),
   [tax2.name]: Yup.string(),
-  [paymentMethod.name]: Yup.string().required(paymentMethod.errorMsg),
+  [paymentMethod.name]: Yup.string(),
   [reference.name]: Yup.string(),
   [project.name]: Yup.number().required(),
 });

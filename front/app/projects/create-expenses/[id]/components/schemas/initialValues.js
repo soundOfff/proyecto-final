@@ -36,7 +36,7 @@ const initialValues = {
   [amount.name]: "",
   [category.name]: "",
   [note.name]: "",
-  [date.name]: "",
+  [date.name]: Date.now(),
   [name.name]: "",
   [currency.name]: 1,
   [partner.name]: "",

@@ -50,10 +50,6 @@ const form = {
       label: "Cliente",
       errorMsg: "Debe seleccionar un cliente",
     },
-    invoice: {
-      name: "invoice_id",
-      label: "Factura",
-    },
     currency: {
       name: "currency_id",
       label: "Moneda",
@@ -70,7 +66,6 @@ const form = {
     paymentMethod: {
       name: "payment_method_id",
       label: "Forma de Pago",
-      errorMsg: "Debe seleccionar un modo de pago",
     },
     reference: {
       name: "reference_no",

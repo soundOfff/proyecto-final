@@ -24,8 +24,7 @@ import { useEffect } from "react";
 
 export default function First({ formData, partners, categories, invoices }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { name, note, category, date, amount, partner, invoice, billable } =
-    formField;
+  const { name, note, category, date, amount, partner, billable } = formField;
   const searchParams = useSearchParams();
   const partnerId = searchParams.get("partnerId");
 
@@ -86,7 +85,7 @@ export default function First({ formData, partners, categories, invoices }) {
           options={categories}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
-            <MDBox mt={0.75} container display="flex" alignContent="center">
+            <MDBox container display="flex" alignContent="center">
               <MDInput
                 {...params}
                 variant="standard"
@@ -97,7 +96,7 @@ export default function First({ formData, partners, categories, invoices }) {
             </MDBox>
           )}
         />
-        <MDBox mt={0.75}>
+        <MDBox>
           <MDTypography
             component="div"
             variant="caption"
@@ -130,40 +129,13 @@ export default function First({ formData, partners, categories, invoices }) {
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, invoiceSelected) =>
-            setFieldValue(invoice.name, invoiceSelected?.id ?? "")
-          }
-          options={invoices}
-          getOptionLabel={(option) => String(option.number)}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={invoice.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={invoice.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12}>
         <MDDatePicker
           input={{
             variant: "standard",
             fullWidth: true,
             placeholder: "Fecha de Gastos",
             InputLabelProps: { shrink: true },
+            sx: { mt: 2.3 },
           }}
           onChange={(value) =>
             setFieldValue(date.name, moment(value[0]).format("YYYY-MM-DD"))

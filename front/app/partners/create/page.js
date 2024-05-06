@@ -8,7 +8,6 @@ export default async function Create() {
   });
   const notJuridicEntities = await getPartnersSelect({
     "filter[is_juridic]": false,
-    "filter[is_consolidator]": 1,
   });
 
   const countries = await getCountriesSelect();

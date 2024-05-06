@@ -51,7 +51,7 @@ const routes = [
     icon: <MDAvatar src={profilePicture.src} alt="Brooklyn Alice" size="sm" />,
     collapse: [
       {
-        name: "Logout",
+        name: "Cerrar Sesión",
         key: "logout",
       },
     ],

@@ -21,7 +21,7 @@ export default function Stats({ data }) {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <DefaultStatisticsCard
-            title="Tiempo total registrado en el dia"
+            title="Tiempo total registrado en el día"
             count={`${numberFormat(data.total_day_time)} hs`}
           />
         </Grid>
@@ -32,7 +32,7 @@ export default function Stats({ data }) {
             percentage={{
               color: `${getPercentageColor(data.monthly_percentage)}`,
               value: `${numberFormat(data.monthly_percentage)}%`,
-              label: "desde el ultimo mes",
+              label: "desde el último mes",
             }}
           />
         </Grid>
@@ -43,7 +43,7 @@ export default function Stats({ data }) {
             percentage={{
               color: `${getPercentageColor(data.weekly_percentage)}`,
               value: `${numberFormat(data.weekly_percentage)}%`,
-              label: "desde la ultima semana",
+              label: "desde la última semana",
             }}
           />
         </Grid>

@@ -42,7 +42,6 @@ export default function DetailFormComponent({
       person: {
         birthDate,
         expeditionDate,
-        expirationDate,
         isConsolidator: isConsolidatorPerson,
         isMale,
         birthPlace,
@@ -61,7 +60,6 @@ export default function DetailFormComponent({
     [consolidator.name]: partner.consolidatorId,
     [birthDate.name]: partner.birthDate,
     [expeditionDate.name]: partner.expeditionDate,
-    [expirationDate.name]: partner.expirationDate,
     [isMale.name]: partner.isMale,
     [birthPlace.name]: partner.birthPlaceId,
     [nationality.name]: partner.nationalityId,

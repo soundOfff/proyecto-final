@@ -11,6 +11,7 @@ use App\Models\Proposal;
 use App\Models\Taggable;
 use App\Sorts\ProposablePartnerSort;
 use App\Sorts\ProposalStatusSort;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -22,25 +23,28 @@ class ProposalController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Proposal::class)
-        ->selectRaw('proposals.*')
-        ->allowedIncludes([
-            'currency',
-            'estimate',
-            'invoice',
-            'status',
-            'lineItems.taxes',
-            'tags',
-            'proposable',
-            'comments',
-        ])
-        ->allowedSorts([
-            'id', 'subject', 'total', 'date',
-            AllowedSort::field('openTill', 'open_till'),
-            AllowedSort::field('createdAt', 'created_at'),
-            AllowedSort::custom('proposable', new ProposablePartnerSort(), 'partner_name'),
-            AllowedSort::custom('status', new ProposalStatusSort(), 'label'),
-        ])
-        ->orderBy('id', 'desc');
+            ->selectRaw('proposals.*')
+            ->allowedIncludes([
+                'currency',
+                'estimate',
+                'invoice',
+                'status',
+                'lineItems.taxes',
+                'tags',
+                'proposable',
+                'comments',
+            ])
+            ->allowedFilters([
+                AllowedFilter::exact('proposable_id')
+            ])
+            ->allowedSorts([
+                'id', 'subject', 'total', 'date',
+                AllowedSort::field('openTill', 'open_till'),
+                AllowedSort::field('createdAt', 'created_at'),
+                AllowedSort::custom('proposable', new ProposablePartnerSort(), 'partner_name'),
+                AllowedSort::custom('status', new ProposalStatusSort(), 'label'),
+            ])
+            ->orderBy('id', 'desc');
 
         $proposals = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -91,19 +95,19 @@ class ProposalController extends Controller
     public function show(Proposal $proposal)
     {
         $proposal = QueryBuilder::for(Proposal::class)
-        ->allowedIncludes([
-            'currency',
-            'discountType',
-            'estimate',
-            'invoice',
-            'status',
-            'lineItems.taxes',
-            'tags',
-            'proposable.primaryContact',
-            'comments',
-            'saleAgent',
-        ])
-        ->find($proposal->id);
+            ->allowedIncludes([
+                'currency',
+                'discountType',
+                'estimate',
+                'invoice',
+                'status',
+                'lineItems.taxes',
+                'tags',
+                'proposable.primaryContact',
+                'comments',
+                'saleAgent',
+            ])
+            ->find($proposal->id);
 
         return new ProposalResource($proposal);
     }

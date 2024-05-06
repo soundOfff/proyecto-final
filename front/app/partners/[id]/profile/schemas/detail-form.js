@@ -162,11 +162,6 @@ const detailForm = {
         label: "Fecha de Expedición",
         errorMsg: "La fecha de expedición es requerido",
       },
-      expirationDate: {
-        name: "expiration_date",
-        label: "Fecha de Expiración",
-        errorMsg: "La fecha de expiración es requerido",
-      },
       isConsolidator: {
         name: "is_consolidator",
         label: "Cliente Consolidador",

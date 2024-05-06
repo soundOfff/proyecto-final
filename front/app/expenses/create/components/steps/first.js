@@ -29,7 +29,9 @@ export default function First({ formData, partners, categories, invoices }) {
   const partnerId = searchParams.get("partnerId");
 
   useEffect(() => {
-    setFieldValue(partner.name, Number(partnerId));
+    if (partnerId) {
+      setFieldValue(partner.name, Number(partnerId));
+    }
   }, [partnerId, setFieldValue, partner]);
 
   return (
@@ -53,7 +55,7 @@ export default function First({ formData, partners, categories, invoices }) {
               {note.label}
               <Tooltip
                 sx={{ marginLeft: "15px" }}
-                title="Para uso personal - Si se puede facturar, se puede agregar a Nombre a la descripción larga de la factura."
+                title="Para uso personal como recordatorio o para el equipo de soporte"
                 placement="right-end"
               >
                 <MDButton
@@ -78,34 +80,14 @@ export default function First({ formData, partners, categories, invoices }) {
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Autocomplete
-          onChange={(e, categorySelected) =>
-            setFieldValue(category.name, categorySelected?.id)
-          }
+        <Select
+          value={values[category.name]}
           options={categories}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDBox container display="flex" alignContent="center">
-              <MDInput
-                {...params}
-                variant="standard"
-                label={category.label}
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-              />
-            </MDBox>
-          )}
+          optionLabel={(option) => option.name}
+          fieldName={category.name}
+          inputLabel={category.label}
+          setFieldValue={setFieldValue}
         />
-        <MDBox>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={partner.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
         <Select
@@ -124,7 +106,7 @@ export default function First({ formData, partners, categories, invoices }) {
           type={amount.type}
           placeholder={amount.placeholder}
           value={values[amount.name]}
-          error={errors.amount && touched.amount}
+          error={errors.amount}
           success={amount.length > 0 && !errors.amount}
         />
       </Grid>
@@ -137,6 +119,7 @@ export default function First({ formData, partners, categories, invoices }) {
             InputLabelProps: { shrink: true },
             sx: { mt: 2.3 },
           }}
+          value={values[date.name]}
           onChange={(value) =>
             setFieldValue(date.name, moment(value[0]).format("YYYY-MM-DD"))
           }

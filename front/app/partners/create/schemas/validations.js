@@ -46,7 +46,6 @@ const {
       name,
       birthDate,
       expeditionDate,
-      expirationDate,
       isMale,
       number,
       birthPlace,
@@ -105,7 +104,6 @@ const validations = {
   person: Yup.object().shape({
     [name.name]: Yup.string().required(name.errorMsg),
     [country.name]: Yup.number().required(country.errorMsg),
-    [expirationDate.name]: Yup.string().required(expirationDate.errorMsg),
     [isMale.name]: Yup.boolean().required(isMale.errorMsg),
     [number.name]: Yup.string().required(number.errorMsg),
     [birthPlace.name]: Yup.string().required(birthPlace.errorMsg),

@@ -79,7 +79,7 @@ export default function Table({ rows }) {
       width: "10%",
     },
     {
-      Header: "ID de la transaccion",
+      Header: "ID de la transacción",
       accessor: "transactionId",
     },
     {

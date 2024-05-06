@@ -19,7 +19,6 @@ export default async function Profile({ params: { id } }) {
   });
   const notJuridicEntities = await getPartnersSelect({
     "filter[is_juridic]": false,
-    "filter[is_consolidator]": 1,
   });
 
   const countries = await getCountriesSelect();

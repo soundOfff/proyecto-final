@@ -37,7 +37,6 @@ export default function PersonForm({
         name,
         birthDate,
         expeditionDate,
-        expirationDate,
         isMale,
         number,
         country,
@@ -117,6 +116,28 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
+        <FormField
+          label={phone.label}
+          placeholder={phone.placeholder}
+          name={phone.name}
+          type={phone.type}
+          value={values[phone.name]}
+          error={errors.name && touched.name}
+          success={phone.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={email.label}
+          placeholder={email.placeholder}
+          name={email.name}
+          type={email.type}
+          value={values[email.name]}
+          error={errors.name && touched.name}
+          success={email.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
             variant: "standard",
@@ -170,42 +191,13 @@ export default function PersonForm({
         </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <MDDatePicker
-          input={{
-            variant: "standard",
-            fullWidth: true,
-            placeholder: "Fecha de Expiración",
-            InputLabelProps: { shrink: true },
-            sx: { mt: 4.4 },
-          }}
-          options={{ minDate: moment().format("YYYY-MM-DD") }}
-          value={values[expirationDate.name]}
-          onChange={(value) =>
-            setFieldValue(
-              expirationDate.name,
-              moment(value[0]).format("YYYY-MM-DD")
-            )
-          }
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={expirationDate.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={6}>
         <FormControl variant="standard" fullWidth>
           <InputLabel>Género</InputLabel>
           <MuiSelect
             value={values[isMale.name]}
             label="Género"
             onChange={(e) => setFieldValue(isMale.name, e.target.value)}
-            sx={{ height: "3rem" }}
+            sx={{ height: "2rem" }}
           >
             <MenuItem value={1}>Masculino</MenuItem>
             <MenuItem value={0}>Femenino</MenuItem>
@@ -242,7 +234,7 @@ export default function PersonForm({
           setFieldValue={setFieldValue}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={6}>
         <Select
           value={values[country.name]}
           options={countries}
@@ -317,28 +309,6 @@ export default function PersonForm({
           type={address.type}
           error={errors.name && touched.name}
           success={address.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={phone.label}
-          placeholder={phone.placeholder}
-          name={phone.name}
-          type={phone.type}
-          value={values[phone.name]}
-          error={errors.name && touched.name}
-          success={phone.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={email.label}
-          placeholder={email.placeholder}
-          name={email.name}
-          type={email.type}
-          value={values[email.name]}
-          error={errors.name && touched.name}
-          success={email.length > 0 && !errors.name}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

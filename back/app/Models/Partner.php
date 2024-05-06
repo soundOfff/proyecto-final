@@ -138,7 +138,12 @@ class Partner extends Model
     public function scopeSearch($query, $search)
     {
         return $query->when($search, function ($query) use ($search) {
-            $query->where('company', 'like', "%$search%");
+            $query->where(function ($query) use ($search) {
+                $query
+                    ->where('company', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%")
+                ;
+            });
         });
     }
 }

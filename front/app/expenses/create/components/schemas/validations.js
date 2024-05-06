@@ -32,7 +32,6 @@ const {
     tax2,
     repeat,
     recurring,
-    recurringType,
     totalCycles,
     isInfinite,
   },
@@ -42,12 +41,12 @@ const validations = [
   Yup.object().shape({
     [name.name]: Yup.string(),
     [note.name]: Yup.string(),
+    [partner.name]: Yup.string().required(partner.errorMsg),
     [category.name]: Yup.string().required(category.errorMsg),
     [date.name]: Yup.date().required(date.errorMsg),
     [amount.name]: Yup.number("El valor debe ser un número")
       .required(amount.errorMsg)
       .min(1, "Debe ser mayor a 0"),
-    [partner.name]: Yup.string().required(partner.errorMsg),
   }),
   Yup.object().shape({
     [currency.name]: Yup.string().required(currency.errorMsg),

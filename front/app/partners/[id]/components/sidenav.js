@@ -19,6 +19,7 @@ export default function Sidenav() {
 
   const sidenavItems = [
     { icon: "person", label: "Perfil", href: `profile` },
+    { icon: "menu", label: "Casos", href: "projects" },
     { icon: "perm_contact_calendar", label: "Contactos", href: `contacts` },
     { icon: "note", label: "Notas", href: "notes" },
     { icon: "bar_chart", label: "Informe", href: "report" },
@@ -30,7 +31,6 @@ export default function Sidenav() {
     { icon: "refresh", label: "Suscripciones", href: "subscriptions" },
     { icon: "text_snippet", label: "Gastos", href: "expenses" },
     { icon: "article", label: "Contratos", href: "contracts" },
-    { icon: "menu", label: "Casos", href: "projects" },
     { icon: "task", label: "Tareas", href: "tasks" },
     { icon: "receipt_long", label: "Tickets", href: "tickets" },
     { icon: "insert_drive_file", label: "Archivos", href: "files" },

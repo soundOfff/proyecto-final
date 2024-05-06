@@ -17,6 +17,7 @@ import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import { useEffect } from "react";
 import { show as getPartner } from "/actions/partners";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function First({
   formData,
@@ -44,10 +45,20 @@ export default function First({
     email,
     phone,
   } = formField;
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    const partnerId = params.get("partnerId");
+
+    if (partnerId) {
+      setFieldValue(partner.name, Number(partnerId));
+    }
+  }, [setFieldValue, partner.name, searchParams]);
 
   useEffect(() => {
     getPartner(values[partner.name]).then((partner) => {
-      setFieldValue(proposalTo.name, partner.company ?? "");
+      setFieldValue(proposalTo.name, partner.company ?? partner.name ?? "");
       setFieldValue(country.name, partner.countryId ?? "");
       setFieldValue(address.name, partner.address ?? "");
       setFieldValue(city.name, partner.city ?? "");

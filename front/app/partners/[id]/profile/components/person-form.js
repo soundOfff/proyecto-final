@@ -312,17 +312,6 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors.name && touched.name}
-          success={buildingNumber.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
         <FormControl variant="standard" sx={{ mt: -2.3 }} fullWidth>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
@@ -345,6 +334,17 @@ export default function PersonForm({
             </MDTypography>
           </MDBox>
         </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={buildingNumber.label}
+          placeholder={buildingNumber.placeholder}
+          name={buildingNumber.name}
+          type={buildingNumber.type}
+          value={values[buildingNumber.name]}
+          error={errors.name && touched.name}
+          success={buildingNumber.length > 0 && !errors.name}
+        />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="center">
         <FormGroup>

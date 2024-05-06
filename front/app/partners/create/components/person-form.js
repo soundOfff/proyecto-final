@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select as MuiSelect,
   Switch,
+  TextareaAutosize,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "../schemas/form";
@@ -141,6 +142,7 @@ export default function PersonForm({
         <MDDatePicker
           input={{
             variant: "standard",
+            backgroundColor: "black",
             fullWidth: true,
             placeholder: "Fecha de Nacimiento",
             InputLabelProps: { shrink: true },
@@ -266,7 +268,7 @@ export default function PersonForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} alignSelf="end" pb={0.75}>
             <Select
               value={values[jurisdiction.name]}
               options={jurisdictions}
@@ -308,22 +310,13 @@ export default function PersonForm({
           name={address.name}
           type={address.type}
           error={errors.name && touched.name}
+          multiline
+          rows={3}
           success={address.length > 0 && !errors.name}
         />
       </Grid>
-      <Grid item xs={12} sm={3}>
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors.name && touched.name}
-          success={buildingNumber.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={3}>
-        <FormControl variant="standard" sx={{ mt: -2.3 }} fullWidth>
+      <Grid item xs={12} sm={3} mb={0.75} alignSelf="end">
+        <FormControl variant="standard" fullWidth>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
             value={values[isResidential.name]}
@@ -346,7 +339,18 @@ export default function PersonForm({
           </MDBox>
         </FormControl>
       </Grid>
-      <Grid item xs={12} display="flex" alignItems="end" justifyContent="end">
+      <Grid item xs={12} sm={3} alignSelf="end">
+        <FormField
+          label={buildingNumber.label}
+          placeholder={buildingNumber.placeholder}
+          name={buildingNumber.name}
+          type={buildingNumber.type}
+          value={values[buildingNumber.name]}
+          error={errors.name && touched.name}
+          success={buildingNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} display="flex" alignItems="end">
         <FormGroup>
           <FormControlLabel
             control={

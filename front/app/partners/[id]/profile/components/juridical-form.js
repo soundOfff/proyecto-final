@@ -117,7 +117,7 @@ export default function JuridicalForm({
           success={address.length > 0 && !errors.name}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={6}>
         <Select
           value={values[country.name]}
           options={countries}

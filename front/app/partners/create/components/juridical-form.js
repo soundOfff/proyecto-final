@@ -109,15 +109,36 @@ export default function JuridicalForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
-          label={address.label}
-          placeholder={address.placeholder}
-          name={address.name}
-          type={address.type}
+          label={website.label}
+          name={website.name}
+          type={website.type}
           error={errors.name && touched.name}
-          success={address.length > 0 && !errors.name}
+          success={website.length > 0 && !errors.name}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={phone.label}
+          placeholder={phone.placeholder}
+          name={phone.name}
+          type={phone.type}
+          value={values.phoneNumber}
+          error={errors.name && touched.name}
+          success={phone.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={email.label}
+          placeholder={email.placeholder}
+          name={email.name}
+          type={email.type}
+          value={values[email.name]}
+          error={errors.name && touched.name}
+          success={email.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
         <Select
           value={values[country.name]}
           options={countries}
@@ -172,7 +193,7 @@ export default function JuridicalForm({
               success={state.length > 0 && !errors.name}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} alignSelf="end">
             <FormField
               label={city.label}
               placeholder={city.placeholder}
@@ -185,69 +206,19 @@ export default function JuridicalForm({
         </>
       )}
       <Grid item xs={12} sm={6}>
-        <Select
-          value={values[consolidator.name]}
-          options={consolidators}
-          optionLabel={(option) => option.company ?? option.name}
-          fieldName={consolidator.name}
-          inputLabel={consolidator.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
         <FormField
-          label={website.label}
-          name={website.name}
-          type={website.type}
+          multiline
+          rows={3}
+          label={address.label}
+          placeholder={address.placeholder}
+          name={address.name}
+          type={address.type}
           error={errors.name && touched.name}
-          success={website.length > 0 && !errors.name}
+          success={address.length > 0 && !errors.name}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={zip.label}
-          name={zip.name}
-          type={zip.type}
-          error={errors.name && touched.name}
-          success={zip.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={phone.label}
-          placeholder={phone.placeholder}
-          name={phone.name}
-          type={phone.type}
-          value={values.phoneNumber}
-          error={errors.name && touched.name}
-          success={phone.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={email.label}
-          placeholder={email.placeholder}
-          name={email.name}
-          type={email.type}
-          value={values[email.name]}
-          error={errors.name && touched.name}
-          success={email.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors.name && touched.name}
-          success={buildingNumber.length > 0 && !errors.name}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl variant="standard" fullWidth sx={{ mt: -2.3 }}>
+      <Grid item xs={12} sm={3} alignSelf="end" mb={1.5}>
+        <FormControl variant="standard" fullWidth>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
             value={values[isResidential.name]}
@@ -259,6 +230,36 @@ export default function JuridicalForm({
             <MenuItem value={false}>Edificio</MenuItem>
           </MuiSelect>
         </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={3} alignSelf="end">
+        <FormField
+          label={buildingNumber.label}
+          placeholder={buildingNumber.placeholder}
+          name={buildingNumber.name}
+          type={buildingNumber.type}
+          value={values[buildingNumber.name]}
+          error={errors.name && touched.name}
+          success={buildingNumber.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} alignSelf="end">
+        <FormField
+          label={zip.label}
+          name={zip.name}
+          type={zip.type}
+          error={errors.name && touched.name}
+          success={zip.length > 0 && !errors.name}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[consolidator.name]}
+          options={consolidators}
+          optionLabel={(option) => option.company ?? option.name}
+          fieldName={consolidator.name}
+          inputLabel={consolidator.label}
+          setFieldValue={setFieldValue}
+        />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField

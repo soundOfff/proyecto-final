@@ -6,6 +6,7 @@ use App\Http\Requests\EstimateRequest;
 use App\Http\Resources\EstimateResource;
 use App\Http\Resources\EstimateResourceCollection;
 use App\Models\Estimate;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\LineItem;
@@ -109,11 +110,19 @@ class EstimateController extends Controller
         $newEstimate = $request->validated();
         $items = $newEstimate['items'];
         $tags = $newEstimate['tags'];
+        $expenses = $newEstimate['expenses'];
 
         $estimate = Estimate::create($newEstimate);
 
         $estimate->project->project_service_type_id = $newEstimate['service_id'];
         $estimate->project->save();
+
+        foreach ($expenses as $expenseId) {
+            $expense = Expense::find($expenseId);
+            if ($expense) {
+                $expense->update(['estimate_id' => $estimate->id]);
+            }
+        }
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $estimate->id;

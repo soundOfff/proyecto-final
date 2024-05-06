@@ -17,6 +17,7 @@ class Expense extends Model
 
     protected $fillable = [
         'expense_category_id',
+        'estimate_id',
         'currency_id',
         'amount',
         'tax_id',
@@ -48,6 +49,11 @@ class Expense extends Model
     public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class);
+    }
+
+    public function estimate(): BelongsTo
+    {
+        return $this->belongsTo(Estimate::class);
     }
 
     public function category(): BelongsTo

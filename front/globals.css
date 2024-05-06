@@ -3,98 +3,94 @@
 @tailwind utilities;
 
 .display-hidden-print {
-    @media print {
-        display: none !important;
-    }
+  display: none !important;
 }
 
-.container-print {
-    @media print {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: white !important;
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        height: 100%;
-        max-height: min-content;
-        size: portrait;
-        page-break-before: avoid;
-        page-break-after: avoid;
+@media print {
+  .container-print {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white !important;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100%;
+    max-height: min-content;
+    size: portrait;
+    page-break-before: avoid;
+    page-break-after: avoid;
+  }
 
-        .card-container-print {
-            @media print {
-                width: 100vw;
-                display: flex;
-                margin: 0;
-            }
-        }
+  .container-print .card-container-print {
+    width: 100vw;
+    display: flex;
+    margin: 0;
+  }
 
-        tbody th,
-        td {
-            border-collapse: collapse;
-            width: 100px !important;
-            padding: 1rem !important;
-            margin: 1rem !important;
-            font-size: 12px !important;
-        }
+  .container-print tbody th,
+  .container-print tbody td {
+    border-collapse: collapse;
+    width: 100px !important;
+    padding: 1rem !important;
+    margin: 1rem !important;
+    font-size: 12px !important;
+  }
 
-        tbody tr {
-            page-break-inside: avoid;
-            page-break-after: auto;
-            padding: 1rem !important;
-            margin: 0 !important;
-        }
+  .container-print tbody tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+    padding: 1rem !important;
+    margin: 0 !important;
+  }
 
-        thead tr {
-            page-break-inside: avoid;
-            page-break-after: auto;
-            padding-right: 1rem !important;
-            margin: 0 !important;
-        }
+  .container-print thead tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+    padding-right: 1rem !important;
+    margin: 0 !important;
+  }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-size: 12px !important;
-            white-space: normal;
-            word-break: break-word;
-        }
-
-        p {
-            font-size: 12px !important; 
-            white-space: normal;
-            word-break: break-word;
-        }
-    }
+  .container-print h1,
+  .container-print h2,
+  .container-print h3,
+  .container-print h4,
+  .container-print h5,
+  .container-print h6,
+  .container-print p {
+    font-size: 12px !important;
+    white-space: normal;
+    word-break: break-word;
+  }
 }
 
-.table-print {
-    @media print {
-        max-width: 100%;
-        width: max-content !important;
-        display: flex;
-        font-size: small;
-        margin: 0 auto;
-        border-collapse: collapse;
-        border-spacing: 0;
-        padding: 0 !important;
-    }
+@media print {
+  .table-print {
+    max-width: 100%;
+    width: max-content !important;
+    display: flex;
+    font-size: small;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 0 !important;
+  }
 }
 
-.footer-print {
-    @media print {
-        float:none;
-        display: block;
-        width: 100%;
-        margin: auto;
-        height: 32rem;
-        font-size: small;
-        justify-content: center;
-        align-items: center;
-        page-break-before: always;
+@media print {
+  .footer-print {
+    float: none;
+    display: block;
+    width: 100%;
+    margin: auto;
+    height: 32rem;
+    font-size: small;
+    justify-content: center;
+    align-items: center;
+    page-break-before: always;
+  }
 
-        button {
-            display: none;
-        }
-    }
+  .footer-print button {
+    display: none;
+  }
 }

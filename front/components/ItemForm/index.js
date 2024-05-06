@@ -153,8 +153,6 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           errors={errors}
           touched={touched}
           success={description.length > 0 && !errors.description}
-          multiline
-          rows={4}
         />
       </Grid>
       <Grid item xs={12} sm={2}>
@@ -167,8 +165,6 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           errors={errors}
           touched={touched}
           success={longDescription.length > 0 && !errors.longDescription}
-          multiline
-          rows={4}
         />
       </Grid>
       <Grid item xs={12} sm={2}>

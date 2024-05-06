@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\IsGenericExpenseFilter;
 use App\Http\Requests\ExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\ExpenseResourceCollection;
@@ -12,6 +13,7 @@ use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -31,7 +33,11 @@ class ExpenseController extends Controller
             'files',
             'invoice',
         ])
-        ->allowedFilters(['partner_id', 'project_id'])
+        ->allowedFilters([
+            'partner_id',
+            'project_id',
+            AllowedFilter::custom('is_generic', new IsGenericExpenseFilter()),
+        ])
         ->defaultSort('-id')
         ->allowedSorts([
             'id', 'name', 'amount', 'date',

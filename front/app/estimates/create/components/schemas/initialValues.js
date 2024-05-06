@@ -43,6 +43,7 @@ const {
     adjustment,
     unit,
     taxes,
+    expenses,
   },
 } = checkout;
 
@@ -70,6 +71,7 @@ const initialValues = {
   [adjustment.name]: "",
   [unit.name]: "Cantidad",
   [taxes.name]: [],
+  [expenses.name]: [],
 };
 
 export default initialValues;

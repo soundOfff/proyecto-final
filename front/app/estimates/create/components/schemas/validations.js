@@ -38,6 +38,7 @@ const {
     clientNote,
     terms,
     items,
+    expenses,
   },
 } = checkout;
 
@@ -48,9 +49,9 @@ const validations = [
     [project.name]: Yup.number().required(project.errorMsg),
     [dateFrom.name]: Yup.date().required(dateFrom.errorMsg),
     [dateTo.name]: Yup.date().required(dateTo.errorMsg),
-    [serviceType.name]: Yup.string().required(serviceType.errorMsg),
+    [serviceType.name]: Yup.string(),
     [hasRetainingAgent.name]: Yup.boolean(),
-    [subServiceType.name]: Yup.string().required(subServiceType.errorMsg),
+    [subServiceType.name]: Yup.string(),
     [stopPendingRemainder.name]: Yup.boolean(),
     [tags.name]: Yup.array(),
     [currency.name]: Yup.number().required(currency.errorMsg),
@@ -87,6 +88,7 @@ const validations = [
         })
       )
       .min(1, "Debe agregar al menos un item"),
+    [expenses.name]: Yup.array(),
   }),
 ];
 export default validations;

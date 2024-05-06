@@ -25,7 +25,7 @@ class EstimateRequest extends FormRequest
             'partner_id' => 'required|numeric|exists:partners,id',
             'project_id' => 'required|numeric|exists:projects,id',
             'sale_agent_id' => 'required|numeric|exists:partners,id',
-            'service_id' => 'required|numeric|exists:project_service_types,id',
+            'service_id' => 'nullable|numeric|exists:project_service_types,id',
             'sub_service_type_id' => 'nullable|numeric|exists:sub_service_types,id',
             'currency_id' => 'nullable|numeric|exists:currencies,id',
             'recurring_id' => 'nullable|numeric|exists:recurrings,id',
@@ -55,6 +55,7 @@ class EstimateRequest extends FormRequest
             'subtotal' => 'required|numeric',
             'total_tax' => 'required|numeric',
             'total' => 'required|numeric',
+            'expenses' => 'nullable|array',
         ];
     }
 }

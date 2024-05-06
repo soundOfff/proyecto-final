@@ -169,6 +169,9 @@ const form = {
     total: {
       name: "total",
     },
+    expenses: {
+      name: "expenses",
+    },
   },
 };
 

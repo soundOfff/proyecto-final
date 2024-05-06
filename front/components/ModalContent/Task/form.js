@@ -327,7 +327,7 @@ export default function TaskForm({
             <Select
               value={values[partner_id.name]}
               options={partners}
-              optionLabel={(option) => option.company}
+              optionLabel={(option) => option.name}
               fieldName={partner_id.name}
               inputLabel={partner_id.label}
               setFieldValue={setFieldValue}

@@ -55,6 +55,11 @@ const form = {
       label: "Clientes",
       errorMsg: "Debe seleccionar un cliente",
     },
+    responsiblePersonId: {
+      name: "responsible_person_id",
+      label: "Persona Responsable",
+      errorMsg: "Debe seleccionar una persona responsable",
+    },
     status: {
       name: "project_status_id",
       label: "Estado",

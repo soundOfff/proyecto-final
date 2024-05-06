@@ -127,7 +127,7 @@ export default function ModalContentForm({
                 <Select
                   value={values[partnerId.name]}
                   options={partners}
-                  optionLabel={(option) => option.company}
+                  optionLabel={(option) => option.name}
                   fieldName={partnerId.name}
                   inputLabel={partnerId.label}
                   setFieldValue={setFieldValue}

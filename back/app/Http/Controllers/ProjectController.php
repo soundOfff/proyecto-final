@@ -98,6 +98,7 @@ class ProjectController extends Controller
                 'serviceType',
                 'status',
                 'members',
+                'responsiblePerson',
             ])
             ->find($project->id);
 

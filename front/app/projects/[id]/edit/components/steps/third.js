@@ -13,7 +13,7 @@ export default function Third({ formData, project }) {
   useEffect(() => {
     if (project) {
       setFieldValue(startDate.name, project.startDate);
-      setFieldValue(deadline.name, project.deadline);
+      setFieldValue(deadline.name, project.deadline ?? "");
     }
   }, [project, setFieldValue, startDate, deadline]);
 

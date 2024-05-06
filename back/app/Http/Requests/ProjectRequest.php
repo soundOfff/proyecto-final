@@ -24,7 +24,7 @@ class ProjectRequest extends FormRequest
         return [
             'name' => 'required|string',
             'expedient' => 'nullable|string',
-            'deadline' => 'required|date',
+            'deadline' => 'nullable|date',
             'description' => 'nullable|string',
             'estimated_hours' => 'nullable|numeric',
             'cost' => 'nullable|numeric',

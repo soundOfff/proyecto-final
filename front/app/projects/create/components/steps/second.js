@@ -31,7 +31,7 @@ export default function Second({
         <Select
           value={values[partner.name]}
           options={partners}
-          optionLabel={(option) => option.company}
+          optionLabel={(option) => option.name}
           fieldName={partner.name}
           inputLabel={partner.label}
           setFieldValue={setFieldValue}

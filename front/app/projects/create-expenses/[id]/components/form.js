@@ -175,7 +175,7 @@ export default function FormComponent({
                             setFieldValue(partner.name, partnerSelected?.id)
                           }
                           options={partners}
-                          getOptionLabel={(option) => option.company}
+                          getOptionLabel={(option) => option.name}
                           renderInput={(params) => (
                             <MDInput
                               {...params}

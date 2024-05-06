@@ -63,12 +63,10 @@ const validations = [
   }),
   Yup.object().shape({
     [startDate.name]: Yup.date().required(startDate.errorMsg),
-    [deadline.name]: Yup.date()
-      .min(
-        Yup.ref(startDate.name),
-        "La fecha de entrega debe ser mayor a la fecha de inicio"
-      )
-      .required(deadline.errorMsg),
+    [deadline.name]: Yup.date().min(
+      Yup.ref(startDate.name),
+      "La fecha de entrega debe ser mayor a la fecha de inicio"
+    ),
   }),
 ];
 

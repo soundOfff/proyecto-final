@@ -22,6 +22,7 @@ const {
     cost,
     estimatedHours,
     expedient,
+    responsiblePersonId,
     description,
     partner,
     status,
@@ -36,19 +37,25 @@ const {
 const validations = [
   Yup.object().shape({
     [name.name]: Yup.string().required(name.errorMsg),
-    [estimatedHours.name]: Yup.number("El valor debe ser un número")
-      .required(estimatedHours.errorMsg)
-      .min(1, "Debe ser mayor a 0"),
-    [cost.name]: Yup.number("El valor debe ser un número")
-      .required(cost.errorMsg)
-      .min(1, "Debe ser mayor a 0"),
-    [expedient.name]: Yup.string()
-      .matches(/^[0-9]+$/, "Solo se permiten números")
-      .required(expedient.errorMsg),
-    [description.name]: Yup.string().required(description.errorMsg),
+    [estimatedHours.name]: Yup.number("El valor debe ser un número").min(
+      1,
+      "Debe ser mayor a 0"
+    ),
+    [cost.name]: Yup.number("El valor debe ser un número").min(
+      1,
+      "Debe ser mayor a 0"
+    ),
+    [expedient.name]: Yup.string().matches(
+      /^[0-9]+$/,
+      "Solo se permiten números"
+    ),
+    [description.name]: Yup.string(),
   }),
   Yup.object().shape({
     [partner.name]: Yup.string().required(partner.errorMsg),
+    [responsiblePersonId.name]: Yup.string().required(
+      responsiblePersonId.errorMsg
+    ),
     [status.name]: Yup.string().required(status.errorMsg),
     [serviceType.name]: Yup.string().required(serviceType.errorMsg),
     [billingType.name]: Yup.string().required(billingType.errorMsg),
@@ -56,12 +63,10 @@ const validations = [
   }),
   Yup.object().shape({
     [startDate.name]: Yup.date().required(startDate.errorMsg),
-    [deadline.name]: Yup.date()
-      .min(
-        Yup.ref(startDate.name),
-        "La fecha de entrega debe ser mayor a la fecha de inicio"
-      )
-      .required(deadline.errorMsg),
+    [deadline.name]: Yup.date().min(
+      Yup.ref(startDate.name),
+      "La fecha de entrega debe ser mayor a la fecha de inicio"
+    ),
   }),
 ];
 

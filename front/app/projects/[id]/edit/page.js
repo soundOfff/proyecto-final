@@ -25,6 +25,7 @@ export default async function Update({ params: { id } }) {
       "serviceType",
       "status",
       "members",
+      "responsiblePerson",
     ],
   });
 

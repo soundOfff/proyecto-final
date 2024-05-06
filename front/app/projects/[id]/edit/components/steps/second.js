@@ -18,8 +18,14 @@ export default function Second({
   members,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { partner, status, serviceType, billingType, selectedMembers } =
-    formField;
+  const {
+    partner,
+    status,
+    serviceType,
+    billingType,
+    responsiblePersonId,
+    selectedMembers,
+  } = formField;
 
   useEffect(() => {
     if (project) {
@@ -27,6 +33,10 @@ export default function Second({
       setFieldValue(status.name, project.status.id);
       setFieldValue(serviceType.name, project.serviceType?.id || "");
       setFieldValue(billingType.name, project.billingType?.id || "");
+      setFieldValue(
+        responsiblePersonId.name,
+        project.responsiblePerson?.id || ""
+      );
       setFieldValue(selectedMembers.name, project.members);
     }
   }, [
@@ -35,6 +45,7 @@ export default function Second({
     status,
     serviceType,
     billingType,
+    responsiblePersonId,
     selectedMembers,
     setFieldValue,
   ]);
@@ -45,7 +56,7 @@ export default function Second({
         <Select
           value={values[partner.name]}
           options={partners}
-          optionLabel={(option) => option.company ?? option.name}
+          optionLabel={(option) => option.name}
           fieldName={partner.name}
           inputLabel={partner.label}
           setFieldValue={setFieldValue}

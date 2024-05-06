@@ -7,7 +7,6 @@ use App\Http\Resources\PartnerResource;
 use App\Http\Resources\PartnerResourceCollection;
 use App\Http\Resources\PartnerSelectResourceCollection;
 use App\Models\Partner;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -21,7 +20,11 @@ class PartnerController extends Controller
                 AllowedFilter::callback('is_juridic', function ($query, $value) {
                     return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? $query->whereNotNull('company') : $query->whereNotNull('name');
                 }),
-            ])->get();
+            ])
+            ->where(function ($query) {
+                $query->whereNotNull('company')->orWhereNotNull('name');
+            })
+            ->get();
 
         return new PartnerSelectResourceCollection($partners);
     }

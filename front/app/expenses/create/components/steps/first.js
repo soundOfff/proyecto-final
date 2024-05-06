@@ -111,7 +111,7 @@ export default function First({ formData, partners, categories, invoices }) {
         <Select
           value={values[partner.name]}
           options={partners}
-          optionLabel={(option) => option.company ?? option.name}
+          optionLabel={(option) => option.name}
           fieldName={partner.name}
           inputLabel={partner.label}
           setFieldValue={setFieldValue}

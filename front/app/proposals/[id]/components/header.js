@@ -78,7 +78,10 @@ export default function Header({ proposal }) {
           <MDBox width="100%" textAlign={{ xs: "left", md: "right" }}>
             <MDBox mt={1}>
               <MDTypography variant="h6" fontWeight="medium">
-                Para: {proposal.proposable.company ?? "---"}
+                Para:{" "}
+                {proposal.proposable.company ??
+                  proposal.proposable.name ??
+                  "---"}
               </MDTypography>
             </MDBox>
             <MDBox mb={1}>

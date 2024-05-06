@@ -38,7 +38,7 @@ const form = {
     date: {
       name: "date",
       label: "Fecha de Gastos",
-      errorMsg: "La fecha es requerido",
+      errorMsg: "La fecha es requerida",
     },
     amount: {
       name: "amount",

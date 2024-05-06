@@ -42,11 +42,11 @@ const {
 const initialValues = {
   [amount.name]: "",
   [category.name]: "",
+  [partner.name]: "",
   [note.name]: "",
-  [date.name]: Date.now(),
+  [date.name]: "",
   [name.name]: "",
   [currency.name]: "",
-  [partner.name]: "",
   [paymentMethod.name]: "",
   [reference.name]: "",
   [tax.name]: "",

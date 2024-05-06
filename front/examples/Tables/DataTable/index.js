@@ -284,7 +284,7 @@ function DataTable({
               color="secondary"
               fontWeight="regular"
             >
-              Showing {entriesStart} to {entriesEnd} of {rows.length} entries
+              Mostrando {entriesStart} a {entriesEnd} de {rows.length} entradas
             </MDTypography>
           </MDBox>
         )}

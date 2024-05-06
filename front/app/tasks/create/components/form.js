@@ -116,7 +116,7 @@ export default function FormComponent({
                             color="light"
                             onClick={handleBack}
                           >
-                            back
+                            Anterior
                           </MDButton>
                         )}
                         <MDButton

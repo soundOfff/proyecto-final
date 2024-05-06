@@ -12,9 +12,9 @@ import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import { destroy } from "/actions/proposals";
 import useDeleteRow from "/hooks/useDeleteRow";
-import DeleteRow from "../../../components/DeleteRow";
+import DeleteRow from "/components/DeleteRow";
 
-export default function Table({ rows, meta }) {
+export default function Table({ rows, meta, partnerId }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const {
@@ -25,7 +25,6 @@ export default function Table({ rows, meta }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-
   const columns = [
     {
       Header: "id",
@@ -47,12 +46,12 @@ export default function Table({ rows, meta }) {
       Header: "Para",
       accessor: "proposable",
       Cell: ({ value }) => {
-        return value && (value.company || value.name) ? (
+        return value && value.company ? (
           <Link
             href={`/partners/${value.id}`}
             sx={{ cursor: "pointer", color: "info" }}
           >
-            {value.company ?? value.name}
+            {value.company}
           </Link>
         ) : null;
       },
@@ -137,8 +136,8 @@ export default function Table({ rows, meta }) {
 
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href="/proposals/create">
+      <MDBox display="flex" justifyContent="flex-end">
+        <Link href={`/proposals/create?partnerId=${partnerId}`}>
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Propuesta
           </MDButton>

@@ -119,6 +119,7 @@ export default function First({ formData, partners, categories, invoices }) {
             InputLabelProps: { shrink: true },
             sx: { mt: 2.3 },
           }}
+          value={values[date.name]}
           onChange={(value) =>
             setFieldValue(date.name, moment(value[0]).format("YYYY-MM-DD"))
           }

@@ -13,7 +13,7 @@ import ModalContentForm from "/components/ModalContent/Item/form";
 import ItemTable from "/components/ItemTable";
 import ItemForm from "/components/ItemForm";
 import ItemTotals from "/components/ItemTotals";
-import AttachExpenses from "../../../../../components/AttachExpenses";
+import AttachExpenses from "/components/AttachExpenses";
 
 export default function Third({
   formData,
@@ -22,8 +22,8 @@ export default function Third({
   groupIds,
   items: itemsData,
 }) {
-  const { formField } = formData;
-  const { items } = formField;
+  const { formField, values } = formData;
+  const { items, project } = formField;
   const [isOpen, setOpen] = useState(false);
   const [item, setItem] = useState(null);
 
@@ -119,7 +119,7 @@ export default function Third({
         <ItemTotals formData={formData} />
       </Grid>
       <Grid item xs={12}>
-        <AttachExpenses formData={formData} />
+        <AttachExpenses formData={formData} projectId={values[project.name]} />
       </Grid>
     </Grid>
   );

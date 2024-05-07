@@ -104,7 +104,9 @@ export default function Table({ rows, meta }) {
     },
     {
       Header: "Factura",
-      accessor: "invoice.id",
+      accessor: "invoice",
+      Cell: ({ value }) =>
+        value && <Link href={`/invoices/${value.id}`}>{value.number}</Link>,
     },
     {
       Header: "Archivos",

@@ -34,8 +34,8 @@ class ExpenseController extends Controller
             'invoice',
         ])
         ->allowedFilters([
-            'partner_id',
-            'project_id',
+            AllowedFilter::exact('partner_id'),
+            AllowedFilter::exact('project_id'),
             AllowedFilter::custom('is_generic', new IsGenericExpenseFilter()),
         ])
         ->defaultSort('-id')

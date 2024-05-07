@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.display-hidden-print {
-  display: none !important;
-}
-
 @media print {
+  .display-hidden-print {
+    display: none !important;
+  }
+
   .container-print {
     display: flex;
     justify-content: center;
@@ -62,22 +62,7 @@
     white-space: normal;
     word-break: break-word;
   }
-}
 
-@media print {
-  .table-print {
-    max-width: 100%;
-    width: max-content !important;
-    display: flex;
-    font-size: small;
-    margin: 0 auto;
-    border-collapse: collapse;
-    border-spacing: 0;
-    padding: 0 !important;
-  }
-}
-
-@media print {
   .footer-print {
     float: none;
     display: block;
@@ -92,5 +77,16 @@
 
   .footer-print button {
     display: none;
+  }
+
+  .table-print {
+    max-width: 100%;
+    width: max-content !important;
+    display: flex;
+    font-size: small;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 0 !important;
   }
 }

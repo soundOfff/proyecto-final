@@ -6,16 +6,18 @@ import MDTypography from "/components/MDTypography";
 import { getAll as getAllExpenses } from "/actions/expenses";
 import Table from "./components/table";
 
-export default function AttachExpenses({ formData }) {
+export default function AttachExpenses({ formData, projectId }) {
   const [expenses, setExpenses] = useState([]);
-  const { values, formField, setFieldValue } = formData;
 
   useEffect(() => {
-    const filters = { "filter[is_generic]": true };
+    const filters = {
+      "filter[is_generic]": true,
+      "filter[project_id]": projectId,
+    };
     getAllExpenses(filters).then((response) => {
       setExpenses(response.data.expenses);
     });
-  }, []);
+  }, [projectId]);
 
   return (
     <MDBox>

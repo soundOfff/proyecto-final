@@ -13,15 +13,7 @@ class IsGenericExpenseFilter implements Filter
 
         $query
             ->when($value, function (Builder $query) {
-                $query
-                    ->whereNull('estimate_id')
-                    ->whereNull('invoice_id')
-                    ->whereNull('project_id');
-            }, function (Builder $query) {
-                $query
-                    ->whereNotNull('estimate_id')
-                    ->orWhereNotNull('invoice_id')
-                    ->orWhereNotNull('project_id');
+                $query->whereNull('estimate_id');
             });
     }
 }

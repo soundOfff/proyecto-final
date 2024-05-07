@@ -5,6 +5,7 @@ import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
@@ -23,8 +24,7 @@ export default function ModalContentForm({
   const { description, longDescription, rate, tax, tax2, itemGroupId } =
     formField;
 
-  const handleSubmit = async (event, values) => {
-    event.preventDefault();
+  const handleSubmit = async (values) => {
     await storeItem(values);
     onClose();
   };
@@ -180,44 +180,14 @@ export default function ModalContentForm({
                 </MDBox>
               </Grid>
               <Grid item xs={12}>
-                <Autocomplete
-                  onChange={(e, selectedGroupId) =>
-                    setFieldValue(itemGroupId.name, selectedGroupId?.id)
-                  }
+                <Select
+                  value={values[itemGroupId.name]}
                   options={groupIds}
-                  getOptionLabel={(option) => `${option.id} - ${option.name}`}
-                  renderOption={(props, option) => (
-                    <MDBox {...props}>
-                      <MDTypography
-                        variant="caption"
-                        display="inline"
-                        color="text"
-                        ml={2}
-                      >
-                        {`${option.id} - ${option.name}`}
-                      </MDTypography>
-                    </MDBox>
-                  )}
-                  renderInput={(params) => (
-                    <MDInput
-                      {...params}
-                      variant="standard"
-                      label={itemGroupId.label}
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  )}
+                  optionLabel={(option) => `${option.id} - ${option.name}`}
+                  fieldName={itemGroupId.name}
+                  inputLabel={itemGroupId.label}
+                  setFieldValue={setFieldValue}
                 />
-                <MDBox>
-                  <MDTypography
-                    component="div"
-                    variant="caption"
-                    color="error"
-                    fontWeight="regular"
-                  >
-                    <ErrorMessage name={itemGroupId.name} />
-                  </MDTypography>
-                </MDBox>
               </Grid>
             </Grid>
           </MDBox>
@@ -233,7 +203,6 @@ export default function ModalContentForm({
               </MDButton>
               <MDButton
                 disabled={isSubmitting}
-                onClick={(e) => handleSubmit(e, values, errors)}
                 type="submit"
                 variant="gradient"
                 color="dark"

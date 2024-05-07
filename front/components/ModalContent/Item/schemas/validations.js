@@ -22,10 +22,10 @@ const {
 
 const validations = Yup.object().shape({
   [description.name]: Yup.string().required(description.errorMsg),
-  [longDescription.name]: Yup.string(),
   [rate.name]: Yup.number().required(rate.errorMsg),
-  [tax.name]: Yup.string(),
-  [tax2.name]: Yup.string(),
-  [itemGroupId.name]: Yup.string().required(itemGroupId.errorMsg),
+  [longDescription.name]: Yup.string().nullable(),
+  [tax.name]: Yup.string().nullable(),
+  [tax2.name]: Yup.string().nullable(),
+  [itemGroupId.name]: Yup.string().nullable(),
 });
 export default validations;

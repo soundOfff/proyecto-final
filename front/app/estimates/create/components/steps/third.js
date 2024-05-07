@@ -101,7 +101,7 @@ export default function Third({
           Crear Item
         </MDButton>
         {isOpen && (
-          <Modal open={open} onClose={handleClose} width="30%">
+          <Modal open={open} onClose={handleClose} width="30%" height="auto">
             <ModalContentForm taxes={taxes} groupIds={groupIds} />
           </Modal>
         )}

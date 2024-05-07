@@ -16,7 +16,7 @@ class ItemController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Item::class)
-            ->allowedIncludes(['tax', 'itemGroup']);
+            ->allowedIncludes(['tax', 'tax2', 'itemGroup']);
 
         $item = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

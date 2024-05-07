@@ -100,14 +100,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
 
   useEffect(() => {
     if (item) {
-      let defaultTaxes = [];
-      if (item) {
-        if (item.tax) {
-          defaultTaxes = [item.tax];
-        } else if (item.tax && item.tax2) {
-          defaultTaxes = [item.tax, item.tax2];
-        }
-      }
+      const defaultTaxes = [item.tax, item.tax2].filter(Boolean);
       setFieldValue(taxes.name, defaultTaxes);
     }
   }, [item, taxes, setFieldValue]);

@@ -38,7 +38,7 @@ export default async function NewEstimate() {
     getAllTaxes(),
     getAllRecurrings(),
     getAllGroups(),
-    getAllItems({ include: ["tax", "itemGroup"] }),
+    getAllItems({ include: ["tax", "tax2", "itemGroup"] }),
     getAllServiceTypes(),
     getStaffSelect(),
     getAllCurrencies(),

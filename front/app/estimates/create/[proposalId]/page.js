@@ -49,7 +49,7 @@ export default async function UpdateEstimate({ params: { proposalId } }) {
     getAllTaxes(),
     getAllRecurrings(),
     getAllGroups(),
-    getAllItems({ include: ["tax", "itemGroup"] }),
+    getAllItems({ include: ["tax", "tax2", "itemGroup"] }),
     getAllServiceTypes(),
     getStaffSelect(),
     getAllCurrencies(),

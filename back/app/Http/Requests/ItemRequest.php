@@ -22,12 +22,12 @@ class ItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'item_group_id' => 'required|numeric|exists:item_groups,id',
             'description' => 'required|string',
-            'long_description' => 'nullable|string',
             'rate' => 'required|numeric',
-            'tax' => 'nullable|numeric|exists:taxes,id',
-            'tax2' => 'nullable|numeric|exists:taxes,id|different:tax',
+            'item_group_id' => 'nullable|numeric|exists:item_groups,id',
+            'long_description' => 'nullable|string',
+            'tax_id' => 'nullable|numeric|exists:taxes,id',
+            'tax2_id' => 'nullable|numeric|exists:taxes,id|different:tax',
             'unit' => 'nullable|string',
         ];
     }

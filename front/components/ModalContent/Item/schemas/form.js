@@ -32,16 +32,17 @@ const form = {
       errorMsg: "Debe ingresar un importe",
     },
     tax: {
-      name: "tax",
+      name: "tax_id",
       label: "Impuesto 1",
     },
     tax2: {
-      name: "tax2",
+      name: "tax2_id",
       label: "Impuesto 2",
     },
     itemGroupId: {
       name: "item_group_id",
       label: "Grupo",
+      errorMsg: "Debe seleccionar un grupo",
     },
   },
 };

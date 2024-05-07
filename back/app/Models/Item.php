@@ -12,8 +12,8 @@ class Item extends Model
         'description',
         'long_description',
         'rate',
-        'tax',
-        'tax2',
+        'tax_id',
+        'tax2_id',
         'unit',
     ];
 

@@ -22,5 +22,6 @@ export async function store(data) {
   });
 
   revalidatePath("/estimates/create");
-  redirect("/estimates/create");
+  revalidatePath("/credit-notes/create");
+  revalidatePath("/proposals/create");
 }

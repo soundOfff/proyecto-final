@@ -37,7 +37,7 @@ export default async function NewEstimate() {
     getAllCountries(),
     getAllTaxes(),
     getAllGroups(),
-    getAllItems({ include: ["tax", "itemGroup"] }),
+    getAllItems({ include: ["tax", "tax2", "itemGroup"] }),
     getAllItemTypes(),
     getDefaultCurrency(),
   ]);

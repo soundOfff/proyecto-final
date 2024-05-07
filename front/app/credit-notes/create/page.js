@@ -25,7 +25,7 @@ export default async function NewEstimate() {
     getPartnerSelect(),
     getAllTaxes(),
     getAllGroups(),
-    getAllItems({ include: ["tax", "itemGroup"] }),
+    getAllItems({ include: ["tax", "tax2", "itemGroup"] }),
     getAllCurrencies(),
     getAllItemTypes(),
     getAllDiscountTypes(),

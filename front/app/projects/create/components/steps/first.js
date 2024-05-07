@@ -12,9 +12,8 @@ import { ErrorMessage } from "formik";
 
 export default function First({ formData }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { name, cost, estimatedHours, expedient, description } = formField;
+  const { cost, estimatedHours, expedient, description } = formField;
   const {
-    name: nameV,
     cost: costV,
     estimatedHours: estimatedHoursV,
     expedient: expedientV,
@@ -32,17 +31,6 @@ export default function First({ formData }) {
 
   return (
     <Grid container spacing={5}>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          name={name.name}
-          label={name.label}
-          type={name.type}
-          placeholder={name.placeholder}
-          value={nameV}
-          error={errors.name && touched.name}
-          success={name.length > 0 && !errors.name}
-        />
-      </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
           name={cost.name}
@@ -65,7 +53,7 @@ export default function First({ formData }) {
           success={estimatedHours.length > 0 && !errors.estimatedHours}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <FormField
           name={expedient.name}
           label={expedient.label}

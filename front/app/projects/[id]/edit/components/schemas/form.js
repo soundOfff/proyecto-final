@@ -16,13 +16,6 @@ Coded by www.creative-tim.com
 const form = {
   formId: "new-project",
   formField: {
-    name: {
-      name: "name",
-      label: "Nombre Del Caso",
-      type: "text",
-      placeholder: "Caso 1",
-      errorMsg: "El nombre del caso es requerido",
-    },
     cost: {
       name: "cost",
       label: "Costo Total",
@@ -50,10 +43,14 @@ const form = {
       type: "hidden",
       errorMsg: "La descripción es requerida",
     },
-    partner: {
+    defendant: {
       name: "defendant_id",
-      label: "Clientes",
-      errorMsg: "Debe seleccionar un cliente",
+      label: "Demandado",
+      errorMsg: "Debe seleccionar un demandado",
+    },
+    plaintiff: {
+      name: "plaintiff_id",
+      label: "Demandante",
     },
     responsiblePersonId: {
       name: "responsible_person_id",

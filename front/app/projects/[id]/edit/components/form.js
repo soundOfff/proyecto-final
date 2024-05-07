@@ -8,7 +8,6 @@ import { Formik, Form } from "formik";
 
 import First from "./steps/first";
 import Second from "./steps/second";
-import Third from "./steps/third";
 
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
@@ -17,7 +16,7 @@ import form from "./schemas/form";
 import { useState } from "react";
 import { update as updateProject } from "/actions/projects";
 
-const steps = ["Detalles", "Clientes", "Fechas"];
+const steps = ["Detalles", "Clientes"];
 
 export default function FormComponent({
   project,
@@ -50,8 +49,6 @@ export default function FormComponent({
             }}
           />
         );
-      case 2:
-        return <Third formData={formData} project={project} />;
       default:
         return null;
     }

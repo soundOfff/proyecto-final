@@ -18,13 +18,13 @@ import checkout from "./form";
 
 const {
   formField: {
-    name,
     cost,
     estimatedHours,
     expedient,
     responsiblePersonId,
     description,
-    partner,
+    defendant,
+    plaintiff,
     status,
     serviceType,
     billingType,
@@ -36,7 +36,6 @@ const {
 
 const validations = [
   Yup.object().shape({
-    [name.name]: Yup.string().required(name.errorMsg),
     [estimatedHours.name]: Yup.number("El valor debe ser un número").min(
       1,
       "Debe ser mayor a 0"
@@ -52,7 +51,8 @@ const validations = [
     [description.name]: Yup.string(),
   }),
   Yup.object().shape({
-    [partner.name]: Yup.string().required(partner.errorMsg),
+    [defendant.name]: Yup.string().required(defendant.errorMsg),
+    [plaintiff.name]: Yup.string(),
     [responsiblePersonId.name]: Yup.string().required(
       responsiblePersonId.errorMsg
     ),
@@ -60,8 +60,6 @@ const validations = [
     [serviceType.name]: Yup.string().required(serviceType.errorMsg),
     [billingType.name]: Yup.string().required(billingType.errorMsg),
     [selectedMembers.name]: Yup.array().min(1, selectedMembers.errorMsg),
-  }),
-  Yup.object().shape({
     [startDate.name]: Yup.date().required(startDate.errorMsg),
     [deadline.name]: Yup.date().min(
       Yup.ref(startDate.name),

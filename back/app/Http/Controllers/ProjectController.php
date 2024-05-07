@@ -9,6 +9,7 @@ use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
 use App\Models\Project;
+use App\Models\ProjectServiceType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,6 +77,14 @@ class ProjectController extends Controller
         $newProject = $request->validated();
         $ids = $newProject['project_members'];
 
+        $defendantName = Partner::find($newProject['defendant_id'])->merged_name;
+        $plaintiff = Partner::find($newProject['plaintiff_id']);
+        $plaintiffName = $plaintiff ? $plaintiff->merged_name : '';
+        $serviceType = ProjectServiceType::find($newProject['project_service_type_id']);
+        $serviceTypeName = $serviceType ? $serviceType->label : '';
+
+        $newProject['name'] = "$serviceTypeName | $defendantName vs $plaintiffName";
+
         $project = Project::create($newProject);
 
         $project->members()->attach($ids);
@@ -114,6 +123,14 @@ class ProjectController extends Controller
 
         $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($ids);
+
+        $defendantName = Partner::find($data['defendant_id'])->merged_name;
+        $plaintiff = Partner::find($data['plaintiff_id']);
+        $plaintiffName = $plaintiff ? $plaintiff->merged_name : '';
+        $serviceType = ProjectServiceType::find($data['project_service_type_id']);
+        $serviceTypeName = $serviceType ? $serviceType->label : '';
+
+        $data['name'] = "$serviceTypeName | $defendantName vs $plaintiffName";
 
         $project->update($data);
 

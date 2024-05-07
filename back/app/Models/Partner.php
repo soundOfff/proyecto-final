@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,6 +65,15 @@ class Partner extends Model
         'image_number',
         'ruc',
     ];
+
+    protected $appends = ['merged_name'];
+
+    protected function mergedName(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->company ? $this->company : $this->name
+        );
+    }
 
     public function projects(): HasMany
     {
@@ -141,8 +151,7 @@ class Partner extends Model
             $query->where(function ($query) use ($search) {
                 $query
                     ->where('company', 'like', "%$search%")
-                    ->orWhere('name', 'like', "%$search%")
-                ;
+                    ->orWhere('name', 'like', "%$search%");
             });
         });
     }

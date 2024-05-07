@@ -17,12 +17,12 @@ import checkout from "./form";
 
 const {
   formField: {
-    name,
     cost,
     estimatedHours,
     expedient,
     description,
-    partner,
+    defendant,
+    plaintiff,
     status,
     serviceType,
     billingType,
@@ -33,12 +33,12 @@ const {
 } = checkout;
 
 const initialValues = {
-  [name.name]: "",
   [cost.name]: "",
   [estimatedHours.name]: "",
   [expedient.name]: "",
   [description.name]: "",
-  [partner.name]: "",
+  [defendant.name]: "",
+  [plaintiff.name]: "",
   [status.name]: "",
   [serviceType.name]: "",
   [billingType.name]: "",

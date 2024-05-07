@@ -16,7 +16,6 @@ import { Form, Formik, ErrorMessage } from "formik";
 import { store as storeItem } from "/actions/payments";
 import moment from "moment";
 
-// TODO: get taxes and groupIds from API
 export default function ModalContentForm({
   onClose,
   partners,
@@ -33,8 +32,7 @@ export default function ModalContentForm({
     transactionId,
   } = formField;
 
-  const handleSubmit = async (event, values) => {
-    event.preventDefault();
+  const handleSubmit = async (values) => {
     await storeItem(values);
     onClose();
   };
@@ -146,6 +144,8 @@ export default function ModalContentForm({
               <Grid item xs={12}>
                 <FormField
                   name={note.name}
+                  multiline
+                  rows={3}
                   label={note.label}
                   type={note.type}
                   placeholder={note.placeholder}
@@ -168,7 +168,6 @@ export default function ModalContentForm({
               </MDButton>
               <MDButton
                 disabled={isSubmitting}
-                onClick={(e) => handleSubmit(e, values, errors)}
                 type="submit"
                 variant="gradient"
                 color="dark"

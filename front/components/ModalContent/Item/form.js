@@ -14,7 +14,6 @@ import { Form, Formik, ErrorMessage } from "formik";
 
 import { store as storeItem } from "/actions/items";
 
-// TODO: get taxes and groupIds from API
 export default function ModalContentForm({
   taxes = [],
   groupIds = [],

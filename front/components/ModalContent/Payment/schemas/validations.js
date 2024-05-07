@@ -23,22 +23,18 @@ const {
     paymentMethodId,
     partnerId,
     date,
-    dateRecorded,
     note,
-    paymentMode,
     transactionId,
   },
 } = checkout;
 
 const validations = Yup.object().shape({
-  [amount]: Yup.number().required("El monto es requerido"),
-  [expensesAmount]: Yup.number().required(
-    "El total de los gastos es requerido"
-  ),
-  [paymentMethodId]: Yup.string().required("El metodo de pago es requerido"),
-  [partnerId]: Yup.string().required("El cliente es requerido"),
-  [date]: Yup.date().required("La fecha es requerida"),
-  [note]: Yup.string().nullable(),
-  [transactionId]: Yup.string().nullable(),
+  [amount.name]: Yup.number().required(amount.errorMsg),
+  [expensesAmount.name]: Yup.number().required(expensesAmount.errorMsg),
+  [paymentMethodId.name]: Yup.string().required(paymentMethodId.errorMsg),
+  [partnerId.name]: Yup.string().required(partnerId.errorMsg),
+  [date.name]: Yup.date().required(date.errorMsg),
+  [note.name]: Yup.string().nullable(),
+  [transactionId.name]: Yup.string().nullable(),
 });
 export default validations;

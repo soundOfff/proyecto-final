@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Task;
 use App\Models\TaskTimer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -46,8 +47,10 @@ class TaskResource extends JsonResource
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
             'taskable' => $this->whenLoaded('taskable', function () {
-                return $this->taskable_type === 'project'
-                    ? ProjectResource::make($this->whenLoaded('taskable'))->load('members')
+                $taskableTypes = Task::getTaskableTypes();
+                $taskableType = $taskableTypes[$this->taskable_type] ?? null;
+                return $taskableType
+                    ? $taskableType['resource']::make($this->whenLoaded('taskable'))->load($taskableType['load'])
                     : null;
             }),
         ];

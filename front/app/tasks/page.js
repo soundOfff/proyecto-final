@@ -40,7 +40,7 @@ export default async function Tasks({
           <Grid item xs={12}>
             <Table
               rows={tasks}
-              meta={{ per_page: "5" }}
+              meta={{ per_page: perPage, page: page }}
               priorities={priorities}
               repeats={repeats}
               taskableItems={taskableItems}

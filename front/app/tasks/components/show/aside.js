@@ -36,6 +36,7 @@ import { getAll as getAllStatuses } from "/actions/ticket-statuses";
 import { getAll as getAllPriorities } from "/actions/task-priorities";
 import { getAll as getAllTags } from "/actions/tags";
 import { select as getAllStaffs } from "/actions/staffs";
+import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { update } from "/actions/tasks";
 import moment from "moment";
@@ -472,26 +473,28 @@ export default function Aside({ task }) {
                   />
                 </Tooltip>
               ))}
-            <Autocomplete
-              multiple
-              key="assigneds"
-              value={assigneds}
-              onChange={(_, newValues) => setAssigneds(newValues)}
-              options={task.taskable.members}
-              getOptionLabel={(option) =>
-                option.first_name + " " + option.last_name
-              }
-              renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  label="Asignar a"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  inputProps={{ ...params.inputProps }}
-                />
-              )}
-            />
+            {task.taskable && task.taskable_type === PROJECT_TYPE ? (
+              <Autocomplete
+                multiple
+                key="assigneds"
+                value={assigneds}
+                onChange={(_, newValues) => setAssigneds(newValues)}
+                options={task.taskable.members}
+                getOptionLabel={(option) =>
+                  option.first_name + " " + option.last_name
+                }
+                renderInput={(params) => (
+                  <MDInput
+                    {...params}
+                    variant="standard"
+                    label="Asignar a"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    inputProps={{ ...params.inputProps }}
+                  />
+                )}
+              />
+            ) : null}
           </Grid>
           <Divider sx={{ width: "100%" }} />
 

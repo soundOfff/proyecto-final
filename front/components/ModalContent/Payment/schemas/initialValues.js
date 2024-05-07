@@ -28,13 +28,13 @@ const {
 } = checkout;
 
 const initialValues = {
-  [paymentMethodId]: "",
-  [partnerId]: "",
-  [amount]: 0,
-  [expensesAmount]: 0,
-  [date]: "",
-  [note]: "",
-  [transactionId]: "",
+  [paymentMethodId.name]: "",
+  [partnerId.name]: "",
+  [amount.name]: "",
+  [expensesAmount.name]: "",
+  [date.name]: "",
+  [note.name]: "",
+  [transactionId.name]: "",
 };
 
 export default initialValues;

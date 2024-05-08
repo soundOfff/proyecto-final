@@ -251,8 +251,7 @@ export default function Table() {
               task={{
                 taskable: { id: invoice.id },
                 taskable_type: INVOICE_TYPE,
-                partner_id:
-                  invoice.project?.defendant.id ?? invoice.partner._id,
+                partner_id: invoice.project?.defendant.id ?? invoice.partner.id,
               }}
               mode={MODAL_TYPES.CREATE}
             />

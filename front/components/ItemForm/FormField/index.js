@@ -19,6 +19,7 @@ export default function FormField({
         name={name}
         variant="standard"
         label={label}
+        InputLabelProps={{ shrink: true }}
         fullWidth
       />
       <MDBox mt={0.75}>

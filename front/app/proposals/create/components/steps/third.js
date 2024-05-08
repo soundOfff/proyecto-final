@@ -31,7 +31,7 @@ export default function Third({
   };
 
   return (
-    <Grid container spacing={5} p={3}>
+    <Grid container spacing={2} p={5}>
       <Grid item xs={6}>
         <Autocomplete
           onChange={(e, selectedItem) => {
@@ -96,7 +96,7 @@ export default function Third({
             setOpen(true);
           }}
         >
-          <Icon sx={{ fontWeight: "bold", mr: 1 }}>add</Icon>
+          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           Crear Item
         </MDButton>
         {isOpen && (

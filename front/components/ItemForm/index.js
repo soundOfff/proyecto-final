@@ -108,7 +108,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
   return (
     <>
       <Grid item xs={4}>
-        <MDBox display="flex" justifyContent="end">
+        <MDBox display="flex" justifyContent="end" px={2} mb={4}>
           <FormControl>
             <FormLabel sx={{ fontSize: "18px" }} color="dark">
               {unit.label}
@@ -265,7 +265,12 @@ export default function ItemForm({ formData, item, taxesData, types }) {
         />
       </Grid>
       <Grid item xs={12} sm={1}>
-        <MDButton onClick={handleSubmit} size="small" color="success">
+        <MDButton
+          onClick={handleSubmit}
+          size="small"
+          color="success"
+          sx={{ mt: 1.5 }}
+        >
           Agregar
         </MDButton>
       </Grid>

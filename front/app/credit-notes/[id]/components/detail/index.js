@@ -10,9 +10,9 @@ export default function IndexComponent() {
 
   return (
     <MDBox mt={2} mb={4} className="container-print">
-      <Grid container justifyContent="center" className="card-container-print">
-        <Grid item xs={12} sm={10} md={8} className="card-container-print">
-          <Card className="card-container-print">
+      <Grid container justifyContent="center">
+        <Grid item xs={12} sm={10} md={8} className="container-print">
+          <Card>
             <Header creditNote={creditNote} />
             <Table creditNote={creditNote} />
             <Footer creditNote={creditNote} />

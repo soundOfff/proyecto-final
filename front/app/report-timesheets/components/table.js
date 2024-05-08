@@ -73,18 +73,23 @@ export default function Table({ rows, meta }) {
     {
       Header: "Relacionado",
       accessor: "taskable",
-      Cell: ({ row }) => (
-        <Link href={`projects/${row.original.taskable.id}`} color="info">
-          {row.original.taskable.name}
-        </Link>
-      ),
+      Cell: ({ row }) =>
+        row.original.taskable ? (
+          <Link href={`projects/${row.original.taskable.id}`} color="info">
+            {row.original.taskable.name}
+          </Link>
+        ) : (
+          <MDTypography variant="body2" fontSize="small">
+            No hay projecto relacionado
+          </MDTypography>
+        ),
     },
     {
       Header: "Nro del caso",
       accessor: "",
       Cell: ({ row }) => (
-        <MDTypography variant="body2" fontSize="medium">
-          {row.original.taskable.id}
+        <MDTypography variant="body2" fontSize="small">
+          {row.original.taskable ? row.original.taskable.id : "Sin caso"}
         </MDTypography>
       ),
     },
@@ -92,7 +97,7 @@ export default function Table({ rows, meta }) {
       Header: "Fecha",
       accessor: "start_date",
       Cell: ({ row }) => (
-        <MDTypography variant="body2" fontSize="medium">
+        <MDTypography variant="body2" fontSize="small">
           {moment(row.original.start_date).format("DD/MM/YYYY")}
         </MDTypography>
       ),

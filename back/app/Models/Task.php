@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Resources\InvoiceResource;
+use App\Http\Resources\ProjectResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -84,5 +86,19 @@ class Task extends Model
             }
             return Carbon::parse($timer->end_time)->floatDiffInRealHours($timer->start_time);
         });
+    }
+
+    static function getTaskableTypes(): array
+    {
+        return [
+            'project' => [
+                'resource' => ProjectResource::class,
+                'load' => ['members'],
+            ],
+            'invoice' => [
+                'resource' => InvoiceResource::class,
+                'load' => [],
+            ],
+        ];
     }
 }

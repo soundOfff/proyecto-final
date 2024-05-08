@@ -80,7 +80,7 @@ export default function Filters({ paymentMethods, partners }) {
             px={0}
             py={0}
             width="40%"
-            height="60%"
+            height="auto"
             sx={{ overflow: "scroll" }}
           >
             <ModalContentForm

@@ -17,8 +17,16 @@ export default function useDeleteRow(destroyCallback) {
   }, [deleteId, deleteConfirmed, destroyCallback]);
 
   const handleDelete = (id) => {
+    resetValues();
     setDeleteId(id);
     setOpenDeleteConfirmation(true);
+  };
+
+  const resetValues = () => {
+    setDeleteId(0);
+    setDeleteConfirmed(false);
+    setOpenDeleteConfirmation(false);
+    setErrorSB(false);
   };
 
   return {

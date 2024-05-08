@@ -19,8 +19,12 @@ class InvoiceController extends Controller
 {
     public function select()
     {
-        $invoices = Invoice::query()
+        $invoices = QueryBuilder::for(Invoice::class)
         ->select('id', 'number')
+        ->AllowedFilters([
+            AllowedFilter::exact('partner_id'),
+            AllowedFilter::exact('project_id'),
+        ])
         ->distinct()
         ->get();
 

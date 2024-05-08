@@ -32,6 +32,7 @@ import Modal from "/components/Modal";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 
 export default function Table() {
   const [controller, dispatch] = useMaterialUIController();
@@ -83,6 +84,7 @@ export default function Table() {
     getAll({
       "filter[taskable_id]": invoice.id,
       "filter[taskable_type]": "invoice",
+      include: ["assigneds", "tags", "status"],
     }).then((data) => {
       setRows(data);
     });
@@ -234,7 +236,6 @@ export default function Table() {
       ),
     },
   ];
-
   const table = { columns, rows };
 
   return (
@@ -257,7 +258,7 @@ export default function Table() {
               partners={partners}
               task={{
                 taskable: { id: invoice.id },
-                taskable_type: "invoice",
+                taskable_type: INVOICE_TYPE,
                 partner_id: invoice.project.defendant.id,
               }}
               mode={MODAL_TYPES.CREATE}

@@ -8,14 +8,15 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDProgress from "/components/MDProgress";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { parseEditorState } from "/utils/parseEditorState";
 import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { useSession } from "next-auth/react";
 import { DONE_ID } from "/utils/constants/taskStatuses";
-import useTodo from "../../../../hooks/useTodo";
+import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
+import useTodo from "/hooks/useTodo";
 
 export default function Content({
   task,
@@ -78,12 +79,19 @@ export default function Content({
           <MDTypography variant="body1" fontWeight="bold" display="inline">
             Relacionado:
           </MDTypography>{" "}
-          {task.taskable_type === "project" && (
+          {task.taskable_type === PROJECT_TYPE ? (
             <Link
               href={`/projects/${task.taskable.id}`}
               sx={{ overflow: "wrap" }}
             >
               {task.taskable.name}
+            </Link>
+          ) : (
+            <Link
+              href={`/invoices/${task.taskable.id}`}
+              sx={{ overflow: "wrap" }}
+            >
+              Factura # {task.taskable.id}
             </Link>
           )}
           <MDBox

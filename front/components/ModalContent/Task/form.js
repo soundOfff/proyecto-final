@@ -17,10 +17,11 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import moment from "moment";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import { ErrorMessage } from "formik";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
+import { EditorState, convertToRaw } from "draft-js";
 import { getSelect as getProjectSelect } from "/actions/projects";
-import { parseEditorState } from "../../../utils/parseEditorState";
+import { getSelect as getInvoiceSelect } from "/actions/invoices";
+import { parseEditorState } from "/utils/parseEditorState";
+import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 
 export default function TaskForm({
   priorities,
@@ -103,9 +104,14 @@ export default function TaskForm({
 
   useEffect(() => {
     if (values.partner_id) {
-      getProjectSelect(values.partner_id).then((projects) =>
-        setTaskableItems(projects)
-      );
+      const items =
+        values[taskableType.name] === INVOICE_TYPE
+          ? getInvoiceSelect({ "filter[partner_id]": values.partner_id })
+          : getProjectSelect(values.partner_id);
+
+      items.then((data) => {
+        setTaskableItems(data);
+      });
     }
   }, [values.partner_id]);
 
@@ -327,7 +333,7 @@ export default function TaskForm({
             <Select
               value={values[partner_id.name]}
               options={partners}
-              optionLabel={(option) => option.name}
+              optionLabel={(option) => option.name ?? option.company}
               fieldName={partner_id.name}
               inputLabel={partner_id.label}
               setFieldValue={setFieldValue}
@@ -337,7 +343,7 @@ export default function TaskForm({
             <Select
               value={values[taskableId.name]}
               options={taskableItems}
-              optionLabel={(option) => option.name}
+              optionLabel={(option) => option.name ?? `#${option.id}`}
               fieldName={taskableId.name}
               inputLabel={taskableId.label}
               setFieldValue={setFieldValue}

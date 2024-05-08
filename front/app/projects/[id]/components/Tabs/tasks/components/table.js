@@ -85,6 +85,7 @@ export default function Table() {
     getAll({
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
+      include: ["assigneds", "tags", "status"],
     }).then((data) => {
       setRows(data);
       setIsLoading(false);

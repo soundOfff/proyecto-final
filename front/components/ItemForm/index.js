@@ -40,8 +40,8 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       .min(1, "Debe ser mayor que 0")
       .required(quantity.errorMsg),
     [rate.name]: Yup.number().required(rate.errorMsg),
-    [longDescription.name]: Yup.string(),
-    [type.name]: Yup.string(),
+    [longDescription.name]: Yup.string().nullable(),
+    [type.name]: Yup.string().nullable(),
     [taxes.name]: Yup.array().of(
       Yup.object().shape({
         name: Yup.string(),
@@ -100,7 +100,10 @@ export default function ItemForm({ formData, item, taxesData, types }) {
 
   useEffect(() => {
     if (item) {
-      const defaultTaxes = [item.tax, item.tax2].filter(Boolean);
+      const { tax, tax2 } = item;
+      if (tax && tax2 && tax.id === tax2.id)
+        return setFieldValue(taxes.name, [tax]);
+      const defaultTaxes = [tax, tax2].filter(Boolean);
       setFieldValue(taxes.name, defaultTaxes);
     }
   }, [item, taxes, setFieldValue]);

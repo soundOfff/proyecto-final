@@ -99,15 +99,7 @@ export default function Table() {
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (
-        <MDTypography
-          variant="body2"
-          color="info"
-          sx={{ cursor: "pointer" }}
-          onClick={() => {
-            setTaskId(row.original.id);
-            setOpenShowModal(true);
-          }}
-        >
+        <MDTypography variant="body2" color="info" sx={{ cursor: "pointer" }}>
           {row.original.name}
         </MDTypography>
       ),
@@ -259,7 +251,7 @@ export default function Table() {
               task={{
                 taskable: { id: invoice.id },
                 taskable_type: INVOICE_TYPE,
-                partner_id: invoice.project.defendant.id,
+                partner_id: invoice.project?.defendant.id ?? invoice.partner.id,
               }}
               mode={MODAL_TYPES.CREATE}
             />

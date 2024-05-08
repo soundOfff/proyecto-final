@@ -5,23 +5,19 @@ import DataTable from "/examples/Tables/DataTable";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
-import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import EditIcon from "@mui/icons-material/Edit";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CancelIcon from "@mui/icons-material/Cancel";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import { Tooltip } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { show, destroy } from "/actions/projects";
-import { destroy as destroyFile } from "/actions/files";
 
 import { setColor } from "/utils/project-state-colors";
 
-import { DescriptionOutlined } from "@mui/icons-material";
 import Detail from "./detail";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
@@ -134,7 +130,15 @@ export default function Table({ rows }) {
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
-          <Link href={`/projects/create-expenses/${row.original.id}`}>
+          <Link
+            href={{
+              pathname: `/expenses/create`,
+              query: {
+                projectId: row.original.id,
+                partnerId: row.original.defendant.id,
+              },
+            }}
+          >
             <Tooltip title="Registrar Gasto">
               <DescriptionOutlinedIcon
                 color="success"

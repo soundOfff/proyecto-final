@@ -7,7 +7,7 @@ import { getAll as getAllCurrencies } from "/actions/currencies";
 import { getAll as getAllPaymentMethods } from "/actions/payment-methods";
 import Form from "./components/form";
 
-export default async function NewProject() {
+export default async function NewExpense() {
   const [
     partners,
     categories,

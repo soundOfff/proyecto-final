@@ -170,6 +170,11 @@ export default function First({
             setFieldValue={setFieldValue}
           />
         )}
+        {projects.length === 0 && (
+          <MDTypography variant="caption" color="error">
+            No hay proyectos asociados a este cliente
+          </MDTypography>
+        )}
       </Grid>
 
       <Grid item xs={12} sm={6}>

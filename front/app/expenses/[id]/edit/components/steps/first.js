@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Autocomplete,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -14,12 +13,12 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import MDTypography from "/components/MDTypography";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDInput from "/components/MDInput";
 import MDDatePicker from "/components/MDDatePicker";
 import moment from "moment";
 import { ErrorMessage } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Select from "/components/Select";
+import { getSelect as getProjectSelect } from "/actions/projects";
 
 export default function First({
   expense,
@@ -29,13 +28,16 @@ export default function First({
   invoices,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { name, note, category, date, amount, partner, billable } = formField;
+  const { name, note, category, date, amount, partner, project, billable } =
+    formField;
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     setFieldValue(name.name, expense.name);
     setFieldValue(note.name, expense.note);
     setFieldValue(category.name, expense.category?.id ?? null);
     setFieldValue(partner.name, expense.partner?.id ?? null);
+    setFieldValue(project.name, expense.project?.id ?? null);
     setFieldValue(amount.name, expense.amount);
     setFieldValue(date.name, expense.date);
     setFieldValue(billable.name, expense.billable);
@@ -45,11 +47,20 @@ export default function First({
     note,
     category,
     partner,
+    project,
     amount,
     date,
     billable,
     setFieldValue,
   ]);
+
+  useEffect(() => {
+    if (values.partner_id) {
+      getProjectSelect(values.partner_id).then((projects) =>
+        setProjects(projects)
+      );
+    }
+  }, [values.partner_id, setFieldValue, project]);
 
   return (
     <Grid container spacing={4}>
@@ -98,21 +109,33 @@ export default function First({
       </Grid>
       <Grid item xs={12} sm={6}>
         <Select
-          value={values[category.name]}
-          options={categories}
-          optionLabel={(option) => `${option.name}`}
-          fieldName={category.name}
-          inputLabel={category.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
           value={values[partner.name]}
           options={partners}
           optionLabel={(option) => `${option.name}`}
           fieldName={partner.name}
           inputLabel={partner.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        {projects.length > 0 && (
+          <Select
+            value={values[project.name]}
+            options={projects}
+            optionLabel={(option) => option.name}
+            fieldName={project.name}
+            inputLabel={project.label}
+            setFieldValue={setFieldValue}
+          />
+        )}
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[category.name]}
+          options={categories}
+          optionLabel={(option) => `${option.name}`}
+          fieldName={category.name}
+          inputLabel={category.label}
           setFieldValue={setFieldValue}
         />
       </Grid>
@@ -127,7 +150,7 @@ export default function First({
           success={amount.length > 0 && !errors.amount}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <MDDatePicker
           input={{
             variant: "standard",

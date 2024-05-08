@@ -26,6 +26,7 @@ const {
     name,
     currency,
     partner,
+    project,
     reference,
     paymentMethod,
     tax,
@@ -48,6 +49,7 @@ const validations = [
       .required(amount.errorMsg)
       .min(1, "Debe ser mayor a 0"),
     [partner.name]: Yup.string().required(partner.errorMsg),
+    [project.name]: Yup.string().nullable(),
   }),
   Yup.object().shape({
     [currency.name]: Yup.string().required(currency.errorMsg),

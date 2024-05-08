@@ -26,6 +26,7 @@ const {
     name,
     currency,
     partner,
+    project,
     reference,
     paymentMethod,
     tax,
@@ -42,6 +43,7 @@ const validations = [
     [name.name]: Yup.string(),
     [note.name]: Yup.string(),
     [partner.name]: Yup.string().required(partner.errorMsg),
+    [project.name]: Yup.string().nullable(),
     [category.name]: Yup.string().required(category.errorMsg),
     [date.name]: Yup.date().required(date.errorMsg),
     [amount.name]: Yup.number("El valor debe ser un número")

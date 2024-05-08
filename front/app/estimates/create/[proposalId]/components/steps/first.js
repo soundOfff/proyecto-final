@@ -172,7 +172,7 @@ export default function First({
         )}
         {projects.length === 0 && (
           <MDTypography variant="caption" color="error">
-            No hay proyectos asociados a este cliente
+            No hay casos asociados a este cliente
           </MDTypography>
         )}
       </Grid>

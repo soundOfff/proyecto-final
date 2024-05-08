@@ -117,7 +117,7 @@ export default function Filters({ statuses }) {
       >
         <Link href="/projects/create">
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Nuevo Proyecto
+            Nuevo Caso
           </MDButton>
         </Link>
       </Grid>

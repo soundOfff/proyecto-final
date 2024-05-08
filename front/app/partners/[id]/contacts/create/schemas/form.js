@@ -69,7 +69,7 @@ const form = {
     },
     projectEmails: {
       name: "project_emails",
-      label: "Proyectos",
+      label: "Casos",
     },
     taskEmails: {
       name: "task_emails",

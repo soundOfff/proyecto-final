@@ -210,7 +210,7 @@ export default function Table({ rows }) {
       <Card>
         <MDBox p={2}>
           <MDTypography variant="h5" fontWeight="medium" p={2}>
-            Proyectos
+            Casos
           </MDTypography>
           {project && (
             <Modal

@@ -150,8 +150,8 @@ export default function Table({ rows }) {
       <MDSnackbar
         color="error"
         icon="warning"
-        title="Proyecto Eliminado"
-        content="Se ha eliminado el proyecto correctamente"
+        title="Caso Eliminado"
+        content="Se ha eliminado el caso correctamente"
         open={errorSB}
         onClose={() => setErrorSB(false)}
         close={() => setErrorSB(false)}

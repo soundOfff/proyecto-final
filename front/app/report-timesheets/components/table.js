@@ -80,7 +80,7 @@ export default function Table({ rows, meta }) {
           </Link>
         ) : (
           <MDTypography variant="body2" fontSize="small">
-            No hay projecto relacionado
+            No hay caso relacionado
           </MDTypography>
         ),
     },

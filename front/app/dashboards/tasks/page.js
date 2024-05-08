@@ -42,7 +42,7 @@ export default async function Tasks({ searchParams }) {
               <MDBox pt={3} px={3}>
                 <MDTypography variant="h6" fontWeight="medium">
                   {type === "myProjects"
-                    ? "Proyectos en los que participo"
+                    ? "Casos en los que participo"
                     : "Mis tareas / Asignadas por mi"}
                 </MDTypography>
               </MDBox>

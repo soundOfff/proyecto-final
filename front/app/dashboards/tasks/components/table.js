@@ -75,11 +75,11 @@ export default function Table({ rows, meta }) {
       accessor: "estimatedHours",
     },
     {
-      Header: "Comienzo del proyecto",
+      Header: "Comienzo del caso",
       accessor: "startDate",
     },
     {
-      Header: "Fin del proyecto",
+      Header: "Fin del caso",
       accessor: "dateFinished",
     },
     {

@@ -203,8 +203,7 @@ export default function TaskForm({
           <Grid item xs={12} sm={6}>
             <MDDatePicker
               input={{
-                placeholder: "Fecha De Inicio",
-                variant: "standard",
+                label: "Fecha De Inicio",
                 fullWidth: true,
               }}
               value={values[startDate.name]}
@@ -229,8 +228,7 @@ export default function TaskForm({
           <Grid item xs={12} sm={6}>
             <MDDatePicker
               input={{
-                placeholder: "Fecha De Cierre",
-                variant: "standard",
+                label: "Fecha De Cierre",
                 fullWidth: true,
               }}
               value={values[dueDate.name]}

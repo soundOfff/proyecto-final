@@ -114,11 +114,8 @@ export default function First({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: "Fecha desde proforma",
-            InputLabelProps: { shrink: true },
-            sx: { mt: 2 },
+            label: "Fecha desde proforma",
           }}
           format="DD/MM/YYYY"
           value={values[date.name]}

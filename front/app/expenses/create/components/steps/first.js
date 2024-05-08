@@ -141,11 +141,8 @@ export default function First({ formData, partners, categories, invoices }) {
       <Grid item xs={12}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: "Fecha de Gastos",
-            InputLabelProps: { shrink: true },
-            sx: { mt: 2.3 },
+            label: "Fecha de Gastos",
           }}
           value={values[date.name]}
           onChange={(value) =>

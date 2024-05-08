@@ -114,10 +114,8 @@ export default function First({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: "Fecha desde proforma",
-            InputLabelProps: { shrink: true },
+            label: "Fecha desde proforma",
           }}
           format="DD/MM/YYYY"
           value={values[dateFrom.name]}
@@ -140,10 +138,8 @@ export default function First({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: "Fecha de caducidad",
-            InputLabelProps: { shrink: true },
+            label: "Fecha de caducidad",
           }}
           format="DD/MM/YYYY"
           value={values[dateTo.name]}

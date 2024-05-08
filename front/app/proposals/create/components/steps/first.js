@@ -108,10 +108,8 @@ export default function First({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: date.label,
-            InputLabelProps: { shrink: true },
+            label: date.label,
           }}
           format="DD/MM/YYYY"
           value={values[date.name]}
@@ -134,10 +132,8 @@ export default function First({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: openTill.label,
-            InputLabelProps: { shrink: true },
+            label: openTill.label,
           }}
           format="DD/MM/YYYY"
           value={values[openTill.name]}

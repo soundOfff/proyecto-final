@@ -87,8 +87,7 @@ export default function ModalContentForm({
               <Grid item xs={12} sm={6} mt={2}>
                 <MDDatePicker
                   input={{
-                    placeholder: "Fecha de cobro",
-                    variant: "standard",
+                    label: "Fecha de cobro",
                     fullWidth: true,
                   }}
                   value={values[date.name]}

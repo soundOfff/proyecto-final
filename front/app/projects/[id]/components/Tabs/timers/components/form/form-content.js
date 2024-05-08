@@ -43,7 +43,7 @@ export default function FormContent({
           options={{ enableTime: true }}
           value={values[startTime.name]}
           sx={{ height: "40px" }}
-          input={{ placeholder: startTime.label }}
+          input={{ label: startTime.label }}
           onChange={(date) =>
             setFieldValue(
               startTime.name,
@@ -68,7 +68,7 @@ export default function FormContent({
           options={{ enableTime: true }}
           value={values[endTime.name]}
           sx={{ height: "40px" }}
-          input={{ placeholder: endTime.label }}
+          input={{ label: endTime.label }}
           onChange={(date) =>
             setFieldValue(
               endTime.name,

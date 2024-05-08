@@ -141,11 +141,9 @@ export default function PersonForm({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             backgroundColor: "black",
             fullWidth: true,
-            placeholder: "Fecha de Nacimiento",
-            InputLabelProps: { shrink: true },
+            label: "Fecha de Nacimiento",
           }}
           format="DD/MM/YYYY"
           value={values[birthDate.name]}
@@ -167,10 +165,8 @@ export default function PersonForm({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            variant: "standard",
             fullWidth: true,
-            placeholder: "Fecha de Expedición",
-            InputLabelProps: { shrink: true },
+            label: "Fecha de Expedición",
           }}
           options={{ maxDate: moment().format("YYYY-MM-DD") }}
           value={values[expeditionDate.name]}

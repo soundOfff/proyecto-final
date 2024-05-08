@@ -127,8 +127,7 @@ export default function Second({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            placeholder: "Fecha De Inicio",
-            variant: "standard",
+            label: "Fecha De Inicio",
             fullWidth: true,
           }}
           onChange={(date) =>
@@ -149,8 +148,7 @@ export default function Second({
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
-            placeholder: "Fecha De Entrega",
-            variant: "standard",
+            label: "Fecha De Entrega",
             fullWidth: true,
           }}
           onChange={(date) =>

@@ -30,7 +30,13 @@ function MDDatePicker({ input = {}, ...rest }) {
     <Flatpickr
       {...rest}
       render={({ defaultValue }, ref) => (
-        <MDInput {...input} defaultValue={defaultValue} inputRef={ref} />
+        <MDInput
+          {...input}
+          variant="standard"
+          InputLabelProps={{ shrink: true }}
+          defaultValue={defaultValue}
+          inputRef={ref}
+        />
       )}
     />
   );

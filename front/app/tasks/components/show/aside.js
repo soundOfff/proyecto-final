@@ -422,7 +422,7 @@ export default function Aside({ task }) {
                   options={{ enableTime: true }}
                   value={reminderDate}
                   sx={{ height: "40px" }}
-                  input={{ placeholder: "Fecha de Recordatorio" }}
+                  input={{ label: "Fecha de Recordatorio" }}
                   onChange={(date) =>
                     setReminderDate(
                       moment(date[0]).format("YYYY-MM-DD HH:mm:ss")

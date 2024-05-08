@@ -160,8 +160,7 @@ export default function Second({
             setFieldValue(startDate.name, moment(date[0]).format("YYYY-MM-DD"))
           }
           input={{
-            placeholder: "Fecha De Inicio",
-            variant: "standard",
+            label: "Fecha De Inicio",
             fullWidth: true,
           }}
         />
@@ -183,8 +182,7 @@ export default function Second({
             setFieldValue(deadline.name, moment(date[0]).format("YYYY-MM-DD"))
           }
           input={{
-            placeholder: "Fecha De Entrega",
-            variant: "standard",
+            label: "Fecha De Entrega",
             fullWidth: true,
           }}
         />

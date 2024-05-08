@@ -211,7 +211,15 @@ export default function Table({ rows, project }) {
         </Modal>
       )}
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href={`/projects/create-expenses/${project.id}`}>
+        <Link
+          href={{
+            pathname: `/expenses/create`,
+            query: {
+              projectId: project.id,
+              partnerId: project.defendant.id,
+            },
+          }}
+        >
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Gasto
           </MDButton>

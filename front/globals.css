@@ -27,21 +27,7 @@
     background-color: white !important;
     box-shadow: none !important;
   }
-
-  .card-2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: none !important;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100%;
-    max-height: min-content;
-    page-break-before: avoid;
-    page-break-after: avoid;
-  }
-
+  
   .container-print tbody th,
   .container-print tbody td {
     border-collapse: collapse;

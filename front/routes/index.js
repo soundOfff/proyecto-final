@@ -81,6 +81,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Procesos",
+    key: "processes",
+    route: "/processes",
+    icon: <Icon fontSize="medium">playlist_add_check</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
     name: "Clientes",
     key: "partners",
     route: "/partners",

@@ -15,10 +15,11 @@ class ProcedureStatusSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            ['id' => 1, 'name' => 'Preparar'],
-            ['id' => 2, 'name' => 'Enviar'],
-            ['id' => 3, 'name' => 'Recibir'],
-            ['id' => 4, 'name' => 'Revisar'],
+            ['id' => 1, 'name' => 'No Iniciada'],
+            ['id' => 2, 'name' => 'Iniciada'],
+            ['id' => 3, 'name' => 'En Proceso'],
+            ['id' => 4, 'name' => 'Completadas'],
+            ['id' => 5, 'name' => 'Borradas'],
         ];
 
         foreach ($statuses as $statuses) {

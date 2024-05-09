@@ -15,7 +15,7 @@ class ProcessSeeder extends Seeder
     public function run()
     {
         $processes = [
-            ['id' => 1, 'project_id' => 2, 'step_quantity' => 0, 'name' => 'Hipotecario de bien inmueble', 'description' => 'Hipotecario de bien inmueble', 'department' => 'Judicial'],
+            ['id' => 1, 'project_id' => 2, 'step_quantity' => 0, 'name' => 'Proceso Ejecutivo Hipotecario de bien inmueble', 'description' => 'description', 'department' => 'Judicial'],
         ];
 
         foreach ($processes as $process) {

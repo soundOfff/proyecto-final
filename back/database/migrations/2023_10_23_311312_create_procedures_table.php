@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('process_id')->constrained();
             $table->foreignId('procedure_status_id')->constrained();
+            $table->foreignId('responsible_id')->nullable()->constrained('staff');
 
             $table->integer('step_number');
             $table->string('name');

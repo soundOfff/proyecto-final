@@ -23,6 +23,9 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProcedureController;
+use App\Http\Controllers\ProcedureStatusController;
+use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProjectBillingTypeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectNoteController;
@@ -188,6 +191,13 @@ Route::post('/credit-notes', [CreditNoteController::class, 'store']);
 Route::get('/credits', [CreditController::class, 'index']);
 Route::post('/credits', [CreditController::class, 'attach']);
 Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
+
+Route::get('/processes', [ProcessController::class, 'index']);
+Route::get('/processes/{process}', [ProcessController::class, 'show']);
+Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
+
+Route::post('/procedures', [ProcedureController::class, 'store']);
+Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

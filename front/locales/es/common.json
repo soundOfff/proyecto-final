@@ -1,3 +1,18 @@
 {
-  "title": "Proyectos"
+  "dashboards": "Tablero",
+  "projects": "Proyectos",
+  "estimates": "Proformas",
+  "proposals": "Propuestas",
+  "tasks": "Tareas",
+  "partners": "Clientes",
+  "invoices": "Facturas",
+  "expenses": "Gastos",
+  "payments": "Pagos",
+  "credit-notes": "Notas de Crédito",
+  "settings": "Configuración",
+  "files": "Archivos",
+  "report-timesheets": "Tiempos",
+  "profile": "Perfil",
+  "project": "Proyecto",
+  "customer": "Cliente"
 }

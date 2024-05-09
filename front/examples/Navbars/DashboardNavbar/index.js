@@ -63,6 +63,7 @@ import { useSession } from "next-auth/react";
 import moment from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
+import translate from "/locales/es/common.json";
 
 export default function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -77,7 +78,11 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
   } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
-  const route = pathname.split("/").slice(1);
+
+  const route = pathname
+    .split("/")
+    .slice(1)
+    .map((el) => translate[el] ?? el);
 
   useEffect(() => {
     // Setting the navbar type

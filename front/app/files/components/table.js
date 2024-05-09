@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 import { destroy } from "/actions/files";
+import translate from "/locales/es/common.json";
 
 export default function Table({ rows, meta }) {
   const getFileableUrl = (row) => {
@@ -48,7 +49,7 @@ export default function Table({ rows, meta }) {
           href={getFileableUrl(row)}
           sx={{ cursor: "pointer", color: "info" }}
         >
-          {row.original.fileableType}: {row.original.fileableId}
+          {translate[row.original.fileableType]}: {row.original.fileableId}
         </Link>
       ),
     },

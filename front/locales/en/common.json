@@ -1,3 +1,17 @@
 {
-  "title": "Projects"
+  "projects": "Projects",
+  "estimates": "Estimates",
+  "proposals": "Proposals",
+  "tasks": "Tasks",
+  "partners": "Partners",
+  "invoices": "Invoices",
+  "expenses": "Expenses",
+  "payments": "Payments",
+  "credit-notes": "Credit Notes",
+  "settings": "Settings",
+  "files": "Files",
+  "report-timesheets": "Timers",
+  "profile": "Profile",
+  "project": "Project",
+  "customer": "Customer"
 }

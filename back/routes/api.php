@@ -196,6 +196,7 @@ Route::get('/processes', [ProcessController::class, 'index']);
 Route::get('/processes/{process}', [ProcessController::class, 'show']);
 Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 
+Route::get('/procedures', [ProcedureController::class, 'index']);
 Route::post('/procedures', [ProcedureController::class, 'store']);
 Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
 

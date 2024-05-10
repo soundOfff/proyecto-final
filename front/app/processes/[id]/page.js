@@ -3,6 +3,8 @@ import Procedures from "./components/procedures";
 import { show } from "/actions/processes";
 import MDBox from "/components/MDBox";
 
+export const dynamic = "force-dynamic";
+
 export default async function Show({ params: { id } }) {
   const process = await show(id, {
     include: ["project", "procedures.status", "procedures.responsible"],

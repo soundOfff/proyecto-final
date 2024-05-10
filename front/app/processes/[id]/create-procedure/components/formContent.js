@@ -2,7 +2,7 @@
 
 import Select from "/components/Select";
 import form from "./schemas/form";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { select as getSelectStaff } from "/actions/staffs";
 import { getAll as getAllStatuses } from "/actions/procedure-statuses";
@@ -11,8 +11,10 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 export default function FormContent({
   values,
   setFieldValue,
+  setFieldError,
   errors,
   touched,
+  procedures,
 }) {
   const { formField } = form;
   const { name, description, responsible, status, stepNumber } = formField;
@@ -23,6 +25,19 @@ export default function FormContent({
     getSelectStaff().then((staffs) => setStaffs(staffs));
     getAllStatuses().then((response) => setStatuses(response.data.statuses));
   }, []);
+
+  useEffect(() => {
+    if (
+      procedures.find(
+        (procedure) => procedure.stepNumber == values[stepNumber.name]
+      )
+    ) {
+      setFieldError(
+        stepNumber.name,
+        `El paso número ${values[stepNumber.name]} ya existe`
+      );
+    }
+  }, [values, stepNumber, procedures, setFieldError, errors]);
 
   return (
     <Grid container spacing={5}>

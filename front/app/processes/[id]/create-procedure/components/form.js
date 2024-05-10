@@ -7,10 +7,12 @@ import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
-import { store } from "/actions/procedures";
+import { getAll, store } from "/actions/procedures";
+import { useEffect, useState } from "react";
 
 export default function FormComponent({ processId }) {
   const { formId } = form;
+  const [procedures, setProcedures] = useState([]);
 
   const submitForm = async (values, actions) => {
     await store({ ...values, process_id: processId });
@@ -19,6 +21,12 @@ export default function FormComponent({ processId }) {
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
+
+  useEffect(() => {
+    getAll({ "filter[process_id]": processId }).then((response) => {
+      setProcedures(response.data.procedures);
+    });
+  }, [processId]);
 
   return (
     <MDBox>
@@ -46,6 +54,7 @@ export default function FormComponent({ processId }) {
                 setFieldValue,
                 setFieldTouched,
                 setFieldError,
+                procedures,
               }}
             />
             <MDBox mt={5} display="flex" justifyContent="end">

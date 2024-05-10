@@ -26,4 +26,9 @@ class Process extends Model
     {
         return $this->hasMany(Procedure::class);
     }
+
+    public function validateIfStepNumberExists(int $stepNumber): bool
+    {
+        return $this->procedures()->where('step_number', $stepNumber)->exists();
+    }
 }

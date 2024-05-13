@@ -27,7 +27,11 @@ export default function FormComponent({ procedureId }) {
   };
 
   const handleBack = () => {
-    router.push(`/processes/${procedure ? procedure.process.id : ""}`);
+    if (procedure?.process) {
+      router.push(`/processes/${procedure.process.id}`);
+    } else {
+      router.push("/processes");
+    }
   };
 
   useEffect(() => {

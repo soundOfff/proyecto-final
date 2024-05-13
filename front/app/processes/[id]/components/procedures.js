@@ -12,11 +12,23 @@ import { usePathname } from "next/navigation";
 import { getColor } from "/utils/project-state-colors";
 import { Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { destroy } from "/actions/procedures";
+import useDeleteRow from "/hooks/useDeleteRow";
+import DeleteRow from "/components/DeleteRow";
 
 export default function Procedures({ procedures }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const pathname = usePathname();
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const columns = [
     {
@@ -85,11 +97,23 @@ export default function Procedures({ procedures }) {
       id: "acciones",
       Header: "Acciones",
       Cell: ({ row }) => (
-        <Tooltip title="Editar Procedimiento">
-          <Link href={`/procedures/${row.original.id}`}>
-            <EditIcon color="warning" fontSize="medium" />
-          </Link>
-        </Tooltip>
+        <MDBox display="flex">
+          <Tooltip title="Editar Procedimiento">
+            <Link href={`/procedures/${row.original.id}`}>
+              <EditIcon color="warning" fontSize="medium" />
+            </Link>
+          </Tooltip>
+          <Tooltip title="Eliminar Procedimiento">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{ ml: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </MDBox>
       ),
     },
   ];
@@ -110,6 +134,15 @@ export default function Procedures({ procedures }) {
         entriesPerPage={false}
         showTotalEntries={false}
         noEndBorder
+      />
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
       />
     </>
   );

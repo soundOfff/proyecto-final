@@ -166,6 +166,18 @@ class ProjectController extends Controller
         return response()->json($countByStatuses);
     }
 
+    public function attachTasks(Project $project)
+    {
+        $process = $project->process()->first();
+        $procedures = $process->procedures()->get();
+
+        foreach ($procedures as $procedure) {
+            $procedure->convertToTask($project->id, $project->defendant_id, $project->responsible_person_id);
+        }
+
+        return response()->json($project->tasks, 201);
+    }
+
     /**
      * Update the specified resource in storage.
      */

@@ -33,6 +33,7 @@ import Modal from "/components/Modal";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { attachTasks } from "/actions/projects";
 
 export default function Table() {
   const [controller, dispatch] = useMaterialUIController();
@@ -61,6 +62,10 @@ export default function Table() {
 
   const handlePriorityChange = async (taskId, priorityId) => {
     await update(taskId, { task_priority_id: priorityId });
+  };
+
+  const handleCreateTasks = async () => {
+    await attachTasks(project.id);
   };
 
   const handleModalOpen = () => setIsModalOpen(true);
@@ -101,15 +106,7 @@ export default function Table() {
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (
-        <MDTypography
-          variant="body2"
-          color="info"
-          sx={{ cursor: "pointer" }}
-          onClick={() => {
-            setTaskId(row.original.id);
-            setOpenShowModal(true);
-          }}
-        >
+        <MDTypography variant="body2" color="info" sx={{ cursor: "pointer" }}>
           {row.original.name}
         </MDTypography>
       ),
@@ -246,13 +243,27 @@ export default function Table() {
   ) : (
     <MDBox width="100%">
       <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
-        <MDButton
-          variant="gradient"
-          color={darkMode ? "light" : "dark"}
-          onClick={handleModalOpen}
-        >
-          Crear nueva tarea
-        </MDButton>
+        <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
+          <Tooltip title="Solamente se puede crear desde el proceso si el proyecto tiene un responsable">
+            <MDBox>
+              <MDButton
+                variant="gradient"
+                color={"info"}
+                disabled={!project?.responsiblePerson}
+                onClick={handleCreateTasks}
+              >
+                Crear tareas desde el proceso
+              </MDButton>
+            </MDBox>
+          </Tooltip>
+          <MDButton
+            variant="gradient"
+            color={darkMode ? "light" : "dark"}
+            onClick={handleModalOpen}
+          >
+            Crear nueva tarea
+          </MDButton>
+        </MDBox>
         {isModalOpen && (
           <Modal open={handleModalOpen} onClose={handleModalClose} width="40%">
             <ModalContentForm

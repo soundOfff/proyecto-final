@@ -14,6 +14,7 @@ const include = [
   "plaintiff",
   "billingType",
   "serviceType",
+  "responsiblePerson",
   "status",
   "members",
 ];

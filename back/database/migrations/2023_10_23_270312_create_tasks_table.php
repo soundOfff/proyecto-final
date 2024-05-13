@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            // TODO: Change nullable
+            
             $table->foreignId('invoice_id')->nullable()->constrained();
             $table->foreignId('task_priority_id')->constrained();
             $table->foreignId('repeat_id')->constrained('expense_repeats');
@@ -21,9 +21,10 @@ return new class extends Migration {
             $table->foreignId('owner_id')->constrained('staff');
             $table->morphs('taskable');
 
+            $table->mediumText('name');
+            $table->date('start_date');
+
             $table->integer('added_from')->nullable();
-            $table->boolean('billable')->default(false);
-            $table->boolean('billed')->default(false);
             $table->boolean('custom_recurring')->nullable();
             $table->integer('cycles')->nullable();
             $table->dateTime('date_added')->nullable();
@@ -33,20 +34,21 @@ return new class extends Migration {
             $table->date('due_date')->nullable();
             $table->decimal('hourly_rate')->default(0.00);
             $table->boolean('is_added_from_contact')->nullable();
-            $table->boolean('is_public')->default(false);
-            $table->boolean('is_infinite')->default(false);
             $table->integer('is_recurring_from')->nullable();
             $table->integer('kanban_order')->nullable();
             $table->date('last_recurring_date')->nullable();
             $table->integer('milestone')->nullable();
             $table->integer('milestone_order')->nullable();
-            $table->mediumText('name');
             $table->integer('recurring')->nullable();
             $table->string('recurring_type')->nullable();
             $table->integer('repeat_every')->nullable();
-            $table->date('start_date');
             $table->integer('total_cycles')->nullable();
+
             $table->boolean('visible_to_client')->default(false);
+            $table->boolean('is_public')->default(false);
+            $table->boolean('is_infinite')->default(false);
+            $table->boolean('billable')->default(false);
+            $table->boolean('billed')->default(false);
 
             $table->timestamps();
         });

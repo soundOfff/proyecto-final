@@ -44,23 +44,6 @@ export default function Procedures({ procedures }) {
       accessor: "description",
     },
     {
-      Header: "Estado",
-      accessor: "status",
-      textAlign: "center",
-      Cell: ({ value }) => {
-        return (
-          <MDBadge
-            variant="contained"
-            badgeContent={value.name}
-            color={getColor(value.id)}
-            size="xs"
-            container
-            sx={{ ml: 1, height: "2rem" }}
-          />
-        );
-      },
-    },
-    {
       Header: "Responsable",
       accessor: "responsible",
       Cell: ({ value }) =>

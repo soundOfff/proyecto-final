@@ -71,6 +71,8 @@ Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
 Route::get('/projects/{project}', [ProjectController::class, 'show']);
 Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
 
+Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
+
 Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 
 Route::get('/project-statuses', [ProjectStatusController::class, 'index']);

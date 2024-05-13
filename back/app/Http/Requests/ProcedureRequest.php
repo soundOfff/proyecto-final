@@ -23,7 +23,7 @@ class ProcedureRequest extends FormRequest
     {
         return [
             'process_id' => 'required|numeric|exists:processes,id',
-            'procedure_status_id' => 'required|numeric|exists:procedure_statuses,id',
+            'procedure_status_id' => 'nullable|numeric|exists:procedure_statuses,id',
             'step_number' => 'required|numeric',
             'name' => 'required|string',
             'responsible_id' => 'nullable|numeric|exists:staff,id',

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -114,6 +115,11 @@ class Project extends Model
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function process(): HasOne
+    {
+        return $this->hasOne(Process::class);
     }
 
     public function scopeSearch($query, $search)

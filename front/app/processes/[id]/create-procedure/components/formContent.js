@@ -19,11 +19,9 @@ export default function FormContent({
   const { formField } = form;
   const { name, description, responsible, status, stepNumber } = formField;
   const [staffs, setStaffs] = useState([]);
-  const [statuses, setStatuses] = useState([]);
 
   useEffect(() => {
     getSelectStaff().then((staffs) => setStaffs(staffs));
-    getAllStatuses().then((response) => setStatuses(response.data.statuses));
   }, []);
 
   useEffect(() => {
@@ -76,23 +74,13 @@ export default function FormContent({
           rows={4}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <Select
           value={values[responsible.name]}
           options={staffs}
           optionLabel={(option) => option.name}
           fieldName={responsible.name}
           inputLabel={responsible.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[status.name]}
-          options={statuses}
-          optionLabel={(option) => option.name}
-          fieldName={status.name}
-          inputLabel={status.label}
           setFieldValue={setFieldValue}
         />
       </Grid>

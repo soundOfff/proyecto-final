@@ -1,6 +1,8 @@
 {
   "dashboards": "Tablero",
   "projects": "Proyectos",
+  "processes": "Procesos",
+  "procedures": "Procedimientos",
   "estimates": "Proformas",
   "proposals": "Propuestas",
   "tasks": "Tareas",

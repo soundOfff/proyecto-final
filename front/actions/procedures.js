@@ -44,3 +44,13 @@ export async function update(id, data) {
   revalidatePath("/processes");
   redirect("/processes");
 }
+
+export async function destroy(id) {
+  const url = new URL(`${process.env.API_URL}/procedures/${id}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/processes");
+}

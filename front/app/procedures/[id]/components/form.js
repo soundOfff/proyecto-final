@@ -9,10 +9,14 @@ import validations from "./schemas/validations";
 import FormContent from "./formContent";
 import { show, update } from "/actions/procedures";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function FormComponent({ procedureId }) {
   const { formId } = form;
   const [procedure, setProcedure] = useState(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const submitForm = async (values, actions) => {
     await update(procedureId, values);
@@ -20,6 +24,14 @@ export default function FormComponent({ procedureId }) {
 
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
+  };
+
+  const handleBack = () => {
+    if (procedure?.process) {
+      router.push(`/processes/${procedure.process.id}`);
+    } else {
+      router.push("/processes");
+    }
   };
 
   useEffect(() => {
@@ -57,7 +69,15 @@ export default function FormComponent({ procedureId }) {
                 procedure,
               }}
             />
-            <MDBox mt={5} display="flex" justifyContent="end">
+            <MDBox
+              mt={5}
+              width="100%"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <MDButton variant="gradient" color="light" onClick={handleBack}>
+                Volver
+              </MDButton>
               <MDButton
                 disabled={isSubmitting}
                 type="submit"

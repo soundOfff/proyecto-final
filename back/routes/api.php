@@ -200,6 +200,7 @@ Route::get('/procedures', [ProcedureController::class, 'index']);
 Route::get('/procedures/{procedure}', [ProcedureController::class, 'show']);
 Route::post('/procedures', [ProcedureController::class, 'store']);
 Route::put('/procedures/{procedure}', [ProcedureController::class, 'update']);
+Route::delete('/procedures/{procedure}', [ProcedureController::class, 'destroy']);
 
 Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
 

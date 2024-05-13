@@ -13,11 +13,31 @@ export async function getAll(params) {
   return data;
 }
 
+export async function show(id, params) {
+  const url = new URL(`${process.env.API_URL}/procedures/${id}`);
+  url.search = new URLSearchParams(params);
+
+  const { data: procedure } = await customFetch(url, { cache: "no-store" });
+
+  return procedure;
+}
+
 export async function store(data) {
   const url = new URL(`${process.env.API_URL}/procedures`);
 
   await customFetch(url, {
     method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/processes");
+  redirect("/processes");
+}
+
+export async function update(id, data) {
+  const url = new URL(`${process.env.API_URL}/procedures/${id}`);
+  await customFetch(url, {
+    method: "PUT",
     body: JSON.stringify(data),
   });
 

@@ -10,6 +10,8 @@ import { useMaterialUIController } from "/context";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getColor } from "/utils/project-state-colors";
+import { Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function Procedures({ procedures }) {
   const [controller] = useMaterialUIController();
@@ -78,6 +80,17 @@ export default function Procedures({ procedures }) {
             </MDTypography>
           </MDBox>
         ),
+    },
+    {
+      id: "acciones",
+      Header: "Acciones",
+      Cell: ({ row }) => (
+        <Tooltip title="Editar Procedimiento">
+          <Link href={`/procedures/${row.original.id}`}>
+            <EditIcon color="warning" fontSize="medium" />
+          </Link>
+        </Tooltip>
+      ),
     },
   ];
 

@@ -18,6 +18,7 @@ class ProcedureResource extends JsonResource
             'id' => $this->id,
             'processId' => $this->process_id,
             'statusId' => $this->procedure_status_id,
+            'responsibleId' => $this->responsible_id,
             'stepNumber'=> $this->step_number,
             'name' => $this->name,
             'description' => $this->description,

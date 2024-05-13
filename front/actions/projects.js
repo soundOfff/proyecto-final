@@ -60,6 +60,16 @@ export async function update(id, data) {
   redirect("/projects");
 }
 
+export async function attachTasks(projectId) {
+  const url = new URL(
+    `${process.env.API_URL}/projects/${projectId}/tasks-attach`
+  );
+  const { data } = await customFetch(url, { method: "POST" });
+
+  revalidatePath("/projects");
+  revalidatePath("tasks");
+}
+
 export async function updateMembers(id, data) {
   const url = new URL(`${process.env.API_URL}/project-members/${id}`);
   await customFetch(url, {

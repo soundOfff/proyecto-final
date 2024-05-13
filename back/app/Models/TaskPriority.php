@@ -12,6 +12,8 @@ class TaskPriority extends Model
 
     protected $fillable = ['name'];
 
+    public const DEFAULT = 1; 
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);

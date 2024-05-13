@@ -5,7 +5,6 @@ import form from "./schemas/form";
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { select as getSelectStaff } from "/actions/staffs";
-import { getAll as getAllStatuses } from "/actions/procedure-statuses";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 
 export default function FormContent({
@@ -20,11 +19,9 @@ export default function FormContent({
   const { name, description, responsible, status, stepNumber, process } =
     formField;
   const [staffs, setStaffs] = useState([]);
-  const [statuses, setStatuses] = useState([]);
 
   useEffect(() => {
     getSelectStaff().then((staffs) => setStaffs(staffs));
-    getAllStatuses().then((response) => setStatuses(response.data.statuses));
   }, []);
 
   useEffect(() => {
@@ -102,23 +99,13 @@ export default function FormContent({
           rows={4}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <Select
           value={values[responsible.name]}
           options={staffs}
           optionLabel={(option) => option.name}
           fieldName={responsible.name}
           inputLabel={responsible.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[status.name]}
-          options={statuses}
-          optionLabel={(option) => option.name}
-          fieldName={status.name}
-          inputLabel={status.label}
           setFieldValue={setFieldValue}
         />
       </Grid>

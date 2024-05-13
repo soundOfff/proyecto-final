@@ -7,6 +7,7 @@ use App\Http\Resources\ProcedureResource;
 use App\Http\Resources\ProcedureResourceCollection;
 use App\Models\Procedure;
 use App\Models\Process;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -22,7 +23,8 @@ class ProcedureController extends Controller
         ])
         ->allowedFilters([
             AllowedFilter::exact('process_id'),
-        ]);
+        ])
+        ->orderBy('step_number');
 
         $processes = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -82,6 +84,24 @@ class ProcedureController extends Controller
     public function destroy(Procedure $procedure)
     {
         $procedure->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function editSteps(Request $request)
+    {
+        $data = $request->validate([
+            'procedures' => 'required|array',
+            'procedures.*.id' => 'required|exists:procedures,id',
+            'procedures.*.stepNumber' => 'required|integer',
+        ]);
+
+        $procedures = $data['procedures'];
+
+        foreach ($procedures as $procedure) {
+            $procedureToUpdate = Procedure::find($procedure['id']);
+            $procedureToUpdate->update(['step_number' => $procedure['stepNumber']]);
+        }
 
         return response()->json(null, 204);
     }

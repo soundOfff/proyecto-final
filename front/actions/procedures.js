@@ -44,3 +44,12 @@ export async function update(id, data) {
   revalidatePath("/processes");
   redirect("/processes");
 }
+
+export async function editSteps(data) {
+  const url = new URL(`${process.env.API_URL}/procedures-edit-steps`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

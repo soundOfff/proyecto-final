@@ -12,10 +12,14 @@ import { usePathname } from "next/navigation";
 import { getColor } from "/utils/project-state-colors";
 import { Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { useEffect, useState } from "react";
+import update from "immutability-helper";
+import { editSteps } from "/actions/procedures";
 
 export default function Procedures({ procedures }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  const [records, setRecords] = useState(procedures);
   const pathname = usePathname();
 
   const columns = [
@@ -94,7 +98,30 @@ export default function Procedures({ procedures }) {
     },
   ];
 
-  const table = { columns, rows: procedures };
+  const moveRow = (dragIndex, hoverIndex) => {
+    const dragRecord = records[dragIndex];
+    const updatedRecords = update(records, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, dragRecord],
+      ],
+    });
+
+    setRecords(
+      updatedRecords.map((record, index) => ({
+        ...record,
+        stepNumber: index + 1,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      editSteps({ procedures: records });
+    }, 1000);
+  }, [records]);
+
+  const table = { columns, rows: records };
 
   return (
     <>
@@ -109,6 +136,7 @@ export default function Procedures({ procedures }) {
         table={table}
         entriesPerPage={false}
         showTotalEntries={false}
+        moveRow={moveRow}
         noEndBorder
       />
     </>

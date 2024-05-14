@@ -16,6 +16,7 @@ export default function ModalContentForm({
   repeats,
   tagsData,
   partners,
+  partnerId,
   task = null,
   mode = MODAL_TYPES.CREATE,
 }) {
@@ -65,6 +66,7 @@ export default function ModalContentForm({
             task={task}
             onClose={onClose}
             mode={mode}
+            partnerId={partnerId}
           />
           <MDBox p={3}>
             <MDBox width="100%" display="flex" justifyContent="space-between">

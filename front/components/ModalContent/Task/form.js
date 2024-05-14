@@ -31,6 +31,7 @@ export default function TaskForm({
   tagsData,
   task = null,
   mode,
+  partnerId,
 }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
   const {
@@ -79,9 +80,11 @@ export default function TaskForm({
       const parsedDescription = parseEditorState(task?.description ?? "");
       setEditorState(parsedDescription);
     }
+    setFieldValue(partner_id.name, partnerId || "");
   }, [
     task,
     mode,
+    partnerId,
     setFieldValue,
     description.name,
     taskableId.name,
@@ -103,17 +106,17 @@ export default function TaskForm({
   ]);
 
   useEffect(() => {
-    if (values.partner_id) {
+    if (values[partner_id.name]) {
       const items =
         values[taskableType.name] === INVOICE_TYPE
-          ? getInvoiceSelect({ "filter[partner_id]": values.partner_id })
-          : getProjectSelect(values.partner_id);
+          ? getInvoiceSelect({ "filter[partner_id]": values[partner_id.name] })
+          : getProjectSelect(values[partner_id.name]);
 
       items.then((data) => {
         setTaskableItems(data);
       });
     }
-  }, [values.partner_id]);
+  }, [partner_id, taskableType, values]);
 
   const handleChange = useCallback(
     (editorState) => {

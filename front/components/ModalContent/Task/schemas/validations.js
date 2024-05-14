@@ -41,24 +41,25 @@ const {
 } = checkout;
 
 const validations = Yup.object().shape({
+  [name.name]: Yup.string().required(name.errorMsg),
+  [startDate.name]: Yup.string().required(startDate.errorMsg),
+  [partner_id.name]: Yup.string().required(partner_id.errorMsg),
+  [owner_id.name]: Yup.number().required(),
+  [taskableId.name]: Yup.string().required(taskableId.errorMsg),
+  [task_priority_id.name]: Yup.string().required(task_priority_id.errorMsg),
+
   [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),
-  [name.name]: Yup.string().required(name.errorMsg),
   [hourlyRate.name]: Yup.number(),
-  [startDate.name]: Yup.string().required(startDate.errorMsg),
   [dueDate.name]: Yup.string(),
-  [task_priority_id.name]: Yup.string(),
   [task_status_id.name]: Yup.string(),
-  [partner_id.name]: Yup.string().required(partner_id.errorMsg),
   [repeat.name]: Yup.string(),
+  [isInfinite.name]: Yup.boolean(),
+  [taskableType.name]: Yup.string(),
+  [tags.name]: Yup.array(),
   [recurring.name]: Yup.number().nullable(),
   [recurringType.name]: Yup.string().nullable(),
-  [isInfinite.name]: Yup.boolean(),
   [totalCycles.name]: Yup.number().nullable(),
-  [taskableType.name]: Yup.string(),
-  [owner_id.name]: Yup.number().required(),
-  [taskableId.name]: Yup.string().required(taskableId.errorMsg),
-  [tags.name]: Yup.array(),
 });
 export default validations;

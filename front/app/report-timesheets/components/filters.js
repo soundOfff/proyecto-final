@@ -118,7 +118,7 @@ export default function Filters({ partners, projects, staffs }) {
         <Autocomplete
           value={partner}
           options={partners}
-          getOptionLabel={(option) => option.company ?? option.name}
+          getOptionLabel={(option) => option.mergedName}
           onChange={(_, value) => setPartner(value)}
           renderInput={(params) => (
             <MDInput

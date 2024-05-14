@@ -59,12 +59,12 @@ export default function TaskForm({
 
   useEffect(() => {
     if (task) {
-      setFieldValue(name.name, task.name);
-      setFieldValue(hourlyRate.name, task.hourly_rate || "0");
-      setFieldValue(startDate.name, task.start_date);
-      setFieldValue(dueDate.name, task.due_date || "");
-      setFieldValue(task_priority_id.name, task?.priority?.id);
-      setFieldValue(repeat.name, task?.repeat_id || null);
+      setFieldValue(name.name, task.name ?? "");
+      setFieldValue(hourlyRate.name, task.hourly_rate ?? "0");
+      setFieldValue(startDate.name, task.start_date ?? null);
+      setFieldValue(dueDate.name, task.due_date ?? "");
+      setFieldValue(task_priority_id.name, task?.priority?.id ?? "");
+      setFieldValue(repeat.name, task?.repeat_id ?? null);
       setFieldValue(recurring.name, task?.recurring || "");
       setFieldValue(recurringType.name, task?.recurring_type || "");
       setFieldValue(totalCycles.name, task?.total_cycles || "");
@@ -331,7 +331,7 @@ export default function TaskForm({
             <Select
               value={values[partner_id.name]}
               options={partners}
-              optionLabel={(option) => option.name ?? option.company}
+              optionLabel={(option) => option.mergedName}
               fieldName={partner_id.name}
               inputLabel={partner_id.label}
               setFieldValue={setFieldValue}

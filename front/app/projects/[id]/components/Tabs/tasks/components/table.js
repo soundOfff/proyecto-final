@@ -17,6 +17,7 @@ import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
+import MDSnackbar from "/components/MDSnackbar";
 import Loader from "../../components/loader";
 
 import { useDataProvider } from "/providers/DataProvider";
@@ -42,6 +43,8 @@ export default function Table() {
   const [rows, setRows] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const {
     setOpenDeleteConfirmation,
@@ -65,7 +68,15 @@ export default function Table() {
   };
 
   const handleCreateTasks = async () => {
-    await attachTasks(project.id);
+    setIsFetching(true);
+    try {
+      await attachTasks(project?.id);
+      setIsToastOpen(true);
+    } catch (error) {
+      setIsToastOpen(false);
+      console.error(error);
+    }
+    setIsFetching(false);
   };
 
   const handleModalOpen = () => setIsModalOpen(true);
@@ -242,18 +253,30 @@ export default function Table() {
     <Loader />
   ) : (
     <MDBox width="100%">
+      <MDSnackbar
+        color="success"
+        icon="info"
+        title="Tareas creadas correctamente"
+        content="Se han creado todas las tareas del proceso correctamente"
+        open={isToastOpen}
+        onClose={() => setIsToastOpen(false)}
+        close={() => setIsToastOpen(false)}
+        bgWhite
+      />
       <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
         <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
           <Tooltip title="Solamente se puede crear desde el proceso si el proyecto tiene un responsable">
             <MDBox>
-              <MDButton
-                variant="gradient"
-                color={"info"}
-                disabled={!project?.responsiblePerson}
-                onClick={handleCreateTasks}
-              >
-                Crear tareas desde el proceso
-              </MDButton>
+              {project?.process && (
+                <MDButton
+                  variant="gradient"
+                  color={"info"}
+                  disabled={!project?.responsiblePerson || isFetching}
+                  onClick={handleCreateTasks}
+                >
+                  Crear tareas desde el proceso
+                </MDButton>
+              )}
             </MDBox>
           </Tooltip>
           <MDButton

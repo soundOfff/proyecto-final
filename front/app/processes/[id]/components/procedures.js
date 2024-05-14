@@ -1,25 +1,29 @@
 "use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { destroy } from "/actions/procedures";
+import { editSteps } from "/actions/procedures";
+import { useMaterialUIController } from "/context";
+import update from "immutability-helper";
+import useDeleteRow from "/hooks/useDeleteRow";
 
 import DataTable from "/examples/Tables/DataTable";
-import MDBadge from "/components/MDBadge";
 import MDBox from "/components/MDBox";
 import MDAvatar from "/components/MDAvatar";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import { useMaterialUIController } from "/context";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { getColor } from "/utils/project-state-colors";
+import DeleteRow from "/components/DeleteRow";
 import { Tooltip } from "@mui/material";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { destroy } from "/actions/procedures";
-import useDeleteRow from "/hooks/useDeleteRow";
-import DeleteRow from "/components/DeleteRow";
 
 export default function Procedures({ procedures }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  const [records, setRecords] = useState(procedures);
   const pathname = usePathname();
   const {
     setOpenDeleteConfirmation,
@@ -101,7 +105,30 @@ export default function Procedures({ procedures }) {
     },
   ];
 
-  const table = { columns, rows: procedures };
+  const moveRow = (dragIndex, hoverIndex) => {
+    const dragRecord = records[dragIndex];
+    const updatedRecords = update(records, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, dragRecord],
+      ],
+    });
+
+    setRecords(
+      updatedRecords.map((record, index) => ({
+        ...record,
+        stepNumber: index + 1,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      editSteps({ procedures: records });
+    }, 1000);
+  }, [records]);
+
+  const table = { columns, rows: records };
 
   return (
     <>
@@ -116,6 +143,7 @@ export default function Procedures({ procedures }) {
         table={table}
         entriesPerPage={false}
         showTotalEntries={false}
+        moveRow={moveRow}
         noEndBorder
       />
       <DeleteRow

@@ -19,10 +19,16 @@ import PropTypes from "prop-types";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 
-function DataTableBodyCell({ noBorder = false, align = "left", children }) {
+function DataTableBodyCell({
+  noBorder = false,
+  align = "left",
+  dragRef,
+  children,
+}) {
   return (
     <MDBox
       component="td"
+      ref={dragRef}
       textAlign={align}
       px={2}
       py={4}

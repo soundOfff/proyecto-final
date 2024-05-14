@@ -28,6 +28,9 @@ import {
   useSortBy,
 } from "react-table";
 
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 // regenerator-runtime
 import "regenerator-runtime/runtime.js";
 
@@ -48,6 +51,7 @@ import MDPagination from "/components/MDPagination";
 import DataTableHeadCell from "/examples/Tables/components/DataTableHeadCell";
 import DataTableBodyCell from "/examples/Tables/components/DataTableBodyCell";
 import ResponsiveTableContent from "/examples/Tables/components/responsive-table-content";
+import DataTableRow from "../components/DataTableRow";
 
 function DataTable({
   entriesPerPage = { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
@@ -58,6 +62,7 @@ function DataTable({
   isSorted = true,
   noEndBorder = false,
   className = "desktop",
+  moveRow,
 }) {
   const defaultValue = entriesPerPage.defaultValue
     ? entriesPerPage.defaultValue
@@ -204,71 +209,73 @@ function DataTable({
           )}
         </MDBox>
       ) : null}
-      <Table {...getTableProps()}>
-        <MDBox
-          component="thead"
-          sx={{ display: { lg: "table-header-group", xs: "none" } }}
-        >
-          {headerGroups.map((headerGroup, key) => (
-            <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, key) => (
-                <DataTableHeadCell
-                  key={key}
-                  {...column.getHeaderProps(
-                    isSorted && column.getSortByToggleProps()
-                  )}
-                  width={column.width ? column.width : "auto"}
-                  align={column.align ? column.align : "left"}
-                  sorted={setSortedValue(column)}
-                >
-                  {column.render("Header")}
-                </DataTableHeadCell>
-              ))}
-            </TableRow>
-          ))}
-        </MDBox>
-        <TableBody
-          {...getTableBodyProps()}
-          sx={{ display: { lg: "table-row-group", xs: "none" } }}
-        >
-          {page.map((row, key) => {
-            prepareRow(row);
-            return (
-              <TableRow key={key} {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <DataTableBodyCell
+
+      <DndProvider backend={HTML5Backend}>
+        <Table {...getTableProps()}>
+          <MDBox
+            component="thead"
+            sx={{ display: { lg: "table-header-group", xs: "none" } }}
+          >
+            {headerGroups.map((headerGroup, key) => (
+              <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
+                {moveRow && <DataTableHeadCell width="10px" />}
+                {headerGroup.headers.map((column, key) => (
+                  <DataTableHeadCell
                     key={key}
-                    noBorder={noEndBorder && rows.length - 1 === key}
-                    align={cell.column.align ? cell.column.align : "left"}
-                    {...cell.getCellProps()}
+                    {...column.getHeaderProps(
+                      isSorted && column.getSortByToggleProps()
+                    )}
+                    width={column.width ? column.width : "auto"}
+                    align={column.align ? column.align : "left"}
+                    sorted={setSortedValue(column)}
                   >
-                    {cell.render("Cell")}
-                  </DataTableBodyCell>
+                    {column.render("Header")}
+                  </DataTableHeadCell>
                 ))}
               </TableRow>
-            );
-          })}
-        </TableBody>
-        <TableBody
-          {...getTableBodyProps()}
-          sx={{ display: { lg: "none", xs: "table-row-group" } }}
-        >
-          {page.map((row, key) => {
-            prepareRow(row);
-            return (
-              <TableRow key={key} {...row.getRowProps()}>
-                <DataTableBodyCell
-                  key={key}
-                  noBorder={noEndBorder && rows.length - 1 === key}
-                  {...row.cells[0].getCellProps()}
-                >
-                  <ResponsiveTableContent row={row} />
-                </DataTableBodyCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+            ))}
+          </MDBox>
+          <TableBody
+            {...getTableBodyProps()}
+            sx={{ display: { lg: "table-row-group", xs: "none" } }}
+          >
+            {page.map((row, index) => {
+              return (
+                prepareRow(row) || (
+                  <DataTableRow
+                    key={index}
+                    index={index}
+                    row={row}
+                    rows={rows}
+                    noEndBorder={noEndBorder}
+                    moveRow={moveRow}
+                  />
+                )
+              );
+            })}
+          </TableBody>
+          <TableBody
+            {...getTableBodyProps()}
+            sx={{ display: { lg: "none", xs: "table-row-group" } }}
+          >
+            {page.map((row, key) => {
+              return (
+                prepareRow(row) || (
+                  <TableRow key={key} {...row.getRowProps()}>
+                    <DataTableBodyCell
+                      key={key}
+                      noBorder={noEndBorder && rows.length - 1 === key}
+                      {...row.cells[0].getCellProps()}
+                    >
+                      <ResponsiveTableContent row={row} />
+                    </DataTableBodyCell>
+                  </TableRow>
+                )
+              );
+            })}
+          </TableBody>
+        </Table>
+      </DndProvider>
 
       <MDBox
         display="flex"

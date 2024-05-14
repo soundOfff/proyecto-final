@@ -21,7 +21,7 @@ export default async function Reports({ searchParams }) {
   const { period, projectId, partnerId, myTasks, staffId } = searchParams;
   const session = await getServerSession(authOptions);
 
-  const projectFilter = projectId ? { "filter[project_id]": projectId } : null;
+  const projectFilter = projectId ? { "filter[taskable_id]": projectId } : null;
   const partnerFilter = partnerId ? { "filter[partner_id]": partnerId } : null;
   const staffFilter = staffId ? { "filter[staff_id]": staffId } : null;
   const myTasksFilter = myTasks

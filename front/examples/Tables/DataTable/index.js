@@ -52,6 +52,8 @@ import DataTableHeadCell from "/examples/Tables/components/DataTableHeadCell";
 import DataTableBodyCell from "/examples/Tables/components/DataTableBodyCell";
 import ResponsiveTableContent from "/examples/Tables/components/responsive-table-content";
 import DataTableRow from "../components/DataTableRow";
+import withScrolling from "react-dnd-scrolling";
+const ScrollingComponent = withScrolling("div");
 
 function DataTable({
   entriesPerPage = { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
@@ -211,70 +213,74 @@ function DataTable({
       ) : null}
 
       <DndProvider backend={HTML5Backend}>
-        <Table {...getTableProps()}>
-          <MDBox
-            component="thead"
-            sx={{ display: { lg: "table-header-group", xs: "none" } }}
-          >
-            {headerGroups.map((headerGroup, key) => (
-              <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
-                {moveRow && <DataTableHeadCell width="10px" />}
-                {headerGroup.headers.map((column, key) => (
-                  <DataTableHeadCell
-                    key={key}
-                    {...column.getHeaderProps(
-                      isSorted && column.getSortByToggleProps()
-                    )}
-                    width={column.width ? column.width : "auto"}
-                    align={column.align ? column.align : "left"}
-                    sorted={setSortedValue(column)}
-                  >
-                    {column.render("Header")}
-                  </DataTableHeadCell>
-                ))}
-              </TableRow>
-            ))}
-          </MDBox>
-          <TableBody
-            {...getTableBodyProps()}
-            sx={{ display: { lg: "table-row-group", xs: "none" } }}
-          >
-            {page.map((row, index) => {
-              return (
-                prepareRow(row) || (
-                  <DataTableRow
-                    key={index}
-                    index={index}
-                    row={row}
-                    rows={rows}
-                    noEndBorder={noEndBorder}
-                    moveRow={moveRow}
-                  />
-                )
-              );
-            })}
-          </TableBody>
-          <TableBody
-            {...getTableBodyProps()}
-            sx={{ display: { lg: "none", xs: "table-row-group" } }}
-          >
-            {page.map((row, key) => {
-              return (
-                prepareRow(row) || (
-                  <TableRow key={key} {...row.getRowProps()}>
-                    <DataTableBodyCell
+        <ScrollingComponent
+          style={{ overflowY: "auto", height: moveRow ? "70vh" : "100%" }}
+        >
+          <Table {...getTableProps()}>
+            <MDBox
+              component="thead"
+              sx={{ display: { lg: "table-header-group", xs: "none" } }}
+            >
+              {headerGroups.map((headerGroup, key) => (
+                <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
+                  {moveRow && <DataTableHeadCell width="10px" />}
+                  {headerGroup.headers.map((column, key) => (
+                    <DataTableHeadCell
                       key={key}
-                      noBorder={noEndBorder && rows.length - 1 === key}
-                      {...row.cells[0].getCellProps()}
+                      {...column.getHeaderProps(
+                        isSorted && column.getSortByToggleProps()
+                      )}
+                      width={column.width ? column.width : "auto"}
+                      align={column.align ? column.align : "left"}
+                      sorted={setSortedValue(column)}
                     >
-                      <ResponsiveTableContent row={row} />
-                    </DataTableBodyCell>
-                  </TableRow>
-                )
-              );
-            })}
-          </TableBody>
-        </Table>
+                      {column.render("Header")}
+                    </DataTableHeadCell>
+                  ))}
+                </TableRow>
+              ))}
+            </MDBox>
+            <TableBody
+              {...getTableBodyProps()}
+              sx={{ display: { lg: "table-row-group", xs: "none" } }}
+            >
+              {page.map((row, index) => {
+                return (
+                  prepareRow(row) || (
+                    <DataTableRow
+                      key={index}
+                      index={index}
+                      row={row}
+                      rows={rows}
+                      noEndBorder={noEndBorder}
+                      moveRow={moveRow}
+                    />
+                  )
+                );
+              })}
+            </TableBody>
+            <TableBody
+              {...getTableBodyProps()}
+              sx={{ display: { lg: "none", xs: "table-row-group" } }}
+            >
+              {page.map((row, key) => {
+                return (
+                  prepareRow(row) || (
+                    <TableRow key={key} {...row.getRowProps()}>
+                      <DataTableBodyCell
+                        key={key}
+                        noBorder={noEndBorder && rows.length - 1 === key}
+                        {...row.cells[0].getCellProps()}
+                      >
+                        <ResponsiveTableContent row={row} />
+                      </DataTableBodyCell>
+                    </TableRow>
+                  )
+                );
+              })}
+            </TableBody>
+          </Table>
+        </ScrollingComponent>
       </DndProvider>
 
       <MDBox

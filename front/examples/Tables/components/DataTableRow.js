@@ -1,9 +1,8 @@
 import { TableRow } from "@mui/material";
 import DataTableBodyCell from "./DataTableBodyCell";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import DehazeIcon from "@mui/icons-material/Dehaze";
-import { WidthFull } from "@mui/icons-material";
 
 export default function DataTableRow({
   index,
@@ -35,6 +34,7 @@ export default function DataTableRow({
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       // Determine mouse position
       const clientOffset = monitor.getClientOffset();
+
       // Get pixels to the top
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       // Only perform the move when the mouse has crossed half of the items height
@@ -61,25 +61,41 @@ export default function DataTableRow({
   const [{ isDragging }, drag, preview] = useDrag({
     item: { index },
     type: DND_ITEM_TYPE,
+    scroll: false,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
-
   preview(drop(dropRef));
   drag(dragRef);
 
+  const { key: rowKey, rowProps } = row.getRowProps();
+
   return (
-    <TableRow {...row.getRowProps()} ref={dropRef} style={{ opacity }}>
+    <TableRow
+      key={rowKey}
+      {...rowProps}
+      ref={dropRef}
+      sx={{
+        opacity: isDragging ? 0 : 1,
+        backgroundColor: isDragging ? "#f0f0f0" : "white",
+        cursor: isDragging ? "grabbing" : "default",
+        transform: isDragging ? "scale(1.1)" : "scale(1)",
+        transition: "all 0.5s ease",
+      }}
+    >
       {moveRow && (
-        <DataTableBodyCell dragRef={dragRef} sx={{ width: "min-content" }}>
+        <DataTableBodyCell
+          dragRef={dragRef}
+          noBorder={noEndBorder && rows.length - 1 === index}
+        >
           <DehazeIcon fontSize="medium" sx={{ cursor: "pointer" }} />
         </DataTableBodyCell>
       )}
       {row.cells.map((cell) => {
         const { key, ...cellProps } = cell.getCellProps();
+
         return (
           <DataTableBodyCell
             key={key}

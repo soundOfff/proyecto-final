@@ -36,10 +36,6 @@ export default function Procedures({ procedures }) {
 
   const columns = [
     {
-      Header: "Número",
-      accessor: "stepNumber",
-    },
-    {
       Header: "Nombre",
       accessor: "name",
     },
@@ -123,9 +119,7 @@ export default function Procedures({ procedures }) {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      editSteps({ procedures: records });
-    }, 1000);
+    editSteps({ procedures: records });
   }, [records]);
 
   const table = { columns, rows: records };

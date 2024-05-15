@@ -17,7 +17,7 @@ import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import { useEffect } from "react";
 import { show as getPartner } from "/actions/partners";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function First({
   formData,

@@ -160,7 +160,7 @@ export default function First({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        {projects.length > 0 && (
+        {projects.length > 0 ? (
           <Select
             value={values[project.name]}
             options={projects}
@@ -169,6 +169,10 @@ export default function First({
             inputLabel={project.label}
             setFieldValue={setFieldValue}
           />
+        ) : (
+          <MDTypography variant="caption" color="error">
+            No hay proyectos asociados a este cliente
+          </MDTypography>
         )}
       </Grid>
 

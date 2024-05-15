@@ -12,6 +12,7 @@ import Stats from "./components/stats";
 import Filters from "./components/filters";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
+import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,12 @@ export default async function Reports({ searchParams }) {
   const { period, projectId, partnerId, myTasks, staffId } = searchParams;
   const session = await getServerSession(authOptions);
 
-  const projectFilter = projectId ? { "filter[project_id]": projectId } : null;
+  const projectFilter = projectId
+    ? {
+        "filter[taskable_id]": projectId,
+        "filter[taskable_type]": PROJECT_TYPE,
+      }
+    : null;
   const partnerFilter = partnerId ? { "filter[partner_id]": partnerId } : null;
   const staffFilter = staffId ? { "filter[staff_id]": staffId } : null;
   const myTasksFilter = myTasks

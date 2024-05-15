@@ -12,7 +12,7 @@ import { useMaterialUIController } from "/context";
 import { Tooltip } from "@mui/material";
 import { destroy } from "/actions/proposals";
 import useDeleteRow from "/hooks/useDeleteRow";
-import DeleteRow from "../../../components/DeleteRow";
+import DeleteRow from "/components/DeleteRow";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();

@@ -21,7 +21,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSelect as getProjectSelect } from "/actions/projects";
 
-export default function First({ formData, partners, categories, invoices }) {
+export default function First({ formData, partners, categories }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { name, note, category, date, amount, partner, project, billable } =
     formField;
@@ -106,7 +106,7 @@ export default function First({ formData, partners, categories, invoices }) {
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        {projects.length > 0 && (
+        {projects.length > 0 ? (
           <Select
             value={values[project.name]}
             options={projects}
@@ -115,6 +115,10 @@ export default function First({ formData, partners, categories, invoices }) {
             inputLabel={project.label}
             setFieldValue={setFieldValue}
           />
+        ) : (
+          <MDTypography variant="caption" color="warning">
+            No hay proyectos asociados a este cliente
+          </MDTypography>
         )}
       </Grid>
       <Grid item xs={12} sm={6}>

@@ -60,9 +60,10 @@ export default function TaskForm({
 
   useEffect(() => {
     if (task) {
+      console.log(task);
       setFieldValue(name.name, task.name ?? "");
       setFieldValue(hourlyRate.name, task.hourly_rate ?? "0");
-      setFieldValue(startDate.name, task.start_date ?? null);
+      setFieldValue(startDate.name, task.start_date ?? "");
       setFieldValue(dueDate.name, task.due_date ?? "");
       setFieldValue(task_priority_id.name, task?.priority?.id ?? "");
       setFieldValue(repeat.name, task?.repeat_id ?? null);
@@ -80,7 +81,7 @@ export default function TaskForm({
       const parsedDescription = parseEditorState(task?.description ?? "");
       setEditorState(parsedDescription);
     }
-    setFieldValue(partner_id.name, partnerId || "");
+    if (partnerId) setFieldValue(partner_id.name, partnerId || "");
   }, [
     task,
     mode,

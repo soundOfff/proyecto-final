@@ -42,24 +42,27 @@ const {
 
 const validations = Yup.object().shape({
   [name.name]: Yup.string().required(name.errorMsg),
-  [startDate.name]: Yup.string().required(startDate.errorMsg),
+  [startDate.name]: Yup.date().required(startDate.errorMsg),
   [partner_id.name]: Yup.string().required(partner_id.errorMsg),
   [owner_id.name]: Yup.number().required(),
   [taskableId.name]: Yup.string().required(taskableId.errorMsg),
   [task_priority_id.name]: Yup.string().required(task_priority_id.errorMsg),
+  [repeat.name]: Yup.string().required(repeat.errorMsg),
 
   [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),
   [hourlyRate.name]: Yup.number(),
-  [dueDate.name]: Yup.string(),
+  [dueDate.name]: Yup.date().min(
+    Yup.ref(startDate.name),
+    "La fecha desde debe ser anterior a la fecha hasta"
+  ),
   [task_status_id.name]: Yup.string(),
-  [repeat.name]: Yup.string(),
-  [isInfinite.name]: Yup.boolean(),
   [taskableType.name]: Yup.string(),
   [tags.name]: Yup.array(),
   [recurring.name]: Yup.number().nullable(),
   [recurringType.name]: Yup.string().nullable(),
   [totalCycles.name]: Yup.number().nullable(),
+  [isInfinite.name]: Yup.boolean(),
 });
 export default validations;

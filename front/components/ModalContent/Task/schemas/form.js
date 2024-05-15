@@ -63,10 +63,12 @@ const form = {
     repeat: {
       name: "repeat_id",
       label: "Repetir cada",
+      errorMsg: "Debe seleccionar una opción de repetición",
     },
     recurring: {
       name: "recurring",
       type: "number",
+      errorMsg: "Debe ingresar un número de días",
     },
     recurringType: {
       name: "recurring_type",

@@ -1,6 +1,6 @@
 {
   "dashboards": "Tablero",
-  "projects": "Proyectos",
+  "projects": "Casos",
   "processes": "Procesos",
   "procedures": "Procedimientos",
   "estimates": "Proformas",
@@ -15,6 +15,6 @@
   "files": "Archivos",
   "report-timesheets": "Tiempos",
   "profile": "Perfil",
-  "project": "Proyecto",
+  "project": "Caso",
   "customer": "Cliente"
 }

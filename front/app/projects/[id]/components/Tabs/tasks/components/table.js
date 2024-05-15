@@ -265,7 +265,7 @@ export default function Table() {
       />
       <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
         <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
-          <Tooltip title="Solamente se puede crear desde el proceso si el proyecto tiene un responsable">
+          <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable">
             <MDBox>
               {project?.process && (
                 <MDButton

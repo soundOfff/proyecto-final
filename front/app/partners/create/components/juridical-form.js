@@ -255,7 +255,7 @@ export default function JuridicalForm({
         <Select
           value={values[consolidator.name]}
           options={consolidators}
-          optionLabel={(option) => option.company ?? option.name}
+          optionLabel={(option) => option.mergedName}
           fieldName={consolidator.name}
           inputLabel={consolidator.label}
           setFieldValue={setFieldValue}

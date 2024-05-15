@@ -45,6 +45,7 @@ const form = {
     task_priority_id: {
       name: "task_priority_id",
       label: "Prioridad",
+      errorMsg: "Debe seleccionar una prioridad",
     },
     owner_id: {
       name: "owner_id",

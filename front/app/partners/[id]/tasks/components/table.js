@@ -1,51 +1,54 @@
 "use client";
 
+import { show } from "/actions/tasks";
+import { useEffect, useState } from "react";
+import { useMaterialUIController, setCurrentTimer } from "/context";
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import Link from "next/link";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import useDeleteRow from "/hooks/useDeleteRow";
-import DeleteRow from "/components/DeleteRow";
-
-import Grid from "@mui/material/Grid";
-import AccessAlarm from "@mui/icons-material/AccessAlarm";
-import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
-import Autocomplete from "@mui/material/Autocomplete";
-
-import MDTypography from "/components/MDTypography";
-import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
-import MDSnackbar from "/components/MDSnackbar";
-import Loader from "../../components/loader";
+import MDInput from "/components/MDInput";
+import MDTypography from "/components/MDTypography";
+import Modal from "/components/Modal";
 
-import { useDataProvider } from "/providers/DataProvider";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import { destroy, getAll } from "/actions/tasks";
+import ModalContentForm from "/components/ModalContent/Task/index";
+import { Autocomplete, Grid, Link, Tooltip } from "@mui/material";
+
 import { update } from "/actions/tasks";
 import { store as storeTimer, update as updateTimer } from "/actions/timers";
-import { getCurrentTimer } from "/actions/timers";
-import { setCurrentTimer, useMaterialUIController } from "/context";
 
-import moment from "moment";
-import ModalContentForm from "/components/ModalContent/Task";
-import Modal from "/components/Modal";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
-import { useEffect, useState } from "react";
+import { destroy } from "/actions/tasks";
+import Show from "./show";
+import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
-import { attachTasks } from "/actions/projects";
+import { getCurrentTimer } from "/actions/timers";
+import DeleteRow from "/components/DeleteRow";
+import useDeleteRow from "/hooks/useDeleteRow";
+import moment from "moment";
 
-export default function Table() {
+export default function Table({
+  rows,
+  priorities,
+  repeats,
+  taskableItems,
+  tagsData,
+  statuses,
+  partners,
+  currentTimer,
+  currentTaskId,
+  partnerId,
+}) {
   const [controller, dispatch] = useMaterialUIController();
-  const { currentTimer, darkMode } = controller;
-
-  const [rows, setRows] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isToastOpen, setIsToastOpen] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
-
+  const { darkMode } = controller;
+  const [taskId, setTaskId] = useState(currentTaskId || null);
+  const [task, setTask] = useState(null);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openShowModal, setOpenShowModal] = useState(false);
+  const { data: session } = useSession();
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -55,32 +58,17 @@ export default function Table() {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
-  const { statuses, priorities, project, repeats, tagsData, partners } =
-    useDataProvider();
-  const { data: session } = useSession();
-
-  const handleStatusChange = async (taskId, statusId) => {
-    await update(taskId, { task_status_id: statusId });
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+    setTaskId(null);
+    setTask(null);
   };
 
-  const handlePriorityChange = async (taskId, priorityId) => {
-    await update(taskId, { task_priority_id: priorityId });
+  const handleCloseShowModal = () => {
+    setOpenShowModal(false);
+    setTaskId(null);
+    setTask(null);
   };
-
-  const handleCreateTasks = async () => {
-    setIsFetching(true);
-    try {
-      await attachTasks(project?.id);
-      setIsToastOpen(true);
-    } catch (error) {
-      setIsToastOpen(false);
-      console.error(error);
-    }
-    setIsFetching(false);
-  };
-
-  const handleModalOpen = () => setIsModalOpen(true);
-  const handleModalClose = () => setIsModalOpen(false);
 
   const stopTimer = async (timerId, note = "") => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -98,15 +86,46 @@ export default function Table() {
   };
 
   useEffect(() => {
-    getAll({
-      "filter[taskable_id]": project.id,
-      "filter[taskable_type]": "project",
-      include: ["assigneds", "tags", "status"],
-    }).then((data) => {
-      setRows(data);
-      setIsLoading(false);
+    const fetchTask = async () => {
+      setTask(
+        await show(taskId, {
+          include: [
+            "tags",
+            "priority",
+            "status",
+            "comments",
+            "checklistItems",
+            "assigneds",
+            "followers",
+            "taskable",
+            "reminders",
+          ],
+        })
+      );
+    };
+    if (taskId && !task) {
+      fetchTask();
+    }
+  }, [taskId, task]);
+
+  const handleStatusChange = async (taskId, statusId) => {
+    await update(taskId, { task_status_id: statusId });
+  };
+
+  const handlePriorityChange = async (taskId, priorityId) => {
+    await update(taskId, { task_priority_id: priorityId });
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    const doneState = statuses.find((status) => status.name === "Done");
+    if (taskId === doneState) {
+      return;
+    }
+    await update(taskId, {
+      task_status_id: statuses.find((status) => status.name === "Done").id,
     });
-  }, [project]);
+    setOpenShowModal(false);
+  };
 
   const columns = [
     {
@@ -117,7 +136,15 @@ export default function Table() {
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (
-        <MDTypography variant="body2" color="info" sx={{ cursor: "pointer" }}>
+        <MDTypography
+          variant="body2"
+          color="info"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            setTaskId(row.original.id);
+            setOpenShowModal(true);
+          }}
+        >
           {row.original.name}
         </MDTypography>
       ),
@@ -127,9 +154,7 @@ export default function Table() {
       accessor: "status",
       Cell: ({ row }) => (
         <Autocomplete
-          value={statuses?.find(
-            (status) => status.id === row.original.status_id
-          )}
+          value={statuses.find((status) => status.id == row.original.status.id)}
           onChange={(e, status) => {
             handleStatusChange(row.original.id, status.id);
           }}
@@ -191,7 +216,7 @@ export default function Table() {
           value={priorities.find(
             (priority) => priority.id === row.original.priority.id
           )}
-          onChange={(priority) => {
+          onChange={(e, priority) => {
             handlePriorityChange(row.original.id, priority.id);
           }}
           options={priorities}
@@ -213,6 +238,17 @@ export default function Table() {
       accessor: "",
       Cell: ({ row }) => (
         <MDBox display="flex">
+          <Tooltip title="Editar tarea">
+            <EditNoteIcon
+              color="info"
+              fontSize="medium"
+              onClick={() => {
+                setTaskId(row.original.id);
+                setOpenEditModal(true);
+              }}
+              sx={{ mr: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
           <Tooltip title="Eliminar tarea">
             <DeleteIcon
               color="error"
@@ -228,7 +264,7 @@ export default function Table() {
               <LockClockOutlined
                 color="error"
                 fontSize="medium"
-                onClick={() => stopTimer(currentTimer.id)}
+                onClick={() => stopTimer(currentTimer?.id)}
                 sx={{ ml: 1, cursor: "pointer" }}
               />
             </Tooltip>
@@ -249,62 +285,57 @@ export default function Table() {
 
   const table = { columns, rows };
 
-  return isLoading ? (
-    <Loader />
-  ) : (
-    <MDBox width="100%">
-      <MDSnackbar
-        color="success"
-        icon="info"
-        title="Tareas creadas correctamente"
-        content="Se han creado todas las tareas del proceso correctamente"
-        open={isToastOpen}
-        onClose={() => setIsToastOpen(false)}
-        close={() => setIsToastOpen(false)}
-        bgWhite
-      />
-      <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
-        <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
-          <Tooltip title="Solamente se puede crear desde el proceso si el proyecto tiene un responsable">
-            <MDBox>
-              {project?.process && (
-                <MDButton
-                  variant="gradient"
-                  color={"info"}
-                  disabled={!project?.responsiblePerson || isFetching}
-                  onClick={handleCreateTasks}
-                >
-                  Crear tareas desde el proceso
-                </MDButton>
-              )}
-            </MDBox>
-          </Tooltip>
-          <MDButton
-            variant="gradient"
-            color={darkMode ? "light" : "dark"}
-            onClick={handleModalOpen}
+  return (
+    <MDBox>
+      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+        <MDButton
+          variant="gradient"
+          color={darkMode ? "light" : "dark"}
+          onClick={() => {
+            setOpenEditModal(true);
+          }}
+        >
+          Crear nueva tarea
+        </MDButton>
+        {openEditModal && (
+          <Modal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            width="40%"
           >
-            Crear nueva tarea
-          </MDButton>
-        </MDBox>
-        {isModalOpen && (
-          <Modal open={handleModalOpen} onClose={handleModalClose} width="40%">
             <ModalContentForm
               priorities={priorities}
               repeats={repeats}
-              taskableItems={[]}
+              taskableItems={taskableItems}
               tagsData={tagsData}
               partners={partners}
-              task={{
-                taskable: { id: project.id },
-                taskable_type: "project",
-                partner_id: project.defendant.id,
-              }}
-              mode={MODAL_TYPES.CREATE}
+              partnerId={partnerId}
+              task={task}
+              mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
             />
           </Modal>
         )}
       </MDBox>
+      {openShowModal && (
+        <Modal
+          open={openShowModal}
+          onClose={handleCloseShowModal}
+          px={0}
+          py={0}
+          sx={{ overflow: "scroll" }}
+        >
+          {task && (
+            <Show
+              task={task}
+              markAsCompleted={handleCompleteTask}
+              isTimerStarted={currentTimer?.task_id === task.id}
+              currentTimerId={currentTimer?.id}
+              stopTimer={stopTimer}
+              startTimer={startTimer}
+            />
+          )}
+        </Modal>
+      )}
       <DataTable
         table={table}
         showTotalEntries={true}

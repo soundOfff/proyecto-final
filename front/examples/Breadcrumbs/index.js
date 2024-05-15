@@ -25,6 +25,7 @@ import Icon from "@mui/material/Icon";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import translate from "/locales/es/common.json";
 
 function Breadcrumbs({ icon, title, route, light = false }) {
   const routes = route.slice(0, -1);
@@ -61,7 +62,7 @@ function Breadcrumbs({ icon, title, route, light = false }) {
               opacity={light ? 0.8 : 0.5}
               sx={{ lineHeight: 0 }}
             >
-              {el}
+              {translate[el] ?? el}
             </MDTypography>
           </Link>
         ))}

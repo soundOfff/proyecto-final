@@ -84,6 +84,8 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
     .slice(1)
     .map((el) => translate[el] ?? el);
 
+  const link = pathname.split("/").slice(1);
+
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -216,7 +218,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs
             icon="home"
             title={route[route.length - 1]}
-            route={route}
+            route={link}
             light={light}
           />
           <IconButton

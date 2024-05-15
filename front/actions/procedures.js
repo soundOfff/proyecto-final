@@ -31,7 +31,6 @@ export async function store(data) {
   });
 
   revalidatePath("/processes");
-  redirect("/processes");
 }
 
 export async function update(id, data) {
@@ -42,7 +41,6 @@ export async function update(id, data) {
   });
 
   revalidatePath("/processes");
-  redirect("/processes");
 }
 
 export async function destroy(id) {

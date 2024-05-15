@@ -9,17 +9,16 @@ import validations from "./schemas/validations";
 import FormContent from "./formContent";
 import { show, update } from "/actions/procedures";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function FormComponent({ procedureId }) {
   const { formId } = form;
   const [procedure, setProcedure] = useState(null);
   const router = useRouter();
-  const pathname = usePathname();
 
   const submitForm = async (values, actions) => {
     await update(procedureId, values);
+    router.push(`/processes/${procedure.process.id}`);
   };
 
   const handleSubmit = (values, actions) => {

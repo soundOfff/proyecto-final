@@ -18,6 +18,7 @@ export default function FormComponent({ processId }) {
 
   const submitForm = async (values, actions) => {
     await store({ ...values, process_id: processId });
+    router.push(`/processes/${processId}`);
   };
 
   const handleSubmit = (values, actions) => {

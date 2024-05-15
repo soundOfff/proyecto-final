@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,6 +34,10 @@ export default function Procedures({ procedures }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
+
+  useEffect(() => {
+    setRecords(procedures);
+  }, [procedures]);
 
   const columns = [
     {
@@ -119,7 +124,11 @@ export default function Procedures({ procedures }) {
   };
 
   useEffect(() => {
-    editSteps({ procedures: records });
+    if (records.length > 0) {
+      setTimeout(() => {
+        editSteps({ procedures: records });
+      }, 1000);
+    }
   }, [records]);
 
   const table = { columns, rows: records };

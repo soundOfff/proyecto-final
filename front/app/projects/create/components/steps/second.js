@@ -7,11 +7,12 @@ import MDTypography from "/components/MDTypography";
 import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import MDDatePicker from "/components/MDDatePicker";
-import * as moment from "moment";
+import moment from "moment";
+import { useEffect, useState } from "react";
 
 export default function Second({
   formData,
-  partners,
+  partners: partnerData,
   statuses,
   serviceTypes,
   billingTypes,
@@ -30,12 +31,31 @@ export default function Second({
     deadline,
   } = formField;
 
+  const [defendants, setDefendants] = useState(partnerData);
+  const [plaintiffs, setPlaintiffs] = useState(partnerData);
+
+  useEffect(() => {
+    if (values[defendant.name]) {
+      setPlaintiffs(
+        partnerData.filter((partner) => partner.id !== values[defendant.name])
+      );
+    }
+  }, [partnerData, values, defendant]);
+
+  useEffect(() => {
+    if (values[plaintiff.name]) {
+      setDefendants(
+        partnerData.filter((partner) => partner.id !== values[plaintiff.name])
+      );
+    }
+  }, [partnerData, values, plaintiff]);
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <Select
           value={values[defendant.name]}
-          options={partners}
+          options={defendants}
           optionLabel={(option) => option.name}
           fieldName={defendant.name}
           inputLabel={defendant.label}
@@ -45,7 +65,7 @@ export default function Second({
       <Grid item xs={12} sm={6}>
         <Select
           value={values[plaintiff.name]}
-          options={partners}
+          options={plaintiffs}
           optionLabel={(option) => option.name}
           fieldName={plaintiff.name}
           inputLabel={plaintiff.label}
@@ -95,11 +115,9 @@ export default function Second({
       <Grid item xs={12}>
         <Autocomplete
           multiple
+          value={values[selectedMembers.name]}
           onChange={(e, members) =>
-            setFieldValue(
-              selectedMembers.name,
-              members.map((member) => member.id)
-            )
+            setFieldValue(selectedMembers.name, members)
           }
           options={members}
           getOptionLabel={(option) => option.name}
@@ -130,6 +148,7 @@ export default function Second({
             label: "Fecha De Inicio",
             fullWidth: true,
           }}
+          value={values[startDate.name]}
           onChange={(date) =>
             setFieldValue(startDate.name, moment(date[0]).format("YYYY-MM-DD"))
           }
@@ -151,6 +170,7 @@ export default function Second({
             label: "Fecha De Entrega",
             fullWidth: true,
           }}
+          value={values[deadline.name]}
           onChange={(date) =>
             setFieldValue(deadline.name, moment(date[0]).format("YYYY-MM-DD"))
           }

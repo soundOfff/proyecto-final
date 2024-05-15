@@ -7,50 +7,35 @@ import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 
 import { useEffect, useState } from "react";
-import { ContentState, EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { ErrorMessage } from "formik";
+import { parseEditorState } from "/utils/parseEditorState";
 
 export default function First({ formData, project }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { name, cost, estimatedHours, expedient, description } = formField;
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+  const { cost, estimatedHours, expedient, description } = formField;
+  const [editorState, setEditorState] = useState(
+    parseEditorState(project.description)
   );
 
   useEffect(() => {
-    setFieldValue(
-      description.name,
-      editorState.getCurrentContent().getPlainText()
-    );
-  }, [editorState, setFieldValue, description]);
+    const raw = convertToRaw(editorState.getCurrentContent());
+    const strDescription = JSON.stringify(raw);
 
-  useEffect(() => {
-    if (project.description) {
-      setFieldValue(description.name, project.description || "");
-      const content = ContentState.createFromText(project.description);
-      const newEditorState = EditorState.createWithContent(content);
-      setEditorState(newEditorState);
-    }
-  }, [project.description, setFieldValue, description]);
+    setFieldValue(description.name, strDescription);
+  }, [editorState, setFieldValue, description]);
 
   useEffect(() => {
     setFieldValue(cost.name, project.cost || "");
     setFieldValue(estimatedHours.name, project.estimatedHours || "");
     setFieldValue(expedient.name, project.expedient || "");
-  }, [
-    project,
-    name,
-    cost,
-    estimatedHours,
-    expedient,
-    description,
-    setFieldValue,
-  ]);
+  }, [project, cost, estimatedHours, expedient, description, setFieldValue]);
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[cost.name]}
           name={cost.name}
           label={cost.label}
           type={cost.type}
@@ -61,6 +46,7 @@ export default function First({ formData, project }) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[estimatedHours.name]}
           name={estimatedHours.name}
           label={estimatedHours.label}
           type={estimatedHours.type}
@@ -71,6 +57,7 @@ export default function First({ formData, project }) {
       </Grid>
       <Grid item xs={12} sm={12}>
         <FormField
+          value={values[expedient.name]}
           name={expedient.name}
           label={expedient.label}
           type={expedient.type}

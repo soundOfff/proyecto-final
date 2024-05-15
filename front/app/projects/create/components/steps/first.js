@@ -7,59 +7,54 @@ import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 
 import { useEffect, useState } from "react";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { ErrorMessage } from "formik";
+import { parseEditorState } from "/utils/parseEditorState";
 
 export default function First({ formData }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { cost, estimatedHours, expedient, description } = formField;
-  const {
-    cost: costV,
-    estimatedHours: estimatedHoursV,
-    expedient: expedientV,
-  } = values;
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+    parseEditorState(values[description.name])
   );
 
   useEffect(() => {
-    setFieldValue(
-      "description",
-      editorState.getCurrentContent().getPlainText()
-    );
-  }, [editorState, setFieldValue]);
+    const raw = convertToRaw(editorState.getCurrentContent());
+    const strDescription = JSON.stringify(raw);
+    setFieldValue(description.name, strDescription);
+  }, [setFieldValue, description, values, editorState]);
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[cost.name]}
           name={cost.name}
           label={cost.label}
           type={cost.type}
           placeholder={cost.placeholder}
-          value={costV}
           error={errors.cost && touched.cost}
           success={cost.length > 0 && !errors.cost}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[estimatedHours.name]}
           name={estimatedHours.name}
           label={estimatedHours.label}
           type={estimatedHours.type}
           placeholder={estimatedHours.label}
-          value={estimatedHoursV}
           error={errors.estimatedHours && touched.estimatedHours}
           success={estimatedHours.length > 0 && !errors.estimatedHours}
         />
       </Grid>
       <Grid item xs={12}>
         <FormField
+          value={values[expedient.name]}
           name={expedient.name}
           label={expedient.label}
           type={expedient.type}
           placeholder={expedient.placeholder}
-          value={expedientV}
           error={errors.expedient && touched.expedient}
           success={expedient.length > 0 && !errors.expedient}
         />

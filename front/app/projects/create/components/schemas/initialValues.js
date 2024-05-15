@@ -45,7 +45,7 @@ const initialValues = {
   [responsiblePersonId.name]: "",
   [serviceType.name]: ADMINISTRATIVE,
   [billingType.name]: "",
-  [selectedMembers.name]: "",
+  [selectedMembers.name]: [],
   [startDate.name]: "",
   [deadline.name]: "",
 };

@@ -2,7 +2,7 @@
 
 import { Autocomplete, Grid } from "@mui/material";
 import { ErrorMessage } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -13,7 +13,7 @@ import moment from "moment";
 export default function Second({
   formData,
   project,
-  partners,
+  partners: partnerData,
   statuses,
   serviceTypes,
   billingTypes,
@@ -61,12 +61,31 @@ export default function Second({
     setFieldValue,
   ]);
 
+  const [defendants, setDefendants] = useState(partnerData);
+  const [plaintiffs, setPlaintiffs] = useState(partnerData);
+
+  useEffect(() => {
+    if (values[defendant.name]) {
+      setPlaintiffs(
+        partnerData.filter((partner) => partner.id !== values[defendant.name])
+      );
+    }
+  }, [partnerData, values, defendant]);
+
+  useEffect(() => {
+    if (values[plaintiff.name]) {
+      setDefendants(
+        partnerData.filter((partner) => partner.id !== values[plaintiff.name])
+      );
+    }
+  }, [partnerData, values, plaintiff]);
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <Select
           value={values[defendant.name]}
-          options={partners}
+          options={defendants}
           optionLabel={(option) => option.name}
           fieldName={defendant.name}
           inputLabel={defendant.label}
@@ -76,7 +95,7 @@ export default function Second({
       <Grid item xs={12} sm={6}>
         <Select
           value={values[plaintiff.name]}
-          options={partners}
+          options={plaintiffs}
           optionLabel={(option) => option.name}
           fieldName={plaintiff.name}
           inputLabel={plaintiff.label}

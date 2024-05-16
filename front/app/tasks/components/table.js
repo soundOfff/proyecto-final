@@ -1,7 +1,13 @@
 "use client";
 
 import { show } from "/actions/tasks";
-import { useEffect, useState } from "react";
+import {
+  Suspense,
+  startTransition,
+  useEffect,
+  useOptimistic,
+  useState,
+} from "react";
 import { useMaterialUIController, setCurrentTimer } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
@@ -42,6 +48,15 @@ export default function Table({
   currentTimer,
   currentTaskId,
 }) {
+  const [optimisticRows, updateOptimisticRows] = useOptimistic(
+    rows,
+    (state, editedRow) => {
+      const editedRowIndex = state.findIndex((row) => row.id === editedRow.id);
+      const newState = [...state];
+      newState[editedRowIndex] = editedRow;
+      return newState;
+    }
+  );
   const [controller, dispatch] = useMaterialUIController();
   const { darkMode } = controller;
   const [taskId, setTaskId] = useState(currentTaskId || null);
@@ -109,6 +124,9 @@ export default function Table({
   }, [taskId, task]);
 
   const handleStatusChange = async (taskId, statusId) => {
+    const editedRow = rows.find((row) => row.id === taskId);
+    editedRow.status.id = statusId;
+    updateOptimisticRows(editedRow);
     await update(taskId, { task_status_id: statusId });
   };
 
@@ -152,22 +170,26 @@ export default function Table({
     {
       Header: "Estado",
       accessor: "status",
-      Cell: ({ row }) => (
-        <Autocomplete
-          value={statuses?.find(
-            (status) => status.id === row.original.status.id
-          )}
-          onChange={(e, status) => {
-            handleStatusChange(row.original.id, status.id);
-          }}
-          options={statuses}
-          sx={{ width: "150px" }}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDInput {...params} variant="standard" fullWidth />
-          )}
-        />
-      ),
+      Cell: ({ row }) => {
+        return (
+          <Autocomplete
+            value={statuses?.find(
+              (status) => status.id === row.original.status.id
+            )}
+            onChange={(e, status) => {
+              startTransition(async () => {
+                await handleStatusChange(row.original.id, status.id);
+              });
+            }}
+            options={statuses}
+            sx={{ width: "150px" }}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <MDInput {...params} variant="standard" fullWidth />
+            )}
+          />
+        );
+      },
     },
     {
       Header: "Fecha de inicio",
@@ -285,7 +307,7 @@ export default function Table({
     },
   ];
 
-  const table = { columns, rows };
+  const table = { columns, rows: optimisticRows };
 
   return (
     <MDBox>

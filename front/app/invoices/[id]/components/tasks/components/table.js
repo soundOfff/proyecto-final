@@ -30,16 +30,24 @@ import moment from "moment";
 import ModalContentForm from "/components/ModalContent/Task";
 import Modal from "/components/Modal";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { useSession } from "next-auth/react";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 
 export default function Table() {
   const [controller, dispatch] = useMaterialUIController();
   const { currentTimer, darkMode } = controller;
-
   const [rows, setRows] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [optimisticRows, updateOptimisticRows] = useOptimistic(
+    rows,
+    (state, editedRow) => {
+      const editedRowIndex = state.findIndex((row) => row.id === editedRow.id);
+      const newState = [...state];
+      newState[editedRowIndex] = editedRow;
+      return newState;
+    }
+  );
 
   const {
     setOpenDeleteConfirmation,
@@ -54,11 +62,23 @@ export default function Table() {
     useDataProvider();
   const { data: session } = useSession();
 
+  const findTask = (taskId) => rows.find((row) => row.id === taskId);
+
   const handleStatusChange = async (taskId, statusId) => {
+    startTransition(async () => {
+      const editedRow = findTask(taskId);
+      editedRow.status.id = statusId;
+      updateOptimisticRows(editedRow);
+    });
     await update(taskId, { task_status_id: statusId });
   };
 
   const handlePriorityChange = async (taskId, priorityId) => {
+    startTransition(async () => {
+      const editedRow = findTask(taskId);
+      editedRow.priority.id = priorityId;
+      updateOptimisticRows(editedRow);
+    });
     await update(taskId, { task_priority_id: priorityId });
   };
 
@@ -109,9 +129,7 @@ export default function Table() {
       accessor: "status",
       Cell: ({ row }) => (
         <Autocomplete
-          value={statuses?.find(
-            (status) => status.id === row.original.status_id
-          )}
+          value={statuses.find((status) => status.id == row.original.status.id)}
           onChange={(e, status) => {
             handleStatusChange(row.original.id, status.id);
           }}
@@ -173,7 +191,7 @@ export default function Table() {
           value={priorities.find(
             (priority) => priority.id === row.original.priority.id
           )}
-          onChange={(priority) => {
+          onChange={(e, priority) => {
             handlePriorityChange(row.original.id, priority.id);
           }}
           options={priorities}
@@ -228,7 +246,7 @@ export default function Table() {
       ),
     },
   ];
-  const table = { columns, rows };
+  const table = { columns, rows: optimisticRows };
 
   return (
     <MDBox width="100%">

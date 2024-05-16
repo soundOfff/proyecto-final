@@ -123,14 +123,23 @@ export default function Table({
     }
   }, [taskId, task]);
 
+  const findTask = (taskId) => rows.find((row) => row.id === taskId);
+
   const handleStatusChange = async (taskId, statusId) => {
-    const editedRow = rows.find((row) => row.id === taskId);
-    editedRow.status.id = statusId;
-    updateOptimisticRows(editedRow);
+    startTransition(async () => {
+      const editedRow = findTask(taskId);
+      editedRow.status.id = statusId;
+      updateOptimisticRows(editedRow);
+    });
     await update(taskId, { task_status_id: statusId });
   };
 
   const handlePriorityChange = async (taskId, priorityId) => {
+    startTransition(async () => {
+      const editedRow = findTask(taskId);
+      editedRow.priority.id = priorityId;
+      updateOptimisticRows(editedRow);
+    });
     await update(taskId, { task_priority_id: priorityId });
   };
 
@@ -177,9 +186,7 @@ export default function Table({
               (status) => status.id === row.original.status.id
             )}
             onChange={(e, status) => {
-              startTransition(async () => {
-                await handleStatusChange(row.original.id, status.id);
-              });
+              handleStatusChange(row.original.id, status.id);
             }}
             options={statuses}
             sx={{ width: "150px" }}

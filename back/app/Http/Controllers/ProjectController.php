@@ -76,7 +76,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $ids = array_map(fn ($member) => $member['id'], $newProject->get('project_members'));
+        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members');
 
         $defendantName = Partner::find($newProject['defendant_id'])->merged_name;
         $plaintiff = Partner::find($newProject['plaintiff_id']);

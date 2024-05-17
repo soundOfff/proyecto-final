@@ -122,6 +122,7 @@ export default function Table() {
     getAll({
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
+      sort: "milestone_order",
       include: ["assigneds", "tags", "status"],
     }).then((data) => {
       setRows(data);
@@ -133,6 +134,10 @@ export default function Table() {
     {
       Header: "#",
       accessor: "id",
+    },
+    {
+      Header: "N° de Paso",
+      accessor: "milestone_order",
     },
     {
       Header: "Nombre",

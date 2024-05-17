@@ -5,7 +5,6 @@ import form from "./schemas/form";
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { select as getSelectStaff } from "/actions/staffs";
-import { getAll as getAllStatuses } from "/actions/procedure-statuses";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 
 export default function FormContent({
@@ -25,11 +24,10 @@ export default function FormContent({
   }, []);
 
   useEffect(() => {
-    if (
-      procedures.find(
-        (procedure) => procedure.stepNumber == values[stepNumber.name]
-      )
-    ) {
+    const procedureStepNumber = procedures.find(
+      (procedure) => procedure.stepNumber == values[stepNumber.name]
+    );
+    if (procedureStepNumber) {
       setFieldError(
         stepNumber.name,
         `El paso número ${values[stepNumber.name]} ya existe`

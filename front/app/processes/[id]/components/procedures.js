@@ -41,6 +41,10 @@ export default function Procedures({ procedures }) {
 
   const columns = [
     {
+      Header: "N° de Paso",
+      accessor: "stepNumber",
+    },
+    {
       Header: "Nombre",
       accessor: "name",
     },
@@ -147,6 +151,7 @@ export default function Procedures({ procedures }) {
         entriesPerPage={false}
         showTotalEntries={false}
         moveRow={moveRow}
+        isSorted={false}
         noEndBorder
       />
       <DeleteRow

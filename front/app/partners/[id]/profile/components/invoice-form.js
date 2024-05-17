@@ -8,9 +8,11 @@ import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { Form, Formik } from "formik";
 import { update as updatePartner } from "/actions/partners";
+import MDSnackbar from "/components/MDSnackbar";
 
 import invoiceForm from "../schemas/invoice-form";
 import invoiceValidations from "../schemas/invoice-validations";
+import { useState } from "react";
 
 export default function InvoiceFormComponent({ partner, countries }) {
   const {
@@ -29,6 +31,9 @@ export default function InvoiceFormComponent({ partner, countries }) {
     },
   } = invoiceForm;
 
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+
   const initialValues = {
     country_id: partner.countryId,
     company: partner.company,
@@ -46,7 +51,12 @@ export default function InvoiceFormComponent({ partner, countries }) {
   };
 
   const submitForm = async (values, actions) => {
-    await updatePartner(partner.id, values);
+    try {
+      await updatePartner(partner.id, values);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
+    }
   };
 
   const handleSubmit = (values, actions) => {
@@ -62,6 +72,16 @@ export default function InvoiceFormComponent({ partner, countries }) {
       >
         {({ errors, values, touched, isSubmitting, setFieldValue }) => (
           <Form id={formId} autoComplete="off">
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="Error"
+              content={errorMsg}
+              open={errorSB}
+              onClose={() => setErrorSB(false)}
+              close={() => setErrorSB(false)}
+              bgWhite
+            />
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <MDTypography variant="h5" textAlign="center" my={5}>
@@ -178,11 +198,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                 </Grid>
                 <Grid item xs={12}>
                   <MDBox display="flex" justifyContent="end">
-                    <MDButton
-                      color="dark"
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
+                    <MDButton color="dark" type="submit">
                       Guardar
                     </MDButton>
                   </MDBox>

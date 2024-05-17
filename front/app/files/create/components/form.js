@@ -8,10 +8,14 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
 import { useRouter } from "next/navigation";
+import MDSnackbar from "/components/MDSnackbar";
+import { useState } from "react";
 
 export default function FormComponent({ apiUrl }) {
   const { formId } = form;
   const router = useRouter();
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
   const submitForm = async (values, actions) => {
     const formData = new FormData();
@@ -30,8 +34,9 @@ export default function FormComponent({ apiUrl }) {
       });
 
       router.push("/files");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
     }
   };
 
@@ -56,6 +61,16 @@ export default function FormComponent({ apiUrl }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="Error"
+              content={errorMsg}
+              open={errorSB}
+              onClose={() => setErrorSB(false)}
+              close={() => setErrorSB(false)}
+              bgWhite
+            />
             <FormContent
               {...{
                 values,
@@ -68,12 +83,7 @@ export default function FormComponent({ apiUrl }) {
               }}
             />
             <MDBox mt={5} display="flex" justifyContent="end">
-              <MDButton
-                disabled={isSubmitting}
-                type="submit"
-                variant="gradient"
-                color="dark"
-              >
+              <MDButton type="submit" variant="gradient" color="dark">
                 Guardar
               </MDButton>
             </MDBox>

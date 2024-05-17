@@ -4,6 +4,7 @@ import { Card } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import MDSnackbar from "/components/MDSnackbar";
 import { Form, Formik } from "formik";
 import { update as updatePartner } from "/actions/partners";
 
@@ -11,6 +12,7 @@ import detailForm from "../schemas/detail-form";
 import detailValidations from "../schemas/detail-validations";
 import PersonForm from "./person-form";
 import JuridicalForm from "./juridical-form";
+import { useState } from "react";
 
 export default function DetailFormComponent({
   partner,
@@ -73,9 +75,16 @@ export default function DetailFormComponent({
     [rollNumber.name]: partner.rollNumber,
     [imageNumber.name]: partner.imageNumber,
   };
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
   const submitForm = async (values, actions) => {
-    await updatePartner(partner.id, values);
+    try {
+      await updatePartner(partner.id, values);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
+    }
   };
 
   const handleSubmit = (values, actions) => {
@@ -96,6 +105,16 @@ export default function DetailFormComponent({
             <MDBox p={3}>
               <MDTypography variant="h5">Editar Cliente</MDTypography>
             </MDBox>
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="Error"
+              content={errorMsg}
+              open={errorSB}
+              onClose={() => setErrorSB(false)}
+              close={() => setErrorSB(false)}
+              bgWhite
+            />
             <MDBox pb={3} px={3}>
               {partner.name && (
                 <PersonForm
@@ -123,7 +142,7 @@ export default function DetailFormComponent({
                 />
               )}
               <MDBox display="flex" justifyContent="end">
-                <MDButton color="dark" type="submit" disabled={isSubmitting}>
+                <MDButton color="dark" type="submit">
                   Guardar
                 </MDButton>
               </MDBox>

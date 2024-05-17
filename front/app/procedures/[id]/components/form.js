@@ -3,6 +3,7 @@
 import { Formik, Form } from "formik";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import MDSnackbar from "/components/MDSnackbar";
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
@@ -15,10 +16,17 @@ export default function FormComponent({ procedureId }) {
   const { formId } = form;
   const [procedure, setProcedure] = useState(null);
   const router = useRouter();
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
   const submitForm = async (values, actions) => {
-    await update(procedureId, values);
-    router.push(`/processes/${procedure.process.id}`);
+    try {
+      await update(procedureId, values);
+      router.push(`/processes/${procedure.process.id}`);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
+    }
   };
 
   const handleSubmit = (values, actions) => {
@@ -56,6 +64,16 @@ export default function FormComponent({ procedureId }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="Error"
+              content={errorMsg}
+              open={errorSB}
+              onClose={() => setErrorSB(false)}
+              close={() => setErrorSB(false)}
+              bgWhite
+            />
             <FormContent
               {...{
                 values,
@@ -77,12 +95,7 @@ export default function FormComponent({ procedureId }) {
               <MDButton variant="gradient" color="light" onClick={handleBack}>
                 Volver
               </MDButton>
-              <MDButton
-                disabled={isSubmitting}
-                type="submit"
-                variant="gradient"
-                color="dark"
-              >
+              <MDButton type="submit" variant="gradient" color="dark">
                 Guardar
               </MDButton>
             </MDBox>

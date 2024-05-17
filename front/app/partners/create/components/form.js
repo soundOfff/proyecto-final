@@ -12,6 +12,7 @@ import Tabs from "./tabs";
 import form from "../schemas/form";
 import initialValues from "../schemas/initial-values";
 import validations from "../schemas/validations";
+import MDSnackbar from "/components/MDSnackbar";
 
 export default function FormComponent({
   consolidators,
@@ -21,9 +22,16 @@ export default function FormComponent({
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(true);
   const { formId } = form;
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
   const submitForm = async (values, actions) => {
-    await storePartner(values);
+    try {
+      await storePartner(values);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
+    }
   };
 
   const handleSubmit = (values, actions) => {
@@ -48,6 +56,16 @@ export default function FormComponent({
       >
         {({ errors, values, touched, isSubmitting, setFieldValue }) => (
           <Form id={formId} autoComplete="off">
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="Error"
+              content={errorMsg}
+              open={errorSB}
+              onClose={() => setErrorSB(false)}
+              close={() => setErrorSB(false)}
+              bgWhite
+            />
             {tabIndex === 0 ? (
               <DetailForm
                 {...{
@@ -75,7 +93,7 @@ export default function FormComponent({
             )}
             <Grid item xs={12}>
               <MDBox display="flex" justifyContent="end">
-                <MDButton color="dark" type="submit" disabled={isSubmitting}>
+                <MDButton color="dark" type="submit">
                   Guardar
                 </MDButton>
               </MDBox>

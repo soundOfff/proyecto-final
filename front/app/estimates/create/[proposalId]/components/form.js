@@ -2,6 +2,7 @@
 
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import MDSnackbar from "/components/MDSnackbar";
 
 import { Grid, Card, Step, StepLabel, Stepper } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -47,6 +48,8 @@ export default function FormComponent({
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
   const { number, currency } = formField;
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   initialValues[number.name] = `00${Number(maxEstimateId) + 1}`;
   initialValues[currency.name] = defaultCurrency.id;
 
@@ -100,7 +103,12 @@ export default function FormComponent({
   const handleBack = () => setActiveStep(activeStep - 1);
 
   const submitForm = async (values, actions) => {
-    await createEstimate(values);
+    try {
+      await createEstimate(values);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
+    }
   };
 
   const handleSubmit = (values, actions) => {
@@ -141,6 +149,16 @@ export default function FormComponent({
             }) => (
               <Form id={formId} autoComplete="off">
                 <Card sx={{ height: "100%" }}>
+                  <MDSnackbar
+                    color="error"
+                    icon="warning"
+                    title="Error"
+                    content={errorMsg}
+                    open={errorSB}
+                    onClose={() => setErrorSB(false)}
+                    close={() => setErrorSB(false)}
+                    bgWhite
+                  />
                   <MDBox mx={2} mt={-3}>
                     <Stepper activeStep={activeStep} alternativeLabel>
                       {steps.map((label) => (
@@ -178,12 +196,7 @@ export default function FormComponent({
                             Anterior
                           </MDButton>
                         )}
-                        <MDButton
-                          disabled={isSubmitting}
-                          type="submit"
-                          variant="gradient"
-                          color="dark"
-                        >
+                        <MDButton type="submit" variant="gradient" color="dark">
                           {isLastStep ? "Guardar" : "Siguiente"}
                         </MDButton>
                       </MDBox>

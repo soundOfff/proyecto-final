@@ -35,6 +35,7 @@ import { getCurrentTimer } from "/actions/timers";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import moment from "moment";
+import { DONE_STATUS } from "/utils/constants/taskStatuses";
 
 export default function Table({
   rows,
@@ -144,12 +145,12 @@ export default function Table({
   };
 
   const handleCompleteTask = async (taskId) => {
-    const doneState = statuses.find((status) => status.name === "Done");
+    const doneState = statuses.find((status) => status.name === DONE_STATUS);
     if (taskId === doneState) {
       return;
     }
     await update(taskId, {
-      task_status_id: statuses.find((status) => status.name === "Done").id,
+      task_status_id: statuses.find((status) => status.name === DONE_STATUS).id,
     });
     setOpenShowModal(false);
   };

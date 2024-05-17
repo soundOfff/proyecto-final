@@ -60,7 +60,6 @@ export default function TaskForm({
 
   useEffect(() => {
     if (task) {
-      console.log(task);
       setFieldValue(name.name, task.name ?? "");
       setFieldValue(hourlyRate.name, task.hourly_rate ?? "0");
       setFieldValue(startDate.name, task.start_date ?? "");

@@ -73,22 +73,6 @@ const routes = [
   { type: "divider", key: "divider-1" },
   {
     type: "collapse",
-    name: "Casos",
-    key: "projects",
-    route: "/projects",
-    icon: <Icon fontSize="medium">menu</Icon>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Procesos",
-    key: "processes",
-    route: "/processes",
-    icon: <Icon fontSize="medium">playlist_add_check</Icon>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
     name: "Clientes",
     key: "partners",
     route: "/partners",
@@ -97,10 +81,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Gastos",
-    key: "expenses",
-    route: "/expenses",
-    icon: <Icon fontSize="medium">description</Icon>,
+    name: "Casos",
+    key: "projects",
+    route: "/projects",
+    icon: <Icon fontSize="medium">menu</Icon>,
     noCollapse: true,
   },
   {
@@ -123,6 +107,14 @@ const routes = [
       { name: "Notas de Crédito", key: "credit_notes", route: "/credit-notes" },
       { name: "Cobros", key: "payments", route: "/payments" },
     ],
+  },
+  {
+    type: "collapse",
+    name: "Gastos",
+    key: "expenses",
+    route: "/expenses",
+    icon: <Icon fontSize="medium">description</Icon>,
+    noCollapse: true,
   },
   {
     type: "collapse",
@@ -152,6 +144,14 @@ const routes = [
         route: "/report-timesheets",
       },
     ],
+  },
+  {
+    type: "collapse",
+    name: "Procesos",
+    key: "processes",
+    route: "/processes",
+    icon: <Icon fontSize="medium">playlist_add_check</Icon>,
+    noCollapse: true,
   },
 ];
 

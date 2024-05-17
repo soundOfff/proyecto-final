@@ -183,12 +183,12 @@ Route::post('/partial-payments-attach', [PaymentController::class, 'attach']);
 Route::post('/partial-payments-detach', [PaymentController::class, 'detach']);
 
 Route::get('/credit-notes', [CreditNoteController::class, 'index']);
-Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
 Route::post('/credit-notes', [CreditNoteController::class, 'store']);
+Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
+Route::put('/credit-notes/{creditNote}', [CreditNoteController::class, 'update']);
+Route::delete('/credit-notes/{creditNote}', [CreditNoteController::class, 'destroy']);
 
 Route::post('/credits', [CreditController::class, 'attach']);
-
-Route::post('/credit-notes', [CreditNoteController::class, 'store']);
 
 Route::get('/credits', [CreditController::class, 'index']);
 Route::post('/credits', [CreditController::class, 'attach']);

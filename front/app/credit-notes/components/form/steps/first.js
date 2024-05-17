@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Autocomplete,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Switch,
-} from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDTypography from "/components/MDTypography";
 import MDBox from "/components/MDBox";
@@ -28,6 +22,7 @@ export default function First({
   discountTypes,
   tags: tagsData,
   currencies,
+  creditNote,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { partner, project, number, date, currency, reference, discountType } =
@@ -51,6 +46,26 @@ export default function First({
       });
     }
   }, [searchParams, setFieldValue, project, partner]);
+
+  useEffect(() => {
+    if (creditNote) {
+      setFieldValue(number.name, String(creditNote.number) ?? "");
+      setFieldValue(currency.name, creditNote.currencyId ?? "");
+      setFieldValue(reference.name, creditNote.referenceNo ?? "");
+      setFieldValue(date.name, creditNote.date ?? "");
+      setFieldValue(partner.name, creditNote.partnerId ?? "");
+      setFieldValue(project.name, creditNote.projectId ?? "");
+    }
+  }, [
+    creditNote,
+    setFieldValue,
+    number,
+    currency,
+    reference,
+    date,
+    partner,
+    project,
+  ]);
 
   return (
     <Grid container spacing={5}>

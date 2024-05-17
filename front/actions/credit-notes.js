@@ -32,3 +32,25 @@ export async function show(id, params) {
 
   return creditNote;
 }
+
+export async function update(id, data) {
+  const url = new URL(`${process.env.API_URL}/credit-notes/${id}`);
+
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/credit-notes");
+  redirect("/credit-notes");
+}
+
+export async function destroy(id) {
+  const url = new URL(`${process.env.API_URL}/credit-notes/${id}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/credit-notes");
+}

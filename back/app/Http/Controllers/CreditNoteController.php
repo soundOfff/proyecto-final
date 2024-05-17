@@ -9,7 +9,6 @@ use App\Models\CreditNote;
 use App\Models\CreditNoteStatus;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CreditNoteController extends Controller
@@ -79,19 +78,38 @@ class CreditNoteController extends Controller
         return new CreditNoteResource($creditNote);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, CreditNote $creditNote)
+    public function update(CreditNoteRequest $request, CreditNote $creditNote)
     {
-        //
+        $updatedCreditNote = $request->validated();
+        $creditNote->lineItems->each(function ($item) {
+            $item->taxes()->delete();
+        });
+        $creditNote->lineItems()->delete();
+        $items = $updatedCreditNote['items'];
+
+        $creditNote->update($updatedCreditNote);
+
+        foreach ($items as $item) {
+            $item['line_itemable_id'] = $creditNote->id;
+            $item['line_itemable_type'] = 'credit_note';
+            $itemTaxes = $item['taxes'];
+            $lineItem = LineItem::create($item);
+
+            foreach ($itemTaxes as $itemTax) {
+                $itemTax['line_item_id'] = $lineItem->id;
+                $itemTax['line_item_taxable_id'] = $creditNote->id;
+                $itemTax['line_item_taxable_type'] = 'credit_note';
+                LineItemTax::create($itemTax);
+            }
+        }
+
+        return response()->json(null, 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(CreditNote $creditNote)
     {
-        //
+        $creditNote->delete();
+
+        return response()->json(null, 204);
     }
 }

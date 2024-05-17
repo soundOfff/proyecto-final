@@ -9,7 +9,7 @@ import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { destroy } from "/actions/estimates";
+import { destroy } from "/actions/credit-notes";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 

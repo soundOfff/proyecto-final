@@ -15,7 +15,7 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
 
-import { store } from "/actions/credit-notes";
+import { store, update } from "/actions/credit-notes";
 
 import { useState } from "react";
 
@@ -35,6 +35,7 @@ export default function FormComponent({
   discountTypes,
   defaultCurrency,
   countries,
+  creditNote,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
@@ -55,11 +56,20 @@ export default function FormComponent({
               partners,
               currencies,
               discountTypes,
+              creditNote,
             }}
           />
         );
       case 1:
-        return <Second formData={formData} countries={countries} />;
+        return (
+          <Second
+            formData={formData}
+            {...{
+              countries,
+              creditNote,
+            }}
+          />
+        );
       case 2:
         return (
           <Third
@@ -69,6 +79,7 @@ export default function FormComponent({
               itemTypes,
               taxes,
               groupIds,
+              creditNote,
             }}
           />
         );
@@ -81,7 +92,11 @@ export default function FormComponent({
 
   const submitForm = async (values, actions) => {
     try {
-      await store(values);
+      if (creditNote) {
+        await update(creditNote.id, values);
+      } else {
+        await store(values);
+      }
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

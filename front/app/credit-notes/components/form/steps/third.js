@@ -2,7 +2,7 @@
 
 import { Autocomplete, Grid } from "@mui/material";
 import { ErrorMessage } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -20,15 +20,23 @@ export default function Third({
   taxes,
   groupIds,
   items: itemsData,
+  creditNote,
 }) {
-  const { formField } = formData;
-  const { items } = formField;
+  const { formField, setFieldValue } = formData;
+  const { items, adjustment } = formField;
   const [isOpen, setOpen] = useState(false);
   const [item, setItem] = useState(null);
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (creditNote) {
+      setFieldValue(items.name, creditNote.items ?? []);
+      setFieldValue(adjustment.name, creditNote.adjustment ?? "");
+    }
+  }, [creditNote, setFieldValue, items, adjustment]);
 
   return (
     <Grid container spacing={2} p={5}>

@@ -4,8 +4,9 @@ import { Divider, Grid } from "@mui/material";
 import MDTypography from "/components/MDTypography";
 import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import { useEffect } from "react";
 
-export default function Second({ formData, countries }) {
+export default function Second({ formData, countries, creditNote }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
     billingStreet,
@@ -22,6 +23,40 @@ export default function Second({ formData, countries }) {
     clientNote,
     terms,
   } = formField;
+
+  useEffect(() => {
+    if (creditNote) {
+      setFieldValue(adminNote.name, creditNote.adminNote ?? "");
+      setFieldValue(clientNote.name, creditNote.clientNote ?? "");
+      setFieldValue(terms.name, creditNote.terms ?? "");
+      setFieldValue(billingStreet.name, creditNote.billingStreet ?? "");
+      setFieldValue(billingCity.name, creditNote.billingCity ?? "");
+      setFieldValue(billingState.name, creditNote.billingState ?? "");
+      setFieldValue(billingZip.name, creditNote.billingZip ?? "");
+      setFieldValue(billingCountry.name, creditNote.billingCountryId ?? "");
+      setFieldValue(shippingStreet.name, creditNote.shippingStreet ?? "");
+      setFieldValue(shippingCity.name, creditNote.shippingCity ?? "");
+      setFieldValue(shippingState.name, creditNote.shippingState ?? "");
+      setFieldValue(shippingZip.name, creditNote.shippingZip ?? "");
+      setFieldValue(shippingCountry.name, creditNote.shippingCountryId ?? "");
+    }
+  }, [
+    creditNote,
+    setFieldValue,
+    adminNote,
+    clientNote,
+    terms,
+    billingStreet,
+    billingCity,
+    billingState,
+    billingZip,
+    billingCountry,
+    shippingStreet,
+    shippingCity,
+    shippingState,
+    shippingZip,
+    shippingCountry,
+  ]);
 
   return (
     <Grid container spacing={5}>

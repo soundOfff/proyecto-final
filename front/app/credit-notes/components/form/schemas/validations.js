@@ -72,8 +72,8 @@ const validations = [
       .of(
         Yup.object().shape({
           description: Yup.string(),
-          longDescription: Yup.string(),
-          type: Yup.number(),
+          longDescription: Yup.string().nullable(),
+          type: Yup.number().nullable(),
           quantity: Yup.number(),
           rate: Yup.number(),
           taxes: Yup.array().of(
@@ -82,7 +82,7 @@ const validations = [
               rate: Yup.number(),
             })
           ),
-          discount: Yup.number(),
+          discount: Yup.number().nullable(),
         })
       )
       .min(1, "Debe agregar al menos un item"),

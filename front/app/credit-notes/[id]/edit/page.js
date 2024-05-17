@@ -7,10 +7,11 @@ import { getAll as getAllItemTypes } from "/actions/line-item-types";
 import { getAll as getAllDiscountTypes } from "/actions/discount-types";
 import { getDefaultCurrency } from "/actions/currencies";
 import { getSelect as getSelectCountries } from "/actions/countries";
+import { show } from "/actions/credit-notes";
 
-import Form from "../components/form/form";
+import Form from "../../components/form/form";
 
-export default async function NewEstimate() {
+export default async function EditCreditNote({ params: { id } }) {
   const [
     partners,
     taxes,
@@ -33,6 +34,19 @@ export default async function NewEstimate() {
     getSelectCountries(),
   ]);
 
+  const creditNote = await show(id, {
+    include: [
+      "status",
+      "partner",
+      "project",
+      "credits",
+      "billingCountry",
+      "shippingCountry",
+      "lineItems.taxes",
+      "lineItems.type",
+    ],
+  });
+
   return (
     <Form
       {...{
@@ -45,6 +59,7 @@ export default async function NewEstimate() {
         discountTypes,
         defaultCurrency,
         countries,
+        creditNote,
       }}
     />
   );

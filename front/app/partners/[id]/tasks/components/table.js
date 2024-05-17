@@ -1,7 +1,7 @@
 "use client";
 
 import { show } from "/actions/tasks";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { useMaterialUIController, setCurrentTimer } from "/context";
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
@@ -42,6 +42,15 @@ export default function Table({
   currentTaskId,
   partnerId,
 }) {
+  const [optimisticRows, updateOptimisticRows] = useOptimistic(
+    rows,
+    (state, editedRow) => {
+      const editedRowIndex = state.findIndex((row) => row.id === editedRow.id);
+      const newState = [...state];
+      newState[editedRowIndex] = editedRow;
+      return newState;
+    }
+  );
   const [controller, dispatch] = useMaterialUIController();
   const { darkMode } = controller;
   const [taskId, setTaskId] = useState(currentTaskId || null);
@@ -68,6 +77,26 @@ export default function Table({
     setOpenShowModal(false);
     setTaskId(null);
     setTask(null);
+  };
+
+  const findTask = (taskId) => rows.find((row) => row.id === taskId);
+
+  const handleStatusChange = async (taskId, statusId) => {
+    startTransition(async () => {
+      const editedRow = findTask(taskId);
+      editedRow.status.id = statusId;
+      updateOptimisticRows(editedRow);
+    });
+    await update(taskId, { task_status_id: statusId });
+  };
+
+  const handlePriorityChange = async (taskId, priorityId) => {
+    startTransition(async () => {
+      const editedRow = findTask(taskId);
+      editedRow.priority.id = priorityId;
+      updateOptimisticRows(editedRow);
+    });
+    await update(taskId, { task_priority_id: priorityId });
   };
 
   const stopTimer = async (timerId, note = "") => {
@@ -107,14 +136,6 @@ export default function Table({
       fetchTask();
     }
   }, [taskId, task]);
-
-  const handleStatusChange = async (taskId, statusId) => {
-    await update(taskId, { task_status_id: statusId });
-  };
-
-  const handlePriorityChange = async (taskId, priorityId) => {
-    await update(taskId, { task_priority_id: priorityId });
-  };
 
   const handleCompleteTask = async (taskId) => {
     const doneState = statuses.find((status) => status.name === "Done");
@@ -283,7 +304,7 @@ export default function Table({
     },
   ];
 
-  const table = { columns, rows };
+  const table = { columns, rows: optimisticRows };
 
   return (
     <MDBox>

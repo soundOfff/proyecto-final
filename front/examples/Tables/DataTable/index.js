@@ -214,7 +214,10 @@ function DataTable({
 
       <DndProvider backend={HTML5Backend}>
         <ScrollingComponent
-          style={{ overflowY: "auto", height: moveRow ? "70vh" : "100%" }}
+          style={{
+            overflowY: "auto",
+            height: moveRow ? "70vh" : "100%",
+          }}
         >
           <Table {...getTableProps()}>
             <MDBox
@@ -223,7 +226,6 @@ function DataTable({
             >
               {headerGroups.map((headerGroup, key) => (
                 <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
-                  {moveRow && <DataTableHeadCell width="10px" />}
                   {headerGroup.headers.map((column, key) => (
                     <DataTableHeadCell
                       key={key}
@@ -237,6 +239,7 @@ function DataTable({
                       {column.render("Header")}
                     </DataTableHeadCell>
                   ))}
+                  {moveRow && <DataTableHeadCell width="10px" />}
                 </TableRow>
               ))}
             </MDBox>

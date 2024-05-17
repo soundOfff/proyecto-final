@@ -81,18 +81,9 @@ export default function DataTableRow({
         opacity: isDragging ? 0 : 1,
         backgroundColor: isDragging ? "#f0f0f0" : "white",
         cursor: isDragging ? "grabbing" : "default",
-        transform: isDragging ? "scale(1.1)" : "scale(1)",
         transition: "all 0.5s ease",
       }}
     >
-      {moveRow && (
-        <DataTableBodyCell
-          dragRef={dragRef}
-          noBorder={noEndBorder && rows.length - 1 === index}
-        >
-          <DehazeIcon fontSize="medium" sx={{ cursor: "pointer" }} />
-        </DataTableBodyCell>
-      )}
       {row.cells.map((cell) => {
         const { key, ...cellProps } = cell.getCellProps();
 
@@ -107,6 +98,14 @@ export default function DataTableRow({
           </DataTableBodyCell>
         );
       })}
+      {moveRow && (
+        <DataTableBodyCell
+          dragRef={dragRef}
+          noBorder={noEndBorder && rows.length - 1 === index}
+        >
+          <DehazeIcon fontSize="medium" sx={{ cursor: "pointer" }} />
+        </DataTableBodyCell>
+      )}
     </TableRow>
   );
 }

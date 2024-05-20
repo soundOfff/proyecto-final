@@ -7,6 +7,7 @@ import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
+import MDSnackbar from "/components/MDSnackbar";
 import { getAll, store } from "/actions/procedures";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -14,17 +15,26 @@ import { useRouter } from "next/navigation";
 export default function FormComponent({ processId }) {
   const { formId } = form;
   const [procedures, setProcedures] = useState([]);
+  const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
 
   const submitForm = async (values, actions) => {
-    const lastProcedure = procedures.sort(
-      (a, b) => b.stepNumber - a.stepNumber
-    )[0];
-    if (values.step_number > lastProcedure.stepNumber) {
-      values.step_number = lastProcedure.stepNumber + 1;
+    try {
+      const lastProcedure = procedures.sort(
+        (a, b) => b.stepNumber - a.stepNumber
+      )[0];
+
+      if (lastProcedure && values.step_number > lastProcedure.stepNumber) {
+        values.step_number = lastProcedure.stepNumber + 1;
+      }
+
+      await store({ ...values, process_id: processId });
+      router.push(`/processes/${processId}`);
+    } catch (error) {
+      setErrorMsg(error.message);
+      setErrorSB(true);
     }
-    await store({ ...values, process_id: processId });
-    router.push(`/processes/${processId}`);
   };
 
   const handleSubmit = (values, actions) => {
@@ -58,6 +68,16 @@ export default function FormComponent({ processId }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="Error"
+              content={errorMsg}
+              open={errorSB}
+              onClose={() => setErrorSB(false)}
+              close={() => setErrorSB(false)}
+              bgWhite
+            />
             <FormContent
               {...{
                 values,
@@ -84,12 +104,7 @@ export default function FormComponent({ processId }) {
               >
                 Volver
               </MDButton>
-              <MDButton
-                disabled={isSubmitting}
-                type="submit"
-                variant="gradient"
-                color="dark"
-              >
+              <MDButton type="submit" variant="gradient" color="dark">
                 Guardar
               </MDButton>
             </MDBox>

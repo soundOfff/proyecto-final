@@ -110,6 +110,7 @@ class ProjectController extends Controller
                 'status',
                 'members',
                 'responsiblePerson',
+                'process',
             ])
             ->find($project->id);
 

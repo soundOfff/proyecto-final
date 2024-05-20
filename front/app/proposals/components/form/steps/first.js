@@ -16,89 +16,52 @@ import moment from "moment";
 import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import { useEffect } from "react";
-import { show as getPartner } from "/actions/partners";
 
 export default function First({
   formData,
-  proposal,
-  partners,
   discountTypes,
+  statuses,
   tags: tagsData,
   currencies,
+  proposal,
 }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const {
     subject,
-    partner,
     date,
     openTill,
     currency,
     discountType,
     tags,
     allowComments,
-    proposalTo,
-    country,
-    address,
-    state,
-    city,
-    zip,
-    email,
-    phone,
+    status,
   } = formField;
 
   useEffect(() => {
-    getPartner(values[partner.name], { include: ["primaryContact"] }).then(
-      (partner) => {
-        setFieldValue(proposalTo.name, partner.company ?? "");
-        setFieldValue(country.name, partner.countryId ?? "");
-        setFieldValue(address.name, partner.address ?? "");
-        setFieldValue(city.name, partner.city ?? "");
-        setFieldValue(state.name, partner.state ?? "");
-        setFieldValue(zip.name, partner.zip ?? "");
-        setFieldValue(email.name, partner.primaryContact?.email ?? "");
-        setFieldValue(phone.name, partner.phoneNumber ?? "");
-      }
-    );
-  }, [
-    values,
-    proposalTo,
-    country,
-    address,
-    state,
-    city,
-    zip,
-    email,
-    phone,
-    partner,
-    setFieldValue,
-  ]);
-
-  useEffect(() => {
-    setFieldValue(subject.name, proposal.subject);
-    setFieldValue(
-      partner.name,
-      proposal.proposableType == "customer" ? proposal.proposableId : null
-    );
-    setFieldValue(date.name, moment(proposal.date).format("YYYY-MM-DD"));
-    setFieldValue(
-      openTill.name,
-      moment(proposal.openTill).format("YYYY-MM-DD")
-    );
-    setFieldValue(currency.name, proposal.currencyId);
-    setFieldValue(discountType.name, proposal.discountType?.id);
-    setFieldValue(allowComments.name, proposal.allowComments);
-    setFieldValue(tags.name, proposal.tags);
+    if (proposal) {
+      setFieldValue(status.name, proposal.statusId);
+      setFieldValue(subject.name, proposal.subject);
+      setFieldValue(date.name, moment(proposal.date).format("YYYY-MM-DD"));
+      setFieldValue(
+        openTill.name,
+        moment(proposal.openTill).format("YYYY-MM-DD")
+      );
+      setFieldValue(currency.name, proposal.currencyId);
+      setFieldValue(discountType.name, proposal.discountType?.id);
+      setFieldValue(allowComments.name, proposal.allowComments);
+      setFieldValue(tags.name, proposal.tags);
+    }
   }, [
     proposal,
     setFieldValue,
     subject,
-    partner,
     date,
     openTill,
     currency,
     discountType,
     allowComments,
     tags,
+    status,
   ]);
 
   return (
@@ -116,11 +79,11 @@ export default function First({
 
       <Grid item xs={12} sm={6}>
         <Select
-          value={values[partner.name]}
-          options={partners}
-          optionLabel={(option) => option.name}
-          fieldName={partner.name}
-          inputLabel={partner.label}
+          value={values[status.name]}
+          options={statuses}
+          optionLabel={(option) => option.label}
+          fieldName={status.name}
+          inputLabel={status.label}
           setFieldValue={setFieldValue}
         />
       </Grid>

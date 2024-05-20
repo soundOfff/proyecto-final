@@ -12,7 +12,7 @@ import { getAll as getAllDiscountTypes } from "/actions/discount-types";
 import { getDefaultCurrency } from "/actions/currencies";
 import { show as getProposal } from "/actions/proposals";
 
-import Form from "./components/form";
+import Form from "../../components/form/form";
 
 export default async function UpdateEstimate({ params: { id } }) {
   const [

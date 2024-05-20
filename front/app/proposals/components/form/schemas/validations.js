@@ -42,8 +42,8 @@ const {
 
 const validations = [
   Yup.object().shape({
+    [status.name]: Yup.number().required(status.errorMsg),
     [subject.name]: Yup.string().required(subject.errorMsg),
-    [partner.name]: Yup.number().required(partner.errorMsg),
     [date.name]: Yup.date().required(date.errorMsg),
     [openTill.name]: Yup.date().required(openTill.errorMsg),
     [currency.name]: Yup.number().required(currency.errorMsg),
@@ -52,7 +52,7 @@ const validations = [
     [allowComments.name]: Yup.boolean(),
   }),
   Yup.object().shape({
-    [status.name]: Yup.number().required(status.errorMsg),
+    [partner.name]: Yup.number().required(partner.errorMsg),
     [staffAssigned.name]: Yup.number().required(staffAssigned.errorMsg),
     [proposalTo.name]: Yup.string().required(proposalTo.errorMsg),
     [country.name]: Yup.number(),
@@ -69,7 +69,7 @@ const validations = [
         Yup.object().shape({
           description: Yup.string(),
           longDescription: Yup.string().nullable(),
-          type: Yup.number().nullable(),
+          type: Yup.number(),
           quantity: Yup.number(),
           rate: Yup.number(),
           taxes: Yup.array().of(

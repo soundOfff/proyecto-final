@@ -11,7 +11,7 @@ import { getAll as getAllItemTypes } from "/actions/line-item-types";
 import { getAll as getAllDiscountTypes } from "/actions/discount-types";
 import { getDefaultCurrency } from "/actions/currencies";
 
-import Form from "./components/form";
+import Form from "../components/form/form";
 
 export default async function NewEstimate() {
   const [

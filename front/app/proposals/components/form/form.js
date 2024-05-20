@@ -15,6 +15,7 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
 
+import { store as storeProposal } from "/actions/proposals";
 import { update as updateProposal } from "/actions/proposals";
 
 import { useState } from "react";
@@ -26,7 +27,6 @@ const steps = [
 ];
 
 export default function FormComponent({
-  proposal,
   partners,
   currencies,
   tags,
@@ -39,6 +39,7 @@ export default function FormComponent({
   items,
   itemTypes,
   defaultCurrency,
+  proposal,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
@@ -56,11 +57,11 @@ export default function FormComponent({
           <First
             formData={formData}
             {...{
-              proposal,
-              partners,
+              statuses,
               currencies,
               tags,
               discountTypes,
+              proposal,
             }}
           />
         );
@@ -69,10 +70,10 @@ export default function FormComponent({
           <Second
             formData={formData}
             {...{
-              proposal,
-              statuses,
+              partners,
               staffs,
               countries,
+              proposal,
             }}
           />
         );
@@ -81,11 +82,11 @@ export default function FormComponent({
           <Third
             formData={formData}
             {...{
-              proposal,
               items,
               itemTypes,
               taxes,
               groupIds,
+              proposal,
             }}
           />
         );
@@ -98,10 +99,14 @@ export default function FormComponent({
 
   const submitForm = async (values, actions) => {
     try {
-      await updateProposal(proposal.id, values);
+      if (proposal) {
+        await updateProposal(proposal.id, values);
+      } else {
+        await storeProposal(values);
+      }
     } catch (error) {
+      setErrorMsg(error.message);
       setErrorSB(true);
-      setErrorMsg("Ha ocurrido un error");
     }
   };
 
@@ -112,14 +117,6 @@ export default function FormComponent({
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
-      actions.setFieldValue(
-        "items",
-        proposal.items.map((item) => ({
-          ...item,
-          long_description: item.longDescription || "",
-          discount: item.discount || "",
-        }))
-      );
     }
   };
 

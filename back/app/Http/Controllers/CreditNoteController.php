@@ -108,6 +108,7 @@ class CreditNoteController extends Controller
 
     public function destroy(CreditNote $creditNote)
     {
+        $creditNote->credits()->delete();
         $creditNote->delete();
 
         return response()->json(null, 204);

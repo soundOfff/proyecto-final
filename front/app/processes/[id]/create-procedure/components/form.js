@@ -17,6 +17,12 @@ export default function FormComponent({ processId }) {
   const router = useRouter();
 
   const submitForm = async (values, actions) => {
+    const lastProcedure = procedures.sort(
+      (a, b) => b.stepNumber - a.stepNumber
+    )[0];
+    if (values.step_number > lastProcedure.stepNumber) {
+      values.step_number = lastProcedure.stepNumber + 1;
+    }
     await store({ ...values, process_id: processId });
     router.push(`/processes/${processId}`);
   };

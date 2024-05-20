@@ -32,6 +32,9 @@ class TaskController extends Controller
                 'taskable',
                 'reminders',
             ])
+            ->allowedSorts([
+                'milestone_order'
+            ])
             ->allowedFilters(
                 [
                     AllowedFilter::exact('taskable_id'),

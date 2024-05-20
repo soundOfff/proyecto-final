@@ -36,6 +36,7 @@ function Breadcrumbs({ icon, title, route, light = false }) {
   const pathRoutes = pathname.split("/").filter((el) => el.length > 0);
 
   const getPageTitle = () =>
+    "Velo CRM - " +
     pathRoutes
       .filter((el) => !el.match(/\d+/))
       .map((el) => translate[el] ?? el)

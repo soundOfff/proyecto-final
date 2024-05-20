@@ -18,6 +18,7 @@ const include = [
   "responsiblePerson",
   "status",
   "members",
+  "process",
 ];
 
 export default async function Show({ params }) {

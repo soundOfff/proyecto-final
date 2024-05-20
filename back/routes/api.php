@@ -195,6 +195,7 @@ Route::post('/credits', [CreditController::class, 'attach']);
 Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
 
 Route::get('/processes', [ProcessController::class, 'index']);
+Route::post('/processes', [ProcessController::class, 'store']);
 Route::get('/processes/{process}', [ProcessController::class, 'show']);
 Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 

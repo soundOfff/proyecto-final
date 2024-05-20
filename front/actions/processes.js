@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { customFetch } from "./custom-fetch";
 
 export async function getAll(params) {
@@ -18,6 +19,17 @@ export async function show(id, params) {
   const { data } = await customFetch(url);
 
   return data;
+}
+
+export async function store(data) {
+  const url = new URL(`${process.env.API_URL}/processes`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/processes");
 }
 
 export async function destroy(id) {

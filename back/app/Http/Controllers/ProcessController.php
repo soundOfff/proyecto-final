@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProcessResource;
 use App\Http\Resources\ProcessResourceCollection;
 use App\Models\Process;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -43,6 +44,13 @@ class ProcessController extends Controller
         ->find($process->id);
 
         return new ProcessResource($process);
+    }
+
+    public function store(Request $request)
+    {
+        $process = Process::create(request()->all());
+
+        return response()->json(null, 201);
     }
 
     public function destroy(Process $process)

@@ -54,7 +54,7 @@ import {
 } from "/context";
 
 // Images
-import favicon from "/assets/images/favicon.png";
+import favicon from "/assets/images/favicon.ico";
 import appleIcon from "/assets/images/apple-icon.png";
 import logoWhite from "/assets/logo/White/asset-29.svg";
 import logoDark from "/assets/logo/Black/asset-27.svg";

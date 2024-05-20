@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Credit;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -59,5 +60,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProcedureStatusSeeder::class);
         $this->call(ProcessSeeder::class);
         $this->call(ProcedureSeeder::class);
+        $this->call(CreditNoteStatusSeeder::class);
     }
 }

@@ -1,6 +1,5 @@
-import { show } from "/actions/partners";
+import { redirect } from "next/navigation";
 
 export default async function Show({ params: { id } }) {
-  const partner = await show(id);
-  return <div>{partner.company}</div>;
+  redirect(`/partners/${id}/profile`);
 }

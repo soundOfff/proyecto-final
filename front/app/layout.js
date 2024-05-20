@@ -6,7 +6,7 @@ import "../globals.css";
 
 import ThemeProvider from "/providers/ThemeProvider";
 
-import favicon from "/assets/images/favicon.png";
+import favicon from "/assets/images/favicon.ico";
 import appleIcon from "/assets/images/apple-icon.png";
 
 import { Roboto } from "next/font/google";

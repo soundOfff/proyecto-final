@@ -20,18 +20,39 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
+import { usePathname } from "next/navigation";
+
 import Icon from "@mui/material/Icon";
 
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import translate from "/locales/es/common.json";
+import { matchedRoutes } from "../../utils/constants/matchedRoutes";
 
 function Breadcrumbs({ icon, title, route, light = false }) {
-  const routes = route.slice(0, -1);
+  const pathname = usePathname();
+  const segments = route.slice(0, -1).filter((el) => el.length > 0);
+  const pathRoutes = pathname.split("/").filter((el) => el.length > 0);
+
+  const getPageTitle = () =>
+    pathRoutes
+      .filter((el) => !el.match(/\d+/))
+      .map((el) => translate[el] ?? el)
+      .join(" / ");
+
+  const getMatchedUrl = (route) => {
+    if (route.match(/\d+/)) {
+      const routeIdx = pathRoutes.findIndex((el) => el === route);
+      const prevMatchedRoute = pathRoutes[routeIdx - 1];
+      return `/${prevMatchedRoute}/${route}`;
+    }
+    return `${matchedRoutes[route] ?? route}`;
+  };
 
   return (
     <MDBox mr={{ xs: 0, xl: 8 }}>
+      <title>{getPageTitle()}</title>
       <MuiBreadcrumbs
         sx={{
           "& .MuiBreadcrumbs-separator": {
@@ -51,8 +72,8 @@ function Breadcrumbs({ icon, title, route, light = false }) {
             <Icon>{icon}</Icon>
           </MDTypography>
         </Link>
-        {routes.map((el) => (
-          <Link href={`/${el}`} key={el}>
+        {segments.map((el) => (
+          <Link href={getMatchedUrl(el)} key={el}>
             <MDTypography
               component="span"
               variant="button"

@@ -17,5 +17,7 @@
   "report-timesheets": "Tiempos",
   "profile": "Perfil",
   "project": "Caso",
-  "customer": "Cliente"
+  "customer": "Cliente",
+  "edit": "Editar",
+  "create": "Crear"
 }

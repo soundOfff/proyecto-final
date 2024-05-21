@@ -35,7 +35,7 @@ import { getCurrentTimer } from "/actions/timers";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import moment from "moment";
-import { DONE_STATUS } from "/utils/constants/taskStatuses";
+import { DONE_STATUS, DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 export default function Table({
   rows,
@@ -161,30 +161,49 @@ export default function Table({
       accessor: "id",
     },
     {
-      Header: "Bloqueada",
+      Header: "Bloqueada por",
       accessor: "isBlocked",
-      Cell: ({ row }) => (
-        <MDTypography variant="body2" color="error">
-          {row.original.isBlocked ? "Sí" : "No"}
-        </MDTypography>
-      ),
+      Cell: ({ row }) =>
+        row.original.isBlocked && (
+          <MDBox display="flex">
+            {row.original.dependencies.map((dependency) => (
+              <Grid key={dependency.id}>
+                <MDBadge
+                  variant="gradient"
+                  color={
+                    dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
+                  }
+                  size="lg"
+                  badgeContent={`#${dependency.id}`}
+                />
+              </Grid>
+            ))}
+          </MDBox>
+        ),
     },
     {
       Header: "Nombre",
       accessor: "name",
-      Cell: ({ row }) => (
-        <MDTypography
-          variant="body2"
-          color="info"
-          sx={{ cursor: "pointer" }}
-          onClick={() => {
-            setTaskId(row.original.id);
-            setOpenShowModal(true);
-          }}
-        >
-          {row.original.name}
-        </MDTypography>
-      ),
+      Cell: ({ row }) =>
+        row.original.isBlocked ? (
+          <MDBox width="100%" display="flex" justifyContent="start">
+            <MDTypography variant="body2" color="dark">
+              {row.original.name}
+            </MDTypography>
+          </MDBox>
+        ) : (
+          <MDTypography
+            variant="body2"
+            color="info"
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              setTaskId(row.original.id);
+              setOpenShowModal(true);
+            }}
+          >
+            {row.original.name}
+          </MDTypography>
+        ),
     },
     {
       Header: "Estado",
@@ -195,6 +214,7 @@ export default function Table({
             value={statuses?.find(
               (status) => status.id === row.original.status.id
             )}
+            disabled={row.original.isBlocked}
             onChange={(e, status) => {
               handleStatusChange(row.original.id, status.id);
             }}
@@ -306,7 +326,11 @@ export default function Table({
                 color="error"
                 fontSize="medium"
                 onClick={() => stopTimer(currentTimer?.id)}
-                sx={{ ml: 1, cursor: "pointer" }}
+                sx={{
+                  ml: 1,
+                  cursor: "pointer",
+                  display: row.original.isBlocked ? "none" : "block",
+                }}
               />
             </Tooltip>
           ) : (
@@ -315,7 +339,11 @@ export default function Table({
                 color="success"
                 fontSize="medium"
                 onClick={() => startTimer(row.original.id, session.staff.id)}
-                sx={{ ml: 1, cursor: "pointer" }}
+                sx={{
+                  ml: 1,
+                  cursor: "pointer",
+                  display: row.original.isBlocked ? "none" : "block",
+                }}
               />
             </Tooltip>
           )}

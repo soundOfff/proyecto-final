@@ -33,6 +33,7 @@ import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { useSession } from "next-auth/react";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
+import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 export default function Table() {
   const [controller, dispatch] = useMaterialUIController();
@@ -104,7 +105,7 @@ export default function Table() {
     getAll({
       "filter[taskable_id]": invoice.id,
       "filter[taskable_type]": "invoice",
-      include: ["assigneds", "tags", "status"],
+      include: ["assigneds", "tags", "status", "dependencies"],
     }).then((data) => {
       setRows(data);
     });
@@ -114,6 +115,27 @@ export default function Table() {
     {
       Header: "#",
       accessor: "id",
+    },
+    {
+      Header: "Bloqueada por",
+      accessor: "isBlocked",
+      Cell: ({ row }) =>
+        row.original.isBlocked && (
+          <MDBox display="flex">
+            {row.original.dependencies.map((dependency) => (
+              <Grid key={dependency.id}>
+                <MDBadge
+                  variant="gradient"
+                  color={
+                    dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
+                  }
+                  size="lg"
+                  badgeContent={`#${dependency.id}`}
+                />
+              </Grid>
+            ))}
+          </MDBox>
+        ),
     },
     {
       Header: "Nombre",
@@ -133,6 +155,7 @@ export default function Table() {
           onChange={(e, status) => {
             handleStatusChange(row.original.id, status.id);
           }}
+          disabled={row.original.isBlocked}
           options={statuses}
           sx={{ width: "150px" }}
           getOptionLabel={(option) => option.name}
@@ -229,7 +252,11 @@ export default function Table() {
                 color="error"
                 fontSize="medium"
                 onClick={() => stopTimer(currentTimer.id)}
-                sx={{ ml: 1, cursor: "pointer" }}
+                sx={{
+                  ml: 1,
+                  cursor: "pointer",
+                  display: row.original.isBlocked ? "none" : "block",
+                }}
               />
             </Tooltip>
           ) : (
@@ -238,7 +265,11 @@ export default function Table() {
                 color="success"
                 fontSize="medium"
                 onClick={() => startTimer(row.original.id, session.staff.id)}
-                sx={{ ml: 1, cursor: "pointer" }}
+                sx={{
+                  ml: 1,
+                  cursor: "pointer",
+                  display: row.original.isBlocked ? "none" : "block",
+                }}
               />
             </Tooltip>
           )}

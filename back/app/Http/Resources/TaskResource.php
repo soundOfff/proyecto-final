@@ -48,6 +48,7 @@ class TaskResource extends JsonResource
             'assigneds' => StaffResource::collection($this->whenLoaded('assigneds')),
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
+            'dependencies' => TaskResource::collection($this->whenLoaded('dependencies')),
             'isBlocked' => $this->whenLoaded('dependencies', function () {
                 return $this->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
             }),

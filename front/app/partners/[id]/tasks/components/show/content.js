@@ -14,7 +14,7 @@ import { convertToRaw } from "draft-js";
 import ItemList from "./itemList";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { useSession } from "next-auth/react";
-import { DONE_ID } from "/utils/constants/taskStatuses";
+import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import useTodo from "/hooks/useTodo";
 
@@ -102,7 +102,7 @@ export default function Content({
               alignItems: "start",
             }}
           >
-            {task.status_id !== DONE_ID ? (
+            {task.status_id !== DONE_STATUS_ID ? (
               <MDButton
                 color="info"
                 size="small"

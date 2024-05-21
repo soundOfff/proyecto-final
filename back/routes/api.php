@@ -139,6 +139,7 @@ Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 Route::get('/task-stats', [TaskController::class, 'stats']);
+Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 

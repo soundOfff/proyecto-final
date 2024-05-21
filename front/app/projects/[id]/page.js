@@ -13,12 +13,10 @@ const include = [
   "defendant",
   "plaintiff",
   "billingType",
-  "process",
-  "serviceType",
+  "serviceType.processes",
   "responsiblePerson",
   "status",
   "members",
-  "process",
 ];
 
 export default async function Show({ params }) {

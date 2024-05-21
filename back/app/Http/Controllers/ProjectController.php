@@ -53,7 +53,7 @@ class ProjectController extends Controller
                 'notes',
                 'status',
                 'jurisdiction',
-                'process',
+                'serviceType.processes',
                 'defendant',
                 'plaintiff',
                 'responsiblePerson',
@@ -104,13 +104,11 @@ class ProjectController extends Controller
                 'defendant',
                 'plaintiff',
                 'billingType',
-                'process',
+                'serviceType.processes',
                 'files',
-                'serviceType',
                 'status',
                 'members',
                 'responsiblePerson',
-                'process',
             ])
             ->find($project->id);
 
@@ -171,7 +169,7 @@ class ProjectController extends Controller
 
     public function attachTasks(Project $project)
     {
-        $process = $project->process()->first();
+        $process = $project->serviceType()->processes()->first();
         $procedures = $process->procedures()->get();
 
         foreach ($procedures as $procedure) {

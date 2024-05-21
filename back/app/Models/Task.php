@@ -14,7 +14,7 @@ class Task extends Model
     protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'owner_id', 'procedure_id', 'milestone_order', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
 
     public const TASKABLE_PROJECT = 'project';
-    public const TASKABLE_INVOICE = 'invoice';    
+    public const TASKABLE_INVOICE = 'invoice'; 
 
     public function taskable()
     {
@@ -69,6 +69,16 @@ class Task extends Model
     public function reminders(): HasMany
     {
         return $this->hasMany(Reminder::class, 'reminderable_id');
+    }
+
+    public function dependencies()
+    {
+        return $this->belongsToMany(Task::class, 'task_dependencies', 'task_id', 'dependent_task_id');
+    }
+
+    public function dependentTasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_dependencies', 'dependent_task_id', 'task_id');
     }
 
     public function getTotalTime($startDate = null, $endDate = null)

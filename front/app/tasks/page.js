@@ -19,7 +19,7 @@ export default async function Tasks({
   const tasks = await getAllTasks({
     perPage: perPage,
     page: page,
-    include: ["assigneds", "tags", "status"],
+    include: ["assigneds", "tags", "status", "dependencies"],
   });
   const session = await getServerSession(authOptions);
   const tagsData = await getAllTags();

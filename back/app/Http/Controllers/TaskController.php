@@ -24,6 +24,7 @@ class TaskController extends Controller
                 'timers',
                 'priority',
                 'status',
+                'dependencies',
                 'comments',
                 'checklistItems',
                 'assigneds',

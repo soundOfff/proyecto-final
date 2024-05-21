@@ -161,6 +161,15 @@ export default function Table({
       accessor: "id",
     },
     {
+      Header: "Bloqueada",
+      accessor: "isBlocked",
+      Cell: ({ row }) => (
+        <MDTypography variant="body2" color="error">
+          {row.original.isBlocked ? "Sí" : "No"}
+        </MDTypography>
+      ),
+    },
+    {
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (

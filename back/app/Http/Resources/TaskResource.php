@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Task;
+use App\Models\TaskStatus;
 use App\Models\TaskTimer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -47,6 +48,9 @@ class TaskResource extends JsonResource
             'assigneds' => StaffResource::collection($this->whenLoaded('assigneds')),
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
+            'isBlocked' => $this->whenLoaded('dependencies', function () {
+                return $this->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
+            }),
             'taskable' => $this->whenLoaded('taskable', function () {
                 $taskableTypes = Task::getTaskableTypes();
                 $taskableType = $taskableTypes[$this->taskable_type] ?? null;

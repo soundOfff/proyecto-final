@@ -116,6 +116,10 @@ export default function Table() {
       accessor: "id",
     },
     {
+      Header: "N° de Paso",
+      accessor: "milestone_order",
+    },
+    {
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (

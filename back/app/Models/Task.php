@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\ProjectResource;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +16,7 @@ class Task extends Model
     protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'owner_id', 'procedure_id', 'milestone_order', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
 
     public const TASKABLE_PROJECT = 'project';
-    public const TASKABLE_INVOICE = 'invoice';    
+    public const TASKABLE_INVOICE = 'invoice';
 
     public function taskable()
     {
@@ -89,6 +91,16 @@ class Task extends Model
             }
             return Carbon::parse($timer->end_time)->floatDiffInRealHours($timer->start_time);
         });
+    }
+
+    static function getMilestoneOrder($taskableId, $taskableType)
+    {
+        $latestTask = Task::where('taskable_id', $taskableId)
+            ->where('taskable_type', $taskableType)
+            ->whereNotNull('milestone_order')
+            ->orderBy('milestone_order', 'DESC')
+            ->first();
+        return $latestTask ? $latestTask->milestone_order + 1 : 0;
     }
 
     static function getTaskableTypes(): array

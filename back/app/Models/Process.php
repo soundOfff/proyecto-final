@@ -18,9 +18,9 @@ class Process extends Model
         'department',
     ];
 
-    public function project(): BelongsTo
+    public function projectServiceType(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(ProjectServiceType::class);
     }
 
     public function procedures(): HasMany

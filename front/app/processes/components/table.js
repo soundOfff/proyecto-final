@@ -11,8 +11,6 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 
 export default function Table({ rows, meta }) {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -35,16 +33,8 @@ export default function Table({ rows, meta }) {
       ),
     },
     {
-      Header: "Caso",
-      accessor: "project",
-      Cell: ({ value }) => (
-        <Link
-          href={`/projects/${value.id}`}
-          sx={{ cursor: "pointer", color: "info" }}
-        >
-          {value.name}
-        </Link>
-      ),
+      Header: "Tipo de Caso",
+      accessor: "projectServiceType.label",
     },
     {
       Header: "Cant. de Pasos",

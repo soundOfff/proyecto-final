@@ -66,6 +66,7 @@ class ProcessController extends Controller
 
     public function destroy(Process $process)
     {
+        $process->procedures()->delete();
         $process->delete();
 
         return response()->json(null, 204);

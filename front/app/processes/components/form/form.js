@@ -16,8 +16,9 @@ import { store } from "/actions/processes";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { update } from "/actions/processes";
 
-export default function FormComponent({ projectServiceTypes }) {
+export default function FormComponent({ projectServiceTypes, process }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
@@ -25,7 +26,11 @@ export default function FormComponent({ projectServiceTypes }) {
 
   const submitForm = async (values, actions) => {
     try {
-      await store(values);
+      if (process) {
+        await update(process.id, values);
+      } else {
+        await store(values);
+      }
       router.push("/processes");
     } catch (error) {
       setErrorMsg(error.message);
@@ -76,6 +81,7 @@ export default function FormComponent({ projectServiceTypes }) {
                           touched,
                           setFieldValue,
                           projectServiceTypes,
+                          process,
                         }}
                       />
                       <MDBox display="flex" justifyContent="end" mt={5}>

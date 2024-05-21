@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
 import form from "./schemas/form";
+import { useEffect } from "react";
 
 export default function First({
   values,
@@ -11,6 +12,7 @@ export default function First({
   touched,
   setFieldValue,
   projectServiceTypes,
+  process,
 }) {
   const {
     formField: {
@@ -21,6 +23,27 @@ export default function First({
       projectServiceType,
     },
   } = form;
+
+  useEffect(() => {
+    if (process) {
+      setFieldValue(name.name, process.name || "");
+      setFieldValue(description.name, process.description || "");
+      setFieldValue(stepQuantity.name, process.stepQuantity || "");
+      setFieldValue(department.name, process.department || "");
+      setFieldValue(
+        projectServiceType.name,
+        process.projectServiceType?.id || ""
+      );
+    }
+  }, [
+    process,
+    setFieldValue,
+    name,
+    description,
+    stepQuantity,
+    department,
+    projectServiceType,
+  ]);
 
   return (
     <Grid container spacing={5}>

@@ -55,6 +55,15 @@ class ProcessController extends Controller
         return response()->json(null, 201);
     }
 
+    public function update(ProcessRequest $request, Process $process)
+    {
+        $updatedProcess = $request->validated();
+
+        $process->update($updatedProcess);
+
+        return response()->json(null, 204);
+    }
+
     public function destroy(Process $process)
     {
         $process->delete();

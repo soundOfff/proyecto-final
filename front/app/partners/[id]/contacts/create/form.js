@@ -16,16 +16,8 @@ import { store } from "/actions/contacts";
 
 export default function TaskForm() {
   const { formField, formId } = form;
-  const {
-    partner,
-    firstName,
-    lastName,
-    title,
-    email,
-    phoneNumber,
-    isPrimary,
-    profileImage,
-  } = formField;
+  const { partner, firstName, lastName, title, email, phoneNumber, isPrimary } =
+    formField;
   const { id } = useParams();
   const router = useRouter();
 

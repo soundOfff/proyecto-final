@@ -75,7 +75,7 @@ export default function DetailFormComponent({
     [fileNumber.name]: partner.fileNumber ?? "",
     [rollNumber.name]: partner.rollNumber ?? "",
     [imageNumber.name]: partner.imageNumber ?? "",
-    [dv.name]: partner.dv.toString() ?? "",
+    [dv.name]: partner.dv?.toString() ?? "",
   };
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");

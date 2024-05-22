@@ -2,12 +2,9 @@
 
 namespace App\Observers;
 
-use App\Events\TaskClosed;
-use App\Events\TaskCreated;
-use App\Events\TaskUnlocked;
+use App\Actions\TaskActions;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use Illuminate\Support\Facades\Event;
 
 class TaskObserver
 {
@@ -17,7 +14,7 @@ class TaskObserver
     public function created(Task $task): void
     {
         // Case 1 - Task is created.
-        Event::dispatch(new TaskCreated($task));
+        $this->dispatchActions($task);
     }
 
     /**
@@ -28,7 +25,7 @@ class TaskObserver
         if ($task->wasChanged('task_status_id') && $task->task_status_id !== TaskStatus::COMPLETED) return;
         
         // Case 1 - Task is closed.
-        Event::dispatch(new TaskClosed($task));
+        $this->dispatchActions($task);
 
         // Case 2 - Task is closed and another task is unlocked.
         $lockedTasks = $task->dependentTasks;
@@ -42,7 +39,7 @@ class TaskObserver
 
         if (count($recentlyUnlockedTasks) > 0) {
             foreach ($recentlyUnlockedTasks as $task) {
-                Event::dispatch(new TaskUnlocked($task));
+                $this->dispatchActions($task);
             }
         }
         
@@ -71,4 +68,20 @@ class TaskObserver
     {
         //
     }
+
+    private function dispatchActions(Task $task)
+    {
+        if ($task->is_expense) {
+            TaskActions::handleExpense($task);
+        }
+
+        if ($task->is_api) {
+            TaskActions::handleApi($task);
+        }
+
+        if ($task->is_mail) {
+            TaskActions::handleMail($task);
+        }
+    }
+
 }

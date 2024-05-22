@@ -67,8 +67,8 @@ export default function Second({ formData, countries, creditNote }) {
           type={adminNote.type}
           placeholder={adminNote.placeholder}
           value={values[adminNote.name]}
-          error={errors.adminNote && touched.adminNote}
-          success={adminNote.length > 0 && !errors.adminNote}
+          error={errors[adminNote.name] && touched[adminNote.name]}
+          success={values[adminNote.name].length > 0 && !errors[adminNote.name]}
           multiline
           rows={4}
         />
@@ -80,8 +80,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={clientNote.type}
           placeholder={clientNote.placeholder}
           value={values[clientNote.name]}
-          error={errors.clientNote && touched.clientNote}
-          success={clientNote.length > 0 && !errors.clientNote}
+          error={errors[clientNote.name] && touched[clientNote.name]}
+          success={
+            values[clientNote.name].length > 0 && !errors[clientNote.name]
+          }
           multiline
           rows={4}
         />
@@ -93,8 +95,8 @@ export default function Second({ formData, countries, creditNote }) {
           type={terms.type}
           placeholder={terms.placeholder}
           value={values[terms.name]}
-          error={errors.terms && touched.terms}
-          success={terms.length > 0 && !errors.terms}
+          error={errors[terms.name] && touched[terms.name]}
+          success={values[terms.name].length > 0 && !errors[terms.name]}
           multiline
           rows={4}
         />
@@ -116,8 +118,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={billingStreet.type}
           placeholder={billingStreet.placeholder}
           value={values[billingStreet.name]}
-          error={errors.billingStreet && touched.billingStreet}
-          success={billingStreet.length > 0 && !errors.billingStreet}
+          error={errors[billingStreet.name] && touched[billingStreet.name]}
+          success={
+            values[billingStreet.name].length > 0 && !errors[billingStreet.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -127,8 +131,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={shippingStreet.type}
           placeholder={shippingStreet.placeholder}
           value={values[shippingStreet.name]}
-          error={errors.shippingStreet && touched.shippingStreet}
-          success={shippingStreet.length > 0 && !errors.shippingStreet}
+          error={errors[shippingStreet.name] && touched[shippingStreet.name]}
+          success={
+            [shippingStreet.name].length > 0 && !errors[shippingStreet.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -138,8 +144,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={billingCity.type}
           placeholder={billingCity.placeholder}
           value={values[billingCity.name]}
-          error={errors.billingCity && touched.billingCity}
-          success={billingCity.length > 0 && !errors.billingCity}
+          error={errors[billingCity.name] && touched[billingCity.name]}
+          success={
+            values[billingCity.name].length > 0 && !errors[billingCity.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -149,8 +157,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={shippingCity.type}
           placeholder={shippingCity.placeholder}
           value={values[shippingCity.name]}
-          error={errors.shippingCity && touched.shippingCity}
-          success={shippingCity.length > 0 && !errors.shippingCity}
+          error={errors[shippingCity.name] && touched[shippingCity.name]}
+          success={
+            values[shippingCity.name].length > 0 && !errors[shippingCity.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -160,8 +170,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={billingState.type}
           placeholder={billingState.placeholder}
           value={values[billingState.name]}
-          error={errors.billingState && touched.billingState}
-          success={billingState.length > 0 && !errors.billingState}
+          error={errors[billingState.name] && touched[billingState.name]}
+          success={
+            values[billingState.name].length > 0 && !errors[billingState.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -171,8 +183,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={shippingState.type}
           placeholder={shippingState.placeholder}
           value={values[shippingState.name]}
-          error={errors.shippingState && touched.shippingState}
-          success={shippingState.length > 0 && !errors.shippingState}
+          error={errors[shippingState.name] && touched[shippingState.name]}
+          success={
+            values[shippingState.name].length > 0 && !errors[shippingState.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -182,8 +196,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={billingZip.type}
           placeholder={billingZip.placeholder}
           value={values[billingZip.name]}
-          error={errors.billingZip && touched.billingZip}
-          success={billingZip.length > 0 && !errors.billingZip}
+          error={errors[billingZip.name] && touched[billingZip.name]}
+          success={
+            values[billingZip.name].length > 0 && !errors[billingZip.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -193,8 +209,10 @@ export default function Second({ formData, countries, creditNote }) {
           type={shippingZip.type}
           placeholder={shippingZip.placeholder}
           value={values[shippingZip.name]}
-          error={errors.shippingZip && touched.shippingZip}
-          success={shippingZip.length > 0 && !errors.shippingZip}
+          error={errors[shippingZip.name] && touched[shippingZip.name]}
+          success={
+            values[shippingZip.name].length > 0 && !errors[shippingZip.name]
+          }
         />
       </Grid>
       <Grid item xs={6}>

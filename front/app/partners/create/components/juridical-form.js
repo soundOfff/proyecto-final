@@ -99,21 +99,23 @@ export default function JuridicalForm({
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[company.name]}
           label={company.label}
           placeholder={company.placeholder}
           name={company.name}
           type={company.type}
-          error={errors.name && touched.name}
-          success={company.length > 0 && !errors.name}
+          error={errors[company.name] && touched[company.name]}
+          success={values[company.name].length > 0 && !errors[company.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[website.name]}
           label={website.label}
           name={website.name}
           type={website.type}
-          error={errors.name && touched.name}
-          success={website.length > 0 && !errors.name}
+          error={errors[website.name] && touched[website.name]}
+          success={values[website.name].length > 0 && !errors[website.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -122,9 +124,9 @@ export default function JuridicalForm({
           placeholder={phone.placeholder}
           name={phone.name}
           type={phone.type}
-          value={values.phoneNumber}
-          error={errors.name && touched.name}
-          success={phone.length > 0 && !errors.name}
+          value={values[phone.name]}
+          error={errors[phone.name] && touched[phone.name]}
+          success={values[phone.name].length > 0 && !errors[phone.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -134,8 +136,8 @@ export default function JuridicalForm({
           name={email.name}
           type={email.type}
           value={values[email.name]}
-          error={errors.name && touched.name}
-          success={email.length > 0 && !errors.name}
+          error={errors[email.name] && touched[email.name]}
+          success={values[email.name].length > 0 && !errors[email.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -185,22 +187,24 @@ export default function JuridicalForm({
         <>
           <Grid item xs={12} sm={6}>
             <FormField
+              value={values[state.name]}
               label={state.label}
               placeholder={state.placeholder}
               name={state.name}
               type={state.type}
-              error={errors.name && touched.name}
-              success={state.length > 0 && !errors.name}
+              error={errors[state.name] && touched[state.name]}
+              success={values[state.name].length > 0 && !errors[state.name]}
             />
           </Grid>
           <Grid item xs={12} sm={6} alignSelf="end">
             <FormField
+              value={values[city.name]}
               label={city.label}
               placeholder={city.placeholder}
               name={city.name}
               type={city.type}
-              error={errors.name && touched.name}
-              success={city.length > 0 && !errors.name}
+              error={errors[city.name] && touched[city.name]}
+              success={values[city.name].length > 0 && !errors[city.name]}
             />
           </Grid>
         </>
@@ -209,12 +213,13 @@ export default function JuridicalForm({
         <FormField
           multiline
           rows={3}
+          value={values[address.name]}
           label={address.label}
           placeholder={address.placeholder}
           name={address.name}
           type={address.type}
-          error={errors.name && touched.name}
-          success={address.length > 0 && !errors.name}
+          error={errors[address.name] && touched[address.name]}
+          success={values[address.name].length > 0 && !errors[address.name]}
         />
       </Grid>
       <Grid item xs={12} sm={3} alignSelf="end" mb={1.5}>
@@ -238,17 +243,21 @@ export default function JuridicalForm({
           name={buildingNumber.name}
           type={buildingNumber.type}
           value={values[buildingNumber.name]}
-          error={errors.name && touched.name}
-          success={buildingNumber.length > 0 && !errors.name}
+          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
+          success={
+            values[buildingNumber.name].length > 0 &&
+            !errors[buildingNumber.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={6} alignSelf="end">
         <FormField
+          value={values[zip.name]}
           label={zip.label}
           name={zip.name}
           type={zip.type}
-          error={errors.name && touched.name}
-          success={zip.length > 0 && !errors.name}
+          error={errors[zip.name] && touched[zip.name]}
+          success={values[zip.name].length > 0 && !errors[zip.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -268,8 +277,10 @@ export default function JuridicalForm({
           name={fileNumber.name}
           type={fileNumber.type}
           value={values[fileNumber.name]}
-          error={errors.name && touched.name}
-          success={fileNumber.length > 0 && !errors.name}
+          error={errors[fileNumber.name] && touched[fileNumber.name]}
+          success={
+            values[fileNumber.name].length > 0 && !errors[fileNumber.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -279,8 +290,10 @@ export default function JuridicalForm({
           name={rollNumber.name}
           type={rollNumber.type}
           value={values[rollNumber.name]}
-          error={errors.name && touched.name}
-          success={rollNumber.length > 0 && !errors.name}
+          error={errors[rollNumber.name] && touched[rollNumber.name]}
+          success={
+            values[rollNumber.name].length > 0 && !errors[rollNumber.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -290,8 +303,10 @@ export default function JuridicalForm({
           name={imageNumber.name}
           type={imageNumber.type}
           value={values[imageNumber.name]}
-          error={errors.name && touched.name}
-          success={imageNumber.length > 0 && !errors.name}
+          error={errors[imageNumber.name] && touched[imageNumber.name]}
+          success={
+            values[imageNumber.name].length > 0 && !errors[imageNumber.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -301,8 +316,8 @@ export default function JuridicalForm({
           name={ruc.name}
           type={ruc.type}
           value={values[ruc.name]}
-          error={errors.name && touched.name}
-          success={ruc.length > 0 && !errors.name}
+          error={errors[ruc.name] && touched[ruc.name]}
+          success={values[ruc.name].length > 0 && !errors[ruc.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -312,8 +327,8 @@ export default function JuridicalForm({
           name={dv.name}
           type={dv.type}
           value={values[dv.name]}
-          error={errors.name && touched.name}
-          success={dv.length > 0 && !errors.name}
+          error={errors[dv.name] && touched[dv.name]}
+          success={values[dv.name].length > 0 && !errors[dv.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

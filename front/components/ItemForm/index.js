@@ -148,7 +148,9 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={description.type}
           errors={errors}
           touched={touched}
-          success={description.length > 0 && !errors.description}
+          success={
+            values[description.name].length > 0 && !errors[description.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={2}>
@@ -160,7 +162,10 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={longDescription.type}
           errors={errors}
           touched={touched}
-          success={longDescription.length > 0 && !errors.longDescription}
+          success={
+            values[longDescription.name].length > 0 &&
+            !errors[longDescription.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={2}>
@@ -188,7 +193,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={quantity.type}
           errors={errors}
           touched={touched}
-          success={quantity.length > 0 && !errors.quantity}
+          success={values[quantity.name].length > 0 && !errors[quantity.name]}
           value={values[quantity.name]}
           onChange={(e) => setFieldValue(quantity.name, e.target.value)}
         />
@@ -200,7 +205,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={rate.type}
           errors={errors}
           touched={touched}
-          success={rate.length > 0 && !errors.rate}
+          success={values[rate.name].length > 0 && !errors[rate.name]}
           value={values[rate.name]}
           onChange={(e) => setFieldValue(rate.name, e.target.value)}
         />
@@ -262,7 +267,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={discount.type}
           errors={errors}
           touched={touched}
-          success={discount.length > 0 && !errors.discount}
+          success={values[discount.name].length > 0 && !errors[discount.name]}
           value={values[discount.name]}
           onChange={(e) => setFieldValue(discount.name, e.target.value)}
         />

@@ -35,19 +35,19 @@ export default function InvoiceFormComponent({ partner, countries }) {
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
   const initialValues = {
-    country_id: partner.countryId,
-    company: partner.company,
-    consolidator_id: partner.consolidatorId,
-    [shippingCity.name]: partner.shippingCity,
-    [shippingCountry.name]: partner.shippingCountryId,
-    [shippingState.name]: partner.shippingState,
-    [shippingZip.name]: partner.shippingZip,
-    [shippingStreet.name]: partner.shippingStreet,
-    [billingCity.name]: partner.billingCity,
-    [billingCountry.name]: partner.billingCountryId,
-    [billingState.name]: partner.billingState,
-    [billingZip.name]: partner.billingZip,
-    [billingStreet.name]: partner.billingStreet,
+    country_id: partner.countryId ?? "",
+    company: partner.company ?? "",
+    consolidator_id: partner.consolidatorId ?? "",
+    [shippingCity.name]: partner.shippingCity ?? "",
+    [shippingCountry.name]: partner.shippingCountryId ?? "",
+    [shippingState.name]: partner.shippingState ?? "",
+    [shippingZip.name]: partner.shippingZip ?? "",
+    [shippingStreet.name]: partner.shippingStreet ?? "",
+    [billingCity.name]: partner.billingCity ?? "",
+    [billingCountry.name]: partner.billingCountryId ?? "",
+    [billingState.name]: partner.billingState ?? "",
+    [billingZip.name]: partner.billingZip ?? "",
+    [billingStreet.name]: partner.billingStreet ?? "",
   };
 
   const submitForm = async (values, actions) => {
@@ -98,82 +98,129 @@ export default function InvoiceFormComponent({ partner, countries }) {
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[billingStreet.name]}
                     label={billingStreet.label}
                     placeholder={billingStreet.placeholder}
                     name={billingStreet.name}
                     type={billingStreet.type}
-                    error={errors.name && touched.name}
-                    success={billingStreet.length > 0 && !errors.name}
+                    error={
+                      errors[billingStreet.name] && touched[billingStreet.name]
+                    }
+                    success={
+                      values[billingStreet.name].length > 0 &&
+                      !errors[billingStreet.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[shippingStreet.name]}
                     label={shippingStreet.label}
                     placeholder={shippingStreet.placeholder}
                     name={shippingStreet.name}
                     type={shippingStreet.type}
-                    error={errors.name && touched.name}
-                    success={shippingStreet.length > 0 && !errors.name}
+                    error={
+                      errors[shippingStreet.name] &&
+                      touched[shippingStreet.name]
+                    }
+                    success={
+                      values[shippingStreet.name].length > 0 &&
+                      !errors[shippingStreet.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[billingCity.name]}
                     label={billingCity.label}
                     placeholder={billingCity.placeholder}
                     name={billingCity.name}
                     type={billingCity.type}
-                    error={errors.name && touched.name}
-                    success={billingCity.length > 0 && !errors.name}
+                    error={
+                      errors[billingCity.name] && touched[billingCity.name]
+                    }
+                    success={
+                      values[billingCity.name].length > 0 &&
+                      !errors[billingCity.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[shippingCity.name]}
                     label={shippingCity.label}
                     placeholder={shippingCity.placeholder}
                     name={shippingCity.name}
                     type={shippingCity.type}
-                    error={errors.name && touched.name}
-                    success={shippingCity.length > 0 && !errors.name}
+                    error={
+                      errors[shippingCity.name] && touched[shippingCity.name]
+                    }
+                    success={
+                      values[shippingCity.name].length > 0 &&
+                      !errors[shippingCity.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[billingState.name]}
                     label={billingState.label}
                     placeholder={billingState.placeholder}
                     name={billingState.name}
                     type={billingState.type}
-                    error={errors.name && touched.name}
-                    success={billingState.length > 0 && !errors.name}
+                    error={
+                      errors[billingState.name] && touched[billingState.name]
+                    }
+                    success={
+                      values[billingState.name].length > 0 &&
+                      !errors[billingState.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[shippingState.name]}
                     label={shippingState.label}
                     placeholder={shippingState.placeholder}
                     name={shippingState.name}
                     type={shippingState.type}
-                    error={errors.name && touched.name}
-                    success={shippingState.length > 0 && !errors.name}
+                    error={
+                      errors[shippingState.name] && touched[shippingState.name]
+                    }
+                    success={
+                      values[shippingState.name].length > 0 &&
+                      !errors[shippingState.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[billingZip.name]}
                     label={billingZip.label}
                     placeholder={billingZip.placeholder}
                     name={billingZip.name}
                     type={billingZip.type}
-                    error={errors.name && touched.name}
-                    success={billingZip.length > 0 && !errors.name}
+                    error={errors[billingZip.name] && touched[billingZip.name]}
+                    success={
+                      values[billingZip.name].length > 0 &&
+                      !errors[billingZip.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormField
+                    value={values[shippingZip.name]}
                     label={shippingZip.label}
                     placeholder={shippingZip.placeholder}
                     name={shippingZip.name}
                     type={shippingZip.type}
-                    error={errors.name && touched.name}
-                    success={shippingZip.length > 0 && !errors.name}
+                    error={
+                      errors[shippingZip.name] && touched[shippingZip.name]
+                    }
+                    success={
+                      values[shippingZip.name].length > 0 &&
+                      !errors[shippingZip.name]
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>

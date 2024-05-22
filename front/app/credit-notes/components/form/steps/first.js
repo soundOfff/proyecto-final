@@ -16,14 +16,7 @@ import {
 } from "/actions/projects";
 import { useSearchParams } from "next/navigation";
 
-export default function First({
-  formData,
-  partners,
-  discountTypes,
-  tags: tagsData,
-  currencies,
-  creditNote,
-}) {
+export default function First({ formData, partners, currencies, creditNote }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { partner, project, number, date, currency, reference, discountType } =
     formField;
@@ -71,12 +64,13 @@ export default function First({
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[number.name]}
           name={number.name}
           label={number.label}
           type={number.type}
           placeholder={number.placeholder}
-          error={errors.number && touched.number}
-          success={number.length > 0 && !errors.number}
+          error={errors[number.name] && touched[number.name]}
+          success={values[number.name].length > 0 && !errors[number.name]}
         />
       </Grid>
 
@@ -117,12 +111,13 @@ export default function First({
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[reference.name]}
           name={reference.name}
           label={reference.label}
           type={reference.type}
           placeholder={reference.placeholder}
-          error={errors.reference && touched.reference}
-          success={reference.length > 0 && !errors.reference}
+          error={errors[reference.name] && touched[reference.name]}
+          success={values[reference.name].length > 0 && !errors[reference.name]}
         />
       </Grid>
 

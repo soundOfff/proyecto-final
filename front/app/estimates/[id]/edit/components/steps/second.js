@@ -104,12 +104,13 @@ export default function Second({
 
       <Grid item xs={12}>
         <FormField
+          value={values[reference.name]}
           name={reference.name}
           label={reference.label}
           type={reference.type}
           placeholder={reference.placeholder}
-          error={errors.reference && touched.reference}
-          success={reference.length > 0 && !errors.reference}
+          error={errors[reference.name] && touched[reference.name]}
+          success={values[reference.name].length > 0 && !errors[reference.name]}
         />
       </Grid>
 
@@ -120,8 +121,8 @@ export default function Second({
           type={adminNote.type}
           placeholder={adminNote.placeholder}
           value={values[adminNote.name]}
-          error={errors.adminNote && touched.adminNote}
-          success={adminNote.length > 0 && !errors.adminNote}
+          error={errors[adminNote.name] && touched[adminNote.name]}
+          success={values[adminNote.name].length > 0 && !errors[adminNote.name]}
           multiline
           rows={4}
         />
@@ -133,8 +134,10 @@ export default function Second({
           type={clientNote.type}
           placeholder={clientNote.placeholder}
           value={values[clientNote.name]}
-          error={errors.clientNote && touched.clientNote}
-          success={clientNote.length > 0 && !errors.clientNote}
+          error={errors[clientNote.name] && touched[clientNote.name]}
+          success={
+            values[clientNote.name].length > 0 && !errors[clientNote.name]
+          }
           multiline
           rows={4}
         />
@@ -146,8 +149,8 @@ export default function Second({
           type={terms.type}
           placeholder={terms.placeholder}
           value={values[terms.name]}
-          error={errors.terms && touched.terms}
-          success={terms.length > 0 && !errors.terms}
+          error={errors[terms.name] && touched[terms.name]}
+          success={values[terms.name].length > 0 && !errors[terms.name]}
           multiline
           rows={4}
         />

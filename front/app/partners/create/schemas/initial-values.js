@@ -42,6 +42,7 @@ const {
       president,
       secretary,
       treasurer,
+      dv,
     },
 
     person: {
@@ -111,6 +112,7 @@ const initialValues = {
   [president.name]: "",
   [secretary.name]: "",
   [treasurer.name]: "",
+  [dv.name]: "",
 };
 
 export default initialValues;

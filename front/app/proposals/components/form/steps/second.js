@@ -109,45 +109,51 @@ export default function Second({
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[proposalTo.name]}
           name={proposalTo.name}
           label={proposalTo.label}
           type={proposalTo.type}
           placeholder={proposalTo.placeholder}
-          error={errors.proposalTo && touched.proposalTo}
-          success={proposalTo.length > 0 && !errors.proposalTo}
+          error={errors[proposalTo.name] && touched[proposalTo.name]}
+          success={
+            values[proposalTo.name].length > 0 && !errors[proposalTo.name]
+          }
         />
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[address.name]}
           name={address.name}
           label={address.label}
           type={address.type}
           placeholder={address.placeholder}
-          error={errors.address && touched.address}
-          success={address.length > 0 && !errors.address}
+          error={errors[address.name] && touched[address.name]}
+          success={values[address.name].length > 0 && !errors[address.name]}
         />
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[city.name]}
           name={city.name}
           label={city.label}
           type={city.type}
           placeholder={city.placeholder}
-          error={errors.city && touched.city}
-          success={city.length > 0 && !errors.city}
+          error={errors[city.name] && touched[city.name]}
+          success={values[city.name].length > 0 && !errors[city.name]}
         />
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[state.name]}
           name={state.name}
           label={state.label}
           type={state.type}
           placeholder={state.placeholder}
-          error={errors.state && touched.state}
-          success={state.length > 0 && !errors.state}
+          error={errors[state.name] && touched[state.name]}
+          success={values[state.name].length > 0 && !errors[state.name]}
         />
       </Grid>
 
@@ -164,34 +170,37 @@ export default function Second({
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[zip.name]}
           name={zip.name}
           label={zip.label}
           type={zip.type}
           placeholder={zip.placeholder}
-          error={errors.zip && touched.zip}
-          success={zip.length > 0 && !errors.zip}
+          error={errors[zip.name] && touched[zip.name]}
+          success={values[zip.name].length > 0 && !errors[zip.name]}
         />
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[email.name]}
           name={email.name}
           label={email.label}
           type={email.type}
           placeholder={email.placeholder}
-          error={errors.email && touched.email}
-          success={email.length > 0 && !errors.email}
+          error={errors[email.name] && touched[email.name]}
+          success={values[email.name].length > 0 && !errors[email.name]}
         />
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[phone.name]}
           name={phone.name}
           label={phone.label}
           type={phone.type}
           placeholder={phone.placeholder}
-          error={errors.phone && touched.phone}
-          success={phone.length > 0 && !errors.phone}
+          error={errors[phone.name] && touched[phone.name]}
+          success={values[phone.name].length > 0 && !errors[phone.name]}
         />
       </Grid>
     </Grid>

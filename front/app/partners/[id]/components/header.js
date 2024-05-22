@@ -11,7 +11,7 @@ import MDAvatar from "/components/MDAvatar";
 
 function Header({ contact }) {
   return (
-    <Card id="profile">
+    <Card id="profile" sx={{ mb: 3 }}>
       <MDBox p={2}>
         <Grid container spacing={3} alignItems="center">
           <Grid item>

@@ -65,8 +65,10 @@ export default function TaskForm() {
                   type={firstName.type}
                   placeholder={firstName.placeholder}
                   value={values[firstName.name]}
-                  error={errors.name && touched.name}
-                  success={firstName.length > 0 && !errors.name}
+                  error={errors[firstName.name] && touched[firstName.name]}
+                  success={
+                    values[firstName.name].length > 0 && !errors[firstName.name]
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -76,8 +78,10 @@ export default function TaskForm() {
                   type={lastName.type}
                   placeholder={lastName.placeholder}
                   value={values[lastName.name]}
-                  error={errors.name && touched.name}
-                  success={lastName.length > 0 && !errors.name}
+                  error={errors[lastName.name] && touched[lastName.name]}
+                  success={
+                    values[lastName.name].length > 0 && !errors[lastName.name]
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -87,8 +91,8 @@ export default function TaskForm() {
                   type={email.type}
                   placeholder={email.placeholder}
                   value={values[email.name]}
-                  error={errors.name && touched.name}
-                  success={email.length > 0 && !errors.name}
+                  error={errors[email.name] && touched[email.name]}
+                  success={values[email.name].length > 0 && !errors[email.name]}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -98,8 +102,8 @@ export default function TaskForm() {
                   type={title.type}
                   placeholder={title.placeholder}
                   value={values[title.name]}
-                  error={errors.name && touched.name}
-                  success={title.length > 0 && !errors.name}
+                  error={errors[title.name] && touched[title.name]}
+                  success={values[title.name].length > 0 && !errors[title.name]}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -109,8 +113,11 @@ export default function TaskForm() {
                   type={phoneNumber.type}
                   placeholder={phoneNumber.placeholder}
                   value={values[phoneNumber.name]}
-                  error={errors.name && touched.name}
-                  success={phoneNumber.length > 0 && !errors.name}
+                  error={errors[phoneNumber.name] && touched[phoneNumber.name]}
+                  success={
+                    values[phoneNumber.name].length > 0 &&
+                    !errors[phoneNumber.name]
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

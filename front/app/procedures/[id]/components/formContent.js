@@ -11,6 +11,7 @@ export default function FormContent({
   values,
   setFieldValue,
   setFieldError,
+  setFieldTouched,
   errors,
   touched,
   procedure,
@@ -20,11 +21,9 @@ export default function FormContent({
     formField;
   const [staffs, setStaffs] = useState([]);
 
-  useEffect(() => {
-    getSelectStaff().then((staffs) => setStaffs(staffs));
-  }, []);
+  const validateStepNumberNotExist = (stepNumber) => {
+    let error;
 
-  useEffect(() => {
     const proceduresSaved =
       procedure &&
       procedure.process.procedures.filter((p) => p.id != procedure.id);
@@ -32,15 +31,19 @@ export default function FormContent({
     if (
       procedure &&
       proceduresSaved.find(
-        (procedureSaved) => procedureSaved.stepNumber == values[stepNumber.name]
+        (procedureSaved) => procedureSaved.stepNumber == stepNumber
       )
     ) {
-      setFieldError(
-        stepNumber.name,
-        `El paso número ${values[stepNumber.name]} ya existe`
-      );
+      error = `El paso número ${stepNumber} ya existe`;
+      setFieldError(stepNumber.name, error);
     }
-  }, [values, stepNumber, procedure, setFieldError, errors]);
+
+    return error;
+  };
+
+  useEffect(() => {
+    getSelectStaff().then((staffs) => setStaffs(staffs));
+  }, []);
 
   useEffect(() => {
     if (procedure) {
@@ -72,7 +75,7 @@ export default function FormContent({
           placeholder={name.placeholder}
           value={values[name.name]}
           error={errors.name && touched.name}
-          success={name.length > 0 && !errors.name}
+          success={values[name.name].length > 0 && !errors.name}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -82,8 +85,11 @@ export default function FormContent({
           type={stepNumber.type}
           placeholder={stepNumber.placeholder}
           value={values[stepNumber.name]}
-          error={errors.stepNumber && touched.stepNumber}
-          success={stepNumber.length > 0 && !errors.stepNumber}
+          error={errors[stepNumber.name] && touched[stepNumber.name]}
+          success={
+            values[stepNumber.name].length > 0 && !errors[stepNumber.name]
+          }
+          validate={validateStepNumberNotExist}
         />
       </Grid>
       <Grid item xs={12}>
@@ -93,8 +99,10 @@ export default function FormContent({
           type={description.type}
           placeholder={description.placeholder}
           value={values[description.name]}
-          error={errors.description && touched.description}
-          success={description.length > 0 && !errors.description}
+          error={errors[description.name] && touched[description.name]}
+          success={
+            values[description.name].length > 0 && !errors[description.name]
+          }
           multiline
           rows={4}
         />

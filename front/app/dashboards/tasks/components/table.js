@@ -1,7 +1,7 @@
 "use client";
 
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
@@ -26,18 +26,21 @@ export default function Table({ rows, meta }) {
     searchParams.get("type") === "myProjects" ? 1 : 0
   );
 
-  const TAB_TYPES = [
-    {
-      tabIndex: 0,
-      label: "Mis tareas",
-      value: "myTasks",
-    },
-    {
-      tabIndex: 1,
-      label: "Mis casos",
-      value: "myProjects",
-    },
-  ];
+  const TAB_TYPES = useMemo(
+    () => [
+      {
+        tabIndex: 0,
+        label: "Mis tareas",
+        value: "myTasks",
+      },
+      {
+        tabIndex: 1,
+        label: "Mis casos",
+        value: "myProjects",
+      },
+    ],
+    []
+  );
 
   const projectColumns = [
     {
@@ -266,7 +269,7 @@ export default function Table({ rows, meta }) {
     const query = queryParams ? `?${queryParams}` : "";
 
     router.push(`${pathname}${query}`);
-  }, [selectedTab, router, pathname, searchParams]);
+  }, [selectedTab, router, pathname, searchParams, TAB_TYPES]);
 
   return (
     <>

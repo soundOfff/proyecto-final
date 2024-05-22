@@ -60,6 +60,7 @@ function Basic({ NEXTAUTH_URL }) {
           height={180}
           width={180}
           src={logoWhite}
+          alt="logo"
           style={{
             borderRadius: "50%",
             width: "80%",
@@ -99,7 +100,7 @@ function Basic({ NEXTAUTH_URL }) {
             gap={1}
           >
             <span>Continuar con Google</span>
-            <Image src={google} height={20} width={20} />
+            <Image src={google} height={20} width={20} alt="google image" />
           </MDTypography>
         </MDButton>
       </MDBox>

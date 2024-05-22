@@ -26,21 +26,21 @@ class ExpenseRequest extends FormRequest
     {
         return [
             'expense_category_id' => 'required|numeric|exists:expense_categories,id',
-            'project_id' => 'nullable|numeric|exists:projects,id',
             'billable' => 'required|boolean',
             'currency_id' => 'required|numeric|exists:currencies,id',
             'date' => 'required|date',
             'amount' => 'required|numeric',
             'partner_id' => 'required|numeric|exists:partners,id',
+            'is_infinite' => 'required_with:repeat_id|boolean',
             'create_invoice_billable' => 'nullable|boolean',
             'send_invoice_to_customer' => 'nullable|boolean',
-            'is_infinite' => 'required_with:repeat_id|boolean',
             'total_cycles' => Rule::requiredIf(
                 fn () => isset(request()->repeat_id) && request()->is_infinite == 0
             ),
             'name' => 'nullable|string',
             'note' => 'nullable|string',
             'invoice_id' => 'nullable|numeric|exists:invoices,id',
+            'project_id' => 'nullable|numeric|exists:projects,id',
             'tax_id' => 'nullable|numeric|exists:taxes,id',
             'tax2_id' => 'nullable|numeric|exists:taxes,id',
             'repeat_id' => 'nullable|exists:expense_repeats,id',

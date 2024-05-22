@@ -71,17 +71,7 @@ class TaskObserver
 
     private function dispatchActions(Task $task)
     {
-        if ($task->is_expense) {
-            TaskActions::handleExpense($task);
-        }
-
-        if ($task->is_api) {
-            TaskActions::handleApi($task);
-        }
-
-        if ($task->is_mail) {
-            TaskActions::handleMail($task);
-        }
+        $task->actions->each(fn ($action) => TaskActions::handleAction($task, $action));
     }
 
 }

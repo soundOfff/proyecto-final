@@ -317,7 +317,11 @@ export default function Table({
               onClick={() => {
                 handleDelete(row.original.id);
               }}
-              sx={{ mx: 1, cursor: "pointer" }}
+              sx={{
+                mx: 1,
+                cursor: "pointer",
+                display: row.original.isBlocked ? "none" : "block",
+              }}
             />
           </Tooltip>
           {currentTimer?.task_id === row.original.id ? (

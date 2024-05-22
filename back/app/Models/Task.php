@@ -84,6 +84,11 @@ class Task extends Model
         return $this->belongsToMany(Task::class, 'task_dependencies', 'dependent_task_id', 'task_id');
     }
 
+    public function actions()
+    {
+        return $this->belongsToMany(Action::class, 'task_actions')->withPivot('is_completed');
+    }
+
     public function getTotalTime($startDate = null, $endDate = null)
     {
         if ($startDate && $endDate) {

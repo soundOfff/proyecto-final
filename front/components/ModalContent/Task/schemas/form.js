@@ -103,6 +103,10 @@ const form = {
       name: "description",
       label: "Descripción",
     },
+    actions: {
+      name: "actions",
+      label: "Acciones",
+    },
   },
 };
 

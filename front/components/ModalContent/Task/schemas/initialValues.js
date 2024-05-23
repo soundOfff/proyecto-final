@@ -17,6 +17,7 @@ import checkout from "./form";
 
 const {
   formField: {
+    description,
     isPublic,
     billable,
     name,
@@ -36,7 +37,7 @@ const {
     partner_id,
     tags,
     dependencies,
-    description,
+    actions,
   },
 } = checkout;
 
@@ -61,6 +62,7 @@ const initialValues = {
   [taskableId.name]: "",
   [tags.name]: [],
   [dependencies.name]: [],
+  [actions.name]: [],
 };
 
 export default initialValues;

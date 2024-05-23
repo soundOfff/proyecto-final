@@ -67,6 +67,8 @@ class TaskRequest extends FormRequest
             'checklist_items.*.finished' => 'nullable|boolean',
             'checklist_items.*.finished_from' => 'nullable|numeric',
             'checklist_items.*.list_order' => 'nullable|numeric',
+            'actions' => 'nullable|array',
+            'actions.*.id' => 'nullable|numeric|exists:actions,id',
         ];
     }
 }

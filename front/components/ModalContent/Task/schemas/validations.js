@@ -38,6 +38,7 @@ const {
     partner_id,
     owner_id,
     description,
+    actions,
   },
 } = checkout;
 
@@ -65,5 +66,6 @@ const validations = Yup.object().shape({
   [recurringType.name]: Yup.string().nullable(),
   [totalCycles.name]: Yup.number().nullable(),
   [isInfinite.name]: Yup.boolean(),
+  [actions.name]: Yup.array(),
 });
 export default validations;

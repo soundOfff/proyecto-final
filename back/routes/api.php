@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CreditController;
@@ -210,6 +211,8 @@ Route::delete('/procedures/{procedure}', [ProcedureController::class, 'destroy']
 Route::post('/procedures-edit-steps', [ProcedureController::class, 'editSteps']);
 
 Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
+
+Route::get('/actions', [ActionController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

@@ -34,7 +34,7 @@ class TaskController extends Controller
                 'reminders',
             ])
             ->allowedSorts([
-                'milestone_order'
+                'milestone_order',
             ])
             ->allowedFilters(
                 [
@@ -77,6 +77,9 @@ class TaskController extends Controller
         $newTask = $request->validated();
         $tags = $newTask['tags'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
+        if (! array_key_exists('milestone_order', $newTask)) {
+            $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
+        }
         $task = Task::create($newTask);
 
         foreach ($tags as $tag) {
@@ -145,12 +148,15 @@ class TaskController extends Controller
     {
         $projectId = $request->input('project_id');
         $countByStatuses = DB::table('task_statuses')
-            ->when($projectId, function ($query, $projectId) {
-                return $query->selectRaw("task_statuses.id, task_statuses.name, SUM(IF(tasks.taskable_id = $projectId AND tasks.taskable_type = 'project', 1, 0)) as count");
-            },
+            ->when(
+                $projectId,
+                function ($query, $projectId) {
+                    return $query->selectRaw("task_statuses.id, task_statuses.name, SUM(IF(tasks.taskable_id = $projectId AND tasks.taskable_type = 'project', 1, 0)) as count");
+                },
                 function ($query) {
                     return $query->selectRaw('task_statuses.id, task_statuses.name, COUNT(task_status_id) as count');
-                })
+                }
+            )
 
             ->leftJoin('tasks', 'tasks.task_status_id', '=', 'task_statuses.id')
             ->groupBy('task_statuses.id', 'task_statuses.name')
@@ -183,6 +189,11 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        Task::where('taskable_id', $task->taskable_id)
+            ->where('taskable_type', $task->taskable_type)
+            ->where('milestone_order', '>', $task->milestone_order)
+            ->decrement('milestone_order');
+
         $task->delete();
 
         return response()->json(null, 204);
@@ -207,11 +218,13 @@ class TaskController extends Controller
         $lastMonthlyEnd = now()->subMonth()->endOfMonth();
 
         $tasks = Task::all()->when(
-            $ownerId, function ($tasks) use ($ownerId) {
+            $ownerId,
+            function ($tasks) use ($ownerId) {
                 return $tasks->where('owner_id', $ownerId);
             }
         )->when(
-            $projectId, function ($tasks) use ($projectId) {
+            $projectId,
+            function ($tasks) use ($projectId) {
                 return $tasks->where('taskable_id', $projectId)->where('taskable_type', 'project');
             }
         );
@@ -249,5 +262,23 @@ class TaskController extends Controller
             'monthly_percentage' => $monthlyPercentage,
             'weekly_percentage' => $weeklyPercentage,
         ], 200);
+    }
+
+    public function editSteps(Request $request)
+    {
+        $data = $request->validate([
+            'tasks' => 'required|array',
+            'tasks.*.id' => 'required|exists:tasks,id',
+            'tasks.*.milestone_order' => 'required|integer',
+        ]);
+
+        $tasks = $data['tasks'];
+
+        foreach ($tasks as $task) {
+            $taskToUpdate = Task::find($task['id']);
+            $taskToUpdate->update(['milestone_order' => $task['milestone_order']]);
+        }
+
+        return response()->json(null, 204);
     }
 }

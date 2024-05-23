@@ -5,22 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Process extends Model
 {
     protected $fillable = [
         'id',
-        'project_id',
+        'project_service_type_id',
         'step_quantity',
         'name',
         'description',
         'department',
     ];
 
-    public function project(): BelongsTo
+    public function projectServiceType(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(ProjectServiceType::class);
     }
 
     public function procedures(): HasMany

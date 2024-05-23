@@ -5,7 +5,7 @@ export const matchedRoutes = {
   procedures: "/procedures",
   estimates: "/estimates",
   proposals: "/proposals",
-  "create-notes": "/credit-notes/create",
+  "create-notes": "/projects",
   tasks: "/tasks",
   partners: "/partners",
   invoices: "/invoices",

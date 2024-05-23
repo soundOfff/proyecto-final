@@ -4,15 +4,13 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useMaterialUIController } from "/context";
+import EditIcon from "@mui/icons-material/Edit";
 import { Tooltip } from "@mui/material";
 import { destroy } from "/actions/processes";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 
 export default function Table({ rows, meta }) {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -35,16 +33,8 @@ export default function Table({ rows, meta }) {
       ),
     },
     {
-      Header: "Caso",
-      accessor: "project",
-      Cell: ({ value }) => (
-        <Link
-          href={`/projects/${value.id}`}
-          sx={{ cursor: "pointer", color: "info" }}
-        >
-          {value.name}
-        </Link>
-      ),
+      Header: "Tipo de Caso",
+      accessor: "projectServiceType.label",
     },
     {
       Header: "Cant. de Pasos",
@@ -67,6 +57,15 @@ export default function Table({ rows, meta }) {
       Header: "Acciones",
       Cell: ({ row }) => (
         <MDBox display="flex">
+          <Link href={`/processes/${row.original.id}/edit`}>
+            <Tooltip title="Editar">
+              <EditIcon
+                color="warning"
+                fontSize="medium"
+                sx={{ mr: 3, cursor: "pointer" }}
+              />
+            </Tooltip>
+          </Link>
           <Tooltip title="Eliminar">
             <DeleteIcon
               color="error"

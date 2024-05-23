@@ -33,8 +33,8 @@ export default function First({ formData }) {
           label={cost.label}
           type={cost.type}
           placeholder={cost.placeholder}
-          error={errors.cost && touched.cost}
-          success={cost.length > 0 && !errors.cost}
+          error={errors[cost.name] && touched[cost.name]}
+          success={values[cost.name].length > 0 && !errors[cost.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -44,8 +44,11 @@ export default function First({ formData }) {
           label={estimatedHours.label}
           type={estimatedHours.type}
           placeholder={estimatedHours.label}
-          error={errors.estimatedHours && touched.estimatedHours}
-          success={estimatedHours.length > 0 && !errors.estimatedHours}
+          error={errors[estimatedHours.name] && touched[estimatedHours.name]}
+          success={
+            values[estimatedHours.name].length > 0 &&
+            !errors[estimatedHours.name]
+          }
         />
       </Grid>
       <Grid item xs={12}>
@@ -55,8 +58,8 @@ export default function First({ formData }) {
           label={expedient.label}
           type={expedient.type}
           placeholder={expedient.placeholder}
-          error={errors.expedient && touched.expedient}
-          success={expedient.length > 0 && !errors.expedient}
+          error={errors[expedient.name] && touched[expedient.name]}
+          success={values[expedient.name].length > 0 && !errors[expedient.name]}
         />
       </Grid>
       <Grid item xs={12}>

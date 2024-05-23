@@ -32,6 +32,17 @@ export async function store(data) {
   revalidatePath("/processes");
 }
 
+export async function update(id, data) {
+  const url = new URL(`${process.env.API_URL}/processes/${id}`);
+
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/processes");
+}
+
 export async function destroy(id) {
   const url = new URL(`${process.env.API_URL}/processes/${id}`);
 

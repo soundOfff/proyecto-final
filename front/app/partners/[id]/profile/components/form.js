@@ -15,7 +15,7 @@ export default function Form({
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
-    <MDBox py={5}>
+    <MDBox>
       <Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
       {tabIndex === 0 ? (
         <DetailForm

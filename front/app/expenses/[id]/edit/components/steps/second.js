@@ -118,8 +118,8 @@ export default function Second({
           type={reference.type}
           value={values[reference.name]}
           placeholder={reference.placeholder}
-          error={errors.reference && touched.reference}
-          success={reference.length > 0 && !errors.reference}
+          error={errors[reference.name] && touched[reference.name]}
+          success={values[reference.name].length > 0 && !errors[reference.name]}
         />
       </Grid>
       <Grid item xs={12}>
@@ -141,8 +141,10 @@ export default function Second({
               label=""
               placeholder={recurring.placeholder}
               value={values[recurring.name]}
-              error={errors.recurring && touched.recurring}
-              success={recurring.length > 0 && !errors.recurring}
+              error={errors[recurring.name] && touched[recurring.name]}
+              success={
+                values[recurring.name].length > 0 && !errors[recurring.name]
+              }
               box={{ width: "80%" }}
             />
           </Grid>
@@ -162,12 +164,15 @@ export default function Second({
         <Grid item xs={12}>
           <MDBox display="flex" alignItems="center">
             <FormField
+              value={values[totalCycles.name]}
               name={totalCycles.name}
               label={totalCycles.label}
               type={totalCycles.type}
               placeholder={totalCycles.placeholder}
-              error={errors.totalCycles && touched.totalCycles}
-              success={totalCycles.length > 0 && !errors.totalCycles}
+              error={errors[totalCycles.name] && touched[totalCycles.name]}
+              success={
+                values[totalCycles.name].length > 0 && !errors[totalCycles.name]
+              }
               box={{ width: "80%" }}
               disabled={values[isInfinite.name]}
             />

@@ -117,11 +117,6 @@ class Project extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function process(): HasOne
-    {
-        return $this->hasOne(Process::class);
-    }
-
     public function scopeSearch($query, $search)
     {
         return $query->when($search, function ($query) use ($search) {

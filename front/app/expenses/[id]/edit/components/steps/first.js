@@ -20,13 +20,7 @@ import { useEffect, useState } from "react";
 import Select from "/components/Select";
 import { getSelect as getProjectSelect } from "/actions/projects";
 
-export default function First({
-  expense,
-  formData,
-  partners,
-  categories,
-  invoices,
-}) {
+export default function First({ expense, formData, partners, categories }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { name, note, category, date, amount, partner, project, billable } =
     formField;
@@ -71,8 +65,8 @@ export default function First({
           type={name.type}
           placeholder={name.placeholder}
           value={values[name.name]}
-          error={errors.name && touched.name}
-          success={name.length > 0 && !errors.name}
+          error={errors[name.name] && touched[name.name]}
+          success={values[name.name].length > 0 && !errors[name.name]}
         />
       </Grid>
       <Grid item xs={12}>
@@ -101,8 +95,8 @@ export default function First({
           type={note.type}
           placeholder={note.placeholder}
           value={values[note.name]}
-          error={errors.note && touched.note}
-          success={note.length > 0 && !errors.note}
+          error={errors[note.name] && touched[note.name]}
+          success={values[note.name].length > 0 && !errors[note.name]}
           multiline
           rows={4}
         />
@@ -150,8 +144,8 @@ export default function First({
           type={amount.type}
           placeholder={amount.placeholder}
           value={values[amount.name]}
-          error={errors.amount && touched.amount}
-          success={amount.length > 0 && !errors.amount}
+          error={errors[amount.name] && touched[amount.name]}
+          success={values[amount.name].length > 0 && !errors[amount.name]}
         />
       </Grid>
       <Grid item xs={12}>

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProcessRequest;
 use App\Http\Resources\ProcessResource;
 use App\Http\Resources\ProcessResourceCollection;
 use App\Models\Process;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -15,12 +15,12 @@ class ProcessController extends Controller
     {
         $query = QueryBuilder::for(Process::class)
         ->allowedIncludes([
-            'project',
+            'projectServiceType',
             'procedures.status',
             'procedures.responsible',
         ])
         ->allowedFilters([
-            AllowedFilter::exact('project_id'),
+            AllowedFilter::exact('project_service_type_id'),
         ]);
 
         $processes = request()->has('perPage')
@@ -34,7 +34,7 @@ class ProcessController extends Controller
     {
         $process = QueryBuilder::for(Process::class)
         ->allowedIncludes([
-            'project',
+            'projectServiceType',
             'procedures.status',
             'procedures.responsible',
         ])
@@ -46,15 +46,27 @@ class ProcessController extends Controller
         return new ProcessResource($process);
     }
 
-    public function store(Request $request)
+    public function store(ProcessRequest $request)
     {
-        $process = Process::create(request()->all());
+        $newProcess = $request->validated();
+
+        Process::create($newProcess);
 
         return response()->json(null, 201);
     }
 
+    public function update(ProcessRequest $request, Process $process)
+    {
+        $updatedProcess = $request->validated();
+
+        $process->update($updatedProcess);
+
+        return response()->json(null, 204);
+    }
+
     public function destroy(Process $process)
     {
+        $process->procedures()->delete();
         $process->delete();
 
         return response()->json(null, 204);

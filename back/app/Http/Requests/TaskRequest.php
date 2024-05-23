@@ -31,6 +31,7 @@ class TaskRequest extends FormRequest
             'task_priority_id' => 'sometimes|required|numeric|exists:task_priorities,id',
             'partner_id' => 'nullable|numeric|exists:partners,id',
             'recurring' => 'nullable|numeric',
+            'milestone_order' => 'nullable|numeric',
             'is_infinite' => 'nullable|boolean',
             'billable' => 'nullable|boolean',
             'total_cycles' => 'required_if:is_infinite,false',

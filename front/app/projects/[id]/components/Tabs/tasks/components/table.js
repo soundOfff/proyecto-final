@@ -23,7 +23,7 @@ import Loader from "../../components/loader";
 import { useDataProvider } from "/providers/DataProvider";
 
 import { destroy, getAll } from "/actions/tasks";
-import { update } from "/actions/tasks";
+import { update as updateTask } from "/actions/tasks";
 import { store as storeTimer, update as updateTimer } from "/actions/timers";
 import { getCurrentTimer } from "/actions/timers";
 import { setCurrentTimer, useMaterialUIController } from "/context";
@@ -36,6 +36,8 @@ import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { useSession } from "next-auth/react";
 import { attachTasks } from "/actions/projects";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+import { editSteps } from "/actions/tasks";
+import update from "immutability-helper";
 
 export default function Table() {
   const [controller, dispatch] = useMaterialUIController();
@@ -77,7 +79,7 @@ export default function Table() {
       editedRow.status.id = statusId;
       updateOptimisticRows(editedRow);
     });
-    await update(taskId, { task_status_id: statusId });
+    await updateTask(taskId, { task_status_id: statusId });
   };
 
   const handlePriorityChange = async (taskId, priorityId) => {
@@ -86,7 +88,7 @@ export default function Table() {
       editedRow.priority.id = priorityId;
       updateOptimisticRows(editedRow);
     });
-    await update(taskId, { task_priority_id: priorityId });
+    await updateTask(taskId, { task_priority_id: priorityId });
   };
 
   const handleCreateTasks = async () => {
@@ -131,11 +133,32 @@ export default function Table() {
     });
   }, [project]);
 
+  const moveRow = (dragIndex, hoverIndex) => {
+    const dragRow = rows[dragIndex];
+    const updatedRows = update(rows, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, dragRow],
+      ],
+    });
+
+    setRows(
+      updatedRows.map((row, index) => ({
+        ...row,
+        milestone_order: index + 1,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    if (rows.length > 0) {
+      setTimeout(() => {
+        editSteps({ tasks: rows });
+      }, 1000);
+    }
+  }, [rows]);
+
   const columns = [
-    {
-      Header: "#",
-      accessor: "id",
-    },
     {
       Header: "N° de Paso",
       accessor: "milestone_order",
@@ -368,6 +391,7 @@ export default function Table() {
         table={table}
         showTotalEntries={true}
         isSorted={true}
+        moveRow={moveRow}
         noEndBorder
       />
       <DeleteRow

@@ -97,22 +97,25 @@ export default function PersonForm({
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[name.name]}
           label={name.label}
           placeholder={name.placeholder}
           name={name.name}
           type={name.type}
-          error={errors.name && touched.name}
-          success={name.length > 0 && !errors.name}
+          error={errors[name.name] && touched[name.name]}
+          success={values[name.name].length > 0 && !errors[name.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[number.name]}
+          autocomplete="off"
           label={number.label}
           placeholder={number.placeholder}
           name={number.name}
           type={number.type}
-          error={errors.name && touched.name}
-          success={number.length > 0 && !errors.name}
+          error={errors[number.name] && touched[number.name]}
+          success={values[number.name].length > 0 && !errors[number.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -122,8 +125,8 @@ export default function PersonForm({
           name={phone.name}
           type={phone.type}
           value={values[phone.name]}
-          error={errors.name && touched.name}
-          success={phone.length > 0 && !errors.name}
+          error={errors[phone.name] && touched[phone.name]}
+          success={values[phone.name].length > 0 && !errors[phone.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -133,8 +136,8 @@ export default function PersonForm({
           name={email.name}
           type={email.type}
           value={values[email.name]}
-          error={errors.name && touched.name}
-          success={email.length > 0 && !errors.name}
+          error={errors[email.name] && touched[email.name]}
+          success={values[email.name].length > 0 && !errors[email.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -277,34 +280,37 @@ export default function PersonForm({
         <>
           <Grid item xs={12} sm={6}>
             <FormField
+              value={values[state.name]}
               label={state.label}
               placeholder={state.placeholder}
               name={state.name}
               type={state.type}
-              error={errors.name && touched.name}
-              success={state.length > 0 && !errors.name}
+              error={errors[state.name] && touched[state.name]}
+              success={values[state.name].length > 0 && !errors[state.name]}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormField
+              value={values[city.name]}
               label={city.label}
               placeholder={city.placeholder}
               name={city.name}
               type={city.type}
-              error={errors.name && touched.name}
-              success={city.length > 0 && !errors.name}
+              error={errors[city.name] && touched[city.name]}
+              success={values[city.name].length > 0 && !errors[city.name]}
             />
           </Grid>
         </>
       )}
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[address.name]}
           label={address.label}
           placeholder={address.placeholder}
           name={address.name}
           type={address.type}
-          error={errors.name && touched.name}
-          success={address.length > 0 && !errors.name}
+          error={errors[address.name] && touched[address.name]}
+          success={values[address.name].length > 0 && !errors[address.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -338,8 +344,11 @@ export default function PersonForm({
           name={buildingNumber.name}
           type={buildingNumber.type}
           value={values[buildingNumber.name]}
-          error={errors.name && touched.name}
-          success={buildingNumber.length > 0 && !errors.name}
+          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
+          success={
+            values[buildingNumber.name].length > 0 &&
+            !errors[buildingNumber.name]
+          }
         />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="center">

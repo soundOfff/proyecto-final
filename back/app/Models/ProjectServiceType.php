@@ -19,4 +19,9 @@ class ProjectServiceType extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    public function processes(): HasMany
+    {
+        return $this->hasMany(Process::class);
+    }
 }

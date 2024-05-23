@@ -38,9 +38,10 @@ class Procedure extends Model
             ->where('taskable_id', $projectId)
             ->where('taskable_type', Task::TASKABLE_PROJECT)
             ->exists();
-
+        
         if ($isAlreadyCreated) return null;
 
+        $latestMilestoneOrder = Task::getMilestoneOrder($projectId, Task::TASKABLE_PROJECT);
         
         return Task::create([
             'procedure_id' => $this->id,
@@ -54,7 +55,7 @@ class Procedure extends Model
             'start_date' => now(),
             'description' => $this->description,
             'name' => $this->name,
-            'milestone_order' => $this->step_number,
+            'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder,
         ]);
     }
 }

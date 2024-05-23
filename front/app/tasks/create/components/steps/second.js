@@ -185,12 +185,13 @@ export default function Second({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[reference.name]}
           name={reference.name}
           label={reference.label}
           type={reference.type}
           placeholder={reference.placeholder}
-          error={errors.reference && touched.reference}
-          success={reference.length > 0 && !errors.reference}
+          error={errors[reference.name] && touched[reference.name]}
+          success={values[reference.name].length > 0 && !errors[reference.name]}
         />
       </Grid>
       <Grid item xs={12}>
@@ -225,12 +226,15 @@ export default function Second({
         <>
           <Grid item xs={12} sm={6}>
             <FormField
+              value={values[recurring.name]}
               name={recurring.name}
               type={recurring.type}
               label=""
               placeholder={recurring.placeholder}
-              error={errors.recurring && touched.recurring}
-              success={recurring.length > 0 && !errors.recurring}
+              error={errors[recurring.name] && touched[recurring.name]}
+              success={
+                values[recurring.name].length > 0 && !errors[recurring.name]
+              }
               box={{ width: "80%" }}
             />
           </Grid>
@@ -272,12 +276,15 @@ export default function Second({
         <Grid item xs={12}>
           <MDBox display="flex" alignItems="center">
             <FormField
+              value={values[totalCycles.name]}
               name={totalCycles.name}
               label={totalCycles.label}
               type={totalCycles.type}
               placeholder={totalCycles.placeholder}
-              error={errors.totalCycles && touched.totalCycles}
-              success={totalCycles.length > 0 && !errors.totalCycles}
+              error={errors[totalCycles.name] && touched[totalCycles.name]}
+              success={
+                values[totalCycles.name].length > 0 && !errors[totalCycles.name]
+              }
               box={{ width: "80%" }}
               disabled={values[isInfinite.name]}
             />

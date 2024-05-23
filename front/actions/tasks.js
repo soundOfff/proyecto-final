@@ -87,3 +87,12 @@ export async function getStats(params) {
 
   return data;
 }
+
+export async function editSteps(data) {
+  const url = new URL(`${process.env.API_URL}/tasks-edit-steps`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

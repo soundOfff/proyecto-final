@@ -139,6 +139,7 @@ Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 Route::get('/task-stats', [TaskController::class, 'stats']);
+Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
@@ -197,6 +198,7 @@ Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
 Route::get('/processes', [ProcessController::class, 'index']);
 Route::post('/processes', [ProcessController::class, 'store']);
 Route::get('/processes/{process}', [ProcessController::class, 'show']);
+Route::put('/processes/{process}', [ProcessController::class, 'update']);
 Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 
 Route::get('/procedures', [ProcedureController::class, 'index']);

@@ -117,6 +117,10 @@ export default function Table() {
       accessor: "id",
     },
     {
+      Header: "N° de Paso",
+      accessor: "milestone_order",
+    },
+    {
       Header: "Bloqueada por",
       accessor: "isBlocked",
       Cell: ({ row }) =>

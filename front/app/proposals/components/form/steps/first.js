@@ -68,12 +68,13 @@ export default function First({
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <FormField
+          value={values[subject.name]}
           name={subject.name}
           label={subject.label}
           type={subject.type}
           placeholder={subject.placeholder}
-          error={errors.subject && touched.subject}
-          success={subject.length > 0 && !errors.subject}
+          error={errors[subject.name] && touched[subject.name]}
+          success={values[subject.name].length > 0 && !errors[subject.name]}
         />
       </Grid>
 

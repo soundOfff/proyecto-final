@@ -1,13 +1,7 @@
 "use client";
 
 import { show } from "/actions/tasks";
-import {
-  Suspense,
-  startTransition,
-  useEffect,
-  useOptimistic,
-  useState,
-} from "react";
+import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { useMaterialUIController, setCurrentTimer } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
@@ -36,6 +30,7 @@ import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import moment from "moment";
 import { DONE_STATUS, DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+import { actions } from "react-table";
 
 export default function Table({
   rows,
@@ -48,6 +43,7 @@ export default function Table({
   partners,
   currentTimer,
   currentTaskId,
+  actionsData,
 }) {
   const [optimisticRows, updateOptimisticRows] = useOptimistic(
     rows,
@@ -115,6 +111,7 @@ export default function Table({
             "followers",
             "taskable",
             "reminders",
+            "actions",
           ],
         })
       );
@@ -383,6 +380,7 @@ export default function Table({
               tagsData={tagsData}
               partners={partners}
               task={task}
+              actionsData={actionsData}
               mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
             />
           </Modal>

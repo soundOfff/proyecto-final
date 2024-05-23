@@ -36,6 +36,7 @@ const {
     partner_id,
     tags,
     description,
+    actions,
   },
 } = checkout;
 
@@ -59,6 +60,7 @@ const initialValues = {
   [owner_id.name]: "",
   [taskableId.name]: "",
   [tags.name]: [],
+  [actions.name]: [],
 };
 
 export default initialValues;

@@ -32,6 +32,7 @@ class TaskController extends Controller
                 'followers',
                 'taskable',
                 'reminders',
+                'actions',
             ])
             ->allowedSorts([
                 'milestone_order',
@@ -76,11 +77,18 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = $newTask['tags'];
+        $actionIds = array_column($newTask['actions'], 'id');
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
+
         if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
         }
+
         $task = Task::create($newTask);
+
+        if (isset($actionIds)) {
+            $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
+        }
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $task->id;
@@ -101,6 +109,7 @@ class TaskController extends Controller
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
         $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
+        $actions = isset($newTask['actions']) ? $newTask['actions'] : null;
         $task->update($newTask);
 
         if (isset($comments)) {
@@ -136,6 +145,11 @@ class TaskController extends Controller
                 $tag['tag_id'] = $tag['id'];
                 Taggable::create($tag);
             }
+        }
+
+        if (isset($actions)) {
+            $actionIds = array_column($actions, 'id');
+            $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
         }
 
         return response()->json(null, 204);
@@ -181,6 +195,7 @@ class TaskController extends Controller
                 'followers',
                 'taskable',
                 'reminders',
+                'actions',
             ])
             ->find($task->id);
 

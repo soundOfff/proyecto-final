@@ -1,4 +1,5 @@
 "use client";
+
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import MDBox from "/components/MDBox";
@@ -17,6 +18,7 @@ export default function ModalContentForm({
   tagsData,
   partners,
   partnerId,
+  actionsData,
   task = null,
   mode = MODAL_TYPES.CREATE,
 }) {
@@ -67,6 +69,7 @@ export default function ModalContentForm({
             onClose={onClose}
             mode={mode}
             partnerId={partnerId}
+            actionsData={actionsData}
           />
           <MDBox p={3}>
             <MDBox width="100%" display="flex" justifyContent="space-between">

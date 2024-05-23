@@ -48,17 +48,19 @@ class TaskResource extends JsonResource
             'assigneds' => StaffResource::collection($this->whenLoaded('assigneds')),
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
-            'dependencies' => TaskResource::collection($this->whenLoaded('dependencies')),
+            'dependencies' => self::collection($this->whenLoaded('dependencies')),
             'isBlocked' => $this->whenLoaded('dependencies', function () {
                 return $this->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
             }),
             'taskable' => $this->whenLoaded('taskable', function () {
                 $taskableTypes = Task::getTaskableTypes();
                 $taskableType = $taskableTypes[$this->taskable_type] ?? null;
+
                 return $taskableType
                     ? $taskableType['resource']::make($this->whenLoaded('taskable'))->load($taskableType['load'])
                     : null;
             }),
+            'actions' => ActionResource::collection($this->whenLoaded('actions')),
         ];
     }
 }

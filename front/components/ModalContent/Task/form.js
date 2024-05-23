@@ -29,6 +29,7 @@ export default function TaskForm({
   repeats,
   partners,
   tagsData,
+  actionsData,
   task = null,
   mode,
   partnerId,
@@ -52,6 +53,7 @@ export default function TaskForm({
     taskableType,
     tags,
     description,
+    actions,
   } = formField;
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -79,6 +81,7 @@ export default function TaskForm({
       setTaskableItems(task.taskable ? [task?.taskable] : []);
       const parsedDescription = parseEditorState(task?.description ?? "");
       setEditorState(parsedDescription);
+      setFieldValue(actions.name, task?.actions || []);
     }
     if (partnerId) setFieldValue(partner_id.name, partnerId || "");
   }, [
@@ -103,6 +106,7 @@ export default function TaskForm({
     totalCycles.name,
     partner_id.name,
     tags.name,
+    actions.name,
   ]);
 
   useEffect(() => {
@@ -353,8 +357,8 @@ export default function TaskForm({
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              onChange={(e, selectedTag) =>
-                setFieldValue(tags.name, selectedTag)
+              onChange={(e, tagsSelected) =>
+                setFieldValue(tags.name, tagsSelected)
               }
               value={values[tags.name]}
               options={tagsData}
@@ -379,6 +383,38 @@ export default function TaskForm({
                 fontWeight="regular"
               >
                 <ErrorMessage name={tags.name} />
+              </MDTypography>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              onChange={(e, actionsSelected) =>
+                setFieldValue(actions.name, actionsSelected)
+              }
+              value={values[actions.name]}
+              options={actionsData}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  key={actions.id}
+                  label={actions.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={actions.name} />
               </MDTypography>
             </MDBox>
           </Grid>

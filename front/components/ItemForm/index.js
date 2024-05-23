@@ -149,7 +149,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           errors={errors}
           touched={touched}
           success={
-            values[description.name].length > 0 && !errors[description.name]
+            values[description.name]?.length > 0 && !errors[description.name]
           }
         />
       </Grid>
@@ -163,7 +163,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           errors={errors}
           touched={touched}
           success={
-            values[longDescription.name].length > 0 &&
+            values[longDescription.name]?.length > 0 &&
             !errors[longDescription.name]
           }
         />
@@ -193,7 +193,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={quantity.type}
           errors={errors}
           touched={touched}
-          success={values[quantity.name].length > 0 && !errors[quantity.name]}
+          success={values[quantity.name]?.length > 0 && !errors[quantity.name]}
           value={values[quantity.name]}
           onChange={(e) => setFieldValue(quantity.name, e.target.value)}
         />
@@ -205,7 +205,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={rate.type}
           errors={errors}
           touched={touched}
-          success={values[rate.name].length > 0 && !errors[rate.name]}
+          success={values[rate.name]?.length > 0 && !errors[rate.name]}
           value={values[rate.name]}
           onChange={(e) => setFieldValue(rate.name, e.target.value)}
         />
@@ -267,7 +267,7 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           type={discount.type}
           errors={errors}
           touched={touched}
-          success={values[discount.name].length > 0 && !errors[discount.name]}
+          success={values[discount.name]?.length > 0 && !errors[discount.name]}
           value={values[discount.name]}
           onChange={(e) => setFieldValue(discount.name, e.target.value)}
         />

@@ -58,7 +58,7 @@ export default function InvoiceFormComponent({
               type={billingStreet.type}
               error={errors[billingStreet.name] && touched[billingStreet.name]}
               success={
-                values[billingStreet.name].length > 0 &&
+                values[billingStreet.name]?.length > 0 &&
                 !errors[billingStreet.name]
               }
             />
@@ -74,7 +74,7 @@ export default function InvoiceFormComponent({
                 errors[shippingStreet.name] && touched[shippingStreet.name]
               }
               success={
-                values[shippingStreet.name].length > 0 &&
+                values[shippingStreet.name]?.length > 0 &&
                 !errors[shippingStreet.name]
               }
             />
@@ -88,7 +88,8 @@ export default function InvoiceFormComponent({
               type={billingCity.type}
               error={errors[billingCity.name] && touched[billingCity.name]}
               success={
-                values[billingCity.name].length > 0 && !errors[billingCity.name]
+                values[billingCity.name]?.length > 0 &&
+                !errors[billingCity.name]
               }
             />
           </Grid>
@@ -101,7 +102,7 @@ export default function InvoiceFormComponent({
               type={shippingCity.type}
               error={errors[shippingCity.name] && touched[shippingCity.name]}
               success={
-                values[shippingCity.name].length > 0 &&
+                values[shippingCity.name]?.length > 0 &&
                 !errors[shippingCity.name]
               }
             />
@@ -115,7 +116,7 @@ export default function InvoiceFormComponent({
               type={billingState.type}
               error={errors[billingState.name] && touched[billingState.name]}
               success={
-                values[billingState.name].length > 0 &&
+                values[billingState.name]?.length > 0 &&
                 !errors[billingState.name]
               }
             />
@@ -129,7 +130,7 @@ export default function InvoiceFormComponent({
               type={shippingState.type}
               error={errors[shippingState.name] && touched[shippingState.name]}
               success={
-                values[shippingState.name].length > 0 &&
+                values[shippingState.name]?.length > 0 &&
                 !errors[shippingState.name]
               }
             />
@@ -143,7 +144,7 @@ export default function InvoiceFormComponent({
               type={billingZip.type}
               error={errors[billingZip.name] && touched[billingZip.name]}
               success={
-                values[billingZip.name].length > 0 && !errors[billingZip.name]
+                values[billingZip.name]?.length > 0 && !errors[billingZip.name]
               }
             />
           </Grid>
@@ -156,7 +157,8 @@ export default function InvoiceFormComponent({
               type={shippingZip.type}
               error={errors[shippingZip.name] && touched[shippingZip.name]}
               success={
-                values[shippingZip.name].length > 0 && !errors[shippingZip.name]
+                values[shippingZip.name]?.length > 0 &&
+                !errors[shippingZip.name]
               }
             />
           </Grid>

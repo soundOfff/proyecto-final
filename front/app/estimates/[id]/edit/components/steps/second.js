@@ -110,7 +110,9 @@ export default function Second({
           type={reference.type}
           placeholder={reference.placeholder}
           error={errors[reference.name] && touched[reference.name]}
-          success={values[reference.name].length > 0 && !errors[reference.name]}
+          success={
+            values[reference.name]?.length > 0 && !errors[reference.name]
+          }
         />
       </Grid>
 
@@ -122,7 +124,9 @@ export default function Second({
           placeholder={adminNote.placeholder}
           value={values[adminNote.name]}
           error={errors[adminNote.name] && touched[adminNote.name]}
-          success={values[adminNote.name].length > 0 && !errors[adminNote.name]}
+          success={
+            values[adminNote.name]?.length > 0 && !errors[adminNote.name]
+          }
           multiline
           rows={4}
         />
@@ -136,7 +140,7 @@ export default function Second({
           value={values[clientNote.name]}
           error={errors[clientNote.name] && touched[clientNote.name]}
           success={
-            values[clientNote.name].length > 0 && !errors[clientNote.name]
+            values[clientNote.name]?.length > 0 && !errors[clientNote.name]
           }
           multiline
           rows={4}
@@ -150,7 +154,7 @@ export default function Second({
           placeholder={terms.placeholder}
           value={values[terms.name]}
           error={errors[terms.name] && touched[terms.name]}
-          success={values[terms.name].length > 0 && !errors[terms.name]}
+          success={values[terms.name]?.length > 0 && !errors[terms.name]}
           multiline
           rows={4}
         />

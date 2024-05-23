@@ -180,7 +180,9 @@ export default function Second({
           type={reference.type}
           placeholder={reference.placeholder}
           error={errors[reference.name] && touched[reference.name]}
-          success={values[reference.name].length > 0 && !errors[reference.name]}
+          success={
+            values[reference.name]?.length > 0 && !errors[reference.name]
+          }
         />
       </Grid>
       <Grid item xs={12}>
@@ -222,7 +224,7 @@ export default function Second({
               placeholder={recurring.placeholder}
               error={errors[recurring.name] && touched[recurring.name]}
               success={
-                values[recurring.name].length > 0 && !errors[recurring.name]
+                values[recurring.name]?.length > 0 && !errors[recurring.name]
               }
               box={{ width: "80%" }}
             />
@@ -272,7 +274,8 @@ export default function Second({
               placeholder={totalCycles.placeholder}
               error={errors[totalCycles.name] && touched[totalCycles.name]}
               success={
-                values[totalCycles.name].length > 0 && !errors[totalCycles.name]
+                values[totalCycles.name]?.length > 0 &&
+                !errors[totalCycles.name]
               }
               box={{ width: "80%" }}
               disabled={values[isInfinite.name]}

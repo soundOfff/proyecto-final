@@ -68,7 +68,9 @@ export default function Second({ formData, countries, creditNote }) {
           placeholder={adminNote.placeholder}
           value={values[adminNote.name]}
           error={errors[adminNote.name] && touched[adminNote.name]}
-          success={values[adminNote.name].length > 0 && !errors[adminNote.name]}
+          success={
+            values[adminNote.name]?.length > 0 && !errors[adminNote.name]
+          }
           multiline
           rows={4}
         />
@@ -82,7 +84,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[clientNote.name]}
           error={errors[clientNote.name] && touched[clientNote.name]}
           success={
-            values[clientNote.name].length > 0 && !errors[clientNote.name]
+            values[clientNote.name]?.length > 0 && !errors[clientNote.name]
           }
           multiline
           rows={4}
@@ -96,7 +98,7 @@ export default function Second({ formData, countries, creditNote }) {
           placeholder={terms.placeholder}
           value={values[terms.name]}
           error={errors[terms.name] && touched[terms.name]}
-          success={values[terms.name].length > 0 && !errors[terms.name]}
+          success={values[terms.name]?.length > 0 && !errors[terms.name]}
           multiline
           rows={4}
         />
@@ -120,7 +122,8 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[billingStreet.name]}
           error={errors[billingStreet.name] && touched[billingStreet.name]}
           success={
-            values[billingStreet.name].length > 0 && !errors[billingStreet.name]
+            values[billingStreet.name]?.length > 0 &&
+            !errors[billingStreet.name]
           }
         />
       </Grid>
@@ -133,7 +136,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[shippingStreet.name]}
           error={errors[shippingStreet.name] && touched[shippingStreet.name]}
           success={
-            [shippingStreet.name].length > 0 && !errors[shippingStreet.name]
+            [shippingStreet.name]?.length > 0 && !errors[shippingStreet.name]
           }
         />
       </Grid>
@@ -146,7 +149,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[billingCity.name]}
           error={errors[billingCity.name] && touched[billingCity.name]}
           success={
-            values[billingCity.name].length > 0 && !errors[billingCity.name]
+            values[billingCity.name]?.length > 0 && !errors[billingCity.name]
           }
         />
       </Grid>
@@ -159,7 +162,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[shippingCity.name]}
           error={errors[shippingCity.name] && touched[shippingCity.name]}
           success={
-            values[shippingCity.name].length > 0 && !errors[shippingCity.name]
+            values[shippingCity.name]?.length > 0 && !errors[shippingCity.name]
           }
         />
       </Grid>
@@ -172,7 +175,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[billingState.name]}
           error={errors[billingState.name] && touched[billingState.name]}
           success={
-            values[billingState.name].length > 0 && !errors[billingState.name]
+            values[billingState.name]?.length > 0 && !errors[billingState.name]
           }
         />
       </Grid>
@@ -185,7 +188,8 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[shippingState.name]}
           error={errors[shippingState.name] && touched[shippingState.name]}
           success={
-            values[shippingState.name].length > 0 && !errors[shippingState.name]
+            values[shippingState.name]?.length > 0 &&
+            !errors[shippingState.name]
           }
         />
       </Grid>
@@ -198,7 +202,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[billingZip.name]}
           error={errors[billingZip.name] && touched[billingZip.name]}
           success={
-            values[billingZip.name].length > 0 && !errors[billingZip.name]
+            values[billingZip.name]?.length > 0 && !errors[billingZip.name]
           }
         />
       </Grid>
@@ -211,7 +215,7 @@ export default function Second({ formData, countries, creditNote }) {
           value={values[shippingZip.name]}
           error={errors[shippingZip.name] && touched[shippingZip.name]}
           success={
-            values[shippingZip.name].length > 0 && !errors[shippingZip.name]
+            values[shippingZip.name]?.length > 0 && !errors[shippingZip.name]
           }
         />
       </Grid>

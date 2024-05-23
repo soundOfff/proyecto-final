@@ -87,7 +87,7 @@ export default function First({
           type={number.type}
           placeholder={number.placeholder}
           error={errors[number.name] && touched[number.name]}
-          success={values[number.name].length > 0 && !errors[number.name]}
+          success={values[number.name]?.length > 0 && !errors[number.name]}
         />
       </Grid>
 

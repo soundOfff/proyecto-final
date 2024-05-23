@@ -119,7 +119,9 @@ export default function Second({
           value={values[reference.name]}
           placeholder={reference.placeholder}
           error={errors[reference.name] && touched[reference.name]}
-          success={values[reference.name].length > 0 && !errors[reference.name]}
+          success={
+            values[reference.name]?.length > 0 && !errors[reference.name]
+          }
         />
       </Grid>
       <Grid item xs={12}>

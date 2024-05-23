@@ -59,7 +59,8 @@ export default function TaskForm() {
                   value={values[firstName.name]}
                   error={errors[firstName.name] && touched[firstName.name]}
                   success={
-                    values[firstName.name].length > 0 && !errors[firstName.name]
+                    values[firstName.name]?.length > 0 &&
+                    !errors[firstName.name]
                   }
                 />
               </Grid>
@@ -72,7 +73,7 @@ export default function TaskForm() {
                   value={values[lastName.name]}
                   error={errors[lastName.name] && touched[lastName.name]}
                   success={
-                    values[lastName.name].length > 0 && !errors[lastName.name]
+                    values[lastName.name]?.length > 0 && !errors[lastName.name]
                   }
                 />
               </Grid>
@@ -84,7 +85,9 @@ export default function TaskForm() {
                   placeholder={email.placeholder}
                   value={values[email.name]}
                   error={errors[email.name] && touched[email.name]}
-                  success={values[email.name].length > 0 && !errors[email.name]}
+                  success={
+                    values[email.name]?.length > 0 && !errors[email.name]
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -95,7 +98,9 @@ export default function TaskForm() {
                   placeholder={title.placeholder}
                   value={values[title.name]}
                   error={errors[title.name] && touched[title.name]}
-                  success={values[title.name].length > 0 && !errors[title.name]}
+                  success={
+                    values[title.name]?.length > 0 && !errors[title.name]
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -107,7 +112,7 @@ export default function TaskForm() {
                   value={values[phoneNumber.name]}
                   error={errors[phoneNumber.name] && touched[phoneNumber.name]}
                   success={
-                    values[phoneNumber.name].length > 0 &&
+                    values[phoneNumber.name]?.length > 0 &&
                     !errors[phoneNumber.name]
                   }
                 />

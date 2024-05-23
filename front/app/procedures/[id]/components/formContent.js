@@ -75,7 +75,7 @@ export default function FormContent({
           placeholder={name.placeholder}
           value={values[name.name]}
           error={errors.name && touched.name}
-          success={values[name.name].length > 0 && !errors.name}
+          success={values[name.name]?.length > 0 && !errors.name}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -87,7 +87,7 @@ export default function FormContent({
           value={values[stepNumber.name]}
           error={errors[stepNumber.name] && touched[stepNumber.name]}
           success={
-            values[stepNumber.name].length > 0 && !errors[stepNumber.name]
+            values[stepNumber.name]?.length > 0 && !errors[stepNumber.name]
           }
           validate={validateStepNumberNotExist}
         />
@@ -101,7 +101,7 @@ export default function FormContent({
           value={values[description.name]}
           error={errors[description.name] && touched[description.name]}
           success={
-            values[description.name].length > 0 && !errors[description.name]
+            values[description.name]?.length > 0 && !errors[description.name]
           }
           multiline
           rows={4}

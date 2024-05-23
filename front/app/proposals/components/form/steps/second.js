@@ -116,7 +116,7 @@ export default function Second({
           placeholder={proposalTo.placeholder}
           error={errors[proposalTo.name] && touched[proposalTo.name]}
           success={
-            values[proposalTo.name].length > 0 && !errors[proposalTo.name]
+            values[proposalTo.name]?.length > 0 && !errors[proposalTo.name]
           }
         />
       </Grid>
@@ -129,7 +129,7 @@ export default function Second({
           type={address.type}
           placeholder={address.placeholder}
           error={errors[address.name] && touched[address.name]}
-          success={values[address.name].length > 0 && !errors[address.name]}
+          success={values[address.name]?.length > 0 && !errors[address.name]}
         />
       </Grid>
 
@@ -141,7 +141,7 @@ export default function Second({
           type={city.type}
           placeholder={city.placeholder}
           error={errors[city.name] && touched[city.name]}
-          success={values[city.name].length > 0 && !errors[city.name]}
+          success={values[city.name]?.length > 0 && !errors[city.name]}
         />
       </Grid>
 
@@ -153,7 +153,7 @@ export default function Second({
           type={state.type}
           placeholder={state.placeholder}
           error={errors[state.name] && touched[state.name]}
-          success={values[state.name].length > 0 && !errors[state.name]}
+          success={values[state.name]?.length > 0 && !errors[state.name]}
         />
       </Grid>
 
@@ -176,7 +176,7 @@ export default function Second({
           type={zip.type}
           placeholder={zip.placeholder}
           error={errors[zip.name] && touched[zip.name]}
-          success={values[zip.name].length > 0 && !errors[zip.name]}
+          success={values[zip.name]?.length > 0 && !errors[zip.name]}
         />
       </Grid>
 
@@ -188,7 +188,7 @@ export default function Second({
           type={email.type}
           placeholder={email.placeholder}
           error={errors[email.name] && touched[email.name]}
-          success={values[email.name].length > 0 && !errors[email.name]}
+          success={values[email.name]?.length > 0 && !errors[email.name]}
         />
       </Grid>
 
@@ -200,7 +200,7 @@ export default function Second({
           type={phone.type}
           placeholder={phone.placeholder}
           error={errors[phone.name] && touched[phone.name]}
-          success={values[phone.name].length > 0 && !errors[phone.name]}
+          success={values[phone.name]?.length > 0 && !errors[phone.name]}
         />
       </Grid>
     </Grid>

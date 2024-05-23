@@ -107,7 +107,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       errors[billingStreet.name] && touched[billingStreet.name]
                     }
                     success={
-                      values[billingStreet.name].length > 0 &&
+                      values[billingStreet.name]?.length > 0 &&
                       !errors[billingStreet.name]
                     }
                   />
@@ -124,7 +124,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       touched[shippingStreet.name]
                     }
                     success={
-                      values[shippingStreet.name].length > 0 &&
+                      values[shippingStreet.name]?.length > 0 &&
                       !errors[shippingStreet.name]
                     }
                   />
@@ -140,7 +140,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       errors[billingCity.name] && touched[billingCity.name]
                     }
                     success={
-                      values[billingCity.name].length > 0 &&
+                      values[billingCity.name]?.length > 0 &&
                       !errors[billingCity.name]
                     }
                   />
@@ -156,7 +156,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       errors[shippingCity.name] && touched[shippingCity.name]
                     }
                     success={
-                      values[shippingCity.name].length > 0 &&
+                      values[shippingCity.name]?.length > 0 &&
                       !errors[shippingCity.name]
                     }
                   />
@@ -172,7 +172,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       errors[billingState.name] && touched[billingState.name]
                     }
                     success={
-                      values[billingState.name].length > 0 &&
+                      values[billingState.name]?.length > 0 &&
                       !errors[billingState.name]
                     }
                   />
@@ -188,7 +188,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       errors[shippingState.name] && touched[shippingState.name]
                     }
                     success={
-                      values[shippingState.name].length > 0 &&
+                      values[shippingState.name]?.length > 0 &&
                       !errors[shippingState.name]
                     }
                   />
@@ -202,7 +202,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                     type={billingZip.type}
                     error={errors[billingZip.name] && touched[billingZip.name]}
                     success={
-                      values[billingZip.name].length > 0 &&
+                      values[billingZip.name]?.length > 0 &&
                       !errors[billingZip.name]
                     }
                   />
@@ -218,7 +218,7 @@ export default function InvoiceFormComponent({ partner, countries }) {
                       errors[shippingZip.name] && touched[shippingZip.name]
                     }
                     success={
-                      values[shippingZip.name].length > 0 &&
+                      values[shippingZip.name]?.length > 0 &&
                       !errors[shippingZip.name]
                     }
                   />

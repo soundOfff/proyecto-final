@@ -103,7 +103,7 @@ export default function PersonForm({
           name={name.name}
           type={name.type}
           error={errors[name.name] && touched[name.name]}
-          success={values[name.name].length > 0 && !errors[name.name]}
+          success={values[name.name]?.length > 0 && !errors[name.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -115,7 +115,7 @@ export default function PersonForm({
           name={number.name}
           type={number.type}
           error={errors[number.name] && touched[number.name]}
-          success={values[number.name].length > 0 && !errors[number.name]}
+          success={values[number.name]?.length > 0 && !errors[number.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -126,7 +126,7 @@ export default function PersonForm({
           type={phone.type}
           value={values[phone.name]}
           error={errors[phone.name] && touched[phone.name]}
-          success={values[phone.name].length > 0 && !errors[phone.name]}
+          success={values[phone.name]?.length > 0 && !errors[phone.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -137,7 +137,7 @@ export default function PersonForm({
           type={email.type}
           value={values[email.name]}
           error={errors[email.name] && touched[email.name]}
-          success={values[email.name].length > 0 && !errors[email.name]}
+          success={values[email.name]?.length > 0 && !errors[email.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -286,7 +286,7 @@ export default function PersonForm({
               name={state.name}
               type={state.type}
               error={errors[state.name] && touched[state.name]}
-              success={values[state.name].length > 0 && !errors[state.name]}
+              success={values[state.name]?.length > 0 && !errors[state.name]}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -297,7 +297,7 @@ export default function PersonForm({
               name={city.name}
               type={city.type}
               error={errors[city.name] && touched[city.name]}
-              success={values[city.name].length > 0 && !errors[city.name]}
+              success={values[city.name]?.length > 0 && !errors[city.name]}
             />
           </Grid>
         </>
@@ -310,7 +310,7 @@ export default function PersonForm({
           name={address.name}
           type={address.type}
           error={errors[address.name] && touched[address.name]}
-          success={values[address.name].length > 0 && !errors[address.name]}
+          success={values[address.name]?.length > 0 && !errors[address.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -346,7 +346,7 @@ export default function PersonForm({
           value={values[buildingNumber.name]}
           error={errors[buildingNumber.name] && touched[buildingNumber.name]}
           success={
-            values[buildingNumber.name].length > 0 &&
+            values[buildingNumber.name]?.length > 0 &&
             !errors[buildingNumber.name]
           }
         />

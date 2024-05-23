@@ -105,7 +105,7 @@ export default function JuridicalForm({
           name={company.name}
           type={company.type}
           error={errors[company.name] && touched[company.name]}
-          success={values[company.name].length > 0 && !errors[company.name]}
+          success={values[company.name]?.length > 0 && !errors[company.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -115,7 +115,7 @@ export default function JuridicalForm({
           name={website.name}
           type={website.type}
           error={errors[website.name] && touched[website.name]}
-          success={values[website.name].length > 0 && !errors[website.name]}
+          success={values[website.name]?.length > 0 && !errors[website.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -126,7 +126,7 @@ export default function JuridicalForm({
           type={phone.type}
           value={values[phone.name]}
           error={errors[phone.name] && touched[phone.name]}
-          success={values[phone.name].length > 0 && !errors[phone.name]}
+          success={values[phone.name]?.length > 0 && !errors[phone.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -137,7 +137,7 @@ export default function JuridicalForm({
           type={email.type}
           value={values[email.name]}
           error={errors[email.name] && touched[email.name]}
-          success={values[email.name].length > 0 && !errors[email.name]}
+          success={values[email.name]?.length > 0 && !errors[email.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -193,7 +193,7 @@ export default function JuridicalForm({
               name={state.name}
               type={state.type}
               error={errors[state.name] && touched[state.name]}
-              success={values[state.name].length > 0 && !errors[state.name]}
+              success={values[state.name]?.length > 0 && !errors[state.name]}
             />
           </Grid>
           <Grid item xs={12} sm={6} alignSelf="end">
@@ -204,7 +204,7 @@ export default function JuridicalForm({
               name={city.name}
               type={city.type}
               error={errors[city.name] && touched[city.name]}
-              success={values[city.name].length > 0 && !errors[city.name]}
+              success={values[city.name]?.length > 0 && !errors[city.name]}
             />
           </Grid>
         </>
@@ -219,7 +219,7 @@ export default function JuridicalForm({
           name={address.name}
           type={address.type}
           error={errors[address.name] && touched[address.name]}
-          success={values[address.name].length > 0 && !errors[address.name]}
+          success={values[address.name]?.length > 0 && !errors[address.name]}
         />
       </Grid>
       <Grid item xs={12} sm={3} alignSelf="end" mb={1.5}>
@@ -245,7 +245,7 @@ export default function JuridicalForm({
           value={values[buildingNumber.name]}
           error={errors[buildingNumber.name] && touched[buildingNumber.name]}
           success={
-            values[buildingNumber.name].length > 0 &&
+            values[buildingNumber.name]?.length > 0 &&
             !errors[buildingNumber.name]
           }
         />
@@ -257,7 +257,7 @@ export default function JuridicalForm({
           name={zip.name}
           type={zip.type}
           error={errors[zip.name] && touched[zip.name]}
-          success={values[zip.name].length > 0 && !errors[zip.name]}
+          success={values[zip.name]?.length > 0 && !errors[zip.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -279,7 +279,7 @@ export default function JuridicalForm({
           value={values[fileNumber.name]}
           error={errors[fileNumber.name] && touched[fileNumber.name]}
           success={
-            values[fileNumber.name].length > 0 && !errors[fileNumber.name]
+            values[fileNumber.name]?.length > 0 && !errors[fileNumber.name]
           }
         />
       </Grid>
@@ -292,7 +292,7 @@ export default function JuridicalForm({
           value={values[rollNumber.name]}
           error={errors[rollNumber.name] && touched[rollNumber.name]}
           success={
-            values[rollNumber.name].length > 0 && !errors[rollNumber.name]
+            values[rollNumber.name]?.length > 0 && !errors[rollNumber.name]
           }
         />
       </Grid>
@@ -305,7 +305,7 @@ export default function JuridicalForm({
           value={values[imageNumber.name]}
           error={errors[imageNumber.name] && touched[imageNumber.name]}
           success={
-            values[imageNumber.name].length > 0 && !errors[imageNumber.name]
+            values[imageNumber.name]?.length > 0 && !errors[imageNumber.name]
           }
         />
       </Grid>
@@ -317,7 +317,7 @@ export default function JuridicalForm({
           type={ruc.type}
           value={values[ruc.name]}
           error={errors[ruc.name] && touched[ruc.name]}
-          success={values[ruc.name].length > 0 && !errors[ruc.name]}
+          success={values[ruc.name]?.length > 0 && !errors[ruc.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -328,7 +328,7 @@ export default function JuridicalForm({
           type={dv.type}
           value={values[dv.name]}
           error={errors[dv.name] && touched[dv.name]}
-          success={values[dv.name].length > 0 && !errors[dv.name]}
+          success={values[dv.name]?.length > 0 && !errors[dv.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

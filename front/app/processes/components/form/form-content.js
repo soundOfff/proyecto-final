@@ -55,7 +55,7 @@ export default function First({
           type={name.type}
           placeholder={name.placeholder}
           error={errors[name.name] && touched[name.name]}
-          success={values[name.name].length > 0 && !errors[name.name]}
+          success={values[name.name]?.length > 0 && !errors[name.name]}
         />
       </Grid>
 
@@ -68,7 +68,7 @@ export default function First({
           placeholder={description.placeholder}
           error={errors[description.name] && touched[description.name]}
           success={
-            values[description.name].length > 0 && !errors[description.name]
+            values[description.name]?.length > 0 && !errors[description.name]
           }
           multiline
           rows={3}
@@ -84,7 +84,7 @@ export default function First({
           placeholder={stepQuantity.placeholder}
           error={errors[stepQuantity.name] && touched[stepQuantity.name]}
           success={
-            values[stepQuantity.name].length > 0 && !errors[stepQuantity.name]
+            values[stepQuantity.name]?.length > 0 && !errors[stepQuantity.name]
           }
         />
       </Grid>
@@ -98,7 +98,7 @@ export default function First({
           placeholder={department.placeholder}
           error={errors[department.name] && touched[department.name]}
           success={
-            values[department.name].length > 0 && !errors[department.name]
+            values[department.name]?.length > 0 && !errors[department.name]
           }
         />
       </Grid>

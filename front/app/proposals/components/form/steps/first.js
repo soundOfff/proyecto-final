@@ -74,7 +74,7 @@ export default function First({
           type={subject.type}
           placeholder={subject.placeholder}
           error={errors[subject.name] && touched[subject.name]}
-          success={values[subject.name].length > 0 && !errors[subject.name]}
+          success={values[subject.name]?.length > 0 && !errors[subject.name]}
         />
       </Grid>
 

@@ -70,7 +70,7 @@ export default function First({ formData, partners, currencies, creditNote }) {
           type={number.type}
           placeholder={number.placeholder}
           error={errors[number.name] && touched[number.name]}
-          success={values[number.name].length > 0 && !errors[number.name]}
+          success={values[number.name]?.length > 0 && !errors[number.name]}
         />
       </Grid>
 
@@ -117,7 +117,9 @@ export default function First({ formData, partners, currencies, creditNote }) {
           type={reference.type}
           placeholder={reference.placeholder}
           error={errors[reference.name] && touched[reference.name]}
-          success={values[reference.name].length > 0 && !errors[reference.name]}
+          success={
+            values[reference.name]?.length > 0 && !errors[reference.name]
+          }
         />
       </Grid>
 

@@ -141,6 +141,7 @@ Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 Route::get('/task-stats', [TaskController::class, 'stats']);
 Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
+
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
 Route::get('/tags', [TagController::class, 'index']);

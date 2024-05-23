@@ -45,6 +45,7 @@ export default function Table({
   taskableItems,
   tagsData,
   statuses,
+  dependencyTasks,
   partners,
   currentTimer,
   currentTaskId,
@@ -112,6 +113,7 @@ export default function Table({
             "comments",
             "checklistItems",
             "assigneds",
+            "dependencies",
             "followers",
             "taskable",
             "reminders",
@@ -380,6 +382,7 @@ export default function Table({
               priorities={priorities}
               repeats={repeats}
               taskableItems={taskableItems}
+              dependencyTasks={dependencyTasks}
               tagsData={tagsData}
               partners={partners}
               task={task}

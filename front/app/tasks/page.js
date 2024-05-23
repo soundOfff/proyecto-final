@@ -3,9 +3,8 @@ import Card from "@mui/material/Card";
 import MDBox from "/components/MDBox";
 import Table from "./components/table";
 import { getAll as getAllTags } from "/actions/tags";
-import { getAll as getAllTasks } from "/actions/tasks";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
-import { getTaskPriorities } from "/actions/tasks";
+import { getTaskPriorities, getAll as getAllTasks } from "/actions/tasks";
 import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
@@ -45,6 +44,7 @@ export default async function Tasks({
               repeats={repeats}
               taskableItems={taskableItems}
               tagsData={tagsData}
+              dependencyTasks={tasks}
               partners={partners}
               statuses={statuses}
               currentTimer={currentTimer}

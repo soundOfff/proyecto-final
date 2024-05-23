@@ -28,6 +28,7 @@ export default function TaskForm({
   formData,
   repeats,
   partners,
+  dependencyTasks,
   tagsData,
   task = null,
   mode,
@@ -45,6 +46,7 @@ export default function TaskForm({
     repeat,
     recurring,
     recurringType,
+    dependencies,
     isInfinite,
     totalCycles,
     taskableId,
@@ -71,6 +73,7 @@ export default function TaskForm({
       setFieldValue(totalCycles.name, task?.total_cycles || "");
       setFieldValue(taskableType.name, task?.taskable_type || 0);
       setFieldValue(tags.name, task?.tags || []);
+      setFieldValue(dependencies.name, task?.dependencies || []);
       setFieldValue(partner_id.name, task?.partner_id || "");
       setFieldValue(taskableId.name, task?.taskable?.id || "");
       setFieldValue(billable.name, Boolean(task?.billable));
@@ -117,6 +120,19 @@ export default function TaskForm({
       });
     }
   }, [partner_id, taskableType, values]);
+
+  const filteredDependencyTasks = useCallback(() => {
+    if (task) {
+      return dependencyTasks.filter(
+        (dependency) =>
+          dependency.id !== task.id ||
+          (dependency.milestone_order > task.milestone_order &&
+            task.taskable_type === dependency.taskable_type &&
+            task.taskable_id === dependency.taskable_id) // Check the order in base of the project
+      );
+    }
+    return dependencyTasks;
+  }, [dependencyTasks, task]);
 
   const handleChange = useCallback(
     (editorState) => {
@@ -379,6 +395,38 @@ export default function TaskForm({
                 fontWeight="regular"
               >
                 <ErrorMessage name={tags.name} />
+              </MDTypography>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              onChange={(e, selectedTask) =>
+                setFieldValue(dependencies.name, selectedTask)
+              }
+              value={values[dependencies.name]}
+              options={filteredDependencyTasks()}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  key={dependencies.id}
+                  label={dependencies.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={dependencies.name} />
               </MDTypography>
             </MDBox>
           </Grid>

@@ -16,6 +16,7 @@ export default function ModalContentForm({
   repeats,
   tagsData,
   partners,
+  dependencyTasks,
   partnerId,
   task = null,
   mode = MODAL_TYPES.CREATE,
@@ -64,6 +65,7 @@ export default function ModalContentForm({
             repeats={repeats}
             tagsData={tagsData}
             task={task}
+            dependencyTasks={dependencyTasks}
             onClose={onClose}
             mode={mode}
             partnerId={partnerId}

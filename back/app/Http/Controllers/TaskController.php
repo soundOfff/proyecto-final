@@ -76,11 +76,16 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = $newTask['tags'];
+        $dependencies = $newTask['dependencies'];
+        $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
         if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
         }
         $task = Task::create($newTask);
+
+        $dependencyIds = array_column($dependencies, 'id');
+        $task->dependencies()->sync($dependencyIds);
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $task->id;
@@ -96,6 +101,7 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
+        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : null;
         $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
@@ -106,6 +112,11 @@ class TaskController extends Controller
         if (isset($comments)) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
+        }
+        
+        if (isset($dependencies)) {
+            $dependencyIds = array_column($dependencies, 'id');
+            $task->dependencies()->sync($dependencyIds);
         }
 
         if (isset($checklistItems)) {
@@ -176,6 +187,7 @@ class TaskController extends Controller
                 'priority',
                 'status',
                 'comments',
+                'dependencies',
                 'checklistItems',
                 'assigneds',
                 'followers',

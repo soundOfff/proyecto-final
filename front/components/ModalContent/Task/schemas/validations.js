@@ -27,6 +27,7 @@ const {
     task_priority_id,
     task_status_id,
     repeat,
+    dependencies,
     recurring,
     recurringType,
     isInfinite,
@@ -48,7 +49,7 @@ const validations = Yup.object().shape({
   [taskableId.name]: Yup.string().required(taskableId.errorMsg),
   [task_priority_id.name]: Yup.string().required(task_priority_id.errorMsg),
   [repeat.name]: Yup.string().required(repeat.errorMsg),
-
+  [dependencies.name]: Yup.array(),
   [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),

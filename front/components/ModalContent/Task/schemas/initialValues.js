@@ -35,6 +35,7 @@ const {
     taskableId,
     partner_id,
     tags,
+    dependencies,
     description,
   },
 } = checkout;
@@ -59,6 +60,7 @@ const initialValues = {
   [owner_id.name]: "",
   [taskableId.name]: "",
   [tags.name]: [],
+  [dependencies.name]: [],
 };
 
 export default initialValues;

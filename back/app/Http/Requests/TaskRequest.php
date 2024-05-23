@@ -40,6 +40,8 @@ class TaskRequest extends FormRequest
             'owner_id' => 'nullable|numeric|exists:staff,id',
             'task_status_id' => 'sometimes|required|numeric|exists:task_statuses,id',
             'description' => 'nullable|string',
+            'dependencies' => 'nullable|array',
+            'dependencies.*.id' => 'nullable|numeric|exists:tasks,id',
             'tags' => 'nullable|array',
             'tags.*.id' => 'nullable|numeric|exists:tags,id',
             'assigneds' => 'nullable|array',

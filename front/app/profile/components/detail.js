@@ -12,6 +12,7 @@ import moneyFormat from "/utils/moneyFormat";
 import { Divider } from "@mui/material";
 import HandIcon from "/assets/logo/Black/hand.svg";
 import Image from "next/image";
+import { parseProjectDescription } from "/utils/parseProjectDescription";
 
 export default function Detail({ project }) {
   return (
@@ -146,19 +147,23 @@ export default function Detail({ project }) {
         </Grid>
       )}
 
-      <MDBox m={5} lineHeight={1}>
-        <MDTypography variant="h4" textAlign="center" my={2}>
-          Descripción
-        </MDTypography>
-        <MDTypography
-          variant="body2"
-          textTransform="capitalize"
-          paragraph
-          dangerouslySetInnerHTML={{
-            __html: project.description ?? "Sin descripción",
-          }}
-        ></MDTypography>
-      </MDBox>
+      {parseProjectDescription(project.description) && (
+        <MDBox m={5} lineHeight={1}>
+          <MDTypography variant="h4" textAlign="center" my={2}>
+            Descripción
+          </MDTypography>
+          <MDTypography
+            variant="body2"
+            textTransform="capitalize"
+            paragraph
+            dangerouslySetInnerHTML={{
+              __html:
+                parseProjectDescription(project.description) ??
+                "Sin descripción",
+            }}
+          ></MDTypography>
+        </MDBox>
+      )}
     </Grid>
   );
 }

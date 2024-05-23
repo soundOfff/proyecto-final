@@ -12,6 +12,7 @@ import moneyFormat from "/utils/moneyFormat";
 import { Divider } from "@mui/material";
 import HandIcon from "/assets/logo/Black/hand.svg";
 import Image from "next/image";
+import { parseProjectDescription } from "/utils/parseProjectDescription";
 
 export default function Detail({ project }) {
   return (
@@ -36,12 +37,14 @@ export default function Detail({ project }) {
           />
         </MDBox>
         <Grid container mt={3}>
-          <Grid item xs={12} xxl={2} display="flex">
-            <MonetizationOnOutlinedIcon sx={{ mr: 1 }} />
-            <MDTypography variant="h6" color="text" fontWeight="light">
-              {moneyFormat(project.cost)}
-            </MDTypography>
-          </Grid>
+          {project.cost && (
+            <Grid item xs={12} xxl={2} display="flex">
+              <MonetizationOnOutlinedIcon sx={{ mr: 1 }} />
+              <MDTypography variant="h6" color="text" fontWeight="light">
+                {moneyFormat(project.cost)}
+              </MDTypography>
+            </Grid>
+          )}
           {project.defendant && (
             <Grid item xs={12} xxl={3} display="flex">
               <Image
@@ -84,24 +87,26 @@ export default function Detail({ project }) {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Grid
-          container
-          spacing={5}
-          mx={{ xl: 10, xs: 0 }}
-          mt={{ xl: 3, xs: 0 }}
-          justifyContent="center"
-        >
-          <Grid item xs={6}>
-            <MDTypography variant="body2" fontWeight="medium">
-              Horas Estimadas
-            </MDTypography>
+        {project.estimatedHours && (
+          <Grid
+            container
+            spacing={5}
+            mx={{ xl: 10, xs: 0 }}
+            mt={{ xl: 3, xs: 0 }}
+            justifyContent="center"
+          >
+            <Grid item xs={6}>
+              <MDTypography variant="body2" fontWeight="medium">
+                Horas Estimadas
+              </MDTypography>
+            </Grid>
+            <Grid item xs={6}>
+              <MDTypography variant="body2" color="text">
+                {project.estimatedHours}
+              </MDTypography>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <MDTypography variant="body2" color="text">
-              {project.estimatedHours}
-            </MDTypography>
-          </Grid>
-        </Grid>
+        )}
         <Divider fullWidth />
       </Grid>
       <Grid item xs={12}>
@@ -145,20 +150,23 @@ export default function Detail({ project }) {
           </Grid>
         </Grid>
       )}
-
-      <MDBox m={5} lineHeight={1}>
-        <MDTypography variant="h4" textAlign="center" my={2}>
-          Descripción
-        </MDTypography>
-        <MDTypography
-          variant="body2"
-          textTransform="capitalize"
-          paragraph
-          dangerouslySetInnerHTML={{
-            __html: project.description ?? "Sin descripción",
-          }}
-        ></MDTypography>
-      </MDBox>
+      {parseProjectDescription(project.description) && (
+        <MDBox m={5} lineHeight={1}>
+          <MDTypography variant="h4" textAlign="center" my={2}>
+            Descripción
+          </MDTypography>
+          <MDTypography
+            variant="body2"
+            textTransform="capitalize"
+            paragraph
+            dangerouslySetInnerHTML={{
+              __html:
+                parseProjectDescription(project.description) ??
+                "Sin descripción",
+            }}
+          ></MDTypography>
+        </MDBox>
+      )}
     </Grid>
   );
 }

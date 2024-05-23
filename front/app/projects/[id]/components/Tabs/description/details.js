@@ -9,6 +9,7 @@ import { Divider, Grid } from "@mui/material";
 
 import moneyFormat from "/utils/moneyFormat";
 import { useDataProvider } from "/providers/DataProvider";
+import { parseProjectDescription } from "/utils/parseProjectDescription";
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
@@ -66,7 +67,7 @@ export default function Details() {
             color="dark"
             title="Fin"
             icon="date_range"
-            description={project.deadline}
+            description={project.deadline ?? "Sin Fecha Fin"}
           />
         </Grid>
       </Grid>
@@ -85,7 +86,7 @@ export default function Details() {
           <DefaultItem
             color="dark"
             title="Demandante"
-            description={project.plaintiff?.company}
+            description={project.plaintiff?.company ?? "Sin Demandante"}
           />
         </Grid>
 
@@ -95,14 +96,16 @@ export default function Details() {
           <DefaultItem
             color="dark"
             title="Tipo De Facturación"
-            description={project.billingType?.label}
+            description={
+              project.billingType?.label ?? "Sin Tipo de Facturación"
+            }
           />
         </Grid>
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
             title="Horas Estimadas"
-            description={project.estimatedHours}
+            description={project.estimatedHours ?? "Sin estimación"}
           />
         </Grid>
 
@@ -120,33 +123,43 @@ export default function Details() {
             color="dark"
             title="Abogado Principal"
             description={
-              project.staffs.length > 0 &&
-              project.staffs.at(-1)?.firstName +
-                " " +
-                project.staffs.at(-1)?.lastName
+              project.staffs.length > 0
+                ? project.staffs.at(-1)?.firstName +
+                  " " +
+                  project.staffs.at(-1)?.lastName
+                : "Sin abogado principal"
             }
           />
         </Grid>
 
         <Divider variant="left" sx={{ width: "70%" }} />
 
-        <Grid xs={12} mt={3}>
-          <MDBox ml={2} mt={0.5} lineHeight={1.4}>
-            <MDTypography display="block" variant="button" fontWeight="medium">
-              Descripción
-            </MDTypography>
-            <MDTypography
-              variant="button"
-              fontWeight="regular"
-              color="text"
-              dangerouslySetInnerHTML={{
-                __html: project.description ?? "Sin descripción",
-              }}
-            />
-          </MDBox>
-        </Grid>
-
-        <Divider variant="left" sx={{ width: "70%" }} />
+        {parseProjectDescription(project.description) && (
+          <>
+            <Grid xs={12} mt={3}>
+              <MDBox ml={2} mt={0.5} lineHeight={1.4}>
+                <MDTypography
+                  display="block"
+                  variant="button"
+                  fontWeight="medium"
+                >
+                  Descripción
+                </MDTypography>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      parseProjectDescription(project.description) ??
+                      "Sin descripción",
+                  }}
+                />
+              </MDBox>
+            </Grid>
+            <Divider variant="left" sx={{ width: "70%" }} />
+          </>
+        )}
 
         <Grid xs={12} pl={2} mt={3}>
           <MDBox mt={0.5} lineHeight={1.4}>

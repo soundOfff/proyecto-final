@@ -96,7 +96,7 @@ export default function First({ expense, formData, partners, categories }) {
           placeholder={note.placeholder}
           value={values[note.name]}
           error={errors[note.name] && touched[note.name]}
-          success={values[note.name].length > 0 && !errors[note.name]}
+          success={values[note.name]?.length > 0 && !errors[note.name]}
           multiline
           rows={4}
         />

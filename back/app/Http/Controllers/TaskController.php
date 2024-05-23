@@ -24,6 +24,7 @@ class TaskController extends Controller
                 'timers',
                 'priority',
                 'status',
+                'dependencies',
                 'comments',
                 'checklistItems',
                 'assigneds',
@@ -31,6 +32,7 @@ class TaskController extends Controller
                 'followers',
                 'taskable',
                 'reminders',
+                'actions',
             ])
             ->allowedSorts([
                 'milestone_order',
@@ -75,11 +77,20 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = $newTask['tags'];
+        $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
+
         if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
         }
+
         $task = Task::create($newTask);
+
+        $dependencyIds = array_column($dependencies, 'id');
+        $task->dependencies()->sync($dependencyIds);
+
+        $actionIds = array_column($newTask['actions'], 'id');
+        $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $task->id;
@@ -95,16 +106,23 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
+        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : null;
         $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
         $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
+        $actions = isset($newTask['actions']) ? $newTask['actions'] : null;
         $task->update($newTask);
 
         if (isset($comments)) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
+        }
+
+        if (isset($dependencies)) {
+            $dependencyIds = array_column($dependencies, 'id');
+            $task->dependencies()->sync($dependencyIds);
         }
 
         if (isset($checklistItems)) {
@@ -135,6 +153,11 @@ class TaskController extends Controller
                 $tag['tag_id'] = $tag['id'];
                 Taggable::create($tag);
             }
+        }
+
+        if (isset($actions)) {
+            $actionIds = array_column($actions, 'id');
+            $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
         }
 
         return response()->json(null, 204);
@@ -175,11 +198,13 @@ class TaskController extends Controller
                 'priority',
                 'status',
                 'comments',
+                'dependencies',
                 'checklistItems',
                 'assigneds',
                 'followers',
                 'taskable',
                 'reminders',
+                'actions',
             ])
             ->find($task->id);
 

@@ -4,18 +4,20 @@ namespace App\Models;
 
 use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\ProjectResource;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use App\Observers\TaskObserver;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
     protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'owner_id', 'procedure_id', 'milestone_order', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
 
     public const TASKABLE_PROJECT = 'project';
+
     public const TASKABLE_INVOICE = 'invoice';
 
     public function taskable()
@@ -73,10 +75,26 @@ class Task extends Model
         return $this->hasMany(Reminder::class, 'reminderable_id');
     }
 
+    public function dependencies()
+    {
+        return $this->belongsToMany(self::class, 'task_dependencies', 'task_id', 'dependent_task_id');
+    }
+
+    public function dependentTasks()
+    {
+        return $this->belongsToMany(self::class, 'task_dependencies', 'dependent_task_id', 'task_id');
+    }
+
+    public function actions()
+    {
+        return $this->belongsToMany(Action::class, 'task_actions')->withPivot('is_completed');
+    }
+
     public function getTotalTime($startDate = null, $endDate = null)
     {
         if ($startDate && $endDate) {
             $timers = $this->timers->whereBetween('start_time', [$startDate, $endDate]);
+
             return $this->calculateTotalTime($timers);
         }
 
@@ -89,21 +107,23 @@ class Task extends Model
             if (is_null($timer->end_time)) {
                 return 0;
             }
+
             return Carbon::parse($timer->end_time)->floatDiffInRealHours($timer->start_time);
         });
     }
 
-    static function getMilestoneOrder($taskableId, $taskableType)
+    public static function getMilestoneOrder($taskableId, $taskableType)
     {
-        $latestTask = Task::where('taskable_id', $taskableId)
+        $latestTask = self::where('taskable_id', $taskableId)
             ->where('taskable_type', $taskableType)
             ->whereNotNull('milestone_order')
             ->orderBy('milestone_order', 'DESC')
             ->first();
+
         return $latestTask ? $latestTask->milestone_order + 1 : 0;
     }
 
-    static function getTaskableTypes(): array
+    public static function getTaskableTypes(): array
     {
         return [
             'project' => [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CreditController;
@@ -141,6 +142,7 @@ Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 Route::get('/task-stats', [TaskController::class, 'stats']);
 Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
+
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
 Route::get('/tags', [TagController::class, 'index']);
@@ -209,6 +211,8 @@ Route::delete('/procedures/{procedure}', [ProcedureController::class, 'destroy']
 Route::post('/procedures-edit-steps', [ProcedureController::class, 'editSteps']);
 
 Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
+
+Route::get('/actions', [ActionController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

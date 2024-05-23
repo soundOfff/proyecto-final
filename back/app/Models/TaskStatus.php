@@ -12,6 +12,7 @@ class TaskStatus extends Model
     protected $guarded = [];
     
     public const IN_PROGRESS = 2;
+    public const COMPLETED = 3;
 
     public static function getInProgress(): self
     {

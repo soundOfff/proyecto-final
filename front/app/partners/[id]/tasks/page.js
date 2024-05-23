@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 export default async function PartnerTasks({ params: { id } }) {
   const tasks = await getAll({
-    include: ["assigneds", "tags", "status"],
+    include: ["assigneds", "tags", "status", "dependencies"],
     "filter[partner_id]": id,
   });
 

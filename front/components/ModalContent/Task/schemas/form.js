@@ -95,9 +95,17 @@ const form = {
       name: "tags",
       label: "Etiquetas",
     },
+    dependencies: {
+      name: "dependencies",
+      label: "Dependencias",
+    },
     description: {
       name: "description",
       label: "Descripción",
+    },
+    actions: {
+      name: "actions",
+      label: "Acciones",
     },
   },
 };

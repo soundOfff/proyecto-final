@@ -28,7 +28,9 @@ export default function TaskForm({
   formData,
   repeats,
   partners,
+  dependencyTasks,
   tagsData,
+  actionsData,
   task = null,
   mode,
   partnerId,
@@ -45,6 +47,7 @@ export default function TaskForm({
     repeat,
     recurring,
     recurringType,
+    dependencies,
     isInfinite,
     totalCycles,
     taskableId,
@@ -52,6 +55,7 @@ export default function TaskForm({
     taskableType,
     tags,
     description,
+    actions,
   } = formField;
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -71,6 +75,7 @@ export default function TaskForm({
       setFieldValue(totalCycles.name, task?.total_cycles || "");
       setFieldValue(taskableType.name, task?.taskable_type || 0);
       setFieldValue(tags.name, task?.tags || []);
+      setFieldValue(dependencies.name, task?.dependencies || []);
       setFieldValue(partner_id.name, task?.partner_id || "");
       setFieldValue(taskableId.name, task?.taskable?.id || "");
       setFieldValue(billable.name, Boolean(task?.billable));
@@ -79,6 +84,7 @@ export default function TaskForm({
       setTaskableItems(task.taskable ? [task?.taskable] : []);
       const parsedDescription = parseEditorState(task?.description ?? "");
       setEditorState(parsedDescription);
+      setFieldValue(actions.name, task?.actions || []);
     }
     if (partnerId) setFieldValue(partner_id.name, partnerId || "");
   }, [
@@ -103,6 +109,7 @@ export default function TaskForm({
     totalCycles.name,
     partner_id.name,
     tags.name,
+    actions.name,
   ]);
 
   useEffect(() => {
@@ -117,6 +124,19 @@ export default function TaskForm({
       });
     }
   }, [partner_id, taskableType, values]);
+
+  const filteredDependencyTasks = useCallback(() => {
+    if (task) {
+      return dependencyTasks.filter(
+        (dependency) =>
+          dependency.id !== task.id ||
+          (dependency.milestone_order > task.milestone_order &&
+            task.taskable_type === dependency.taskable_type &&
+            task.taskable_id === dependency.taskable_id) // Check the order in base of the project
+      );
+    }
+    return dependencyTasks;
+  }, [dependencyTasks, task]);
 
   const handleChange = useCallback(
     (editorState) => {
@@ -353,8 +373,8 @@ export default function TaskForm({
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              onChange={(e, selectedTag) =>
-                setFieldValue(tags.name, selectedTag)
+              onChange={(e, tagsSelected) =>
+                setFieldValue(tags.name, tagsSelected)
               }
               value={values[tags.name]}
               options={tagsData}
@@ -379,6 +399,70 @@ export default function TaskForm({
                 fontWeight="regular"
               >
                 <ErrorMessage name={tags.name} />
+              </MDTypography>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              onChange={(e, selectedTask) =>
+                setFieldValue(dependencies.name, selectedTask)
+              }
+              value={values[dependencies.name]}
+              options={filteredDependencyTasks()}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  key={dependencies.id}
+                  label={dependencies.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={dependencies.name} />
+              </MDTypography>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              onChange={(e, actionsSelected) =>
+                setFieldValue(actions.name, actionsSelected)
+              }
+              value={values[actions.name]}
+              options={actionsData}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  key={actions.id}
+                  label={actions.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={actions.name} />
               </MDTypography>
             </MDBox>
           </Grid>

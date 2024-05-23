@@ -79,7 +79,6 @@ class TaskController extends Controller
         $tags = $newTask['tags'];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
-        $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
 
         if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);

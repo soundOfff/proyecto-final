@@ -163,7 +163,7 @@ export default function Table({
       Header: "Bloqueada por",
       accessor: "isBlocked",
       Cell: ({ row }) =>
-        row.original.isBlocked && (
+        row.original.isBlocked ? (
           <MDBox display="flex">
             {row.original.dependencies.map((dependency) => (
               <Grid key={dependency.id}>
@@ -178,6 +178,10 @@ export default function Table({
               </Grid>
             ))}
           </MDBox>
+        ) : (
+          <MDTypography variant="caption" color="dark">
+            Desbloqueada
+          </MDTypography>
         ),
     },
     {

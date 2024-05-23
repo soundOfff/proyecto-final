@@ -38,6 +38,7 @@ class TaskActions
                     'currency_id' => $defaultCurrency->id,
                     'date' => now(),
                     'amount' => 100,
+                    'name' => "Expense created from task #{$task->id}",  
                     'billable' => $task->billable,
                     'partner_id' => $task->partner_id,
                     'is_infinite' => $task->is_infinite,

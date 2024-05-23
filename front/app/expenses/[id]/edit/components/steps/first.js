@@ -66,7 +66,7 @@ export default function First({ expense, formData, partners, categories }) {
           placeholder={name.placeholder}
           value={values[name.name]}
           error={errors[name.name] && touched[name.name]}
-          success={values[name.name].length > 0 && !errors[name.name]}
+          success={values[name.name]?.length > 0 && !errors[name.name]}
         />
       </Grid>
       <Grid item xs={12}>
@@ -145,7 +145,7 @@ export default function First({ expense, formData, partners, categories }) {
           placeholder={amount.placeholder}
           value={values[amount.name]}
           error={errors[amount.name] && touched[amount.name]}
-          success={values[amount.name].length > 0 && !errors[amount.name]}
+          success={values[amount.name]?.length > 0 && !errors[amount.name]}
         />
       </Grid>
       <Grid item xs={12}>

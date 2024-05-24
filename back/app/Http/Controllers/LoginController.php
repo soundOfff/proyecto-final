@@ -19,22 +19,14 @@ class LoginController extends Controller
 
         $staff = Staff::where('email', $email)->first();
 
-        if ($googleUser->getEmail() !== $email) {
+        if (! $staff) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        if (! $staff) {
-            $staff = Staff::create([
-                'role_id' => 1,
-                'email' => $email,
-                'first_name' => $googleUser->user['given_name'],
-                'last_name' => $googleUser->user['family_name'],
-                'profile_image' => $googleUser->getAvatar(),
-                'last_login' => now(),
-                'last_ip' => $request->ip(),
-            ]);
-        } else {
+        if ($staff) {
             $staff->update([
+                $googleUser->user['given_name'],
+                $googleUser->user['family_name'],
                 'last_login' => now(),
                 'last_ip' => $request->ip(),
             ]);
@@ -45,5 +37,12 @@ class LoginController extends Controller
         Auth::login($staff);
 
         return new StaffResource($staff);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Successfully logged out']);
     }
 }

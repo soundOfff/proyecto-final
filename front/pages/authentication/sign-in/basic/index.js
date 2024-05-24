@@ -85,7 +85,7 @@ function Basic({ NEXTAUTH_URL }) {
         <MDButton
           onClick={() =>
             signIn("google", {
-              callbackUrl: NEXTAUTH_URL,
+              callbackUrl: `${NEXTAUTH_URL}/check-session`,
             })
           }
         >

@@ -90,12 +90,11 @@ export const authOptions = {
       });
 
       if (!res.ok) {
-        const data = await res.json();
+        const error = await res.json();
         throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
       }
 
       const { data: staff } = await res.json();
-
       session.staff = staff;
 
       return session;

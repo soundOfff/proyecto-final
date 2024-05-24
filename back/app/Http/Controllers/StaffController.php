@@ -35,7 +35,19 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newStaff = $request->validated();
+
+        $staff = Staff::create([
+            'role_id' => 1,
+            'email' => $newStaff['email'],
+            'last_login' => now(),
+            'last_ip' => $request->ip(),
+        ]);
+
+        $staff->token = $staff->createToken('api')->plainTextToken;
+        $staff->save();
+
+        return response()->json(null, 201);
     }
 
     /**

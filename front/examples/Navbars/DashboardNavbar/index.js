@@ -86,6 +86,26 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
 
   const segments = pathname.split("/");
 
+  const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
+  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+  const handleCloseMenu = () => setOpenMenu(false);
+  const { data: session } = useSession();
+
+  const refetchCurrentTimer = async () => {
+    const refetchCurrentTimer = await getCurrentTimer(session.staff.id, {
+      include: "task",
+    });
+    setCurrentTimer(dispatch, refetchCurrentTimer);
+  };
+
+  useEffect(() => {
+    if (!currentTimer && session) {
+      refetchCurrentTimer();
+    }
+  }, [session]);
+
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -115,28 +135,18 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
-  const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-  const handleConfiguratorOpen = () =>
-    setOpenConfigurator(dispatch, !openConfigurator);
-  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
-  const handleCloseMenu = () => setOpenMenu(false);
-  const { data: session } = useSession();
-
   const getTimeTaken = () => {
     if (currentTimer) {
-      return numberFormat(
-        moment.duration(moment().diff(currentTimer.start_time)).asHours()
-      );
+      return moment
+        .utc(moment().diff(currentTimer.start_time))
+        .format("HH:mm:ss");
     }
   };
 
   const stopTimer = async () => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
     await updateTimer(currentTimer.id, { end_time: date });
-    const refetchCurrentTimer = await getCurrentTimer(session.staff.id, {
-      include: "task",
-    });
-    setCurrentTimer(dispatch, refetchCurrentTimer);
+    await refetchCurrentTimer();
   };
 
   // Render the notifications menu
@@ -170,13 +180,12 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
               Tiempo Transcurrido:
             </MDTypography>
             <MDTypography variant="body2" display="inline">
-              {getTimeTaken()} Horas
+              {getTimeTaken()}
             </MDTypography>
           </MDBox>
           <MDButton variant="gradient" color="error" onClick={stopTimer}>
             Detener Temporizador
           </MDButton>
-          )
         </MDBox>
       ) : (
         <NotificationItem title="No se encontraron temporizadores corriendo" />

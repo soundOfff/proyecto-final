@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class StaffController extends Controller
@@ -25,7 +26,20 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staffs = Staff::all();
+        $query = QueryBuilder::for(Staff::class)
+            ->allowedSorts(
+                [
+                    AllowedSort::field('email'),
+                    AllowedSort::field('created_at'),
+                    AllowedSort::field('updated_at'),
+                    AllowedSort::field('last_login'),
+                    AllowedSort::field('active'),
+                ]
+            );
+
+        $staffs = request()->has('perPage')
+            ? $query->paginate((int) request('perPage'))
+            : $query->get();
 
         return new StaffResourceCollection($staffs);
     }
@@ -74,8 +88,11 @@ class StaffController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Staff $staff)
     {
-        //
+        // TODO: ask if it needed to pass the data to another staff as the old system
+        Staff::destroy($staff->id);
+
+        return response()->json(null, 204);
     }
 }

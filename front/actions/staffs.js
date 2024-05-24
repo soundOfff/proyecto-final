@@ -16,5 +16,15 @@ export async function getAll(params) {
 
   const data = await customFetch(url);
 
-  return data.staffs;
+  return data;
+}
+
+export async function destroy(id) {
+  const url = new URL(`${process.env.API_URL}/staffs/${id}`);
+
+  const response = await customFetch(url, {
+    method: "DELETE",
+  });
+
+  return response;
 }

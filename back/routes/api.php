@@ -162,6 +162,7 @@ Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
 Route::get('/staffs', [StaffController::class, 'index']);
+Route::delete('/staffs/{staff}', [StaffController::class, 'destroy']);
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 

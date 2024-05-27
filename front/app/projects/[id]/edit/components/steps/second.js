@@ -127,8 +127,8 @@ export default function Second({
           value={values[billingType.name]}
           options={billingTypes}
           optionLabel={(option) => option.label}
-          fieldName={serviceType.name}
-          inputLabel={serviceType.label}
+          fieldName={billingType.name}
+          inputLabel={billingType.label}
           setFieldValue={setFieldValue}
         />
       </Grid>

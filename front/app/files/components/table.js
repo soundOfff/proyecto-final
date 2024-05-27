@@ -17,6 +17,8 @@ export default function Table({ rows, meta }) {
         return `/projects/${row.original.fileableId}`;
       case "customer":
         return `/partners/${row.original.fileableId}`;
+      case "task":
+        return `/tasks/${row.original.fileableId}`;
       default:
         return "/";
     }

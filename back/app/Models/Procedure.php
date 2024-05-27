@@ -32,18 +32,28 @@ class Procedure extends Model
         return $this->belongsTo(Staff::class, 'responsible_id');
     }
 
+    public function dependencies()
+    {
+        return $this->belongsToMany(Procedure::class, 'procedure_dependencies', 'procedure_id', 'dependent_procedure_id');
+    }
+
+    public function dependant()
+    {
+        return $this->belongsToMany(Procedure::class, 'procedure_dependencies', 'dependent_procedure_id', 'procedure_id');
+    }
+
     public function convertToTask($projectId, $partnerId, $responsiblePersonId): Task | null
     {
         $isAlreadyCreated = Task::where('procedure_id', $this->id)
             ->where('taskable_id', $projectId)
             ->where('taskable_type', Task::TASKABLE_PROJECT)
             ->exists();
-        
+
         if ($isAlreadyCreated) return null;
 
         $latestMilestoneOrder = Task::getMilestoneOrder($projectId, Task::TASKABLE_PROJECT);
-        
-        return Task::create([
+
+        $task = Task::create([
             'procedure_id' => $this->id,
             'task_priority_id' => TaskPriority::DEFAULT,
             'repeat_id' => ExpenseRepeat::DEFAULT,
@@ -57,5 +67,17 @@ class Procedure extends Model
             'name' => $this->name,
             'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder,
         ]);
+
+        $this->load('dependencies');
+        if ($this->dependencies->isNotEmpty()) {
+            $procedureDependencies = array_column($this->dependencies->toArray(), "id");
+            $tasksId = array_map(
+                fn ($id) =>
+                Task::where('procedure_id', $id)->first()->id,
+                $procedureDependencies
+            );
+            $task->dependencies()->sync($tasksId);
+        }
+        return $task;
     }
 }

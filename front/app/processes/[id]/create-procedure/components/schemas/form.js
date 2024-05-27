@@ -41,6 +41,10 @@ const form = {
       type: "number",
       errorMsg: "Debe seleccionar el número de paso",
     },
+    dependencies: {
+      name: "dependencies",
+      label: "Dependencias",
+    },
   },
 };
 

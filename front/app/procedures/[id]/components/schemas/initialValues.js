@@ -1,7 +1,15 @@
 import checkout from "./form";
 
 const {
-  formField: { name, description, responsible, status, stepNumber, process },
+  formField: {
+    name,
+    description,
+    dependencies,
+    responsible,
+    status,
+    stepNumber,
+    process,
+  },
 } = checkout;
 
 const initialValues = {
@@ -11,6 +19,7 @@ const initialValues = {
   [responsible.name]: "",
   [status.name]: "",
   [stepNumber.name]: "",
+  [dependencies.name]: [],
 };
 
 export default initialValues;

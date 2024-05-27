@@ -2,7 +2,14 @@ import * as Yup from "yup";
 import checkout from "./form";
 
 const {
-  formField: { name, description, responsible, status, stepNumber },
+  formField: {
+    name,
+    description,
+    responsible,
+    dependencies,
+    status,
+    stepNumber,
+  },
 } = checkout;
 
 const validations = Yup.object().shape({
@@ -11,5 +18,6 @@ const validations = Yup.object().shape({
   [status.name]: Yup.number().nullable(),
   [stepNumber.name]: Yup.number().required(stepNumber.errorMsg),
   [description.name]: Yup.string(),
+  [dependencies.name]: Yup.array(),
 });
 export default validations;

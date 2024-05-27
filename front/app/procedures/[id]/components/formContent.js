@@ -3,22 +3,33 @@
 import Select from "/components/Select";
 import form from "./schemas/form";
 import { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import { select as getSelectStaff } from "/actions/staffs";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import MDBox from "/components/MDBox";
+import MDTypography from "/components/MDTypography";
+import MDInput from "/components/MDInput";
+import { ErrorMessage } from "formik";
 
 export default function FormContent({
   values,
   setFieldValue,
   setFieldError,
-  setFieldTouched,
   errors,
   touched,
   procedure,
+  procedures,
 }) {
   const { formField } = form;
-  const { name, description, responsible, status, stepNumber, process } =
-    formField;
+  const {
+    name,
+    description,
+    responsible,
+    status,
+    stepNumber,
+    dependencies,
+    process,
+  } = formField;
   const [staffs, setStaffs] = useState([]);
 
   const validateStepNumberNotExist = (stepNumber) => {
@@ -53,6 +64,7 @@ export default function FormContent({
       setFieldValue(stepNumber.name, procedure.stepNumber);
       setFieldValue(responsible.name, procedure.responsibleId ?? "");
       setFieldValue(status.name, procedure.statusId);
+      setFieldValue(dependencies.name, procedure.dependencies ?? []);
     }
   }, [
     procedure,
@@ -116,6 +128,38 @@ export default function FormContent({
           inputLabel={responsible.label}
           setFieldValue={setFieldValue}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <Autocomplete
+          multiple
+          onChange={(e, selectedTask) =>
+            setFieldValue(dependencies.name, selectedTask)
+          }
+          value={values[dependencies.name]}
+          options={procedures}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              key={dependencies.id}
+              label={dependencies.label}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={dependencies.name} />
+          </MDTypography>
+        </MDBox>
       </Grid>
     </Grid>
   );

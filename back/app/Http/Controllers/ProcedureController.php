@@ -20,6 +20,7 @@ class ProcedureController extends Controller
             'process',
             'status',
             'responsible',
+            'dependencies',
         ])
         ->allowedFilters([
             AllowedFilter::exact('process_id'),
@@ -38,6 +39,7 @@ class ProcedureController extends Controller
         $procedure = QueryBuilder::for(Procedure::class)
             ->allowedIncludes([
                 'process.procedures',
+                'dependencies',
                 'status',
                 'responsible',
             ])
@@ -51,6 +53,8 @@ class ProcedureController extends Controller
         $newProcedure = $request->validated();
         $processId = $newProcedure['process_id'];
         $stepNumber = $newProcedure['step_number'];
+        $dependencies = $newProcedure['dependencies'];
+        $dependenciesId = array_column($dependencies, 'id');
 
         abort_if(
             Process::find($processId)->validateIfStepNumberExists($stepNumber),
@@ -58,8 +62,8 @@ class ProcedureController extends Controller
             'Step number already exists'
         );
 
-        Procedure::create($newProcedure);
-
+        $procedure = Procedure::create($newProcedure);
+        $procedure->dependencies()->sync($dependenciesId);
         return response()->json(null, 201);
     }
 
@@ -67,7 +71,8 @@ class ProcedureController extends Controller
     {
         $procedureUpdated = $request->validated();
         $processId = $procedureUpdated['process_id'];
-        $stepNumber = $procedureUpdated['step_number'];
+        $stepNumber = $procedureUpdated['step_number']; 
+        $dependencies = isset($procedureUpdated['dependencies']) ? $procedureUpdated['dependencies'] : null;
 
         abort_if(
             Process::find($processId)->validateIfStepNumberExists($stepNumber) &&
@@ -77,6 +82,11 @@ class ProcedureController extends Controller
         );
 
         $procedure->update($procedureUpdated);
+
+        if ($dependencies) {
+            $dependenciesId = array_column($dependencies, 'id');
+            $procedure->dependencies()->sync($dependenciesId);
+        }
 
         return response()->json(null, 204);
     }

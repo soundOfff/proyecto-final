@@ -10,7 +10,7 @@ export default async function Show({ params: { id } }) {
     data: { procedures },
   } = await getAllProcedures({
     "filter[process_id]": id,
-    include: ["status", "responsible"],
+    include: ["status", "responsible", "dependencies"],
   });
 
   return (

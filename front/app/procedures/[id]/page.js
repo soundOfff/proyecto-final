@@ -6,7 +6,9 @@ import { getAll } from "/actions/procedures";
 export default async function EditProcedure({ params: { id } }) {
   const {
     data: { procedures },
-  } = await getAll({ include: ["dependencies"] });
+  } = await getAll({
+    include: ["dependencies"],
+  });
   return (
     <Card sx={{ overflow: "visible", my: 3 }}>
       <MDBox p={3}>

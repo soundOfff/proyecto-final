@@ -2,7 +2,7 @@
 
 import Select from "/components/Select";
 import form from "./schemas/form";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Autocomplete, Grid } from "@mui/material";
 import { select as getSelectStaff } from "/actions/staffs";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
@@ -51,6 +51,12 @@ export default function FormContent({
 
     return error;
   };
+
+  const filteredProcedures = useCallback(() =>
+    procedures.filter(
+      (p) => p.processId === procedure?.processId && p.id !== procedure.id
+    )
+  );
 
   useEffect(() => {
     getSelectStaff().then((staffs) => setStaffs(staffs));
@@ -136,7 +142,7 @@ export default function FormContent({
             setFieldValue(dependencies.name, selectedTask)
           }
           value={values[dependencies.name]}
-          options={procedures}
+          options={filteredProcedures()}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (

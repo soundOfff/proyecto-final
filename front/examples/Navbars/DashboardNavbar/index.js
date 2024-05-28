@@ -33,6 +33,7 @@ import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDButton from "/components/MDButton";
 import MDTypography from "/components/MDTypography";
+import MDInput from "/components/MDInput";
 
 // NextJS Material Dashboard 2 PRO examples
 import Breadcrumbs from "/examples/Breadcrumbs";
@@ -60,7 +61,7 @@ import {
 import { usePathname } from "next/navigation";
 import { getCurrentTimer } from "/actions/timers";
 import { useSession } from "next-auth/react";
-import moment from "moment";
+import moment, { utc } from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 import translate from "/locales/es/common.json";
@@ -92,12 +93,47 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const { data: session } = useSession();
+  const [addedTime, setAddedTime] = useState(5);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const addTime = async () => {
+    setIsFetching(true);
+    const date = moment(currentTimer.start_time)
+      .subtract(addedTime, "minutes")
+      .format("YYYY-MM-DD HH:mm:ss");
+    await updateTimer(currentTimer.id, {
+      start_time: date,
+    });
+    await refetchCurrentTimer();
+    setIsFetching(false);
+  };
+
+  const removeTime = async () => {
+    setIsFetching(true);
+
+    const currentMinutes = moment
+      .duration(moment().diff(currentTimer.start_time))
+      .asMinutes();
+
+    const date = moment(currentTimer.start_time)
+      .add(addedTime >= currentMinutes ? currentMinutes : addedTime, "minutes")
+      .format("YYYY-MM-DD HH:mm:ss");
+    await updateTimer(currentTimer.id, {
+      start_time: date,
+    });
+    await refetchCurrentTimer();
+    setIsFetching(false);
+  };
 
   const refetchCurrentTimer = async () => {
     const refetchCurrentTimer = await getCurrentTimer(session.staff.id, {
       include: "task",
     });
     setCurrentTimer(dispatch, refetchCurrentTimer);
+  };
+
+  const handleAddedTime = (e) => {
+    setAddedTime(e.target.value);
   };
 
   useEffect(() => {
@@ -163,14 +199,22 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
       sx={{ mt: 2 }}
     >
       {currentTimer ? (
-        <MDBox p={2} lineHeight={1}>
-          <MDBox mb={2}>
+        <MDBox
+          p={2}
+          display="flex"
+          gap={0.5}
+          flexDirection="column"
+          lineHeight={1}
+        >
+          <MDBox>
             <MDTypography variant="h6" fontWeight="medium">
               Tarea:{" "}
               <Link href={`/tasks?${currentTimer.task.id}`}>
                 {currentTimer.task.name}
               </Link>
             </MDTypography>
+          </MDBox>
+          <MDBox>
             <MDTypography
               variant="h6"
               fontWeight="medium"
@@ -182,6 +226,57 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
             <MDTypography variant="body2" display="inline">
               {getTimeTaken()}
             </MDTypography>
+          </MDBox>
+          <MDBox
+            display="flex"
+            flexDirection="column"
+            alignContent="center"
+            mb={2}
+          >
+            <MDTypography
+              variant="h6"
+              fontWeight="medium"
+              display="inline"
+              mr={1}
+              mb={0.5}
+            >
+              Agregar minutos
+            </MDTypography>
+            <MDBox
+              display="flex"
+              alignContent="center"
+              justifyContent="center"
+              gap={2}
+            >
+              <MDButton
+                variant="gradient"
+                color="primary"
+                size="small"
+                disabled={isFetching}
+                onClick={removeTime}
+              >
+                Quitar
+                <Icon>remove</Icon>
+              </MDButton>
+              <MDInput
+                value={numberFormat(addedTime)}
+                onChange={(e) => handleAddedTime(e)}
+                placeholder="Tiempo en minutos"
+                disabled={isFetching}
+                size="small"
+                type="number"
+              />
+              <MDButton
+                variant="gradient"
+                color="success"
+                disabled={isFetching}
+                size="small"
+                onClick={addTime}
+              >
+                Agregar
+                <Icon>add</Icon>
+              </MDButton>
+            </MDBox>
           </MDBox>
           <MDButton variant="gradient" color="error" onClick={stopTimer}>
             Detener Temporizador

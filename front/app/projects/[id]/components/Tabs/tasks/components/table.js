@@ -158,6 +158,10 @@ export default function Table() {
 
   const columns = [
     {
+      Header: "ID",
+      accessor: "id",
+    },
+    {
       Header: "N° de Paso",
       accessor: "milestone_order",
     },

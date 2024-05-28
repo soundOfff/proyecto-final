@@ -235,7 +235,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
               mr={1}
               mb={0.5}
             >
-              Agregar minutos al temporizador
+              Agregar minutos
             </MDTypography>
             <MDBox
               display="flex"

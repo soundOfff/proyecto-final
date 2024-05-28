@@ -61,7 +61,7 @@ import {
 import { usePathname } from "next/navigation";
 import { getCurrentTimer } from "/actions/timers";
 import { useSession } from "next-auth/react";
-import moment from "moment";
+import moment, { utc } from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 import translate from "/locales/es/common.json";
@@ -96,7 +96,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
   const [addedTime, setAddedTime] = useState(5);
   const [isFetching, setIsFetching] = useState(false);
 
-  const addTime = async (e) => {
+  const addTime = async () => {
     setIsFetching(true);
     const date = moment(currentTimer.start_time)
       .subtract(addedTime, "minutes")
@@ -108,10 +108,15 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
     setIsFetching(false);
   };
 
-  const removeTime = async (e) => {
+  const removeTime = async () => {
     setIsFetching(true);
+
+    const currentMinutes = moment
+      .duration(moment().diff(currentTimer.start_time))
+      .asMinutes();
+
     const date = moment(currentTimer.start_time)
-      .add(addedTime, "minutes")
+      .add(addedTime >= currentMinutes ? currentMinutes : addedTime, "minutes")
       .format("YYYY-MM-DD HH:mm:ss");
     await updateTimer(currentTimer.id, {
       start_time: date,
@@ -245,12 +250,12 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
             >
               <MDButton
                 variant="gradient"
-                color="dark"
+                color="primary"
+                size="small"
                 disabled={isFetching}
-                iconOnly
-                circular
                 onClick={removeTime}
               >
+                Quitar
                 <Icon>remove</Icon>
               </MDButton>
               <MDInput
@@ -263,12 +268,12 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
               />
               <MDButton
                 variant="gradient"
-                color="dark"
-                iconOnly
+                color="success"
                 disabled={isFetching}
-                circular
+                size="small"
                 onClick={addTime}
               >
+                Agregar
                 <Icon>add</Icon>
               </MDButton>
             </MDBox>

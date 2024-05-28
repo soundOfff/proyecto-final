@@ -16,16 +16,17 @@ class ProcedureController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Procedure::class)
-        ->allowedIncludes([
-            'process',
-            'status',
-            'responsible',
-            'dependencies',
-        ])
-        ->allowedFilters([
-            AllowedFilter::exact('process_id'),
-        ])
-        ->orderBy('step_number');
+            ->allowedIncludes([
+                'process',
+                'status',
+                'responsible',
+                'dependencies',
+                'process.procedures',
+            ])
+            ->allowedFilters([
+                AllowedFilter::exact('process_id'),
+            ])
+            ->orderBy('step_number');
 
         $processes = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -71,12 +72,12 @@ class ProcedureController extends Controller
     {
         $procedureUpdated = $request->validated();
         $processId = $procedureUpdated['process_id'];
-        $stepNumber = $procedureUpdated['step_number']; 
+        $stepNumber = $procedureUpdated['step_number'];
         $dependencies = isset($procedureUpdated['dependencies']) ? $procedureUpdated['dependencies'] : null;
 
         abort_if(
             Process::find($processId)->validateIfStepNumberExists($stepNumber) &&
-            $stepNumber != $procedure->step_number,
+                $stepNumber != $procedure->step_number,
             422,
             'Step number already exists'
         );

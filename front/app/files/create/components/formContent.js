@@ -18,7 +18,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function FormContent({ values, setFieldValue }) {
   const { formField } = form;
-  const { file: fileField, fileableType, fileableId } = formField;
+  const { file: fileField, fileableType, fileableId, path, name } = formField;
   const [relations, setRelations] = useState([]);
   const searchParams = useSearchParams();
 
@@ -46,8 +46,9 @@ export default function FormContent({ values, setFieldValue }) {
   useEffect(() => {
     if (values[fileableType.name]) {
       getRelation(values[fileableType.name]);
+      setFieldValue(path.name, `${values[fileableType.name]}/`);
     }
-  }, [values, fileableType]);
+  }, [values, fileableType, setFieldValue, path.name]);
 
   useEffect(() => {
     if (searchParams.get("projectId")) {
@@ -66,7 +67,8 @@ export default function FormContent({ values, setFieldValue }) {
       setFieldValue(fileableType.name, "task");
       setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
     }
-  }, [searchParams, fileableId, fileableType, setFieldValue]);
+    setFieldValue(name.name, values[fileableId.name]);
+  }, [searchParams, fileableId, fileableType, setFieldValue, values, name]);
 
   const options = useMemo(
     () => ({

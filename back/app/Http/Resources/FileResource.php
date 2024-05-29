@@ -10,13 +10,17 @@ class FileResource extends JsonResource
 {
     private function getPublicUrl(): string
     {
-        $url = Storage::drive('google')->url($this->url);
+        try {
+            $url = Storage::drive('google')->url($this->url);
 
-        preg_match('/id=([^&]*)/', $url, $matches);
+            preg_match('/id=([^&]*)/', $url, $matches);
 
-        $id = $matches[1] ?? null;
+            $id = $matches[1] ?? null;
 
-        return "https://drive.google.com/file/d/$id/view?usp=sharing";
+            return "https://drive.google.com/file/d/$id/view?usp=sharing";
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     /**

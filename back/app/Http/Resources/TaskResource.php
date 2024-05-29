@@ -61,6 +61,7 @@ class TaskResource extends JsonResource
                     : null;
             }),
             'actions' => ActionResource::collection($this->whenLoaded('actions')),
+            'files' => FileResource::collection($this->whenLoaded('files')),
         ];
     }
 }

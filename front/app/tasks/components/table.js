@@ -10,27 +10,26 @@ import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
+import Link from "next/link";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import ModalContentForm from "../../../components/ModalContent/Task/index";
-import { Autocomplete, Grid, Link, Tooltip } from "@mui/material";
+import ModalContentForm from "/components/ModalContent/Task/index";
+import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
-import { update } from "/actions/tasks";
+import { update, destroy } from "/actions/tasks";
 import { store as storeTimer, update as updateTimer } from "/actions/timers";
 
-import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
-import { destroy } from "../../../actions/tasks";
+import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import Show from "./show";
-import { AccessAlarm, LockClockOutlined } from "@mui/icons-material";
+import { AccessAlarm, LockClockOutlined, NoteAdd } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { getCurrentTimer } from "/actions/timers";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import moment from "moment";
 import { DONE_STATUS, DONE_STATUS_ID } from "/utils/constants/taskStatuses";
-import { actions } from "react-table";
 
 export default function Table({
   rows,
@@ -299,9 +298,22 @@ export default function Table({
     },
     {
       Header: "Acciones",
-      accessor: "",
       Cell: ({ row }) => (
         <MDBox display="flex">
+          <Tooltip title="Agregar Archivo">
+            <Link
+              href={{
+                pathname: "/files/create",
+                query: { taskId: row.original.id },
+              }}
+            >
+              <NoteAdd
+                color="warning"
+                fontSize="medium"
+                sx={{ mr: 1, cursor: "pointer" }}
+              />
+            </Link>
+          </Tooltip>
           <Tooltip title="Editar tarea">
             <EditNoteIcon
               color="info"

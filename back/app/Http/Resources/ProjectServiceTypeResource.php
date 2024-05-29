@@ -18,6 +18,7 @@ class ProjectServiceTypeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'label' => $this->label,
+            'processes' => ProcessResource::collection($this->whenLoaded('processes')),
         ];
     }
 }

@@ -2,10 +2,14 @@
 
 import Select from "/components/Select";
 import form from "./schemas/form";
-import { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { Autocomplete, Grid } from "@mui/material";
 import { select as getSelectStaff } from "/actions/staffs";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import MDBox from "/components/MDBox";
+import MDTypography from "/components/MDTypography";
+import MDInput from "/components/MDInput";
+import { ErrorMessage } from "formik";
 
 export default function FormContent({
   values,
@@ -16,7 +20,8 @@ export default function FormContent({
   procedures,
 }) {
   const { formField } = form;
-  const { name, description, responsible, status, stepNumber } = formField;
+  const { name, description, responsible, stepNumber, dependencies } =
+    formField;
   const [staffs, setStaffs] = useState([]);
 
   useEffect(() => {
@@ -81,6 +86,38 @@ export default function FormContent({
           inputLabel={responsible.label}
           setFieldValue={setFieldValue}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <Autocomplete
+          multiple
+          onChange={(e, selectedTask) =>
+            setFieldValue(dependencies.name, selectedTask)
+          }
+          value={values[dependencies.name]}
+          options={procedures}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              key={dependencies.id}
+              label={dependencies.label}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={dependencies.name} />
+          </MDTypography>
+        </MDBox>
       </Grid>
     </Grid>
   );

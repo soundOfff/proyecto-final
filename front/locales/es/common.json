@@ -19,5 +19,6 @@
   "project": "Caso",
   "customer": "Cliente",
   "edit": "Editar",
-  "create": "Crear"
+  "create": "Crear",
+  "task": "Tarea"
 }

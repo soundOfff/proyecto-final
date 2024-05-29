@@ -70,9 +70,7 @@ export default function Table() {
   const { statuses, priorities, project, repeats, tagsData, partners } =
     useDataProvider();
   const { data: session } = useSession();
-
   const findTask = (taskId) => rows.find((row) => row.id === taskId);
-
   const handleStatusChange = async (taskId, statusId) => {
     startTransition(async () => {
       const editedRow = findTask(taskId);
@@ -159,6 +157,10 @@ export default function Table() {
   }, [rows]);
 
   const columns = [
+    {
+      Header: "ID",
+      accessor: "id",
+    },
     {
       Header: "N° de Paso",
       accessor: "milestone_order",
@@ -349,7 +351,7 @@ export default function Table() {
         <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
           <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable">
             <MDBox>
-              {project?.process && (
+              {project?.serviceType?.processes[0] && (
                 <MDButton
                   variant="gradient"
                   color={"info"}

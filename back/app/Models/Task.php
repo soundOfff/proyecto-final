@@ -10,11 +10,34 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 #[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
-    protected $fillable = ['name', 'hourly_rate', 'description', 'start_date', 'due_date', 'owner_id', 'procedure_id', 'milestone_order', 'task_priority_id', 'partner_id', 'task_status_id', 'repeat_id', 'recurring_type', 'recurring', 'is_infinite', 'billable', 'total_cycles', 'taskable_type', 'taskable_id'];
+    protected $fillable = [
+        'name',
+        'hourly_rate',
+        'description',
+        'start_date',
+        'due_date',
+        'owner_id',
+        'procedure_id',
+        'milestone_order',
+        'task_priority_id',
+        'partner_id',
+        'task_status_id',
+        'repeat_id',
+        'recurring_type',
+        'recurring',
+        'is_infinite',
+        'billable',
+        'total_cycles',
+        'taskable_type',
+        'taskable_id',
+        'visible_to_client',
+        'is_file_needed',
+    ];
 
     public const TASKABLE_PROJECT = 'project';
 
@@ -88,6 +111,11 @@ class Task extends Model
     public function actions()
     {
         return $this->belongsToMany(Action::class, 'task_actions')->withPivot('is_completed');
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 
     public function getTotalTime($startDate = null, $endDate = null)

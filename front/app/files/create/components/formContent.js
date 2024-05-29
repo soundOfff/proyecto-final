@@ -13,6 +13,7 @@ import { Autocomplete, Grid } from "@mui/material";
 import { getAll as getAllProjects } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllExpenses } from "/actions/expenses";
+import { getAll as getAllTasks } from "/actions/tasks";
 import { useSearchParams } from "next/navigation";
 
 export default function FormContent({ values, setFieldValue }) {
@@ -37,6 +38,9 @@ export default function FormContent({ values, setFieldValue }) {
     if (fileableType === "expense") {
       getAllExpenses().then((data) => setRelations(data.data.expenses));
     }
+    if (fileableType === "task") {
+      getAllTasks().then((data) => setRelations(data));
+    }
   };
 
   useEffect(() => {
@@ -52,11 +56,15 @@ export default function FormContent({ values, setFieldValue }) {
     }
     if (searchParams.get("partnerId")) {
       setFieldValue(fileableType.name, "customer");
-      setFieldValue(fileableId.name, searchParams.get("partnerId"));
+      setFieldValue(fileableId.name, Number(searchParams.get("partnerId")));
     }
     if (searchParams.get("expenseId")) {
       setFieldValue(fileableType.name, "expense");
-      setFieldValue(fileableId.name, searchParams.get("expenseId"));
+      setFieldValue(fileableId.name, Number(searchParams.get("expenseId")));
+    }
+    if (searchParams.get("taskId")) {
+      setFieldValue(fileableType.name, "task");
+      setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
     }
   }, [searchParams, fileableId, fileableType, setFieldValue]);
 

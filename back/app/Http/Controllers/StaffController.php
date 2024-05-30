@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StaffRequest;
 use App\Http\Resources\StaffResource;
 use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
@@ -47,16 +48,14 @@ class StaffController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StaffRequest $request)
     {
         $newStaff = $request->validated();
+        $newStaff['role_id'] = isset($newStaff['role_id']) ? $newStaff['role_id'] : 1;
+        $newStaff['last_login'] = now();
+        $newStaff['last_ip'] = $request->ip();
 
-        $staff = Staff::create([
-            'role_id' => 1,
-            'email' => $newStaff['email'],
-            'last_login' => now(),
-            'last_ip' => $request->ip(),
-        ]);
+        $staff = Staff::create($newStaff);
 
         $staff->token = $staff->createToken('api')->plainTextToken;
         $staff->save();
@@ -67,12 +66,19 @@ class StaffController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $email)
+    public function show(Staff $staff)
     {
         $staff = QueryBuilder::for(Staff::class)
             ->allowedIncludes('projects')
-            ->where('email', $email)
+            ->where('email', $staff->email)
             ->first();
+
+        return new StaffResource($staff);
+    }
+
+    public function getUser(Staff $staff)
+    {        
+        $staff = QueryBuilder::for(Staff::class)->find($staff->id);
 
         return new StaffResource($staff);
     }
@@ -80,9 +86,13 @@ class StaffController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Staff $staff, StaffRequest $request)
     {
-        //
+        $updatedStaff = $request->validated();
+        
+        $staff->update($updatedStaff);
+
+        return response()->json($staff, 200);
     }
 
     /**

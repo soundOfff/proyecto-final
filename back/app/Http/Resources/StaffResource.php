@@ -37,6 +37,7 @@ class StaffResource extends JsonResource
             'newPassKey' => $this->new_pass_key,
             'newPassKeyRequested' => $this->new_pass_key_requested,
             'password' => $this->password,
+            'welcomeEmail' => $this->welcome_email,
             'phoneNumber' => $this->phone_number,
             'profileImage' => $this->profile_image,
             'skype' => $this->skype,

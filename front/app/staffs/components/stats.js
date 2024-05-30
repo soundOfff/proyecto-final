@@ -1,9 +1,7 @@
-import React from "react";
-import MDBox from "/components/MDBox";
-import Form from "/app/staffs/components/form";
 import { Card, Grid } from "@mui/material";
+import MDBox from "/components/MDBox";
 
-export default async function Create() {
+export default function Stats() {
   return (
     <MDBox
       mb={3}
@@ -12,10 +10,10 @@ export default async function Create() {
       alignContent="center"
       justifyContent="center"
     >
-      <Card sx={{ width: "60%" }}>
+      <Card sx={{ height: "200px", width: "100%" }}>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Form />
+            Stats
           </Grid>
         </Grid>
       </Card>

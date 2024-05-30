@@ -50,14 +50,16 @@ export default function Table({ rows, meta }) {
               }}
             />
           )}
-          <MDTypography
-            variant="button"
-            fontWeight="regular"
-            color="text"
-            mr={2}
-          >
-            {row.original.firstName} {row.original.lastName}
-          </MDTypography>
+          <Link href={`/staffs/${row.original.id}`}>
+            <MDTypography
+              variant="button"
+              fontWeight="regular"
+              color="info"
+              mr={2}
+            >
+              {row.original.firstName} {row.original.lastName}
+            </MDTypography>
+          </Link>
         </MDBox>
       ),
     },
@@ -83,16 +85,14 @@ export default function Table({ rows, meta }) {
       accessor: "last_login",
       Cell: ({ row }) => {
         return (
-          <MDBox display="flex" alignContent="center" width="100%">
-            <MDTypography variant="caption">
-              {row.original.lastLogin
-                ? moment
-                    .duration(moment().diff(row.original.lastLogin))
-                    .locale("es")
-                    .humanize()
-                : "Nunca"}
-            </MDTypography>
-          </MDBox>
+          <MDTypography variant="caption">
+            {row.original.lastLogin
+              ? moment
+                  .duration(moment().diff(row.original.lastLogin))
+                  .locale("es")
+                  .humanize()
+              : "Nunca"}
+          </MDTypography>
         );
       },
     },

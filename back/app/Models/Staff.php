@@ -21,6 +21,7 @@ class Staff extends Authenticatable
         'direction',
         'email',
         'email_signature',
+        'password',
         'facebook',
         'first_name',
         'hourly_rate',
@@ -36,6 +37,7 @@ class Staff extends Authenticatable
         'new_pass_key_requested',
         'phone_number',
         'profile_image',
+        'welcome_email',
         'skype',
         'two_factor_auth_code',
         'two_factor_auth_code_requested',
@@ -50,7 +52,6 @@ class Staff extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 

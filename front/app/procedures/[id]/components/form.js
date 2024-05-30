@@ -12,7 +12,7 @@ import { show, update } from "/actions/procedures";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function FormComponent({ procedureId, procedures }) {
+export default function FormComponent({ procedureId, procedures, actions }) {
   const { formId } = form;
   const [procedure, setProcedure] = useState(null);
   const router = useRouter();
@@ -42,11 +42,11 @@ export default function FormComponent({ procedureId, procedures }) {
   };
 
   useEffect(() => {
-    show(procedureId, { include: ["process.procedures", "dependencies"] }).then(
-      (procedure) => {
-        setProcedure(procedure);
-      }
-    );
+    show(procedureId, {
+      include: ["process.procedures", "dependencies", "actions"],
+    }).then((procedure) => {
+      setProcedure(procedure);
+    });
   }, [procedureId]);
 
   return (
@@ -87,6 +87,7 @@ export default function FormComponent({ procedureId, procedures }) {
                 setFieldError,
                 procedure,
                 procedures,
+                actions,
               }}
             />
             <MDBox

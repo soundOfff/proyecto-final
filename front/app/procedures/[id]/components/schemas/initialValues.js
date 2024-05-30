@@ -8,6 +8,7 @@ const {
     responsible,
     status,
     stepNumber,
+    actions,
     process,
   },
 } = checkout;
@@ -20,6 +21,7 @@ const initialValues = {
   [status.name]: "",
   [stepNumber.name]: "",
   [dependencies.name]: [],
+  [actions.name]: [],
 };
 
 export default initialValues;

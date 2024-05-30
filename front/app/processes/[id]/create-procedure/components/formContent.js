@@ -1,10 +1,8 @@
 "use client";
 
-import Select from "/components/Select";
 import form from "./schemas/form";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Autocomplete, Grid } from "@mui/material";
-import { select as getSelectStaff } from "/actions/staffs";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -18,15 +16,10 @@ export default function FormContent({
   errors,
   touched,
   procedures,
+  actions: actionsOptions,
 }) {
   const { formField } = form;
-  const { name, description, responsible, stepNumber, dependencies } =
-    formField;
-  const [staffs, setStaffs] = useState([]);
-
-  useEffect(() => {
-    getSelectStaff().then((staffs) => setStaffs(staffs));
-  }, []);
+  const { name, description, stepNumber, dependencies, actions } = formField;
 
   useEffect(() => {
     const procedureStepNumber = procedures.find(
@@ -78,16 +71,6 @@ export default function FormContent({
         />
       </Grid>
       <Grid item xs={12}>
-        <Select
-          value={values[responsible.name]}
-          options={staffs}
-          optionLabel={(option) => option.name}
-          fieldName={responsible.name}
-          inputLabel={responsible.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12}>
         <Autocomplete
           multiple
           onChange={(e, selectedTask) =>
@@ -116,6 +99,38 @@ export default function FormContent({
             fontWeight="regular"
           >
             <ErrorMessage name={dependencies.name} />
+          </MDTypography>
+        </MDBox>
+      </Grid>
+      <Grid item xs={12}>
+        <Autocomplete
+          multiple
+          onChange={(e, selectedAction) =>
+            setFieldValue(actions.name, selectedAction)
+          }
+          value={values[actions.name]}
+          options={actionsOptions}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          getOptionLabel={(option) => option.label}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              key={actions.id}
+              label={actions.label}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={actions.name} />
           </MDTypography>
         </MDBox>
       </Grid>

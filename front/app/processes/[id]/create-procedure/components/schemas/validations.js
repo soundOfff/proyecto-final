@@ -9,6 +9,7 @@ const {
     dependencies,
     status,
     stepNumber,
+    actions,
   },
 } = checkout;
 
@@ -19,5 +20,6 @@ const validations = Yup.object().shape({
   [stepNumber.name]: Yup.number().required(stepNumber.errorMsg),
   [description.name]: Yup.string(),
   [dependencies.name]: Yup.array(),
+  [actions.name]: Yup.array(),
 });
 export default validations;

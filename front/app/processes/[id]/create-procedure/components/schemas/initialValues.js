@@ -8,6 +8,7 @@ const {
     status,
     stepNumber,
     dependencies,
+    actions,
   },
 } = checkout;
 
@@ -18,6 +19,7 @@ const initialValues = {
   [status.name]: "",
   [stepNumber.name]: "",
   [dependencies.name]: [],
+  [actions.name]: [],
 };
 
 export default initialValues;

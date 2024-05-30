@@ -15,9 +15,10 @@ class ActionSeeder extends Seeder
     public function run()
     {
         $actions = [
-            ['id' => 1, 'name' => 'expense'],
-            ['id' => 2, 'name' => 'api'],
-            ['id' => 3, 'name' => 'email'],
+            ['id' => 1, 'name' => 'expense', 'label' => 'Crear un gasto'],
+            ['id' => 2, 'name' => 'api', 'label' => 'Mandar un request'],
+            ['id' => 3, 'name' => 'email', 'label' => 'Enviar un email'],
+            ['id' => 4, 'name' => 'input', 'label' => 'Llenar un campo'],
         ];
 
         foreach ($actions as $action) {

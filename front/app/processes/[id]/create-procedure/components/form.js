@@ -12,7 +12,7 @@ import { getAll, store } from "/actions/procedures";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function FormComponent({ processId }) {
+export default function FormComponent({ processId, actions }) {
   const { formId } = form;
   const [procedures, setProcedures] = useState([]);
   const [errorSB, setErrorSB] = useState(false);
@@ -89,6 +89,7 @@ export default function FormComponent({ processId }) {
                 setFieldError,
                 procedures,
               }}
+              actions={actions}
             />
             <MDBox
               mt={5}

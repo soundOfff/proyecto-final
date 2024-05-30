@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use App\Observers\TaskObserver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,6 +43,15 @@ class Task extends Model
     public const TASKABLE_PROJECT = 'project';
 
     public const TASKABLE_INVOICE = 'invoice';
+
+    protected $appends = ['can_change_status'];
+
+    protected function canChangeStatus(): Attribute
+    {
+        return new Attribute(
+            get: fn () => ($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed
+        );
+    }
 
     public function taskable()
     {

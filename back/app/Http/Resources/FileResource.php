@@ -38,6 +38,7 @@ class FileResource extends JsonResource
             'publicUrl' => $this->getPublicUrl(),
             'subject' => $this->subject,
             'visibleToCustomer' => $this->visible_to_customer,
+            'isFileNeeded' => $this->is_file_needed,
         ];
     }
 }

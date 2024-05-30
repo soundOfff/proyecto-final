@@ -22,6 +22,7 @@ import {
   Lock,
   Notifications,
   Remove,
+  Rowing,
   StarHalf,
 } from "@mui/icons-material";
 import MDBox from "/components/MDBox";
@@ -200,6 +201,7 @@ export default function Aside({ task }) {
                 value={statusId}
                 label="Estado"
                 onChange={(e) => setStatusId(e.target.value)}
+                disabled={task.isBlocked || !task.canChangeStatus}
                 sx={{ height: "40px", width: "100%" }}
               >
                 {statuses.map((status) => (

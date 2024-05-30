@@ -216,7 +216,7 @@ export default function Table({
             value={statuses?.find(
               (status) => status.id === row.original.status.id
             )}
-            disabled={row.original.isBlocked}
+            disabled={row.original.isBlocked || !row.original.canChangeStatus}
             onChange={(e, status) => {
               handleStatusChange(row.original.id, status.id);
             }}

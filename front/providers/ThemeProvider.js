@@ -1,7 +1,9 @@
 "use client";
 
-import logoWhite from "/assets/logo/White/asset-29.svg";
-import logoDark from "/assets/logo/Black/asset-27.svg";
+import brandfactorsIconWhite from "/assets/logo/White/brandfactors.svg";
+import brandfactorsIconWhiteMini from "/assets/logo/White/brandfactors-mini.png";
+import veloIconWhite from "/assets/logo/White/asset-29.svg";
+import veloIconWhiteMini from "/assets/logo/White/velolegal-mini.svg";
 
 import {
   useMaterialUIController,
@@ -37,18 +39,12 @@ import createCache from "@emotion/cache";
 import { useServerInsertedHTML } from "next/navigation";
 import { CacheProvider as DefaultCacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
+import { BRANDFACTORS } from "/utils/constants/appNames";
 
 export default function Theme(props) {
   const [controller, dispatch] = useMaterialUIController();
-  const {
-    miniSidenav,
-    layout,
-    openConfigurator,
-    sidenavColor,
-    transparentSidenav,
-    whiteSidenav,
-    darkMode,
-  } = controller;
+  const { miniSidenav, layout, openConfigurator, sidenavColor, darkMode } =
+    controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const pathname = usePathname();
 
@@ -79,7 +75,11 @@ export default function Theme(props) {
   }, [pathname]);
 
   const brandIcon =
-    (transparentSidenav && !darkMode) || whiteSidenav ? logoDark : logoWhite;
+    process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS
+      ? miniSidenav
+        ? brandfactorsIconWhiteMini
+        : brandfactorsIconWhite
+      : veloIconWhite;
 
   const configsButton = (
     <MDBox
@@ -184,7 +184,7 @@ export default function Theme(props) {
             <Sidenav
               color={sidenavColor}
               brand={brandIcon}
-              brandName="Velo Legal"
+              brandName={process.env.NEXT_PUBLIC_APP_NAME}
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}

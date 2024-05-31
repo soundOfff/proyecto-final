@@ -59,7 +59,6 @@ export default function FormContent({
 
   useEffect(() => {
     if (procedure) {
-      console.log(procedure.actions);
       setFieldValue(process.name, procedure.processId);
       setFieldValue(name.name, procedure.name);
       setFieldValue(description.name, procedure.description ?? "");

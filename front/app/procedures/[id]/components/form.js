@@ -19,7 +19,7 @@ export default function FormComponent({ procedureId, procedures, actions }) {
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       await update(procedureId, values);
       router.push(`/processes/${procedure.process.id}`);

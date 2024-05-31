@@ -25,7 +25,7 @@ export default async function Tasks({ searchParams }) {
     include: type === "myProjects" ? projectsInclude : tasksInclude,
     ...staffFilter,
   };
-
+  console.log(process.env.NEXT_PUBLIC_TEST);
   const data =
     type === "myProjects"
       ? await getAllProjects(params)

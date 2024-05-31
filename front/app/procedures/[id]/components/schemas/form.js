@@ -48,6 +48,10 @@ const form = {
       name: "dependencies",
       label: "Dependencias",
     },
+    actions: {
+      name: "actions",
+      label: "Acciones",
+    },
   },
 };
 

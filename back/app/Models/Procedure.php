@@ -32,6 +32,11 @@ class Procedure extends Model
         return $this->belongsTo(Staff::class, 'responsible_id');
     }
 
+    public function actions()
+    {
+        return $this->belongsToMany(Action::class, 'action_procedure');
+    }
+
     public function dependencies()
     {
         return $this->belongsToMany(Procedure::class, 'procedure_dependencies', 'procedure_id', 'dependent_procedure_id');

@@ -10,18 +10,17 @@ import { useMaterialUIController } from "/context";
 import update from "immutability-helper";
 import useDeleteRow from "/hooks/useDeleteRow";
 
+import { update as updateProcedure } from "/actions/procedures";
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import MDAvatar from "/components/MDAvatar";
-import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import DeleteRow from "/components/DeleteRow";
-import { Tooltip } from "@mui/material";
+import { Switch, Tooltip } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Procedures({ procedures }) {
+export default function Procedures({ procedures, actions }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [records, setRecords] = useState(procedures);
@@ -35,6 +34,52 @@ export default function Procedures({ procedures }) {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
+  const handleActionsChange = async (e, row, action) => {
+    const newActions = e.target.checked
+      ? [...row.original.actions, action]
+      : row.original.actions.filter((a) => a.name !== action.name);
+
+    const newRecord = {
+      ...row.original,
+      actions: newActions,
+    };
+
+    const updatedRecords = update(records, {
+      [row.index]: { $set: newRecord },
+    });
+
+    setRecords(updatedRecords);
+
+    await updateProcedure(row.original.id, {
+      process_id: row.original.processId,
+      procedure_status_id: row.original.statusId,
+      step_number: row.original.stepNumber,
+      name: row.original.name,
+      responsible_id: row.original.responsibleId,
+      dependencies: row.original.dependencies,
+      actions: newActions,
+    });
+  };
+
+  const getActionsColumns = () => {
+    return actions.map((action) => {
+      return {
+        Header: action.label,
+        accessor: action.name,
+        Cell: ({ row }) => (
+          <MDBox display="flex" justifyContent="center" width="100%">
+            <Switch
+              name={action.name}
+              label={action.label}
+              onChange={(e) => handleActionsChange(e, row, action)}
+              checked={row.original.actions.some((a) => a.name === action.name)}
+            />
+          </MDBox>
+        ),
+      };
+    });
+  };
+
   useEffect(() => {
     setRecords(procedures);
   }, [procedures]);
@@ -43,6 +88,7 @@ export default function Procedures({ procedures }) {
     {
       Header: "N° de Paso",
       accessor: "stepNumber",
+      width: 100,
     },
     {
       Header: "Nombre",
@@ -52,47 +98,15 @@ export default function Procedures({ procedures }) {
       Header: "Descripción",
       accessor: "description",
     },
-    {
-      Header: "Responsable",
-      accessor: "responsible",
-      Cell: ({ value }) =>
-        value && (
-          <MDBox key={value.id} display="inline-block" mr={2}>
-            {value.profileImage && (
-              <MDAvatar
-                src={value?.profileImage}
-                alt="profile-image"
-                size="md"
-                shadow="sm"
-                sx={{
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  marginRight: "0.5rem",
-                  marginBottom: "0.5rem",
-                  height: "2rem",
-                  width: "2rem",
-                }}
-              />
-            )}
-            <MDTypography
-              variant="button"
-              fontWeight="regular"
-              color="text"
-              mr={2}
-            >
-              {value.name}
-            </MDTypography>
-          </MDBox>
-        ),
-    },
+    ...getActionsColumns(),
     {
       id: "acciones",
-      Header: "Acciones",
+      Header: "",
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Editar Procedimiento">
             <Link href={`/procedures/${row.original.id}`}>
-              <EditIcon color="warning" fontSize="medium" />
+              <EditIcon color="info" fontSize="medium" />
             </Link>
           </Tooltip>
           <Tooltip title="Eliminar Procedimiento">

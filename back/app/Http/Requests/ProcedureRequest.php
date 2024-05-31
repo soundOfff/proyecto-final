@@ -30,6 +30,8 @@ class ProcedureRequest extends FormRequest
             'description' => 'nullable|string',
             'dependencies' => 'nullable|array',
             'dependencies.*.id' => 'numeric|exists:procedures,id',
+            'actions' => 'nullable|array',
+            'actions.*.id' => 'numeric|exists:actions,id',
         ];
     }
 }

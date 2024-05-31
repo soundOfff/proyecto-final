@@ -15,4 +15,9 @@ class Action extends Model
     {
         return $this->belongsToMany(Task::class, 'task_actions');
     }
+
+    public function procedures()
+    {
+        return $this->belongsToMany(Procedure::class, 'action_procedure');
+    }
 }

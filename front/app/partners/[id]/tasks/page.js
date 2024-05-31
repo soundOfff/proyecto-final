@@ -1,7 +1,7 @@
 import { Card, Grid } from "@mui/material";
 import { getAll } from "/actions/tasks";
 import MDBox from "/components/MDBox";
-import Table from "./components/table";
+import Table from "/components/Tasks/table-server";
 import { getAll as getAllTags } from "/actions/tags";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
 import { getTaskPriorities } from "/actions/tasks";
@@ -14,10 +14,15 @@ import { authOptions } from "/pages/api/auth/[...nextauth]";
 
 export const dynamic = "force-dynamic";
 
-export default async function PartnerTasks({ params: { id } }) {
+export default async function PartnerTasks({
+  params: { id },
+  searchParams: { perPage = 10, page = 1 },
+}) {
   const tasks = await getAll({
     include: ["assigneds", "tags", "status", "dependencies"],
     "filter[partner_id]": id,
+    perPage: perPage,
+    page: page,
   });
 
   const session = await getServerSession(authOptions);
@@ -36,6 +41,7 @@ export default async function PartnerTasks({ params: { id } }) {
           <Grid item xs={12}>
             <Table
               rows={tasks}
+              meta={{ per_page: perPage, page: page }}
               priorities={priorities}
               repeats={repeats}
               taskableItems={taskableItems}

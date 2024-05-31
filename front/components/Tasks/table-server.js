@@ -1,8 +1,6 @@
 "use client";
 
-import { show } from "/actions/tasks";
-import { startTransition, useEffect, useOptimistic, useState } from "react";
-import { useMaterialUIController, setCurrentTimer } from "/context";
+import { useMaterialUIController } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
@@ -15,21 +13,20 @@ import Link from "next/link";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import ModalContentForm from "/components/ModalContent/Task/index";
+import ModalContentForm from "/components/ModalContent/Task";
 import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
-import { update, destroy } from "/actions/tasks";
-import { store as storeTimer, update as updateTimer } from "/actions/timers";
+import { destroy } from "/actions/tasks";
 
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import Show from "./show";
 import { AccessAlarm, LockClockOutlined, NoteAdd } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
-import { getCurrentTimer } from "/actions/timers";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
-import moment from "moment";
-import { DONE_STATUS, DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+
+import useTaskTable from "/hooks/useTaskTable";
 
 export default function Table({
   rows,
@@ -44,23 +41,29 @@ export default function Table({
   currentTimer,
   currentTaskId,
   actionsData,
+  partnerId,
 }) {
-  const [optimisticRows, updateOptimisticRows] = useOptimistic(
-    rows,
-    (state, editedRow) => {
-      const editedRowIndex = state.findIndex((row) => row.id === editedRow.id);
-      const newState = [...state];
-      newState[editedRowIndex] = editedRow;
-      return newState;
-    }
-  );
   const [controller, dispatch] = useMaterialUIController();
+  const {
+    optimisticRows,
+    task,
+    openEditModal,
+    openShowModal,
+    handleCloseEditModal,
+    handleCloseShowModal,
+    stopTimer,
+    startTimer,
+    handleStatusChange,
+    handlePriorityChange,
+    handleCompleteTask,
+    setOpenShowModal,
+    setOpenEditModal,
+    setTaskId,
+  } = useTaskTable({ rows, dispatch, currentTaskId });
   const { darkMode } = controller;
-  const [taskId, setTaskId] = useState(currentTaskId || null);
-  const [task, setTask] = useState(null);
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [openShowModal, setOpenShowModal] = useState(false);
+
   const { data: session } = useSession();
+
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -69,89 +72,6 @@ export default function Table({
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-
-  const handleCloseEditModal = () => {
-    setOpenEditModal(false);
-    setTaskId(null);
-    setTask(null);
-  };
-
-  const handleCloseShowModal = () => {
-    setOpenShowModal(false);
-    setTaskId(null);
-    setTask(null);
-  };
-
-  const stopTimer = async (timerId, note = "") => {
-    const date = moment().format("YYYY-MM-DD HH:mm:ss");
-    await updateTimer(timerId, { end_time: date, note });
-    setCurrentTimer(dispatch, null);
-  };
-
-  const startTimer = async (taskId, staffId) => {
-    const date = moment().format("YYYY-MM-DD HH:mm:ss");
-    await storeTimer({ task_id: taskId, start_time: date, staff_id: staffId });
-    const currentTimer = await getCurrentTimer(staffId, {
-      include: "task",
-    });
-    setCurrentTimer(dispatch, currentTimer);
-  };
-
-  useEffect(() => {
-    const fetchTask = async () => {
-      setTask(
-        await show(taskId, {
-          include: [
-            "tags",
-            "priority",
-            "status",
-            "comments",
-            "checklistItems",
-            "assigneds",
-            "dependencies",
-            "followers",
-            "taskable",
-            "reminders",
-            "actions",
-          ],
-        })
-      );
-    };
-    if (taskId && !task) {
-      fetchTask();
-    }
-  }, [taskId, task]);
-
-  const findTask = (taskId) => rows.find((row) => row.id === taskId);
-
-  const handleStatusChange = async (taskId, statusId) => {
-    startTransition(async () => {
-      const editedRow = findTask(taskId);
-      editedRow.status.id = statusId;
-      updateOptimisticRows(editedRow);
-    });
-    await update(taskId, { task_status_id: statusId });
-  };
-
-  const handlePriorityChange = async (taskId, priorityId) => {
-    startTransition(async () => {
-      const editedRow = findTask(taskId);
-      editedRow.priority.id = priorityId;
-      updateOptimisticRows(editedRow);
-    });
-    await update(taskId, { task_priority_id: priorityId });
-  };
-
-  const handleCompleteTask = async (taskId) => {
-    const doneState = statuses.find((status) => status.name === DONE_STATUS);
-    if (taskId === doneState) {
-      return;
-    }
-    await update(taskId, {
-      task_status_id: statuses.find((status) => status.name === DONE_STATUS).id,
-    });
-    setOpenShowModal(false);
-  };
 
   const columns = [
     {
@@ -375,7 +295,7 @@ export default function Table({
 
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+      <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
         <MDButton
           variant="gradient"
           color={darkMode ? "light" : "dark"}
@@ -385,26 +305,23 @@ export default function Table({
         >
           Crear nueva tarea
         </MDButton>
-        {openEditModal && (
-          <Modal
-            open={openEditModal}
-            onClose={handleCloseEditModal}
-            width="40%"
-          >
-            <ModalContentForm
-              priorities={priorities}
-              repeats={repeats}
-              taskableItems={taskableItems}
-              dependencyTasks={dependencyTasks}
-              tagsData={tagsData}
-              partners={partners}
-              task={task}
-              actionsData={actionsData}
-              mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
-            />
-          </Modal>
-        )}
       </MDBox>
+      {openEditModal && (
+        <Modal open={openEditModal} onClose={handleCloseEditModal} width="40%">
+          <ModalContentForm
+            priorities={priorities}
+            repeats={repeats}
+            taskableItems={taskableItems}
+            dependencyTasks={dependencyTasks}
+            tagsData={tagsData}
+            partners={partners}
+            task={task}
+            actionsData={actionsData}
+            partnerId={partnerId}
+            mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
+          />
+        </Modal>
+      )}
       {openShowModal && (
         <Modal
           open={openShowModal}

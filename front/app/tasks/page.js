@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import MDBox from "/components/MDBox";
-import Table from "./components/table";
+import Table from "/components/Tasks/table-server";
 import { getAll as getAllTags } from "/actions/tags";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
 import { getTaskPriorities, getAll as getAllTasks } from "/actions/tasks";

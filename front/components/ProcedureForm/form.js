@@ -25,24 +25,9 @@ export default function FormComponent({
 
   const submitForm = async (values, actions) => {
     try {
-      const lastProcedure = procedures.sort(
-        (a, b) => b.stepNumber - a.stepNumber
-      )[0];
-
-      if (lastProcedure && values.step_number > lastProcedure.stepNumber) {
-        values.step_number = lastProcedure.stepNumber + 1;
-      }
-
-      if (procedure) {
-        await update(procedure.id, {
-          ...values,
-          process_id: procedure.processId,
-        });
-        router.push(`/processes/${procedure.processId}`);
-      } else {
-        await store({ ...values, process_id: processId });
-        router.push(`/processes/${processId}`);
-      }
+      // TODO: Fix stepNumber + 1 parse
+      await store({ ...values, process_id: processId });
+      router.push(`/processes/${processId}`);
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

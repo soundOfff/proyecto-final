@@ -6,18 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
+    protected $fillable = [
+        'id',
+        'name',
+        'description',
+        'action_type_id',
+    ];
 
-    public const ACTION_EXPENSE = 'expense';
-    public const ACTION_API = 'api';
-    public const ACTION_MAIL = 'email';
-
-    public function tasks()
+    public function task()
     {
-        return $this->belongsToMany(Task::class, 'task_actions');
+        return $this->belongsTo(Task::class);
     }
 
-    public function procedures()
+    public function procedure()
     {
-        return $this->belongsToMany(Procedure::class, 'action_procedure');
+        return $this->belongsTo(Procedure::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(ActionType::class, 'action_type_id');
     }
 }

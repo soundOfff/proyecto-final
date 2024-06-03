@@ -21,6 +21,7 @@ class ProcedureController extends Controller
                 'status',
                 'responsible',
                 'actions',
+                'actions.type',
                 'dependencies',
                 'process.procedures',
             ])
@@ -43,6 +44,7 @@ class ProcedureController extends Controller
                 'process.procedures',
                 'dependencies',
                 'actions',
+                'actions.type',
                 'status',
                 'responsible',
             ])
@@ -56,10 +58,9 @@ class ProcedureController extends Controller
         $newProcedure = $request->validated();
         $processId = $newProcedure['process_id'];
         $stepNumber = $newProcedure['step_number'];
-        $dependencies = $newProcedure['dependencies'];
-        $actions = $newProcedure['actions'];
+        $dependencies = isset($newProcedure['dependencies']) ? $newProcedure['dependencies'] : [];
+        $actions = isset($newProcedure['actions']) ? $newProcedure['actions'] : [];
 
-        $actionsId = array_column($actions, 'id');
         $dependenciesId = array_column($dependencies, 'id');
 
         abort_if(
@@ -69,8 +70,9 @@ class ProcedureController extends Controller
         );
 
         $procedure = Procedure::create($newProcedure);
-        $procedure->actions()->sync($actionsId);
+        $procedure->actions()->createMany($actions);
         $procedure->dependencies()->sync($dependenciesId);
+
         return response()->json(null, 201);
     }
 
@@ -80,7 +82,7 @@ class ProcedureController extends Controller
         $processId = $procedureUpdated['process_id'];
         $stepNumber = $procedureUpdated['step_number'];
         $dependencies = isset($procedureUpdated['dependencies']) ? $procedureUpdated['dependencies'] : null;
-        $actions = isset($procedureUpdated['actions']) ? $procedureUpdated['actions'] : null;
+        $actions = isset($procedureUpdated['actions']) ? $procedureUpdated['actions'] : [];
 
         abort_if(
             Process::find($processId)->validateIfStepNumberExists($stepNumber) &&
@@ -90,15 +92,12 @@ class ProcedureController extends Controller
         );
 
         $procedure->update($procedureUpdated);
+        $procedure->actions()->delete();
+        $procedure->actions()->createMany($actions);
 
         if ($dependencies) {
             $dependenciesId = array_column($dependencies, 'id');
             $procedure->dependencies()->sync($dependenciesId);
-        }
-
-        if ($actions) {
-            $actionsId = array_column($actions, 'id');
-            $procedure->actions()->sync($actionsId);
         }
 
         return response()->json(null, 204);

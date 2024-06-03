@@ -9,6 +9,8 @@ import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import { ErrorMessage } from "formik";
 
+import ActionForm from "./actionForm";
+import ActionList from "./actionList";
 export default function FormContent({
   values,
   setFieldValue,
@@ -16,10 +18,36 @@ export default function FormContent({
   errors,
   touched,
   procedures,
-  actions: actionsOptions,
+  procedure,
+  actionTypes: actionsOptions,
 }) {
   const { formField } = form;
   const { name, description, stepNumber, dependencies, actions } = formField;
+
+  const deleteAction = (index) => {
+    setFieldValue(actions.name, [
+      ...values.actions.slice(0, index),
+      ...values.actions.slice(index + 1),
+    ]);
+  };
+
+  useEffect(() => {
+    if (procedure) {
+      setFieldValue(name.name, procedure.name);
+      setFieldValue(description.name, procedure.description);
+      setFieldValue(stepNumber.name, procedure.stepNumber);
+      setFieldValue(dependencies.name, procedure.dependencies);
+      setFieldValue(actions.name, procedure.actions);
+    }
+  }, [
+    procedure,
+    setFieldValue,
+    name.name,
+    description.name,
+    stepNumber.name,
+    dependencies.name,
+    actions.name,
+  ]);
 
   useEffect(() => {
     const procedureStepNumber = procedures.find(
@@ -103,37 +131,23 @@ export default function FormContent({
         </MDBox>
       </Grid>
       <Grid item xs={12}>
-        <Autocomplete
-          multiple
-          onChange={(e, selectedAction) =>
-            setFieldValue(actions.name, selectedAction)
-          }
-          value={values[actions.name]}
-          options={actionsOptions}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              key={actions.id}
-              label={actions.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={actions.name} />
-          </MDTypography>
-        </MDBox>
+        <MDTypography variant="h6" fontWeight="medium">
+          Acciones del procedimiento
+        </MDTypography>
       </Grid>
+      <ActionForm
+        options={actionsOptions}
+        actions={actions}
+        values={values}
+        formData={form}
+        setFieldValue={setFieldValue}
+      />
+      <ActionList
+        actions={values[actions.name]}
+        procedure={procedure}
+        options={actionsOptions}
+        deleteAction={deleteAction}
+      />
     </Grid>
   );
 }

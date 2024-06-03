@@ -120,7 +120,7 @@ class Task extends Model
 
     public function actions()
     {
-        return $this->belongsToMany(Action::class, 'task_actions')->withPivot('is_completed');
+        return $this->hasMany(Action::class);
     }
 
     public function files(): MorphMany

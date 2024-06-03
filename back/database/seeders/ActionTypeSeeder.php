@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Action;
+use App\Models\ActionType;
 use Illuminate\Database\Seeder;
 
-class ActionSeeder extends Seeder
+class ActionTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,7 +22,7 @@ class ActionSeeder extends Seeder
         ];
 
         foreach ($actions as $action) {
-            Action::updateOrCreate(['id' => $action['id']], $action);
+            ActionType::updateOrCreate(['id' => $action['id']], $action);
         }
     }
 }

@@ -31,7 +31,9 @@ class ProcedureRequest extends FormRequest
             'dependencies' => 'nullable|array',
             'dependencies.*.id' => 'numeric|exists:procedures,id',
             'actions' => 'nullable|array',
-            'actions.*.id' => 'numeric|exists:actions,id',
+            'actions.*.name' => 'nullable|string',
+            'actions.*.description' => 'nullable|string',
+            'actions.*.action_type_id' => 'nullable|numeric|exists:action_types,id',
         ];
     }
 }

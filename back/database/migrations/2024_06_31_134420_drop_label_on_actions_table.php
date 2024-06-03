@@ -10,12 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('action_procedure', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('procedure_id')->constrained()->onDelete('cascade');
-            $table->foreignId('action_id')->constrained()->onDelete('cascade');
-
-            $table->timestamps();
+        Schema::table('actions', function (Blueprint $table) {
+            $table->dropColumn('label');
         });
     }
 
@@ -24,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('action_procedure');
+        Schema::table('actions', function (Blueprint $table) {
+            $table->string('label');
+        });
     }
 };

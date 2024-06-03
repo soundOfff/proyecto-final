@@ -17,7 +17,11 @@ class ActionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'label' => $this->label
+            'description' => $this->description,
+            'action_type_id' => $this->action_type_id,
+            'type' => ActionTypeResource::make($this->whenLoaded('type')),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+            'procedures' => ProcedureResource::collection($this->whenLoaded('procedures')),
         ];
     }
 }

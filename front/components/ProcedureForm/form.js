@@ -8,13 +8,17 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
 import MDSnackbar from "/components/MDSnackbar";
-import { getAll, store } from "/actions/procedures";
-import { useEffect, useState } from "react";
+import { store, update } from "/actions/procedures";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function FormComponent({ processId, actions }) {
+export default function FormComponent({
+  processId,
+  procedure,
+  procedures,
+  actionTypes,
+}) {
   const { formId } = form;
-  const [procedures, setProcedures] = useState([]);
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
@@ -29,8 +33,16 @@ export default function FormComponent({ processId, actions }) {
         values.step_number = lastProcedure.stepNumber + 1;
       }
 
-      await store({ ...values, process_id: processId });
-      router.push(`/processes/${processId}`);
+      if (procedure) {
+        await update(procedure.id, {
+          ...values,
+          process_id: procedure.processId,
+        });
+        router.push(`/processes/${procedure.processId}`);
+      } else {
+        await store({ ...values, process_id: processId });
+        router.push(`/processes/${processId}`);
+      }
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -44,12 +56,6 @@ export default function FormComponent({ processId, actions }) {
   const handleBack = () => {
     router.push(`/processes/${processId}`);
   };
-
-  useEffect(() => {
-    getAll({ "filter[process_id]": processId }).then((response) => {
-      setProcedures(response.data.procedures);
-    });
-  }, [processId]);
 
   return (
     <MDBox>
@@ -88,8 +94,9 @@ export default function FormComponent({ processId, actions }) {
                 setFieldTouched,
                 setFieldError,
                 procedures,
+                procedure,
+                actionTypes,
               }}
-              actions={actions}
             />
             <MDBox
               mt={5}

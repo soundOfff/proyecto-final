@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { destroy } from "/actions/procedures";
@@ -10,7 +9,6 @@ import { useMaterialUIController } from "/context";
 import update from "immutability-helper";
 import useDeleteRow from "/hooks/useDeleteRow";
 
-import { update as updateProcedure } from "/actions/procedures";
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
@@ -20,11 +18,10 @@ import { Switch, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Procedures({ procedures, actions }) {
+export default function Procedures({ procedures, actionTypes, processId }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [records, setRecords] = useState(procedures);
-  const pathname = usePathname();
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -34,48 +31,25 @@ export default function Procedures({ procedures, actions }) {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
-  const handleActionsChange = async (e, row, action) => {
-    const newActions = e.target.checked
-      ? [...row.original.actions, action]
-      : row.original.actions.filter((a) => a.name !== action.name);
-
-    const newRecord = {
-      ...row.original,
-      actions: newActions,
-    };
-
-    const updatedRecords = update(records, {
-      [row.index]: { $set: newRecord },
-    });
-
-    setRecords(updatedRecords);
-
-    await updateProcedure(row.original.id, {
-      process_id: row.original.processId,
-      procedure_status_id: row.original.statusId,
-      step_number: row.original.stepNumber,
-      name: row.original.name,
-      responsible_id: row.original.responsibleId,
-      dependencies: row.original.dependencies,
-      actions: newActions,
-    });
-  };
-
   const getActionsColumns = () => {
-    return actions.map((action) => {
+    return actionTypes.map((actionType) => {
       return {
-        Header: action.label,
-        accessor: action.name,
-        Cell: ({ row }) => (
-          <MDBox display="flex" justifyContent="center" width="100%">
-            <Switch
-              name={action.name}
-              label={action.label}
-              onChange={(e) => handleActionsChange(e, row, action)}
-              checked={row.original.actions.some((a) => a.name === action.name)}
-            />
-          </MDBox>
-        ),
+        Header: actionType.label,
+        accessor: actionType.name,
+        Cell: ({ row }) => {
+          return (
+            <MDBox display="flex" justifyContent="center" width="100%">
+              <Switch
+                name={actionType.name}
+                label={actionType.label}
+                disabled={true}
+                checked={row.original.actions.some(
+                  (action) => action.type.id === actionType.id
+                )}
+              />
+            </MDBox>
+          );
+        },
       };
     });
   };
@@ -154,7 +128,7 @@ export default function Procedures({ procedures, actions }) {
   return (
     <>
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href={`${pathname}/create-procedure`}>
+        <Link href={{ pathname: "/procedures/create", query: { processId } }}>
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Agregar Procedimiento
           </MDButton>
@@ -162,7 +136,7 @@ export default function Procedures({ procedures, actions }) {
       </MDBox>
       <DataTable
         table={table}
-        entriesPerPage={false}
+        entriesPerPage={{ defaultValue: 50 }}
         showTotalEntries={false}
         moveRow={moveRow}
         isSorted={false}

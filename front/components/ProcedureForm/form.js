@@ -25,9 +25,16 @@ export default function FormComponent({
 
   const submitForm = async (values, actions) => {
     try {
-      // TODO: Fix stepNumber + 1 parse
-      await store({ ...values, process_id: processId });
-      router.push(`/processes/${processId}`);
+      if (procedure) {
+        await update(procedure.id, {
+          ...values,
+          process_id: procedure.processId,
+        });
+        router.push(`/processes/${procedure.processId}`);
+      } else {
+        await store({ ...values, process_id: processId });
+        router.push(`/processes/${processId}`);
+      }
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

@@ -9,7 +9,7 @@ import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getCurrentTimer } from "/actions/timers";
-import { getAll as getAllActions } from "/actions/actions";
+import { getAll as getAllActionTypes } from "/actions/action-types";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
 
@@ -44,7 +44,7 @@ export default async function Tasks({
     getTaskStatus(),
     getAllPartners(),
     getCurrentTimer(session.staff.id),
-    getAllActions(),
+    getAllActionTypes(),
   ]);
 
   return (

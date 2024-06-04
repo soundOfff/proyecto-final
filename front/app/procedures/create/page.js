@@ -9,6 +9,7 @@ export default async function CreateProcedure({ searchParams: { processId } }) {
     data: { procedures },
   } = await getAllProcedures({
     include: ["dependencies", "actions"],
+    "filter[process_id]": processId,
   });
   const actionTypes = await getAll();
   return (

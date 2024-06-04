@@ -32,7 +32,16 @@ export default function FormComponent({
         });
         router.push(`/processes/${procedure.processId}`);
       } else {
-        await store({ ...values, process_id: processId });
+        const lastProcedure = procedures.sort(
+          (a, b) => b.stepNumber - a.stepNumber
+        )[0];
+        const lastStepNumber = lastProcedure?.stepNumber ?? 0;
+
+        await store({
+          ...values,
+          process_id: processId,
+          step_number: lastStepNumber + 1,
+        });
         router.push(`/processes/${processId}`);
       }
     } catch (error) {

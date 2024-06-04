@@ -49,17 +49,59 @@ export default function FormContent({
     actions.name,
   ]);
 
-  useEffect(() => {
-    const procedureStepNumber = procedures.find(
-      (procedure) => procedure.stepNumber == values[stepNumber.name]
-    );
-    if (procedureStepNumber) {
-      setFieldError(
-        stepNumber.name,
-        `El paso número ${values[stepNumber.name]} ya existe`
+  const validateStepNumberNotExist = (stepNumber) => {
+    let error;
+
+    if (procedure) {
+      const proceduresSaved =
+        procedure && procedures.filter((p) => p.id != procedure.id);
+
+      if (
+        proceduresSaved.find(
+          (procedureSaved) => procedureSaved.stepNumber == stepNumber
+        )
+      ) {
+        error = `El paso número ${stepNumber} ya existe`;
+        setFieldError("step_number", error);
+      }
+    } else {
+      const procedureStepNumber = procedures.find(
+        (procedure) => procedure.stepNumber == stepNumber
       );
+      if (procedureStepNumber) {
+        error = `El paso número ${stepNumber} ya existe`;
+        setFieldError("step_number", error);
+      }
     }
-  }, [values, stepNumber, procedures, setFieldError, errors]);
+
+    return error;
+  };
+
+  useEffect(() => {
+    if (procedure) {
+      const proceduresSaved =
+        procedure && procedures.filter((p) => p.id != procedure.id);
+
+      if (
+        proceduresSaved.find(
+          (procedureSaved) => procedureSaved.stepNumber == values.step_number
+        )
+      ) {
+        const error = `El paso número ${values[stepNumber.name]} ya existe`;
+        setFieldError(stepNumber.name, error);
+      }
+    } else {
+      const procedureStepNumber = procedures.find(
+        (procedure) => procedure.stepNumber == values[stepNumber.name]
+      );
+      if (procedureStepNumber) {
+        setFieldError(
+          stepNumber.name,
+          `El paso número ${values[stepNumber.name]} ya existe`
+        );
+      }
+    }
+  }, [values, stepNumber, procedure, procedures, setFieldError, errors]);
 
   return (
     <Grid container spacing={5}>
@@ -83,6 +125,7 @@ export default function FormContent({
           value={values[stepNumber.name]}
           error={errors.stepNumber && touched.stepNumber}
           success={stepNumber.length > 0 && !errors.stepNumber}
+          validate={validateStepNumberNotExist}
         />
       </Grid>
       <Grid item xs={12}>

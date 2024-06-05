@@ -19,15 +19,16 @@ const detailForm = {
     juridical: {
       company: {
         name: "company",
-        label: "Empresa",
+        label: "Razón Social",
         type: "text",
-        errorMsg: "El nombre de la Empresa es requerida",
+        errorMsg: "La Razón Social es requerida",
       },
       ruc: {
         name: "ruc",
         label: "RUC",
         type: "text",
         placeholder: "RUC",
+        errorMsg: "El RUC es requerido",
       },
       country: {
         name: "country_id",
@@ -68,11 +69,27 @@ const detailForm = {
         name: "phone_number",
         label: "Teléfono",
         type: "text",
+        errorMsg: "El teléfono es requerido",
       },
       website: {
         name: "website",
         label: "Website",
         errorMsg: "Debe seleccionar un tipo de servicio",
+      },
+      industry: {
+        name: "industry",
+        label: "Industria",
+        errorMsg: "Debe ingresar una industria",
+      },
+      document: {
+        name: "document",
+        label: "Folio",
+        errorMsg: "Debe ingresar un documento",
+      },
+      section: {
+        name: "section",
+        label: "Sección",
+        errorMsg: "Debe ingresar una sección",
       },
       isConsolidator: {
         name: "is_consolidator",
@@ -91,11 +108,13 @@ const detailForm = {
         name: "address",
         label: "Dirección",
         type: "text",
+        errorMsg: "La dirección es requerida",
       },
       email: {
         name: "email",
         label: "Email",
         type: "email",
+        errorMsg: "El email es requerido",
       },
       isResidential: {
         name: "is_residential",
@@ -120,22 +139,15 @@ const detailForm = {
         label: "Número de Imagen",
         type: "text",
       },
-      president: {
-        name: "president_id",
-        label: "Presidente",
-      },
-      secretary: {
-        name: "secretary_id",
-        label: "Secretario",
-      },
-      treasurer: {
-        name: "treasurer_id",
-        label: "Tesorero",
+      persons: {
+        name: "persons",
+        label: "Personas",
       },
       dv: {
         name: "dv",
         label: "DV",
         type: "text",
+        errorMsg: "El DV es requerido",
       },
     },
 
@@ -215,6 +227,7 @@ const detailForm = {
         name: "phone_number",
         label: "Teléfono",
         type: "text",
+        errorMsg: "El teléfono es requerido",
       },
       address: {
         name: "address",

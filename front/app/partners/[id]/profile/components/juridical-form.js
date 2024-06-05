@@ -34,6 +34,9 @@ export default function JuridicalForm({
         company,
         state,
         city,
+        industry,
+        document,
+        section,
         consolidator,
         isConsolidator,
         country,
@@ -52,9 +55,6 @@ export default function JuridicalForm({
         rollNumber,
         ruc,
         dv,
-        president,
-        secretary,
-        treasurer,
       },
     },
   } = detailForm;
@@ -103,9 +103,39 @@ export default function JuridicalForm({
           label={company.label}
           placeholder={company.placeholder}
           name={company.name}
-          type={company.type}
+          type="text"
           error={errors[company.name] && touched[company.name]}
           success={values[company.name]?.length > 0 && !errors[company.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[industry.name]}
+          label={industry.label}
+          name={industry.name}
+          type="text"
+          error={errors[industry.name] && touched[industry.name]}
+          success={values[industry.name]?.length > 0 && !errors[industry.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[section.name]}
+          label={section.label}
+          name={section.name}
+          type="text"
+          error={errors[section.name] && touched[section.name]}
+          success={values[section.name]?.length > 0 && !errors[section.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[document.name]}
+          label={document.label}
+          name={document.name}
+          type="text"
+          error={errors[document.name] && touched[document.name]}
+          success={values[document.name]?.length > 0 && !errors[document.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -328,42 +358,6 @@ export default function JuridicalForm({
           value={values[dv.name]}
           error={errors[dv.name] && touched[dv.name]}
           success={values[dv.name]?.length > 0 && !errors[dv.name]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[president.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
-          fieldName={president.name}
-          inputLabel={president.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[secretary.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
-          fieldName={secretary.name}
-          inputLabel={secretary.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[treasurer.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
-          fieldName={treasurer.name}
-          inputLabel={treasurer.label}
-          setFieldValue={setFieldValue}
         />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="center">

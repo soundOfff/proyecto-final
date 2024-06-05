@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { getAll as getAllProvinces } from "/actions/provinces";
 import { getAll as getAllDistricts } from "/actions/districts";
 import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
+import RelatedPersonFormComponent from "./related-person-form";
 
 export default function JuridicalForm({
   countries,
@@ -40,10 +41,12 @@ export default function JuridicalForm({
         district,
         jurisdiction,
         province,
-        website,
+        industry,
         zip,
         email,
         address,
+        document,
+        section,
         isResidential,
         phone,
         buildingNumber,
@@ -51,9 +54,6 @@ export default function JuridicalForm({
         imageNumber,
         rollNumber,
         ruc,
-        president,
-        secretary,
-        treasurer,
         dv,
       },
     },
@@ -110,12 +110,32 @@ export default function JuridicalForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
-          value={values[website.name]}
-          label={website.label}
-          name={website.name}
-          type={website.type}
-          error={errors[website.name] && touched[website.name]}
-          success={values[website.name]?.length > 0 && !errors[website.name]}
+          value={values[industry.name]}
+          label={industry.label}
+          name={industry.name}
+          type={industry.type}
+          error={errors[industry.name] && touched[industry.name]}
+          success={values[industry.name]?.length > 0 && !errors[industry.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[section.name]}
+          label={section.label}
+          name={section.name}
+          type={section.type}
+          error={errors[section.name] && touched[section.name]}
+          success={values[section.name]?.length > 0 && !errors[section.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[document.name]}
+          label={document.label}
+          name={document.name}
+          type={document.type}
+          error={errors[document.name] && touched[document.name]}
+          success={values[document.name]?.length > 0 && !errors[document.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -331,38 +351,10 @@ export default function JuridicalForm({
           success={values[dv.name]?.length > 0 && !errors[dv.name]}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[president.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) => {
-            return option.name;
-          }}
-          fieldName={president.name}
-          inputLabel={president.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[secretary.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) => option.name}
-          fieldName={secretary.name}
-          inputLabel={secretary.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[treasurer.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) => option.name}
-          fieldName={treasurer.name}
-          inputLabel={treasurer.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
+      <RelatedPersonFormComponent
+        setFieldValue={setFieldValue}
+        values={values}
+      />
       <Grid item xs={12} sm={6} display="flex" alignItems="center">
         <FormGroup>
           <FormControlLabel

@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import form from "./form";
+import { PANAMA_ID } from "/utils/constants/countries";
 
 const {
   formField: {
@@ -27,8 +28,12 @@ const {
       address,
       ruc,
       city,
+      document,
+      industry,
+      section,
       consolidator,
       isConsolidator,
+      dv,
       language,
       website,
       buildingNumber,
@@ -72,12 +77,32 @@ const validations = {
   juridical: Yup.object().shape({
     [company.name]: Yup.string().required(company.errorMsg),
     [country.name]: Yup.number().required(country.errorMsg),
+    [address.name]: Yup.string().required(address.errorMsg),
+    [document.name]: Yup.string().nullable(),
+    [industry.name]: Yup.string().nullable(),
+    [section.name]: Yup.string().nullable(),
+    [ruc.name]: Yup.string().required(ruc.errorMsg),
+    [dv.name]: Yup.string().required(dv.errorMsg),
+    [phone.name]: Yup.string().required(phone.errorMsg),
+    [email.name]: Yup.string().email().required(email.errorMsg),
+    [jurisdiction.name]: Yup.number().when([country.name], {
+      is: (country) => country == PANAMA_ID,
+      then: (schema) => schema.required(jurisdiction.errorMsg),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    [district.name]: Yup.number().when([country.name], {
+      is: (country) => country == PANAMA_ID,
+      then: (schema) => schema.required(district.errorMsg),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    [province.name]: Yup.number().when([country.name], {
+      is: (country) => country == PANAMA_ID,
+      then: (schema) => schema.required(province.errorMsg),
+      otherwise: (schema) => schema.nullable(),
+    }),
     [state.name]: Yup.string().nullable(),
     [zip.name]: Yup.string().nullable(),
-    [address.name]: Yup.string().nullable(),
-    [ruc.name]: Yup.string().nullable(),
     [city.name]: Yup.string().nullable(),
-    [phone.name]: Yup.string().nullable(),
     [consolidator.name]: Yup.number().nullable(),
     [shippingCity.name]: Yup.string().nullable(),
     [shippingState.name]: Yup.string().nullable(),
@@ -92,13 +117,9 @@ const validations = {
     [isConsolidator.name]: Yup.boolean().nullable(),
     [website.name]: Yup.string().nullable(),
     [buildingNumber.name]: Yup.string().nullable(),
-    [district.name]: Yup.number().nullable(),
-    [email.name]: Yup.string().nullable(),
     [fileNumber.name]: Yup.string().nullable(),
     [imageNumber.name]: Yup.string().nullable(),
     [isResidential.name]: Yup.boolean().nullable(),
-    [jurisdiction.name]: Yup.number().nullable(),
-    [province.name]: Yup.number().nullable(),
     [rollNumber.name]: Yup.string().nullable(),
   }),
   person: Yup.object().shape({
@@ -107,8 +128,8 @@ const validations = {
     [isMale.name]: Yup.boolean().required(isMale.errorMsg),
     [number.name]: Yup.string().required(number.errorMsg),
     [birthPlace.name]: Yup.string().required(birthPlace.errorMsg),
-    [birthDate.name]: Yup.string().nullable(),
     [expeditionDate.name]: Yup.date().max(new Date()).nullable(),
+    [birthDate.name]: Yup.string().nullable(),
     [shippingCity.name]: Yup.string().nullable(),
     [shippingState.name]: Yup.string().nullable(),
     [shippingZip.name]: Yup.string().nullable(),

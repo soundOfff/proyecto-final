@@ -12,11 +12,13 @@ import { getCurrentTimer } from "/actions/timers";
 import { getAll as getAllActionTypes } from "/actions/action-types";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
+import { getTableFields } from "/actions/table-field";
 
 export default async function Tasks({
   searchParams: { perPage = 10, page = 1 },
 }) {
   const session = await getServerSession(authOptions);
+  const tableName = "projects";
 
   const [
     tasks,
@@ -28,6 +30,7 @@ export default async function Tasks({
     partners,
     currentTimer,
     actionsData,
+    tableFields,
   ] = await Promise.all([
     getAllTasks({
       perPage: perPage,
@@ -45,6 +48,7 @@ export default async function Tasks({
     getAllPartners(),
     getCurrentTimer(session.staff.id),
     getAllActionTypes(),
+    getTableFields({ table: tableName }),
   ]);
 
   return (
@@ -64,6 +68,7 @@ export default async function Tasks({
               statuses={statuses}
               currentTimer={currentTimer}
               actionsData={actionsData}
+              tableFields={tableFields}
             />
           </Grid>
         </Grid>

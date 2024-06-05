@@ -89,8 +89,7 @@ class TaskController extends Controller
         $dependencyIds = array_column($dependencies, 'id');
         $task->dependencies()->sync($dependencyIds);
 
-        $actionIds = array_column($newTask['actions'], 'id');
-        $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
+        $task->requiredFields()->createMany($newTask['requiredFields']);
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $task->id;
@@ -113,6 +112,7 @@ class TaskController extends Controller
         $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $actions = isset($newTask['actions']) ? $newTask['actions'] : null;
+        $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
         $task->update($newTask);
 
         if (isset($comments)) {
@@ -160,6 +160,9 @@ class TaskController extends Controller
             $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
         }
 
+        $task->requiredFields()->delete();
+        $task->requiredFields()->createMany($requiredFields);
+
         return response()->json(null, 204);
     }
 
@@ -205,6 +208,7 @@ class TaskController extends Controller
                 'taskable',
                 'reminders',
                 'actions',
+                'requiredFields',
             ])
             ->find($task->id);
 

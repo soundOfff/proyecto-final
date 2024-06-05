@@ -110,6 +110,7 @@ export default function useTaskTable({ rows, dispatch, currentTaskId }) {
             "taskable",
             "reminders",
             "actions",
+            "requiredFields",
           ],
         })
       );

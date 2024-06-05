@@ -107,6 +107,10 @@ const form = {
       name: "actions",
       label: "Acciones",
     },
+    requiredFields: {
+      name: "requiredFields",
+      label: "Campos requeridos",
+    },
   },
 };
 

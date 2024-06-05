@@ -39,6 +39,7 @@ const {
     owner_id,
     description,
     actions,
+    requiredFields,
   },
 } = checkout;
 
@@ -67,5 +68,6 @@ const validations = Yup.object().shape({
   [totalCycles.name]: Yup.number().nullable(),
   [isInfinite.name]: Yup.boolean(),
   [actions.name]: Yup.array(),
+  [requiredFields.name]: Yup.array(),
 });
 export default validations;

@@ -41,6 +41,7 @@ export default function Table({
   currentTimer,
   currentTaskId,
   actionsData,
+  tableFields,
   partnerId,
 }) {
   const [controller, dispatch] = useMaterialUIController();
@@ -61,7 +62,6 @@ export default function Table({
     setTaskId,
   } = useTaskTable({ rows, dispatch, currentTaskId });
   const { darkMode } = controller;
-
   const { data: session } = useSession();
 
   const {
@@ -317,6 +317,7 @@ export default function Table({
             partners={partners}
             task={task}
             actionsData={actionsData}
+            tableFields={tableFields}
             partnerId={partnerId}
             mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
           />

@@ -33,6 +33,7 @@ class PartnerRequest extends FormRequest
             'shipping_country_id' => 'nullable|numeric|exists:countries,id',
             'nationality_id' => 'nullable|numeric|exists:countries,id',
             'birth_place_id' => 'nullable|numeric|exists:countries,id',
+            'related_partners' => 'nullable|array',
             'website' => 'nullable|string',
             'city' => 'nullable|string',
             'state' => 'nullable|string',

@@ -139,8 +139,8 @@ const detailForm = {
         label: "Número de Imagen",
         type: "text",
       },
-      persons: {
-        name: "persons",
+      relatedPartners: {
+        name: "related_partners",
         label: "Personas",
       },
       dv: {

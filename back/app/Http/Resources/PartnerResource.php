@@ -75,6 +75,13 @@ class PartnerResource extends JsonResource
             'industry' => $this->industry,
             'section' => $this->section,
             'document' => $this->document,
+            'relatedPartners' => PartnerResource::collection($this->whenLoaded('relatedPartners', fn () => [
+                'id' => $this->relatedPartners->id,
+                'start_date' => $this->relatedPartners->start_date,
+                'end_date' => $this->relatedPartners->end_date,
+                'related_partner_id' => $this->relatedPartners->related_partner_id,
+                'partner_id' => $this->relatedPartners->partner_id,
+            ])),
             'files' => FileResource::collection($this->whenLoaded('files')),
             'createdAt' => Carbon::parse($this->created_at)->format('m/d/Y g:i A'),
             'country' => CountryResource::make($this->whenLoaded('country')),

@@ -15,6 +15,7 @@ export default function DetailFormComponent({
   touched,
   setFieldValue,
   isJuridic,
+  partnerTypes,
   setIsJuridic,
 }) {
   return (
@@ -40,6 +41,7 @@ export default function DetailFormComponent({
               {...{
                 countries,
                 consolidators,
+                partnerTypes,
                 notJuridicEntities,
                 errors,
                 values,

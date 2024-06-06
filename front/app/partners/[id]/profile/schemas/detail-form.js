@@ -23,6 +23,10 @@ const detailForm = {
         type: "text",
         errorMsg: "La Razón Social es requerida",
       },
+      relatedPartners: {
+        name: "related_partners",
+        label: "Socios Relacionados",
+      },
       ruc: {
         name: "ruc",
         label: "RUC",

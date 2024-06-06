@@ -1,5 +1,6 @@
 import { show, getSelect as getPartnersSelect } from "/actions/partners";
 import { getSelect as getCountriesSelect } from "/actions/countries";
+import { getAll as getAllPartnerTypes } from "/actions/partner-types";
 import Form from "./components/form";
 
 export default async function Profile({ params: { id } }) {
@@ -9,6 +10,7 @@ export default async function Profile({ params: { id } }) {
       "country",
       "consolidator",
       "shippingCountry",
+      "relatedPartners",
       "billingCountry",
       "jurisdiction.district.province",
     ],
@@ -21,6 +23,8 @@ export default async function Profile({ params: { id } }) {
     "filter[is_juridic]": false,
   });
 
+  const partnerTypes = await getAllPartnerTypes();
+
   const countries = await getCountriesSelect();
 
   return (
@@ -29,6 +33,7 @@ export default async function Profile({ params: { id } }) {
       notJuridicEntities={notJuridicEntities}
       consolidators={consolidators}
       countries={countries}
+      partnerTypes={partnerTypes}
     />
   );
 }

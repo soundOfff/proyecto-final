@@ -21,7 +21,10 @@ export default async function Tasks({
   const tableName = "projects";
 
   const [
-    tasks,
+    {
+      data: { tasks },
+      meta,
+    },
     tagsData,
     repeats,
     priorities,
@@ -35,15 +38,12 @@ export default async function Tasks({
     getAllTasks({
       perPage: perPage,
       page: page,
-      include: ["assigneds", "tags", "status", "dependencies"],
+      include: ["assigneds", "tags", "status", "dependencies", "author"],
     }),
     getAllTags(),
     getAllRepeats(),
     getTaskPriorities(),
-    getAllTaskableTypes({
-      perPage: perPage,
-      page: page,
-    }),
+    getAllTaskableTypes(),
     getTaskStatus(),
     getAllPartners(),
     getCurrentTimer(session.staff.id),
@@ -58,7 +58,7 @@ export default async function Tasks({
           <Grid item xs={12}>
             <Table
               rows={tasks}
-              meta={{ per_page: perPage, page: page }}
+              meta={meta}
               priorities={priorities}
               repeats={repeats}
               taskableItems={taskableItems}

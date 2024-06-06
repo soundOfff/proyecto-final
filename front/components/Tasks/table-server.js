@@ -27,6 +27,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 import useTaskTable from "/hooks/useTaskTable";
+import Header from "./show/header";
 
 export default function Table({
   rows,
@@ -215,6 +216,11 @@ export default function Table({
           sx={{ width: "150px" }}
         />
       ),
+    },
+    {
+      Header: "Autor",
+      accessor: "author",
+      Cell: ({ value }) => value && value.name,
     },
     {
       Header: "Acciones",

@@ -18,8 +18,11 @@ export default async function PartnerTasks({
   params: { id },
   searchParams: { perPage = 10, page = 1 },
 }) {
-  const tasks = await getAll({
-    include: ["assigneds", "tags", "status", "dependencies"],
+  const {
+    data: { tasks },
+    meta,
+  } = await getAll({
+    include: ["assigneds", "tags", "status", "dependencies", "author"],
     "filter[partner_id]": id,
     perPage: perPage,
     page: page,
@@ -41,7 +44,7 @@ export default async function PartnerTasks({
           <Grid item xs={12}>
             <Table
               rows={tasks}
-              meta={{ per_page: perPage, page: page }}
+              meta={meta}
               priorities={priorities}
               repeats={repeats}
               taskableItems={taskableItems}

@@ -72,6 +72,11 @@ export default function Procedures({ procedures, actionTypes, processId }) {
       Header: "Descripción",
       accessor: "description",
     },
+    {
+      Header: "Autor",
+      accessor: "author",
+      Cell: ({ value }) => value && value.name,
+    },
     ...getActionsColumns(),
     {
       id: "acciones",

@@ -39,7 +39,7 @@ export default function FormContent({ values, setFieldValue }) {
       getAllExpenses().then((data) => setRelations(data.data.expenses));
     }
     if (fileableType === "task") {
-      getAllTasks().then((data) => setRelations(data));
+      getAllTasks().then((data) => setRelations(data.data.tasks));
     }
   };
 

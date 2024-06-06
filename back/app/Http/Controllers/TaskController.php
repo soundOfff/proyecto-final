@@ -33,6 +33,7 @@ class TaskController extends Controller
                 'taskable',
                 'reminders',
                 'actions',
+                'author',
             ])
             ->allowedSorts([
                 'milestone_order',
@@ -64,7 +65,8 @@ class TaskController extends Controller
                         )
                     ),
                 ]
-            );
+            )
+            ->orderBy('id', 'desc');
 
         $tasks = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -79,6 +81,7 @@ class TaskController extends Controller
         $tags = $newTask['tags'];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
+        $newTask['author_id'] = $newTask['owner_id'];
 
         if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
@@ -209,6 +212,7 @@ class TaskController extends Controller
                 'reminders',
                 'actions',
                 'requiredFields',
+                'author',
             ])
             ->find($task->id);
 

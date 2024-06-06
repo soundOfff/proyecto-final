@@ -29,6 +29,7 @@ class Task extends Model
         'partner_id',
         'task_status_id',
         'repeat_id',
+        'author_id',
         'recurring_type',
         'recurring',
         'is_infinite',
@@ -84,6 +85,11 @@ class Task extends Model
     public function status()
     {
         return $this->belongsTo(TaskStatus::class, 'task_status_id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Staff::class, 'author_id');
     }
 
     public function comments()

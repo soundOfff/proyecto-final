@@ -11,6 +11,7 @@ import MDSnackbar from "/components/MDSnackbar";
 import { store, update } from "/actions/procedures";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function FormComponent({
   processId,
@@ -22,6 +23,7 @@ export default function FormComponent({
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
+  const { data: session } = useSession();
 
   const submitForm = async (values, actions) => {
     try {
@@ -41,6 +43,7 @@ export default function FormComponent({
           ...values,
           process_id: processId,
           step_number: lastStepNumber + 1,
+          author_id: session.staff.id,
         });
         router.push(`/processes/${processId}`);
       }

@@ -37,6 +37,7 @@ class TaskResource extends JsonResource
             'milestone_order' => $this->milestone_order,
             'description' => $this->description,
             'canChangeStatus' => $this->can_change_status,
+            'is_file_needed' => $this->is_file_needed,
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'total_time' => $this->getTotalTime(),
             'timers' => TaskTimerResource::collection($this->whenLoaded('timers')),

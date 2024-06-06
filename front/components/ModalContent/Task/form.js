@@ -5,6 +5,7 @@ import {
   Checkbox,
   FormControl,
   FormGroup,
+  Switch,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import MDBox from "/components/MDBox";
@@ -30,7 +31,6 @@ export default function TaskForm({
   partners,
   dependencyTasks,
   tagsData,
-  actionsData,
   tableFields,
   task = null,
   mode,
@@ -58,6 +58,7 @@ export default function TaskForm({
     description,
     actions,
     requiredFields,
+    isFileNeeded,
   } = formField;
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -88,6 +89,7 @@ export default function TaskForm({
       setEditorState(parsedDescription);
       setFieldValue(actions.name, task.actions || []);
       setFieldValue(requiredFields.name, task.requiredFields || []);
+      setFieldValue(isFileNeeded.name, Boolean(task.is_file_needed));
     }
     if (partnerId) setFieldValue(partner_id.name, partnerId || "");
   }, [
@@ -115,6 +117,7 @@ export default function TaskForm({
     actions.name,
     dependencies.name,
     requiredFields.name,
+    isFileNeeded.name,
   ]);
 
   useEffect(() => {
@@ -472,6 +475,21 @@ export default function TaskForm({
                 <ErrorMessage name={requiredFields.name} />
               </MDTypography>
             </MDBox>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={values[isFileNeeded.name]}
+                    onChange={(e) =>
+                      setFieldValue(isFileNeeded.name, e.target.checked)
+                    }
+                  />
+                }
+                label={isFileNeeded.label}
+              />
+            </FormGroup>
           </Grid>
           <Grid item xs={12}>
             <MDTypography variant="body2" color="text">

@@ -39,6 +39,7 @@ const {
     dependencies,
     actions,
     requiredFields,
+    isFileNeeded,
   },
 } = checkout;
 
@@ -65,6 +66,7 @@ const initialValues = {
   [dependencies.name]: [],
   [actions.name]: [],
   [requiredFields.name]: [],
+  [isFileNeeded.name]: false,
 };
 
 export default initialValues;

@@ -40,6 +40,7 @@ const {
     description,
     actions,
     requiredFields,
+    isFileNeeded,
   },
 } = checkout;
 
@@ -69,5 +70,6 @@ const validations = Yup.object().shape({
   [isInfinite.name]: Yup.boolean(),
   [actions.name]: Yup.array(),
   [requiredFields.name]: Yup.array(),
+  [isFileNeeded.name]: Yup.boolean(),
 });
 export default validations;

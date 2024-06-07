@@ -18,6 +18,7 @@ class ProcessController extends Controller
             'projectServiceType',
             'procedures.status',
             'procedures.responsible',
+            'author',
         ])
         ->allowedFilters([
             AllowedFilter::exact('project_service_type_id'),
@@ -37,6 +38,7 @@ class ProcessController extends Controller
             'projectServiceType',
             'procedures.status',
             'procedures.responsible',
+            'author',
         ])
         ->allowedFilters([
             AllowedFilter::exact('project_id'),

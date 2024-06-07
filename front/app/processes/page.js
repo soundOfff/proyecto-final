@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function Proposals({
   searchParams: { perPage = 10, page = 1, sort = "-id" },
 }) {
-  const include = ["projectServiceType"];
+  const include = ["projectServiceType", "author"];
   const {
     data: { processes },
     meta,

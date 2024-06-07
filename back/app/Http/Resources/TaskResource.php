@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Models\TaskTimer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -38,6 +37,7 @@ class TaskResource extends JsonResource
             'milestone_order' => $this->milestone_order,
             'description' => $this->description,
             'canChangeStatus' => $this->can_change_status,
+            'is_file_needed' => $this->is_file_needed,
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'total_time' => $this->getTotalTime(),
             'timers' => TaskTimerResource::collection($this->whenLoaded('timers')),
@@ -50,6 +50,8 @@ class TaskResource extends JsonResource
             'followers' => StaffResource::collection($this->whenLoaded('followers')),
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
             'dependencies' => self::collection($this->whenLoaded('dependencies')),
+            'requiredFields' => TaskRequiredFieldResource::collection($this->whenLoaded('requiredFields')),
+            'author' => StaffResource::make($this->whenLoaded('author')),
             'isBlocked' => $this->whenLoaded('dependencies', function () {
                 return $this->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
             }),

@@ -107,7 +107,7 @@ export default function Table() {
       "filter[taskable_type]": "invoice",
       include: ["assigneds", "tags", "status", "dependencies"],
     }).then((data) => {
-      setRows(data);
+      setRows(data.data.tasks);
     });
   }, [invoice]);
 

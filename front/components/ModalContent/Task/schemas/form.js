@@ -107,6 +107,14 @@ const form = {
       name: "actions",
       label: "Acciones",
     },
+    requiredFields: {
+      name: "requiredFields",
+      label: "Campos requeridos",
+    },
+    isFileNeeded: {
+      name: "is_file_needed",
+      label: "Se necesita un archivo",
+    },
   },
 };
 

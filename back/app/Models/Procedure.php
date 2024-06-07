@@ -12,6 +12,7 @@ class Procedure extends Model
         'process_id',
         'procedure_status_id',
         'responsible_id',
+        'author_id',
         'step_number',
         'name',
         'description',
@@ -45,6 +46,11 @@ class Procedure extends Model
     public function dependant()
     {
         return $this->belongsToMany(self::class, 'procedure_dependencies', 'dependent_procedure_id', 'procedure_id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Staff::class, 'author_id');
     }
 
     public function convertToTask($projectId, $partnerId, $responsiblePersonId): Task | null

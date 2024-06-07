@@ -53,6 +53,11 @@ export default function Table({ rows, meta }) {
       accessor: "createdAt",
     },
     {
+      Header: "Autor",
+      accessor: "author",
+      Cell: ({ value }) => value && value.name,
+    },
+    {
       id: "actions",
       Header: "Acciones",
       Cell: ({ row }) => (

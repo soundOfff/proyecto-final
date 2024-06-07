@@ -71,9 +71,9 @@ export default function Table({ statuses, priorities, project }) {
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
       sort: "milestone_order",
-      include: ["assigneds", "tags", "status", "dependencies"],
+      include: ["assigneds", "tags", "status", "dependencies", "author"],
     }).then((data) => {
-      setRows(data);
+      setRows(data.data.tasks);
       setIsLoading(false);
     });
   }, [project, setIsLoading]);
@@ -243,6 +243,11 @@ export default function Table({ statuses, priorities, project }) {
           sx={{ width: "150px" }}
         />
       ),
+    },
+    {
+      Header: "Autor",
+      accessor: "author",
+      Cell: ({ value }) => value && value.name,
     },
     {
       Header: "Acciones",

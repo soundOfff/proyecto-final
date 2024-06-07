@@ -24,6 +24,7 @@ class ProcedureController extends Controller
                 'actions.type',
                 'dependencies',
                 'process.procedures',
+                'author',
             ])
             ->allowedFilters([
                 AllowedFilter::exact('process_id'),
@@ -47,6 +48,7 @@ class ProcedureController extends Controller
                 'actions.type',
                 'status',
                 'responsible',
+                'author',
             ])
             ->find($procedure->id);
 

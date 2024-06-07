@@ -5,14 +5,15 @@ import { getAll, show } from "/actions/procedures";
 import { getAll as getAllActionTypes } from "/actions/action-types";
 
 export default async function EditProcedure({ params: { id } }) {
+  const actionTypes = await getAllActionTypes();
+  const procedure = await show(id, {
+    include: ["dependencies", "actions.type"],
+  });
   const {
     data: { procedures },
   } = await getAll({
     include: ["dependencies", "actions"],
-  });
-  const actionTypes = await getAllActionTypes();
-  const procedure = await show(id, {
-    include: ["dependencies", "actions.type"],
+    "filter[process_id]": procedure.processId,
   });
 
   return (

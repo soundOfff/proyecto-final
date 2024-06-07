@@ -39,6 +39,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RecurringController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SubServiceTypeController;
+use App\Http\Controllers\TableFieldController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPriorityController;
@@ -214,6 +215,8 @@ Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
 
 Route::get('/actions', [ActionController::class, 'index']);
 Route::get('/action-types', [ActionTypeController::class, 'index']);
+
+Route::post('/table-fields', TableFieldController::class);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

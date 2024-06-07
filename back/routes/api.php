@@ -22,6 +22,7 @@ use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PermissionController;
@@ -102,6 +103,8 @@ Route::get('/partners/{partner}', [PartnerController::class, 'show']);
 Route::put('/partners/{partner}', [PartnerController::class, 'update']);
 Route::get('/partner-stats', [PartnerController::class, 'stats']);
 Route::get('/partners-select', [PartnerController::class, 'select']);
+
+Route::get('/partner-types', [PartnerTypeController::class, 'index']);
 
 Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 

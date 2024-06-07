@@ -15,6 +15,7 @@ export default function DetailFormComponent({
   touched,
   setFieldValue,
   isJuridic,
+  partnerTypes,
   setIsJuridic,
 }) {
   return (
@@ -35,17 +36,20 @@ export default function DetailFormComponent({
       </MDBox>
       <MDBox pb={3} px={3}>
         {isJuridic === true && (
-          <JuridicalForm
-            {...{
-              countries,
-              consolidators,
-              notJuridicEntities,
-              errors,
-              values,
-              touched,
-              setFieldValue,
-            }}
-          />
+          <>
+            <JuridicalForm
+              {...{
+                countries,
+                consolidators,
+                partnerTypes,
+                notJuridicEntities,
+                errors,
+                values,
+                touched,
+                setFieldValue,
+              }}
+            />
+          </>
         )}
         {isJuridic === false && (
           <PersonForm

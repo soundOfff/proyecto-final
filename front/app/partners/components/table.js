@@ -16,7 +16,7 @@ export default function Table({ rows }) {
   const columns = [
     { Header: "#", accessor: "id" },
     {
-      Header: "Empresa",
+      Header: "Razón Social",
       accessor: "company",
       Cell: ({ row }) =>
         row.original.name ? (

@@ -121,6 +121,19 @@ class PartnerController extends Controller
     {
         $partnerUpdate = $request->validated();
 
+        $relatedPartnersData = $partnerUpdate['related_partners'];
+        $pivotData = [];
+
+        foreach ($relatedPartnersData as $relatedData) {
+            $pivotData[$relatedData['related_partner_id']] = [
+                'start_date' => $relatedData['start_date'],
+                'end_date' => $relatedData['end_date'],
+                'partner_type_id' => $relatedData['partner_type_id'],
+                'active' => $relatedData['active'],
+            ];            
+        }
+        
+        $partner->relatedPartners()->sync($pivotData);
         $partner->update($partnerUpdate);
 
         return response()->json(null, 204);

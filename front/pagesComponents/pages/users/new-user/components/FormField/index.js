@@ -24,7 +24,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 
-function FormField({ label, name, box, ...rest }) {
+function FormField({ label, name, isImportant = false, box, ...rest }) {
   return (
     <MDBox mb={1.5} {...box}>
       <Field
@@ -33,6 +33,7 @@ function FormField({ label, name, box, ...rest }) {
         as={MDInput}
         variant="standard"
         label={label}
+        sx={{ background: isImportant ? "rgb(232, 241, 250)" : "transparent" }}
         fullWidth
       />
       <MDBox mt={0.75}>

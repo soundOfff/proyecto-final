@@ -193,6 +193,25 @@ const detailForm = {
         label: "Lugar de Nacimiento",
         errorMsg: "Debe seleccionar un país",
       },
+      idType: {
+        name: "id_type",
+        label: "Tipo de Identificación",
+        errorMsg: "Debe seleccionar un tipo de identificación",
+      },
+      idNumber: {
+        name: "id_number",
+        label: "Número de Identificación",
+        errorMsg: "El número de identificación es requerido",
+      },
+      civilStatus: {
+        name: "civil_status",
+        label: "Estado Civil",
+      },
+      occupation: {
+        name: "occupation",
+        label: "Ocupación",
+        type: "text",
+      },
       country: {
         name: "country_id",
         label: "País",

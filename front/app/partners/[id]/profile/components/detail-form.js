@@ -54,7 +54,7 @@ export default function DetailFormComponent({
       },
     },
   } = detailForm;
-  console.log(partner.relatedPartners);
+
   const initialValues = {
     ...partner,
     [country.name]: partner.countryId ?? "",
@@ -74,7 +74,8 @@ export default function DetailFormComponent({
     [nationality.name]: partner.nationalityId ?? "",
     [phone.name]: partner.phoneNumber ?? "",
     [buildingNumber.name]: partner.buildingNumber ?? "",
-    [relatedPartners.name]: partner.relatedPartners ?? [],
+    [relatedPartners.name]:
+      partner.relatedPartners.map((partner) => partner.pivot) ?? [],
     [isResidential.name]: partner.isResidential ?? "",
     [fileNumber.name]: partner.fileNumber ?? "",
     [rollNumber.name]: partner.rollNumber ?? "",

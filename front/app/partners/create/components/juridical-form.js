@@ -101,6 +101,7 @@ export default function JuridicalForm({
         <Grid item xs={12} sm={6}>
           <FormField
             value={values[company.name]}
+            isImportant
             label={company.label}
             placeholder={company.placeholder}
             name={company.name}
@@ -112,6 +113,7 @@ export default function JuridicalForm({
         <Grid item xs={12} sm={6}>
           <FormField
             value={values[industry.name]}
+            isImportant
             label={industry.label}
             name={industry.name}
             type={industry.type}
@@ -123,6 +125,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[section.name]}
             label={section.label}
             name={section.name}
@@ -133,6 +136,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[document.name]}
             label={document.label}
             name={document.name}
@@ -145,6 +149,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             label={phone.label}
             placeholder={phone.placeholder}
             name={phone.name}
@@ -156,6 +161,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             label={email.label}
             placeholder={email.placeholder}
             name={email.name}
@@ -237,6 +243,7 @@ export default function JuridicalForm({
         <Grid item xs={12} sm={6}>
           <FormField
             multiline
+            isImportant
             rows={3}
             value={values[address.name]}
             label={address.label}
@@ -342,6 +349,7 @@ export default function JuridicalForm({
             placeholder={ruc.placeholder}
             name={ruc.name}
             type={ruc.type}
+            isImportant
             value={values[ruc.name]}
             error={errors[ruc.name] && touched[ruc.name]}
             success={values[ruc.name]?.length > 0 && !errors[ruc.name]}
@@ -352,6 +360,7 @@ export default function JuridicalForm({
             label={dv.label}
             placeholder={dv.placeholder}
             name={dv.name}
+            isImportant
             type={dv.type}
             value={values[dv.name]}
             error={errors[dv.name] && touched[dv.name]}

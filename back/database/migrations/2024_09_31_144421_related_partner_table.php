@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('partner_id')->constrained()->onDelete('cascade');
             $table->foreignId('related_partner_id')->constrained('partners')->onDelete('cascade');
             $table->foreignId('partner_type_id')->constrained()->onDelete('cascade');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->string('start_date')->default(now());
+            $table->string('end_date')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

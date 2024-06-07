@@ -24,7 +24,6 @@ export default async function Profile({ params: { id } }) {
   });
 
   const partnerTypes = await getAllPartnerTypes();
-
   const countries = await getCountriesSelect();
 
   return (

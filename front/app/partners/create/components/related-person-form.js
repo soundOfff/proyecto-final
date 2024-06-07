@@ -48,7 +48,6 @@ export default function RelatedPersonFormComponent({
   notJuridicalEntities,
   partnerTypes,
 }) {
-  console.log(externalValues);
   const { relatedPartnerId, partnerTypeId, startDate, endDate, active } =
     newRelatedPeopleFormField.formField;
 
@@ -69,7 +68,14 @@ export default function RelatedPersonFormComponent({
     actions.setTouched({});
   };
 
-  const { values, errors, touched, handleSubmit, setFieldValue } = useFormik({
+  const deleteRelatedPartner = (index) => {
+    const filteredPartners = externalValues.related_partners.filter(
+      (_, i) => i !== index
+    );
+    setFieldValueExternal("related_partners", filteredPartners);
+  };
+
+  const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       [relatedPartnerId.name]: "",
       [partnerTypeId.name]: "",
@@ -138,17 +144,19 @@ export default function RelatedPersonFormComponent({
     {
       Header: "",
       accessor: "actions",
-      Cell: ({ row }) => (
-        <MDBox mr={1}>
-          <MDButton
-            variant="text"
-            color="error"
-            onClick={() => deleteAction(index)}
-          >
-            <Icon>delete</Icon>&nbsp;Borrar
-          </MDButton>
-        </MDBox>
-      ),
+      Cell: ({ row }) => {
+        return (
+          <MDBox mr={1}>
+            <MDButton
+              variant="text"
+              color="error"
+              onClick={() => deleteRelatedPartner(row.index)}
+            >
+              <Icon>delete</Icon>&nbsp;Borrar
+            </MDButton>
+          </MDBox>
+        );
+      },
     },
   ];
 

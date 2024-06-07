@@ -102,6 +102,7 @@ export default function JuridicalForm({
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[company.name]}
             label={company.label}
             placeholder={company.placeholder}
@@ -113,6 +114,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[industry.name]}
             label={industry.label}
             name={industry.name}
@@ -125,6 +127,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[section.name]}
             label={section.label}
             name={section.name}
@@ -135,6 +138,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[document.name]}
             label={document.label}
             name={document.name}
@@ -147,6 +151,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             value={values[address.name]}
             label={address.label}
             placeholder={address.placeholder}
@@ -258,6 +263,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             label={phone.label}
             placeholder={phone.placeholder}
             name={phone.name}
@@ -269,6 +275,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             label={email.label}
             placeholder={email.placeholder}
             name={email.name}
@@ -349,6 +356,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             label={ruc.label}
             placeholder={ruc.placeholder}
             name={ruc.name}
@@ -360,6 +368,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
+            isImportant
             label={dv.label}
             placeholder={dv.placeholder}
             name={dv.name}
@@ -369,7 +378,13 @@ export default function JuridicalForm({
             success={values[dv.name]?.length > 0 && !errors[dv.name]}
           />
         </Grid>
-        <Grid item xs={12} sm={6} display="flex" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          display="flex"
+          alignItems="center"
+          justifyContent="end"
+        >
           <FormGroup>
             <FormControlLabel
               control={

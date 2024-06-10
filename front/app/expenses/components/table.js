@@ -80,6 +80,11 @@ export default function Table({ rows, meta }) {
       accessor: "date",
     },
     {
+      Header: "Creado automáticamente",
+      accessor: "createdFromAction",
+      Cell: ({ value }) => (value ? "Sí" : ""),
+    },
+    {
       Header: "Caso",
       accessor: "project.name",
       width: "25%",

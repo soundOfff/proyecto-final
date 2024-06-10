@@ -45,6 +45,7 @@ class TaskActions
                     'is_infinite' => $task->is_infinite,
                     'project_id' => $task->taskable_type === Task::TASKABLE_PROJECT ? $task->taskable_id : null,
                     'invoice_id' => $task->taskable_type === Task::TASKABLE_INVOICE ? $task->taskable_id : null,
+                    'created_from_action' => 1
                 ]
             );
         } catch(\Exception $e) {

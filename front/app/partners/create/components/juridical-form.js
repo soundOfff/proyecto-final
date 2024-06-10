@@ -112,8 +112,8 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
-            value={values[industry.name]}
             isImportant
+            value={values[industry.name]}
             label={industry.label}
             name={industry.name}
             type={industry.type}

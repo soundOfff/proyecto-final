@@ -82,7 +82,13 @@ export default function Table({ rows, meta }) {
     {
       Header: "Creado automáticamente",
       accessor: "createdFromAction",
-      Cell: ({ value }) => (value ? "Sí" : ""),
+      Cell: ({ value }) => (
+        <MDBox display="flex" justifyContent="center">
+          <MDTypography variant="caption" fontWeight="regular">
+            {value ? "Sí" : ""}
+          </MDTypography>
+        </MDBox>
+      ),
     },
     {
       Header: "Caso",

@@ -179,6 +179,7 @@ Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
 
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/permissions', [PermissionController::class, 'index']);
 

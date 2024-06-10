@@ -88,4 +88,14 @@ class Staff extends Authenticatable
     {
         return $this->timers->whereNull('end_time')->first();
     }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    public function lastSession() : Session | null
+    {
+        return $this->sessions->last();
+    }
 }

@@ -163,8 +163,10 @@ class TaskController extends Controller
             $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
         }
 
-        $task->requiredFields()->delete();
-        $task->requiredFields()->createMany($requiredFields);
+        if ($requiredFields) {
+            $task->requiredFields()->delete();
+            $task->requiredFields()->createMany($requiredFields);
+        }
 
         return response()->json(null, 204);
     }

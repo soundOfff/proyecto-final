@@ -54,6 +54,7 @@ import {
 import { Skeleton } from "@mui/material";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { customFetch } from "../../actions/custom-fetch";
 
 function Sidenav({
   color = "dark",
@@ -166,13 +167,20 @@ function Sidenav({
             color={color}
             name={name}
             active={key === itemName}
-            onClick={() => signOut()}
+            onClick={handleSignOut}
           />
         );
       }
 
       return <SidenavList key={key}>{returnValue}</SidenavList>;
     });
+
+  const handleSignOut = () => {
+    signOut();
+    customFetch("/api/logout", {
+      method: "POST",
+    });
+  };
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(

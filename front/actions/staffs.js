@@ -18,3 +18,11 @@ export async function getAll(params) {
 
   return data.staffs;
 }
+
+export async function logout() {
+  const url = new URL(`${process.env.API_URL}/logout`);
+
+  const data = await customFetch(url);
+
+  return data;
+}

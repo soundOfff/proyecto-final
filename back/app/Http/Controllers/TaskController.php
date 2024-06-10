@@ -11,6 +11,7 @@ use App\Models\TaskStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Psy\CodeCleaner\IssetPass;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -163,8 +164,10 @@ class TaskController extends Controller
             $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
         }
 
-        $task->requiredFields()->delete();
-        $task->requiredFields()->createMany($requiredFields);
+        if ($requiredFields) {
+            $task->requiredFields()->delete();
+            $task->requiredFields()->createMany($requiredFields);
+        }
 
         return response()->json(null, 204);
     }

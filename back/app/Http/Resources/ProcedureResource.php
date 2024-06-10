@@ -25,7 +25,9 @@ class ProcedureResource extends JsonResource
             'process' => ProcessResource::make($this->whenLoaded('process')),
             'status' => ProcedureStatusResource::make($this->whenLoaded('status')),
             'responsible' => StaffResource::make($this->whenLoaded('responsible')),
-            'dependencies' => ProcedureResource::collection($this->whenLoaded('dependencies')),
+            'dependencies' => self::collection($this->whenLoaded('dependencies')),
+            'actions' => ActionResource::collection($this->whenLoaded('actions')),
+            'author' => StaffResource::make($this->whenLoaded('author')),
         ];
     }
 }

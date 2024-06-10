@@ -5,6 +5,7 @@ import {
   Checkbox,
   FormControl,
   FormGroup,
+  Switch,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import MDBox from "/components/MDBox";
@@ -30,7 +31,7 @@ export default function TaskForm({
   partners,
   dependencyTasks,
   tagsData,
-  actionsData,
+  tableFields,
   task = null,
   mode,
   partnerId,
@@ -56,6 +57,8 @@ export default function TaskForm({
     tags,
     description,
     actions,
+    requiredFields,
+    isFileNeeded,
   } = formField;
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -74,17 +77,19 @@ export default function TaskForm({
       setFieldValue(recurringType.name, task?.recurring_type || "");
       setFieldValue(totalCycles.name, task?.total_cycles || "");
       setFieldValue(taskableType.name, task?.taskable_type || 0);
-      setFieldValue(tags.name, task?.tags || []);
+      setFieldValue(tags.name, task.tags || []);
       setFieldValue(dependencies.name, task?.dependencies || []);
       setFieldValue(partner_id.name, task?.partner_id || "");
       setFieldValue(taskableId.name, task?.taskable?.id || "");
-      setFieldValue(billable.name, Boolean(task?.billable));
-      setFieldValue(isPublic.name, Boolean(task?.is_public));
-      setFieldValue(isInfinite.name, Boolean(task?.is_infinite));
-      setTaskableItems(task.taskable ? [task?.taskable] : []);
-      const parsedDescription = parseEditorState(task?.description ?? "");
+      setFieldValue(billable.name, Boolean(task.billable));
+      setFieldValue(isPublic.name, Boolean(task.is_public));
+      setFieldValue(isInfinite.name, Boolean(task.is_infinite));
+      setTaskableItems(task.taskable ? [task.taskable] : []);
+      const parsedDescription = parseEditorState(task.description ?? "");
       setEditorState(parsedDescription);
-      setFieldValue(actions.name, task?.actions || []);
+      setFieldValue(actions.name, task.actions || []);
+      setFieldValue(requiredFields.name, task.requiredFields || []);
+      setFieldValue(isFileNeeded.name, Boolean(task.is_file_needed));
     }
     if (partnerId) setFieldValue(partner_id.name, partnerId || "");
   }, [
@@ -110,6 +115,9 @@ export default function TaskForm({
     partner_id.name,
     tags.name,
     actions.name,
+    dependencies.name,
+    requiredFields.name,
+    isFileNeeded.name,
   ]);
 
   useEffect(() => {
@@ -437,19 +445,21 @@ export default function TaskForm({
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              onChange={(e, actionsSelected) =>
-                setFieldValue(actions.name, actionsSelected)
+              onChange={(e, requiredFieldsSelected) =>
+                setFieldValue(requiredFields.name, requiredFieldsSelected)
               }
-              value={values[actions.name]}
-              options={actionsData}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              getOptionLabel={(option) => option.name}
+              value={values[requiredFields.name]}
+              options={tableFields}
+              isOptionEqualToValue={(option, value) =>
+                option.field === value.field
+              }
+              getOptionLabel={(option) => option.field}
               renderInput={(params) => (
                 <MDInput
                   {...params}
                   variant="standard"
-                  key={actions.id}
-                  label={actions.label}
+                  key={requiredFields.id}
+                  label={requiredFields.label}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
                 />
@@ -462,9 +472,24 @@ export default function TaskForm({
                 color="error"
                 fontWeight="regular"
               >
-                <ErrorMessage name={actions.name} />
+                <ErrorMessage name={requiredFields.name} />
               </MDTypography>
             </MDBox>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={values[isFileNeeded.name]}
+                    onChange={(e) =>
+                      setFieldValue(isFileNeeded.name, e.target.checked)
+                    }
+                  />
+                }
+                label={isFileNeeded.label}
+              />
+            </FormGroup>
           </Grid>
           <Grid item xs={12}>
             <MDTypography variant="body2" color="text">

@@ -26,10 +26,16 @@ export default async function Tasks({ searchParams }) {
     ...staffFilter,
   };
 
-  const data =
-    type === "myProjects"
-      ? await getAllProjects(params)
-      : await getAllTasks(params);
+  let data = null;
+  if (type === "myProjects") {
+    data = await getAllProjects(params);
+  } else {
+    const {
+      data: { tasks },
+    } = await getAllTasks(params);
+    data = tasks;
+  }
+
   const stats = await getStats({ ownerId: session.staff.id });
 
   return (

@@ -29,7 +29,7 @@ export default function Timers() {
 
     getStats({ projectId: project.id }).then((data) => setStats(data));
     getAllTasks(params).then((data) => {
-      setTasks(data);
+      setTasks(data.data.tasks);
       setIsLoading(false);
     });
   }, [project]);

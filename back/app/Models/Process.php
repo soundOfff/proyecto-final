@@ -11,6 +11,7 @@ class Process extends Model
     protected $fillable = [
         'id',
         'project_service_type_id',
+        'author_id',
         'step_quantity',
         'name',
         'description',
@@ -30,5 +31,10 @@ class Process extends Model
     public function validateIfStepNumberExists(int $stepNumber): bool
     {
         return $this->procedures()->where('step_number', $stepNumber)->exists();
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Staff::class, 'author_id');
     }
 }

@@ -5,10 +5,10 @@ import validations from "./schemas/validations";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import { Form, Formik } from "formik";
-import { store as storeItem, update } from "../../../actions/tasks";
+import { store as storeItem, update } from "/actions/tasks";
 import TaskForm from "./form";
 import form from "./schemas/form";
-import { MODAL_TYPES } from "../../../utils/constants/modalTypes";
+import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { useSession } from "next-auth/react";
 
 export default function ModalContentForm({
@@ -20,6 +20,7 @@ export default function ModalContentForm({
   dependencyTasks,
   partnerId,
   actionsData,
+  tableFields,
   task = null,
   mode = MODAL_TYPES.CREATE,
 }) {
@@ -72,6 +73,7 @@ export default function ModalContentForm({
             mode={mode}
             partnerId={partnerId}
             actionsData={actionsData}
+            tableFields={tableFields}
           />
           <MDBox p={3}>
             <MDBox width="100%" display="flex" justifyContent="space-between">

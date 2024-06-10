@@ -5,7 +5,7 @@ import { show } from "/actions/processes";
 export default async function CreateProcess({ params: { id } }) {
   const projectServiceTypes = await getAllProjectServiceTypes();
   const process = await show(id, {
-    include: ["projectServiceType", "dependencies"],
+    include: ["projectServiceType"],
   });
 
   return <Form projectServiceTypes={projectServiceTypes} process={process} />;

@@ -31,6 +31,12 @@ const form = {
       label: "Nombre",
       errorMsg: "Debe seleccionar una entidad para relacionar con el archivo",
     },
+    path: {
+      name: "path",
+    },
+    name: {
+      name: "name",
+    },
   },
 };
 

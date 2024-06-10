@@ -23,6 +23,7 @@ class ProcessRequest extends FormRequest
     {
         return [
             'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
+            'author_id' => 'required|numeric|exists:staff,id',
             'name' => 'required|string',
             'description' => 'nullable|string',
             'step_quantity' => 'required|numeric',

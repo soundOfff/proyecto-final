@@ -17,19 +17,21 @@ import { store } from "/actions/processes";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { update } from "/actions/processes";
+import { useSession } from "next-auth/react";
 
 export default function FormComponent({ projectServiceTypes, process }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
+  const { data: session } = useSession();
 
   const submitForm = async (values, actions) => {
     try {
       if (process) {
         await update(process.id, values);
       } else {
-        await store(values);
+        await store({ ...values, author_id: session.staff.id });
       }
       router.push("/processes");
     } catch (error) {

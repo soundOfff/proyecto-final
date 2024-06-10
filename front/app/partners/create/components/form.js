@@ -18,6 +18,7 @@ export default function FormComponent({
   consolidators,
   notJuridicEntities,
   countries,
+  partnerTypes,
 }) {
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(true);
@@ -71,6 +72,7 @@ export default function FormComponent({
                 {...{
                   consolidators,
                   notJuridicEntities,
+                  partnerTypes,
                   countries,
                   errors,
                   values,

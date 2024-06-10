@@ -12,6 +12,7 @@ class Procedure extends Model
         'process_id',
         'procedure_status_id',
         'responsible_id',
+        'author_id',
         'step_number',
         'name',
         'description',
@@ -32,14 +33,24 @@ class Procedure extends Model
         return $this->belongsTo(Staff::class, 'responsible_id');
     }
 
+    public function actions()
+    {
+        return $this->hasMany(Action::class);
+    }
+
     public function dependencies()
     {
-        return $this->belongsToMany(Procedure::class, 'procedure_dependencies', 'procedure_id', 'dependent_procedure_id');
+        return $this->belongsToMany(self::class, 'procedure_dependencies', 'procedure_id', 'dependent_procedure_id');
     }
 
     public function dependant()
     {
-        return $this->belongsToMany(Procedure::class, 'procedure_dependencies', 'dependent_procedure_id', 'procedure_id');
+        return $this->belongsToMany(self::class, 'procedure_dependencies', 'dependent_procedure_id', 'procedure_id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Staff::class, 'author_id');
     }
 
     public function convertToTask($projectId, $partnerId, $responsiblePersonId): Task | null
@@ -49,7 +60,9 @@ class Procedure extends Model
             ->where('taskable_type', Task::TASKABLE_PROJECT)
             ->exists();
 
-        if ($isAlreadyCreated) return null;
+        if ($isAlreadyCreated) {
+            return null;
+        }
 
         $latestMilestoneOrder = Task::getMilestoneOrder($projectId, Task::TASKABLE_PROJECT);
 
@@ -70,14 +83,14 @@ class Procedure extends Model
 
         $this->load('dependencies');
         if ($this->dependencies->isNotEmpty()) {
-            $procedureDependencies = array_column($this->dependencies->toArray(), "id");
+            $procedureDependencies = array_column($this->dependencies->toArray(), 'id');
             $tasksId = array_map(
-                fn ($id) =>
-                Task::where('procedure_id', $id)->first()->id,
+                fn ($id) => Task::where('procedure_id', $id)->first()->id,
                 $procedureDependencies
             );
             $task->dependencies()->sync($tasksId);
         }
+
         return $task;
     }
 }

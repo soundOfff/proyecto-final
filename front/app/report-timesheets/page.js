@@ -19,7 +19,15 @@ export const dynamic = "force-dynamic";
 const include = ["timers", "status", "assigneds", "taskable", "partner"];
 
 export default async function Reports({ searchParams }) {
-  const { period, projectId, partnerId, myTasks, staffId } = searchParams;
+  const {
+    period,
+    projectId,
+    partnerId,
+    myTasks,
+    staffId,
+    perPage = 10,
+    page = 1,
+  } = searchParams;
   const session = await getServerSession(authOptions);
 
   const projectFilter = projectId
@@ -42,9 +50,14 @@ export default async function Reports({ searchParams }) {
     ...myTasksFilter,
     ...periodFilter,
     ...staffFilter,
+    perPage,
+    page,
   };
 
-  const tasks = await getAllTasks(params);
+  const {
+    data: { tasks },
+    meta,
+  } = await getAllTasks(params);
   const partners = await getAllPartners();
   const projects = await getAllProjects();
   const staffs = await getStaffsSelect();
@@ -62,7 +75,7 @@ export default async function Reports({ searchParams }) {
             />
             <Filters partners={partners} projects={projects} staffs={staffs} />
             <MDBox py={1}>
-              <Table rows={tasks} meta={{ per_page: "5" }} />
+              <Table rows={tasks} meta={meta} />
             </MDBox>
           </Grid>
         </Grid>

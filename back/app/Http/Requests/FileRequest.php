@@ -25,6 +25,8 @@ class FileRequest extends FormRequest
             'file' => 'nullable|file',
             'fileable_id' => 'required|integer',
             'fileable_type' => 'required|string',
+            'path' => 'required|string',
+            'name' => 'required|string',
             'visible_to_customer' => 'nullable|boolean',
         ];
     }

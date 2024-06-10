@@ -33,6 +33,7 @@ class TaskController extends Controller
                 'taskable',
                 'reminders',
                 'actions',
+                'author',
             ])
             ->allowedSorts([
                 'milestone_order',
@@ -64,7 +65,8 @@ class TaskController extends Controller
                         )
                     ),
                 ]
-            );
+            )
+            ->orderBy('id', 'desc');
 
         $tasks = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -79,6 +81,7 @@ class TaskController extends Controller
         $tags = $newTask['tags'];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
+        $newTask['author_id'] = $newTask['owner_id'];
 
         if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
@@ -89,8 +92,7 @@ class TaskController extends Controller
         $dependencyIds = array_column($dependencies, 'id');
         $task->dependencies()->sync($dependencyIds);
 
-        $actionIds = array_column($newTask['actions'], 'id');
-        $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
+        $task->requiredFields()->createMany($newTask['requiredFields']);
 
         foreach ($tags as $tag) {
             $tag['taggable_id'] = $task->id;
@@ -113,6 +115,7 @@ class TaskController extends Controller
         $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $actions = isset($newTask['actions']) ? $newTask['actions'] : null;
+        $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
         $task->update($newTask);
 
         if (isset($comments)) {
@@ -160,6 +163,9 @@ class TaskController extends Controller
             $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
         }
 
+        $task->requiredFields()->delete();
+        $task->requiredFields()->createMany($requiredFields);
+
         return response()->json(null, 204);
     }
 
@@ -205,6 +211,8 @@ class TaskController extends Controller
                 'taskable',
                 'reminders',
                 'actions',
+                'requiredFields',
+                'author',
             ])
             ->find($task->id);
 

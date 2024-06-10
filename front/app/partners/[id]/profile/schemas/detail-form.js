@@ -19,15 +19,20 @@ const detailForm = {
     juridical: {
       company: {
         name: "company",
-        label: "Empresa",
+        label: "Razón social",
         type: "text",
-        errorMsg: "El nombre de la Empresa es requerida",
+        errorMsg: "La Razón Social es requerida",
+      },
+      relatedPartners: {
+        name: "related_partners",
+        label: "Socios Relacionados",
       },
       ruc: {
         name: "ruc",
         label: "RUC",
         type: "text",
         placeholder: "RUC",
+        errorMsg: "El RUC es requerido",
       },
       country: {
         name: "country_id",
@@ -43,6 +48,22 @@ const detailForm = {
         name: "state",
         label: "Provincia",
         type: "text",
+        errorMsg: "Debe seleccionar una provincia",
+      },
+      industry: {
+        name: "industry",
+        label: "Industria",
+        errorMsg: "Debe ingresar una industria",
+      },
+      document: {
+        name: "document",
+        label: "Folio",
+        errorMsg: "Debe ingresar un documento",
+      },
+      section: {
+        name: "section",
+        label: "Sección",
+        errorMsg: "Debe ingresar una sección",
       },
       province: {
         name: "province_id",
@@ -68,6 +89,7 @@ const detailForm = {
         name: "phone_number",
         label: "Teléfono",
         type: "text",
+        errorMsg: "El teléfono es requerido",
       },
       website: {
         name: "website",
@@ -91,11 +113,13 @@ const detailForm = {
         name: "address",
         label: "Dirección",
         type: "text",
+        errorMsg: "La dirección es requerida",
       },
       email: {
         name: "email",
         label: "Email",
         type: "email",
+        errorMsg: "El email es requerido",
       },
       isResidential: {
         name: "is_residential",
@@ -120,22 +144,11 @@ const detailForm = {
         label: "Número de Imagen",
         type: "text",
       },
-      president: {
-        name: "president_id",
-        label: "Presidente",
-      },
-      secretary: {
-        name: "secretary_id",
-        label: "Secretario",
-      },
-      treasurer: {
-        name: "treasurer_id",
-        label: "Tesorero",
-      },
       dv: {
         name: "dv",
         label: "DV",
         type: "text",
+        errorMsg: "El DV es requerido",
       },
     },
 

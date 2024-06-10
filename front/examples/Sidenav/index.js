@@ -27,6 +27,7 @@ import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
 
+import { BRANDFACTORS } from "/utils/constants/appNames";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -52,6 +53,7 @@ import {
 } from "/context";
 import { Skeleton } from "@mui/material";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 function Sidenav({
   color = "dark",
@@ -311,11 +313,13 @@ function Sidenav({
         <Link href="/">
           <MDBox display="flex" alignItems="center">
             {brand && brand.src ? (
-              <MDBox
-                component="img"
+              <Image
                 src={brand.src}
-                alt={brandName}
-                width="11rem"
+                alt={brand.alt}
+                width={miniSidenav ? 50 : 220}
+                height={
+                  process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS ? 20 : 30
+                }
               />
             ) : (
               brand

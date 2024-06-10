@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActionController;
+use App\Http\Controllers\ActionTypeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CreditController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PermissionController;
@@ -38,6 +40,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RecurringController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SubServiceTypeController;
+use App\Http\Controllers\TableFieldController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPriorityController;
@@ -101,6 +104,8 @@ Route::put('/partners/{partner}', [PartnerController::class, 'update']);
 Route::get('/partner-stats', [PartnerController::class, 'stats']);
 Route::get('/partners-select', [PartnerController::class, 'select']);
 
+Route::get('/partner-types', [PartnerTypeController::class, 'index']);
+
 Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
@@ -141,7 +146,6 @@ Route::get('/tasks/{task}', [TaskController::class, 'show']);
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 Route::get('/task-stats', [TaskController::class, 'stats']);
 Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
-
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
@@ -217,6 +221,9 @@ Route::post('/procedures-edit-steps', [ProcedureController::class, 'editSteps'])
 Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
 
 Route::get('/actions', [ActionController::class, 'index']);
+Route::get('/action-types', [ActionTypeController::class, 'index']);
+
+Route::post('/table-fields', TableFieldController::class);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

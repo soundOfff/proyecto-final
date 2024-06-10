@@ -7,9 +7,9 @@ export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/tasks`);
   url.search = new URLSearchParams(params);
 
-  const { data } = await customFetch(url);
+  const data = await customFetch(url);
 
-  return data.tasks;
+  return data;
 }
 
 export async function getTaskStatus() {

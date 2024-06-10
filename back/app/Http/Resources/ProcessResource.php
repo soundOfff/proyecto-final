@@ -25,6 +25,7 @@ class ProcessResource extends JsonResource
             'createdAt' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
             'projectServiceType' => ProjectServiceTypeResource::make($this->whenLoaded('projectServiceType')),
             'procedures' => ProcedureResource::collection($this->whenLoaded('procedures')),
+            'author' => StaffResource::make($this->whenLoaded('author')),
         ];
     }
 }

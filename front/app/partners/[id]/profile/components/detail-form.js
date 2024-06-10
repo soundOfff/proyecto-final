@@ -18,6 +18,7 @@ export default function DetailFormComponent({
   partner,
   consolidators,
   notJuridicEntities,
+  partnerTypes,
   countries,
 }) {
   const {
@@ -30,12 +31,13 @@ export default function DetailFormComponent({
         province,
         district,
         jurisdiction,
+        industry,
+        relatedPartners,
+        section,
+        document,
         phone,
         buildingNumber,
         isResidential,
-        president,
-        secretary,
-        treasurer,
         fileNumber,
         rollNumber,
         imageNumber,
@@ -52,11 +54,15 @@ export default function DetailFormComponent({
       },
     },
   } = detailForm;
+
   const initialValues = {
     ...partner,
     [country.name]: partner.countryId ?? "",
     [province.name]: partner.jurisdiction?.district?.province?.id ?? "",
     [district.name]: partner.jurisdiction?.district?.id ?? "",
+    [industry.name]: partner.industry ?? "",
+    [section.name]: partner.section ?? "",
+    [document.name]: partner.document ?? "",
     [jurisdiction.name]: partner.jurisdiction?.id ?? "",
     [isConsolidator.name]: partner.isConsolidator ?? "",
     [isConsolidatorPerson.name]: partner.isConsolidator ?? "",
@@ -68,10 +74,9 @@ export default function DetailFormComponent({
     [nationality.name]: partner.nationalityId ?? "",
     [phone.name]: partner.phoneNumber ?? "",
     [buildingNumber.name]: partner.buildingNumber ?? "",
+    [relatedPartners.name]:
+      partner.relatedPartners.map((partner) => partner.pivot) ?? [],
     [isResidential.name]: partner.isResidential ?? "",
-    [president.name]: partner.presidentId ?? "",
-    [secretary.name]: partner.secretaryId ?? "",
-    [treasurer.name]: partner.treasurerId ?? "",
     [fileNumber.name]: partner.fileNumber ?? "",
     [rollNumber.name]: partner.rollNumber ?? "",
     [imageNumber.name]: partner.imageNumber ?? "",
@@ -135,6 +140,7 @@ export default function DetailFormComponent({
                   {...{
                     countries,
                     consolidators,
+                    partnerTypes,
                     notJuridicEntities,
                     errors,
                     values,

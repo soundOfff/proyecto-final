@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { destroy } from "/actions/procedures";
@@ -12,20 +11,17 @@ import useDeleteRow from "/hooks/useDeleteRow";
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
-import MDAvatar from "/components/MDAvatar";
-import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import DeleteRow from "/components/DeleteRow";
-import { Tooltip } from "@mui/material";
+import { Switch, Tooltip } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Procedures({ procedures }) {
+export default function Procedures({ procedures, actionTypes, processId }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [records, setRecords] = useState(procedures);
-  const pathname = usePathname();
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -35,6 +31,29 @@ export default function Procedures({ procedures }) {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
+  const getActionsColumns = () => {
+    return actionTypes.map((actionType) => {
+      return {
+        Header: actionType.label,
+        accessor: actionType.name,
+        Cell: ({ row }) => {
+          return (
+            <MDBox display="flex" justifyContent="center" width="100%">
+              <Switch
+                name={actionType.name}
+                label={actionType.label}
+                disabled={true}
+                checked={row.original.actions.some(
+                  (action) => action.type.id === actionType.id
+                )}
+              />
+            </MDBox>
+          );
+        },
+      };
+    });
+  };
+
   useEffect(() => {
     setRecords(procedures);
   }, [procedures]);
@@ -43,6 +62,7 @@ export default function Procedures({ procedures }) {
     {
       Header: "N° de Paso",
       accessor: "stepNumber",
+      width: 100,
     },
     {
       Header: "Nombre",
@@ -53,46 +73,19 @@ export default function Procedures({ procedures }) {
       accessor: "description",
     },
     {
-      Header: "Responsable",
-      accessor: "responsible",
-      Cell: ({ value }) =>
-        value && (
-          <MDBox key={value.id} display="inline-block" mr={2}>
-            {value.profileImage && (
-              <MDAvatar
-                src={value?.profileImage}
-                alt="profile-image"
-                size="md"
-                shadow="sm"
-                sx={{
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  marginRight: "0.5rem",
-                  marginBottom: "0.5rem",
-                  height: "2rem",
-                  width: "2rem",
-                }}
-              />
-            )}
-            <MDTypography
-              variant="button"
-              fontWeight="regular"
-              color="text"
-              mr={2}
-            >
-              {value.name}
-            </MDTypography>
-          </MDBox>
-        ),
+      Header: "Autor",
+      accessor: "author",
+      Cell: ({ value }) => value && value.name,
     },
+    ...getActionsColumns(),
     {
       id: "acciones",
-      Header: "Acciones",
+      Header: "",
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Editar Procedimiento">
             <Link href={`/procedures/${row.original.id}`}>
-              <EditIcon color="warning" fontSize="medium" />
+              <EditIcon color="info" fontSize="medium" />
             </Link>
           </Tooltip>
           <Tooltip title="Eliminar Procedimiento">
@@ -140,7 +133,7 @@ export default function Procedures({ procedures }) {
   return (
     <>
       <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href={`${pathname}/create-procedure`}>
+        <Link href={{ pathname: "/procedures/create", query: { processId } }}>
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Agregar Procedimiento
           </MDButton>
@@ -148,7 +141,7 @@ export default function Procedures({ procedures }) {
       </MDBox>
       <DataTable
         table={table}
-        entriesPerPage={false}
+        entriesPerPage={{ defaultValue: 50 }}
         showTotalEntries={false}
         moveRow={moveRow}
         isSorted={false}

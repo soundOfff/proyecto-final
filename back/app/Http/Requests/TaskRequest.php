@@ -27,6 +27,7 @@ class TaskRequest extends FormRequest
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date',
             'repeat_id' => 'nullable|exists:expense_repeats,id',
+            'is_file_needed' => 'nullable|boolean',
             'recurring_type' => 'nullable|numeric',
             'task_priority_id' => 'sometimes|required|numeric|exists:task_priorities,id',
             'partner_id' => 'nullable|numeric|exists:partners,id',
@@ -38,6 +39,7 @@ class TaskRequest extends FormRequest
             'taskable_type' => 'nullable|string',
             'taskable_id' => 'nullable|numeric',
             'owner_id' => 'nullable|numeric|exists:staff,id',
+            'author_id' => 'nullable|numeric|exists:staff,id',
             'task_status_id' => 'sometimes|required|numeric|exists:task_statuses,id',
             'description' => 'nullable|string',
             'dependencies' => 'nullable|array',
@@ -67,8 +69,9 @@ class TaskRequest extends FormRequest
             'checklist_items.*.finished' => 'nullable|boolean',
             'checklist_items.*.finished_from' => 'nullable|numeric',
             'checklist_items.*.list_order' => 'nullable|numeric',
-            'actions' => 'nullable|array',
-            'actions.*.id' => 'nullable|numeric|exists:actions,id',
+            'requiredFields' => 'nullable|array',
+            'requiredFields.*.table' => 'nullable|string',
+            'requiredFields.*.field' => 'nullable|string',
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use App\Observers\TaskObserver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,6 +29,7 @@ class Task extends Model
         'partner_id',
         'task_status_id',
         'repeat_id',
+        'author_id',
         'recurring_type',
         'recurring',
         'is_infinite',
@@ -42,6 +44,18 @@ class Task extends Model
     public const TASKABLE_PROJECT = 'project';
 
     public const TASKABLE_INVOICE = 'invoice';
+
+    protected $appends = ['can_change_status'];
+
+    protected function canChangeStatus(): Attribute
+    {
+        return new Attribute(
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+                && $this->requiredFields->every(
+                    fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
+                )
+        );
+    }
 
     public function taskable()
     {
@@ -71,6 +85,11 @@ class Task extends Model
     public function status()
     {
         return $this->belongsTo(TaskStatus::class, 'task_status_id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Staff::class, 'author_id');
     }
 
     public function comments()
@@ -110,7 +129,12 @@ class Task extends Model
 
     public function actions()
     {
-        return $this->belongsToMany(Action::class, 'task_actions')->withPivot('is_completed');
+        return $this->hasMany(Action::class);
+    }
+
+    public function requiredFields()
+    {
+        return $this->hasMany(TaskRequiredField::class);
     }
 
     public function files(): MorphMany

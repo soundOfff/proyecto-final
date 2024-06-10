@@ -51,6 +51,7 @@ class PartnerController extends Controller
             ->allowedIncludes([
                 'contacts',
                 'country',
+                'relatedPartners',
                 'files',
                 'consolidator',
             ])
@@ -76,6 +77,17 @@ class PartnerController extends Controller
 
         $partner = Partner::create($newPartner);
 
+        $relatedPartnersData = $newPartner['related_partners'];
+
+        foreach ($relatedPartnersData as $relatedData) {
+            $partner->relatedPartners()->attach($relatedData['related_partner_id'], [
+                'start_date' => $relatedData['start_date'],
+                'end_date' => $relatedData['end_date'],
+                'partner_type_id' => $relatedData['partner_type_id'],
+                'active' => $relatedData['active'],
+            ]);   
+        }
+
         return response()->json($partner, 201);
     }
 
@@ -90,6 +102,7 @@ class PartnerController extends Controller
                 'country',
                 'shippingCountry',
                 'billingCountry',
+                'relatedPartners',
                 'contacts',
                 'files',
                 'consolidator',
@@ -108,6 +121,19 @@ class PartnerController extends Controller
     {
         $partnerUpdate = $request->validated();
 
+        $relatedPartnersData = $partnerUpdate['related_partners'];
+        $pivotData = [];
+
+        foreach ($relatedPartnersData as $relatedData) {
+            $pivotData[$relatedData['related_partner_id']] = [
+                'start_date' => $relatedData['start_date'],
+                'end_date' => $relatedData['end_date'],
+                'partner_type_id' => $relatedData['partner_type_id'],
+                'active' => $relatedData['active'],
+            ];            
+        }
+        
+        $partner->relatedPartners()->sync($pivotData);
         $partner->update($partnerUpdate);
 
         return response()->json(null, 204);

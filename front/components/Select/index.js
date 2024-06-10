@@ -36,7 +36,7 @@ export default function Select({
             variant="standard"
             label={inputLabel}
             fullWidth
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ shrink: true, style: { fontSize: 18 } }}
             inputProps={{ ...params.inputProps }}
           />
         )}

@@ -33,7 +33,9 @@ function FormField({ label, name, isImportant = false, box, ...rest }) {
         as={MDInput}
         variant="standard"
         label={label}
-        sx={{ background: isImportant ? "rgb(232, 241, 250)" : "transparent" }}
+        sx={{
+          background: isImportant ? "rgb(232, 241, 250)" : "transparent",
+        }}
         fullWidth
       />
       <MDBox mt={0.75}>

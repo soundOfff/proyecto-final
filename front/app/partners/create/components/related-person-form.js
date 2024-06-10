@@ -177,7 +177,23 @@ export default function RelatedPersonFormComponent({
       <Grid item xs={12}>
         <MDTypography variant="h5">Personas Relacionadas</MDTypography>
       </Grid>
-      <Grid item xs={12} display="flex" flexDirection="row" gap={2}>
+      <Grid
+        item
+        xs={12}
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        alignContent="center"
+        gap={2}
+        sx={{
+          width: "100%",
+          flexWrap: "nowrap",
+          "@media (max-width: 576px)": {
+            width: "100%",
+            flexWrap: "wrap",
+          },
+        }}
+      >
         <Select
           value={values[relatedPartnerId.name]}
           options={notJuridicalEntities}
@@ -253,7 +269,13 @@ export default function RelatedPersonFormComponent({
           variant="gradient"
           color="dark"
           display="flex"
-          sx={{ width: "fit-content" }}
+          sx={{
+            width: "fit-content",
+            height: "fit-content",
+            "@media (max-width: 780px)": {
+              width: "100%",
+            },
+          }}
           gap={1}
           p={1}
           alignContent="center"

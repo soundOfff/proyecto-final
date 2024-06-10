@@ -26,15 +26,13 @@ export default async function Show({ params: { id } }) {
           </Grid>
         </Card>
         <MDBox display="flex" flexDirection="column" width="50%">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} sx={{ margin: "20px", height: "400px" }}>
-              <Grid container spacing={3} p={5}>
-                <Grid item xs={12}>
-                  Tabla {i}
-                </Grid>
+          <Card sx={{ margin: "20px" }}>
+            <Grid container spacing={3} p={5}>
+              <Grid item xs={12}>
+                Reports table
               </Grid>
-            </Card>
-          ))}
+            </Grid>
+          </Card>
         </MDBox>
       </MDBox>
     </MDBox>

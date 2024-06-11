@@ -261,7 +261,7 @@ export default function RelatedPersonFormComponent({
           Agregar Persona
         </MDButton>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} mb={5}>
         <MDBox
           py={2}
           borderRadius="lg"

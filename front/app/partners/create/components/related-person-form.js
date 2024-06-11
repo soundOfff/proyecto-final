@@ -166,55 +166,34 @@ export default function RelatedPersonFormComponent({
   };
 
   return (
-    <Grid
-      container
-      spacing={3}
-      gap={5}
-      sx={{
-        padding: "20px 80px 80px 80px !important",
-      }}
-    >
-      <Grid item xs={12}>
+    <>
+      <Grid xs={12} item>
         <MDTypography variant="h5">Personas Relacionadas</MDTypography>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-        alignContent="center"
-        gap={2}
-        sx={{
-          width: "100%",
-          flexWrap: "nowrap",
-          "@media (max-width: 576px)": {
-            width: "100%",
-            flexWrap: "wrap",
-          },
-        }}
-      >
+      <Grid xs={12} sm={3} item>
         <Select
           value={values[relatedPartnerId.name]}
           options={notJuridicalEntities}
           optionLabel={(option) => option.mergedName}
           fieldName={relatedPartnerId.name}
           inputLabel={"Persona Relacionada"}
-          sx={{ width: "300px" }}
           setFieldValue={setFieldValue}
         />
+      </Grid>
+      <Grid xs={12} sm={3} item>
         <Select
           value={values[partnerTypeId.name]}
           options={partnerTypes}
           optionLabel={(option) => option.label}
           fieldName={partnerTypeId.name}
           inputLabel={"Cargo de la Persona"}
-          sx={{ width: "300px" }}
           setFieldValue={setFieldValue}
         />
+      </Grid>
+      <Grid xs={12} sm={2} item>
         <MDDatePicker
           input={{
-            fullWidth: false,
+            fullWidth: true,
             label: "Fecha inicio",
           }}
           format="DD/MM/YYYY"
@@ -233,9 +212,11 @@ export default function RelatedPersonFormComponent({
             <ErrorMessage name={startDate.name} />
           </MDTypography>
         </MDBox>
+      </Grid>
+      <Grid xs={12} sm={2} item>
         <MDDatePicker
           input={{
-            fullWidth: false,
+            fullWidth: true,
             label: "Fecha fin",
           }}
           format="DD/MM/YYYY"
@@ -254,6 +235,8 @@ export default function RelatedPersonFormComponent({
             <ErrorMessage name={endDate.name} />
           </MDTypography>
         </MDBox>
+      </Grid>
+      <Grid xs={12} sm={2} item>
         <FormGroup>
           <FormControlLabel
             control={
@@ -265,19 +248,13 @@ export default function RelatedPersonFormComponent({
             label={active.label}
           />
         </FormGroup>
+      </Grid>
+      <Grid xs={12} item display="flex" justifyContent="end">
         <MDButton
           variant="gradient"
           color="dark"
           display="flex"
-          sx={{
-            width: "fit-content",
-            height: "fit-content",
-            "@media (max-width: 780px)": {
-              width: "100%",
-            },
-          }}
           gap={1}
-          p={1}
           alignContent="center"
           onClick={handleSubmit}
         >
@@ -287,13 +264,12 @@ export default function RelatedPersonFormComponent({
       <Grid item xs={12}>
         <MDBox
           py={2}
-          px={2}
           borderRadius="lg"
           sx={{ border: 1, borderColor: "grey.400" }}
         >
           <DataTable table={table} showTotalEntries={false} isSorted={false} />
         </MDBox>
       </Grid>
-    </Grid>
+    </>
   );
 }

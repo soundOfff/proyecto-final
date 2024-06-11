@@ -387,13 +387,13 @@ export default function JuridicalForm({
             />
           </FormGroup>
         </Grid>
+        <RelatedPersonFormComponent
+          setFieldValue={setFieldValue}
+          values={values}
+          partnerTypes={partnerTypes}
+          notJuridicalEntities={notJuridicEntities}
+        />
       </Grid>
-      <RelatedPersonFormComponent
-        setFieldValue={setFieldValue}
-        values={values}
-        partnerTypes={partnerTypes}
-        notJuridicalEntities={notJuridicEntities}
-      />
     </>
   );
 }

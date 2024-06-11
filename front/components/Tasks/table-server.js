@@ -12,7 +12,7 @@ import Link from "next/link";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalContentForm from "/components/ModalContent/Task";
 import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
@@ -264,6 +264,15 @@ export default function Table({
                 display: row.original.isBlocked ? "none" : "block",
               }}
             />
+          </Tooltip>
+          <Tooltip title="Ver Cambios">
+            <Link href={`/tasks/${row.original.id}/changes`}>
+              <VisibilityIcon
+                color="action"
+                fontSize="medium"
+                sx={{ mx: 1, cursor: "pointer" }}
+              />
+            </Link>
           </Tooltip>
           {currentTimer?.task_id === row.original.id ? (
             <Tooltip title="Detener temporizador">

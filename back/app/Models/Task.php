@@ -12,10 +12,44 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly([
+            'name',
+            'hourly_rate',
+            'description',
+            'start_date',
+            'due_date',
+            'owner_id',
+            'procedure_id',
+            'milestone_order',
+            'task_priority_id',
+            'partner_id',
+            'task_status_id',
+            'repeat_id',
+            'author_id',
+            'recurring_type',
+            'recurring',
+            'is_infinite',
+            'billable',
+            'total_cycles',
+            'taskable_type',
+            'taskable_id',
+            'visible_to_client',
+            'is_file_needed',
+        ])
+        ->logOnlyDirty();
+    }
+
     protected $fillable = [
         'name',
         'hourly_rate',
@@ -135,6 +169,11 @@ class Task extends Model
     public function requiredFields()
     {
         return $this->hasMany(TaskRequiredField::class);
+    }
+
+    public function historyTasks()
+    {
+        return $this->hasMany(HistoryTask::class);
     }
 
     public function files(): MorphMany

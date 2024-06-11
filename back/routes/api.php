@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\ActionTypeController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CreditController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\HistoryTaskController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemGroupController;
@@ -47,6 +49,7 @@ use App\Http\Controllers\TaskPriorityController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
+use Google\Service\CloudSearch\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -220,6 +223,8 @@ Route::get('/actions', [ActionController::class, 'index']);
 Route::get('/action-types', [ActionTypeController::class, 'index']);
 
 Route::post('/table-fields', TableFieldController::class);
+
+Route::get('/activity-logs', [ActivityController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

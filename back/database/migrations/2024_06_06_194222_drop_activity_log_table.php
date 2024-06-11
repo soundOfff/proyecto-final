@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateActivityLogTable extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::dropIfExists('activity_log');
@@ -23,4 +22,4 @@ class CreateActivityLogTable extends Migration
             $table->timestamps();
         });
     }
-}
+};

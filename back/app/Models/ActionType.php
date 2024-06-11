@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ActionType extends Model
 {
-    public const ACTION_EXPENSE = 'expense';
+    public const ACTION_EXPENSE_ID = 1;
 
-    public const ACTION_API = 'api';
+    public const ACTION_API_ID = 2;
 
-    public const ACTION_MAIL = 'email';
+    public const ACTION_MAIL_ID = 3;
 
     public function actions() : HasMany {
         return $this->hasMany(Action::class);

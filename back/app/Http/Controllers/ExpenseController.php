@@ -41,6 +41,7 @@ class ExpenseController extends Controller
         ->defaultSort('-id')
         ->allowedSorts([
             'id', 'name', 'amount', 'date',
+            AllowedSort::field('createdFromAction', 'created_from_action'),
             AllowedSort::custom('partner', new ExpensePartnerSort(), 'partner_name'),
             AllowedSort::custom('category.name', new ExpenseCategorySort(), 'name'),
             AllowedSort::custom('project.name', new ExpenseProjectSort(), 'name'),

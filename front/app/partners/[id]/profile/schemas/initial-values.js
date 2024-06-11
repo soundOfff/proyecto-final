@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import detailForm from "./detail-form";
 import invoiceForm from "./invoice-form";
+import { PANAMA_ID } from "/utils/constants/countries";
 
 const {
   formField: {
@@ -80,7 +81,7 @@ const initialValues = {
   [city.name]: "",
   [company.name]: "",
   [consolidator.name]: null,
-  [country.name]: null,
+  [country.name]: PANAMA_ID,
   [isConsolidator.name]: "",
   [document.name]: "",
   [industry.name]: "",

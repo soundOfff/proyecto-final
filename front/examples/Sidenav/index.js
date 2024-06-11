@@ -54,6 +54,7 @@ import {
 import { Skeleton } from "@mui/material";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { customFetch } from "../../actions/custom-fetch";
 
 function Sidenav({
   color = "dark",
@@ -166,13 +167,25 @@ function Sidenav({
             color={color}
             name={name}
             active={key === itemName}
-            onClick={() => signOut()}
+            onClick={handleSignOut}
           />
         );
       }
 
       return <SidenavList key={key}>{returnValue}</SidenavList>;
     });
+
+  const handleSignOut = async () => {
+    try {
+      await customFetch("/api/auth/logout", {
+        method: "POST",
+        body: JSON.stringify({ staff_id: session.staff.id }),
+      });
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(

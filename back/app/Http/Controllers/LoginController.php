@@ -31,15 +31,14 @@ class LoginController extends Controller
                 'last_login' => now(),
                 'last_ip' => $request->ip(),
             ]);
-
-            $ltsSession = $this->latestSession($staff->id);
-            if (!$ltsSession) {
-                Session::create([
-                    'staff_id' => $staff->id,
-                    'ip_address' => $request->ip(),
-                    'last_login' => now(),
-                ]);
-            }
+            // $ltsSession = $this->latestSession($staff->id);
+            // if (!$ltsSession) {
+            //     Session::create([
+            //         'staff_id' => $staff->id,
+            //         'ip_address' => $request->ip(),
+            //         'last_login' => now(),
+            //     ]);
+            // }
         }
 
         $staff->token = $staff->createToken('api')->plainTextToken;

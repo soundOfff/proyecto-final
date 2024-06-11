@@ -175,11 +175,16 @@ function Sidenav({
       return <SidenavList key={key}>{returnValue}</SidenavList>;
     });
 
-  const handleSignOut = () => {
-    signOut();
-    customFetch("/api/logout", {
-      method: "POST",
-    });
+  const handleSignOut = async () => {
+    try {
+      await customFetch("/api/auth/logout", {
+        method: "POST",
+        body: JSON.stringify({ staff_id: session.staff.id }),
+      });
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
   };
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)

@@ -44,36 +44,35 @@ class LoginController extends Controller
 
         $staff->token = $staff->createToken('api')->plainTextToken;
 
-        Auth::login($staff);
+        Auth::login($staff, true);
 
         return new StaffResource($staff);
     }
 
     public function logout(Request $request)
     {
-        $staffId = Auth::user()->id; // TODO: Need to get the correct staffId this returns null
+        $request->validate([
+            'staff_id' => 'required|integer|exists:staff,id',
+        ]);
+        $staffId = $request['staff_id'];
         $ltsSession = $this->latestSession($staffId);
+        
         if ($ltsSession) {
             $ltsSession->update([
-                'last_logout' => now(),
-            ]);
-        } else {
-            Session::create([
-                'staff_id' => $staffId,
-                'ip_address' => $request->ip(),
                 'last_logout' => now(),
             ]);
         }
 
         Auth::logout();
 
-        return response()->json(['message' => 'Successfully logged out'], 204);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
     private function latestSession($staffId)
     {
         return Session::where('staff_id', $staffId)
             ->where('created_at', '>=', now()->subMinutes(5))
+            ->whereNull('last_logout')
             ->latest()
             ->first();
     }

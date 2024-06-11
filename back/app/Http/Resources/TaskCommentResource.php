@@ -18,6 +18,8 @@ class TaskCommentResource extends JsonResource
         return [
             'id' => $this->id,
             'content' => $this->content,
+            'task_id' => $this->task_id,
+            'staff_id' => $this->staff_id,
             'task' => TaskResource::make($this->whenLoaded('task')),
             'staff' => StaffResource::make($this->whenLoaded('staff')),
             'contact' => ContactResource::make($this->whenLoaded('contact')),

@@ -44,7 +44,7 @@ export async function store(data) {
   redirect("/partners");
 }
 
-export async function storePerson(data) {
+export async function storeNotJuridicalPartner(data) {
   const url = new URL(`${process.env.API_URL}/partners`);
 
   await customFetch(url, {

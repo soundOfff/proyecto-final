@@ -8,7 +8,7 @@
   "partner_id": "Cliente",
   "owner_id": "Dueño",
   "taskable_type": "Relación",
-  "taskable_id": "Id de la relación",
+  "taskable_id": "Nombre de la Relación",
   "name": "Nombre",
   "start_date": "Fecha de Inicio",
   "added_from": "Añadido desde",
@@ -42,5 +42,8 @@
   "dependencies": "Dependencias",
   "checklistItems": "Lista de Items",
   "comments": "Comentarios",
-  "assigneds": "Asignados"
+  "assigneds": "Asignados",
+  "reminders": "Recordatorios",
+  "requiredFields": "Campos Requeridos",
+  "followers": "Seguidores"
 }

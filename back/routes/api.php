@@ -49,9 +49,7 @@ use App\Http\Controllers\TaskPriorityController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
-use Google\Service\CloudSearch\History;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*

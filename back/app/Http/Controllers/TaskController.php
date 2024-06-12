@@ -110,14 +110,14 @@ class TaskController extends Controller
     public function update(Task $task, TaskRequest $request)
     {
         $newTask = $request->validated();
-        $tags = isset($newTask['tags']) ? $newTask['tags'] : [];
-        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : [];
-        $comments = isset($newTask['comments']) ? $newTask['comments'] : [];
-        $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : [];
-        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
-        $followers = isset($newTask['followers']) ? $newTask['followers'] : [];
-        $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : [];
-        $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : [];
+        $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
+        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : null;
+        $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
+        $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
+        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
+        $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
+        $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
+        $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
 
         CauserResolver::setCauser(Staff::find($newTask['owner_id'] ?? $task->owner_id));
 
@@ -147,37 +147,37 @@ class TaskController extends Controller
 
         $task->update($newTask);
 
-        if (count($comments)) {
+        if ($comments) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
         }
 
-        if (count($dependencies)) {
+        if ($dependencies) {
             $dependencyIds = array_column($dependencies, 'id');
             $task->dependencies()->sync($dependencyIds);
         }
 
-        if (count($checklistItems)) {
+        if ($checklistItems) {
             $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
         }
 
-        if (count($assigneds)) {
+        if ($assigneds) {
             $assignedIds = array_column($assigneds, 'id');
             $task->assigneds()->sync($assignedIds);
         }
 
-        if (count($followers)) {
+        if ($followers) {
             $followerIds = array_column($followers, 'id');
             $task->followers()->sync($followerIds);
         }
 
-        if (count($reminders)) {
+        if ($reminders) {
             $task->reminders()->delete();
             $task->reminders()->createMany($reminders);
         }
 
-        if (count($tags)) {
+        if ($tags) {
             $task->tags()->detach();
             foreach ($tags as $tag) {
                 $tag['taggable_id'] = $task->id;
@@ -185,11 +185,6 @@ class TaskController extends Controller
                 $tag['tag_id'] = $tag['id'];
                 Taggable::create($tag);
             }
-        }
-
-        if (count($requiredFields)) {
-            $task->requiredFields()->delete();
-            $task->requiredFields()->createMany($requiredFields);
         }
 
         if ($requiredFields) {

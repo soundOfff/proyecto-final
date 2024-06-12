@@ -1,4 +1,3 @@
-"use server";
 import { getSelect as getPartnersSelect } from "/actions/partners";
 import { getSelect as getCountriesSelect } from "/actions/countries";
 import { getAll as getAllPartnerTypes } from "/actions/partner-types";

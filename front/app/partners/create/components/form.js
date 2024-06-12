@@ -13,6 +13,7 @@ import form from "../schemas/form";
 import initialValues from "../schemas/initial-values";
 import validations from "../schemas/validations";
 import MDSnackbar from "/components/MDSnackbar";
+import { useRouter } from "next/navigation";
 
 export default function FormComponent({
   consolidators,
@@ -25,10 +26,12 @@ export default function FormComponent({
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
 
   const submitForm = async (values, actions) => {
     try {
       await storePartner(values);
+      router.push("/partners");
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

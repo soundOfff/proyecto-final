@@ -13,6 +13,7 @@ import detailValidations from "../schemas/detail-validations";
 import PersonForm from "./person-form";
 import JuridicalForm from "./juridical-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function DetailFormComponent({
   partner,
@@ -84,10 +85,12 @@ export default function DetailFormComponent({
   };
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
 
   const submitForm = async (values, actions) => {
     try {
       await updatePartner(partner.id, values);
+      router.push("/partners");
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

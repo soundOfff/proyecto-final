@@ -10,7 +10,7 @@ import MDTypography from "/components/MDTypography";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import PersonForm from "./form";
-import { storeNotJuridicalPartner } from "/actions/partners";
+import { store as storePartner } from "/actions/partners";
 
 export default function Index({ countries, handleClose }) {
   const [errorSB, setErrorSB] = useState(false);
@@ -18,7 +18,7 @@ export default function Index({ countries, handleClose }) {
 
   const submitForm = async (values, actions) => {
     try {
-      await storeNotJuridicalPartner(values);
+      await storePartner(values);
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

@@ -12,7 +12,6 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
-import form from "../schemas/form";
 import MDDatePicker from "/components/MDDatePicker";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -24,6 +23,7 @@ import { PANAMA_ID } from "/utils/constants/countries";
 import { getAll as getAllProvinces } from "/actions/provinces";
 import { getAll as getAllDistricts } from "/actions/districts";
 import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
+import notJuridicalPartnerForm from "./schemas/form";
 
 export default function PersonForm({
   countries,
@@ -34,32 +34,30 @@ export default function PersonForm({
 }) {
   const {
     formField: {
-      person: {
-        name,
-        birthDate,
-        expeditionDate,
-        isMale,
-        idNumber,
-        country,
-        nationality,
-        birthPlace,
-        occupation,
-        civilStatus,
-        idType,
-        state,
-        city,
-        district,
-        jurisdiction,
-        province,
-        address,
-        isConsolidator,
-        phone,
-        email,
-        isResidential,
-        buildingNumber,
-      },
+      name,
+      birthDate,
+      expeditionDate,
+      isMale,
+      idNumber,
+      country,
+      nationality,
+      birthPlace,
+      occupation,
+      civilStatus,
+      idType,
+      state,
+      city,
+      district,
+      jurisdiction,
+      province,
+      address,
+      isConsolidator,
+      phone,
+      email,
+      isResidential,
+      buildingNumber,
     },
-  } = form;
+  } = notJuridicalPartnerForm;
 
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -394,7 +392,7 @@ export default function PersonForm({
           }
         />
       </Grid>
-      <Grid item xs={12} sm={6} display="flex" alignItems="end">
+      <Grid item xs={12} sm={6} mb={1} display="flex" alignItems="end">
         <FormGroup>
           <FormControlLabel
             control={

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Icon, Switch, FormControlLabel, FormGroup } from "@mui/material";
 import MDButton from "/components/MDButton";
 import Select from "/components/Select";
@@ -6,7 +6,9 @@ import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
-2;
+import Modal from "/components/Modal";
+import PersonForm from "/components/ModalContent/Partner/";
+
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import moment from "moment";
@@ -46,8 +48,10 @@ export default function RelatedPersonFormComponent({
   setFieldValue: setFieldValueExternal,
   values: externalValues,
   notJuridicalEntities,
+  countries,
   partnerTypes,
 }) {
+  const [openModal, setOpenModal] = useState(false);
   const { relatedPartnerId, partnerTypeId, startDate, endDate, active } =
     newRelatedPeopleFormField.formField;
 
@@ -249,15 +253,15 @@ export default function RelatedPersonFormComponent({
           />
         </FormGroup>
       </Grid>
-      <Grid xs={12} item display="flex" justifyContent="end">
+      <Grid xs={12} display="flex" gap={2} justifyContent="end" item>
         <MDButton
           variant="gradient"
-          color="dark"
-          display="flex"
-          gap={1}
-          alignContent="center"
-          onClick={handleSubmit}
+          color="success"
+          onClick={() => setOpenModal(true)}
         >
+          Crear Persona
+        </MDButton>
+        <MDButton variant="gradient" color="dark" onClick={handleSubmit}>
           Agregar Persona
         </MDButton>
       </Grid>
@@ -270,6 +274,12 @@ export default function RelatedPersonFormComponent({
           <DataTable table={table} showTotalEntries={false} isSorted={false} />
         </MDBox>
       </Grid>
+      <Modal open={openModal} onClose={() => setOpenModal(false)} width="50%">
+        <PersonForm
+          countries={countries}
+          handleClose={() => setOpenModal(false)}
+        />
+      </Modal>
     </>
   );
 }

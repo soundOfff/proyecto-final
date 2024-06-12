@@ -391,6 +391,7 @@ export default function JuridicalForm({
           setFieldValue={setFieldValue}
           values={values}
           partnerTypes={partnerTypes}
+          countries={countries}
           notJuridicalEntities={notJuridicEntities}
         />
       </Grid>

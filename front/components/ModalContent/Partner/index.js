@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Form, Formik } from "formik";
 import { Grid } from "@mui/material";
-import { store as storePartner } from "/actions/partners";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
@@ -11,6 +10,7 @@ import MDTypography from "/components/MDTypography";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import PersonForm from "./form";
+import { storePerson } from "/actions/partners";
 
 export default function Index({ countries, handleClose }) {
   const [errorSB, setErrorSB] = useState(false);
@@ -18,7 +18,7 @@ export default function Index({ countries, handleClose }) {
 
   const submitForm = async (values, actions) => {
     try {
-      await storePartner(values);
+      await storePerson(values);
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

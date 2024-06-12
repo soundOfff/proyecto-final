@@ -70,11 +70,13 @@ const notJuridicalPartnerForm = {
     civilStatus: {
       name: "civil_status",
       label: "Estado Civil",
+      errorMsg: "Debe seleccionar un estado civil",
     },
     occupation: {
       name: "occupation",
       label: "Ocupación",
       type: "text",
+      errorMsg: "La ocupación es requerida",
     },
     country: {
       name: "country_id",
@@ -85,11 +87,13 @@ const notJuridicalPartnerForm = {
       name: "city",
       label: "Ciudad",
       type: "text",
+      errorMsg: "La ciudad es requerida",
     },
     state: {
       name: "state",
       label: "Provincia",
       type: "text",
+      errorMsg: "La provincia es requerida",
     },
     province: {
       name: "province_id",
@@ -127,11 +131,13 @@ const notJuridicalPartnerForm = {
     isResidential: {
       name: "is_residential",
       label: "Tipo",
+      errorMsg: "Debe seleccionar un tipo",
     },
     buildingNumber: {
       name: "building_number",
       label: "Número de casa/apartamento/edificio",
       type: "text",
+      errorMsg: "El número de casa/apartamento/edificio es requerido",
     },
   },
 };

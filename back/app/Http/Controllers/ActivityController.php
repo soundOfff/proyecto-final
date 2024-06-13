@@ -22,6 +22,7 @@ class ActivityController extends Controller
                 AllowedFilter::exact('subject_id'),
                 AllowedFilter::exact('causer_by'),
                 AllowedFilter::exact('causer_type'),
+                AllowedFilter::exact('event'),
             ])
             ->allowedIncludes(['subject', 'causer'])
             ->orderBy('created_at', 'desc')

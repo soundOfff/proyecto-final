@@ -5,6 +5,7 @@ export default async function Changes({ params: { id } }) {
   const params = {
     "filter[subject_id]": id,
     "filter[subject_type]": "task",
+    "filter[event]": "update",
     include: ["causer", "subject"],
   };
   const changes = await getAllActivities(params);

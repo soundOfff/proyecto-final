@@ -33,12 +33,16 @@ function FormField({ label, name, isImportant = false, box, ...rest }) {
         as={MDInput}
         variant="standard"
         label={label}
+        InputLabelProps={{
+          style: {
+            paddingLeft: isImportant ? "16px" : "0",
+            top: isImportant ? "8px" : "0",
+          },
+        }}
         sx={{
           background: isImportant ? "rgb(232, 241, 250)" : "transparent",
-          "& .MuiInputLabel-root": {
-            padding: isImportant ? "0 0 0 16px" : "0 0 0 0",
-          },
-          padding: isImportant ? "10px 16px 10px 16px" : "0 0 0 0",
+          padding: isImportant ? "0 16px 10px 16px" : "0 0 0 0",
+          borderRadius: "4px",
         }}
         fullWidth
       />

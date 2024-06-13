@@ -57,7 +57,6 @@ export default function FormContent({ formData, staff = null }) {
       setFieldValue(hourlyRate.name, staff.hourlyRate);
       setFieldValue(lastName.name, staff.lastName);
       setFieldValue(linkedin.name, staff.linkedin);
-      setFieldValue(password.name, staff.password);
       setFieldValue(phoneNumber.name, staff.phoneNumber);
       setFieldValue(profileImage.name, staff.profileImage);
       setFieldValue(skype.name, staff.skype);
@@ -179,45 +178,47 @@ export default function FormContent({ formData, staff = null }) {
             rows={4}
           />
         </Grid>
-        <Grid
-          item
-          container
-          justifyContent="space-between"
-          alignContent="center"
-          xs={12}
-        >
-          <Grid xs={11} item>
-            <FormField
-              name={password.name}
-              label={password.label}
-              type={isPasswordVisible ? "text" : "password"}
-              placeholder={password.placeholder}
-              value={values[password.name]}
-              error={errors.password && touched.password}
-              success={password.length > 0 && !errors.password}
-            />
+        {!staff && (
+          <Grid
+            item
+            container
+            justifyContent="space-between"
+            alignContent="center"
+            xs={12}
+          >
+            <Grid xs={11} item>
+              <FormField
+                name={password.name}
+                label={password.label}
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder={password.placeholder}
+                value={values[password.name]}
+                error={errors.password && touched.password}
+                success={password.length > 0 && !errors.password}
+              />
+            </Grid>
+            <Grid xs={1} item display="flex" alignSelf="center" noWrap>
+              <MDButton
+                variant="gradient"
+                color="dark"
+                iconOnly
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                sx={{ mr: 2, ml: 2 }}
+              >
+                <Icon sx={{ fontWeight: "bold" }}>visibility</Icon>
+              </MDButton>
+              <MDButton
+                variant="gradient"
+                color="dark"
+                onClick={handleRefreshPassword}
+                iconOnly
+                sx={{ mr: 2 }}
+              >
+                <Icon sx={{ fontWeight: "bold" }}>refresh</Icon>
+              </MDButton>
+            </Grid>
           </Grid>
-          <Grid xs={1} item display="flex" alignSelf="center" noWrap>
-            <MDButton
-              variant="gradient"
-              color="dark"
-              iconOnly
-              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              sx={{ mr: 2, ml: 2 }}
-            >
-              <Icon sx={{ fontWeight: "bold" }}>visibility</Icon>
-            </MDButton>
-            <MDButton
-              variant="gradient"
-              color="dark"
-              onClick={handleRefreshPassword}
-              iconOnly
-              sx={{ mr: 2 }}
-            >
-              <Icon sx={{ fontWeight: "bold" }}>refresh</Icon>
-            </MDButton>
-          </Grid>
-        </Grid>
+        )}
         <Grid item xs={12}>
           <MDBox>
             <FormGroup>

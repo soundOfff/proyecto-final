@@ -42,6 +42,13 @@ export async function store(data) {
   redirect("/staffs");
 }
 
+export async function stats(id) {
+  const url = new URL(`${process.env.API_URL}/staffs/${id}/stats`);
+
+  const { data } = await customFetch(url);
+  return data;
+}
+
 export async function update(id, data) {
   const url = new URL(`${process.env.API_URL}/staffs/${id}`);
 

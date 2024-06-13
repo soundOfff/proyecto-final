@@ -9,7 +9,9 @@ use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Task;
+use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -57,6 +59,7 @@ class StaffController extends Controller
 
         $staff = Staff::create($newStaff);
 
+        $staff->password = Hash::make($newStaff['password']);
         $staff->token = $staff->createToken('api')->plainTextToken;
         $staff->save();
 
@@ -77,8 +80,10 @@ class StaffController extends Controller
     }
 
     public function getUser(Staff $staff)
-    {        
-        $staff = QueryBuilder::for(Staff::class)->find($staff->id);
+    {
+        $staff = QueryBuilder::for(Staff::class)
+            ->allowedIncludes('projects.status')
+            ->find($staff->id);
 
         return new StaffResource($staff);
     }
@@ -89,10 +94,35 @@ class StaffController extends Controller
     public function update(Staff $staff, StaffRequest $request)
     {
         $updatedStaff = $request->validated();
-        
+
         $staff->update($updatedStaff);
 
         return response()->json($staff, 200);
+    }
+
+    public function stats(Staff $staff)
+    {
+        $taskCounts = Task::selectRaw('task_status_id, COUNT(*) as count')
+            ->whereHas('assigneds', function ($query) use ($staff) {
+                $query->where('staff_id', $staff->id);
+            })
+            ->groupBy('task_status_id')
+            ->pluck('count', 'task_status_id');
+
+        $pendingTasks = $taskCounts[TaskStatus::PENDING] ?? 0;
+        $inProgressTasks = $taskCounts[TaskStatus::IN_PROGRESS] ?? 0;
+        $completedTasks = $taskCounts[TaskStatus::COMPLETED] ?? 0;
+
+        return response()->json(
+            [
+                "data" => [
+                    'pendingTasks' => $pendingTasks,
+                    'inProgressTasks' => $inProgressTasks,
+                    'completedTasks' => $completedTasks,
+                ]
+            ],
+            200
+        );
     }
 
     /**

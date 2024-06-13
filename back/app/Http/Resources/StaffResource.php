@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Hash;
 
 class StaffResource extends JsonResource
 {
@@ -36,7 +37,6 @@ class StaffResource extends JsonResource
             'mediaPathSlug' => $this->media_path_slug,
             'newPassKey' => $this->new_pass_key,
             'newPassKeyRequested' => $this->new_pass_key_requested,
-            'password' => $this->password,
             'welcomeEmail' => $this->welcome_email,
             'phoneNumber' => $this->phone_number,
             'profileImage' => $this->profile_image,
@@ -45,7 +45,7 @@ class StaffResource extends JsonResource
             'twoFactorAuthCodeRequested' => $this->two_factor_auth_code_requested,
             'twoFactorAuthEnabled' => $this->two_factor_auth_enabled,
             'token' => $this->token,
-            'projects' => ProjectResource::collection($this->whenLoaded('project')),
+            'projects' => ProjectResource::collection($this->whenLoaded('projects')),
             'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
             'role' => RoleResource::make($this->whenLoaded('role')),
         ];

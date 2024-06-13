@@ -53,6 +53,7 @@ class Staff extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'password',
         'remember_token',
     ];
 
@@ -66,9 +67,9 @@ class Staff extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function projects(): BelongsToMany
+    public function projects(): HasMany
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasMany(Project::class, 'responsible_person_id');
     }
 
     public function contacts(): HasMany

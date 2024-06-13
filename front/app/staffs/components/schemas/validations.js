@@ -48,7 +48,7 @@ const validations = Yup.object().shape({
   [skype.name]: Yup.string().nullable(),
   [defaultLanguage.name]: Yup.string().nullable(),
   [emailSignature.name]: Yup.string().nullable(),
-  [password.name]: Yup.string().required(password.requiredErrorMsg),
+  [password.name]: Yup.string().nullable(),
   [departments.name]: Yup.array().nullable(),
   [welcomeEmail.name]: Yup.bool(),
   [admin.name]: Yup.bool(),

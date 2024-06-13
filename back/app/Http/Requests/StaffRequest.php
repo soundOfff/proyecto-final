@@ -24,7 +24,7 @@ class StaffRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'password' => 'required|string',
+            'password' => 'nullable|string',
             'active' => 'nullable|boolean',
             'admin' => 'required|boolean',
             'default_language' => 'nullable|string',

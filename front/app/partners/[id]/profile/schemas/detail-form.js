@@ -159,16 +159,25 @@ const detailForm = {
         type: "text",
         errorMsg: "El nombre es requerido",
       },
-      number: {
-        name: "number",
+      idNumber: {
+        name: "id_number",
         label: "Número de Identificación",
         type: "text",
         errorMsg: "El número de identificación es requerido",
+      },
+      idType: {
+        name: "id_type",
+        label: "Tipo de Identificación",
+        errorMsg: "Debe seleccionar un tipo de identificación",
       },
       birthDate: {
         name: "birth_date",
         label: "Fecha de Nacimiento",
         errorMsg: "La fecha de nacimiento es requerida",
+      },
+      civilStatus: {
+        name: "civil_status",
+        label: "Estado Civil",
       },
       expeditionDate: {
         name: "expedition_date",

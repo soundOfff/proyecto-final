@@ -29,7 +29,15 @@ export default function Content({
   const [description, setDescription] = useState(
     parseEditorState(task.description)
   );
-  const [comments, setComments] = useState(task.comments || []);
+  const [comments, setComments] = useState(
+    task.comments.map((comment) => {
+      return {
+        task_id: comment.task_id,
+        content: comment.content,
+        staff_id: comment.staff_id,
+      };
+    }) || []
+  );
   const [note, setNote] = useState("");
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
   const [commentContent, setCommentContent] = useState("");
@@ -51,13 +59,18 @@ export default function Content({
   };
 
   const handleCommentUpdate = async () => {
-    setComments([...comments, { taskId: task.id, content: commentContent }]);
+    setComments([
+      ...comments,
+      { task_id: task.id, content: commentContent, staff_id: session.staff.id },
+    ]);
+    setCommentContent("");
     await update(task.id, {
       comments: [
         ...task.comments,
         {
           content: commentContent,
           staff_id: session.staff.id,
+          task_id: task.id,
         },
       ],
     });

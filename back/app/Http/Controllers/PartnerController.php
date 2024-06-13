@@ -77,7 +77,8 @@ class PartnerController extends Controller
 
         $partner = Partner::create($newPartner);
 
-        $relatedPartnersData = $newPartner['related_partners'];
+        $relatedPartnersData = isset($newPartner['related_partners']) ? $newPartner['related_partners'] : [];
+
 
         foreach ($relatedPartnersData as $relatedData) {
             $partner->relatedPartners()->attach($relatedData['related_partner_id'], [

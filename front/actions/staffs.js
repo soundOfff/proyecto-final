@@ -62,3 +62,14 @@ export async function destroy(id) {
 
   return response;
 }
+
+export async function logout(staffId) {
+  const url = new URL(`${process.env.API_URL}/logout`);
+
+  const data = await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify({ staff_id: staffId }),
+  });
+
+  return data;
+}

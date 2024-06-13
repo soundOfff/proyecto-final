@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\CausesActivity;
 
 class Staff extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, CausesActivity;
 
     protected $fillable = [
         'active',
@@ -88,5 +89,15 @@ class Staff extends Authenticatable
     public function getCurrentTimer(): TaskTimer | null
     {
         return $this->timers->whereNull('end_time')->first();
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    public function lastSession() : Session | null
+    {
+        return $this->sessions->last();
     }
 }

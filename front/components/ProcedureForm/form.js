@@ -31,6 +31,7 @@ export default function FormComponent({
         await update(procedure.id, {
           ...values,
           process_id: procedure.processId,
+          author_id: session.staff.id,
         });
         router.push(`/processes/${procedure.processId}`);
       } else {

@@ -98,314 +98,307 @@ export default function JuridicalForm({
   }, [values.district_id]);
 
   return (
-    <>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            value={values[company.name]}
-            label={company.label}
-            placeholder={company.placeholder}
-            name={company.name}
-            type="text"
-            error={errors[company.name] && touched[company.name]}
-            success={values[company.name]?.length > 0 && !errors[company.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            value={values[industry.name]}
-            label={industry.label}
-            name={industry.name}
-            type="text"
-            error={errors[industry.name] && touched[industry.name]}
-            success={
-              values[industry.name]?.length > 0 && !errors[industry.name]
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            value={values[section.name]}
-            label={section.label}
-            name={section.name}
-            type="text"
-            error={errors[section.name] && touched[section.name]}
-            success={values[section.name]?.length > 0 && !errors[section.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            value={values[document.name]}
-            label={document.label}
-            name={document.name}
-            type="text"
-            error={errors[document.name] && touched[document.name]}
-            success={
-              values[document.name]?.length > 0 && !errors[document.name]
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            value={values[address.name]}
-            label={address.label}
-            placeholder={address.placeholder}
-            name={address.name}
-            type={address.type}
-            error={errors[address.name] && touched[address.name]}
-            success={values[address.name]?.length > 0 && !errors[address.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Select
-            value={values[country.name]}
-            options={countries}
-            optionLabel={(option) => option.shortName}
-            fieldName={country.name}
-            inputLabel={country.label}
-            setFieldValue={setFieldValue}
-          />
-        </Grid>
-        {values[country.name] === PANAMA_ID ? (
-          <>
-            <Grid item xs={12} sm={6}>
-              <Select
-                value={values[province.name]}
-                options={provinces}
-                optionLabel={(option) => option.name}
-                fieldName={province.name}
-                inputLabel={province.label}
-                setFieldValue={setFieldValue}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Select
-                value={values[district.name]}
-                options={districts}
-                optionLabel={(option) => option.name}
-                fieldName={district.name}
-                inputLabel={district.label}
-                setFieldValue={setFieldValue}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Select
-                value={values[jurisdiction.name]}
-                options={jurisdictions}
-                optionLabel={(option) => option.name}
-                fieldName={jurisdiction.name}
-                inputLabel={jurisdiction.label}
-                setFieldValue={setFieldValue}
-              />
-            </Grid>
-          </>
-        ) : (
-          <>
-            <Grid item xs={12} sm={6}>
-              <FormField
-                value={values[state.name]}
-                label={state.label}
-                placeholder={state.placeholder}
-                name={state.name}
-                type={state.type}
-                error={errors[state.name] && touched[state.name]}
-                success={values[state.name]?.length > 0 && !errors[state.name]}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormField
-                value={values[city.name]}
-                label={city.label}
-                placeholder={city.placeholder}
-                name={city.name}
-                type={city.type}
-                error={errors[city.name] && touched[city.name]}
-                success={values[city.name]?.length > 0 && !errors[city.name]}
-              />
-            </Grid>
-          </>
-        )}
-        <Grid item xs={12} sm={6}>
-          <Select
-            value={values[consolidator.name]}
-            options={consolidators}
-            optionLabel={(option) => option.mergedName}
-            fieldName={consolidator.name}
-            inputLabel={consolidator.label}
-            setFieldValue={setFieldValue}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormField
-            value={values[website.name]}
-            label={website.label}
-            name={website.name}
-            type={website.type}
-            error={errors[website.name] && touched[website.name]}
-            success={values[website.name]?.length > 0 && !errors[website.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            value={values[zip.name]}
-            label={zip.label}
-            name={zip.name}
-            type={zip.type}
-            error={errors[zip.name] && touched[zip.name]}
-            success={values[zip.name]?.length > 0 && !errors[zip.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            label={phone.label}
-            placeholder={phone.placeholder}
-            name={phone.name}
-            type={phone.type}
-            value={values[phone.name]}
-            error={errors[phone.name] && touched[phone.name]}
-            success={values[phone.name]?.length > 0 && !errors[phone.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            label={email.label}
-            placeholder={email.placeholder}
-            name={email.name}
-            type={email.type}
-            value={values[email.name]}
-            error={errors[email.name] && touched[email.name]}
-            success={values[email.name]?.length > 0 && !errors[email.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            label={buildingNumber.label}
-            placeholder={buildingNumber.placeholder}
-            name={buildingNumber.name}
-            type={buildingNumber.type}
-            value={values[buildingNumber.name]}
-            error={errors[buildingNumber.name] && touched[buildingNumber.name]}
-            success={
-              values[buildingNumber.name]?.length > 0 &&
-              !errors[buildingNumber.name]
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl variant="standard" fullWidth sx={{ mt: -2.3 }}>
-            <InputLabel>{isResidential.label}</InputLabel>
-            <MuiSelect
-              value={values[isResidential.name]}
-              label={isResidential.label}
-              onChange={(e) =>
-                setFieldValue(isResidential.name, e.target.value)
-              }
-              sx={{ height: "3rem" }}
-            >
-              <MenuItem value={true}>Residencial</MenuItem>
-              <MenuItem value={false}>Edificio</MenuItem>
-            </MuiSelect>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            label={fileNumber.label}
-            placeholder={fileNumber.placeholder}
-            name={fileNumber.name}
-            type={fileNumber.type}
-            value={values[fileNumber.name]}
-            error={errors[fileNumber.name] && touched[fileNumber.name]}
-            success={
-              values[fileNumber.name]?.length > 0 && !errors[fileNumber.name]
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            label={rollNumber.label}
-            placeholder={rollNumber.placeholder}
-            name={rollNumber.name}
-            type={rollNumber.type}
-            value={values[rollNumber.name]}
-            error={errors[rollNumber.name] && touched[rollNumber.name]}
-            success={
-              values[rollNumber.name]?.length > 0 && !errors[rollNumber.name]
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            label={imageNumber.label}
-            placeholder={imageNumber.placeholder}
-            name={imageNumber.name}
-            type={imageNumber.type}
-            value={values[imageNumber.name]}
-            error={errors[imageNumber.name] && touched[imageNumber.name]}
-            success={
-              values[imageNumber.name]?.length > 0 && !errors[imageNumber.name]
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            label={ruc.label}
-            placeholder={ruc.placeholder}
-            name={ruc.name}
-            type={ruc.type}
-            value={values[ruc.name]}
-            error={errors[ruc.name] && touched[ruc.name]}
-            success={values[ruc.name]?.length > 0 && !errors[ruc.name]}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
-            label={dv.label}
-            placeholder={dv.placeholder}
-            name={dv.name}
-            type={dv.type}
-            value={values[dv.name]}
-            error={errors[dv.name] && touched[dv.name]}
-            success={values[dv.name]?.length > 0 && !errors[dv.name]}
-          />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          alignItems="center"
-          justifyContent="end"
-        >
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={values[isConsolidator.name]}
-                  onChange={(e) =>
-                    setFieldValue(isConsolidator.name, e.currentTarget.checked)
-                  }
-                />
-              }
-              label={consolidator.label}
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[company.name]}
+          label={company.label}
+          placeholder={company.placeholder}
+          name={company.name}
+          type="text"
+          error={errors[company.name] && touched[company.name]}
+          success={values[company.name]?.length > 0 && !errors[company.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[industry.name]}
+          label={industry.label}
+          name={industry.name}
+          type="text"
+          error={errors[industry.name] && touched[industry.name]}
+          success={values[industry.name]?.length > 0 && !errors[industry.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[section.name]}
+          label={section.label}
+          name={section.name}
+          type="text"
+          error={errors[section.name] && touched[section.name]}
+          success={values[section.name]?.length > 0 && !errors[section.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[document.name]}
+          label={document.label}
+          name={document.name}
+          type="text"
+          error={errors[document.name] && touched[document.name]}
+          success={values[document.name]?.length > 0 && !errors[document.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[address.name]}
+          label={address.label}
+          placeholder={address.placeholder}
+          name={address.name}
+          type={address.type}
+          error={errors[address.name] && touched[address.name]}
+          success={values[address.name]?.length > 0 && !errors[address.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[country.name]}
+          options={countries}
+          optionLabel={(option) => option.shortName}
+          fieldName={country.name}
+          inputLabel={country.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      {values[country.name] === PANAMA_ID ? (
+        <>
+          <Grid item xs={12} sm={6}>
+            <Select
+              value={values[province.name]}
+              options={provinces}
+              optionLabel={(option) => option.name}
+              fieldName={province.name}
+              inputLabel={province.label}
+              setFieldValue={setFieldValue}
             />
-          </FormGroup>
-        </Grid>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Select
+              value={values[district.name]}
+              options={districts}
+              optionLabel={(option) => option.name}
+              fieldName={district.name}
+              inputLabel={district.label}
+              setFieldValue={setFieldValue}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Select
+              value={values[jurisdiction.name]}
+              options={jurisdictions}
+              optionLabel={(option) => option.name}
+              fieldName={jurisdiction.name}
+              inputLabel={jurisdiction.label}
+              setFieldValue={setFieldValue}
+            />
+          </Grid>
+        </>
+      ) : (
+        <>
+          <Grid item xs={12} sm={6}>
+            <FormField
+              value={values[state.name]}
+              label={state.label}
+              placeholder={state.placeholder}
+              name={state.name}
+              type={state.type}
+              error={errors[state.name] && touched[state.name]}
+              success={values[state.name]?.length > 0 && !errors[state.name]}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormField
+              value={values[city.name]}
+              label={city.label}
+              placeholder={city.placeholder}
+              name={city.name}
+              type={city.type}
+              error={errors[city.name] && touched[city.name]}
+              success={values[city.name]?.length > 0 && !errors[city.name]}
+            />
+          </Grid>
+        </>
+      )}
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[consolidator.name]}
+          options={consolidators}
+          optionLabel={(option) => option.mergedName}
+          fieldName={consolidator.name}
+          inputLabel={consolidator.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[website.name]}
+          label={website.label}
+          name={website.name}
+          type={website.type}
+          error={errors[website.name] && touched[website.name]}
+          success={values[website.name]?.length > 0 && !errors[website.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[zip.name]}
+          label={zip.label}
+          name={zip.name}
+          type={zip.type}
+          error={errors[zip.name] && touched[zip.name]}
+          success={values[zip.name]?.length > 0 && !errors[zip.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          label={phone.label}
+          placeholder={phone.placeholder}
+          name={phone.name}
+          type={phone.type}
+          value={values[phone.name]}
+          error={errors[phone.name] && touched[phone.name]}
+          success={values[phone.name]?.length > 0 && !errors[phone.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          label={email.label}
+          placeholder={email.placeholder}
+          name={email.name}
+          type={email.type}
+          value={values[email.name]}
+          error={errors[email.name] && touched[email.name]}
+          success={values[email.name]?.length > 0 && !errors[email.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={buildingNumber.label}
+          placeholder={buildingNumber.placeholder}
+          name={buildingNumber.name}
+          type={buildingNumber.type}
+          value={values[buildingNumber.name]}
+          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
+          success={
+            values[buildingNumber.name]?.length > 0 &&
+            !errors[buildingNumber.name]
+          }
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl variant="standard" fullWidth sx={{ mt: -2.3 }}>
+          <InputLabel>{isResidential.label}</InputLabel>
+          <MuiSelect
+            value={values[isResidential.name]}
+            label={isResidential.label}
+            onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
+            sx={{ height: "3rem" }}
+          >
+            <MenuItem value={true}>Residencial</MenuItem>
+            <MenuItem value={false}>Edificio</MenuItem>
+          </MuiSelect>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={fileNumber.label}
+          placeholder={fileNumber.placeholder}
+          name={fileNumber.name}
+          type={fileNumber.type}
+          value={values[fileNumber.name]}
+          error={errors[fileNumber.name] && touched[fileNumber.name]}
+          success={
+            values[fileNumber.name]?.length > 0 && !errors[fileNumber.name]
+          }
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={rollNumber.label}
+          placeholder={rollNumber.placeholder}
+          name={rollNumber.name}
+          type={rollNumber.type}
+          value={values[rollNumber.name]}
+          error={errors[rollNumber.name] && touched[rollNumber.name]}
+          success={
+            values[rollNumber.name]?.length > 0 && !errors[rollNumber.name]
+          }
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={imageNumber.label}
+          placeholder={imageNumber.placeholder}
+          name={imageNumber.name}
+          type={imageNumber.type}
+          value={values[imageNumber.name]}
+          error={errors[imageNumber.name] && touched[imageNumber.name]}
+          success={
+            values[imageNumber.name]?.length > 0 && !errors[imageNumber.name]
+          }
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          label={ruc.label}
+          placeholder={ruc.placeholder}
+          name={ruc.name}
+          type={ruc.type}
+          value={values[ruc.name]}
+          error={errors[ruc.name] && touched[ruc.name]}
+          success={values[ruc.name]?.length > 0 && !errors[ruc.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          label={dv.label}
+          placeholder={dv.placeholder}
+          name={dv.name}
+          type={dv.type}
+          value={values[dv.name]}
+          error={errors[dv.name] && touched[dv.name]}
+          success={values[dv.name]?.length > 0 && !errors[dv.name]}
+        />
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        display="flex"
+        alignItems="center"
+        justifyContent="end"
+      >
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={values[isConsolidator.name]}
+                onChange={(e) =>
+                  setFieldValue(isConsolidator.name, e.currentTarget.checked)
+                }
+              />
+            }
+            label={consolidator.label}
+          />
+        </FormGroup>
       </Grid>
       <RelatedPersonFormComponent
         setFieldValue={setFieldValue}
         values={values}
         partnerTypes={partnerTypes}
+        countries={countries}
         notJuridicalEntities={notJuridicEntities}
       />
-    </>
+    </Grid>
   );
 }

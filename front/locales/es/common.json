@@ -20,5 +20,6 @@
   "customer": "Cliente",
   "edit": "Editar",
   "create": "Crear",
-  "task": "Tarea"
+  "task": "Tarea",
+  "changes": "Historial de Cambios"
 }

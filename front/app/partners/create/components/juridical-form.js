@@ -112,8 +112,8 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
-            value={values[industry.name]}
             isImportant
+            value={values[industry.name]}
             label={industry.label}
             name={industry.name}
             type={industry.type}
@@ -346,7 +346,6 @@ export default function JuridicalForm({
         <Grid item xs={12} sm={6}>
           <FormField
             label={ruc.label}
-            placeholder={ruc.placeholder}
             name={ruc.name}
             type={ruc.type}
             isImportant
@@ -388,13 +387,14 @@ export default function JuridicalForm({
             />
           </FormGroup>
         </Grid>
+        <RelatedPersonFormComponent
+          setFieldValue={setFieldValue}
+          values={values}
+          partnerTypes={partnerTypes}
+          countries={countries}
+          notJuridicalEntities={notJuridicEntities}
+        />
       </Grid>
-      <RelatedPersonFormComponent
-        setFieldValue={setFieldValue}
-        values={values}
-        partnerTypes={partnerTypes}
-        notJuridicalEntities={notJuridicEntities}
-      />
     </>
   );
 }

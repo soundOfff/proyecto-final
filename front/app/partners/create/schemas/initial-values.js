@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import form from "./form";
+import { PANAMA_ID } from "/utils/constants/countries";
 
 const {
   formField: {
@@ -83,7 +84,7 @@ const initialValues = {
   [document.name]: "",
   [section.name]: "",
   [consolidator.name]: null,
-  [country.name]: null,
+  [country.name]: PANAMA_ID,
   [isConsolidator.name]: 0,
   [language.name]: "",
   [phone.name]: "",

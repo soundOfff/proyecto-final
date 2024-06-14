@@ -171,7 +171,7 @@ Route::get('/staffs/{staff}', [StaffController::class, 'getUser']);
 Route::put('/staffs/{staff}', [StaffController::class, 'update']);
 Route::post('/staffs', [StaffController::class, 'store']);
 Route::delete('/staffs/{staff}', [StaffController::class, 'destroy']);
-Route::get('staffs/{staff}/stats', [StaffController::class, 'stats']);
+Route::get('/staffs-stats/{staff}', [StaffController::class, 'stats']);
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 

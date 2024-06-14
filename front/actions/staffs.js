@@ -43,7 +43,7 @@ export async function store(data) {
 }
 
 export async function stats(id) {
-  const url = new URL(`${process.env.API_URL}/staffs/${id}/stats`);
+  const url = new URL(`${process.env.API_URL}/staffs-stats/${id}`);
 
   const { data } = await customFetch(url);
   return data;

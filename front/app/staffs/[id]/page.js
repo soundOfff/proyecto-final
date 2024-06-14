@@ -24,7 +24,7 @@ export default async function Show({ params: { id } }) {
         flexDirection="row"
         width="100%"
         sx={{
-          "@media (max-width: 768px)": {
+          md: {
             flexDirection: "column",
           },
         }}
@@ -34,7 +34,7 @@ export default async function Show({ params: { id } }) {
             width: "50%",
             height: "100%",
             margin: "20px",
-            "@media (max-width: 768px)": {
+            md: {
               width: "100%",
               margin: "0px",
             },
@@ -51,7 +51,7 @@ export default async function Show({ params: { id } }) {
           flexDirection="column"
           width="50%"
           sx={{
-            "@media (max-width: 768px)": {
+            md: {
               width: "100%",
             },
           }}
@@ -59,7 +59,7 @@ export default async function Show({ params: { id } }) {
           <Card
             sx={{
               margin: "20px",
-              "@media (max-width: 768px)": {
+              md: {
                 margin: "20px 0 20px 0",
               },
             }}

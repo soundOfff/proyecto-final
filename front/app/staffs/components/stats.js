@@ -11,7 +11,7 @@ export default function Stats({
       sx={{
         padding: "10px",
         margin: "20px",
-        "@media (max-width: 768px)": { margin: "20px 0 20px 0" },
+        md: { margin: "20px 0 20px 0" },
       }}
     >
       <Grid container sx={{ mx: { xs: 0, sm: 5 } }}>

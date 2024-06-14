@@ -1,5 +1,4 @@
 "use client";
-
 import { useMaterialUIController } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
@@ -87,10 +86,7 @@ export default function Table({ rows, meta }) {
         return (
           <MDTypography variant="caption">
             {row.original.lastLogin
-              ? moment
-                  .duration(moment().diff(row.original.lastLogin))
-                  .locale("es")
-                  .humanize()
+              ? moment(row.original.lastLogin).format("DD/MM/YYYY HH:mm")
               : "Nunca"}
           </MDTypography>
         );

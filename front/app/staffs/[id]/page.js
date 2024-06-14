@@ -14,30 +14,21 @@ export default async function Show({ params: { id } }) {
       width="100%"
       display="flex"
       flexDirection="column"
-      alignContent="center"
+      alignItems="center"
       justifyContent="center"
       spacing={3}
     >
       <Stats data={staffStats} />
       <MDBox
         display="flex"
-        flexDirection="row"
         width="100%"
-        sx={{
-          md: {
-            flexDirection: "column",
-          },
-        }}
+        flexDirection={{ xs: "column", md: "row" }}
+        justifyContent="space-between"
       >
         <Card
           sx={{
-            width: "50%",
-            height: "100%",
-            margin: "20px",
-            md: {
-              width: "100%",
-              margin: "0px",
-            },
+            width: { xs: "100%", md: "48%" },
+            margin: "20px 0",
           }}
         >
           <Grid container spacing={3} p={5}>
@@ -46,31 +37,20 @@ export default async function Show({ params: { id } }) {
             </Grid>
           </Grid>
         </Card>
-        <MDBox
-          display="flex"
-          flexDirection="column"
-          width="50%"
+        <Card
           sx={{
-            md: {
-              width: "100%",
-            },
+            width: { xs: "100%", md: "48%" },
+            margin: "20px 0",
+            height: "40%",
+            maxHeight: "100%",
           }}
         >
-          <Card
-            sx={{
-              margin: "20px",
-              md: {
-                margin: "20px 0 20px 0",
-              },
-            }}
-          >
-            <Grid container spacing={3} p={5}>
-              <Grid item xs={12}>
-                <Table projects={staff?.projects} />
-              </Grid>
+          <Grid container spacing={3} p={5}>
+            <Grid item xs={12}>
+              <Table projects={staff?.projects} />
             </Grid>
-          </Card>
-        </MDBox>
+          </Grid>
+        </Card>
       </MDBox>
     </MDBox>
   );

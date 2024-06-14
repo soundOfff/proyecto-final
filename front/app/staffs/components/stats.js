@@ -9,6 +9,7 @@ export default function Stats({
   return (
     <Card
       sx={{
+        width: "100%",
         padding: "10px",
         margin: "20px",
         md: { margin: "20px 0 20px 0" },

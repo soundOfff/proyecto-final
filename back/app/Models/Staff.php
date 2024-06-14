@@ -22,6 +22,7 @@ class Staff extends Authenticatable
         'direction',
         'email',
         'email_signature',
+        'password',
         'facebook',
         'first_name',
         'hourly_rate',
@@ -37,6 +38,7 @@ class Staff extends Authenticatable
         'new_pass_key_requested',
         'phone_number',
         'profile_image',
+        'welcome_email',
         'skype',
         'two_factor_auth_code',
         'two_factor_auth_code_requested',
@@ -65,9 +67,9 @@ class Staff extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function projects(): BelongsToMany
+    public function projects(): HasMany
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasMany(Project::class, 'responsible_person_id');
     }
 
     public function contacts(): HasMany

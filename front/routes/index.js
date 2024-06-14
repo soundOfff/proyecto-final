@@ -153,6 +153,14 @@ const routes = [
     icon: <Icon fontSize="medium">playlist_add_check</Icon>,
     noCollapse: true,
   },
+  {
+    type: "collapse",
+    name: "Equipo",
+    key: "staffs",
+    route: "/staffs",
+    icon: <Icon fontSize="medium">people</Icon>,
+    noCollapse: true,
+  },
 ];
 
 export default routes;

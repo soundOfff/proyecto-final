@@ -53,8 +53,7 @@ class TaskController extends Controller
                         'staff_id',
                         function (Builder $query, $value) {
                             $query
-                                ->where('owner_id', $value)
-                                ->orWhereHas(
+                                ->whereHas(
                                     'assigneds',
                                     fn (Builder $query) => $query->where('staff_id', $value)
                                 );

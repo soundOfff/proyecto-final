@@ -18,7 +18,7 @@ import { storeToken } from "/actions/fcm";
 export default function FCM({ children }) {
   const [payload, setPayload] = useState(null);
   const [token, setToken] = useState("");
-  const [permission, setPermission] = useState(Notification.permission);
+  const [permission, setPermission] = useState("default");
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
 

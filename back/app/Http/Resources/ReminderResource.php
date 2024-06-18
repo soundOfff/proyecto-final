@@ -21,6 +21,7 @@ class ReminderResource extends JsonResource
             'date' => $this->date,
             'description' => $this->description,
             'is_notified' => $this->is_notified,
+            'staff' => StaffResource::make($this->whenLoaded('staff')),
             'reminderable_id' => $this->reminderable_id,
             'reminderable_type' => $this->reminderable_type,
             'reminderable' => $this->whenLoaded('reminderable', function () {

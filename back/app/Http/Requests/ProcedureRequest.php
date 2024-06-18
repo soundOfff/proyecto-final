@@ -35,6 +35,10 @@ class ProcedureRequest extends FormRequest
             'actions.*.name' => 'nullable|string',
             'actions.*.description' => 'nullable|string',
             'actions.*.action_type_id' => 'nullable|numeric|exists:action_types,id',
+            'reminders' => 'nullable|array',
+            'reminders.*.staff_id' => 'required|numeric|exists:staff,id',
+            'reminders.*.date' => 'required|date',
+            'reminders.*.description' => 'required|string',
         ];
     }
 }

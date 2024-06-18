@@ -170,11 +170,11 @@ class ProjectController extends Controller
     public function attachTasks(Project $project)
     {
         $process = $project->load('serviceType.processes')->serviceType->processes->first();
-      
+
         $procedures = $process->load('procedures')->procedures;
 
         foreach ($procedures as $procedure) {
-            $procedure->convertToTask($project->id, $project->defendant_id, $project->responsible_person_id);
+            $procedure->convertToTask($project);
         }
 
         return response()->json($project->tasks, 201);

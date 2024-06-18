@@ -63,7 +63,8 @@ export async function attachTasks(projectId) {
   const url = new URL(
     `${process.env.API_URL}/projects/${projectId}/tasks-attach`
   );
-  const { data } = await customFetch(url, { method: "POST" });
+
+  await customFetch(url, { method: "POST" });
 
   revalidatePath("/projects");
   revalidatePath("tasks");

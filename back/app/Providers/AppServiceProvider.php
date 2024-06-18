@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
             'task' => 'App\Models\Task',
             'staff' => 'App\Models\Staff',
             'credit_note' => 'App\Models\CreditNote',
+            'procedure' => 'App\Models\Procedure',
         ]);
 
         try {

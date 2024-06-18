@@ -7,7 +7,12 @@ import { DONE_STATUS } from "/utils/constants/taskStatuses";
 import { show, update as updateTask } from "/actions/tasks";
 import { attachTasks } from "/actions/projects";
 
-export default function useTaskTable({ rows, dispatch, currentTaskId }) {
+export default function useTaskTable({
+  rows,
+  dispatch,
+  currentTaskId,
+  project,
+}) {
   const [taskId, setTaskId] = useState(currentTaskId || null);
   const [task, setTask] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);

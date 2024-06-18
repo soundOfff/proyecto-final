@@ -146,9 +146,9 @@ class Task extends Model
         return $this->belongsToMany(Staff::class, 'task_followers');
     }
 
-    public function reminders(): HasMany
+    public function reminders(): MorphMany
     {
-        return $this->hasMany(Reminder::class, 'reminderable_id');
+        return $this->morphMany(Reminder::class, 'reminderable');
     }
 
     public function dependencies()
@@ -169,11 +169,6 @@ class Task extends Model
     public function requiredFields()
     {
         return $this->hasMany(TaskRequiredField::class);
-    }
-
-    public function historyTasks()
-    {
-        return $this->hasMany(HistoryTask::class);
     }
 
     public function files(): MorphMany

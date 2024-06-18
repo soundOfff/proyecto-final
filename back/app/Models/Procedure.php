@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Procedure extends Model
 {
@@ -53,28 +54,33 @@ class Procedure extends Model
         return $this->belongsTo(Staff::class, 'author_id');
     }
 
-    public function convertToTask($projectId, $partnerId, $responsiblePersonId): Task | null
+    public function reminders(): MorphMany
+    {
+        return $this->morphMany(Reminder::class, 'reminderable');
+    }
+
+    public function convertToTask(Project $project): void
     {
         $isAlreadyCreated = Task::where('procedure_id', $this->id)
-            ->where('taskable_id', $projectId)
+            ->where('taskable_id', $project->id)
             ->where('taskable_type', Task::TASKABLE_PROJECT)
             ->exists();
 
         if ($isAlreadyCreated) {
-            return null;
+            return;
         }
 
-        $latestMilestoneOrder = Task::getMilestoneOrder($projectId, Task::TASKABLE_PROJECT);
+        $latestMilestoneOrder = Task::getMilestoneOrder($project->id, Task::TASKABLE_PROJECT);
 
         $task = Task::create([
             'procedure_id' => $this->id,
             'task_priority_id' => TaskPriority::DEFAULT,
             'repeat_id' => ExpenseRepeat::DEFAULT,
             'task_status_id' => TaskStatus::IN_PROGRESS,
-            'taskable_id' => $projectId,
+            'taskable_id' => $project->id,
             'taskable_type' => Task::TASKABLE_PROJECT,
-            'partner_id' => $partnerId,
-            'owner_id' => $responsiblePersonId,
+            'partner_id' => $project->defendant_id,
+            'owner_id' => $project->responsible_person_id,
             'start_date' => now(),
             'description' => $this->description,
             'name' => $this->name,
@@ -91,6 +97,16 @@ class Procedure extends Model
             $task->dependencies()->sync($tasksId);
         }
 
-        return $task;
+        $this->load('reminders');
+        if ($this->reminders->isNotEmpty()) {
+            $reminders = $this->reminders->makeHidden('id')->toArray();
+            $task->reminders()->createMany($reminders);
+        }
+
+        $this->load('actions');
+        if ($this->actions->isNotEmpty()) {
+            $actions = $this->actions->makeHidden('id')->toArray();
+            $task->actions()->createMany($actions);
+        }
     }
 }

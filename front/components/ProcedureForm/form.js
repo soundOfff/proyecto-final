@@ -17,6 +17,7 @@ export default function FormComponent({
   processId,
   procedure,
   procedures,
+  staffs,
   actionTypes,
 }) {
   const { formId } = form;
@@ -100,6 +101,7 @@ export default function FormComponent({
                 setFieldError,
                 procedures,
                 procedure,
+                staffs,
                 actionTypes,
               }}
             />

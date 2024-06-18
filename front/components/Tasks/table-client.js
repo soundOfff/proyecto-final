@@ -55,7 +55,7 @@ export default function Table({ statuses, priorities, project }) {
     setTaskId,
     handleCreateTasks,
     setOpenShowModal,
-  } = useTaskTable({ rows, dispatch });
+  } = useTaskTable({ rows, dispatch, project });
 
   const {
     setOpenDeleteConfirmation,

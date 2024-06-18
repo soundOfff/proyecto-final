@@ -15,6 +15,7 @@ use App\Http\Controllers\EstimateStatusController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
+use App\Http\Controllers\FcmController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HistoryTaskController;
 use App\Http\Controllers\InvoiceController;
@@ -229,6 +230,9 @@ Route::get('/action-types', [ActionTypeController::class, 'index']);
 Route::post('/table-fields', TableFieldController::class);
 
 Route::get('/activity-logs', [ActivityController::class, 'index']);
+
+Route::post('/send-notification', [FcmController::class, 'sendNotification']);
+Route::post('/store-token', [FcmController::class, 'storeToken']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

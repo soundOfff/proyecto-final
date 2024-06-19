@@ -25,7 +25,10 @@ export default function Table({ rows, meta }) {
       Header: "Nombre",
       Cell: ({ row }) => (
         <Link
-          href={`/processes/${row.original.id}`}
+          href={{
+            pathname: "/procedures",
+            query: { processId: row.original.id },
+          }}
           sx={{ cursor: "pointer", color: "info" }}
         >
           {row.original.name}

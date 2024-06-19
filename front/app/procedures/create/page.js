@@ -5,6 +5,8 @@ import { getAll } from "/actions/action-types";
 import { getAll as getAllProcedures } from "/actions/procedures";
 import { select as getAllStaffs } from "/actions/staffs";
 
+export const dynamic = "force-dynamic";
+
 export default async function CreateProcedure({ searchParams: { processId } }) {
   const {
     data: { procedures },

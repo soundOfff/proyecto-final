@@ -62,7 +62,23 @@ export default function FormContent({ formData, staff = null }) {
       setFieldValue(skype.name, staff.skype);
       setFieldValue(welcomeEmail.name, staff.welcomeEmail);
     }
-  }, [staff, setFieldValue]);
+  }, [
+    staff,
+    setFieldValue,
+    admin.name,
+    defaultLanguage.name,
+    email.name,
+    emailSignature.name,
+    facebook.name,
+    firstName.name,
+    hourlyRate.name,
+    lastName.name,
+    linkedin.name,
+    phoneNumber.name,
+    profileImage.name,
+    skype.name,
+    welcomeEmail.name,
+  ]);
 
   return (
     <MDBox sx={{ p: 5 }}>

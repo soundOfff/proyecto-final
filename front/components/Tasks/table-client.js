@@ -24,6 +24,7 @@ import { destroy, getAll } from "/actions/tasks";
 import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
+import ModalContentForm from "/components/ModalContent/Task";
 import Show from "./show";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -31,8 +32,20 @@ import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { editSteps } from "/actions/tasks";
 import update from "immutability-helper";
 import useTaskTable from "/hooks/useTaskTable";
+import { MODAL_TYPES } from "/utils/constants/modalTypes";
 
-export default function Table({ statuses, priorities, project }) {
+export default function Table({
+  statuses,
+  priorities,
+  project,
+  repeats,
+  taskableItems,
+  tagsData,
+  dependencyTasks,
+  partners,
+  actionsData,
+  tableFields,
+}) {
   const [controller, dispatch] = useMaterialUIController();
   const { currentTimer, darkMode } = controller;
   const [isLoading, setIsLoading] = useState(true);
@@ -42,11 +55,13 @@ export default function Table({ statuses, priorities, project }) {
     optimisticRows,
     task,
     openShowModal,
+    openEditModal,
     stopTimer,
     startTimer,
     isToastOpen,
     isFetching,
-    handleEditModalOpen,
+    setOpenEditModal,
+    handleCloseEditModal,
     handleCloseShowModal,
     handleStatusChange,
     handlePriorityChange,
@@ -337,11 +352,34 @@ export default function Table({ statuses, priorities, project }) {
           <MDButton
             variant="gradient"
             color={darkMode ? "light" : "dark"}
-            onClick={handleEditModalOpen}
+            onClick={() => {
+              setOpenEditModal(true);
+            }}
           >
             Crear nueva tarea
           </MDButton>
         </MDBox>
+        {openEditModal && (
+          <Modal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            width="40%"
+          >
+            <ModalContentForm
+              priorities={priorities}
+              repeats={repeats}
+              taskableItems={taskableItems}
+              dependencyTasks={dependencyTasks}
+              tagsData={tagsData}
+              partners={partners}
+              task={task}
+              actionsData={actionsData}
+              tableFields={tableFields}
+              project={project}
+              mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
+            />
+          </Modal>
+        )}
         {openShowModal && (
           <Modal
             open={openShowModal}

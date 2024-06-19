@@ -33,6 +33,7 @@ export default function TaskForm({
   tagsData,
   tableFields,
   task = null,
+  project = null,
   mode,
   partnerId,
 }) {
@@ -92,9 +93,14 @@ export default function TaskForm({
       setFieldValue(isFileNeeded.name, Boolean(task.is_file_needed));
     }
     if (partnerId) setFieldValue(partner_id.name, partnerId || "");
+    if (project) {
+      setFieldValue(taskableId.name, project.id);
+      setFieldValue(partner_id.name, project.defendantId);
+    }
   }, [
     task,
     mode,
+    project,
     partnerId,
     setFieldValue,
     description.name,

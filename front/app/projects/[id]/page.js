@@ -2,9 +2,13 @@ import { show } from "/actions/projects";
 
 import { select as staffSelect } from "/actions/staffs";
 import { getTaskStatus, getTaskPriorities } from "/actions/tasks";
+import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
 import { getAll as getAllTags } from "/actions/tags";
+import { getAll as getAllDependencies } from "/actions/tasks";
 import { getAll as getAllPartners } from "/actions/partners";
+import { getAll as getAllActionTypes } from "/actions/action-types";
+import { getTableFields } from "/actions/table-field";
 
 import Index from "./components/index";
 
@@ -20,13 +24,33 @@ const include = [
 ];
 
 export default async function Show({ params }) {
-  const project = await show(params.id, { include });
-  const staffs = await staffSelect();
-  const statuses = await getTaskStatus();
-  const priorities = await getTaskPriorities();
-  const repeats = await getAllRepeats();
-  const tagsData = await getAllTags();
-  const partners = await getAllPartners();
+  const [
+    project,
+    staffs,
+    tagsData,
+    repeats,
+    priorities,
+    taskableItems,
+    statuses,
+    partners,
+    actionsData,
+    tableFields,
+    {
+      data: { tasks: dependencyTasks },
+    },
+  ] = await Promise.all([
+    show(params.id, { include }),
+    staffSelect(),
+    getAllTags(),
+    getAllRepeats(),
+    getTaskPriorities(),
+    getAllTaskableTypes(),
+    getTaskStatus(),
+    getAllPartners(),
+    getAllActionTypes(),
+    getTableFields({ table: "projects" }),
+    getAllDependencies(),
+  ]);
 
   return (
     <Index
@@ -37,6 +61,10 @@ export default async function Show({ params }) {
       repeats={repeats}
       tagsData={tagsData}
       partners={partners}
+      taskableItems={taskableItems}
+      actionsData={actionsData}
+      tableFields={tableFields}
+      dependencyTasks={dependencyTasks}
     />
   );
 }

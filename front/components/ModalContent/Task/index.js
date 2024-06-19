@@ -22,6 +22,7 @@ export default function ModalContentForm({
   actionsData,
   tableFields,
   task = null,
+  project = null,
   mode = MODAL_TYPES.CREATE,
 }) {
   const { formId, formField } = form;
@@ -72,6 +73,7 @@ export default function ModalContentForm({
             onClose={onClose}
             mode={mode}
             partnerId={partnerId}
+            project={project}
             actionsData={actionsData}
             tableFields={tableFields}
           />

@@ -7,8 +7,18 @@ import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
 
 export default function Tasks() {
-  const { statuses, priorities, project, repeats, tagsData, partners } =
-    useDataProvider();
+  const {
+    statuses,
+    priorities,
+    project,
+    repeats,
+    tagsData,
+    partners,
+    dependencyTasks,
+    taskableItems,
+    actionsData,
+    tableFields,
+  } = useDataProvider();
 
   return (
     <MDBox py={3}>
@@ -24,6 +34,10 @@ export default function Tasks() {
                 repeats,
                 tagsData,
                 partners,
+                dependencyTasks,
+                taskableItems,
+                actionsData,
+                tableFields,
               }}
             />
           </MDBox>

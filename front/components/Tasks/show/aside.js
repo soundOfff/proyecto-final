@@ -116,6 +116,10 @@ export default function Aside({ task }) {
     setReminderDate("");
   };
 
+  const canReminderSave = () => {
+    return reminderStaffId && reminderDate && reminderDescription;
+  };
+
   useEffect(() => {
     getAllStatuses().then((statuses) => {
       setStatuses(statuses);
@@ -420,16 +424,20 @@ export default function Aside({ task }) {
                   )}
                 />
                 <MDDatePicker
-                  key="reminderDate"
-                  options={{ enableTime: true }}
                   value={reminderDate}
-                  sx={{ height: "40px" }}
-                  input={{ label: "Fecha de Recordatorio" }}
+                  input={{
+                    label: "Fecha de Recordatorio",
+                  }}
                   onChange={(date) =>
                     setReminderDate(
                       moment(date[0]).format("YYYY-MM-DD HH:mm:ss")
                     )
                   }
+                  options={{
+                    minDate: new Date(),
+                    enableTime: true,
+                    static: true,
+                  }}
                 />
                 <MDInput
                   key="reminderDescription"
@@ -443,6 +451,7 @@ export default function Aside({ task }) {
                   color="dark"
                   sx={{ ml: 1 }}
                   onClick={handleReminderSave}
+                  disabled={!canReminderSave()}
                 >
                   Guardar
                 </MDButton>

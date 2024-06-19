@@ -18,13 +18,12 @@ import { storeToken } from "/actions/fcm";
 export default function FCM({ children }) {
   const [payload, setPayload] = useState(null);
   const [token, setToken] = useState("");
-  const [permission, setPermission] = useState("default");
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
 
   const handleAccept = () => {
     if (window !== "undefined") {
-      const handler = () => setPermission(Notification.permission);
+      const handler = () => Notification.permission;
       handler();
 
       Notification.requestPermission().then(handler);
@@ -38,16 +37,13 @@ export default function FCM({ children }) {
     }
   };
 
-  const handleReject = () => {
-    setPermission("denied");
-    setOpen(false);
-  };
-
   useEffect(() => {
-    if (permission === "default") {
-      setOpen(true);
+    if (window !== "undefined") {
+      if (Notification.permission === "default") {
+        setOpen(true);
+      }
     }
-  }, [permission]);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
@@ -61,7 +57,7 @@ export default function FCM({ children }) {
         unsubscribe();
       };
     }
-  }, [token, permission, session]);
+  }, [token, session]);
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -77,7 +73,7 @@ export default function FCM({ children }) {
           const messaging = getMessaging(firebaseApp);
 
           // Check if permission is granted before retrieving the token
-          if (permission === "granted") {
+          if (Notification.permission === "granted") {
             const currentToken = await getToken(messaging, {
               vapidKey:
                 "BN9siHaVjvL_wBx5vx0_zP7BI8mEwwLqOfzAVztlojc9fenuoWkkLc5qNtGy-HXnnglT3HUmILiAvvWQJY5GK-c",
@@ -97,7 +93,7 @@ export default function FCM({ children }) {
       }
     };
     retrieveToken();
-  }, [permission, session]);
+  }, [session]);
 
   return (
     <>
@@ -115,7 +111,7 @@ export default function FCM({ children }) {
       )}
       <Dialog
         open={open}
-        onClose={handleReject}
+        onClose={() => setOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         sx={{ p: 5 }}
@@ -129,11 +125,8 @@ export default function FCM({ children }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <MDButton onClick={handleAccept} color="success">
-            Aceptar
-          </MDButton>
-          <MDButton onClick={handleReject} color="error">
-            Rechazar
+          <MDButton onClick={handleAccept} color="dark">
+            Establecer Permisos
           </MDButton>
         </DialogActions>
       </Dialog>

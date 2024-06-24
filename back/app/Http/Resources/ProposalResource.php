@@ -63,7 +63,7 @@ class ProposalResource extends JsonResource
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),
             'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
             'status' => ProposalStatusResource::make($this->whenLoaded('status')),
-            'country' => CountryResource::make($this->whenLoaded('billingCountry')),
+            'country' => CountryResource::make($this->whenLoaded('country')),
             'discountType' => DiscountTypeResource::make($this->whenLoaded('discountType')),
             'items' => LineItemResource::collection($this->whenLoaded('lineItems')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),

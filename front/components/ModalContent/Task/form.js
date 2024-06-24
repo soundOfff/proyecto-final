@@ -72,16 +72,16 @@ export default function TaskForm({
       setFieldValue(hourlyRate.name, task.hourly_rate ?? "0");
       setFieldValue(startDate.name, task.start_date ?? "");
       setFieldValue(dueDate.name, task.due_date ?? "");
-      setFieldValue(task_priority_id.name, task?.priority?.id ?? "");
-      setFieldValue(repeat.name, task?.repeat_id ?? null);
-      setFieldValue(recurring.name, task?.recurring || "");
-      setFieldValue(recurringType.name, task?.recurring_type || "");
-      setFieldValue(totalCycles.name, task?.total_cycles || "");
-      setFieldValue(taskableType.name, task?.taskable_type || 0);
+      setFieldValue(task_priority_id.name, task.priority?.id ?? "");
+      setFieldValue(repeat.name, task.repeat_id ?? "");
+      setFieldValue(recurring.name, task.recurring || "");
+      setFieldValue(recurringType.name, task.recurring_type || "");
+      setFieldValue(totalCycles.name, task.total_cycles || "");
+      setFieldValue(taskableType.name, task.taskable_type || 0);
       setFieldValue(tags.name, task.tags || []);
       setFieldValue(dependencies.name, task?.dependencies || []);
-      setFieldValue(partner_id.name, task?.partner_id || "");
-      setFieldValue(taskableId.name, task?.taskable?.id || "");
+      setFieldValue(partner_id.name, task.partner_id || "");
+      setFieldValue(taskableId.name, task.taskable?.id || "");
       setFieldValue(billable.name, Boolean(task.billable));
       setFieldValue(isPublic.name, Boolean(task.is_public));
       setFieldValue(isInfinite.name, Boolean(task.is_infinite));
@@ -247,7 +247,7 @@ export default function TaskForm({
               onChange={(date) =>
                 setFieldValue(
                   startDate.name,
-                  moment(date[0]).format("YYYY-MM-DD")
+                  date[0] ? moment(date[0]).format("YYYY-MM-DD") : ""
                 )
               }
             />
@@ -268,11 +268,12 @@ export default function TaskForm({
                 label: "Fecha De Cierre",
                 fullWidth: true,
               }}
+              options={{ minDate: values[startDate.name] }}
               value={values[dueDate.name]}
               onChange={(date) =>
                 setFieldValue(
                   dueDate.name,
-                  moment(date[0]).format("YYYY-MM-DD")
+                  date[0] ? moment(date[0]).format("YYYY-MM-DD") : ""
                 )
               }
             />

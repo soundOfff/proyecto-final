@@ -243,45 +243,63 @@ function DataTable({
                 </TableRow>
               ))}
             </MDBox>
-            <TableBody
-              {...getTableBodyProps()}
-              sx={{ display: { lg: "table-row-group", xs: "none" } }}
-            >
-              {page.map((row, index) => {
-                return (
-                  prepareRow(row) || (
-                    <DataTableRow
-                      key={index}
-                      index={index}
-                      row={row}
-                      rows={rows}
-                      noEndBorder={noEndBorder}
-                      moveRow={moveRow}
-                    />
-                  )
-                );
-              })}
-            </TableBody>
-            <TableBody
-              {...getTableBodyProps()}
-              sx={{ display: { lg: "none", xs: "table-row-group" } }}
-            >
-              {page.map((row, key) => {
-                return (
-                  prepareRow(row) || (
-                    <TableRow key={key} {...row.getRowProps()}>
-                      <DataTableBodyCell
-                        key={key}
-                        noBorder={noEndBorder && rows.length - 1 === key}
-                        {...row.cells[0].getCellProps()}
-                      >
-                        <ResponsiveTableContent row={row} />
-                      </DataTableBodyCell>
-                    </TableRow>
-                  )
-                );
-              })}
-            </TableBody>
+            {rows.length > 0 ? (
+              <>
+                <TableBody
+                  {...getTableBodyProps()}
+                  sx={{ display: { lg: "table-row-group", xs: "none" } }}
+                >
+                  {page.map((row, index) => {
+                    return (
+                      prepareRow(row) || (
+                        <DataTableRow
+                          key={index}
+                          index={index}
+                          row={row}
+                          rows={rows}
+                          noEndBorder={noEndBorder}
+                          moveRow={moveRow}
+                        />
+                      )
+                    );
+                  })}
+                </TableBody>
+                <TableBody
+                  {...getTableBodyProps()}
+                  sx={{ display: { lg: "none", xs: "table-row-group" } }}
+                >
+                  {page.map((row, key) => {
+                    return (
+                      prepareRow(row) || (
+                        <TableRow key={key} {...row.getRowProps()}>
+                          <DataTableBodyCell
+                            key={key}
+                            noBorder={noEndBorder && rows.length - 1 === key}
+                            {...row.cells[0].getCellProps()}
+                          >
+                            <ResponsiveTableContent row={row} />
+                          </DataTableBodyCell>
+                        </TableRow>
+                      )
+                    );
+                  })}
+                </TableBody>
+              </>
+            ) : (
+              <TableBody p={3}>
+                <TableRow>
+                  <DataTableBodyCell colSpan={columns.length}>
+                    <MDTypography
+                      variant="body2"
+                      color="textSecondary"
+                      align="center"
+                    >
+                      No se encontraron resultados
+                    </MDTypography>
+                  </DataTableBodyCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </ScrollingComponent>
       </DndProvider>

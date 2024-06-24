@@ -32,6 +32,7 @@ const form = {
     hourlyRate: {
       name: "hourly_rate",
       label: "Precio por hora",
+      errorMsg: "Debe ingresar un precio por hora",
     },
     startDate: {
       name: "start_date",

@@ -35,7 +35,7 @@ class ProposalController extends Controller
                 'comments',
             ])
             ->allowedFilters([
-                AllowedFilter::exact('proposable_id')
+                AllowedFilter::exact('proposable_id'),
             ])
             ->allowedSorts([
                 'id', 'subject', 'total', 'date',
@@ -106,6 +106,7 @@ class ProposalController extends Controller
                 'proposable.primaryContact',
                 'comments',
                 'saleAgent',
+                'country',
             ])
             ->find($proposal->id);
 

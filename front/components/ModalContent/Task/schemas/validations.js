@@ -56,7 +56,7 @@ const validations = Yup.object().shape({
   [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),
-  [hourlyRate.name]: Yup.number(),
+  [hourlyRate.name]: Yup.number().required(hourlyRate.errorMsg),
   [dueDate.name]: Yup.date().min(
     Yup.ref(startDate.name),
     "La fecha desde debe ser anterior a la fecha hasta"

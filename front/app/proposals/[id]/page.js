@@ -34,6 +34,7 @@ export default async function Show({ params: { id } }) {
       "tags",
       "proposable",
       "comments",
+      "country",
     ],
   });
 

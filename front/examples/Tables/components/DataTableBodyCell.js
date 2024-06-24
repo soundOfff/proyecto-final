@@ -22,6 +22,7 @@ import MDBox from "/components/MDBox";
 function DataTableBodyCell({
   noBorder = false,
   align = "left",
+  colSpan = 1,
   dragRef,
   children,
 }) {
@@ -30,6 +31,7 @@ function DataTableBodyCell({
       component="td"
       ref={dragRef}
       textAlign={align}
+      colSpan={colSpan}
       px={2}
       py={4}
       sx={({

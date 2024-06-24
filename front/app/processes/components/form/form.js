@@ -29,7 +29,7 @@ export default function FormComponent({ projectServiceTypes, process }) {
   const submitForm = async (values, actions) => {
     try {
       if (process) {
-        await update(process.id, values);
+        await update(process.id, { ...values, author_id: session.staff.id });
       } else {
         await store({ ...values, author_id: session.staff.id });
       }

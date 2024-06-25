@@ -101,6 +101,8 @@ function DataTable({
 
   const canPreviousPage = () => meta.current_page > 1;
 
+  const canNextPage = () => meta.current_page < meta.last_page;
+
   const setCurrentPage = (page) => {
     const params = new URLSearchParams(searchParams);
 
@@ -279,13 +281,19 @@ function DataTable({
             variant={pagination.variant ? pagination.variant : "gradient"}
             color={pagination.color ? pagination.color : "dark"}
           >
-            {canPreviousPage && (
-              <MDPagination item onClick={() => previousPage()}>
-                <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
-              </MDPagination>
-            )}
+            <MDPagination
+              item
+              disabled={!canPreviousPage()}
+              onClick={() => previousPage()}
+            >
+              <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
+            </MDPagination>
             {renderPagination}
-            <MDPagination item onClick={() => nextPage()}>
+            <MDPagination
+              item
+              disabled={!canNextPage()}
+              onClick={() => nextPage()}
+            >
               <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
             </MDPagination>
           </MDPagination>

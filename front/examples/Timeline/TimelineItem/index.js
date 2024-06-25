@@ -79,11 +79,16 @@ function TimelineItem({
         >
           {title}
         </MDTypography>
-        <MDBox mt={0.5}>
-          <MDTypography variant="caption" color={isDark ? "secondary" : "text"}>
-            Fecha: {dateTime}
-          </MDTypography>
-        </MDBox>
+        {dateTime && (
+          <MDBox mt={0.5}>
+            <MDTypography
+              variant="caption"
+              color={isDark ? "secondary" : "text"}
+            >
+              Fecha: {dateTime}
+            </MDTypography>
+          </MDBox>
+        )}
         <MDBox mt={2} mb={1.5}>
           {firstDescriptionTitle && (
             <MDTypography
@@ -95,7 +100,7 @@ function TimelineItem({
             </MDTypography>
           )}
           <br />
-          {firstDescription.length &&
+          {firstDescription &&
             firstDescription.map((description) => (
               <>
                 <MDTypography

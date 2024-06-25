@@ -4,6 +4,7 @@ import TimelineList from "/examples/Timeline/TimelineList";
 import TimelineItem from "/examples/Timeline/TimelineItem";
 import { parseEditorState } from "/utils/parseEditorState";
 import taskFieldTranslate from "/locales/es/task-fields";
+import MDTypography from "/components/MDTypography";
 
 export default function Timeline({ changes }) {
   const formatProperties = (values) => {
@@ -39,7 +40,7 @@ export default function Timeline({ changes }) {
     return formattedProperties;
   };
 
-  return (
+  return changes.length > 0 ? (
     <TimelineList title="Timeline">
       {changes.map((change) => (
         <TimelineItem
@@ -55,6 +56,12 @@ export default function Timeline({ changes }) {
           badges={["design"]}
         />
       ))}
+    </TimelineList>
+  ) : (
+    <TimelineList title="Timeline">
+      <MDTypography variant="body2" mx={1}>
+        No hay cambios registrados
+      </MDTypography>
     </TimelineList>
   );
 }

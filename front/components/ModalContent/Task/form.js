@@ -81,7 +81,10 @@ export default function TaskForm({
       setFieldValue(tags.name, task.tags || []);
       setFieldValue(dependencies.name, task?.dependencies || []);
       setFieldValue(partner_id.name, task.partner_id || "");
-      setFieldValue(taskableId.name, task.taskable?.id || "");
+      setFieldValue(
+        taskableId.name,
+        task.taskable?.id || task.taskable_id || ""
+      );
       setFieldValue(billable.name, Boolean(task.billable));
       setFieldValue(isPublic.name, Boolean(task.is_public));
       setFieldValue(isInfinite.name, Boolean(task.is_infinite));
@@ -323,10 +326,7 @@ export default function TaskForm({
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Select
-                  value={RECURRING_TYPES.find(
-                    (recurring_type) =>
-                      recurring_type.id === values[recurringType.name]
-                  )}
+                  value={values[recurringType.name]}
                   options={RECURRING_TYPES}
                   optionLabel={(option) => option.label}
                   fieldName={recurringType.name}
@@ -381,7 +381,9 @@ export default function TaskForm({
               options={taskableItems}
               optionLabel={(option) => option.name ?? `#${option.id}`}
               fieldName={taskableId.name}
-              inputLabel={taskableId.label}
+              inputLabel={
+                values[taskableType.name] === INVOICE_TYPE ? "Factura" : "Caso"
+              }
               setFieldValue={setFieldValue}
             />
           </Grid>

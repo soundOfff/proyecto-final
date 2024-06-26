@@ -4,15 +4,18 @@ import MDBox from "/components/MDBox";
 import Table from "/components/Tasks/table-server";
 import { getAll as getAllTags } from "/actions/tags";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
-import { getTaskPriorities, getAll as getAllTasks } from "/actions/tasks";
-import { getTaskStatus } from "/actions/tasks";
+import {
+  getTaskPriorities,
+  getAll as getAllTasks,
+  getTaskStatus,
+} from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getCurrentTimer } from "/actions/timers";
 import { getAll as getAllActionTypes } from "/actions/action-types";
+import { getTableFields } from "/actions/table-field";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
-import { getTableFields } from "/actions/table-field";
 
 export default async function Tasks({
   searchParams: { perPage = 10, page = 1 },

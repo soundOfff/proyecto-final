@@ -19,6 +19,7 @@ import { Autocomplete, Grid, Tooltip } from "@mui/material";
 import { destroy } from "/actions/tasks";
 
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
+import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 import Show from "./show";
 import { AccessAlarm, LockClockOutlined, NoteAdd } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -43,6 +44,7 @@ export default function Table({
   actionsData,
   tableFields,
   partnerId,
+  invoice,
 }) {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -329,11 +331,20 @@ export default function Table({
             dependencyTasks={dependencyTasks}
             tagsData={tagsData}
             partners={partners}
-            task={task}
+            task={
+              invoice && !task
+                ? {
+                    taskable_id: invoice.id,
+                    taskable_type: INVOICE_TYPE,
+                    partner_id:
+                      invoice.project?.defendant.id ?? invoice.partner.id,
+                  }
+                : task
+            }
             actionsData={actionsData}
             tableFields={tableFields}
             partnerId={partnerId}
-            mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
+            mode={invoice || !task ? MODAL_TYPES.CREATE : MODAL_TYPES.EDIT}
           />
         </Modal>
       )}

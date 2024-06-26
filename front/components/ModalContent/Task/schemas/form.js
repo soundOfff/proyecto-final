@@ -70,6 +70,7 @@ const form = {
       name: "recurring",
       type: "number",
       errorMsg: "Debe ingresar un número de días",
+      placeholder: "Número de días",
     },
     recurringType: {
       name: "recurring_type",

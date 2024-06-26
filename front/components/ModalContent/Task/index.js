@@ -10,6 +10,7 @@ import TaskForm from "./form";
 import form from "./schemas/form";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function ModalContentForm({
   onClose,
@@ -27,18 +28,21 @@ export default function ModalContentForm({
 }) {
   const { formId, formField } = form;
   const { data: session } = useSession();
+  const router = useRouter();
   initialValues.owner_id = session.staff.id;
 
   const handleSubmit = async (values, actions) => {
     await storeItem(values);
     onClose();
     actions.resetForm();
+    router.refresh();
   };
 
-  const handleEdit = async (values, _) => {
+  const handleEdit = async (values, actions) => {
     await update(task.id, values);
     onClose();
     actions.resetForm();
+    router.refresh();
   };
 
   return (

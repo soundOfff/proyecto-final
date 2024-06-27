@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectServiceTypeResourceCollection;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class ProjectServiceTypeController extends Controller
 {
@@ -15,7 +18,24 @@ class ProjectServiceTypeController extends Controller
      */
     public function index()
     {
-        $serviceTypes = ProjectServiceType::all();
+        $query = QueryBuilder::for(ProjectServiceType::class)
+            ->allowedFilters(
+                [
+                    AllowedFilter::callback(
+                        'withoutForkedProcesses',
+                        function (Builder $query) {
+                            return $query
+                                ->whereHas('processes', function (Builder $query) {
+                                    $query->whereDoesntHave('forkedFrom');
+                                })
+                                ->orWhereDoesntHave('processes');
+                        }
+                    )
+
+                ]
+            );
+
+        $serviceTypes = $query->get();
 
         return new ProjectServiceTypeResourceCollection($serviceTypes);
     }

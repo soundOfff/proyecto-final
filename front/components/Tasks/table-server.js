@@ -62,7 +62,7 @@ export default function Table({
     setOpenShowModal,
     setOpenEditModal,
     setTaskId,
-  } = useTaskTable({ rows, dispatch, currentTaskId });
+  } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
   const { darkMode } = controller;
   const { data: session } = useSession();
 

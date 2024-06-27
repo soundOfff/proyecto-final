@@ -33,16 +33,14 @@ import MDDatePicker from "/components/MDDatePicker";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import { useState, useEffect } from "react";
-import { getAll as getAllStatuses } from "/actions/ticket-statuses";
-import { getAll as getAllPriorities } from "/actions/task-priorities";
-import { getAll as getAllTags } from "/actions/tags";
-import { select as getAllStaffs } from "/actions/staffs";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
+import { useDataProvider } from "/providers/DataProvider";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { update } from "/actions/tasks";
 import moment from "moment";
 
-export default function Aside({ task }) {
+export default function Aside() {
+  const { statuses, priorities, staffs, tagsData, task } = useDataProvider();
   const [statusId, setStatusId] = useState(task.status.id);
   const [startDate, setStartDate] = useState(task.start_date);
   const [dueDate, setDueDate] = useState(task.due_date);
@@ -50,10 +48,6 @@ export default function Aside({ task }) {
   const [hourlyRate, setHourlyRate] = useState(task.hourly_rate);
   const [billable, setBillable] = useState(task.billable);
   const [tags, setTags] = useState(task.tags);
-  const [tagsData, setTagsData] = useState([]);
-  const [statuses, setStatuses] = useState([]);
-  const [priorities, setPriorities] = useState([]);
-  const [staffs, setStaffs] = useState([]);
   const [showReminderForm, setShowReminderForm] = useState(false);
   const [reminders, setReminders] = useState(task.reminders || []);
   const [reminderStaffId, setReminderStaffId] = useState(null);
@@ -119,21 +113,6 @@ export default function Aside({ task }) {
   const canReminderSave = () => {
     return reminderStaffId && reminderDate && reminderDescription;
   };
-
-  useEffect(() => {
-    getAllStatuses().then((statuses) => {
-      setStatuses(statuses);
-    });
-    getAllPriorities().then((priorities) => {
-      setPriorities(priorities);
-    });
-    getAllTags().then((tags) => {
-      setTagsData(tags);
-    });
-    getAllStaffs().then((staffs) => {
-      setStaffs(staffs);
-    });
-  }, []);
 
   useEffect(() => {
     update(task.id, { task_status_id: statusId });

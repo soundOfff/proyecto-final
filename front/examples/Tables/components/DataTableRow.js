@@ -10,6 +10,7 @@ export default function DataTableRow({
   row,
   noEndBorder,
   moveRow,
+  isTaskTable = false,
 }) {
   const DND_ITEM_TYPE = "row";
   const dropRef = useRef(null);
@@ -70,6 +71,23 @@ export default function DataTableRow({
   preview(drop(dropRef));
   drag(dragRef);
 
+  const getLevelColor = () => {
+    if (!row.original.procedure) return "white";
+
+    const groups = Object.entries(
+      Object.groupBy(rows, (row) => row.original.procedure.process.id)
+    );
+
+    const opacity =
+      (groups.findIndex((group) => {
+        return group[0] == row.original.procedure.process.id;
+      }) +
+        1) /
+      groups.length;
+
+    return `rgb(225, 225, 225, ${opacity})`;
+  };
+
   const { key: rowKey, rowProps } = row.getRowProps();
 
   return (
@@ -79,7 +97,11 @@ export default function DataTableRow({
       ref={dropRef}
       sx={{
         opacity: isDragging ? 0 : 1,
-        backgroundColor: isDragging ? "#f0f0f0" : "white",
+        backgroundColor: isDragging
+          ? "#f0f0f0"
+          : isTaskTable
+          ? getLevelColor()
+          : "white",
         cursor: isDragging ? "grabbing" : "default",
         transition: "all 0.5s ease",
       }}

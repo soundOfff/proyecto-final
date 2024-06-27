@@ -112,6 +112,11 @@ class Project extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
+    public function tasks(): MorphMany
+    {
+        return $this->morphMany(Task::class, 'taskable');
+    }
+
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');

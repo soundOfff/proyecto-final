@@ -91,6 +91,11 @@ class Task extends Model
         );
     }
 
+    public function procedure()
+    {
+        return $this->belongsTo(Procedure::class);
+    }
+
     public function taskable()
     {
         return $this->morphTo();
@@ -166,6 +171,28 @@ class Task extends Model
         return $this->hasMany(Action::class);
     }
 
+    public function isFinalTask()
+    {
+        if (! $this->procedure) {
+            return false;
+        }
+
+        $relatedProcedures = $this->procedure->process->procedures->sortByDesc('step_number');
+
+        return $relatedProcedures->first()->id === $this->procedure->id;
+    }
+
+    // If logic is needed, uncomment this method
+    // public function finalTask() {
+    //     $latestTask = self::where('taskable_id', $this->taskable_id)
+    //         ->where('taskable_type', $this->taskable_type)
+    //         ->whereNotNull('milestone_order')
+    //         ->orderBy('milestone_order', 'DESC')
+    //         ->first();
+
+    //     return $latestTask;
+    // }
+
     public function requiredFields()
     {
         return $this->hasMany(TaskRequiredField::class);
@@ -198,15 +225,16 @@ class Task extends Model
         });
     }
 
-    public static function getMilestoneOrder($taskableId, $taskableType)
+    public static function getLatestMilestoneOrder($taskableId, $taskableType)
     {
         $latestTask = self::where('taskable_id', $taskableId)
             ->where('taskable_type', $taskableType)
             ->whereNotNull('milestone_order')
             ->orderBy('milestone_order', 'DESC')
             ->first();
+        
 
-        return $latestTask ? $latestTask->milestone_order + 1 : 0;
+        return $latestTask ? $latestTask->milestone_order : 0;
     }
 
     public static function getTaskableTypes(): array

@@ -11,6 +11,7 @@ export default function useTaskTable({
   rows,
   dispatch,
   currentTaskId,
+  statuses = [],
   project,
 }) {
   const [taskId, setTaskId] = useState(currentTaskId || null);
@@ -77,12 +78,14 @@ export default function useTaskTable({
   };
 
   const handleCompleteTask = async (taskId) => {
+    console.log(statuses);
     const doneState = statuses.find((status) => status.name === DONE_STATUS);
     if (taskId === doneState) {
       return;
     }
     await updateTask(taskId, {
-      task_status_id: statuses.find((status) => status.name === DONE_STATUS).id,
+      task_status_id: statuses.find((status) => status.name === DONE_STATUS)
+        ?.id,
     });
     setOpenShowModal(false);
   };
@@ -116,6 +119,7 @@ export default function useTaskTable({
             "reminders",
             "actions",
             "requiredFields",
+            "procedure",
           ],
         })
       );

@@ -3,28 +3,19 @@ import Header from "./show/header";
 import Content from "./show/content";
 import Aside from "./show/aside";
 import MDBox from "/components/MDBox";
+import { useDataProvider } from "/providers/DataProvider";
 
-export default function Show({
-  task,
-  markAsCompleted,
-  isTimerStarted,
-  stopTimer,
-  currentTimerId,
-  startTimer,
-}) {
+export default function Show() {
+  const { task, getSelectedFork } = useDataProvider();
+  const selectedFork = task.isFinalTask
+    ? getSelectedFork(task.procedure.process.forks)
+    : null;
   return (
     <MDBox>
-      <Header task={task} />
+      <Header />
       <Grid container wrap="nowrap">
-        <Content
-          task={task}
-          markAsCompleted={markAsCompleted}
-          stopTimer={stopTimer}
-          startTimer={startTimer}
-          isTimerStarted={isTimerStarted}
-          currentTimerId={currentTimerId}
-        />
-        <Aside task={task} />
+        <Content selectedFork={selectedFork} />
+        <Aside />
       </Grid>
     </MDBox>
   );

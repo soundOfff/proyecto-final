@@ -25,6 +25,7 @@ import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
 import ModalContentForm from "/components/ModalContent/Task";
+import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -39,6 +40,7 @@ export default function Table({
   priorities,
   project,
   repeats,
+  staffs,
   taskableItems,
   tagsData,
   dependencyTasks,
@@ -70,7 +72,7 @@ export default function Table({
     setTaskId,
     handleCreateTasks,
     setOpenShowModal,
-  } = useTaskTable({ rows, dispatch, project });
+  } = useTaskTable({ rows, dispatch, project, statuses });
 
   const {
     setOpenDeleteConfirmation,
@@ -202,7 +204,6 @@ export default function Table({
       accessor: "due_date",
     },
     {
-      // TODO: make accessor works
       Header: "Asignar a",
       accessor: "",
       Cell: ({ row }) => {
@@ -315,6 +316,21 @@ export default function Table({
     },
   ];
 
+  const getSelectedFork = (children = []) => {
+    // Check if the task has a fork selected
+    let selectedFork = null;
+    children.forEach((child) => {
+      if (
+        rows.some(
+          (task) => task.procedure && task.procedure.process.id === child.id
+        )
+      ) {
+        selectedFork = child;
+      }
+    });
+    return selectedFork;
+  };
+
   const table = { columns, rows: optimisticRows };
 
   return isLoading ? (
@@ -389,24 +405,36 @@ export default function Table({
             sx={{ overflow: "scroll" }}
           >
             {task && (
-              <Show
-                task={task}
-                markAsCompleted={handleCompleteTask}
-                isTimerStarted={currentTimer?.task_id === task.id}
-                currentTimerId={currentTimer?.id}
-                stopTimer={stopTimer}
-                startTimer={startTimer}
-              />
+              <DataProvider
+                value={{
+                  task,
+                  project,
+                  currentTimerId: currentTimer?.id,
+                  isTimerStarted: currentTimer?.task_id === task.id,
+                  statuses,
+                  priorities,
+                  tagsData,
+                  staffs,
+                  markAsCompleted: handleCompleteTask,
+                  stopTimer,
+                  startTimer,
+                  getSelectedFork,
+                }}
+              >
+                <Show />
+              </DataProvider>
             )}
           </Modal>
         )}
       </MDBox>
       <DataTable
         table={table}
-        showTotalEntries={true}
-        isSorted={true}
+        showTotalEntries={false}
+        isSorted={false}
         moveRow={moveRow}
         noEndBorder
+        isTaskTable={true}
+        entriesPerPage={{ defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] }}
       />
       <DeleteRow
         {...{

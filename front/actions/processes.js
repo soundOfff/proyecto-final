@@ -30,6 +30,7 @@ export async function store(data) {
   });
 
   revalidatePath("/processes");
+  revalidatePath("/processes/create");
 }
 
 export async function update(id, data) {

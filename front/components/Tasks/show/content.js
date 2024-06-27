@@ -1,31 +1,39 @@
 "use client";
 
-import { Card, Divider, Grid } from "@mui/material";
+import { Autocomplete, Card, Divider, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
-import { update } from "/actions/tasks";
 import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDProgress from "/components/MDProgress";
+import MDInput from "/components/MDInput";
+import MDSnackbar from "/components/MDSnackbar";
+import ItemList from "./itemList";
+import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
+
 import Link from "next/link";
 import { useState } from "react";
 import { parseEditorState } from "/utils/parseEditorState";
 import { convertToRaw } from "draft-js";
-import ItemList from "./itemList";
-import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { useSession } from "next-auth/react";
-import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+import { useDataProvider } from "/providers/DataProvider";
+
+import { DONE_STATUS_ID, DONE_STATUS } from "/utils/constants/taskStatuses";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import useTodo from "/hooks/useTodo";
+import { attachTasks } from "/actions/projects";
+import { update } from "/actions/tasks";
 
-export default function Content({
-  task,
-  markAsCompleted,
-  stopTimer,
-  startTimer,
-  isTimerStarted,
-  currentTimerId,
-}) {
+export default function Content({ selectedFork }) {
+  const {
+    task,
+    isTimerStarted,
+    currentTimerId,
+    markAsCompleted,
+    stopTimer,
+    startTimer,
+  } = useDataProvider();
+
   const [description, setDescription] = useState(
     parseEditorState(task.description)
   );
@@ -40,6 +48,10 @@ export default function Content({
   );
   const [note, setNote] = useState("");
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
+  const [selectedProcess, setSelectedProcess] = useState(selectedFork);
+  const [isAttachingTasks, setIsAttachingTasks] = useState(false);
+  const [errorSB, setErrorSB] = useState(false);
+  const [createdSB, setCreatedSB] = useState(false);
   const [commentContent, setCommentContent] = useState("");
   const {
     items,
@@ -56,6 +68,17 @@ export default function Content({
     await stopTimer(currentTimerId, note);
     setIsStoppingTimer(false);
     setNote("");
+  };
+
+  const handleSelectNextStep = async () => {
+    setIsAttachingTasks(true);
+    try {
+      await attachTasks(task.taskable.id, selectedProcess.id);
+      setCreatedSB(true);
+    } catch (error) {
+      setErrorSB(true);
+    }
+    setIsAttachingTasks(false);
   };
 
   const handleCommentUpdate = async () => {
@@ -79,14 +102,49 @@ export default function Content({
   const handleSaveItems = async () => {
     await update(task.id, { checklist_items: getFilteredItems() });
   };
+
   const handleDeleteItem = async (id) => {
     const newItems = items.filter((item) => item.id !== id); // Server update
     removeItem(id); // UI update
     await update(task.id, { checklist_items: newItems });
   };
 
+  const showNextStepForm = () => {
+    if (!task) return false;
+
+    return (
+      task.isFinalTask &&
+      task.status.name === DONE_STATUS &&
+      task.procedure?.process?.forks?.length !== 0
+    );
+  };
+
   return (
     <Grid item xs={8} wrap="nowrap">
+      <MDSnackbar
+        color={errorSB ? "error" : "success"}
+        icon={errorSB ? "warning" : "check_circle"}
+        title={
+          errorSB
+            ? "Error al seleccionar paso"
+            : "Paso seleccionado correctamente"
+        }
+        content={
+          errorSB
+            ? "Ocurrió un error al seleccionar el paso, intente de nuevo"
+            : "El paso se seleccionó correctamente"
+        }
+        open={errorSB || createdSB}
+        onClose={() => {
+          setErrorSB(false);
+          setCreatedSB(false);
+        }}
+        close={() => {
+          setErrorSB(false);
+          setCreatedSB(false);
+        }}
+        bgWhite
+      />
       <MDBox px={5} py={2}>
         <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body1" fontWeight="bold" display="inline">
@@ -189,6 +247,84 @@ export default function Content({
 
         <Divider />
 
+        {showNextStepForm() && (
+          <>
+            <MDTypography variant="body2" fontWeight="bold">
+              Elegir siguiente paso
+            </MDTypography>
+            <MDBox
+              py={2}
+              display="flex"
+              gap={2}
+              flexDirection="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <MDBox display="flex" flexDirection="row" gap={1} width="100%">
+                <Grid container xs={12} spacing={3}>
+                  <Grid item xs={12} sm={5}>
+                    <Autocomplete
+                      value={task?.procedure?.process}
+                      disabled
+                      options={[]}
+                      getOptionLabel={(option) => option.name}
+                      renderInput={(params) => (
+                        <MDInput
+                          {...params}
+                          variant="standard"
+                          label={"Paso anterior"}
+                          fullWidth
+                          InputLabelProps={{ shrink: true }}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <Autocomplete
+                      value={selectedProcess}
+                      onChange={(e, value) => {
+                        setSelectedProcess(value);
+                      }}
+                      options={task?.procedure?.process?.forks || []}
+                      getOptionLabel={(option) => option.name}
+                      renderInput={(params) => (
+                        <MDInput
+                          {...params}
+                          variant="standard"
+                          label={"Siguiente paso"}
+                          fullWidth
+                          InputLabelProps={{ shrink: true }}
+                        />
+                      )}
+                    />
+                    {selectedProcess &&
+                      selectedProcess.realStepQuantity == 0 && (
+                        <MDTypography variant="caption" color="error">
+                          Este paso no tiene procedimientos asociados
+                        </MDTypography>
+                      )}
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <MDButton
+                      variant="gradient"
+                      color="dark"
+                      disabled={
+                        !selectedProcess ||
+                        isAttachingTasks ||
+                        selectedProcess.realStepQuantity == 0
+                      }
+                      onClick={handleSelectNextStep}
+                    >
+                      Seleccionar paso
+                    </MDButton>
+                  </Grid>
+                </Grid>
+              </MDBox>
+            </MDBox>
+            <Divider />
+          </>
+        )}
+
         <MDBox py={2}>
           <MDBox display="flex">
             <MDTypography variant="body2" fontWeight="bold" mb={2}>
@@ -217,7 +353,11 @@ export default function Content({
             <MDBox sx={{ width: "80%", my: 1 }}>
               {progress > 0 && (
                 <MDBox
-                  sx={{ display: "flex", alignItems: "center", flexGrow: "1" }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexGrow: "1",
+                  }}
                 >
                   <MDBox width="100%" mt={0.25}>
                     <MDProgress

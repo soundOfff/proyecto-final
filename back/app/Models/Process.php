@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Process extends Model
@@ -31,6 +32,16 @@ class Process extends Model
     public function validateIfStepNumberExists(int $stepNumber): bool
     {
         return $this->procedures()->where('step_number', $stepNumber)->exists();
+    }
+
+    public function forks(): BelongsToMany
+    {
+        return $this->belongsToMany(Process::class, 'fork_process', 'process_id', 'fork_id');
+    }
+
+    public function forkedFrom(): BelongsToMany
+    {
+        return $this->belongsToMany(Process::class, 'fork_process', 'fork_id', 'process_id');
     }
 
     public function author()

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Procedure extends Model
 {
@@ -22,6 +23,11 @@ class Procedure extends Model
     public function process(): BelongsTo
     {
         return $this->belongsTo(Process::class);
+    }
+
+    public function task(): HasOne
+    {
+        return $this->hasOne(Task::class);
     }
 
     public function status(): BelongsTo
@@ -70,13 +76,13 @@ class Procedure extends Model
             return;
         }
 
-        $latestMilestoneOrder = Task::getMilestoneOrder($project->id, Task::TASKABLE_PROJECT);
+        $latestMilestoneOrder = Task::getLatestMilestoneOrder($project->id, Task::TASKABLE_PROJECT);
 
         $task = Task::create([
             'procedure_id' => $this->id,
             'task_priority_id' => TaskPriority::DEFAULT,
             'repeat_id' => ExpenseRepeat::DEFAULT,
-            'task_status_id' => TaskStatus::IN_PROGRESS,
+            'task_status_id' => TaskStatus::PENDING,
             'taskable_id' => $project->id,
             'taskable_type' => Task::TASKABLE_PROJECT,
             'partner_id' => $project->defendant_id,
@@ -84,7 +90,7 @@ class Procedure extends Model
             'start_date' => now(),
             'description' => $this->description,
             'name' => $this->name,
-            'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder,
+            'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder + 1 // Next milestone order,
         ]);
 
         $this->load('dependencies');

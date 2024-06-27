@@ -10,6 +10,7 @@ use App\Models\Taggable;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Pipes\TaskPipe;
+use App\Services\FcmService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
+
     public function index()
     {
         $query = QueryBuilder::for(Task::class)
@@ -86,7 +91,7 @@ class TaskController extends Controller
         $newTask['author_id'] = $newTask['owner_id'];
 
         if (! array_key_exists('milestone_order', $newTask)) {
-            $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
+            $newTask['milestone_order'] = Task::getLatestMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']) + 1; // Next milestone order
         }
 
         $task = Task::create($newTask);
@@ -191,6 +196,27 @@ class TaskController extends Controller
             $task->requiredFields()->createMany($requiredFields);
         }
 
+        if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {
+            $staffs = Staff::whereIn('id',
+                array_merge(
+                    isset($newTask['assigneds']) ? $newTask['assigneds'] : array_column($task->assigneds->toArray(), 'id') ?? [],
+                    isset($newTask['followers']) ? $newTask['followers'] : array_column($task->followers->toArray(), 'id') ?? [],
+                    isset($newTask['owner_id']) ? [$newTask['owner_id']] : [$task->owner_id]
+                )
+            )->with('devices')->get();
+            foreach ($staffs as $staff) {
+                foreach ($staff->devices as $device) {
+                    $taskName = isset($newTask['name']) ? $newTask['name'] : $task->name;
+                    $this->fcmService->sendNotification(
+                        $device->device_token,
+                        'Tarea Completada',
+                        "La tarea \"$taskName\" ha sido completada, puede elegir el siguiente proceso",
+                        $staff->id
+                    );
+                }
+            }
+        }
+
         return response()->json(null, 204);
     }
 
@@ -238,6 +264,7 @@ class TaskController extends Controller
                 'actions',
                 'requiredFields',
                 'author',
+                'procedure',
             ])
             ->find($task->id);
 

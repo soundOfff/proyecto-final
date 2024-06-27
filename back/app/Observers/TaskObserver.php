@@ -25,6 +25,7 @@ class TaskObserver
         if (! $task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) {
             return;
         }
+        
         // Case 1 - Task is closed.
         $this->dispatchActions($task);
 

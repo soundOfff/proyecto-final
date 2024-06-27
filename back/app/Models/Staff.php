@@ -45,7 +45,6 @@ class Staff extends Authenticatable
         'two_factor_auth_enabled',
         'role_id',
         'token',
-        'device_token',
     ];
 
     /**
@@ -101,5 +100,10 @@ class Staff extends Authenticatable
     public function lastSession() : Session | null
     {
         return $this->sessions->last();
+    }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(StaffDevice::class);
     }
 }

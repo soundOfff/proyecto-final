@@ -73,7 +73,7 @@ export default function Tasks() {
           </MDBox>
         </Grid>
         <Grid item xs={12}>
-          {showNextStepForm() && (
+          {showNextStepForm() && false && (
             <>
               <MDTypography variant="body2" fontWeight="bold">
                 Elegir siguiente paso

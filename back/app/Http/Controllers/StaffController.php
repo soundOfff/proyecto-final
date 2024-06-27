@@ -6,6 +6,7 @@ use App\Http\Requests\StaffRequest;
 use App\Http\Resources\StaffResource;
 use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
+use App\Models\Contact;
 use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Task;
@@ -130,7 +131,6 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
-        // TODO: ask if it needed to pass the data to another staff as the old system
         Staff::destroy($staff->id);
 
         return response()->json(null, 204);

@@ -67,6 +67,7 @@ export async function destroy(id) {
     method: "DELETE",
   });
 
+  revalidatePath("/staffs");
   return response;
 }
 

@@ -4,7 +4,7 @@ import MDBox from "/components/MDBox";
 import Table from "./components/table";
 import { getAll as getAllStaffs } from "/actions/staffs";
 
-export default async function Tasks({
+export default async function Staffs({
   searchParams: { perPage = 10, page = 1, sort = "last_login" },
 }) {
   const {

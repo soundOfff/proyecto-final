@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,7 @@ use Spatie\Activitylog\Traits\CausesActivity;
 
 class Staff extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, CausesActivity;
+    use HasApiTokens, HasFactory, Notifiable, CausesActivity, SoftDeletes;
 
     protected $fillable = [
         'active',
@@ -71,7 +72,7 @@ class Staff extends Authenticatable
     {
         return $this->hasMany(Project::class, 'responsible_person_id');
     }
-
+    
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);

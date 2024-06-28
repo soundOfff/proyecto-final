@@ -66,6 +66,7 @@ export default function Table({
     handleCloseEditModal,
     handleCloseShowModal,
     handleStatusChange,
+    getSelectedFork,
     handlePriorityChange,
     handleCompleteTask,
     setIsToastOpen,
@@ -315,21 +316,6 @@ export default function Table({
       ),
     },
   ];
-
-  const getSelectedFork = (children = []) => {
-    // Check if the task has a fork selected
-    let selectedFork = null;
-    children.forEach((child) => {
-      if (
-        rows.some(
-          (task) => task.procedure && task.procedure.process.id === child.id
-        )
-      ) {
-        selectedFork = child;
-      }
-    });
-    return selectedFork;
-  };
 
   const table = { columns, rows: optimisticRows };
 

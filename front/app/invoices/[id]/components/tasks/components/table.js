@@ -24,6 +24,7 @@ export default function TableComponent() {
     tagsData,
     partners,
     taskableItems,
+    staffs,
     currentTimer,
     actionsData,
     tableFields,
@@ -54,6 +55,7 @@ export default function TableComponent() {
           tagsData={tagsData}
           dependencyTasks={tasks}
           partners={partners}
+          staffs={staffs}
           statuses={statuses}
           currentTimer={currentTimer}
           actionsData={actionsData}

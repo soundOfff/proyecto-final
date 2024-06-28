@@ -75,7 +75,10 @@ export default function DataTableRow({
     if (!row.original.procedure) return "white";
 
     const groups = Object.entries(
-      Object.groupBy(rows, (row) => row.original.procedure.process.id)
+      Object.groupBy(
+        rows,
+        (row) => row.original.procedure && row.original.procedure.process.id
+      )
     );
 
     const opacity =

@@ -38,7 +38,7 @@ export default function PersonForm({
         birthDate,
         expeditionDate,
         isMale,
-        number,
+        idNumber,
         country,
         isConsolidator,
         nationality,
@@ -108,14 +108,14 @@ export default function PersonForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
-          value={values[number.name]}
+          value={values[idNumber.name]}
           autocomplete="off"
-          label={number.label}
-          placeholder={number.placeholder}
-          name={number.name}
-          type={number.type}
-          error={errors[number.name] && touched[number.name]}
-          success={values[number.name]?.length > 0 && !errors[number.name]}
+          label={idNumber.label}
+          placeholder={idNumber.placeholder}
+          name={idNumber.name}
+          type={idNumber.type}
+          error={errors[idNumber.name] && touched[idNumber.name]}
+          success={values[idNumber.name]?.length > 0 && !errors[idNumber.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

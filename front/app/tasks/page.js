@@ -14,6 +14,7 @@ import { getAll as getAllPartners } from "/actions/partners";
 import { getCurrentTimer } from "/actions/timers";
 import { getAll as getAllActionTypes } from "/actions/action-types";
 import { getTableFields } from "/actions/table-field";
+import { select as getAllStaffs } from "/actions/staffs";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
 
@@ -37,6 +38,7 @@ export default async function Tasks({
     currentTimer,
     actionsData,
     tableFields,
+    staffs,
   ] = await Promise.all([
     getAllTasks({
       perPage: perPage,
@@ -52,6 +54,7 @@ export default async function Tasks({
     getCurrentTimer(session.staff.id),
     getAllActionTypes(),
     getTableFields({ table: tableName }),
+    getAllStaffs(),
   ]);
 
   return (
@@ -68,6 +71,7 @@ export default async function Tasks({
               tagsData={tagsData}
               dependencyTasks={tasks}
               partners={partners}
+              staffs={staffs}
               statuses={statuses}
               currentTimer={currentTimer}
               actionsData={actionsData}

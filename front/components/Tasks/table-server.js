@@ -8,6 +8,8 @@ import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
+import { DataProvider } from "/providers/DataProvider";
+import Show from "./show";
 import Link from "next/link";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -20,7 +22,6 @@ import { destroy } from "/actions/tasks";
 
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
-import Show from "./show";
 import { AccessAlarm, LockClockOutlined, NoteAdd } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import DeleteRow from "/components/DeleteRow";
@@ -37,6 +38,7 @@ export default function Table({
   taskableItems,
   tagsData,
   statuses,
+  staffs,
   dependencyTasks,
   partners,
   currentTimer,
@@ -58,6 +60,7 @@ export default function Table({
     startTimer,
     handleStatusChange,
     handlePriorityChange,
+    getSelectedFork,
     handleCompleteTask,
     setOpenShowModal,
     setOpenEditModal,
@@ -357,14 +360,23 @@ export default function Table({
           sx={{ overflow: "scroll" }}
         >
           {task && (
-            <Show
-              task={task}
-              markAsCompleted={handleCompleteTask}
-              isTimerStarted={currentTimer?.task_id === task.id}
-              currentTimerId={currentTimer?.id}
-              stopTimer={stopTimer}
-              startTimer={startTimer}
-            />
+            <DataProvider
+              value={{
+                task,
+                currentTimerId: currentTimer?.id,
+                isTimerStarted: currentTimer?.task_id === task.id,
+                statuses,
+                priorities,
+                tagsData,
+                staffs,
+                markAsCompleted: handleCompleteTask,
+                stopTimer,
+                startTimer,
+                getSelectedFork,
+              }}
+            >
+              <Show />
+            </DataProvider>
           )}
         </Modal>
       )}

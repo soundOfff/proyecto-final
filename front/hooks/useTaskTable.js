@@ -42,6 +42,21 @@ export default function useTaskTable({
     setTask(null);
   };
 
+  const getSelectedFork = (children = []) => {
+    // Check if the task has a fork selected
+    let selectedFork = null;
+    children.forEach((child) => {
+      if (
+        rows.some(
+          (task) => task.procedure && task.procedure.process.id === child.id
+        )
+      ) {
+        selectedFork = child;
+      }
+    });
+    return selectedFork;
+  };
+
   const stopTimer = async (timerId, note = "") => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
     await updateTimer(timerId, { end_time: date, note });
@@ -147,6 +162,7 @@ export default function useTaskTable({
     handleCompleteTask,
     handlePriorityChange,
     handleStatusChange,
+    getSelectedFork,
     stopTimer,
     startTimer,
     handleCreateTasks,

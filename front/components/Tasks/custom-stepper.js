@@ -69,7 +69,7 @@ function CustomStepper({ processes, tasks }) {
       (task) => task.procedure.process.id === process.id
     ).length;
 
-    // Needed because the component is builded like ------()
+    // Needed because the component is builded like (progress bar) + (node)
     // and we need the value of the completed tasks in the prev process
     const totalPrevTasks = key === 0 ? 1 : processes[key - 1].realStepQuantity;
     const totalPrevCompletedTasks =
@@ -84,7 +84,9 @@ function CustomStepper({ processes, tasks }) {
         <StyledLabelContainer>
           <StyledStepperStepIndex>
             <MDTypography variant="caption" fontWeight="bold" color="white">
-              {totalCompletedProcessTasks}/{totalTasks}
+              {key !== processes.length - 1
+                ? `${totalCompletedProcessTasks}/${totalTasks}`
+                : `${completedTasks().length}/${tasks.length - 1}`}
             </MDTypography>
           </StyledStepperStepIndex>
           <MDTypography variant="caption" color="dark">

@@ -22,7 +22,6 @@ import {
   Lock,
   Notifications,
   Remove,
-  Rowing,
   StarHalf,
 } from "@mui/icons-material";
 import MDBox from "/components/MDBox";
@@ -37,7 +36,7 @@ import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { useDataProvider } from "/providers/DataProvider";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { update } from "/actions/tasks";
-import moment from "moment";
+import moment from "moment-timezone";
 
 export default function Aside() {
   const { statuses, priorities, staffs, tagsData, task } = useDataProvider();
@@ -413,7 +412,9 @@ export default function Aside() {
                     )
                   }
                   options={{
-                    minDate: new Date(),
+                    minDate: moment()
+                      .tz("America/Panama")
+                      .format("YYYY-MM-DD HH:mm:ss"),
                     enableTime: true,
                     static: true,
                   }}

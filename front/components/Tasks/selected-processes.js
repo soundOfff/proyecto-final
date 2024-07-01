@@ -3,14 +3,17 @@ import { Grid } from "@mui/material";
 import MDTypography from "/components/MDTypography";
 import CustomStepper from "./custom-stepper";
 
-export default function SelectedProcesses({ selectedProcesses = [] }) {
+export default function SelectedProcesses({
+  selectedProcesses = [],
+  tasks = [],
+}) {
   return (
     <Grid item xs={12} md={selectedProcesses.length > 1 ? 10 : 12} ml={2}>
       <MDTypography variant="button" fontWeight="medium">
         Procesos seleccionados
       </MDTypography>
       {selectedProcesses.length > 1 ? (
-        <CustomStepper processes={selectedProcesses} />
+        <CustomStepper processes={selectedProcesses} tasks={tasks} />
       ) : (
         <MDTypography
           variant="button"

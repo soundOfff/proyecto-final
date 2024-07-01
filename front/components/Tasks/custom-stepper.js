@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import LinearProgress from "@mui/material/LinearProgress";
 import styled from "@emotion/styled";
 
-// TODO: adapt this for the new use case
+import MDProgress from "/components/MDProgress";
+import MDBox from "/components/MDBox";
+import MDTypography from "/components/MDTypography";
+
+import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 const StyledStepper = styled("ul")({
   display: "flex",
@@ -20,69 +23,80 @@ const StyledStepperStep = styled("li")({
   alignItems: "center",
   width: "100%",
 });
-const StyledStepperStepIndex = styled("div")(({ currentStep, done }) => ({
+const StyledStepperStepIndex = styled("div")(() => ({
+  display: "block",
   width: "30px",
   height: "30px",
   lineHeight: "30px",
   borderRadius: "50%",
-  background: currentStep || done ? "orange !important" : "#dedede",
-  color: currentStep || done ? "#fff" : "#999",
+  background: "blue !important",
+  color: "#fff",
   textAlign: "center",
   marginBottom: "5px",
 }));
-
 const StyledLabelContainer = styled("div")({
   display: "flex",
   flexFlow: "column nowrap",
   alignItems: "center",
 });
 
-function CustomStepper({ processes }) {
-  function StepContent({ done, index }) {
-    return done ? "✓" : index + 1;
-  }
+function CustomStepper({ processes, tasks }) {
+  const completedTasks = useCallback(
+    () => tasks.filter((task) => task.status_id === DONE_STATUS_ID),
+    [tasks]
+  );
 
-  const ProgressBar = ({ current = 0, step, progress = 0 }) => {
-    let value = 0;
-    if (current + 1 === step) {
-      value = progress;
-    } else if (current >= step) {
-      value = 100;
-    }
-
+  const ProgressBar = ({ totalTasks, completedTasks }) => {
+    const percentage = (completedTasks / totalTasks) * 100;
     return (
-      <LinearProgress
-        variant="determinate"
-        value={value}
+      <MDBox
         sx={{
-          "&.MuiLinearProgress-root": {
-            flex: "1 1 auto",
-            position: "absolute",
-            top: 12,
-            left: "calc(-50% + 20px)",
-            right: "calc(50% + 20px)",
-            backgroundColor: "#ffd8ba61",
-          },
-          "& .MuiLinearProgress-bar": {
-            backgroundColor: "orange",
-          },
+          flex: "1 1 auto",
+          position: "absolute",
+          top: 12,
+          left: "calc(-50% + 30px)",
+          right: "calc(50% + 30px)",
         }}
-      />
+      >
+        <MDProgress color="info" value={percentage} />
+      </MDBox>
     );
   };
 
   function renderStep(process, key) {
-    console.log(process);
-    const done = 0;
-    const currentStep = 0;
+    const totalTasks = process.realStepQuantity;
+    const totalCompletedProcessTasks = completedTasks().filter(
+      (task) => task.procedure.process.id === process.id
+    ).length;
+
+    // Needed because the component is builded like ------()
+    // and we need the value of the completed tasks in the prev process
+    const totalPrevTasks = key === 0 ? 1 : processes[key - 1].realStepQuantity;
+    const totalPrevCompletedTasks =
+      key === 0
+        ? 0
+        : completedTasks().filter(
+            (task) => task.procedure.process.id === processes[key - 1].id
+          ).length;
+
     return (
       <StyledStepperStep key={key}>
         <StyledLabelContainer>
-          <StyledStepperStepIndex currentStep={currentStep} done={done}>
-            <StepContent done={done} index={key} />
+          <StyledStepperStepIndex>
+            <MDTypography variant="caption" fontWeight="bold" color="white">
+              {totalCompletedProcessTasks}/{totalTasks}
+            </MDTypography>
           </StyledStepperStepIndex>
+          <MDTypography variant="caption" color="dark">
+            {process.name}
+          </MDTypography>
         </StyledLabelContainer>
-        {!!key && <ProgressBar step={key} />}
+        {!!key && (
+          <ProgressBar
+            totalTasks={totalPrevTasks}
+            completedTasks={totalPrevCompletedTasks}
+          />
+        )}
       </StyledStepperStep>
     );
   }
@@ -92,6 +106,7 @@ function CustomStepper({ processes }) {
 
 CustomStepper.propTypes = {
   processes: PropTypes.array.isRequired,
+  tasks: PropTypes.array.isRequired,
 };
 
 export default CustomStepper;

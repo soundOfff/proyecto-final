@@ -49,6 +49,7 @@ class ProjectResource extends JsonResource
                     return $task->procedure ? $task->procedure->process : null;
                 })->filter()->unique('id')->values());
             }),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'plaintiff' => PartnerResource::make($this->whenLoaded('plaintiff')),
             'responsiblePerson' => PartnerResource::make($this->whenLoaded('responsiblePerson')),
             'lawFirm' => LawFirmResource::make($this->whenLoaded('lawFirm')),

@@ -10,6 +10,7 @@ use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DiscountTypeController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\EstimateStatusController;
 use App\Http\Controllers\ExpenseCategoryController;
@@ -17,7 +18,6 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\HistoryTaskController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemGroupController;
@@ -233,6 +233,8 @@ Route::get('/activity-logs', [ActivityController::class, 'index']);
 
 Route::post('/send-notification', [FcmController::class, 'sendNotification']);
 Route::post('/store-token', [FcmController::class, 'storeToken']);
+
+Route::get('/documents', [DocumentController::class, 'generate']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

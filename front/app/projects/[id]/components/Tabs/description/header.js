@@ -1,13 +1,32 @@
+"use client";
+
 import { Grid } from "@mui/material";
 import { setColor } from "/utils/project-state-colors";
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
 import { useDataProvider } from "/providers/DataProvider";
+import MDButton from "/components/MDButton";
+import { generate } from "/actions/documents";
+import { useState } from "react";
+import Loader from "/components/Loader";
 
 export default function Header() {
   const { project } = useDataProvider();
+  const [isLoading, setIsLoading] = useState(false);
 
-  return (
+  const handleGenerateDocument = () => {
+    setIsLoading(true);
+    generate()
+      .then((data) => {
+        setIsLoading(false);
+        window.open(data.url, "_blank");
+      })
+      .catch(() => setIsLoading(false));
+  };
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <Grid container mt={3} mb={5} lineHeight={0}>
       <Grid item xs={12} md={6}>
         <MDTypography
@@ -36,6 +55,15 @@ export default function Header() {
           container
           sx={{ height: "40px" }}
         />
+        <MDButton
+          variant="gradient"
+          color="dark"
+          size="small"
+          onClick={handleGenerateDocument}
+          sx={{ height: "40px", mx: 5 }}
+        >
+          Generar Documento
+        </MDButton>
       </Grid>
     </Grid>
   );

@@ -77,18 +77,20 @@ export default function DataTableRow({
     const groups = Object.entries(
       Object.groupBy(
         rows,
-        (row) => row.procedure && row.original.procedure.process.id
+        (row) => row.original.procedure && row.original.procedure.process.id
       )
     );
 
-    const opacity =
-      (groups.findIndex((group) => {
-        return group[0] == row.original.procedure.process.id;
-      }) +
-        1) /
-      groups.length;
+    const groupIndex = groups.findIndex((group) => {
+      return group[0] == row.original.procedure.process.id;
+    });
 
-    return `rgb(225, 225, 225, ${opacity})`;
+    const color1 = "rgb(225, 225, 225, 0.4)"; // Light gray
+    const color2 = "rgb(200, 200, 255, 0.4)"; // Light blue
+
+    const color = groupIndex % 2 === 0 ? color1 : color2;
+
+    return color;
   };
 
   const { key: rowKey, rowProps } = row.getRowProps();

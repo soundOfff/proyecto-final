@@ -10,6 +10,7 @@ export default function Show() {
   const selectedFork = task.isFinalTask
     ? getSelectedFork(task.procedure.process.forks)
     : null;
+
   return (
     <MDBox>
       <Header />

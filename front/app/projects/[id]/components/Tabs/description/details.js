@@ -10,6 +10,7 @@ import { Divider, Grid, Step, StepLabel, Stepper } from "@mui/material";
 import moneyFormat from "/utils/moneyFormat";
 import { useDataProvider } from "/providers/DataProvider";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
+import SelectedProcesses from "/components/Tasks/selected-processes";
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
@@ -75,42 +76,10 @@ export default function Details() {
       <Divider variant="left" sx={{ width: "100%" }} />
 
       <Grid container mt={3} xs={12} display="flex" justifyContent="center">
-        <Grid
-          item
-          xs={12}
-          md={project.selectedProcesses.length > 1 ? 10 : 12}
-          ml={2}
-        >
-          <MDTypography variant="button" fontWeight="medium">
-            Procesos seleccionados
-          </MDTypography>
-          {project.selectedProcesses.length > 1 ? (
-            <Stepper activeStep={1} alternativeLabel>
-              {project.selectedProcesses.map((process) => (
-                <Step
-                  key={process.id}
-                  sx={{
-                    "& .MuiStepLabel-label": {
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                    },
-                  }}
-                >
-                  <StepLabel>{process.name}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          ) : (
-            <MDTypography
-              variant="button"
-              fontWeight="regular"
-              verticalAlign="center"
-              m={5}
-            >
-              No hay procesos seleccionados
-            </MDTypography>
-          )}
-        </Grid>
+        <SelectedProcesses
+          selectedProcesses={project.selectedProcesses}
+          tasks={project.tasks}
+        />
       </Grid>
 
       <Divider variant="left" sx={{ width: "100%" }} />

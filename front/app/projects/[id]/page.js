@@ -14,6 +14,7 @@ import Index from "./components/index";
 
 const include = [
   "staffs",
+  "tasks",
   "defendant",
   "tasks",
   "plaintiff",

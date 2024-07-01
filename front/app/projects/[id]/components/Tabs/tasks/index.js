@@ -46,6 +46,7 @@ export default function Tasks() {
 
   const showNextStepForm = () => {
     // TODO Get if last task in project is completed
+    if (!process) return false;
     return process.forks.length > 0;
   };
 

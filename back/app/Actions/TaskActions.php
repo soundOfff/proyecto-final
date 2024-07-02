@@ -7,6 +7,8 @@ use App\Models\ActionType;
 use App\Models\Currency;
 use App\Models\Expense;
 use App\Models\Task;
+use App\Services\DocassembleService;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Log;
 
 class TaskActions
@@ -46,7 +48,7 @@ class TaskActions
                     'is_infinite' => $task->is_infinite,
                     'project_id' => $task->taskable_type === Task::TASKABLE_PROJECT ? $task->taskable_id : null,
                     'invoice_id' => $task->taskable_type === Task::TASKABLE_INVOICE ? $task->taskable_id : null,
-                    'created_from_action' => 1
+                    'created_from_action' => 1,
                 ]
             );
         } catch(\Exception $e) {
@@ -56,8 +58,9 @@ class TaskActions
 
     public static function handleApi(Task $task)
     {
-        // Logic for handling API call
-        // dd("test - api from task: {$task->id}");
+        $fileService = new FileService();
+        $docassembleService = new DocassembleService($fileService);
+        $docassembleService->createDocument();
     }
 
     public static function handleMail(Task $task)

@@ -65,15 +65,9 @@ export default function Table({ rows, meta }) {
     {
       Header: "Email",
       accessor: "email",
-      Cell: ({ row }) => {
-        return (
-          <MDTypography variant="body2" color="info">
-            <Link href={`mailto ${row.original.email}`}>
-              {row.original.email}
-            </Link>
-          </MDTypography>
-        );
-      },
+      Cell: ({ row }) => (
+        <MDTypography variant="body2">{row.original.email}</MDTypography>
+      ),
     },
     {
       Header: "Cargo",

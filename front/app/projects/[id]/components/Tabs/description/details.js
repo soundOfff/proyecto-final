@@ -14,6 +14,9 @@ import SelectedProcesses from "/components/Tasks/selected-processes";
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
+
+  const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
+
   return (
     <>
       <Grid container ml={2}>
@@ -78,7 +81,7 @@ export default function Details() {
       <Grid container mt={3} xs={12} display="flex" justifyContent="center">
         <SelectedProcesses
           selectedProcesses={project.selectedProcesses}
-          tasks={project.tasks}
+          tasks={filteredTasks}
         />
       </Grid>
 

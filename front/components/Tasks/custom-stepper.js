@@ -86,7 +86,7 @@ function CustomStepper({ processes, tasks }) {
             <MDTypography variant="caption" fontWeight="bold" color="white">
               {key !== processes.length - 1
                 ? `${totalCompletedProcessTasks}/${totalTasks}`
-                : `${completedTasks().length}/${tasks.length - 1}`}
+                : `${completedTasks().length}/${tasks.length}`}
             </MDTypography>
           </StyledStepperStepIndex>
           <MDTypography variant="caption" color="dark">

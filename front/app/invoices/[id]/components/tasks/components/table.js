@@ -1,7 +1,5 @@
 "use client";
 
-import MDBox from "/components/MDBox";
-
 import { useDataProvider } from "/providers/DataProvider";
 
 import { useEffect, useState } from "react";
@@ -9,7 +7,8 @@ import Table from "/components/Tasks/table-server";
 import { useSearchParams } from "next/navigation";
 import { getAll } from "/actions/tasks";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
-import { Card } from "@mui/material";
+import { Grid, Card } from "@mui/material";
+import MDBox from "/components/MDBox";
 
 export default function TableComponent() {
   const [tasks, setTasks] = useState([]);
@@ -44,25 +43,29 @@ export default function TableComponent() {
   }, [invoice, searchParams]);
 
   return (
-    <Card>
-      <MDBox display="flex" justifyContent="flex-end" p={5}>
-        <Table
-          rows={tasks}
-          meta={meta}
-          priorities={priorities}
-          repeats={repeats}
-          taskableItems={taskableItems}
-          tagsData={tagsData}
-          dependencyTasks={tasks}
-          partners={partners}
-          staffs={staffs}
-          statuses={statuses}
-          currentTimer={currentTimer}
-          actionsData={actionsData}
-          tableFields={tableFields}
-          invoice={invoice}
-        />
-      </MDBox>
-    </Card>
+    <MDBox mb={3}>
+      <Card>
+        <Grid container spacing={3} p={5}>
+          <Grid item xs={12}>
+            <Table
+              rows={tasks}
+              meta={meta}
+              priorities={priorities}
+              repeats={repeats}
+              taskableItems={taskableItems}
+              tagsData={tagsData}
+              dependencyTasks={tasks}
+              partners={partners}
+              staffs={staffs}
+              statuses={statuses}
+              currentTimer={currentTimer}
+              actionsData={actionsData}
+              tableFields={tableFields}
+              invoice={invoice}
+            />
+          </Grid>
+        </Grid>
+      </Card>
+    </MDBox>
   );
 }

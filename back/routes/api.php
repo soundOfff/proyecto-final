@@ -237,6 +237,8 @@ Route::post('/send-notification', [FcmController::class, 'sendNotification']);
 Route::post('/store-token', [FcmController::class, 'storeToken']);
 
 Route::get('/mail-templates', [MailTemplateController::class, 'index']);
+Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
+
 Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 
 Route::get('/documents', [DocumentController::class, 'generate']);

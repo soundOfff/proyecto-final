@@ -9,3 +9,12 @@ export async function getAll(params) {
 
   return data.templates;
 }
+
+export async function show(id, params) {
+  const url = new URL(`${process.env.API_URL}/mail-templates/${id}`);
+  url.search = new URLSearchParams(params);
+
+  const { data } = await customFetch(url);
+
+  return data;
+}

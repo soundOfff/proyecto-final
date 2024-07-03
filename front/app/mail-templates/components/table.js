@@ -4,7 +4,7 @@ import MDBox from "/components/MDBox";
 import Row from "./row";
 import Icon from "@mui/material/Icon";
 import MDTypography from "/components/MDTypography";
-import { Divider, Link } from "@mui/material";
+import { Link } from "@mui/material";
 
 const renderGroup = ({ name, mailTemplates }, key) => {
   return (
@@ -49,13 +49,16 @@ const renderGroup = ({ name, mailTemplates }, key) => {
             No hay plantillas de mail para este grupo
           </MDTypography>
         ) : (
-          mailTemplates.map((template) => (
-            <Row
-              key={template.id}
-              name={template.name}
-              disabled={template.disabled}
-            />
-          ))
+          mailTemplates.map((template) => {
+            return (
+              <Row
+                id={template.id}
+                name={template.name}
+                slug={template.event}
+                disabled={template.disabled}
+              />
+            );
+          })
         )}
       </MDBox>
     </MDBox>

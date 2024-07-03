@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MailTemplateResource;
 use App\Http\Resources\MailTemplateResourceCollection;
 use App\Models\MailTemplate;
 use Spatie\QueryBuilder\AllowedInclude;
@@ -19,5 +20,10 @@ class MailTemplateController extends Controller
             : $query->get();
 
         return new MailTemplateResourceCollection($templates);
+    }
+
+    public function show(MailTemplate $mailTemplate)
+    {
+        return new MailTemplateResource($mailTemplate);
     }
 }

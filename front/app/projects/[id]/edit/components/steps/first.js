@@ -7,7 +7,7 @@ import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 
 import { useEffect, useState } from "react";
-import { EditorState, convertToRaw } from "draft-js";
+import { convertToRaw } from "draft-js";
 import { ErrorMessage } from "formik";
 import { parseEditorState } from "/utils/parseEditorState";
 
@@ -66,7 +66,9 @@ export default function First({ formData, project }) {
           type={expedient.type}
           placeholder={expedient.placeholder}
           error={errors[expedient.name] && touched[expedient.name]}
-          success={values[expedient.name]?.length > 0 && !errors[expedient.name]}
+          success={
+            values[expedient.name]?.length > 0 && !errors[expedient.name]
+          }
         />
       </Grid>
       <Grid item xs={12}>

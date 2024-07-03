@@ -23,16 +23,24 @@ import Icon from "@mui/material/Icon";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import { FormGroup, FormControlLabel, Switch } from "@mui/material";
+import Link from "next/link";
 
-function Row({ name, slug, disabled, key }) {
+function Row({ name, slug, disabled, id }) {
   return (
-    <MDBox key={key} component="li" pr={2} mb={1}>
+    <MDBox key={id} component="li" pr={2} mb={1}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center">
         <MDBox display="flex" alignItems="center">
           <MDBox display="flex" flexDirection="column" justifyContent="center">
-            <MDTypography variant="button" fontWeight="medium" gutterBottom>
-              {name}
-            </MDTypography>
+            <Link href={`/mail-templates/${id}`}>
+              <MDTypography
+                variant="button"
+                fontWeight="medium"
+                color="info"
+                gutterBottom
+              >
+                {name}
+              </MDTypography>
+            </Link>
             <MDTypography variant="caption" color="text" fontWeight="regular">
               {slug}
             </MDTypography>

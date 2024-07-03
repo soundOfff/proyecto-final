@@ -24,6 +24,8 @@ use App\Http\Controllers\ItemGroupController;
 use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MailTemplateController;
+use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
@@ -233,6 +235,9 @@ Route::get('/activity-logs', [ActivityController::class, 'index']);
 
 Route::post('/send-notification', [FcmController::class, 'sendNotification']);
 Route::post('/store-token', [FcmController::class, 'storeToken']);
+
+Route::get('/mail-templates', [MailTemplateController::class, 'index']);
+Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 
 Route::get('/documents', [DocumentController::class, 'generate']);
 

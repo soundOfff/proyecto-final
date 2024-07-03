@@ -24,6 +24,33 @@ class MailTemplateSeeder extends Seeder
                 'send_from' => 'Velo Legal | Cases',
                 'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
             ],
+            [
+                'id' => 2,
+                'name' => 'Ticket Reply (Sent to Customer)',
+                'mail_template_group_id' => 6, // 'tasks'
+                'event' => 'ticket-reply',
+                'subject' => 'New ticket reply',
+                'send_from' => 'Velo Legal | Cases',
+                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
+            ],
+            [
+                'id' => 3,
+                'name' => 'New Comment on Task (Sent to Staff)',
+                'mail_template_group_id' => 6, // 'tasks'
+                'event' => 'new-comment-on-task',
+                'subject' => 'New Comment on Task - {task_name}',
+                'send_from' => 'Velo Legal | Cases',
+                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
+            ],
+            [
+                'id' => 4,
+                'name' => 'Task Deadline Reminder - Sent to Assigned Members',
+                'mail_template_group_id' => 6, // 'tasks'
+                'event' => 'task-deadline-reminder',
+                'subject' => 'Task Deadline Reminder',
+                'send_from' => 'Velo Legal | Cases',
+                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
+            ]
         ];
 
         foreach ($templates as $template) {

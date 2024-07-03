@@ -47,7 +47,7 @@ function Row({ name, slug, disabled, id }) {
           </MDBox>
         </MDBox>
         <FormGroup>
-          <FormControlLabel control={<Switch checked={disabled} />} />
+          <FormControlLabel control={<Switch checked={!disabled} />} />
         </FormGroup>
       </MDBox>
     </MDBox>

@@ -21,6 +21,10 @@ const templateForm = {
       label: "Nombre",
       requiredErrorMsg: "Nombre es requerido",
     },
+    groupId: {
+      name: "mail_template_group_id",
+      label: "Grupo",
+    },
     event: {
       name: "event",
       label: "Evento",

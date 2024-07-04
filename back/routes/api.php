@@ -238,6 +238,7 @@ Route::post('/store-token', [FcmController::class, 'storeToken']);
 
 Route::get('/mail-templates', [MailTemplateController::class, 'index']);
 Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
+Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
 
 Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 

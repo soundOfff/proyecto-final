@@ -39,6 +39,7 @@ const renderGroup = ({ name, mailTemplates }, key) => {
       <MDBox
         component="ul"
         display="flex"
+        key={key}
         flexDirection="column"
         px={8}
         m={3}

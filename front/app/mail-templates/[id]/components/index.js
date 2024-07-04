@@ -10,13 +10,16 @@ import initialValues from "./schemas/initial-values";
 import validations from "./schemas/validations";
 
 import { Card } from "@mui/material";
-import { useEffect, useState } from "react";
-import { parseEditorState } from "/utils/parseEditorState";
+import { update } from "/actions/mail-templates";
 
 export default function MailTemplateForm({ mailTemplate }) {
   const { formField, formId } = form;
 
-  const handleSubmit = () => {}; // todo: make this works
+  const handleSubmit = async (values) => {
+    console.log(values);
+    await update(mailTemplate.id, values);
+  };
+
   return (
     <Formik
       initialValues={initialValues}

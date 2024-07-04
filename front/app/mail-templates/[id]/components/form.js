@@ -1,10 +1,14 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Grid, FormGroup, FormControlLabel, Switch } from "@mui/material";
 import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
-import { parseEditorState } from "/utils/parseEditorState";
+
+import dynamic from "next/dynamic";
+import { convertToHtml } from "/utils/parseEditorState";
+import { EditorState } from "draft-js";
 
 export default function MailTemplateForm({ mailTemplate, formData }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
@@ -12,9 +16,7 @@ export default function MailTemplateForm({ mailTemplate, formData }) {
   const { subject, name, sendFrom, disabled, formatted, event, body } =
     formField;
 
-  const [editorState, setEditorState] = useState(
-    parseEditorState(mailTemplate.body) // TODO: define what data is expected here
-  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
     setFieldValue(name.name, mailTemplate.name);
@@ -26,6 +28,11 @@ export default function MailTemplateForm({ mailTemplate, formData }) {
     setFieldValue(event.name, mailTemplate.event);
     setFieldValue(body.name, mailTemplate.body);
   }, [mailTemplate]);
+
+  useEffect(() => {
+    const editorState = convertToHtml(mailTemplate.body);
+    setEditorState(editorState);
+  }, []); // TODO: setFieldValue when the body changes and save it formatted as html
 
   return (
     <MDBox p={4}>

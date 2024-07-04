@@ -16,12 +16,22 @@ Coded by www.creative-tim.com
 import form from "./form";
 
 const {
-  formField: { body, name, event, sendFrom, subject, disabled, formatted },
+  formField: {
+    body,
+    name,
+    event,
+    sendFrom,
+    subject,
+    disabled,
+    groupId,
+    formatted,
+  },
 } = form;
 
 const initialValues = {
   [name.name]: "",
   [event.name]: "",
+  [groupId.name]: "",
   [sendFrom.name]: "",
   [subject.name]: "",
   [body.name]: "",

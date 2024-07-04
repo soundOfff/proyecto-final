@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\MailTemplateResource;
 use App\Http\Resources\MailTemplateResourceCollection;
 use App\Models\MailTemplate;
-use Spatie\QueryBuilder\AllowedInclude;
+use App\Models\Task;
+use App\Services\MailTemplateService;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class MailTemplateController extends Controller
 {
+    public function __construct(protected MailTemplateService $mailTemplateService)
+    {
+    }
+
     public function index()
     {
         $query = QueryBuilder::for(MailTemplate::class)
@@ -22,8 +27,17 @@ class MailTemplateController extends Controller
         return new MailTemplateResourceCollection($templates);
     }
 
-    public function show(MailTemplate $mailTemplate)
+    public function send(Request $request)
     {
-        return new MailTemplateResource($mailTemplate);
+        $to = $request->get('to');
+        $templateId = $request->get('template_id');
+        $taskId = $request->get('task_id');
+
+        $template = MailTemplate::findOrFail($templateId);
+        $task = Task::findOrFail($taskId);
+
+        $this->mailTemplateService->sendTemplate($to, $task, $template);
+
+        return response()->json(['message' => 'Mail sent.']);
     }
 }

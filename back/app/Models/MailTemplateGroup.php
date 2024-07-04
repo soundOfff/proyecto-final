@@ -12,6 +12,7 @@ class MailTemplateGroup extends Model
         'slug',
     ];
 
+    const TASK_ID = 6;
 
     public function mailTemplates()
     {

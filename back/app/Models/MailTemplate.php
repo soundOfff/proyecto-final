@@ -13,11 +13,16 @@ class MailTemplate extends Model
         'subject',
         'send_from',
         'send_to',
-        'template_group_id',
+        'mail_template_group_id',
         'body',
         'formatted',
         'disabled',
     ];
+
+    public function isTaskGroup()
+    {
+        return $this->mail_template_group_id == MailTemplateGroup::TASK_ID;
+    }
 
     public function group()
     {

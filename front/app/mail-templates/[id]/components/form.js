@@ -6,9 +6,9 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 
-import dynamic from "next/dynamic";
-import { convertToHtml } from "/utils/parseEditorState";
+import { htmlToEditorState } from "/utils/parseEditorState";
 import { EditorState } from "draft-js";
+import { editorStateToHtml } from "/utils/parseEditorState";
 
 export default function MailTemplateForm({ mailTemplate, formData }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
@@ -30,9 +30,14 @@ export default function MailTemplateForm({ mailTemplate, formData }) {
   }, [mailTemplate]);
 
   useEffect(() => {
-    const editorState = convertToHtml(mailTemplate.body);
+    const editorState = htmlToEditorState(mailTemplate.body);
     setEditorState(editorState);
-  }, []); // TODO: setFieldValue when the body changes and save it formatted as html
+  }, [mailTemplate]);
+
+  useEffect(() => {
+    const content = editorStateToHtml(editorState);
+    setFieldValue(body.name, content);
+  }, [editorState, setFieldValue]);
 
   return (
     <MDBox p={4}>

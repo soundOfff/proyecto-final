@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-=======
 use App\Http\Requests\MailTemplateRequest;
 use App\Http\Resources\MailTemplateResource;
->>>>>>> 0abf2d3 (wip mail body editor)
 use App\Http\Resources\MailTemplateResourceCollection;
 use App\Models\MailTemplate;
 use App\Models\Task;
 use App\Services\MailTemplateService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class MailTemplateController extends Controller
@@ -30,6 +28,11 @@ class MailTemplateController extends Controller
             : $query->get();
 
         return new MailTemplateResourceCollection($templates);
+    }
+
+    public function show(MailTemplate $mailTemplate)
+    {
+        return new MailTemplateResource($mailTemplate);
     }
 
     public function send(Request $request)

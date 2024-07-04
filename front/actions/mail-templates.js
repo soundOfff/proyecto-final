@@ -30,5 +30,4 @@ export async function update(id, data) {
   });
 
   revalidatePath("/mail-templates");
-  redirect("/mail-templates");
 }

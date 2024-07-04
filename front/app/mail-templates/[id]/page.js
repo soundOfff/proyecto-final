@@ -2,7 +2,7 @@ import MDBox from "/components/MDBox";
 import Form from "./components/index";
 import { Grid } from "@mui/material";
 import { show as getMailTemplate } from "/actions/mail-templates";
-// import FieldList from "./components/field-list";
+import FieldList from "./components/field-list";
 
 export const dynamic = "force-dynamic";
 
@@ -16,9 +16,9 @@ export default async function MailTemplates({ params }) {
         <Grid item xs={12} sm={6}>
           <Form mailTemplate={mailTemplate} />
         </Grid>
-        {/* <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
           <FieldList />
-        </Grid> */}
+        </Grid>
       </Grid>
     </MDBox>
   );

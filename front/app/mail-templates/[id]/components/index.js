@@ -16,7 +16,6 @@ export default function MailTemplateForm({ mailTemplate }) {
   const { formField, formId } = form;
 
   const handleSubmit = async (values) => {
-    console.log(values);
     await update(mailTemplate.id, values);
   };
 

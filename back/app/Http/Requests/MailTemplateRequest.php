@@ -26,7 +26,6 @@ class MailTemplateRequest extends FormRequest
             'subject' => 'required|string',
             'body' => 'required|string',
             'event' => 'required|string',
-            'mail_template_group_id' => 'nullable|exists:mail_template_groups,id',
             'send_from' => 'required|string',
             'send_to' => 'nullable|string',
             'formatted' => 'nullable|boolean',

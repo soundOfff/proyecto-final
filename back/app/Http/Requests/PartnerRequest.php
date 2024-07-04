@@ -45,6 +45,8 @@ class PartnerRequest extends FormRequest
             'name' => 'nullable|string',
             'document' => 'nullable|string',
             'section' => 'nullable|string',
+            'id_type' => 'nullable|string',
+            'id_number' => 'nullable|string',
             'industry' => 'nullable|string',
             'number' => 'nullable|string',
             'birth_date' => 'nullable|date',

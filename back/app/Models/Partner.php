@@ -25,6 +25,8 @@ class Partner extends Model
         'active',
         'added_from',
         'address',
+        'id_type',
+        'id_number',
         'billing_city',
         'billing_country_id',
         'billing_state',

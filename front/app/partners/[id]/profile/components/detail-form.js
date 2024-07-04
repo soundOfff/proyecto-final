@@ -48,6 +48,8 @@ export default function DetailFormComponent({
       person: {
         birthDate,
         expeditionDate,
+        idType,
+        idNumber,
         isConsolidator: isConsolidatorPerson,
         isMale,
         birthPlace,
@@ -71,6 +73,8 @@ export default function DetailFormComponent({
     [birthDate.name]: partner.birthDate ?? "",
     [expeditionDate.name]: partner.expeditionDate ?? "",
     [isMale.name]: partner.isMale ?? "",
+    [idType.name]: partner.idType ?? "",
+    [idNumber.name]: partner.idNumber ?? "",
     [birthPlace.name]: partner.birthPlaceId ?? "",
     [nationality.name]: partner.nationalityId ?? "",
     [phone.name]: partner.phoneNumber ?? "",

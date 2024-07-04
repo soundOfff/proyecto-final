@@ -39,11 +39,13 @@ const detailForm = {
         name: "city",
         label: "Ciudad",
         type: "text",
+        errorMsg: "La ciudad es requerida",
       },
       state: {
         name: "state",
         label: "Provincia",
         type: "text",
+        errorMsg: "Debe seleccionar una provincia",
       },
       province: {
         name: "province_id",
@@ -221,11 +223,13 @@ const detailForm = {
         name: "city",
         label: "Ciudad",
         type: "text",
+        errorMsg: "La ciudad es requerida",
       },
       state: {
         name: "state",
         label: "Provincia",
         type: "text",
+        errorMsg: "Debe seleccionar una provincia",
       },
       province: {
         name: "province_id",

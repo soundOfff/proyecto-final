@@ -24,7 +24,7 @@ class EstimateRequest extends FormRequest
         return [
             'partner_id' => 'required|numeric|exists:partners,id',
             'project_id' => 'required|numeric|exists:projects,id',
-            'sale_agent_id' => 'required|numeric|exists:partners,id',
+            'sale_agent_id' => 'required|numeric|exists:staff,id',
             'service_id' => 'nullable|numeric|exists:project_service_types,id',
             'sub_service_type_id' => 'nullable|numeric|exists:sub_service_types,id',
             'currency_id' => 'nullable|numeric|exists:currencies,id',

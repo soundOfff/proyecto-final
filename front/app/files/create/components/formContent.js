@@ -6,7 +6,13 @@ import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import Select from "/components/Select";
 import form from "./schemas/form";
-import { FILEABLE_TYPES } from "/utils/constants/fileableTypes";
+import {
+  FILEABLE_TYPES,
+  TASK_FILEABLE_TYPE,
+  PROJECT_FILEABLE_TYPE,
+  EXPENSE_FILEABLE_TYPE,
+  PARTNER_FILEABLE_TYPE,
+} from "/utils/constants/fileableTypes";
 import { ErrorMessage } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { Autocomplete, Grid } from "@mui/material";
@@ -29,16 +35,16 @@ export default function FormContent({ values, setFieldValue }) {
   };
 
   const getRelation = (fileableType) => {
-    if (fileableType === "project") {
+    if (fileableType === PROJECT_FILEABLE_TYPE) {
       getAllProjects().then((data) => setRelations(data));
     }
-    if (fileableType === "customer") {
+    if (fileableType === PARTNER_FILEABLE_TYPE) {
       getAllPartners().then((data) => setRelations(data));
     }
-    if (fileableType === "expense") {
+    if (fileableType === EXPENSE_FILEABLE_TYPE) {
       getAllExpenses().then((data) => setRelations(data.data.expenses));
     }
-    if (fileableType === "task") {
+    if (fileableType === TASK_FILEABLE_TYPE) {
       getAllTasks().then((data) => setRelations(data.data.tasks));
     }
   };
@@ -51,21 +57,23 @@ export default function FormContent({ values, setFieldValue }) {
   }, [values, fileableType, setFieldValue, path.name]);
 
   useEffect(() => {
-    if (searchParams.get("projectId")) {
-      setFieldValue(fileableType.name, "project");
-      setFieldValue(fileableId.name, Number(searchParams.get("projectId")));
-    }
-    if (searchParams.get("partnerId")) {
-      setFieldValue(fileableType.name, "customer");
-      setFieldValue(fileableId.name, Number(searchParams.get("partnerId")));
-    }
-    if (searchParams.get("expenseId")) {
-      setFieldValue(fileableType.name, "expense");
-      setFieldValue(fileableId.name, Number(searchParams.get("expenseId")));
-    }
-    if (searchParams.get("taskId")) {
-      setFieldValue(fileableType.name, "task");
-      setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
+    if (!values[fileableType.name]) {
+      if (searchParams.get("projectId")) {
+        setFieldValue(fileableType.name, PROJECT_FILEABLE_TYPE);
+        setFieldValue(fileableId.name, Number(searchParams.get("projectId")));
+      }
+      if (searchParams.get("partnerId")) {
+        setFieldValue(fileableType.name, PARTNER_FILEABLE_TYPE);
+        setFieldValue(fileableId.name, Number(searchParams.get("partnerId")));
+      }
+      if (searchParams.get("expenseId")) {
+        setFieldValue(fileableType.name, EXPENSE_FILEABLE_TYPE);
+        setFieldValue(fileableId.name, Number(searchParams.get("expenseId")));
+      }
+      if (searchParams.get("taskId")) {
+        setFieldValue(fileableType.name, TASK_FILEABLE_TYPE);
+        setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
+      }
     }
     setFieldValue(name.name, values[fileableId.name]);
   }, [searchParams, fileableId, fileableType, setFieldValue, values, name]);
@@ -105,7 +113,7 @@ export default function FormContent({ values, setFieldValue }) {
               ) ?? null
             }
             onChange={(_, newFileableType) =>
-              setFieldValue(fileableType.name, newFileableType.value)
+              setFieldValue(fileableType.name, newFileableType?.value ?? "")
             }
             options={FILEABLE_TYPES}
             isOptionEqualToValue={(option, value) =>

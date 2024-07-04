@@ -53,6 +53,7 @@ export async function update(taskId, data) {
   revalidatePath("/projects");
   revalidatePath("/partners/tasks");
   revalidatePath("/invoices/[id]");
+  revalidatePath("/expenses");
 }
 
 export async function show(id, params) {

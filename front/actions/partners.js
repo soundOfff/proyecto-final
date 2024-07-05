@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { customFetch } from "./custom-fetch";
 
@@ -40,7 +40,7 @@ export async function store(data) {
   });
 
   revalidatePath("/partners");
-  redirect("/partners");
+  revalidatePath("/partners/create");
 }
 
 export async function update(id, data) {

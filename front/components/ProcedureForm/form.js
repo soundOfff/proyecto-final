@@ -17,6 +17,7 @@ export default function FormComponent({
   processId,
   procedure,
   procedures,
+  staffs,
   actionTypes,
 }) {
   const { formId } = form;
@@ -31,6 +32,7 @@ export default function FormComponent({
         await update(procedure.id, {
           ...values,
           process_id: procedure.processId,
+          author_id: session.staff.id,
         });
         router.push(`/processes/${procedure.processId}`);
       } else {
@@ -99,6 +101,7 @@ export default function FormComponent({
                 setFieldError,
                 procedures,
                 procedure,
+                staffs,
                 actionTypes,
               }}
             />

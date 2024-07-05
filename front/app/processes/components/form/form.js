@@ -19,7 +19,11 @@ import { useRouter } from "next/navigation";
 import { update } from "/actions/processes";
 import { useSession } from "next-auth/react";
 
-export default function FormComponent({ projectServiceTypes, process }) {
+export default function FormComponent({
+  projectServiceTypes,
+  process,
+  processes,
+}) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
@@ -29,7 +33,7 @@ export default function FormComponent({ projectServiceTypes, process }) {
   const submitForm = async (values, actions) => {
     try {
       if (process) {
-        await update(process.id, values);
+        await update(process.id, { ...values, author_id: session.staff.id });
       } else {
         await store({ ...values, author_id: session.staff.id });
       }
@@ -84,6 +88,7 @@ export default function FormComponent({ projectServiceTypes, process }) {
                           setFieldValue,
                           projectServiceTypes,
                           process,
+                          processes,
                         }}
                       />
                       <MDBox display="flex" justifyContent="end" mt={5}>

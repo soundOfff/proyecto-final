@@ -8,6 +8,15 @@ import {
 
 const COLORS = ["info", "primary", "warning", "error", "success", "dark"];
 
+const LEVELS = [
+  "#D9D9D9",
+  "#A6A6A6",
+  "#737373",
+  "#595959",
+  "#404040",
+  "#1A1A1A",
+];
+
 export function setColor(label) {
   if (label === NOT_STARTED) {
     return "primary";

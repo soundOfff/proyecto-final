@@ -3,6 +3,9 @@ import Form from "/components/ProcedureForm/form";
 import { Card } from "@mui/material";
 import { getAll } from "/actions/action-types";
 import { getAll as getAllProcedures } from "/actions/procedures";
+import { select as getAllStaffs } from "/actions/staffs";
+
+export const dynamic = "force-dynamic";
 
 export default async function CreateProcedure({ searchParams: { processId } }) {
   const {
@@ -12,6 +15,8 @@ export default async function CreateProcedure({ searchParams: { processId } }) {
     "filter[process_id]": processId,
   });
   const actionTypes = await getAll();
+  const staffs = await getAllStaffs();
+
   return (
     <Card sx={{ overflow: "visible", my: 3 }}>
       <MDBox p={3}>
@@ -19,6 +24,7 @@ export default async function CreateProcedure({ searchParams: { processId } }) {
           processId={processId}
           procedures={procedures}
           actionTypes={actionTypes}
+          staffs={staffs}
         />
       </MDBox>
     </Card>

@@ -18,6 +18,7 @@ class ProcessController extends Controller
             'projectServiceType',
             'procedures.status',
             'procedures.responsible',
+            'forks',
             'author',
         ])
         ->allowedFilters([
@@ -38,6 +39,7 @@ class ProcessController extends Controller
             'projectServiceType',
             'procedures.status',
             'procedures.responsible',
+            'forks',
             'author',
         ])
         ->allowedFilters([
@@ -51,8 +53,10 @@ class ProcessController extends Controller
     public function store(ProcessRequest $request)
     {
         $newProcess = $request->validated();
+        $forkIds = array_column($newProcess['forks'], 'id');
 
-        Process::create($newProcess);
+        $process = Process::create($newProcess);
+        $process->forks()->sync($forkIds);
 
         return response()->json(null, 201);
     }
@@ -60,8 +64,10 @@ class ProcessController extends Controller
     public function update(ProcessRequest $request, Process $process)
     {
         $updatedProcess = $request->validated();
+        $forkIds = array_column($updatedProcess['forks'], 'id');
 
         $process->update($updatedProcess);
+        $process->forks()->sync($forkIds);
 
         return response()->json(null, 204);
     }

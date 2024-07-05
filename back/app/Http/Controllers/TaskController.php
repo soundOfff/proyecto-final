@@ -5,17 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskResourceCollection;
+use App\Models\Staff;
 use App\Models\Taggable;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Pipes\TaskPipe;
+use App\Services\FcmService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Facades\CauserResolver;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
+
     public function index()
     {
         $query = QueryBuilder::for(Task::class)
@@ -50,8 +58,7 @@ class TaskController extends Controller
                         'staff_id',
                         function (Builder $query, $value) {
                             $query
-                                ->where('owner_id', $value)
-                                ->orWhereHas(
+                                ->whereHas(
                                     'assigneds',
                                     fn (Builder $query) => $query->where('staff_id', $value)
                                 );
@@ -84,7 +91,7 @@ class TaskController extends Controller
         $newTask['author_id'] = $newTask['owner_id'];
 
         if (! array_key_exists('milestone_order', $newTask)) {
-            $newTask['milestone_order'] = Task::getMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']);
+            $newTask['milestone_order'] = Task::getLatestMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']) + 1; // Next milestone order
         }
 
         $task = Task::create($newTask);
@@ -114,41 +121,67 @@ class TaskController extends Controller
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
         $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
-        $actions = isset($newTask['actions']) ? $newTask['actions'] : null;
         $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
+
+        CauserResolver::setCauser(Staff::find($newTask['owner_id'] ?? $task->owner_id));
+
+        $task->load('tags', 'dependencies', 'comments', 'checklistItems', 'assigneds', 'followers', 'reminders', 'requiredFields');
+        $oldRelations = [
+            'tags' => $task->tags,
+            'dependencies' => $task->dependencies,
+            'comments' => $task->comments,
+            'checklistItems' => $task->checklistItems,
+            'assigneds' => $task->assigneds,
+            'followers' => $task->followers,
+            'reminders' => $task->reminders,
+            'requiredFields' => $task->requiredFields,
+        ];
+        $newRelations = [
+            'tags' => $tags,
+            'dependencies' => $dependencies,
+            'comments' => $comments,
+            'checklistItems' => $checklistItems,
+            'assigneds' => $assigneds,
+            'followers' => $followers,
+            'reminders' => $reminders,
+            'requiredFields' => $requiredFields,
+        ];
+
+        Task::addLogChange(new TaskPipe($oldRelations, $newRelations));
+
         $task->update($newTask);
 
-        if (isset($comments)) {
+        if ($comments) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
         }
 
-        if (isset($dependencies)) {
+        if ($dependencies) {
             $dependencyIds = array_column($dependencies, 'id');
             $task->dependencies()->sync($dependencyIds);
         }
 
-        if (isset($checklistItems)) {
+        if ($checklistItems) {
             $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
         }
 
-        if (isset($assigneds)) {
+        if ($assigneds) {
             $assignedIds = array_column($assigneds, 'id');
             $task->assigneds()->sync($assignedIds);
         }
 
-        if (isset($followers)) {
+        if ($followers) {
             $followerIds = array_column($followers, 'id');
             $task->followers()->sync($followerIds);
         }
 
-        if (isset($reminders)) {
+        if ($reminders) {
             $task->reminders()->delete();
             $task->reminders()->createMany($reminders);
         }
 
-        if (isset($tags)) {
+        if ($tags) {
             $task->tags()->detach();
             foreach ($tags as $tag) {
                 $tag['taggable_id'] = $task->id;
@@ -158,13 +191,31 @@ class TaskController extends Controller
             }
         }
 
-        if (isset($actions)) {
-            $actionIds = array_column($actions, 'id');
-            $task->actions()->syncWithPivotValues($actionIds, ['is_completed' => false]);
+        if ($requiredFields) {
+            $task->requiredFields()->delete();
+            $task->requiredFields()->createMany($requiredFields);
         }
 
-        $task->requiredFields()->delete();
-        $task->requiredFields()->createMany($requiredFields);
+        if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {
+            $staffs = Staff::whereIn('id',
+                array_merge(
+                    isset($newTask['assigneds']) ? $newTask['assigneds'] : array_column($task->assigneds->toArray(), 'id') ?? [],
+                    isset($newTask['followers']) ? $newTask['followers'] : array_column($task->followers->toArray(), 'id') ?? [],
+                    isset($newTask['owner_id']) ? [$newTask['owner_id']] : [$task->owner_id]
+                )
+            )->with('devices')->get();
+            foreach ($staffs as $staff) {
+                foreach ($staff->devices as $device) {
+                    $taskName = isset($newTask['name']) ? $newTask['name'] : $task->name;
+                    $this->fcmService->sendNotification(
+                        $device->device_token,
+                        'Tarea Completada',
+                        "La tarea \"$taskName\" ha sido completada, puede elegir el siguiente proceso",
+                        $staff->id
+                    );
+                }
+            }
+        }
 
         return response()->json(null, 204);
     }
@@ -213,6 +264,7 @@ class TaskController extends Controller
                 'actions',
                 'requiredFields',
                 'author',
+                'procedure',
             ])
             ->find($task->id);
 

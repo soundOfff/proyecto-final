@@ -80,6 +80,17 @@ export default function Table({ rows, meta }) {
       accessor: "date",
     },
     {
+      Header: "Creado automáticamente",
+      accessor: "createdFromAction",
+      Cell: ({ value }) => (
+        <MDBox display="flex" justifyContent="center">
+          <MDTypography variant="caption" fontWeight="regular">
+            {value ? "Sí" : ""}
+          </MDTypography>
+        </MDBox>
+      ),
+    },
+    {
       Header: "Caso",
       accessor: "project.name",
       width: "25%",

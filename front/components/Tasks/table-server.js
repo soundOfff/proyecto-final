@@ -8,18 +8,20 @@ import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
+import { DataProvider } from "/providers/DataProvider";
+import Show from "./show";
 import Link from "next/link";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalContentForm from "/components/ModalContent/Task";
 import { Autocomplete, Grid, Tooltip } from "@mui/material";
 
 import { destroy } from "/actions/tasks";
 
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
-import Show from "./show";
+import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 import { AccessAlarm, LockClockOutlined, NoteAdd } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import DeleteRow from "/components/DeleteRow";
@@ -27,7 +29,6 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 import useTaskTable from "/hooks/useTaskTable";
-import Header from "./show/header";
 
 export default function Table({
   rows,
@@ -37,6 +38,7 @@ export default function Table({
   taskableItems,
   tagsData,
   statuses,
+  staffs,
   dependencyTasks,
   partners,
   currentTimer,
@@ -44,6 +46,7 @@ export default function Table({
   actionsData,
   tableFields,
   partnerId,
+  invoice,
 }) {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -57,11 +60,12 @@ export default function Table({
     startTimer,
     handleStatusChange,
     handlePriorityChange,
+    getSelectedFork,
     handleCompleteTask,
     setOpenShowModal,
     setOpenEditModal,
     setTaskId,
-  } = useTaskTable({ rows, dispatch, currentTaskId });
+  } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
   const { darkMode } = controller;
   const { data: session } = useSession();
 
@@ -265,6 +269,15 @@ export default function Table({
               }}
             />
           </Tooltip>
+          <Tooltip title="Ver Cambios">
+            <Link href={`/tasks/${row.original.id}/changes`}>
+              <VisibilityIcon
+                color="action"
+                fontSize="medium"
+                sx={{ mx: 1, cursor: "pointer" }}
+              />
+            </Link>
+          </Tooltip>
           {currentTimer?.task_id === row.original.id ? (
             <Tooltip title="Detener temporizador">
               <LockClockOutlined
@@ -321,11 +334,20 @@ export default function Table({
             dependencyTasks={dependencyTasks}
             tagsData={tagsData}
             partners={partners}
-            task={task}
+            task={
+              invoice && !task
+                ? {
+                    taskable_id: invoice.id,
+                    taskable_type: INVOICE_TYPE,
+                    partner_id:
+                      invoice.project?.defendant.id ?? invoice.partner.id,
+                  }
+                : task
+            }
             actionsData={actionsData}
             tableFields={tableFields}
             partnerId={partnerId}
-            mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
+            mode={invoice || !task ? MODAL_TYPES.CREATE : MODAL_TYPES.EDIT}
           />
         </Modal>
       )}
@@ -338,14 +360,23 @@ export default function Table({
           sx={{ overflow: "scroll" }}
         >
           {task && (
-            <Show
-              task={task}
-              markAsCompleted={handleCompleteTask}
-              isTimerStarted={currentTimer?.task_id === task.id}
-              currentTimerId={currentTimer?.id}
-              stopTimer={stopTimer}
-              startTimer={startTimer}
-            />
+            <DataProvider
+              value={{
+                task,
+                currentTimerId: currentTimer?.id,
+                isTimerStarted: currentTimer?.task_id === task.id,
+                statuses,
+                priorities,
+                tagsData,
+                staffs,
+                markAsCompleted: handleCompleteTask,
+                stopTimer,
+                startTimer,
+                getSelectedFork,
+              }}
+            >
+              <Show />
+            </DataProvider>
           )}
         </Modal>
       )}

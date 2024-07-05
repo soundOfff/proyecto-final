@@ -22,7 +22,7 @@ const {
     name,
     stepQuantity,
     projectServiceType,
-    dependencies,
+    forks,
   },
 } = checkout;
 
@@ -32,7 +32,7 @@ const initialValues = {
   [name.name]: "",
   [stepQuantity.name]: "",
   [projectServiceType.name]: "",
-  [dependencies.name]: [],
+  [forks.name]: [],
 };
 
 export default initialValues;

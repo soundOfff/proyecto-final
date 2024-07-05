@@ -11,6 +11,9 @@ import { ErrorMessage } from "formik";
 
 import ActionForm from "./actionForm";
 import ActionList from "./actionList";
+import ReminderForm from "./reminderForm";
+import ReminderList from "./reminderList";
+
 export default function FormContent({
   values,
   setFieldValue,
@@ -18,16 +21,25 @@ export default function FormContent({
   errors,
   touched,
   procedures,
+  staffs,
   procedure,
   actionTypes: actionsOptions,
 }) {
   const { formField } = form;
-  const { name, description, stepNumber, dependencies, actions } = formField;
+  const { name, description, stepNumber, dependencies, actions, reminders } =
+    formField;
 
   const deleteAction = (index) => {
     setFieldValue(actions.name, [
-      ...values.actions.slice(0, index),
-      ...values.actions.slice(index + 1),
+      ...values[actions.name].slice(0, index),
+      ...values[actions.name].slice(index + 1),
+    ]);
+  };
+
+  const deleteReminder = (index) => {
+    setFieldValue(reminders.name, [
+      ...values[reminders.name].slice(0, index),
+      ...values[reminders.name].slice(index + 1),
     ]);
   };
 
@@ -36,8 +48,9 @@ export default function FormContent({
       setFieldValue(name.name, procedure.name);
       setFieldValue(description.name, procedure.description);
       setFieldValue(stepNumber.name, procedure.stepNumber);
-      setFieldValue(dependencies.name, procedure.dependencies);
-      setFieldValue(actions.name, procedure.actions);
+      setFieldValue(dependencies.name, procedure.dependencies || []);
+      setFieldValue(actions.name, procedure.actions || []);
+      setFieldValue(reminders.name, procedure.reminders || []);
     }
   }, [
     procedure,
@@ -47,6 +60,7 @@ export default function FormContent({
     stepNumber.name,
     dependencies.name,
     actions.name,
+    reminders.name,
   ]);
 
   const validateStepNumberNotExist = (stepNumber) => {
@@ -190,6 +204,24 @@ export default function FormContent({
         procedure={procedure}
         options={actionsOptions}
         deleteAction={deleteAction}
+      />
+      <Grid item xs={12}>
+        <MDTypography variant="h6" fontWeight="medium">
+          Recordatorios
+        </MDTypography>
+      </Grid>
+      <ReminderForm
+        reminders={values[reminders.name]}
+        actions={actions}
+        values={values}
+        remindersField={reminders}
+        staffs={staffs}
+        setFieldValue={setFieldValue}
+      />
+      <ReminderList
+        reminders={values[reminders.name]}
+        staffs={staffs}
+        deleteReminder={deleteReminder}
       />
     </Grid>
   );

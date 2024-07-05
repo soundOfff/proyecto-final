@@ -18,10 +18,12 @@ import { useEffect, useState } from "react";
 import { getAll as getAllProvinces } from "/actions/provinces";
 import { getAll as getAllDistricts } from "/actions/districts";
 import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
+import RelatedPersonFormComponent from "/app/partners/create/components/related-person-form";
 
 export default function JuridicalForm({
   countries,
   consolidators,
+  partnerTypes,
   notJuridicEntities,
   errors,
   values,
@@ -34,6 +36,9 @@ export default function JuridicalForm({
         company,
         state,
         city,
+        industry,
+        document,
+        section,
         consolidator,
         isConsolidator,
         country,
@@ -52,9 +57,6 @@ export default function JuridicalForm({
         rollNumber,
         ruc,
         dv,
-        president,
-        secretary,
-        treasurer,
       },
     },
   } = detailForm;
@@ -99,17 +101,52 @@ export default function JuridicalForm({
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6}>
         <FormField
+          isImportant
           value={values[company.name]}
           label={company.label}
           placeholder={company.placeholder}
           name={company.name}
-          type={company.type}
+          type="text"
           error={errors[company.name] && touched[company.name]}
           success={values[company.name]?.length > 0 && !errors[company.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          isImportant
+          value={values[industry.name]}
+          label={industry.label}
+          name={industry.name}
+          type="text"
+          error={errors[industry.name] && touched[industry.name]}
+          success={values[industry.name]?.length > 0 && !errors[industry.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[section.name]}
+          label={section.label}
+          name={section.name}
+          type="text"
+          error={errors[section.name] && touched[section.name]}
+          success={values[section.name]?.length > 0 && !errors[section.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
+          value={values[document.name]}
+          label={document.label}
+          name={document.name}
+          type="text"
+          error={errors[document.name] && touched[document.name]}
+          success={values[document.name]?.length > 0 && !errors[document.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          isImportant
           value={values[address.name]}
           label={address.label}
           placeholder={address.placeholder}
@@ -221,6 +258,7 @@ export default function JuridicalForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          isImportant
           label={phone.label}
           placeholder={phone.placeholder}
           name={phone.name}
@@ -232,6 +270,7 @@ export default function JuridicalForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          isImportant
           label={email.label}
           placeholder={email.placeholder}
           name={email.name}
@@ -259,13 +298,13 @@ export default function JuridicalForm({
         <FormControl variant="standard" fullWidth sx={{ mt: -2.3 }}>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
-            value={values[isResidential.name]}
+            value={Number(values[isResidential.name])}
             label={isResidential.label}
             onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
             sx={{ height: "3rem" }}
           >
-            <MenuItem value={true}>Residencial</MenuItem>
-            <MenuItem value={false}>Edificio</MenuItem>
+            <MenuItem value={1}>Residencial</MenuItem>
+            <MenuItem value={0}>Edificio</MenuItem>
           </MuiSelect>
         </FormControl>
       </Grid>
@@ -310,6 +349,7 @@ export default function JuridicalForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          isImportant
           label={ruc.label}
           placeholder={ruc.placeholder}
           name={ruc.name}
@@ -321,6 +361,7 @@ export default function JuridicalForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
+          isImportant
           label={dv.label}
           placeholder={dv.placeholder}
           name={dv.name}
@@ -330,43 +371,13 @@ export default function JuridicalForm({
           success={values[dv.name]?.length > 0 && !errors[dv.name]}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[president.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
-          fieldName={president.name}
-          inputLabel={president.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[secretary.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
-          fieldName={secretary.name}
-          inputLabel={secretary.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={values[treasurer.name]}
-          options={notJuridicEntities}
-          optionLabel={(option) =>
-            option.company ? option.company : option.name
-          }
-          fieldName={treasurer.name}
-          inputLabel={treasurer.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} display="flex" alignItems="center">
+      <Grid
+        item
+        xs={12}
+        display="flex"
+        alignItems="center"
+        justifyContent="end"
+      >
         <FormGroup>
           <FormControlLabel
             control={
@@ -381,6 +392,13 @@ export default function JuridicalForm({
           />
         </FormGroup>
       </Grid>
+      <RelatedPersonFormComponent
+        setFieldValue={setFieldValue}
+        values={values}
+        partnerTypes={partnerTypes}
+        countries={countries}
+        notJuridicalEntities={notJuridicEntities}
+      />
     </Grid>
   );
 }

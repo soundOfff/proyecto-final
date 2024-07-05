@@ -12,10 +12,44 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly([
+            'name',
+            'hourly_rate',
+            'description',
+            'start_date',
+            'due_date',
+            'owner_id',
+            'procedure_id',
+            'milestone_order',
+            'task_priority_id',
+            'partner_id',
+            'task_status_id',
+            'repeat_id',
+            'author_id',
+            'recurring_type',
+            'recurring',
+            'is_infinite',
+            'billable',
+            'total_cycles',
+            'taskable_type',
+            'taskable_id',
+            'visible_to_client',
+            'is_file_needed',
+        ])
+        ->logOnlyDirty();
+    }
+
     protected $fillable = [
         'name',
         'hourly_rate',
@@ -55,6 +89,11 @@ class Task extends Model
                     fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
         );
+    }
+
+    public function procedure()
+    {
+        return $this->belongsTo(Procedure::class);
     }
 
     public function taskable()
@@ -112,9 +151,9 @@ class Task extends Model
         return $this->belongsToMany(Staff::class, 'task_followers');
     }
 
-    public function reminders(): HasMany
+    public function reminders(): MorphMany
     {
-        return $this->hasMany(Reminder::class, 'reminderable_id');
+        return $this->morphMany(Reminder::class, 'reminderable');
     }
 
     public function dependencies()
@@ -131,6 +170,28 @@ class Task extends Model
     {
         return $this->hasMany(Action::class);
     }
+
+    public function isFinalTask()
+    {
+        if (! $this->procedure) {
+            return false;
+        }
+
+        $relatedProcedures = $this->procedure->process->procedures->sortByDesc('step_number');
+
+        return $relatedProcedures->first()->id === $this->procedure->id;
+    }
+
+    // If logic is needed, uncomment this method
+    // public function finalTask() {
+    //     $latestTask = self::where('taskable_id', $this->taskable_id)
+    //         ->where('taskable_type', $this->taskable_type)
+    //         ->whereNotNull('milestone_order')
+    //         ->orderBy('milestone_order', 'DESC')
+    //         ->first();
+
+    //     return $latestTask;
+    // }
 
     public function requiredFields()
     {
@@ -164,15 +225,16 @@ class Task extends Model
         });
     }
 
-    public static function getMilestoneOrder($taskableId, $taskableType)
+    public static function getLatestMilestoneOrder($taskableId, $taskableType)
     {
         $latestTask = self::where('taskable_id', $taskableId)
             ->where('taskable_type', $taskableType)
             ->whereNotNull('milestone_order')
             ->orderBy('milestone_order', 'DESC')
             ->first();
+        
 
-        return $latestTask ? $latestTask->milestone_order + 1 : 0;
+        return $latestTask ? $latestTask->milestone_order : 0;
     }
 
     public static function getTaskableTypes(): array

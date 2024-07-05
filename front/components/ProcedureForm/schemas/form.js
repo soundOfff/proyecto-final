@@ -49,6 +49,10 @@ const form = {
       name: "actions",
       label: "Acciones",
     },
+    reminders: {
+      name: "reminders",
+      label: "Recordatorios",
+    },
   },
 };
 

@@ -38,6 +38,7 @@ export async function store(data) {
 
   revalidatePath("/tasks");
   revalidatePath("/projects");
+  revalidatePath("/invoices/[id]");
 }
 
 export async function update(taskId, data) {
@@ -51,6 +52,8 @@ export async function update(taskId, data) {
   revalidatePath("/tasks");
   revalidatePath("/projects");
   revalidatePath("/partners/tasks");
+  revalidatePath("/invoices/[id]");
+  revalidatePath("/expenses");
 }
 
 export async function show(id, params) {
@@ -70,6 +73,9 @@ export async function destroy(taskId) {
   });
 
   revalidatePath("/tasks");
+  revalidatePath("/projects");
+  revalidatePath("/partners/tasks");
+  revalidatePath("/invoices/[id]");
 }
 
 export async function getCountByStatuses(params) {

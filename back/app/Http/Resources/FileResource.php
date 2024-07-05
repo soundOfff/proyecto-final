@@ -2,27 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class FileResource extends JsonResource
 {
-    private function getPublicUrl(): string
-    {
-        try {
-            $url = Storage::drive('google')->url($this->url);
-
-            preg_match('/id=([^&]*)/', $url, $matches);
-
-            $id = $matches[1] ?? null;
-
-            return "https://drive.google.com/file/d/$id/view?usp=sharing";
-        } catch (\Exception $e) {
-            return '';
-        }
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -35,7 +20,7 @@ class FileResource extends JsonResource
             'fileableId' => $this->fileable_id,
             'fileableType' => $this->fileable_type,
             'url' => $this->url,
-            'publicUrl' => $this->getPublicUrl(),
+            'publicUrl' => (new FileService)->getPublicUrl($this->url),
             'subject' => $this->subject,
             'visibleToCustomer' => $this->visible_to_customer,
             'isFileNeeded' => $this->is_file_needed,

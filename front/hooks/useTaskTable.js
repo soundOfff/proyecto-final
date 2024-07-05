@@ -7,7 +7,13 @@ import { DONE_STATUS } from "/utils/constants/taskStatuses";
 import { show, update as updateTask } from "/actions/tasks";
 import { attachTasks } from "/actions/projects";
 
-export default function useTaskTable({ rows, dispatch, currentTaskId }) {
+export default function useTaskTable({
+  rows,
+  dispatch,
+  currentTaskId,
+  statuses = [],
+  project,
+}) {
   const [taskId, setTaskId] = useState(currentTaskId || null);
   const [task, setTask] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -34,6 +40,21 @@ export default function useTaskTable({ rows, dispatch, currentTaskId }) {
     setOpenShowModal(false);
     setTaskId(null);
     setTask(null);
+  };
+
+  const getSelectedFork = (children = []) => {
+    // Check if the task has a fork selected
+    let selectedFork = null;
+    children.forEach((child) => {
+      if (
+        rows.some(
+          (task) => task.procedure && task.procedure.process.id === child.id
+        )
+      ) {
+        selectedFork = child;
+      }
+    });
+    return selectedFork;
   };
 
   const stopTimer = async (timerId, note = "") => {
@@ -77,7 +98,8 @@ export default function useTaskTable({ rows, dispatch, currentTaskId }) {
       return;
     }
     await updateTask(taskId, {
-      task_status_id: statuses.find((status) => status.name === DONE_STATUS).id,
+      task_status_id: statuses.find((status) => status.name === DONE_STATUS)
+        ?.id,
     });
     setOpenShowModal(false);
   };
@@ -111,6 +133,7 @@ export default function useTaskTable({ rows, dispatch, currentTaskId }) {
             "reminders",
             "actions",
             "requiredFields",
+            "procedure",
           ],
         })
       );
@@ -138,6 +161,7 @@ export default function useTaskTable({ rows, dispatch, currentTaskId }) {
     handleCompleteTask,
     handlePriorityChange,
     handleStatusChange,
+    getSelectedFork,
     stopTimer,
     startTimer,
     handleCreateTasks,

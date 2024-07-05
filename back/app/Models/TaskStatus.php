@@ -10,7 +10,8 @@ class TaskStatus extends Model
     use HasFactory;
 
     protected $guarded = [];
-    
+   
+    public const PENDING = 1;
     public const IN_PROGRESS = 2;
     public const COMPLETED = 3;
 

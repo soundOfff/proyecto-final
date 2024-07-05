@@ -5,14 +5,18 @@ import MDTypography from "/components/MDTypography";
 import MDAvatar from "/components/MDAvatar";
 
 import DefaultItem from "/examples/Items/DefaultItem";
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Step, StepLabel, Stepper } from "@mui/material";
 
 import moneyFormat from "/utils/moneyFormat";
 import { useDataProvider } from "/providers/DataProvider";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
+import SelectedProcesses from "/components/Tasks/selected-processes";
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
+
+  const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
+
   return (
     <>
       <Grid container ml={2}>
@@ -70,6 +74,15 @@ export default function Details() {
             description={project.deadline ?? "Sin Fecha Fin"}
           />
         </Grid>
+      </Grid>
+
+      <Divider variant="left" sx={{ width: "100%" }} />
+
+      <Grid container mt={3} xs={12} display="flex" justifyContent="center">
+        <SelectedProcesses
+          selectedProcesses={project.selectedProcesses}
+          tasks={filteredTasks}
+        />
       </Grid>
 
       <Divider variant="left" sx={{ width: "100%" }} />

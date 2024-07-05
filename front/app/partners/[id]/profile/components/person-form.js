@@ -38,7 +38,8 @@ export default function PersonForm({
         birthDate,
         expeditionDate,
         isMale,
-        number,
+        idNumber,
+        idType,
         country,
         isConsolidator,
         nationality,
@@ -108,14 +109,25 @@ export default function PersonForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
-          value={values[number.name]}
+          value={values[idType.name]}
+          label={idType.label}
+          placeholder={idType.placeholder}
+          name={idType.name}
+          type={idType.type}
+          error={errors[idType.name] && touched[idType.name]}
+          success={values[idType.name]?.length > 0 && !errors[idType.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[idNumber.name]}
           autocomplete="off"
-          label={number.label}
-          placeholder={number.placeholder}
-          name={number.name}
-          type={number.type}
-          error={errors[number.name] && touched[number.name]}
-          success={values[number.name]?.length > 0 && !errors[number.name]}
+          label={idNumber.label}
+          placeholder={idNumber.placeholder}
+          name={idNumber.name}
+          type={idNumber.type}
+          error={errors[idNumber.name] && touched[idNumber.name]}
+          success={values[idNumber.name]?.length > 0 && !errors[idNumber.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -317,7 +329,7 @@ export default function PersonForm({
         <FormControl variant="standard" sx={{ mt: -2.3 }} fullWidth>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
-            value={values[isResidential.name]}
+            value={Number(values[isResidential.name])}
             label={isResidential.label}
             onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
             sx={{ height: "3rem" }}

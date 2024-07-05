@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import detailForm from "./detail-form";
 import invoiceForm from "./invoice-form";
+import { PANAMA_ID } from "/utils/constants/countries";
 
 const {
   formField: {
@@ -27,6 +28,10 @@ const {
       address,
       ruc,
       city,
+      document,
+      industry,
+      section,
+      relatedPartners,
       isConsolidator,
       language,
       website,
@@ -40,9 +45,6 @@ const {
       jurisdiction,
       province,
       rollNumber,
-      president,
-      secretary,
-      treasurer,
       dv,
     },
 
@@ -52,6 +54,8 @@ const {
       expeditionDate,
       isConsolidator: isConsolidatorPerson,
       isMale,
+      idNumber,
+      idType,
       number,
       birthPlace,
       nationality,
@@ -79,9 +83,15 @@ const initialValues = {
   [city.name]: "",
   [company.name]: "",
   [consolidator.name]: null,
-  [country.name]: null,
+  [country.name]: PANAMA_ID,
   [isConsolidator.name]: "",
+  [document.name]: "",
+  [industry.name]: "",
+  [section.name]: "",
+  [idType.name]: "",
+  [idNumber.name]: "",
   [language.name]: "",
+  [relatedPartners.name]: [],
   [phone.name]: "",
   [ruc.name]: "",
   [state.name]: "",
@@ -114,9 +124,6 @@ const initialValues = {
   [rollNumber.name]: "",
   [birthPlace.name]: "",
   [nationality.name]: "",
-  [president.name]: "",
-  [secretary.name]: "",
-  [treasurer.name]: "",
   [dv.name]: "",
 };
 

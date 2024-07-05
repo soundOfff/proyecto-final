@@ -24,6 +24,8 @@ import { destroy, getAll } from "/actions/tasks";
 import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
+import ModalContentForm from "/components/ModalContent/Task";
+import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -31,8 +33,21 @@ import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { editSteps } from "/actions/tasks";
 import update from "immutability-helper";
 import useTaskTable from "/hooks/useTaskTable";
+import { MODAL_TYPES } from "/utils/constants/modalTypes";
 
-export default function Table({ statuses, priorities, project }) {
+export default function Table({
+  statuses,
+  priorities,
+  project,
+  repeats,
+  staffs,
+  taskableItems,
+  tagsData,
+  dependencyTasks,
+  partners,
+  actionsData,
+  tableFields,
+}) {
   const [controller, dispatch] = useMaterialUIController();
   const { currentTimer, darkMode } = controller;
   const [isLoading, setIsLoading] = useState(true);
@@ -42,20 +57,23 @@ export default function Table({ statuses, priorities, project }) {
     optimisticRows,
     task,
     openShowModal,
+    openEditModal,
     stopTimer,
     startTimer,
     isToastOpen,
     isFetching,
-    handleEditModalOpen,
+    setOpenEditModal,
+    handleCloseEditModal,
     handleCloseShowModal,
     handleStatusChange,
+    getSelectedFork,
     handlePriorityChange,
     handleCompleteTask,
     setIsToastOpen,
     setTaskId,
     handleCreateTasks,
     setOpenShowModal,
-  } = useTaskTable({ rows, dispatch });
+  } = useTaskTable({ rows, dispatch, project, statuses });
 
   const {
     setOpenDeleteConfirmation,
@@ -187,7 +205,6 @@ export default function Table({ statuses, priorities, project }) {
       accessor: "due_date",
     },
     {
-      // TODO: make accessor works
       Header: "Asignar a",
       accessor: "",
       Cell: ({ row }) => {
@@ -337,11 +354,34 @@ export default function Table({ statuses, priorities, project }) {
           <MDButton
             variant="gradient"
             color={darkMode ? "light" : "dark"}
-            onClick={handleEditModalOpen}
+            onClick={() => {
+              setOpenEditModal(true);
+            }}
           >
             Crear nueva tarea
           </MDButton>
         </MDBox>
+        {openEditModal && (
+          <Modal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            width="40%"
+          >
+            <ModalContentForm
+              priorities={priorities}
+              repeats={repeats}
+              taskableItems={taskableItems}
+              dependencyTasks={dependencyTasks}
+              tagsData={tagsData}
+              partners={partners}
+              task={task}
+              actionsData={actionsData}
+              tableFields={tableFields}
+              project={project}
+              mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
+            />
+          </Modal>
+        )}
         {openShowModal && (
           <Modal
             open={openShowModal}
@@ -351,24 +391,36 @@ export default function Table({ statuses, priorities, project }) {
             sx={{ overflow: "scroll" }}
           >
             {task && (
-              <Show
-                task={task}
-                markAsCompleted={handleCompleteTask}
-                isTimerStarted={currentTimer?.task_id === task.id}
-                currentTimerId={currentTimer?.id}
-                stopTimer={stopTimer}
-                startTimer={startTimer}
-              />
+              <DataProvider
+                value={{
+                  task,
+                  project,
+                  currentTimerId: currentTimer?.id,
+                  isTimerStarted: currentTimer?.task_id === task.id,
+                  statuses,
+                  priorities,
+                  tagsData,
+                  staffs,
+                  markAsCompleted: handleCompleteTask,
+                  stopTimer,
+                  startTimer,
+                  getSelectedFork,
+                }}
+              >
+                <Show />
+              </DataProvider>
             )}
           </Modal>
         )}
       </MDBox>
       <DataTable
         table={table}
-        showTotalEntries={true}
-        isSorted={true}
+        showTotalEntries={false}
+        isSorted={false}
         moveRow={moveRow}
         noEndBorder
+        isTaskTable={true}
+        entriesPerPage={{ defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] }}
       />
       <DeleteRow
         {...{

@@ -16,7 +16,7 @@ export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/processes/${id}`);
   url.search = new URLSearchParams(params);
 
-  const { data } = await customFetch(url);
+  const { data } = await customFetch(url, { cache: "no-store" });
 
   return data;
 }
@@ -30,6 +30,7 @@ export async function store(data) {
   });
 
   revalidatePath("/processes");
+  revalidatePath("/processes/create");
 }
 
 export async function update(id, data) {

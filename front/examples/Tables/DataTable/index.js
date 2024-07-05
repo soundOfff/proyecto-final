@@ -18,6 +18,7 @@ import { useMemo, useEffect, useState } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import { setColor } from "/utils/project-state-colors";
 
 // react-table components
 import {
@@ -62,6 +63,7 @@ function DataTable({
   table = [],
   pagination = { variant: "gradient", color: "dark" },
   isSorted = true,
+  isTaskTable = false,
   noEndBorder = false,
   className = "desktop",
   moveRow,
@@ -245,20 +247,21 @@ function DataTable({
             </MDBox>
             <TableBody
               {...getTableBodyProps()}
-              sx={{ display: { lg: "table-row-group", xs: "none" } }}
+              sx={{
+                display: { lg: "table-row-group", xs: "none" },
+              }}
             >
               {page.map((row, index) => {
                 return (
-                  prepareRow(row) || (
-                    <DataTableRow
-                      key={index}
-                      index={index}
-                      row={row}
-                      rows={rows}
-                      noEndBorder={noEndBorder}
-                      moveRow={moveRow}
-                    />
-                  )
+                  <DataTableRow
+                    key={index}
+                    index={index}
+                    row={row}
+                    rows={rows}
+                    noEndBorder={noEndBorder}
+                    isTaskTable={isTaskTable}
+                    moveRow={moveRow}
+                  />
                 );
               })}
             </TableBody>

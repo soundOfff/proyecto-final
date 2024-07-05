@@ -40,9 +40,9 @@ const form = {
       label: "Tipo de Caso",
       errorMsg: "El Tipo de Caso es obligatorio",
     },
-    dependencies: {
-      name: "dependencies",
-      label: "Dependencias",
+    forks: {
+      name: "forks",
+      label: "Procesos Hijos",
     },
   },
 };

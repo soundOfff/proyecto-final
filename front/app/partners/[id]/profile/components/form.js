@@ -10,6 +10,7 @@ export default function Form({
   partner,
   consolidators,
   notJuridicEntities,
+  partnerTypes,
   countries,
 }) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -21,6 +22,7 @@ export default function Form({
         <DetailForm
           partner={partner}
           notJuridicEntities={notJuridicEntities}
+          partnerTypes={partnerTypes}
           consolidators={consolidators}
           countries={countries}
         />

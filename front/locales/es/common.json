@@ -7,6 +7,7 @@
   "proposals": "Propuestas",
   "create-notes": "Crear notas",
   "tasks": "Tareas",
+  "staffs": "Equpo",
   "partners": "Clientes",
   "invoices": "Facturas",
   "expenses": "Gastos",
@@ -20,5 +21,6 @@
   "customer": "Cliente",
   "edit": "Editar",
   "create": "Crear",
-  "task": "Tarea"
+  "task": "Tarea",
+  "changes": "Historial de Cambios"
 }

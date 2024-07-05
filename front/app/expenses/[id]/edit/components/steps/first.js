@@ -27,13 +27,16 @@ export default function First({ expense, formData, partners, categories }) {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    setFieldValue(name.name, expense.name);
-    setFieldValue(note.name, expense.note);
+    setFieldValue(name.name, expense.name ?? "");
+    setFieldValue(note.name, expense.note ?? "");
     setFieldValue(category.name, expense.category?.id ?? null);
     setFieldValue(partner.name, expense.partner?.id ?? null);
     setFieldValue(project.name, expense.project?.id ?? null);
-    setFieldValue(amount.name, expense.amount);
-    setFieldValue(date.name, expense.date);
+    setFieldValue(amount.name, expense.amount ?? "");
+    setFieldValue(
+      date.name,
+      expense.date ? expense.date : moment().format("YYYY-MM-DD")
+    );
     setFieldValue(billable.name, expense.billable);
   }, [
     expense,
@@ -156,7 +159,10 @@ export default function First({ expense, formData, partners, categories }) {
           }}
           value={values[date.name]}
           onChange={(value) =>
-            setFieldValue(date.name, moment(value[0]).format("YYYY-MM-DD"))
+            setFieldValue(
+              date.name,
+              value[0] ? moment(value[0]).format("YYYY-MM-DD") : null
+            )
           }
         />
         <MDBox mt={0.75}>

@@ -28,6 +28,7 @@ class ProcedureResource extends JsonResource
             'dependencies' => self::collection($this->whenLoaded('dependencies')),
             'actions' => ActionResource::collection($this->whenLoaded('actions')),
             'author' => StaffResource::make($this->whenLoaded('author')),
+            'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
         ];
     }
 }

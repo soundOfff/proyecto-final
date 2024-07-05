@@ -13,21 +13,25 @@ import form from "../schemas/form";
 import initialValues from "../schemas/initial-values";
 import validations from "../schemas/validations";
 import MDSnackbar from "/components/MDSnackbar";
+import { useRouter } from "next/navigation";
 
 export default function FormComponent({
   consolidators,
   notJuridicEntities,
   countries,
+  partnerTypes,
 }) {
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(true);
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
 
   const submitForm = async (values, actions) => {
     try {
       await storePartner(values);
+      router.push("/partners");
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -71,6 +75,7 @@ export default function FormComponent({
                 {...{
                   consolidators,
                   notJuridicEntities,
+                  partnerTypes,
                   countries,
                   errors,
                   values,

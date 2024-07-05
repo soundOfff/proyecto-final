@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -34,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
             'task' => 'App\Models\Task',
             'staff' => 'App\Models\Staff',
             'credit_note' => 'App\Models\CreditNote',
+            'procedure' => 'App\Models\Procedure',
         ]);
 
         try {
@@ -62,5 +64,9 @@ class AppServiceProvider extends ServiceProvider
         } catch(\Exception $e) {
             Log::error($e->getMessage());
         }
+
+        Http::macro('docassemble', function () {
+            return Http::baseUrl(env('DOCASSEMBLE_URL'));
+        });
     }
 }

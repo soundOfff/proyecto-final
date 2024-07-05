@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import form from "./form";
+import { PANAMA_ID } from "/utils/constants/countries";
 
 const {
   formField: {
@@ -23,6 +24,9 @@ const {
       country,
       zip,
       phone,
+      industry,
+      document,
+      section,
       address,
       ruc,
       city,
@@ -34,14 +38,12 @@ const {
       district,
       email,
       fileNumber,
+      relatedPartners,
       imageNumber,
       isResidential,
       jurisdiction,
       province,
       rollNumber,
-      president,
-      secretary,
-      treasurer,
       dv,
     },
 
@@ -51,6 +53,10 @@ const {
       expeditionDate,
       isMale,
       number,
+      idNumber,
+      occupation,
+      idType,
+      civilStatus,
       birthPlace,
       nationality,
     },
@@ -74,18 +80,26 @@ const initialValues = {
   [address.name]: "",
   [city.name]: "",
   [company.name]: "",
+  [industry.name]: "",
+  [document.name]: "",
+  [section.name]: "",
   [consolidator.name]: null,
-  [country.name]: null,
+  [country.name]: PANAMA_ID,
   [isConsolidator.name]: 0,
   [language.name]: "",
   [phone.name]: "",
+  [occupation.name]: "",
   [ruc.name]: "",
+  [relatedPartners.name]: [],
   [state.name]: "",
   [website.name]: "",
   [zip.name]: "",
   [name.name]: "",
   [birthDate.name]: "",
   [expeditionDate.name]: "",
+  [idNumber.name]: "",
+  [idType.name]: "",
+  [civilStatus.name]: "",
   [isMale.name]: "",
   [number.name]: "",
   [billingCity.name]: "",
@@ -109,9 +123,6 @@ const initialValues = {
   [rollNumber.name]: "",
   [birthPlace.name]: "",
   [nationality.name]: "",
-  [president.name]: "",
-  [secretary.name]: "",
-  [treasurer.name]: "",
   [dv.name]: "",
 };
 

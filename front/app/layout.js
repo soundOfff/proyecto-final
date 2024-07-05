@@ -5,6 +5,7 @@ import SessionProvider from "/providers/SessionProvider";
 import "../globals.css";
 
 import ThemeProvider from "/providers/ThemeProvider";
+import FcmProvider from "/providers/FcmProvider";
 
 import favicon from "/assets/images/favicon.ico";
 import appleIcon from "/assets/images/apple-icon.png";
@@ -34,7 +35,9 @@ export default function RootLayout({ children }) {
       <body>
         <MaterialUIControllerProvider>
           <SessionProvider>
-            <ThemeProvider options={{ key: "mui" }}>{children}</ThemeProvider>
+            <ThemeProvider options={{ key: "mui" }}>
+              <FcmProvider>{children}</FcmProvider>
+            </ThemeProvider>
           </SessionProvider>
         </MaterialUIControllerProvider>
       </body>

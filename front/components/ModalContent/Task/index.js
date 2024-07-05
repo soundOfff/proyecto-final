@@ -10,6 +10,7 @@ import TaskForm from "./form";
 import form from "./schemas/form";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function ModalContentForm({
   onClose,
@@ -17,27 +18,31 @@ export default function ModalContentForm({
   repeats,
   tagsData,
   partners,
-  dependencyTasks,
+  dependencyTasks = [],
   partnerId,
-  actionsData,
-  tableFields,
+  actionsData = [],
+  tableFields = [],
   task = null,
+  project = null,
   mode = MODAL_TYPES.CREATE,
 }) {
   const { formId, formField } = form;
   const { data: session } = useSession();
+  const router = useRouter();
   initialValues.owner_id = session.staff.id;
 
   const handleSubmit = async (values, actions) => {
     await storeItem(values);
     onClose();
     actions.resetForm();
+    router.refresh();
   };
 
-  const handleEdit = async (values, _) => {
+  const handleEdit = async (values, actions) => {
     await update(task.id, values);
     onClose();
     actions.resetForm();
+    router.refresh();
   };
 
   return (
@@ -72,6 +77,7 @@ export default function ModalContentForm({
             onClose={onClose}
             mode={mode}
             partnerId={partnerId}
+            project={project}
             actionsData={actionsData}
             tableFields={tableFields}
           />

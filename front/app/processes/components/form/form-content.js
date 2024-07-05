@@ -1,10 +1,14 @@
 "use client";
 
-import { Grid } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
 import form from "./schemas/form";
 import { useEffect } from "react";
+import { ErrorMessage } from "formik";
+import MDInput from "/components/MDInput";
+import MDBox from "/components/MDBox";
+import MDTypography from "/components/MDTypography";
 
 export default function First({
   values,
@@ -13,6 +17,7 @@ export default function First({
   setFieldValue,
   projectServiceTypes,
   process,
+  processes,
 }) {
   const {
     formField: {
@@ -21,6 +26,7 @@ export default function First({
       name,
       stepQuantity,
       projectServiceType,
+      forks,
     },
   } = form;
 
@@ -34,6 +40,7 @@ export default function First({
         projectServiceType.name,
         process.projectServiceType?.id || ""
       );
+      setFieldValue(forks.name, process.forks || "");
     }
   }, [
     process,
@@ -43,6 +50,7 @@ export default function First({
     stepQuantity,
     department,
     projectServiceType,
+    forks,
   ]);
 
   return (
@@ -112,6 +120,36 @@ export default function First({
           inputLabel={projectServiceType.label}
           setFieldValue={setFieldValue}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <Autocomplete
+          multiple
+          value={values[forks.name]}
+          onChange={(e, forksSelected) =>
+            setFieldValue(forks.name, forksSelected)
+          }
+          options={processes}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={forks.label}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={forks.name} />
+          </MDTypography>
+        </MDBox>
       </Grid>
     </Grid>
   );

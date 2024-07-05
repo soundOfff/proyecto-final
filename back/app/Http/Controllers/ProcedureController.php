@@ -25,6 +25,7 @@ class ProcedureController extends Controller
                 'dependencies',
                 'process.procedures',
                 'author',
+                'reminders.staff',
             ])
             ->allowedFilters([
                 AllowedFilter::exact('process_id'),
@@ -49,6 +50,7 @@ class ProcedureController extends Controller
                 'status',
                 'responsible',
                 'author',
+                'reminders.staff',
             ])
             ->find($procedure->id);
 
@@ -62,6 +64,7 @@ class ProcedureController extends Controller
         $stepNumber = $newProcedure['step_number'];
         $dependencies = isset($newProcedure['dependencies']) ? $newProcedure['dependencies'] : [];
         $actions = isset($newProcedure['actions']) ? $newProcedure['actions'] : [];
+        $reminders = isset($newProcedure['reminders']) ? $newProcedure['reminders'] : [];
 
         $dependenciesId = array_column($dependencies, 'id');
 
@@ -72,7 +75,9 @@ class ProcedureController extends Controller
         );
 
         $procedure = Procedure::create($newProcedure);
+
         $procedure->actions()->createMany($actions);
+        $procedure->reminders()->createMany($reminders);
         $procedure->dependencies()->sync($dependenciesId);
 
         return response()->json(null, 201);
@@ -85,6 +90,7 @@ class ProcedureController extends Controller
         $stepNumber = $procedureUpdated['step_number'];
         $dependencies = isset($procedureUpdated['dependencies']) ? $procedureUpdated['dependencies'] : null;
         $actions = isset($procedureUpdated['actions']) ? $procedureUpdated['actions'] : [];
+        $reminders = isset($procedureUpdated['reminders']) ? $procedureUpdated['reminders'] : [];
 
         abort_if(
             Process::find($processId)->validateIfStepNumberExists($stepNumber) &&
@@ -95,6 +101,8 @@ class ProcedureController extends Controller
 
         $procedure->update($procedureUpdated);
         $procedure->actions()->delete();
+        $procedure->reminders()->delete();
+        $procedure->reminders()->createMany($reminders);
         $procedure->actions()->createMany($actions);
 
         if ($dependencies) {

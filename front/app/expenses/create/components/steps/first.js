@@ -150,7 +150,10 @@ export default function First({ formData, partners, categories }) {
           }}
           value={values[date.name]}
           onChange={(value) =>
-            setFieldValue(date.name, moment(value[0]).format("YYYY-MM-DD"))
+            setFieldValue(
+              date.name,
+              value[0] ? moment(value[0]).format("YYYY-MM-DD") : ""
+            )
           }
         />
         <MDBox mt={0.75}>

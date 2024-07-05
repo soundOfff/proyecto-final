@@ -28,8 +28,19 @@ import { useTimeline } from "/examples/Timeline/context";
 
 // Custom styles for the TimelineItem
 import timelineItem from "/examples/Timeline/TimelineItem/styles";
+import { Divider } from "@mui/material";
 
-function TimelineItem({ color, icon, title, dateTime, description, lastItem }) {
+function TimelineItem({
+  color,
+  icon,
+  title,
+  dateTime,
+  firstDescriptionTitle,
+  firstDescription,
+  secondDescriptionTitle,
+  secondDescription,
+  lastItem,
+}) {
   const isDark = useTimeline();
 
   return (
@@ -57,9 +68,9 @@ function TimelineItem({ color, icon, title, dateTime, description, lastItem }) {
       </MDBox>
       <MDBox
         ml={5.75}
-        pt={description ? 0.7 : 0.5}
+        pt={firstDescription ? 0.7 : 0.5}
         lineHeight={0}
-        maxWidth="30rem"
+        width="100%"
       >
         <MDTypography
           variant="button"
@@ -68,17 +79,64 @@ function TimelineItem({ color, icon, title, dateTime, description, lastItem }) {
         >
           {title}
         </MDTypography>
-        <MDBox mt={0.5}>
-          <MDTypography variant="caption" color={isDark ? "secondary" : "text"}>
-            {dateTime}
-          </MDTypography>
-        </MDBox>
-        <MDBox mt={2} mb={1.5}>
-          {description ? (
-            <MDTypography variant="button" color={isDark ? "white" : "dark"}>
-              {description}
+        {dateTime && (
+          <MDBox mt={0.5}>
+            <MDTypography
+              variant="caption"
+              color={isDark ? "secondary" : "text"}
+            >
+              Fecha: {dateTime}
             </MDTypography>
-          ) : null}
+          </MDBox>
+        )}
+        <MDBox mt={2} mb={1.5}>
+          {firstDescriptionTitle && (
+            <MDTypography
+              variant="button"
+              fontWeight="bold"
+              color={isDark ? "white" : "dark"}
+            >
+              {firstDescriptionTitle}
+            </MDTypography>
+          )}
+          <br />
+          {firstDescription &&
+            firstDescription.map((description) => (
+              <>
+                <MDTypography
+                  key={description}
+                  variant="button"
+                  color={isDark ? "white" : "dark"}
+                >
+                  {description}
+                </MDTypography>
+                <br />
+              </>
+            ))}
+          <MDBox py={1} />
+          {secondDescriptionTitle && (
+            <MDTypography
+              variant="button"
+              fontWeight="bold"
+              color={isDark ? "white" : "dark"}
+            >
+              {secondDescriptionTitle}
+            </MDTypography>
+          )}
+          <br />
+          {secondDescription &&
+            secondDescription.map((description) => (
+              <>
+                <MDTypography
+                  key={description}
+                  variant="button"
+                  color={isDark ? "white" : "dark"}
+                >
+                  {description}
+                </MDTypography>
+                <br />
+              </>
+            ))}
         </MDBox>
       </MDBox>
     </MDBox>
@@ -89,7 +147,8 @@ function TimelineItem({ color, icon, title, dateTime, description, lastItem }) {
 TimelineItem.defaultProps = {
   color: "dark",
   lastItem: false,
-  description: "",
+  firstDescription: "",
+  secondDescription: "",
 };
 
 // Typechecking props for the TimelineItem

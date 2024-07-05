@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
+use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
 use Illuminate\Database\Eloquent\Builder;
@@ -104,11 +105,12 @@ class ProjectController extends Controller
                 'defendant',
                 'plaintiff',
                 'billingType',
-                'serviceType.processes',
+                'serviceType.processes.forks',
                 'files',
                 'status',
                 'members',
                 'responsiblePerson',
+                'tasks',
             ])
             ->find($project->id);
 
@@ -167,14 +169,18 @@ class ProjectController extends Controller
         return response()->json($countByStatuses);
     }
 
-    public function attachTasks(Project $project)
+    public function attachTasks(Project $project, Request $request)
     {
-        $process = $project->load('serviceType.processes')->serviceType->processes->first();
-      
-        $procedures = $process->load('procedures')->procedures;
+        $process = Process::find($request->get('processId')); // != null means that is from a child process
+
+        if (is_null($process)) { // == null means that is from a root process
+            $process = $project->load('serviceType.processes')->serviceType->processes->first();
+        }
+
+        $procedures = $process->load('procedures')->procedures->sortBy('step_number');
 
         foreach ($procedures as $procedure) {
-            $procedure->convertToTask($project->id, $project->defendant_id, $project->responsible_person_id);
+            $procedure->convertToTask($project);
         }
 
         return response()->json($project->tasks, 201);

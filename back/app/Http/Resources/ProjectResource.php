@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Process;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -43,7 +44,13 @@ class ProjectResource extends JsonResource
             'status' => ProjectStatusResource::make($this->whenLoaded('status')),
             'jurisdiction' => JurisdictionResource::make($this->whenLoaded('jurisdiction')),
             'defendant' => PartnerResource::make($this->whenLoaded('defendant')),
-            'plaintiff'=> PartnerResource::make($this->whenLoaded('plaintiff')),
+            'selectedProcesses' => $this->whenLoaded('tasks', function () {
+                return ProcessResource::collection($this->tasks->map(function ($task) {
+                    return $task->procedure ? $task->procedure->process : null;
+                })->filter()->unique('id')->values());
+            }),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+            'plaintiff' => PartnerResource::make($this->whenLoaded('plaintiff')),
             'responsiblePerson' => PartnerResource::make($this->whenLoaded('responsiblePerson')),
             'lawFirm' => LawFirmResource::make($this->whenLoaded('lawFirm')),
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),

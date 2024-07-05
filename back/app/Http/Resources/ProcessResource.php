@@ -19,6 +19,7 @@ class ProcessResource extends JsonResource
             'id' => $this->id,
             'projectId' => $this->project_id,
             'stepQuantity' => $this->step_quantity,
+            'realStepQuantity' => $this->procedures->count(),
             'name' => $this->name,
             'description' => $this->description,
             'department' => $this->department,
@@ -26,6 +27,8 @@ class ProcessResource extends JsonResource
             'projectServiceType' => ProjectServiceTypeResource::make($this->whenLoaded('projectServiceType')),
             'procedures' => ProcedureResource::collection($this->whenLoaded('procedures')),
             'author' => StaffResource::make($this->whenLoaded('author')),
+            'forks' => ProcessResource::collection($this->whenLoaded('forks')),
+            'forkedFrom' => ProcessResource::make($this->whenLoaded('forkedFrom')),
         ];
     }
 }

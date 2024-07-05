@@ -8,6 +8,7 @@ import { getTaskPriorities } from "/actions/tasks";
 import { getTaskStatus } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
+import { getAll as getAllStaffs } from "/actions/staffs";
 import { getCurrentTimer } from "/actions/timers";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
@@ -31,6 +32,7 @@ export default async function PartnerTasks({
   const session = await getServerSession(authOptions);
   const tagsData = await getAllTags();
   const repeats = await getAllRepeats();
+  const staffs = await getAllStaffs();
   const priorities = await getTaskPriorities();
   const taskableItems = await getAllTaskableTypes();
   const statuses = await getTaskStatus();
@@ -51,6 +53,7 @@ export default async function PartnerTasks({
               tagsData={tagsData}
               partners={partners}
               statuses={statuses}
+              staffs={staffs}
               currentTimer={currentTimer}
               partnerId={Number(id)}
             />

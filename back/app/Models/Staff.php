@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\CausesActivity;
 
 class Staff extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, CausesActivity, SoftDeletes;
 
     protected $fillable = [
         'active',
@@ -21,6 +23,7 @@ class Staff extends Authenticatable
         'direction',
         'email',
         'email_signature',
+        'password',
         'facebook',
         'first_name',
         'hourly_rate',
@@ -36,6 +39,7 @@ class Staff extends Authenticatable
         'new_pass_key_requested',
         'phone_number',
         'profile_image',
+        'welcome_email',
         'skype',
         'two_factor_auth_code',
         'two_factor_auth_code_requested',
@@ -64,11 +68,11 @@ class Staff extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function projects(): BelongsToMany
+    public function projects(): HasMany
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasMany(Project::class, 'responsible_person_id');
     }
-
+    
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
@@ -87,5 +91,20 @@ class Staff extends Authenticatable
     public function getCurrentTimer(): TaskTimer | null
     {
         return $this->timers->whereNull('end_time')->first();
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    public function lastSession() : Session | null
+    {
+        return $this->sessions->last();
+    }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(StaffDevice::class);
     }
 }

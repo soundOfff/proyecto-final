@@ -44,44 +44,34 @@ export default function Header({ proposal }) {
           </MDBox>
         </Grid>
         <Grid item xs={12} md={6}>
-          {proposal.proposableType === "customer" && (
-            <MDBox>
-              <MDTypography variant="h6" fontWeight="medium">
-                {proposal.proposable.billingStreet}
+          <MDBox>
+            <MDTypography variant="h6" fontWeight="medium">
+              {proposal.address}
+            </MDTypography>
+            <MDTypography variant="h6" fontWeight="medium">
+              {proposal.city ? `${proposal.city}, ` : null}
+              {proposal.state ? proposal.state : null}
+              {proposal.country ? `, ${proposal.country.shortName}` : null}
+            </MDTypography>
+            <MDBox mt={1} mb={2}>
+              <MDTypography
+                display="block"
+                variant="body2"
+                color={darkMode ? "text" : "secondary"}
+              >
+                {proposal.phone ? `teléfono: ${proposal.phone}` : null}
               </MDTypography>
-              <MDTypography variant="h6" fontWeight="medium">
-                {proposal.proposable.billingCity
-                  ? `${proposal.proposable.billingCity}, `
-                  : null}
-                {proposal.proposable.billingState
-                  ? proposal.proposable.billingState
-                  : null}
-                {proposal.proposable.billingCountry
-                  ? `, ${proposal.proposable.billingCountry.name}`
-                  : null}
-              </MDTypography>
-              <MDBox mt={1} mb={2}>
-                <MDTypography
-                  display="block"
-                  variant="body2"
-                  color={darkMode ? "text" : "secondary"}
-                >
-                  {proposal.proposable.phoneNumber
-                    ? `teléfono: ${proposal.proposable.phoneNumber}`
-                    : null}
-                </MDTypography>
-              </MDBox>
             </MDBox>
-          )}
+          </MDBox>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
           <MDBox width="100%" textAlign={{ xs: "left", md: "right" }}>
             <MDBox mt={1}>
               <MDTypography variant="h6" fontWeight="medium">
                 Para:{" "}
-                {proposal.proposable.company ??
-                  proposal.proposable.name ??
-                  "---"}
+                {proposal.proposalTo
+                  ? proposal.proposalTo
+                  : proposal.proposable.name}
               </MDTypography>
             </MDBox>
             <MDBox mb={1}>

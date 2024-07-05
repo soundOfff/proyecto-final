@@ -101,6 +101,8 @@ function DataTable({
 
   const canPreviousPage = () => meta.current_page > 1;
 
+  const canNextPage = () => meta.current_page < meta.last_page;
+
   const setCurrentPage = (page) => {
     const params = new URLSearchParams(searchParams);
 
@@ -196,77 +198,107 @@ function DataTable({
             </TableRow>
           ))}
         </MDBox>
-        <TableBody
-          {...getTableBodyProps()}
-          sx={{ display: { lg: "table-row-group", xs: "none" } }}
-        >
-          {rows.map((row, key) => {
-            prepareRow(row);
-            return (
-              <TableRow key={key} {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <DataTableBodyCell
-                    key={key}
-                    noBorder={noEndBorder && rows.length - 1 === key}
-                    align={cell.column.align ? cell.column.align : "left"}
-                    {...cell.getCellProps()}
-                  >
-                    {cell.render("Cell")}
-                  </DataTableBodyCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-        <TableBody
-          {...getTableBodyProps()}
-          sx={{ display: { lg: "none", xs: "table-row-group" } }}
-        >
-          {rows.map((row, key) => {
-            prepareRow(row);
-            return (
-              <TableRow key={key} {...row.getRowProps()}>
-                <DataTableBodyCell
-                  key={key}
-                  noBorder={noEndBorder && rows.length - 1 === key}
-                  {...row.cells[0].getCellProps()}
+        {rows.length > 0 ? (
+          <>
+            <TableBody
+              {...getTableBodyProps()}
+              sx={{ display: { lg: "table-row-group", xs: "none" } }}
+            >
+              {rows.map((row, key) => {
+                prepareRow(row);
+                return (
+                  <TableRow key={key} {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <DataTableBodyCell
+                        key={key}
+                        noBorder={noEndBorder && rows.length - 1 === key}
+                        align={cell.column.align ? cell.column.align : "left"}
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render("Cell")}
+                      </DataTableBodyCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+            <TableBody
+              {...getTableBodyProps()}
+              sx={{ display: { lg: "none", xs: "table-row-group" } }}
+            >
+              {rows.map((row, key) => {
+                prepareRow(row);
+                return (
+                  <TableRow key={key} {...row.getRowProps()}>
+                    <DataTableBodyCell
+                      key={key}
+                      noBorder={noEndBorder && rows.length - 1 === key}
+                      {...row.cells[0].getCellProps()}
+                    >
+                      <ResponsiveTableContent row={row} />
+                    </DataTableBodyCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </>
+        ) : (
+          <TableBody p={3}>
+            <TableRow>
+              <DataTableBodyCell colSpan={columns.length}>
+                <MDTypography
+                  variant="body2"
+                  color="textSecondary"
+                  align="center"
                 >
-                  <ResponsiveTableContent row={row} />
-                </DataTableBodyCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
+                  No se encontraron resultados
+                </MDTypography>
+              </DataTableBodyCell>
+            </TableRow>
+          </TableBody>
+        )}
       </Table>
 
-      <MDBox
-        display="flex"
-        flexDirection={{ xs: "column", sm: "row" }}
-        justifyContent="space-around"
-        alignItems={{ xs: "flex-start", sm: "center" }}
-        p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
-      >
-        <MDBox mb={{ xs: 3, sm: 0 }}>
-          <MDTypography variant="button" color="secondary" fontWeight="regular">
-            Mostrando desde {meta.from} a {meta.to} de un total de {meta.total}{" "}
-            filas
-          </MDTypography>
-        </MDBox>
-        <MDPagination
-          variant={pagination.variant ? pagination.variant : "gradient"}
-          color={pagination.color ? pagination.color : "dark"}
+      {rows.length > 0 && (
+        <MDBox
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
+          justifyContent="space-around"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
         >
-          {canPreviousPage && (
-            <MDPagination item onClick={() => previousPage()}>
+          <MDBox mb={{ xs: 3, sm: 0 }}>
+            <MDTypography
+              variant="button"
+              color="secondary"
+              fontWeight="regular"
+            >
+              Mostrando desde {meta.from} a {meta.to} de un total de{" "}
+              {meta.total} filas
+            </MDTypography>
+          </MDBox>
+          <MDPagination
+            variant={pagination.variant ? pagination.variant : "gradient"}
+            color={pagination.color ? pagination.color : "dark"}
+          >
+            <MDPagination
+              item
+              disabled={!canPreviousPage()}
+              onClick={() => previousPage()}
+            >
               <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
             </MDPagination>
-          )}
-          {renderPagination}
-          <MDPagination item onClick={() => nextPage()}>
-            <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
+            {renderPagination}
+            <MDPagination
+              item
+              disabled={!canNextPage()}
+              onClick={() => nextPage()}
+            >
+              <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
+            </MDPagination>
           </MDPagination>
-        </MDPagination>
-      </MDBox>
+        </MDBox>
+      )}
     </TableContainer>
   );
 }

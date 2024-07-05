@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
+import { CUSTOM } from "/utils/constants/repeats";
 
 const {
   formField: {
@@ -56,7 +57,7 @@ const validations = Yup.object().shape({
   [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),
-  [hourlyRate.name]: Yup.number(),
+  [hourlyRate.name]: Yup.number().required(hourlyRate.errorMsg),
   [dueDate.name]: Yup.date().min(
     Yup.ref(startDate.name),
     "La fecha desde debe ser anterior a la fecha hasta"
@@ -64,10 +65,32 @@ const validations = Yup.object().shape({
   [task_status_id.name]: Yup.string(),
   [taskableType.name]: Yup.string(),
   [tags.name]: Yup.array(),
-  [recurring.name]: Yup.number().nullable(),
-  [recurringType.name]: Yup.string().nullable(),
-  [totalCycles.name]: Yup.number().nullable(),
-  [isInfinite.name]: Yup.boolean(),
+  [repeat.name]: Yup.number(),
+  [recurring.name]: Yup.number().when(repeat.name, {
+    is: CUSTOM,
+    then: (schema) =>
+      schema
+        .min(1, "Debe ser mayor a 0")
+        .required("Este campo es requerido si se selecciono Personalizado"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  [recurringType.name]: Yup.number().when(repeat.name, {
+    is: CUSTOM,
+    then: (schema) =>
+      schema.required("Este campo es requerido si se selecciono Personalizado"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  [isInfinite.name]: Yup.boolean().when(repeat.name, {
+    is: true,
+    then: Yup.boolean().required("Este campo es requerido"),
+  }),
+  [totalCycles.name]: Yup.number().when([repeat.name, isInfinite.name], {
+    is: (repeat_id, is_infinite) => repeat_id && !is_infinite,
+    then: (schema) =>
+      schema
+        .min(1, "Los ciclos totales deben ser mayor a 0")
+        .required('Este campo es requerido si seleccionó "repetir cada"'),
+  }),
   [actions.name]: Yup.array(),
   [requiredFields.name]: Yup.array(),
   [isFileNeeded.name]: Yup.boolean(),

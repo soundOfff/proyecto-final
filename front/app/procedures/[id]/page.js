@@ -3,11 +3,12 @@ import Form from "/components/ProcedureForm/form";
 import { Card } from "@mui/material";
 import { getAll, show } from "/actions/procedures";
 import { getAll as getAllActionTypes } from "/actions/action-types";
+import { select as getAllStaffs } from "/actions/staffs";
 
 export default async function EditProcedure({ params: { id } }) {
   const actionTypes = await getAllActionTypes();
   const procedure = await show(id, {
-    include: ["dependencies", "actions.type"],
+    include: ["dependencies", "actions.type", "reminders.staff"],
   });
   const {
     data: { procedures },
@@ -15,6 +16,7 @@ export default async function EditProcedure({ params: { id } }) {
     include: ["dependencies", "actions"],
     "filter[process_id]": procedure.processId,
   });
+  const staffs = await getAllStaffs();
 
   return (
     <Card sx={{ overflow: "visible", my: 3 }}>
@@ -23,6 +25,7 @@ export default async function EditProcedure({ params: { id } }) {
           procedure={procedure}
           procedures={procedures}
           actionTypes={actionTypes}
+          staffs={staffs}
         />
       </MDBox>
     </Card>

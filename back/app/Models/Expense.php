@@ -28,6 +28,7 @@ class Expense extends Model
         'partner_id',
         'project_id',
         'billable',
+        'created_from_action',
         'payment_method_id',
         'date',
         'invoice_id',

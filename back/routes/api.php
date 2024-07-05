@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\ActionTypeController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CreditController;
@@ -9,11 +10,13 @@ use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DiscountTypeController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\EstimateStatusController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRepeatController;
+use App\Http\Controllers\FcmController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
@@ -22,6 +25,7 @@ use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PermissionController;
@@ -47,7 +51,6 @@ use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,6 +105,8 @@ Route::get('/partners/{partner}', [PartnerController::class, 'show']);
 Route::put('/partners/{partner}', [PartnerController::class, 'update']);
 Route::get('/partner-stats', [PartnerController::class, 'stats']);
 Route::get('/partners-select', [PartnerController::class, 'select']);
+
+Route::get('/partner-types', [PartnerTypeController::class, 'index']);
 
 Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
@@ -163,6 +168,11 @@ Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
 Route::get('/staffs', [StaffController::class, 'index']);
+Route::get('/staffs/{staff}', [StaffController::class, 'getUser']);
+Route::put('/staffs/{staff}', [StaffController::class, 'update']);
+Route::post('/staffs', [StaffController::class, 'store']);
+Route::delete('/staffs/{staff}', [StaffController::class, 'destroy']);
+Route::get('/staffs-stats/{staff}', [StaffController::class, 'stats']);
 
 Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 
@@ -176,6 +186,7 @@ Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
 
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/permissions', [PermissionController::class, 'index']);
 
@@ -217,6 +228,13 @@ Route::get('/actions', [ActionController::class, 'index']);
 Route::get('/action-types', [ActionTypeController::class, 'index']);
 
 Route::post('/table-fields', TableFieldController::class);
+
+Route::get('/activity-logs', [ActivityController::class, 'index']);
+
+Route::post('/send-notification', [FcmController::class, 'sendNotification']);
+Route::post('/store-token', [FcmController::class, 'storeToken']);
+
+Route::get('/documents', [DocumentController::class, 'generate']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

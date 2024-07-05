@@ -9,7 +9,6 @@ use App\Models\MailTemplate;
 use App\Models\Task;
 use App\Services\MailTemplateService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class MailTemplateController extends Controller
@@ -32,7 +31,11 @@ class MailTemplateController extends Controller
 
     public function show(MailTemplate $mailTemplate)
     {
-        return new MailTemplateResource($mailTemplate);
+        $template = QueryBuilder::for(MailTemplate::class)
+            ->allowedIncludes(['group'])
+            ->find($mailTemplate->id);
+
+        return new MailTemplateResource($template);
     }
 
     public function send(Request $request)

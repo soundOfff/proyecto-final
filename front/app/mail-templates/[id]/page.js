@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function MailTemplates({ params }) {
   const { id } = params;
-  const mailTemplate = await getMailTemplate(id);
+  const mailTemplate = await getMailTemplate(id, { include: ["group"] });
 
   return (
     <MDBox mb={3} width="100%">
@@ -17,7 +17,7 @@ export default async function MailTemplates({ params }) {
           <Form mailTemplate={mailTemplate} />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FieldList />
+          <FieldList mailTemplate={mailTemplate} />
         </Grid>
       </Grid>
     </MDBox>

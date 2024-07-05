@@ -1,6 +1,10 @@
+"use client";
+
 import { Card, Divider, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import { getTableFields } from "/actions/table-field";
+import { useEffect, useState } from "react";
 
 const Row = (label, slug, index) => (
   <MDBox key={index} component="li" mb={1}>
@@ -24,14 +28,14 @@ const Row = (label, slug, index) => (
         fontWeight="medium"
         textTransform="lowercase"
       >
-        {`{ ${slug} }`}
+        {`{${slug}}`}
       </MDTypography>
     </MDBox>
   </MDBox>
 );
 
-const renderFieldList = () => {
-  return ["Cliente", "Tarea", "Otros"].map(
+const renderFieldList = (groupLabel, fields = []) => {
+  return [groupLabel, "Cliente", "Otros"].map(
     (
       fieldGroup,
       index // TODO: Get the correct data
@@ -58,15 +62,12 @@ const renderFieldList = () => {
           display="flex"
           key={index}
           flexDirection="column"
-          px={4}
-          m={3}
+          px={2}
+          m={1}
           gap={1}
           sx={{ listStyle: "none" }}
         >
-          {[
-            { label: "Nombre del cliente", slug: "partner_name" },
-            { label: "Direccion del cliente", slug: "partner_address" }, // TODO: Get the correct data
-          ].map(({ label, slug }, index) => {
+          {fields.map(({ label, slug }, index) => {
             return Row(label, slug, index);
           })}
         </MDBox>
@@ -75,14 +76,25 @@ const renderFieldList = () => {
   );
 };
 
-export default function FieldList() {
+export default async function FieldList({ mailTemplate }) {
+  const [fields, setFields] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const fields = await getTableFields(mailTemplate.group.slug);
+  //     setFields(fields);
+  //   };
+
+  //   fetchData();
+  // },  [mailTemplate]); // TODO: Make this works
+
   return (
     <Card sx={{ width: "100%" }}>
-      <MDBox pl={6} pr={4} py={4}>
+      <MDBox pl={4} pr={2} py={4}>
         <MDTypography variant="h5">Campos combinados disponibles</MDTypography>
         <Divider />
         <Grid container spacing={2}>
-          {renderFieldList()}
+          {renderFieldList(mailTemplate.group.name)}
         </Grid>
       </MDBox>
     </Card>

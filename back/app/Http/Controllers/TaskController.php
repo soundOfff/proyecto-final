@@ -278,6 +278,7 @@ class TaskController extends Controller
             ->where('milestone_order', '>', $task->milestone_order)
             ->decrement('milestone_order');
 
+        $task->dependencies()->detach();
         $task->delete();
 
         return response()->json(null, 204);

@@ -142,6 +142,7 @@ Route::post('/timers', [TaskTimerController::class, 'store']);
 Route::get('/current-timer/{staff}', [TaskTimerController::class, 'getCurrentTimer']);
 
 Route::get('/tasks', [TaskController::class, 'index']);
+Route::get('/tasks-select', [TaskController::class, 'select']);
 Route::post('/tasks', [TaskController::class, 'store']);
 Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);

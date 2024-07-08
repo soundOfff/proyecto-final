@@ -17,6 +17,7 @@ import { getTableFields } from "/actions/table-field";
 import { select as getAllStaffs } from "/actions/staffs";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
+import { getSelect as getSelectTasks } from "/actions/tasks";
 
 export default async function Tasks({
   searchParams: { perPage = 10, page = 1 },
@@ -39,6 +40,7 @@ export default async function Tasks({
     actionsData,
     tableFields,
     staffs,
+    dependencyTasks,
   ] = await Promise.all([
     getAllTasks({
       perPage: perPage,
@@ -55,6 +57,7 @@ export default async function Tasks({
     getAllActionTypes(),
     getTableFields({ table: tableName }),
     getAllStaffs(),
+    getSelectTasks(),
   ]);
 
   return (
@@ -69,7 +72,7 @@ export default async function Tasks({
               repeats={repeats}
               taskableItems={taskableItems}
               tagsData={tagsData}
-              dependencyTasks={tasks}
+              dependencyTasks={dependencyTasks}
               partners={partners}
               staffs={staffs}
               statuses={statuses}

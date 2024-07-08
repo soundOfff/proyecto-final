@@ -1,11 +1,14 @@
 import { show } from "/actions/projects";
 
 import { select as staffSelect } from "/actions/staffs";
-import { getTaskStatus, getTaskPriorities } from "/actions/tasks";
+import {
+  getTaskStatus,
+  getTaskPriorities,
+  getSelect as getAllDependencies,
+} from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
 import { getAll as getAllRepeats } from "/actions/expense-repeats";
 import { getAll as getAllTags } from "/actions/tags";
-import { getAll as getAllDependencies } from "/actions/tasks";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllActionTypes } from "/actions/action-types";
 import { getTableFields } from "/actions/table-field";
@@ -37,9 +40,7 @@ export default async function Show({ params }) {
     partners,
     actionsData,
     tableFields,
-    {
-      data: { tasks: dependencyTasks },
-    },
+    dependencyTasks,
   ] = await Promise.all([
     show(params.id, { include }),
     staffSelect(),

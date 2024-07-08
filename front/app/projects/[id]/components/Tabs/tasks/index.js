@@ -31,7 +31,7 @@ export default function Tasks() {
   const [isAttachingTasks, setIsAttachingTasks] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [createdSB, setCreatedSB] = useState(false);
-  const process = project.serviceType.processes.at(-1);
+  const process = project.serviceType?.processes?.at(-1) ?? null;
 
   const handleSelectNextStep = async () => {
     setIsAttachingTasks(true);

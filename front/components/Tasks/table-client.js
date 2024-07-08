@@ -336,18 +336,20 @@ export default function Table({
       <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
         <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
           {project && (
-            <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable">
+            <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable, un tipo de servicio y un proceso">
               <MDBox>
-                {project?.serviceType?.processes[0] && (
-                  <MDButton
-                    variant="gradient"
-                    color={"info"}
-                    disabled={!project?.responsiblePerson || isFetching}
-                    onClick={handleCreateTasks}
-                  >
-                    Crear tareas desde el proceso
-                  </MDButton>
-                )}
+                <MDButton
+                  variant="gradient"
+                  color={"info"}
+                  disabled={
+                    !project?.responsiblePerson ||
+                    !project?.serviceType?.processes[0] ||
+                    isFetching
+                  }
+                  onClick={handleCreateTasks}
+                >
+                  Crear tareas desde el proceso
+                </MDButton>
               </MDBox>
             </Tooltip>
           )}

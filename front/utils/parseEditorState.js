@@ -1,8 +1,9 @@
 import { EditorState, convertFromRaw } from "draft-js";
 
-function isJsonString(str) {
+function isFromEditor(str) {
   try {
-    JSON.parse(str);
+    const parsedValue = JSON.parse(str);
+    if (typeof parsedValue !== "object") throw new Error("Not an object");
   } catch (e) {
     return false;
   }
@@ -10,17 +11,15 @@ function isJsonString(str) {
 }
 
 export const parseEditorState = (value) => {
-  if (
-    !value ||
-    value.length === 0 ||
-    value == "{}" ||
-    value == "null" ||
-    !isJsonString(value)
-  ) {
-    return EditorState.createEmpty();
+  if (value && !isFromEditor(value)) {
+    return EditorState.createWithText(value);
   }
-  const block = JSON.parse(value);
-  const contentState = convertFromRaw(block);
-  const editorState = EditorState.createWithContent(contentState);
-  return editorState;
+
+  if (value && isFromEditor(value)) {
+    const block = JSON.parse(value);
+    const contentState = convertFromRaw(block);
+    return EditorState.createWithContent(contentState);
+  }
+
+  return EditorState.createEmpty();
 };

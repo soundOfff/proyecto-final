@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskResourceCollection;
+use App\Http\Resources\TaskSelectResourceCollection;
 use App\Models\Staff;
 use App\Models\Taggable;
 use App\Models\Task;
@@ -22,6 +23,13 @@ class TaskController extends Controller
 {
     public function __construct(protected FcmService $fcmService)
     {
+    }
+
+    public function select()
+    {
+        $tasks = Task::all();
+
+        return new TaskSelectResourceCollection($tasks);
     }
 
     public function index()

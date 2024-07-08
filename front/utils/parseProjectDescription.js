@@ -1,8 +1,9 @@
 import { parseEditorState } from "./parseEditorState";
 
-function isJsonString(str) {
+function isFromEditor(str) {
   try {
-    JSON.parse(str);
+    const parsedValue = JSON.parse(str);
+    if (typeof parsedValue !== "object") throw new Error("Not an object");
   } catch (e) {
     return false;
   }
@@ -10,7 +11,7 @@ function isJsonString(str) {
 }
 
 export function parseProjectDescription(description) {
-  return isJsonString(description)
+  return isFromEditor(description)
     ? parseEditorState(description).getCurrentContent().getPlainText()
     : description;
 }

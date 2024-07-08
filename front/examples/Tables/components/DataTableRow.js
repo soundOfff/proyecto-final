@@ -117,7 +117,6 @@ export default function DataTableRow({
         transition: "all 0.5s ease",
       }}
     >
-      {getLevelColor()}
       {row.cells.map((cell) => {
         const { key, ...cellProps } = cell.getCellProps();
 

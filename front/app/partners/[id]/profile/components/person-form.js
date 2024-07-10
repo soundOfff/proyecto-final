@@ -39,6 +39,7 @@ export default function PersonForm({
         expeditionDate,
         isMale,
         idNumber,
+        idType,
         country,
         isConsolidator,
         nationality,
@@ -104,6 +105,17 @@ export default function PersonForm({
           type={name.type}
           error={errors[name.name] && touched[name.name]}
           success={values[name.name]?.length > 0 && !errors[name.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          value={values[idType.name]}
+          label={idType.label}
+          placeholder={idType.placeholder}
+          name={idType.name}
+          type={idType.type}
+          error={errors[idType.name] && touched[idType.name]}
+          success={values[idType.name]?.length > 0 && !errors[idType.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -317,7 +329,7 @@ export default function PersonForm({
         <FormControl variant="standard" sx={{ mt: -2.3 }} fullWidth>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
-            value={values[isResidential.name]}
+            value={Number(values[isResidential.name])}
             label={isResidential.label}
             onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
             sx={{ height: "3rem" }}

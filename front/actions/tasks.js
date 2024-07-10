@@ -3,6 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { customFetch } from "./custom-fetch";
 
+export async function getSelect() {
+  const url = new URL(`${process.env.API_URL}/tasks-select`);
+
+  const { data } = await customFetch(url);
+
+  return data.tasks;
+}
+
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/tasks`);
   url.search = new URLSearchParams(params);
@@ -53,6 +61,7 @@ export async function update(taskId, data) {
   revalidatePath("/projects");
   revalidatePath("/partners/tasks");
   revalidatePath("/invoices/[id]");
+  revalidatePath("/expenses");
 }
 
 export async function show(id, params) {

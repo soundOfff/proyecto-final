@@ -74,23 +74,29 @@ export default function DataTableRow({
   const getLevelColor = () => {
     if (!row.original.procedure) return "white";
 
-    const groups = Object.entries(
-      Object.groupBy(
-        rows,
-        (row) => row.original.procedure && row.original.procedure.process.id
-      )
-    );
+    let currentColor = "rgb(225, 225, 225, 0.4)";
+    let previousProcessId = null;
 
-    const groupIndex = groups.findIndex((group) => {
-      return group[0] == row.original.procedure.process.id;
-    });
+    for (let i = 0; i < rows.length; i++) {
+      const currentRow = rows[i];
+      const currentProcessId =
+        currentRow.original.procedure &&
+        currentRow.original.procedure.process.id;
 
-    const color1 = "rgb(225, 225, 225, 0.4)"; // Light gray
-    const color2 = "rgb(200, 200, 255, 0.4)"; // Light blue
+      if (currentProcessId !== previousProcessId) {
+        currentColor =
+          currentColor === "rgb(225, 225, 225, 0.4)"
+            ? "rgb(200, 200, 255, 0.4)"
+            : "rgb(225, 225, 225, 0.4)";
+        previousProcessId = currentProcessId;
+      }
 
-    const color = groupIndex % 2 === 0 ? color1 : color2;
+      if (currentRow.original === row.original) {
+        return currentColor;
+      }
+    }
 
-    return color;
+    return "white";
   };
 
   const { key: rowKey, rowProps } = row.getRowProps();

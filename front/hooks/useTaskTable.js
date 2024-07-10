@@ -93,7 +93,6 @@ export default function useTaskTable({
   };
 
   const handleCompleteTask = async (taskId) => {
-    console.log(statuses);
     const doneState = statuses.find((status) => status.name === DONE_STATUS);
     if (taskId === doneState) {
       return;

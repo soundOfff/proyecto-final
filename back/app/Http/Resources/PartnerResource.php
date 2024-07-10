@@ -38,6 +38,8 @@ class PartnerResource extends JsonResource
             'city' => $this->city,
             'company' => $this->company,
             'isConsolidator' => $this->is_consolidator,
+            'idType' => $this->id_type,
+            'idNumber' => $this->id_number,
             'consolidatorId' => $this->consolidator_id,
             'defaultCurrency' => $this->default_currency,
             'defaultLanguage' => $this->default_language,

@@ -98,22 +98,23 @@ export default function Table({ rows, meta }) {
       Header: "Acciones",
       accessor: "actions",
       noSortBy: true,
-      Cell: ({ row }) => (
-        <Tooltip title="Eliminar un miembro">
-          <DeleteIcon
-            color="error"
-            fontSize="medium"
-            onClick={() => {
-              handleDelete(row.original.id);
-            }}
-            sx={{
-              mx: 1,
-              cursor: "pointer",
-              display: row.original.isBlocked ? "none" : "block",
-            }}
-          />
-        </Tooltip>
-      ),
+      Cell: ({ row }) =>
+        false && (
+          <Tooltip title="Eliminar un miembro">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{
+                mx: 1,
+                cursor: "pointer",
+                display: row.original.isBlocked ? "none" : "block",
+              }}
+            />
+          </Tooltip>
+        ),
     },
   ];
 

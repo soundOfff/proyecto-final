@@ -6,9 +6,10 @@ import {
 } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 
-function isJsonString(str) {
+function isFromEditor(str) {
   try {
-    JSON.parse(str);
+    const parsedValue = JSON.parse(str);
+    if (typeof parsedValue !== "object") throw new Error("Not an object");
   } catch (e) {
     return false;
   }
@@ -49,23 +50,16 @@ export const editorStateToHtml = (editorState) => {
   return markup;
 };
 
-/* 
-  @param {string} value
-  @return {EditorState}
-  This function receives a string formatted as Content blocks and returns an EditorState object.
-*/
 export const parseEditorState = (contentBlockString) => {
-  if (
-    !contentBlockString ||
-    contentBlockString.length === 0 ||
-    contentBlockString == "{}" ||
-    contentBlockString == "null" ||
-    !isJsonString(contentBlockString)
-  ) {
-    return EditorState.createEmpty();
+  if (contentBlockString && !isFromEditor(contentBlockString)) {
+    return EditorState.createWithText(contentBlockString);
   }
-  const block = JSON.parse(contentBlockString);
-  const contentState = convertFromRaw(block);
-  const editorState = EditorState.createWithContent(contentState);
-  return editorState;
+
+  if (contentBlockString && isFromEditor(contentBlockString)) {
+    const block = JSON.parse(contentBlockString);
+    const contentState = convertFromRaw(block);
+    return EditorState.createWithContent(contentState);
+  }
+
+  return EditorState.createEmpty();
 };

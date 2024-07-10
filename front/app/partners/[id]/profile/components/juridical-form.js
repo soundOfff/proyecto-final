@@ -298,13 +298,13 @@ export default function JuridicalForm({
         <FormControl variant="standard" fullWidth sx={{ mt: -2.3 }}>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
-            value={values[isResidential.name]}
+            value={Number(values[isResidential.name])}
             label={isResidential.label}
             onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
             sx={{ height: "3rem" }}
           >
-            <MenuItem value={true}>Residencial</MenuItem>
-            <MenuItem value={false}>Edificio</MenuItem>
+            <MenuItem value={1}>Residencial</MenuItem>
+            <MenuItem value={0}>Edificio</MenuItem>
           </MuiSelect>
         </FormControl>
       </Grid>

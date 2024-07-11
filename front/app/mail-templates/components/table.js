@@ -2,13 +2,12 @@
 
 import MDBox from "/components/MDBox";
 import Row from "./row";
-import Icon from "@mui/material/Icon";
 import MDTypography from "/components/MDTypography";
 import { Link } from "@mui/material";
 
-const renderGroup = ({ name, mailTemplates }, key) => {
+const renderGroup = ({ name, mailTemplates }) => {
   return (
-    <MDBox key={key}>
+    <MDBox>
       <MDBox
         mb={2}
         display="flex"
@@ -39,7 +38,6 @@ const renderGroup = ({ name, mailTemplates }, key) => {
       <MDBox
         component="ul"
         display="flex"
-        key={key}
         flexDirection="column"
         px={8}
         m={3}
@@ -54,6 +52,7 @@ const renderGroup = ({ name, mailTemplates }, key) => {
           mailTemplates.map((template) => {
             return (
               <Row
+                key={template.id}
                 id={template.id}
                 name={template.name}
                 slug={template.event}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Grid, FormGroup, FormControlLabel, Switch } from "@mui/material";
 import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
@@ -7,16 +7,18 @@ import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 
 import { htmlToEditorState } from "/utils/parseEditorState";
-import { EditorState } from "draft-js";
 import { editorStateToHtml } from "/utils/parseEditorState";
 
-export default function MailTemplateForm({ mailTemplate, formData }) {
+export default function MailTemplateForm({
+  mailTemplate,
+  formData,
+  editorState,
+  setEditorState,
+}) {
   const { values, errors, touched, setFieldValue, formField } = formData;
 
   const { subject, name, sendFrom, disabled, formatted, event, body } =
     formField;
-
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
     setFieldValue(name.name, mailTemplate.name);
@@ -27,17 +29,27 @@ export default function MailTemplateForm({ mailTemplate, formData }) {
     setFieldValue(formatted.name, mailTemplate.formatted);
     setFieldValue(event.name, mailTemplate.event);
     setFieldValue(body.name, mailTemplate.body);
-  }, [mailTemplate]);
+  }, [
+    mailTemplate,
+    name,
+    subject,
+    sendFrom,
+    body,
+    disabled,
+    formatted,
+    event,
+    setFieldValue,
+  ]);
 
   useEffect(() => {
     const editorState = htmlToEditorState(mailTemplate.body);
     setEditorState(editorState);
-  }, [mailTemplate]);
+  }, [mailTemplate, setEditorState]);
 
   useEffect(() => {
     const content = editorStateToHtml(editorState);
     setFieldValue(body.name, content);
-  }, [editorState, setFieldValue]);
+  }, [editorState, body, setFieldValue]);
 
   return (
     <MDBox p={4}>

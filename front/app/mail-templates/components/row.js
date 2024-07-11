@@ -27,7 +27,7 @@ import Link from "next/link";
 
 function Row({ name, slug, disabled, id }) {
   return (
-    <MDBox key={id} component="li" pr={2} mb={1}>
+    <MDBox component="li" pr={2} mb={1}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center">
         <MDBox display="flex" alignItems="center">
           <MDBox display="flex" flexDirection="column" justifyContent="center">

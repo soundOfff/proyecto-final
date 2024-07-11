@@ -5,7 +5,8 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import { getTableFields } from "/actions/table-field";
 import { useEffect, useState } from "react";
-import { EditorState } from "draft-js";
+import { EditorState, SelectionState } from "draft-js";
+import { htmlToEditorState } from "/utils/parseEditorState";
 
 export default function FieldList({
   mailTemplate,
@@ -17,14 +18,35 @@ export default function FieldList({
   const handleSlugClick = (e) => {
     e.preventDefault();
     const slug = e.target.textContent;
-    const cursorIndex = editorState.getSelection().focusOffset;
+    const currentSelection = editorState.getSelection();
     const currentContent = editorState.getCurrentContent().getPlainText();
-    const newText =
-      currentContent.slice(0, cursorIndex) +
-      slug +
-      currentContent.slice(cursorIndex);
+    const focusOffset = currentSelection.getFocusOffset();
 
-    setEditorState(EditorState.createWithText(newText));
+    const newText =
+      currentContent.slice(0, focusOffset) +
+      slug +
+      currentContent.slice(focusOffset);
+
+    const newEditorState = htmlToEditorState(newText);
+    const newFocusOffset = focusOffset + slug.length;
+
+    let lastBlockKey;
+    const newContentState = newEditorState.getCurrentContent();
+    const blockMap = newContentState.getBlockMap();
+
+    blockMap.forEach((contentBlock) => {
+      lastBlockKey = contentBlock.getKey();
+    });
+
+    const newSelection = new SelectionState({
+      anchorKey: lastBlockKey,
+      anchorOffset: newFocusOffset,
+      focusKey: lastBlockKey,
+      focusOffset: newFocusOffset,
+      hasFocus: true,
+    });
+
+    setEditorState(EditorState.forceSelection(newEditorState, newSelection));
   };
 
   const renderRow = (field, index) => (

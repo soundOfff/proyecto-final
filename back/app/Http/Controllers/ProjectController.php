@@ -85,7 +85,7 @@ class ProjectController extends Controller
         $serviceType = ProjectServiceType::find($newProject['project_service_type_id']);
         $serviceTypeName = $serviceType ? $serviceType->label : '';
 
-        $newProject['name'] = "$serviceTypeName | $defendantName vs $plaintiffName";
+        $newProject['name'] = "$serviceTypeName | $plaintiffName vs $defendantName";
 
         $project = Project::create($newProject);
 
@@ -133,7 +133,7 @@ class ProjectController extends Controller
         $serviceType = ProjectServiceType::find($data['project_service_type_id']);
         $serviceTypeName = $serviceType ? $serviceType->label : '';
 
-        $data['name'] = "$serviceTypeName | $defendantName vs $plaintiffName";
+        $data['name'] = "$serviceTypeName | $plaintiffName vs $defendantName";
 
         $project->update($data);
 

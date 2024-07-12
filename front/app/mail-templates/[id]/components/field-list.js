@@ -121,9 +121,9 @@ export default function FieldList({
   };
 
   useEffect(() => {
-    getTableFields({ table: mailTemplate.group.slug }).then((fields) =>
-      setFields(fields)
-    );
+    getTableFields({ table: mailTemplate.group.slug }).then((fields) => {
+      setFields(fields);
+    });
   }, [mailTemplate]);
 
   return (

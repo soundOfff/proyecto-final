@@ -75,6 +75,14 @@ class Task extends Model
         'is_file_needed',
     ];
 
+    public const MAIL_TEMPLATE_FIELDS = [
+        'label' => 'Nombre', 'key' => 'task-name',
+        'label' => 'Descripción', 'key' => 'task-description',
+        'label' => 'Fecha inicio', 'key' => 'task-start_date',
+        'label' => 'Fecha fin', 'key' => 'task-due_date',
+        'label' => 'Prioridad', 'key' => 'task-priority-name',
+    ];
+
     public const TASKABLE_PROJECT = 'project';
 
     public const TASKABLE_INVOICE = 'invoice';
@@ -232,7 +240,6 @@ class Task extends Model
             ->whereNotNull('milestone_order')
             ->orderBy('milestone_order', 'DESC')
             ->first();
-        
 
         return $latestTask ? $latestTask->milestone_order : 0;
     }

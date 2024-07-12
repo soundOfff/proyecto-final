@@ -60,4 +60,15 @@ class MailTemplateController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function allowedFields(Request $request)
+    {
+        $request->validate([
+            'model' => 'required|string',
+        ]);
+
+        $fields = $request->model::CUSTOM_TEMPLATE_FIELDS;
+
+        return response()->json($fields);
+    }
 }

@@ -9,16 +9,23 @@ use Illuminate\Support\Facades\Mail;
 
 class MailTemplateService
 {
+    public function __construct(protected TableFieldService $tableFieldService)
+    {
+    }
+
     public function sendTemplate(string $to, Task $task, MailTemplate $template)
     {
         $body = $template->body;
 
         if ($template->isTaskGroup()) {
-            $body = str_replace('{task_name}', $task->name, $body);
-            $body = str_replace('{due_date}', $task->due_date, $body);
-            $body = str_replace('{priority}', $task->priority->name, $body);
-            $body = str_replace('{staff_name}', $task->author->first_name.' '.$task->author->last_name, $body);
+            foreach (Task::MAIL_TEMPLATE_FIELDS as $field) {
+                $modelName = str_split($field, '-');
+
+                $body = str_replace("{$field}", $task->author->{$field['field']}, $body);
+            }
         }
+
+        dd($body);
 
         Mail::to($to)->send(new TemplateMailable($body));
     }

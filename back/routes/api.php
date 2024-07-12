@@ -245,7 +245,8 @@ Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index'
 
 Route::get('/documents', [DocumentController::class, 'generate']);
 
-Route::post('/send-email', [MailTemplateController::class, 'send']);
+Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
+Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

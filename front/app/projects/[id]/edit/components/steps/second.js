@@ -84,21 +84,21 @@ export default function Second({
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
         <Select
-          value={values[defendant.name]}
-          options={defendants}
-          optionLabel={(option) => option.name}
-          fieldName={defendant.name}
-          inputLabel={defendant.label}
-          setFieldValue={setFieldValue}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
           value={values[plaintiff.name]}
           options={plaintiffs}
           optionLabel={(option) => option.name}
           fieldName={plaintiff.name}
           inputLabel={plaintiff.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[defendant.name]}
+          options={defendants}
+          optionLabel={(option) => option.name}
+          fieldName={defendant.name}
+          inputLabel={defendant.label}
           setFieldValue={setFieldValue}
         />
       </Grid>

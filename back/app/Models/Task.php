@@ -232,7 +232,6 @@ class Task extends Model
             ->whereNotNull('milestone_order')
             ->orderBy('milestone_order', 'DESC')
             ->first();
-        
 
         return $latestTask ? $latestTask->milestone_order : 0;
     }

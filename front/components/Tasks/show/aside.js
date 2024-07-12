@@ -52,23 +52,8 @@ export default function Aside() {
   const [reminderStaffId, setReminderStaffId] = useState(null);
   const [reminderDescription, setReminderDescription] = useState("");
   const [reminderDate, setReminderDate] = useState("");
-  const [assigneds, setAssigneds] = useState(
-    task.assigneds.map((assigned) => {
-      return {
-        ...assigned,
-        first_name: assigned.firstName,
-        last_name: assigned.lastName,
-      };
-    })
-  );
-  const [followers, setFollowers] = useState(
-    task.followers.map((follower) => {
-      return {
-        ...follower,
-        name: follower.firstName + " " + follower.lastName,
-      };
-    })
-  );
+  const [assigneds, setAssigneds] = useState(task.assigneds);
+  const [followers, setFollowers] = useState(task.followers);
 
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(

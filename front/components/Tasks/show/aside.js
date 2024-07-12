@@ -444,7 +444,7 @@ export default function Aside() {
             <MDBox display="flex" mt={2} mb={1}>
               <Lock />
               <MDTypography variant="h6" fontWeight="bold" ml={1}>
-                Comercial
+                Responsables
               </MDTypography>
             </MDBox>
             {task.assigneds &&

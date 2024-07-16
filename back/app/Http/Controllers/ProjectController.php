@@ -11,9 +11,11 @@ use App\Models\Partner;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function PHPUnit\Framework\throwException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -62,6 +64,7 @@ class ProjectController extends Controller
                 'lawFirm',
                 'members',
                 'staffs',
+                'partners',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -77,7 +80,12 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+
+        $partnersToAttach = [];
+        foreach ($request->get('partners') as $partner) {
+            $partnersToAttach[$partner['id']] = ['role' => $partner['role']];
+        }
 
         $defendantName = Partner::find($newProject['defendant_id'])->merged_name;
         $plaintiff = Partner::find($newProject['plaintiff_id']);
@@ -89,7 +97,8 @@ class ProjectController extends Controller
 
         $project = Project::create($newProject);
 
-        $project->members()->attach($ids);
+        $project->members()->attach($projectMemberIds);
+        $project->partners()->attach($partnersToAttach);
 
         return response()->json($project, 201);
     }
@@ -111,6 +120,7 @@ class ProjectController extends Controller
                 'members',
                 'responsiblePerson',
                 'tasks',
+                'partners',
             ])
             ->find($project->id);
 
@@ -124,8 +134,14 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
-        $project->members()->sync($ids);
+        $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $project->members()->sync($memberIds);
+
+        $partnersToSync = [];
+        foreach ($request->get('partners') as $partner) {
+            $partnersToSync[$partner['id']] = ['role' => $partner['role']];
+        }
+        $project->partners()->sync($partnersToSync);
 
         $defendantName = Partner::find($data['defendant_id'])->merged_name;
         $plaintiff = Partner::find($data['plaintiff_id']);

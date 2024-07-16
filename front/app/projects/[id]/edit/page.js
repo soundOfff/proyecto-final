@@ -1,4 +1,4 @@
-import FormComponent from "./components/form";
+import FormComponent from "../../components/form/form";
 import MDBox from "/components/MDBox";
 
 import { show as showProject } from "/actions/projects";
@@ -26,6 +26,7 @@ export default async function Update({ params: { id } }) {
       "status",
       "members",
       "responsiblePerson",
+      "partners",
     ],
   });
 

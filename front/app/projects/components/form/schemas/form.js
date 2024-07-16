@@ -52,15 +52,15 @@ const form = {
       name: "plaintiff_id",
       label: "Demandante",
     },
-    status: {
-      name: "project_status_id",
-      label: "Estado",
-      errorMsg: "Debe seleccionar un estado",
-    },
     responsiblePersonId: {
       name: "responsible_person_id",
       label: "Persona Responsable",
       errorMsg: "Debe seleccionar una persona responsable",
+    },
+    status: {
+      name: "project_status_id",
+      label: "Estado",
+      errorMsg: "Debe seleccionar un estado",
     },
     serviceType: {
       name: "project_service_type_id",
@@ -86,6 +86,10 @@ const form = {
       name: "deadline",
       label: "Fecha de Entrega",
       errorMsg: "Debe seleccionar una fecha de entrega",
+    },
+    partners: {
+      name: "partners",
+      label: "Personas Relacionadas",
     },
   },
 };

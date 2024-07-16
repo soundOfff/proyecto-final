@@ -1,38 +1,82 @@
 "use client";
 
-import { Autocomplete, Grid } from "@mui/material";
+import { Autocomplete, Divider, Grid } from "@mui/material";
+import { ErrorMessage } from "formik";
+import { useEffect, useState } from "react";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import MDDatePicker from "/components/MDDatePicker";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import PartnerForm from "../partnerForm";
+import PartnerList from "../partnerList";
 
 export default function Second({
   formData,
+  project,
   partners: partnerData,
   statuses,
   serviceTypes,
   billingTypes,
   members,
 }) {
-  const { formField, values, setFieldValue } = formData;
+  const { formField, values, errors, touched, setFieldValue } = formData;
   const {
     defendant,
     plaintiff,
     status,
     serviceType,
-    responsiblePersonId,
     billingType,
+    responsiblePersonId,
     selectedMembers,
     startDate,
     deadline,
+    partners,
   } = formField;
+
+  useEffect(() => {
+    if (project) {
+      setFieldValue(defendant.name, project.defendant.id || "");
+      setFieldValue(plaintiff.name, project.plaintiff?.id || "");
+      setFieldValue(status.name, project.status.id);
+      setFieldValue(serviceType.name, project.serviceType?.id || "");
+      setFieldValue(billingType.name, project.billingType?.id || "");
+      setFieldValue(
+        responsiblePersonId.name,
+        project.responsiblePerson?.id || ""
+      );
+      setFieldValue(selectedMembers.name, project.members);
+      setFieldValue(startDate.name, project.startDate);
+      setFieldValue(deadline.name, project.deadline ?? "");
+      setFieldValue(partners.name, project.partners);
+    }
+  }, [
+    project,
+    defendant,
+    plaintiff,
+    status,
+    serviceType,
+    billingType,
+    responsiblePersonId,
+    selectedMembers,
+    startDate,
+    deadline,
+    partners,
+    setFieldValue,
+  ]);
 
   const [defendants, setDefendants] = useState(partnerData);
   const [plaintiffs, setPlaintiffs] = useState(partnerData);
+
+  const partnersSelected = values[partners.name]?.map((partner) => {
+    return {
+      id: partner.id,
+      name: partnerData.find((p) => p.id === partner.id).name,
+      role: partner.role,
+    };
+  });
 
   useEffect(() => {
     if (values[defendant.name]) {
@@ -144,14 +188,14 @@ export default function Second({
       </Grid>
       <Grid item xs={12} sm={6}>
         <MDDatePicker
-          input={{
-            label: "Fecha De Inicio",
-            fullWidth: true,
-          }}
           value={values[startDate.name]}
           onChange={(date) =>
             setFieldValue(startDate.name, moment(date[0]).format("YYYY-MM-DD"))
           }
+          input={{
+            label: "Fecha De Inicio",
+            fullWidth: true,
+          }}
         />
         <MDBox mt={0.75}>
           <MDTypography
@@ -166,14 +210,14 @@ export default function Second({
       </Grid>
       <Grid item xs={12} sm={6}>
         <MDDatePicker
-          input={{
-            label: "Fecha De Entrega",
-            fullWidth: true,
-          }}
           value={values[deadline.name]}
           onChange={(date) =>
             setFieldValue(deadline.name, moment(date[0]).format("YYYY-MM-DD"))
           }
+          input={{
+            label: "Fecha De Entrega",
+            fullWidth: true,
+          }}
         />
         <MDBox mt={0.75}>
           <MDTypography
@@ -186,6 +230,13 @@ export default function Second({
           </MDTypography>
         </MDBox>
       </Grid>
+      <PartnerForm {...{ values, setFieldValue, partnerData }} />
+      <PartnerList
+        partners={partnersSelected}
+        setFieldValue={setFieldValue}
+        partnerField={partners}
+        values={values}
+      />
     </Grid>
   );
 }

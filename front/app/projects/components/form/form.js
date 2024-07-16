@@ -15,16 +15,18 @@ import validations from "./schemas/validations";
 import form from "./schemas/form";
 
 import { useState } from "react";
+import { update as updateProject } from "/actions/projects";
+import { store as storeProject } from "/actions/projects";
 
 const steps = ["Detalles", "Clientes"];
 
 export default function FormComponent({
+  project,
   partners,
   statuses,
   serviceTypes,
   members,
   billingTypes,
-  storeProject,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
@@ -36,12 +38,19 @@ export default function FormComponent({
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
       case 0:
-        return <First formData={formData} />;
+        return <First formData={formData} project={project} />;
       case 1:
         return (
           <Second
             formData={formData}
-            {...{ partners, statuses, serviceTypes, members, billingTypes }}
+            {...{
+              project,
+              partners,
+              statuses,
+              serviceTypes,
+              members,
+              billingTypes,
+            }}
           />
         );
       default:
@@ -53,7 +62,11 @@ export default function FormComponent({
 
   const submitForm = async (values, actions) => {
     try {
-      await storeProject(values);
+      if (project) {
+        await updateProject(project.id, values);
+      } else {
+        await storeProject(values);
+      }
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -71,14 +84,14 @@ export default function FormComponent({
   };
 
   return (
-    <MDBox py={3} mb={20} height="65vh">
+    <MDBox mb={10}>
       <Grid
         container
         justifyContent="center"
         alignItems="center"
-        sx={{ height: "100%", mt: 8 }}
+        sx={{ mt: 4 }}
       >
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={10}>
           <Formik
             initialValues={initialValues}
             validationSchema={currentValidation}
@@ -86,17 +99,17 @@ export default function FormComponent({
           >
             {({ values, errors, touched, isSubmitting, setFieldValue }) => (
               <Form id={formId} autoComplete="off">
-                <MDSnackbar
-                  color="error"
-                  icon="warning"
-                  title="Error"
-                  content={errorMsg}
-                  open={errorSB}
-                  onClose={() => setErrorSB(false)}
-                  close={() => setErrorSB(false)}
-                  bgWhite
-                />
-                <Card sx={{ height: "100%" }}>
+                <Card>
+                  <MDSnackbar
+                    color="error"
+                    icon="warning"
+                    title="Error"
+                    content={errorMsg}
+                    open={errorSB}
+                    onClose={() => setErrorSB(false)}
+                    close={() => setErrorSB(false)}
+                    bgWhite
+                  />
                   <MDBox mx={2} mt={-3}>
                     <Stepper activeStep={activeStep} alternativeLabel>
                       {steps.map((label) => (

@@ -7,22 +7,31 @@ import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 
 import { useEffect, useState } from "react";
-import { EditorState, convertToRaw } from "draft-js";
+import { convertToRaw } from "draft-js";
 import { ErrorMessage } from "formik";
 import { parseEditorState } from "/utils/parseEditorState";
 
-export default function First({ formData }) {
+export default function First({ formData, project }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
   const { cost, estimatedHours, expedient, description } = formField;
-  const [editorState, setEditorState] = useState(() =>
-    parseEditorState(values[description.name])
+  const [editorState, setEditorState] = useState(
+    parseEditorState(project?.description || "") // TODO change for html to draft when merge
   );
 
   useEffect(() => {
     const raw = convertToRaw(editorState.getCurrentContent());
     const strDescription = JSON.stringify(raw);
+
     setFieldValue(description.name, strDescription);
-  }, [setFieldValue, description, values, editorState]);
+  }, [editorState, setFieldValue, description]);
+
+  useEffect(() => {
+    if (project) {
+      setFieldValue(cost.name, project.cost || "");
+      setFieldValue(estimatedHours.name, project.estimatedHours || "");
+      setFieldValue(expedient.name, project.expedient || "");
+    }
+  }, [project, cost, estimatedHours, expedient, description, setFieldValue]);
 
   return (
     <Grid container spacing={5}>
@@ -51,7 +60,7 @@ export default function First({ formData }) {
           }
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={12}>
         <FormField
           value={values[expedient.name]}
           name={expedient.name}
@@ -69,7 +78,7 @@ export default function First({ formData }) {
           {description.label}
         </MDTypography>
         <MDEditor
-          editorStyle={{ minHeight: "20vh", fontSize: "18px" }}
+          editorStyle={{ minHeight: "20vh" }}
           editorState={editorState}
           setEditorState={setEditorState}
         />

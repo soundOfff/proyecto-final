@@ -6,12 +6,9 @@ use App\Http\Requests\StaffRequest;
 use App\Http\Resources\StaffResource;
 use App\Http\Resources\StaffResourceCollection;
 use App\Http\Resources\StaffSelectResourceCollection;
-use App\Models\Contact;
-use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -20,7 +17,7 @@ class StaffController extends Controller
 {
     public function select()
     {
-        $staffs = Staff::where('active', true)->get();
+        $staffs = Staff::where('active', true)->orderBy('first_name')->get();
 
         return new StaffSelectResourceCollection($staffs);
     }
@@ -116,11 +113,11 @@ class StaffController extends Controller
 
         return response()->json(
             [
-                "data" => [
+                'data' => [
                     'pendingTasks' => $pendingTasks,
                     'inProgressTasks' => $inProgressTasks,
                     'completedTasks' => $completedTasks,
-                ]
+                ],
             ],
             200
         );

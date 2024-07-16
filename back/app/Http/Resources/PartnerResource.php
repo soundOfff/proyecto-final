@@ -77,7 +77,7 @@ class PartnerResource extends JsonResource
             'industry' => $this->industry,
             'section' => $this->section,
             'document' => $this->document,
-            'relatedPartners' => PartnerResource::collection($this->whenLoaded('relatedPartners')),
+            'relatedPartners' => self::collection($this->whenLoaded('relatedPartners')),
             'pivot' => $this->pivot,
             'files' => FileResource::collection($this->whenLoaded('files')),
             'createdAt' => Carbon::parse($this->created_at)->format('m/d/Y g:i A'),
@@ -94,6 +94,9 @@ class PartnerResource extends JsonResource
             'treasurer' => static::make($this->whenLoaded('treasurer')),
             'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
             'primaryContact' => ContactResource::make($this->whenLoaded('primaryContact')),
+            'role' => $this->whenPivotLoaded('partner_project', function () {
+                return $this->pivot->role;
+            }),
         ];
     }
 }

@@ -107,6 +107,11 @@ class Project extends Model
         return $this->belongsToMany(Staff::class, 'project_staff');
     }
 
+    public function partners(): BelongsToMany
+    {
+        return $this->belongsToMany(Partner::class, 'partner_project')->withPivot('role');
+    }
+
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -102,7 +103,7 @@ class Task extends Model
         );
     }
 
-    public function procedure()
+    public function procedure(): BelongsTo
     {
         return $this->belongsTo(Procedure::class);
     }
@@ -117,12 +118,12 @@ class Task extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function partner()
+    public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class);
     }
 
-    public function priority()
+    public function priority(): BelongsTo
     {
         return $this->belongsTo(TaskPriority::class, 'task_priority_id');
     }
@@ -132,12 +133,12 @@ class Task extends Model
         return $this->hasMany(TaskTimer::class)->orderBy('start_time', 'ASC');
     }
 
-    public function status()
+    public function status(): BelongsTo
     {
         return $this->belongsTo(TaskStatus::class, 'task_status_id');
     }
 
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(Staff::class, 'author_id');
     }

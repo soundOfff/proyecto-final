@@ -15,16 +15,16 @@ class MailTemplateGroupSeeder extends Seeder
     public function run()
     {
         $groups = [
-            ['id' => 1, 'name' => 'Tickets', 'slug' => 'tickets'],
-            ['id' => 2, 'name' => 'Proformas', 'slug' => 'estimates'],
-            ['id' => 3, 'name' => 'Contactos', 'slug' => 'contacts'],
-            ['id' => 4, 'name' => 'Facturas', 'slug' => 'invoices'],
-            ['id' => 5, 'name' => 'Nota de crédito', 'slug' => 'credit_notes'],
-            ['id' => 6, 'name' => 'Tareas', 'slug' => 'tasks'],
-            ['id' => 7, 'name' => 'Clientes', 'slug' => 'partners'],
-            ['id' => 8, 'name' => 'Propuestas', 'slug' => 'proposals'],
-            ['id' => 9, 'name' => 'Casos', 'slug' => 'projects'],
-            ['id' => 10, 'name' => 'Miembros del equipo', 'slug' => 'staff'],
+            ['id' => 1, 'name' => 'Tickets', 'slug' => 'Ticket'],
+            ['id' => 2, 'name' => 'Proformas', 'slug' => 'Estimate'],
+            ['id' => 3, 'name' => 'Contactos', 'slug' => 'Contact'],
+            ['id' => 4, 'name' => 'Facturas', 'slug' => 'Invoice'],
+            ['id' => 5, 'name' => 'Nota de crédito', 'slug' => 'CreditNote'],
+            ['id' => 6, 'name' => 'Tareas', 'slug' => 'Task'],
+            ['id' => 7, 'name' => 'Clientes', 'slug' => 'Partner'],
+            ['id' => 8, 'name' => 'Propuestas', 'slug' => 'Proposal'],
+            ['id' => 9, 'name' => 'Casos', 'slug' => 'Project'],
+            ['id' => 10, 'name' => 'Miembros del equipo', 'slug' => 'Staff'],
         ];
 
         foreach ($groups as $group) {

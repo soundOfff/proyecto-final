@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,7 +14,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('mail_template_id')->constrained()->onDelete('cascade');
             $table->foreignId('group_id')->constrained('mail_template_groups')->onDelete('cascade');
-            $table->string('relation');
             $table->timestamps();
         });
     }

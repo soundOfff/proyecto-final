@@ -67,7 +67,9 @@ class MailTemplateController extends Controller
             'model' => 'required|string',
         ]);
 
-        $fields = $request->model::CUSTOM_TEMPLATE_FIELDS;
+        $modelName = 'App\\Models\\'.$request->model;
+
+        $fields = $modelName::MAIL_TEMPLATE_FIELDS;
 
         return response()->json($fields);
     }

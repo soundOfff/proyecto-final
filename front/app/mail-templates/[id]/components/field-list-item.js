@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import { getTableFields } from "/actions/table-field";
+import { allowedFields } from "/actions/mail-templates";
 
-export default function FieldListItem({ index, name, slug, handleSlugClick }) {
+export default function FieldListItem({ index, name, model, handleSlugClick }) {
   const [fields, setFields] = useState([]);
 
   useEffect(() => {
-    getTableFields({ table: slug }).then((fields) => {
+    allowedFields({ model }).then((fields) => {
       setFields(fields);
     });
-  }, []);
+  }, [model]);
 
   const renderRow = (field, index) => (
     <MDBox key={index} component="li" mb={1}>
@@ -27,7 +27,7 @@ export default function FieldListItem({ index, name, slug, handleSlugClick }) {
           color="text"
           gutterBottom
         >
-          {field.field}
+          {field.label}
         </MDTypography>
         <MDTypography
           variant="button"
@@ -36,7 +36,7 @@ export default function FieldListItem({ index, name, slug, handleSlugClick }) {
           textTransform="lowercase"
           onMouseDown={handleSlugClick}
         >
-          {`{${field.field}}`}
+          {`{${field.key}}`}
         </MDTypography>
       </MDBox>
     </MDBox>

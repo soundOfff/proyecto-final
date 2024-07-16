@@ -52,15 +52,13 @@ export default function FieldList({
         <MDTypography variant="h5">Campos combinados disponibles</MDTypography>
         <Divider />
         <Grid container spacing={2}>
-          {mailTemplate.groups &&
-            mailTemplate.groups.map((fieldGroup, index) => (
-              <FieldListItem
-                key={index}
-                name={fieldGroup.name}
-                slug={fieldGroup.slug}
-                handleSlugClick={handleSlugClick}
-              />
-            ))}
+          {mailTemplate.groups?.length && (
+            <FieldListItem
+              name={mailTemplate.groups[0].name}
+              model={mailTemplate.groups[0].slug}
+              handleSlugClick={handleSlugClick}
+            />
+          )}
         </Grid>
       </MDBox>
     </Card>

@@ -23,31 +23,31 @@ class Task extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly([
-            'name',
-            'hourly_rate',
-            'description',
-            'start_date',
-            'due_date',
-            'owner_id',
-            'procedure_id',
-            'milestone_order',
-            'task_priority_id',
-            'partner_id',
-            'task_status_id',
-            'repeat_id',
-            'author_id',
-            'recurring_type',
-            'recurring',
-            'is_infinite',
-            'billable',
-            'total_cycles',
-            'taskable_type',
-            'taskable_id',
-            'visible_to_client',
-            'is_file_needed',
-        ])
-        ->logOnlyDirty();
+            ->logOnly([
+                'name',
+                'hourly_rate',
+                'description',
+                'start_date',
+                'due_date',
+                'owner_id',
+                'procedure_id',
+                'milestone_order',
+                'task_priority_id',
+                'partner_id',
+                'task_status_id',
+                'repeat_id',
+                'author_id',
+                'recurring_type',
+                'recurring',
+                'is_infinite',
+                'billable',
+                'total_cycles',
+                'taskable_type',
+                'taskable_id',
+                'visible_to_client',
+                'is_file_needed',
+            ])
+            ->logOnlyDirty();
     }
 
     protected $fillable = [
@@ -80,7 +80,7 @@ class Task extends Model
         'label' => 'Descripción', 'key' => 'task-description',
         'label' => 'Fecha inicio', 'key' => 'task-start_date',
         'label' => 'Fecha fin', 'key' => 'task-due_date',
-        'label' => 'Prioridad', 'key' => 'task-priority-name',
+        'label' => 'Prioridad', 'key' => 'task-priority-name', // Relation1 - Relation2 ... RelationN - Field
     ];
 
     public const TASKABLE_PROJECT = 'project';
@@ -92,7 +92,7 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || !$this->is_file_needed)
                 && $this->requiredFields->every(
                     fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
@@ -181,7 +181,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (! $this->procedure) {
+        if (!$this->procedure) {
             return false;
         }
 

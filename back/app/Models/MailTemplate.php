@@ -21,11 +21,11 @@ class MailTemplate extends Model
 
     public function isTaskGroup()
     {
-        return $this->mail_template_group_id == MailTemplateGroup::TASK_ID;
+        return $this->groups->contains('id', MailTemplateGroup::TASK_ID);
     }
 
-    public function group()
+    public function groups()
     {
-        return $this->belongsTo(MailTemplateGroup::class, 'mail_template_group_id');
+        return $this->belongsToMany(MailTemplateGroup::class, 'group_mail_template', 'mail_template_id', 'group_id');
     }
 }

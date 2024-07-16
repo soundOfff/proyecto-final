@@ -18,7 +18,6 @@ class MailTemplateSeeder extends Seeder
             [
                 'id' => 1,
                 'name' => 'New task Assigned (Sent to Staff)',
-                'mail_template_group_id' => 6, // 'tasks'
                 'event' => 'task-assigned',
                 'subject' => 'New task assigned to you - {task_name}',
                 'send_from' => 'Velo Legal | Cases',
@@ -27,7 +26,6 @@ class MailTemplateSeeder extends Seeder
             [
                 'id' => 2,
                 'name' => 'Ticket Reply (Sent to Customer)',
-                'mail_template_group_id' => 6, // 'tasks'
                 'event' => 'ticket-reply',
                 'subject' => 'New ticket reply',
                 'send_from' => 'Velo Legal | Cases',
@@ -36,7 +34,6 @@ class MailTemplateSeeder extends Seeder
             [
                 'id' => 3,
                 'name' => 'New Comment on Task (Sent to Staff)',
-                'mail_template_group_id' => 6, // 'tasks'
                 'event' => 'new-comment-on-task',
                 'subject' => 'New Comment on Task - {task_name}',
                 'send_from' => 'Velo Legal | Cases',
@@ -45,7 +42,6 @@ class MailTemplateSeeder extends Seeder
             [
                 'id' => 4,
                 'name' => 'Task Deadline Reminder - Sent to Assigned Members',
-                'mail_template_group_id' => 6, // 'tasks'
                 'event' => 'task-deadline-reminder',
                 'subject' => 'Task Deadline Reminder',
                 'send_from' => 'Velo Legal | Cases',

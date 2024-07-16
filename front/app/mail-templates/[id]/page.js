@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function MailTemplates({ params }) {
   const { id } = params;
-  const mailTemplate = await getMailTemplate(id, { include: ["group"] });
+  const mailTemplate = await getMailTemplate(id, { include: ["groups"] });
 
   return <Index mailTemplate={mailTemplate} />;
 }

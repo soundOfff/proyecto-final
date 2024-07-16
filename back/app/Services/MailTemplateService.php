@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Mail;
 
 class MailTemplateService
 {
-    public function __construct(protected TableFieldService $tableFieldService)
+    public function __construct()
     {
     }
 
-    public function sendTemplate(string $to, Task $task, MailTemplate $template)
+    public function sendTemplate(string $to, Task $task, MailTemplate $template) // $to, Model $model, MailTemplate $template
     {
         $body = $template->body;
 

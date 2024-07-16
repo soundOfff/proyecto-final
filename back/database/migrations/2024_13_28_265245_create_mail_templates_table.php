@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('mail_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mail_template_group_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('event');
             $table->string('subject');

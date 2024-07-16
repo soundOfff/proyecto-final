@@ -161,6 +161,14 @@ const routes = [
     icon: <Icon fontSize="medium">people</Icon>,
     noCollapse: true,
   },
+  {
+    type: "collapse",
+    name: "Plantilla de Emails",
+    key: "mail-templates",
+    route: "/mail-templates",
+    icon: <Icon fontSize="medium">mail</Icon>,
+    noCollapse: true,
+  },
 ];
 
 export default routes;

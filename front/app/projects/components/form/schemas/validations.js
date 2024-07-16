@@ -31,6 +31,7 @@ const {
     selectedMembers,
     startDate,
     deadline,
+    partners,
   },
 } = checkout;
 
@@ -65,6 +66,7 @@ const validations = [
       Yup.ref(startDate.name),
       "La fecha de entrega debe ser mayor a la fecha de inicio"
     ),
+    [partners.name]: Yup.array(),
   }),
 ];
 

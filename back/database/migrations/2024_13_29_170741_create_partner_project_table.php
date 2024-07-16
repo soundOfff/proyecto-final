@@ -10,10 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('group_mail_template', function (Blueprint $table) {
+        Schema::create('partner_project', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mail_template_id')->constrained()->onDelete('cascade');
-            $table->foreignId('group_id')->constrained('mail_template_groups')->onDelete('cascade');
+            $table->foreignId('partner_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->string('role');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('group_mail_template');
+        Schema::dropIfExists('partner_project');
     }
 };

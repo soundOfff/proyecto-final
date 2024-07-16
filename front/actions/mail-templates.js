@@ -31,3 +31,14 @@ export async function update(id, data) {
 
   revalidatePath("/mail-templates");
 }
+
+export async function allowedFields(body) {
+  const url = new URL(`${process.env.API_URL}/mail-templates-allowed-fields`);
+
+  const data = await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  return data;
+}

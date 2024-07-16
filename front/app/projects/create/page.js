@@ -4,7 +4,7 @@ import { getAll as getAllServiceTypes } from "/actions/project-service-types";
 import { getAll as getAllBillingTypes } from "/actions/project-billing-types";
 import { select as selectMembers } from "/actions/staffs";
 import { store as storeProject } from "/actions/projects";
-import Form from "./components/form";
+import Form from "../components/form/form";
 
 export default async function NewProject() {
   const partners = await getPartnerSelect();

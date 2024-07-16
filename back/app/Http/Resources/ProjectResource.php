@@ -54,6 +54,7 @@ class ProjectResource extends JsonResource
             'responsiblePerson' => PartnerResource::make($this->whenLoaded('responsiblePerson')),
             'lawFirm' => LawFirmResource::make($this->whenLoaded('lawFirm')),
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),
+            'partners' => PartnerResource::collection($this->whenLoaded('partners')),
         ];
     }
 }

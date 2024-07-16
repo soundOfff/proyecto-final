@@ -17,11 +17,11 @@ class MailTemplateSeeder extends Seeder
         $templates = [
             [
                 'id' => 1,
-                'name' => 'New task Assigned (Sent to Staff)',
+                'name' => 'New task Assigned (Sent to Author)',
                 'event' => 'task-assigned',
                 'subject' => 'New task assigned to you - {task_name}',
                 'send_from' => 'Velo Legal | Cases',
-                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
+                'body' => 'Hi {task-author-name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task-name}<br><b>Due Date</b>: {task-due_date}<br><br><b>Priority</b>: {task-priority-name}<br><br>Thanks Velo Cases',
             ],
             [
                 'id' => 2,
@@ -29,7 +29,8 @@ class MailTemplateSeeder extends Seeder
                 'event' => 'ticket-reply',
                 'subject' => 'New ticket reply',
                 'send_from' => 'Velo Legal | Cases',
-                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
+                'body' => 'Hi {task-author-name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task-name}<br><b>Due Date</b>: {task-due_date}<br><br><b>Priority</b>: {task-priority-name}<br><br>Thanks Velo Cases',
+
             ],
             [
                 'id' => 3,
@@ -37,7 +38,7 @@ class MailTemplateSeeder extends Seeder
                 'event' => 'new-comment-on-task',
                 'subject' => 'New Comment on Task - {task_name}',
                 'send_from' => 'Velo Legal | Cases',
-                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
+                'body' => 'Hi {task-author-name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task-name}<br><b>Due Date</b>: {task-due_date}<br><br><b>Priority</b>: {task-priority-name}<br><br>Thanks Velo Cases',
             ],
             [
                 'id' => 4,
@@ -45,8 +46,8 @@ class MailTemplateSeeder extends Seeder
                 'event' => 'task-deadline-reminder',
                 'subject' => 'Task Deadline Reminder',
                 'send_from' => 'Velo Legal | Cases',
-                'body' => 'Hi {staff_name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task_name}<br><b>Due Date</b>: {due_date}<br><br><b>Priority</b>: {priority}<br><br>Thanks Velo Cases',
-            ]
+                'body' => 'Hi {task-author-name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task-name}<br><b>Due Date</b>: {task-due_date}<br><br><b>Priority</b>: {task-priority-name}<br><br>Thanks Velo Cases',
+            ],
         ];
 
         foreach ($templates as $template) {

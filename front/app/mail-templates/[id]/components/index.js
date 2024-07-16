@@ -14,14 +14,18 @@ import { update } from "/actions/mail-templates";
 import FieldList from "./field-list";
 import { EditorState } from "draft-js";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function MailTemplateIndex({ mailTemplate }) {
   const { formField, formId } = form;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
+  const router = useRouter();
+
   const handleSubmit = async (values) => {
     await update(mailTemplate.id, values);
+    router.push("/mail-templates");
   };
 
   return (

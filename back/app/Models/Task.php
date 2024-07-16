@@ -81,7 +81,7 @@ class Task extends Model
         ['label' => 'Descripción', 'key' => 'task-description'],
         ['label' => 'Fecha inicio', 'key' => 'task-start_date'],
         ['label' => 'Fecha fin', 'key' => 'task-due_date'],
-        ['label' => "Nombre del autor", 'key' => 'task-author-email'],
+        ['label' => 'Nombre del autor', 'key' => 'task-author-email'],
         ['label' => 'Nombre del cliente', 'key' => 'task-partner-name'],
         ['label' => 'Prioridad', 'key' => 'task-priority-name'],
         // Relation1 - Relation2 ... RelationN - Field
@@ -96,7 +96,7 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || !$this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
                 && $this->requiredFields->every(
                     fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
@@ -185,7 +185,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (!$this->procedure) {
+        if (! $this->procedure) {
             return false;
         }
 

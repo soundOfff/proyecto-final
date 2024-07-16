@@ -76,11 +76,14 @@ class Task extends Model
     ];
 
     public const MAIL_TEMPLATE_FIELDS = [
-        'label' => 'Nombre', 'key' => 'task-name',
-        'label' => 'Descripción', 'key' => 'task-description',
-        'label' => 'Fecha inicio', 'key' => 'task-start_date',
-        'label' => 'Fecha fin', 'key' => 'task-due_date',
-        'label' => 'Prioridad', 'key' => 'task-priority-name', // Relation1 - Relation2 ... RelationN - Field
+        ['label' => 'Nombre', 'key' => 'task-name'],
+        ['label' => 'Descripción', 'key' => 'task-description'],
+        ['label' => 'Fecha inicio', 'key' => 'task-start_date'],
+        ['label' => 'Fecha fin', 'key' => 'task-due_date'],
+        ['label' => "Nombre del autor", 'key' => 'task-author-email'],
+        ['label' => 'Nombre del cliente', 'key' => 'task-partner-name'],
+        ['label' => 'Prioridad', 'key' => 'task-priority-name'],
+        // Relation1 - Relation2 ... RelationN - Field
     ];
 
     public const TASKABLE_PROJECT = 'project';

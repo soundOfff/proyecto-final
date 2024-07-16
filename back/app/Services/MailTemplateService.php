@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\TemplateMailable;
 use App\Models\MailTemplate;
 use App\Models\Task;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 
 class MailTemplateService
@@ -13,19 +14,30 @@ class MailTemplateService
     {
     }
 
-    public function sendTemplate(string $to, Task $task, MailTemplate $template) // $to, Model $model, MailTemplate $template
+    public function sendTemplate(string $to, Model $model, MailTemplate $template) // $model->priority
     {
         $body = $template->body;
 
-        if ($template->isTaskGroup()) {
-            foreach (Task::MAIL_TEMPLATE_FIELDS as $field) {
-                $modelName = str_split($field, '-');
+        $class = get_class($model);
 
-                $body = str_replace("{$field}", $task->author->{$field['field']}, $body);
+        abort_if(!$class::MAIL_TEMPLATE_FIELDS, 500, 'Model does not have MAIL_TEMPLATE_FIELDS constant');
+
+        foreach ($class::MAIL_TEMPLATE_FIELDS as $slug) {
+            $models = explode("-", $slug["key"]);
+
+            $modelReplace = $model[$models[1]];
+
+            for ($i = 2; $i < count($models); $i++) {
+                if (!isset($modelReplace[$models[$i]])) {
+                    $modelReplace = "---";
+                    break;
+                }
+                $modelReplace = $modelReplace[$models[$i]];
             }
+
+            $body = str_replace("{" . $slug["key"] . "}", $modelReplace, $body);
         }
 
-        dd($body);
 
         Mail::to($to)->send(new TemplateMailable($body));
     }

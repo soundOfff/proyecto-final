@@ -292,6 +292,26 @@ class TaskController extends Controller
         return response()->json(null, 204);
     }
 
+    public function destroyMany(Request $request)
+    {
+        $taskIds = $request->validate([
+            'taskIds' => 'required|array',
+            'taskIds.*' => 'required|exists:tasks,id',
+        ])['taskIds'];
+
+        foreach ($taskIds as $taskId) {
+            $task = Task::find($taskId);
+            Task::where('taskable_id', $task->taskable_id)
+                ->where('taskable_type', $task->taskable_type)
+                ->where('milestone_order', '>', $task->milestone_order)
+                ->decrement('milestone_order');
+            $task->dependencies()->detach();
+            $task->delete();
+        }
+
+        return response()->json(null, 204);
+    }
+
     public function stats(Request $request)
     {
         $ownerId = $request->query('ownerId');

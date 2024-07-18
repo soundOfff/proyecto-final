@@ -13,13 +13,16 @@ import validations from "./schemas/validations";
 import { update } from "/actions/mail-templates";
 import FieldList from "./field-list";
 import { EditorState } from "draft-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { allowedFields } from "/actions/mail-templates";
 
 export default function MailTemplateIndex({ mailTemplate }) {
   const { formField, formId } = form;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [fields, setFields] = useState([]);
 
   const router = useRouter();
 
@@ -27,6 +30,12 @@ export default function MailTemplateIndex({ mailTemplate }) {
     await update(mailTemplate.id, values);
     router.push("/mail-templates");
   };
+
+  useEffect(() => {
+    allowedFields({ model: mailTemplate.group.slug }).then((fields) => {
+      setFields(fields);
+    });
+  }, [mailTemplate]);
 
   return (
     <Formik
@@ -94,6 +103,7 @@ export default function MailTemplateIndex({ mailTemplate }) {
                 mailTemplate={mailTemplate}
                 editorState={editorState}
                 setEditorState={setEditorState}
+                allowedFields={fields}
               />
             </Grid>
           </Grid>

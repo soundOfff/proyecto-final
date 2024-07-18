@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import { allowedFields } from "/actions/mail-templates";
 
-export default function FieldListItem({ index, name, model, handleSlugClick }) {
-  const [fields, setFields] = useState([]);
-
-  useEffect(() => {
-    allowedFields({ model }).then((fields) => {
-      setFields(fields);
-    });
-  }, [model]);
-
+export default function FieldListItem({ name, fields, handleSlugClick, key }) {
   const renderRow = (field, index) => (
-    <MDBox key={index} component="li" mb={1}>
+    <MDBox key={`${key}-${index}`} component="li" mb={1}>
       <MDBox
         display="flex"
         justifyContent="space-between"
@@ -27,7 +17,7 @@ export default function FieldListItem({ index, name, model, handleSlugClick }) {
           color="text"
           gutterBottom
         >
-          {field.label}
+          {field}
         </MDTypography>
         <MDTypography
           variant="button"
@@ -36,14 +26,14 @@ export default function FieldListItem({ index, name, model, handleSlugClick }) {
           textTransform="lowercase"
           onMouseDown={handleSlugClick}
         >
-          {`{${field.key}}`}
+          {`{${field}}`}
         </MDTypography>
       </MDBox>
     </MDBox>
   );
 
   return (
-    <Grid key={index} xs={12} sm={6}>
+    <Grid key={key} xs={12} sm={6}>
       <MDBox
         display="flex"
         justifyContent="space-between"
@@ -63,15 +53,15 @@ export default function FieldListItem({ index, name, model, handleSlugClick }) {
       <MDBox
         component="ul"
         display="flex"
-        key={index}
+        key={key}
         flexDirection="column"
         px={2}
         m={1}
         gap={1}
         sx={{ listStyle: "none" }}
       >
-        {fields.map((field, index) => {
-          return renderRow(field, index);
+        {fields.map((f, index) => {
+          return renderRow(f, index);
         })}
       </MDBox>
     </Grid>

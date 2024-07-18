@@ -8,9 +8,9 @@ import { htmlToEditorState } from "/utils/parseEditorState";
 import FieldListItem from "./field-list-item";
 
 export default function FieldList({
-  mailTemplate,
   editorState,
   setEditorState,
+  allowedFields,
 }) {
   const handleSlugClick = (e) => {
     e.preventDefault();
@@ -52,13 +52,17 @@ export default function FieldList({
         <MDTypography variant="h5">Campos combinados disponibles</MDTypography>
         <Divider />
         <Grid container spacing={2}>
-          {mailTemplate.groups?.length && (
-            <FieldListItem
-              name={mailTemplate.groups[0].name}
-              model={mailTemplate.groups[0].slug}
-              handleSlugClick={handleSlugClick}
-            />
-          )}
+          {allowedFields.length &&
+            allowedFields.map((field, index) => {
+              return (
+                <FieldListItem
+                  key={index}
+                  name={Object.keys(field)[0]}
+                  fields={Object.values(field)[0]}
+                  handleSlugClick={handleSlugClick}
+                />
+              );
+            })}
         </Grid>
       </MDBox>
     </Card>

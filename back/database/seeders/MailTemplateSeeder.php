@@ -17,6 +17,7 @@ class MailTemplateSeeder extends Seeder
         $templates = [
             [
                 'id' => 1,
+                'mail_template_group_id' => 6,
                 'name' => 'New task Assigned (Sent to Author)',
                 'event' => 'task-assigned',
                 'subject' => 'New task assigned to you - {task_name}',
@@ -25,6 +26,7 @@ class MailTemplateSeeder extends Seeder
             ],
             [
                 'id' => 2,
+                'mail_template_group_id' => 6,
                 'name' => 'Ticket Reply (Sent to Customer)',
                 'event' => 'ticket-reply',
                 'subject' => 'New ticket reply',
@@ -34,6 +36,7 @@ class MailTemplateSeeder extends Seeder
             ],
             [
                 'id' => 3,
+                'mail_template_group_id' => 6,
                 'name' => 'New Comment on Task (Sent to Staff)',
                 'event' => 'new-comment-on-task',
                 'subject' => 'New Comment on Task - {task_name}',
@@ -42,6 +45,7 @@ class MailTemplateSeeder extends Seeder
             ],
             [
                 'id' => 4,
+                'mail_template_group_id' => 6,
                 'name' => 'Task Deadline Reminder - Sent to Assigned Members',
                 'event' => 'task-deadline-reminder',
                 'subject' => 'Task Deadline Reminder',

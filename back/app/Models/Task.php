@@ -76,16 +76,7 @@ class Task extends Model
         'is_file_needed',
     ];
 
-    public const MAIL_TEMPLATE_FIELDS = [
-        ['label' => 'Nombre', 'key' => 'task-name'],
-        ['label' => 'Descripción', 'key' => 'task-description'],
-        ['label' => 'Fecha inicio', 'key' => 'task-start_date'],
-        ['label' => 'Fecha fin', 'key' => 'task-due_date'],
-        ['label' => 'Nombre del autor', 'key' => 'task-author-email'],
-        ['label' => 'Nombre del cliente', 'key' => 'task-partner-name'],
-        ['label' => 'Prioridad', 'key' => 'task-priority-name'],
-        // Relation1 - Relation2 ... RelationN - Field
-    ];
+    static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'start_date', 'description', 'due_date', 'hourly_rate', 'milestone_order'];
 
     public const TASKABLE_PROJECT = 'project';
 
@@ -96,7 +87,7 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || !$this->is_file_needed)
                 && $this->requiredFields->every(
                     fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
@@ -185,7 +176,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (! $this->procedure) {
+        if (!$this->procedure) {
             return false;
         }
 

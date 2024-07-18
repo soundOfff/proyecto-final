@@ -14,6 +14,7 @@ export default async function MailTemplates() {
   const groups = await getAllGroups({
     include: ["mailTemplates"],
   });
+
   return (
     <MDBox mb={3}>
       <Card>

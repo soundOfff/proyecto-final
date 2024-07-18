@@ -16,6 +16,6 @@ class MailTemplateGroup extends Model
 
     public function mailTemplates()
     {
-        return $this->belongsToMany(MailTemplate::class, 'group_mail_template', 'group_id', 'mail_template_id');
+        return $this->hasMany(MailTemplate::class, 'mail_template_group_id');
     }
 }

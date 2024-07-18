@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Card, Divider, Grid } from "@mui/material";
+import { Autocomplete, Card, Divider, Grid, Tooltip } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
@@ -260,66 +260,71 @@ export default function Content({ selectedFork }) {
               justifyContent="center"
               alignItems="center"
             >
-              <MDBox display="flex" flexDirection="row" gap={1} width="100%">
-                <Grid container xs={12} spacing={3}>
-                  <Grid item xs={12} sm={5}>
-                    <Autocomplete
-                      value={task?.procedure?.process}
-                      disabled
-                      options={[]}
-                      getOptionLabel={(option) => option.name}
-                      renderInput={(params) => (
-                        <MDInput
-                          {...params}
-                          variant="standard"
-                          label={"Paso anterior"}
-                          fullWidth
-                          InputLabelProps={{ shrink: true }}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={5}>
-                    <Autocomplete
-                      value={selectedProcess}
-                      onChange={(e, value) => {
-                        setSelectedProcess(value);
-                      }}
-                      options={task?.procedure?.process?.forks || []}
-                      getOptionLabel={(option) => option.name}
-                      renderInput={(params) => (
-                        <MDInput
-                          {...params}
-                          variant="standard"
-                          label={"Siguiente paso"}
-                          fullWidth
-                          InputLabelProps={{ shrink: true }}
-                        />
-                      )}
-                    />
-                    {selectedProcess &&
-                      selectedProcess.realStepQuantity == 0 && (
-                        <MDTypography variant="caption" color="error">
-                          Este paso no tiene procedimientos asociados
-                        </MDTypography>
-                      )}
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    <MDButton
-                      variant="gradient"
-                      color="dark"
-                      disabled={
-                        !selectedProcess ||
-                        isAttachingTasks ||
-                        selectedProcess.realStepQuantity == 0
-                      }
-                      onClick={handleSelectNextStep}
-                    >
-                      Seleccionar paso
-                    </MDButton>
-                  </Grid>
+              <Grid
+                container
+                xs={12}
+                spacing={3}
+                display="flex"
+                flexWrap="wrap"
+                width="100%"
+                gap={1}
+              >
+                <Grid item xs={12} sm={4}>
+                  <Autocomplete
+                    value={task?.procedure?.process}
+                    disabled
+                    options={[]}
+                    getOptionLabel={(option) => option.name}
+                    renderInput={(params) => (
+                      <MDInput
+                        {...params}
+                        variant="standard"
+                        label={"Paso anterior"}
+                        fullWidth
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    )}
+                  />
                 </Grid>
-              </MDBox>
+                <Grid item xs={12} sm={5}>
+                  <Autocomplete
+                    value={selectedProcess}
+                    onChange={(e, value) => {
+                      setSelectedProcess(value);
+                    }}
+                    options={task?.procedure?.process?.forks || []}
+                    getOptionLabel={(option) => option.name}
+                    renderInput={(params) => (
+                      <MDInput
+                        {...params}
+                        variant="standard"
+                        label={"Siguiente paso"}
+                        fullWidth
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    )}
+                  />
+                  {selectedProcess && selectedProcess.realStepQuantity == 0 && (
+                    <MDTypography variant="caption" color="error">
+                      Este paso no tiene procedimientos asociados
+                    </MDTypography>
+                  )}
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                  <MDButton
+                    variant="gradient"
+                    color="dark"
+                    disabled={
+                      !selectedProcess ||
+                      isAttachingTasks ||
+                      selectedProcess.realStepQuantity == 0
+                    }
+                    onClick={handleSelectNextStep}
+                  >
+                    Seleccionar paso
+                  </MDButton>
+                </Grid>
+              </Grid>
             </MDBox>
             <Divider />
           </>

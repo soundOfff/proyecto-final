@@ -51,6 +51,8 @@ class Staff extends Authenticatable
 
     protected $appends = ['name'];
 
+    static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['first_name', 'last_name', 'email'];
+
     protected function name(): Attribute
     {
         return new Attribute(
@@ -108,7 +110,7 @@ class Staff extends Authenticatable
         return $this->hasMany(Session::class);
     }
 
-    public function lastSession() : Session | null
+    public function lastSession(): Session | null
     {
         return $this->sessions->last();
     }

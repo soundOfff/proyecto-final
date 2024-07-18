@@ -72,6 +72,9 @@ class Partner extends Model
         'ruc',
     ];
 
+    static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'number', 'company', 'website', 'dv', 'ruc'];
+
+
     protected $appends = ['merged_name'];
 
     protected function mergedName(): Attribute

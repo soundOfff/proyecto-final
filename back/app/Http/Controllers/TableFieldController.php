@@ -9,6 +9,10 @@ class TableFieldController extends Controller
 {
     public function __invoke(Request $request)
     {
+        $request->validate([
+            'table' => 'required|string',
+        ]);
+
         $fields = [];
         $columns = DB::select("SHOW COLUMNS FROM $request->table");
         foreach ($columns as $column) {

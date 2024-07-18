@@ -164,7 +164,6 @@ export default function Table({
       accessor: "due_date",
     },
     {
-      // TODO: make accessor works
       Header: "Asignar a",
       accessor: "",
       Cell: ({ row }) => {

@@ -1,4 +1,10 @@
-import { EditorState, convertFromRaw } from "draft-js";
+import {
+  ContentState,
+  EditorState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
+import draftToHtml from "draftjs-to-html";
 
 function isFromEditor(str) {
   try {
@@ -10,13 +16,47 @@ function isFromEditor(str) {
   return true;
 }
 
-export const parseEditorState = (value) => {
-  if (value && !isFromEditor(value)) {
-    return EditorState.createWithText(value);
+/*
+  @param {string} value
+  @return {EditorState}
+  This function receives a string formatted as HTML and returns an EditorState object.
+*/
+export const htmlToEditorState = (htmlString) => {
+  const htmlToDraft =
+    typeof window === "object" && require("html-to-draftjs").default; // Needed for SSR
+
+  const blocks = htmlToDraft(htmlString);
+  const { contentBlocks, entityMap } = blocks;
+  if (contentBlocks) {
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap
+    );
+    return EditorState.createWithContent(contentState);
+  }
+  return EditorState.createEmpty();
+};
+
+/*
+  @param {string} value
+  @return {string}
+  This function receives an EditorState object and returns a string formatted as HTML.
+*/
+export const editorStateToHtml = (editorState) => {
+  const rawContentState = convertToRaw(editorState.getCurrentContent());
+
+  const markup = draftToHtml(rawContentState);
+
+  return markup;
+};
+
+export const parseEditorState = (contentBlockString) => {
+  if (contentBlockString && !isFromEditor(contentBlockString)) {
+    return EditorState.createWithText(contentBlockString);
   }
 
-  if (value && isFromEditor(value)) {
-    const block = JSON.parse(value);
+  if (contentBlockString && isFromEditor(contentBlockString)) {
+    const block = JSON.parse(contentBlockString);
     const contentState = convertFromRaw(block);
     return EditorState.createWithContent(contentState);
   }

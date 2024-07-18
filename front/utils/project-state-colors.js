@@ -33,7 +33,6 @@ export function setColor(label) {
   }
 }
 
-// TODO: make cyclic array of colors sending an id.
 export function getColor(id = 0) {
   return COLORS[id % COLORS.length];
 }

@@ -3,34 +3,55 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
 export default function FieldListItem({ name, fields, handleSlugClick, key }) {
-  const renderRow = (field, index) => (
-    <MDBox key={`${key}-${index}`} component="li" mb={1}>
-      <MDBox
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        gap={4}
-      >
-        <MDTypography
-          variant="button"
-          fontWeight="medium"
-          color="text"
-          gutterBottom
+  const getLabel = (models) => {
+    return models
+      .map((model) => {
+        model = model.replace(/_/g, " ");
+        return model.charAt(0).toUpperCase() + model.slice(1);
+      })
+      .join(" ");
+  };
+
+  const renderRow = (field, index) => {
+    const models = field.split("-");
+    const label =
+      models.length > 2 ? getLabel(models.slice(1)) : getLabel(models);
+    return (
+      <MDBox key={`${key}-${index}`} component="li" mb={1}>
+        <MDBox
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap={4}
         >
-          {field}
-        </MDTypography>
-        <MDTypography
-          variant="button"
-          sx={{ color: "#008ece", cursor: "pointer" }}
-          fontWeight="medium"
-          textTransform="lowercase"
-          onMouseDown={handleSlugClick}
-        >
-          {`{${field}}`}
-        </MDTypography>
+          <MDTypography
+            variant="button"
+            fontWeight="medium"
+            color="text"
+            sx={{
+              textAlign: "left",
+            }}
+            gutterBottom
+          >
+            {label}
+          </MDTypography>
+          <MDTypography
+            variant="button"
+            sx={{
+              color: "#008ece",
+              cursor: "pointer",
+              textAlign: "right",
+            }}
+            fontWeight="medium"
+            textTransform="lowercase"
+            onMouseDown={handleSlugClick}
+          >
+            {`{${field}}`}
+          </MDTypography>
+        </MDBox>
       </MDBox>
-    </MDBox>
-  );
+    );
+  };
 
   return (
     <Grid key={key} xs={12} sm={6}>

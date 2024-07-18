@@ -28,7 +28,7 @@ class MailTemplateService
 
         $relations = collect($reflector->getMethods()) // TODO: change it for a abstract class or static method
             ->filter(
-                function ($method) use ($class) {
+                function ($method) {
                     $returnType = $method->getReturnType();
                     return
                         !empty($returnType) &&
@@ -75,7 +75,7 @@ class MailTemplateService
                     ($relation['method'] != '' ? '-' . $relation['method'] : '') .
                     '-' . $field;
             }
-            $key = strtolower(class_basename($class)) . ($relation['method'] != '' ? '-' . $relation['method'] : '');
+            $key = $relation['method'] != '' ? strtoupper($relation['method']) : strtoupper(class_basename($class));
             $data[] = [$key => $dataAux];
         }
 
@@ -83,15 +83,11 @@ class MailTemplateService
         return $data;
     }
 
-    public function sendTemplate(string $to, Model $model, MailTemplate $template) // $model->priority
+    public function sendTemplate(string $to, Model $model, MailTemplate $template)
     {
         $body = $template->body;
 
-        $class = class_basename($model);
-
-        $mailTemplateFields = $this->generateFields($class);
-
-        abort_if(!$mailTemplateFields, 500, 'Model does not have MAIL_TEMPLATE_FIELDS');
+        abort_if(!get_class($model), 500, 'Model does not have MAIL_TEMPLATE_FIELDS');
 
         $body = preg_replace_callback('/\{([^}]*)\}/', function ($match) use ($model) {
             $models = explode("-", $match[1]);
@@ -99,7 +95,7 @@ class MailTemplateService
 
             for ($i = 2; $i < count($models); $i++) {
                 if (!isset($modelReplace[$models[$i]])) {
-                    $modelReplace = "---";
+                    $modelReplace = "not found";
                     break;
                 }
                 $modelReplace = $modelReplace[$models[$i]];

@@ -19,6 +19,7 @@ class MailTemplateResource extends JsonResource
             'name' => $this->name,
             'event' => $this->event,
             'group' => MailTemplateGroupResource::make($this->whenLoaded('group')),
+            'lang' => MailTemplateLanguageResource::make($this->whenLoaded('lang')),
             'subject' => $this->subject,
             'send_from' => $this->send_from,
             'send_to' => $this->send_to,

@@ -21,6 +21,14 @@ export async function show(id, params) {
   return data;
 }
 
+export async function getAllLangs() {
+  const url = new URL(`${process.env.API_URL}/mail-templates-languages`);
+
+  const { data } = await customFetch(url);
+
+  return data.languages;
+}
+
 export async function update(id, data) {
   const url = new URL(`${process.env.API_URL}/mail-templates/${id}`);
 

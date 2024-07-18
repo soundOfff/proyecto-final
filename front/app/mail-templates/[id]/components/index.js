@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 import { allowedFields } from "/actions/mail-templates";
 
-export default function MailTemplateIndex({ mailTemplate }) {
+export default function MailTemplateIndex({ mailTemplate, langs }) {
   const { formField, formId } = form;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -67,6 +67,7 @@ export default function MailTemplateIndex({ mailTemplate }) {
                     mailTemplate={mailTemplate}
                     editorState={editorState}
                     setEditorState={setEditorState}
+                    langs={langs}
                     formData={{
                       values,
                       errors,

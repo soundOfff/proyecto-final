@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export default async function MailTemplates() {
   const groups = await getAllGroups({
-    include: ["mailTemplates"],
+    include: ["mailTemplates.lang"],
   });
 
   return (

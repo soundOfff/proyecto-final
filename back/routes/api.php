@@ -26,6 +26,7 @@ use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
+use App\Http\Controllers\MailTemplateLanguageController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
@@ -241,6 +242,8 @@ Route::post('/store-token', [FcmController::class, 'storeToken']);
 Route::get('/mail-templates', [MailTemplateController::class, 'index']);
 Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
 Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
+
+Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 
 Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 

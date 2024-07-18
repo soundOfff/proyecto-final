@@ -24,7 +24,7 @@ class MailTemplateController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(MailTemplate::class)
-            ->allowedIncludes(['group']);
+            ->allowedIncludes(['group', 'lang']);
 
         $templates = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -36,7 +36,7 @@ class MailTemplateController extends Controller
     public function show(MailTemplate $mailTemplate)
     {
         $template = QueryBuilder::for(MailTemplate::class)
-            ->allowedIncludes(['group'])
+            ->allowedIncludes(['group', 'lang'])
             ->find($mailTemplate->id);
 
         return new MailTemplateResource($template);

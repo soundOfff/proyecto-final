@@ -23,4 +23,9 @@ class MailTemplate extends Model
     {
         return $this->belongsTo(MailTemplateGroup::class, 'mail_template_group_id');
     }
+
+    public function lang()
+    {
+        return $this->belongsTo(MailTemplateLanguage::class, 'lang_id');
+    }
 }

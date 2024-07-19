@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Actions\TaskActions;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Services\FcmService;
 
 class TaskObserver
 {
@@ -25,7 +26,7 @@ class TaskObserver
         if (! $task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) {
             return;
         }
-        
+
         // Case 1 - Task is closed.
         $this->dispatchActions($task);
 
@@ -40,8 +41,21 @@ class TaskObserver
         }
 
         if (count($recentlyUnlockedTasks) > 0) {
+            $fcmService = new FcmService();
             foreach ($recentlyUnlockedTasks as $task) {
                 $this->dispatchActions($task);
+
+                // send notification to staff assigneds
+                foreach ($task->assigneds as $assigned) {
+                    foreach ($assigned->devices as $device) {
+                        $fcmService->sendNotification(
+                            $device->device_token,
+                            'Tarea Desbloqueada',
+                            "La tarea: \"{$task->name}\" ha sido desbloqueada",
+                            $assigned->id
+                        );
+                    }
+                }
             }
         }
     }

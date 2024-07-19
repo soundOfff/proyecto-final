@@ -76,21 +76,28 @@ class Task extends Model
         'is_file_needed',
     ];
 
-    static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'start_date', 'description', 'due_date', 'hourly_rate', 'milestone_order'];
+    public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'start_date', 'description', 'due_date', 'hourly_rate', 'milestone_order'];
 
     public const TASKABLE_PROJECT = 'project';
 
     public const TASKABLE_INVOICE = 'invoice';
 
-    protected $appends = ['can_change_status'];
+    protected $appends = ['can_change_status', 'is_blocked'];
 
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || !$this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
                 && $this->requiredFields->every(
                     fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
+        );
+    }
+
+    protected function isBlocked(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
         );
     }
 
@@ -176,7 +183,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (!$this->procedure) {
+        if (! $this->procedure) {
             return false;
         }
 

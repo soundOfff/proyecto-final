@@ -213,7 +213,7 @@ export default function Details() {
           ))}
           <UpdateMembers projectId={project.id} staffs={staffs} />
         </Grid>
-        {project.partners?.length && (
+        {project.partners?.length > 0 && (
           <Grid xs={12} pl={2} mt={3}>
             <MDBox mt={0.5} lineHeight={1.4}>
               <MDTypography

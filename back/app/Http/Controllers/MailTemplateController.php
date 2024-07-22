@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Services\MailTemplateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class MailTemplateController extends Controller
@@ -24,7 +25,13 @@ class MailTemplateController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(MailTemplate::class)
-            ->allowedIncludes(['group']);
+            ->allowedIncludes(['group', 'lang'])
+            ->allowedFilters([
+                AllowedFilter::exact('group_id'),
+                AllowedFilter::exact('lang_id'),
+                AllowedFilter::exact('id'),
+                AllowedFilter::exact('event')
+            ]);
 
         $templates = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -36,7 +43,7 @@ class MailTemplateController extends Controller
     public function show(MailTemplate $mailTemplate)
     {
         $template = QueryBuilder::for(MailTemplate::class)
-            ->allowedIncludes(['group'])
+            ->allowedIncludes(['group', 'lang'])
             ->find($mailTemplate->id);
 
         return new MailTemplateResource($template);
@@ -46,7 +53,7 @@ class MailTemplateController extends Controller
     {
         $to = $request->get('to');
         $templateId = $request->get('template_id');
-        $taskId = $request->get('task_id');
+        $taskId = Task::all()->random()->id; // TODO: Remove this, hardcoded only for tets
 
         $template = MailTemplate::findOrFail($templateId);
         $task = Task::findOrFail($taskId);
@@ -60,7 +67,9 @@ class MailTemplateController extends Controller
     {
         $newMailTemplate = $request->validated();
 
-        $mailTemplate->update($newMailTemplate);
+        MailTemplate::where('lang_id', $newMailTemplate['lang_id'])
+            ->where('event', $newMailTemplate['event'])
+            ->update($newMailTemplate);
 
         return response()->json(null, 204);
     }

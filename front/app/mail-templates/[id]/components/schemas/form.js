@@ -49,6 +49,10 @@ const templateForm = {
       name: "disabled",
       label: "Deshabilitado",
     },
+    lang: {
+      name: "lang_id",
+      label: "Idioma",
+    },
     formatted: {
       name: "formatted",
       label: "Formato",

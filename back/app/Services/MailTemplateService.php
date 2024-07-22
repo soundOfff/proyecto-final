@@ -85,11 +85,20 @@ class MailTemplateService
 
     public function sendTemplate(string $to, Model $model, MailTemplate $template)
     {
-        $body = $template->body;
+        $body = $this->mapFields($model, $template->body);
+        $subject = $this->mapFields($model, $template->subject);
 
         abort_if(!get_class($model), 500, 'Model does not have MAIL_TEMPLATE_FIELDS');
 
-        $body = preg_replace_callback('/\{([^}]*)\}/', function ($match) use ($model) {
+        $mailable = new TemplateMailable($body);
+        $mailable->subject($subject);
+
+        Mail::to($to)->send($mailable);
+    }
+
+    private function mapFields(Model $model, string $text): string
+    {
+        return  preg_replace_callback('/\{([^}]*)\}/', function ($match) use ($model) {
             $models = explode("-", $match[1]);
             $modelReplace = $model[$models[1]];
 
@@ -102,8 +111,6 @@ class MailTemplateService
             }
 
             return $modelReplace;
-        }, $body);
-
-        Mail::to($to)->send(new TemplateMailable($body));
+        }, $text);
     }
 }

@@ -27,6 +27,7 @@ class MailTemplateRequest extends FormRequest
             'body' => 'required|string',
             'event' => 'required|string',
             'send_from' => 'required|string',
+            'lang_id' => 'required|required|exists:mail_template_languages,id',
             'send_to' => 'nullable|string',
             'formatted' => 'nullable|boolean',
             'disabled' => 'nullable|boolean',

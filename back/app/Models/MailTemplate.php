@@ -12,6 +12,7 @@ class MailTemplate extends Model
         'event',
         'subject',
         'send_from',
+        'lang_id',
         'send_to',
         'mail_template_group_id',
         'body',
@@ -22,5 +23,10 @@ class MailTemplate extends Model
     public function group()
     {
         return $this->belongsTo(MailTemplateGroup::class, 'mail_template_group_id');
+    }
+
+    public function lang()
+    {
+        return $this->belongsTo(MailTemplateLanguage::class, 'lang_id');
     }
 }

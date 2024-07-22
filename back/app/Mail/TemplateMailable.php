@@ -24,12 +24,12 @@ class TemplateMailable extends Mailable
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Template Mailable',
-        );
-    }
+    // public function envelope(): Envelope
+    // {
+    //     return new Envelope(
+    //         subject: $subject,
+    //     );
+    // }
 
     /**
      * Get the message content definition.

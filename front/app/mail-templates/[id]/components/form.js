@@ -5,19 +5,24 @@ import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+import Select from "/components/Select";
+
+import { show as getMailTemplate } from "/actions/mail-templates";
 
 import { htmlToEditorState } from "/utils/parseEditorState";
 import { editorStateToHtml } from "/utils/parseEditorState";
 
 export default function MailTemplateForm({
   mailTemplate,
+  langs,
+  relatedMailTemplates,
   formData,
   editorState,
   setEditorState,
 }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
 
-  const { subject, name, sendFrom, disabled, formatted, event, body } =
+  const { subject, name, sendFrom, disabled, formatted, event, body, lang } =
     formField;
 
   useEffect(() => {
@@ -29,6 +34,7 @@ export default function MailTemplateForm({
     setFieldValue(formatted.name, mailTemplate.formatted);
     setFieldValue(event.name, mailTemplate.event);
     setFieldValue(body.name, mailTemplate.body);
+    setFieldValue(lang.name, mailTemplate.lang.id);
   }, [
     mailTemplate,
     name,
@@ -51,6 +57,25 @@ export default function MailTemplateForm({
     setFieldValue(body.name, content);
   }, [editorState, body, setFieldValue]);
 
+  const handleInputChange = (lang) => {
+    const selectedMailTemplate = relatedMailTemplates.find(
+      (template) => template.lang.name === lang
+    );
+
+    if (!selectedMailTemplate) return;
+
+    const editorSTate = htmlToEditorState(selectedMailTemplate.body);
+    // Update UI
+    setEditorState(editorSTate);
+    // Update payload
+    setFieldValue(body.name, selectedMailTemplate.body);
+    setFieldValue(subject.name, selectedMailTemplate.subject);
+    setFieldValue(lang.name, selectedMailTemplate.lang.id);
+    setFieldValue(disabled.name, selectedMailTemplate.disabled);
+    setFieldValue(formatted.name, selectedMailTemplate.formatted);
+    setFieldValue(sendFrom.name, selectedMailTemplate.send_from);
+  };
+
   return (
     <MDBox p={4}>
       <Grid width="100%" container spacing={5}>
@@ -68,17 +93,6 @@ export default function MailTemplateForm({
         </Grid>
         <Grid item sm={12}>
           <FormField
-            name={subject.name}
-            label={subject.label}
-            type={subject.type}
-            placeholder={subject.placeholder}
-            value={values[subject.name]}
-            error={errors.subject && touched.subject}
-            success={subject.length > 0 && !errors.subject}
-          />
-        </Grid>
-        <Grid item sm={12}>
-          <FormField
             name={sendFrom.name}
             label={sendFrom.label}
             type={sendFrom.type}
@@ -86,6 +100,28 @@ export default function MailTemplateForm({
             value={values[sendFrom.name]}
             error={errors.sendFrom && touched.sendFrom}
             success={sendFrom.length > 0 && !errors.sendFrom}
+          />
+        </Grid>
+        <Grid item sm={12}>
+          <Select
+            value={values[lang.name]}
+            options={langs}
+            optionLabel={(option) => option.name}
+            fieldName={lang.name}
+            inputLabel={lang.label}
+            onInputChange={(val) => handleInputChange(val)}
+            setFieldValue={setFieldValue}
+          />
+        </Grid>
+        <Grid item sm={12}>
+          <FormField
+            name={subject.name}
+            label={subject.label}
+            type={subject.type}
+            placeholder={subject.placeholder}
+            value={values[subject.name]}
+            error={errors.subject && touched.subject}
+            success={subject.length > 0 && !errors.subject}
           />
         </Grid>
         <Grid item sm={12}>

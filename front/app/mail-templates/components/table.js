@@ -49,24 +49,26 @@ const renderGroup = ({ name, mailTemplates }) => {
             No hay plantillas de mail para este grupo
           </MDTypography>
         ) : (
-          mailTemplates.map((template) => {
-            return (
-              <Row
-                key={template.id}
-                id={template.id}
-                name={template.name}
-                slug={template.event}
-                disabled={template.disabled}
-              />
-            );
-          })
+          mailTemplates
+            .filter((template) => template.lang.code == "en")
+            .map((template) => {
+              return (
+                <Row
+                  key={template.id}
+                  id={template.id}
+                  name={template.name}
+                  slug={template.event}
+                  disabled={template.disabled}
+                />
+              );
+            })
         )}
       </MDBox>
     </MDBox>
   );
 };
 
-export default function Table({ groups, templates }) {
+export default function Table({ groups }) {
   return (
     <>
       <MDBox pt={3} px={6}>

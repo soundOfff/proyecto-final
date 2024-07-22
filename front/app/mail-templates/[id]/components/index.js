@@ -9,6 +9,7 @@ import FormContent from "./form";
 import form from "./schemas/form";
 import initialValues from "./schemas/initial-values";
 import validations from "./schemas/validations";
+import MDSnackbar from "/components/MDSnackbar";
 
 import { update } from "/actions/mail-templates";
 import FieldList from "./field-list";
@@ -16,13 +17,19 @@ import { EditorState } from "draft-js";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { allowedFields } from "/actions/mail-templates";
+import {
+  allowedFields,
+  getAll as getAllMailTemplates,
+} from "/actions/mail-templates";
+import { sendTestEmail } from "/actions/mail-templates";
 
 export default function MailTemplateIndex({ mailTemplate, langs }) {
   const { formField, formId } = form;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [fields, setFields] = useState([]);
+  const [mailTemplates, setMailTemplates] = useState([]);
+  const [mailSended, setMailSended] = useState(false);
 
   const router = useRouter();
 
@@ -31,9 +38,28 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
     router.push("/mail-templates");
   };
 
+  const handleSendEmail = async () => {
+    try {
+      await sendTestEmail({
+        template_id: mailTemplate.id,
+        to: "testing@gmail.com", // TODO: Remove this, only hardcoded for testing
+      });
+      setMailSended(true);
+    } catch (error) {
+      console.error(error);
+      setMailSended(false);
+    }
+  };
+
   useEffect(() => {
     allowedFields({ model: mailTemplate.group.slug }).then((fields) => {
       setFields(fields);
+    });
+    getAllMailTemplates({
+      "filter[event]": mailTemplate.event,
+      include: ["group", "lang"],
+    }).then((mailTemplates) => {
+      setMailTemplates(mailTemplates);
     });
   }, [mailTemplate]);
 
@@ -45,6 +71,16 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
     >
       {({ values, errors, touched, isSubmitting, setFieldValue }) => (
         <MDBox mb={3} width="100%">
+          <MDSnackbar
+            color="success"
+            icon="check"
+            title="Mail sended successfully"
+            content={`Mail sended to the test env using the template: ${mailTemplate.event} and on ${mailTemplate.lang.name} language`}
+            open={mailSended}
+            onClose={() => setMailSended(false)}
+            close={() => setMailSended(false)}
+            bgWhite
+          />
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>
               <Form id={formId} autoComplete="off">
@@ -67,6 +103,7 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
                     mailTemplate={mailTemplate}
                     editorState={editorState}
                     setEditorState={setEditorState}
+                    relatedMailTemplates={mailTemplates}
                     langs={langs}
                     formData={{
                       values,
@@ -87,6 +124,14 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
                         Volver
                       </MDButton>
                       <MDButton
+                        type="button"
+                        variant="gradient"
+                        color="success"
+                        onClick={handleSendEmail}
+                      >
+                        Enviar mail de prueba
+                      </MDButton>
+                      <MDButton
                         type="submit"
                         disabled={isSubmitting}
                         variant="gradient"
@@ -102,9 +147,9 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
             <Grid item xs={12} sm={6}>
               <FieldList
                 mailTemplate={mailTemplate}
+                allowedFields={fields}
                 editorState={editorState}
                 setEditorState={setEditorState}
-                allowedFields={fields}
               />
             </Grid>
           </Grid>

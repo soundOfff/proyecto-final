@@ -12,6 +12,7 @@ class MailTemplate extends Model
         'event',
         'subject',
         'send_from',
+        'lang_id',
         'send_to',
         'mail_template_group_id',
         'body',

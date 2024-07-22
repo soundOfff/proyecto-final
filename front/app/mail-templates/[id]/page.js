@@ -11,6 +11,7 @@ export default async function MailTemplates({ params }) {
   const mailTemplate = await getMailTemplate(id, {
     include: ["group", "lang"],
   });
+
   const languages = await getAllLangs();
 
   return <Index mailTemplate={mailTemplate} langs={languages} />;

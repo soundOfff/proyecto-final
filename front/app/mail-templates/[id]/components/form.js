@@ -15,6 +15,7 @@ import { editorStateToHtml } from "/utils/parseEditorState";
 export default function MailTemplateForm({
   mailTemplate,
   langs,
+  relatedMailTemplates,
   formData,
   editorState,
   setEditorState,
@@ -56,13 +57,23 @@ export default function MailTemplateForm({
     setFieldValue(body.name, content);
   }, [editorState, body, setFieldValue]);
 
-  const handleInputChange = async (lang) => {
-    // TODO: Make backend endpoint to get the correspond mail template by lang and name or slug and then update subject and body
-    // const mailTemplate = await getMailTemplate(lang.id, {
-    //   include: ["group", "lang"],
-    // });
-    // setFieldValue(subject.name, mailTemplate.subject);
-    // setFieldValue(body.name, mailTemplate.body);
+  const handleInputChange = (lang) => {
+    const selectedMailTemplate = relatedMailTemplates.find(
+      (template) => template.lang.name === lang
+    );
+
+    if (!selectedMailTemplate) return;
+
+    const editorSTate = htmlToEditorState(selectedMailTemplate.body);
+    // Update UI
+    setEditorState(editorSTate);
+    // Update payload
+    setFieldValue(body.name, selectedMailTemplate.body);
+    setFieldValue(subject.name, selectedMailTemplate.subject);
+    setFieldValue(lang.name, selectedMailTemplate.lang.id);
+    setFieldValue(disabled.name, selectedMailTemplate.disabled);
+    setFieldValue(formatted.name, selectedMailTemplate.formatted);
+    setFieldValue(sendFrom.name, selectedMailTemplate.send_from);
   };
 
   return (
@@ -98,9 +109,7 @@ export default function MailTemplateForm({
             optionLabel={(option) => option.name}
             fieldName={lang.name}
             inputLabel={lang.label}
-            onInputChange={(val) => {
-              console.log(val);
-            }}
+            onInputChange={(val) => handleInputChange(val)}
             setFieldValue={setFieldValue}
           />
         </Grid>

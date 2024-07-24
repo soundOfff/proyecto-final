@@ -16,6 +16,7 @@ export default async function File({
   } = await getAll({
     perPage,
     page,
+    include: ["fileable"],
   });
 
   return (

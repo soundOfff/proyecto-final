@@ -5,6 +5,13 @@ export const FILEABLE_TYPES = [
   { label: "Tarea", value: "task" },
 ];
 
+export const MAPPED_FILEABLE_TYPES = {
+  project: { label: "Caso", url: "/project/", key: "name" },
+  customer: { label: "Cliente", url: "/customer/", key: "merged_name" },
+  expense: { label: "Gasto", url: "/expense/", key: "name" },
+  task: { label: "Tarea", url: "/task/", key: "name" },
+};
+
 export const PROJECT_FILEABLE_TYPE = "project";
 export const PARTNER_FILEABLE_TYPE = "customer";
 export const EXPENSE_FILEABLE_TYPE = "expense";

@@ -6,10 +6,10 @@ export const FILEABLE_TYPES = [
 ];
 
 export const MAPPED_FILEABLE_TYPES = {
-  project: { label: "Caso", url: "/project/", key: "name" },
-  customer: { label: "Cliente", url: "/customer/", key: "merged_name" },
-  expense: { label: "Gasto", url: "/expense/", key: "name" },
-  task: { label: "Tarea", url: "/task/", key: "name" },
+  project: { label: "Caso", url: "/projects/", key: "name" },
+  customer: { label: "Cliente", url: "/partners/", key: "merged_name" },
+  expense: { label: "Gasto", url: "/expenses/", key: "name" },
+  task: { label: "Tarea", url: "/tasks/", key: "name" },
 };
 
 export const PROJECT_FILEABLE_TYPE = "project";

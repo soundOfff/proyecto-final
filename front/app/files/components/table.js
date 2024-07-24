@@ -31,7 +31,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
-      id: "name",
+      id: "subject",
       Header: "Nombre",
       accessor: "subject",
       width: "20%",

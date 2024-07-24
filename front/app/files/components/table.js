@@ -8,21 +8,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 import { destroy } from "/actions/files";
-import translate from "/locales/es/common.json";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import MDTypography from "/components/MDTypography";
+import { MAPPED_FILEABLE_TYPES } from "/utils/constants/fileableTypes";
 
 export default function Table({ rows, meta }) {
-  const getFileableUrl = (row) => {
-    switch (row.original.fileableType) {
-      case "project":
-        return `/projects/${row.original.fileableId}`;
-      case "customer":
-        return `/partners/${row.original.fileableId}`;
-      case "task":
-        return `/tasks/${row.original.fileableId}`;
-      default:
-        return "/";
-    }
-  };
+  const getFileableLabel = (row) =>
+    row.fileable
+      ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType].key]
+      : "Sin nombre";
+  const getFileableUrl = (row) =>
+    `${MAPPED_FILEABLE_TYPES[row.fileableType].url}${row.fileableId}`;
+
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -34,24 +31,55 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
-      id: "url",
-      Header: "URL",
-      accessor: "publicUrl",
-      Cell: ({ value }) => (
-        <Link href={value} sx={{ cursor: "pointer", color: "info" }}>
-          {value}
+      id: "name",
+      Header: "Nombre",
+      accessor: "subject",
+      width: "20%",
+    },
+    {
+      id: "fileable_type",
+      Header: "Relacionado con",
+      Cell: ({ row }) => (
+        <MDTypography variant="button" color="dark" sx={{ display: "flex" }}>
+          {MAPPED_FILEABLE_TYPES[row.original.fileableType].label}
+        </MDTypography>
+      ),
+    },
+    {
+      id: "fileable_id",
+      Header: "Nombre relacionado",
+      width: "30%",
+      Cell: ({ row }) => (
+        <Link
+          href={getFileableUrl(row.original)}
+          sx={{ cursor: "pointer", color: "link" }}
+        >
+          <MDTypography variant="button" color="link">
+            {getFileableLabel(row.original)}
+          </MDTypography>
         </Link>
       ),
     },
     {
-      id: "fileable",
-      Header: "Relacionado con",
-      Cell: ({ row }) => (
-        <Link
-          href={getFileableUrl(row)}
-          sx={{ cursor: "pointer", color: "info" }}
-        >
-          {translate[row.original.fileableType]}: {row.original.fileableId}
+      id: "url",
+      Header: "URL",
+      accessor: "publicUrl",
+      Cell: ({ value }) => (
+        <Link href={value} target="_blank" sx={{ color: "info" }}>
+          <MDTypography
+            variant="button"
+            color="link"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              cursor: "pointer",
+              color: "info",
+            }}
+          >
+            Ver archivo
+            <PictureAsPdfIcon fontSize="small" />
+          </MDTypography>
         </Link>
       ),
     },

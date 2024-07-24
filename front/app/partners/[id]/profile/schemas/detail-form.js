@@ -95,7 +95,7 @@ const detailForm = {
       website: {
         name: "website",
         label: "Website",
-        errorMsg: "Debe seleccionar un tipo de servicio",
+        errorMsg: "El website es requerido",
       },
       isConsolidator: {
         name: "is_consolidator",

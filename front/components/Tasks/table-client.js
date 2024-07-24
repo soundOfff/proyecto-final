@@ -137,23 +137,22 @@ export default function Table({
     {
       Header: "Bloqueada por",
       accessor: "isBlocked",
-      Cell: ({ row }) =>
-        row.original.isBlocked && (
-          <MDBox display="flex">
-            {row.original.dependencies.map((dependency) => (
-              <Grid key={dependency.id}>
-                <MDBadge
-                  variant="gradient"
-                  color={
-                    dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
-                  }
-                  size="lg"
-                  badgeContent={`#${dependency.id}`}
-                />
-              </Grid>
-            ))}
-          </MDBox>
-        ),
+      Cell: ({ row }) => (
+        <MDBox display="flex">
+          {row.original.dependencies.map((dependency) => (
+            <Grid key={dependency.id}>
+              <MDBadge
+                variant="gradient"
+                color={
+                  dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
+                }
+                size="lg"
+                badgeContent={`#${dependency.id}`}
+              />
+            </Grid>
+          ))}
+        </MDBox>
+      ),
     },
     {
       Header: "Nombre",

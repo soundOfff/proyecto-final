@@ -10,6 +10,7 @@ import FormContent from "./formContent";
 import { useRouter } from "next/navigation";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
+import { revalidateFiles } from "/actions/files";
 
 export default function FormComponent({ apiUrl }) {
   const { formId } = form;
@@ -31,9 +32,10 @@ export default function FormComponent({ apiUrl }) {
         headers: {
           Accept: "application/json",
         },
+        next: { tags: ["create-file"] },
       });
 
-      router.push("/files");
+      revalidateFiles();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

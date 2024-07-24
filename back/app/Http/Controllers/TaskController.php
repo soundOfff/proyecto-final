@@ -98,7 +98,7 @@ class TaskController extends Controller
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
         $newTask['author_id'] = $newTask['owner_id'];
 
-        if (! array_key_exists('milestone_order', $newTask)) {
+        if (!array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getLatestMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']) + 1; // Next milestone order
         }
 
@@ -205,7 +205,8 @@ class TaskController extends Controller
         }
 
         if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {
-            $staffs = Staff::whereIn('id',
+            $staffs = Staff::whereIn(
+                'id',
                 array_merge(
                     isset($newTask['assigneds']) ? $newTask['assigneds'] : array_column($task->assigneds->toArray(), 'id') ?? [],
                     isset($newTask['followers']) ? $newTask['followers'] : array_column($task->followers->toArray(), 'id') ?? [],

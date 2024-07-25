@@ -23,7 +23,7 @@ class TaskObserver
      */
     public function updated(Task $task): void
     {
-        if (! $task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) {
+        if (!$task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) {
             return;
         }
 
@@ -35,7 +35,7 @@ class TaskObserver
         $recentlyUnlockedTasks = [];
         foreach ($lockedTasks as $lt) {
             $isBlocked = $lt->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
-            if (! $isBlocked) {
+            if (!$isBlocked) {
                 $recentlyUnlockedTasks[] = $lt;
             }
         }

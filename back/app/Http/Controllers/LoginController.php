@@ -50,20 +50,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $request->validate([
-            'staff_id' => 'required|integer|exists:staff,id',
-        ]);
-        $staffId = $request['staff_id'];
-        $ltsSession = $this->latestSession($staffId);
-        
-        if ($ltsSession) {
-            $ltsSession->update([
-                'last_logout' => now(),
-            ]);
-        }
-
         Auth::logout();
-
         return response()->json(['message' => 'Successfully logged out'], 200);
     }
 

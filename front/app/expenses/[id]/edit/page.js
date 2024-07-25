@@ -6,7 +6,7 @@ import { getAll as getAllTaxes } from "/actions/taxes";
 import { getAll as getAllCurrencies } from "/actions/currencies";
 import { getAll as getAllPaymentMethods } from "/actions/payment-methods";
 import FormComponent from "./components/form";
-import { show as getExpense } from "../../../../actions/expenses";
+import { show as getExpense } from "/actions/expenses";
 
 export default async function EditExpense({ params: { id } }) {
   const [

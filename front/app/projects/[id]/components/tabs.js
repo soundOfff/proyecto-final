@@ -4,9 +4,14 @@ import { AppBar, Tab } from "@mui/material";
 import TabList from "@mui/lab/TabList";
 import { useEffect, useState } from "react";
 import breakpoints from "/assets/theme/base/breakpoints";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function TabsComponent({ setTabIndex }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -28,7 +33,16 @@ export default function TabsComponent({ setTabIndex }) {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabIndex(newValue);
+  const handleSetTabValue = (event, newValue) => {
+    setTabIndex(newValue);
+
+    // update the url with the new tab value
+    const params = new URLSearchParams(searchParams);
+    params.delete("tab");
+    params.set("tab", newValue);
+
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <AppBar position="static">

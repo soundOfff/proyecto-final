@@ -44,7 +44,7 @@ export default function Second({
     setFieldValue(tax.name, expense.tax_id ?? null);
     setFieldValue(tax2.name, expense.tax2_id ?? null);
     setFieldValue(paymentMethod.name, expense.paymentMethod?.id ?? null);
-    setFieldValue(reference.name, expense.reference);
+    setFieldValue(reference.name, expense.reference ?? "");
     setFieldValue(repeat.name, expense.repeat_id ?? "");
     setFieldValue(recurring.name, expense.recurring);
     setFieldValue(isInfinite.name, expense.is_infinite);

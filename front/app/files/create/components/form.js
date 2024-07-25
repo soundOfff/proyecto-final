@@ -14,7 +14,6 @@ import { revalidateFiles } from "/actions/files";
 
 export default function FormComponent({ apiUrl }) {
   const { formId } = form;
-  const router = useRouter();
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 

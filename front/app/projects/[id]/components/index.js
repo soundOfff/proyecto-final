@@ -15,9 +15,12 @@ import Estimates from "./Tabs/estimates";
 import Invoices from "./Tabs/invoices";
 import Expenses from "./Tabs/expenses";
 import { DataProvider } from "/providers/DataProvider";
+import { useSearchParams } from "next/navigation";
 
 export default function IndexComponent(props) {
-  const [tab, setTab] = useState("description");
+  const searchParams = useSearchParams();
+  const initialTab = searchParams?.get("tab") || "description";
+  const [tab, setTab] = useState(initialTab);
 
   return (
     <DataProvider value={{ ...props }}>

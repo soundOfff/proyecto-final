@@ -17,6 +17,7 @@ import form from "./schemas/form";
 import { store as storeExpense } from "/actions/expenses";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const steps = ["Nuevo Gasto", "Opciones avanzadas"];
 
@@ -35,6 +36,8 @@ export default function FormComponent({
   const { formId, formField } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -54,7 +57,18 @@ export default function FormComponent({
     }
   };
 
+  const returnToSource = () => {
+    const source = searchParams.get("source");
+    if (!source) {
+      router.push("/expenses");
+      return;
+    }
+    router.push(source);
+  };
+
   const handleBack = () => setActiveStep(activeStep - 1);
+
+  const handleCancel = () => returnToSource();
 
   const submitForm = async (values, actions) => {
     try {
@@ -68,6 +82,7 @@ export default function FormComponent({
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
       submitForm(values, actions);
+      returnToSource();
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -76,12 +91,12 @@ export default function FormComponent({
   };
 
   return (
-    <MDBox py={3} mb={20} height="65vh">
+    <MDBox py={3} mb={20} height="auto">
       <Grid
         container
         justifyContent="center"
-        alignItems="center"
-        sx={{ height: "100%", mt: 8 }}
+        alignItems="start"
+        sx={{ height: "100%", mt: 2 }}
       >
         <Grid item xs={12} lg={8}>
           <Formik
@@ -137,7 +152,14 @@ export default function FormComponent({
                         justifyContent="space-between"
                       >
                         {activeStep === 0 ? (
-                          <MDBox />
+                          <MDButton
+                            variant="gradient"
+                            color="light"
+                            onClick={handleCancel}
+                          >
+                            {" "}
+                            Cancelar
+                          </MDButton>
                         ) : (
                           <MDButton
                             variant="gradient"

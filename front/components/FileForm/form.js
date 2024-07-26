@@ -5,6 +5,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import Select from "/components/Select";
+import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "./schemas/form";
 import {
   FILEABLE_TYPES,
@@ -16,12 +17,12 @@ import {
 import { ErrorMessage } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { Autocomplete, Grid } from "@mui/material";
+import { useSearchParams } from "next/navigation";
+
 import { getAll as getAllProjects } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllExpenses } from "/actions/expenses";
 import { getAll as getAllTasks } from "/actions/tasks";
-import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
-import { useSearchParams } from "next/navigation";
 
 export default function FormContent({ values, setFieldValue, errors }) {
   const { formField } = form;
@@ -156,16 +157,14 @@ export default function FormContent({ values, setFieldValue, errors }) {
         </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
-        {relations.length > 0 && (
-          <Select
-            value={values[fileableId.name]}
-            options={relations}
-            optionLabel={(option) => getOptionLabel(option)}
-            fieldName={fileableId.name}
-            inputLabel={fileableId.label}
-            setFieldValue={setFieldValue}
-          />
-        )}
+        <Select
+          value={values[fileableId.name]}
+          options={relations}
+          optionLabel={(option) => getOptionLabel(option)}
+          fieldName={fileableId.name}
+          inputLabel={fileableId.label}
+          setFieldValue={setFieldValue}
+        />
       </Grid>
     </Grid>
   );

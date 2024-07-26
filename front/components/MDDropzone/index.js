@@ -37,9 +37,15 @@ function MDDropzone({ options, setFieldValue, multiple = false }) {
         ...memoizedOptions,
       });
 
-      dropzoneInstance.current.on("addedfile", (file) =>
-        setFieldValue("file", file)
-      );
+      dropzoneInstance.current.on("addedfile", (file) => {
+        setFieldValue("file", file);
+        setFieldValue("name", file?.upload?.filename.split(".")[0]);
+      });
+
+      dropzoneInstance.current.on("removedfile", () => {
+        setFieldValue("file", null);
+        setFieldValue("name", "");
+      });
 
       return dropzoneInstance.current;
     }

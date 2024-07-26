@@ -13,13 +13,14 @@ import Second from "./steps/second";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
+import FileForm from "/components/FileForm";
 
 import { store as storeExpense } from "/actions/expenses";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const steps = ["Nuevo Gasto", "Opciones avanzadas"];
+const steps = ["Nuevo Gasto", "Opciones avanzadas", "Adjuntar archivo"];
 
 export default function FormComponent({
   partners,
@@ -38,6 +39,7 @@ export default function FormComponent({
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
   const searchParams = useSearchParams();
+  // const formikRef = useRef(); TODO: Needed a way to trigger the submit of the nested form
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -50,6 +52,15 @@ export default function FormComponent({
           <Second
             formData={formData}
             {...{ currencies, taxes, paymentMethods, repeats }}
+          />
+        );
+      case 2:
+        return (
+          <FileForm
+            apiUrl={process.env.apiUrl}
+            sourcePath="/files"
+            isStep={true}
+            ref={formikRef}
           />
         );
       default:
@@ -82,7 +93,7 @@ export default function FormComponent({
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
       submitForm(values, actions);
-      returnToSource();
+      // returnToSource();
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});

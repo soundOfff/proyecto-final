@@ -1,6 +1,6 @@
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import Form from "./components/form";
+import Form from "/components/FileForm";
 import { Card } from "@mui/material";
 import { Suspense } from "react";
 

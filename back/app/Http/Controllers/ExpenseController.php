@@ -8,10 +8,12 @@ use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
 use App\Models\ExpenseRepeat;
+use App\Models\File;
 use App\Sorts\ExpenseCategorySort;
 use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -63,6 +65,19 @@ class ExpenseController extends Controller
         $newExpense = $request->validated();
 
         $expense = Expense::create($newExpense);
+
+        $expenseFiles = isset($newExpense['files']) ? $newExpense['files'] : [];
+        $expenseFilesInfo = isset($newExpense['files_info']) ? $newExpense['files_info'] : [];
+
+        dd($expenseFilesInfo);
+        foreach ($expenseFiles as $file) {
+            Storage::disk('google')->put($file->path . $file->name . '.' . $file->extension(), file_get_contents($file->file));
+
+            $data['url'] = Storage::disk('google')->path("/expense/" . $file->name . '.' . $file->file->extension());
+            $data['subject'] = $file->name;
+
+            File::create($data);
+        }
 
         if (ExpenseRepeat::isCustom($request['recurring_type'])) {
             $expense->recurring_type = $request['recurring_type'];

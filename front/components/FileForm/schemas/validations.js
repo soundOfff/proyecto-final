@@ -11,7 +11,7 @@ const validations = Yup.object().shape({
     .test("fileSize", "El archivo es muy grande", (value) => {
       return value.size <= 2000000;
     }),
-  [fileableType.name]: Yup.string().required(fileableType.errorMsg),
-  [fileableId.name]: Yup.number().required(fileableId.errorMsg),
+  [fileableType.name]: Yup.string().nullable(),
+  [fileableId.name]: Yup.number().nullable(),
 });
 export default validations;

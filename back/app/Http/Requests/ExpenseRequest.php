@@ -47,6 +47,8 @@ class ExpenseRequest extends FormRequest
             'payment_method_id' => 'nullable|numeric|exists:payment_methods,id',
             'reference_no' => 'nullable|string',
             'recurring_type' => 'required_if:repeat_id,8',
+            'files' => "nullable|array",
+            'files_info' => 'nullable|array',
             'recurring' => 'required_if:repeat_id,8',
         ];
     }

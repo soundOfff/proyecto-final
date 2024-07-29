@@ -27,6 +27,7 @@ const {
     currency,
     partner,
     project,
+    files,
     reference,
     paymentMethod,
     tax,
@@ -67,6 +68,7 @@ const validations = [
       is: false,
       then: (schema) => schema.min(1, "Los ciclos totales deben ser mayor a 0"),
     }),
+    [files.name]: Yup.array().nullable(),
   }),
 ];
 

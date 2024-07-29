@@ -19,6 +19,7 @@ import { store as storeExpense } from "/actions/expenses";
 
 import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { EXPENSE_FILEABLE_TYPE } from "/utils/constants/fileableTypes";
 
 const steps = ["Nuevo Gasto", "Opciones avanzadas", "Adjuntar archivo"];
 
@@ -39,7 +40,6 @@ export default function FormComponent({
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const formikRef = useRef(); TODO: Needed a way to trigger the submit of the nested form
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -56,12 +56,7 @@ export default function FormComponent({
         );
       case 2:
         return (
-          <FileForm
-            apiUrl={process.env.apiUrl}
-            sourcePath="/files"
-            isStep={true}
-            ref={formikRef}
-          />
+          <FileForm formData={formData} fileableType={EXPENSE_FILEABLE_TYPE} />
         );
       default:
         return null;
@@ -82,8 +77,32 @@ export default function FormComponent({
   const handleCancel = () => returnToSource();
 
   const submitForm = async (values, actions) => {
+    const formData = new FormData();
+    const files = values[formField.files.name];
+
+    files.forEach((rawFile) => {
+      formData.append("files[]", rawFile.file);
+      formData.append("filesInfo[]", rawFile.name);
+    });
+
+    delete values[formField.files.name];
+
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+
+    console.log(formData.get("files[]"));
     try {
-      await storeExpense(values);
+      await fetch(`${process.env.API_URL}/expenses`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+        next: { tags: ["create-file"] },
+      });
+
+      revalidateFiles();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -93,7 +112,7 @@ export default function FormComponent({
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
       submitForm(values, actions);
-      // returnToSource();
+      returnToSource();
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});

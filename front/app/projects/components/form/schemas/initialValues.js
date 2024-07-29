@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import { NOT_STARTED } from "../../../../../utils/constants/projectStatusesIds";
 import checkout from "./form";
 
 const {
@@ -40,7 +41,7 @@ const initialValues = {
   [description.name]: "",
   [defendant.name]: "",
   [plaintiff.name]: "",
-  [status.name]: "",
+  [status.name]: NOT_STARTED,
   [serviceType.name]: "",
   [billingType.name]: "",
   [selectedMembers.name]: [],

@@ -19,7 +19,7 @@ import checkout from "./form";
 const {
   formField: {
     cost,
-    estimatedHours,
+    /* estimatedHours, */
     expedient,
     responsiblePersonId,
     description,
@@ -37,10 +37,10 @@ const {
 
 const validations = [
   Yup.object().shape({
-    [estimatedHours.name]: Yup.number("El valor debe ser un número").min(
+    /* [estimatedHours.name]: Yup.number("El valor debe ser un número").min(
       1,
       "Debe ser mayor a 0"
-    ),
+    ), */
     [cost.name]: Yup.number("El valor debe ser un número").min(
       1,
       "Debe ser mayor a 0"

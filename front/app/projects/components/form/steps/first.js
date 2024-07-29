@@ -28,7 +28,7 @@ export default function First({ formData, project }) {
   useEffect(() => {
     if (project) {
       setFieldValue(cost.name, project.cost || "");
-      setFieldValue(estimatedHours.name, project.estimatedHours || "");
+      /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(expedient.name, project.expedient || "");
     }
   }, [project, cost, estimatedHours, expedient, description, setFieldValue]);
@@ -46,7 +46,7 @@ export default function First({ formData, project }) {
           success={values[cost.name]?.length > 0 && !errors[cost.name]}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      {/*  <Grid item xs={12} sm={6}>
         <FormField
           value={values[estimatedHours.name]}
           name={estimatedHours.name}
@@ -59,8 +59,8 @@ export default function First({ formData, project }) {
             !errors[estimatedHours.name]
           }
         />
-      </Grid>
-      <Grid item xs={12} sm={12}>
+      </Grid> */}
+      <Grid item xs={12} sm={6}>
         <FormField
           value={values[expedient.name]}
           name={expedient.name}

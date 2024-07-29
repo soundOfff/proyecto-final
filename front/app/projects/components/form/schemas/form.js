@@ -23,13 +23,13 @@ const form = {
       placeholder: "1000",
       errorMsg: "El costo del caso es requerido",
     },
-    estimatedHours: {
+    /*  estimatedHours: {
       name: "estimated_hours",
       label: "Horas Estimadas",
       type: "number",
       placeholder: "20",
       errorMsg: "La cantidad de horas es requerida",
-    },
+    }, */
     expedient: {
       name: "expedient",
       label: "Expediente",

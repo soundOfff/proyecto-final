@@ -124,7 +124,6 @@ export default function Second({
           fieldName={status.name}
           inputLabel={status.label}
           setFieldValue={setFieldValue}
-          defaultValue={status.name}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

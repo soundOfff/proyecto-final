@@ -15,11 +15,9 @@ use App\Models\Task;
 use App\Models\TaskRepeat;
 use App\Models\TaskTimer;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function PHPUnit\Framework\throwException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 

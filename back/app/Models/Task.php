@@ -126,6 +126,11 @@ class Task extends Model
         return $this->belongsTo(TaskPriority::class, 'task_priority_id');
     }
 
+    public function repeat(): BelongsTo
+    {
+        return $this->belongsTo(TaskRepeat::class, 'repeat_id');
+    }
+
     public function timers()
     {
         return $this->hasMany(TaskTimer::class)->orderBy('start_time', 'ASC');

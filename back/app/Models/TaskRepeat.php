@@ -20,9 +20,9 @@ class TaskRepeat extends Model
         'days',
     ];
 
-    public function expenses(): HasMany
+    public function tasks(): HasMany
     {
-        return $this->hasMany(Expense::class);
+        return $this->hasMany(Task::class);
     }
 
     public static function isCustom(int|null $id): bool

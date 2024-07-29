@@ -18,7 +18,7 @@ import checkout from "./form";
 const {
   formField: {
     cost,
-    estimatedHours,
+    /* estimatedHours, */
     expedient,
     description,
     defendant,
@@ -35,7 +35,7 @@ const {
 
 const initialValues = {
   [cost.name]: "",
-  [estimatedHours.name]: "",
+  /* [estimatedHours.name]: "", */
   [expedient.name]: "",
   [description.name]: "",
   [defendant.name]: "",

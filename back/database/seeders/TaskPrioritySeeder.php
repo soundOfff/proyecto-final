@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\TaskPriority;
 use Illuminate\Database\Seeder;
 
 class TaskPrioritySeeder extends Seeder
@@ -13,14 +13,14 @@ class TaskPrioritySeeder extends Seeder
     public function run(): void
     {
         $priorities = [
-            ['name' => 'Bajo'],
-            ['name' => 'Medio'],
-            ['name' => 'Alto'],
-            ['name' => 'Urgente'],
+            ['id' => 1, 'name' => 'Bajo'],
+            ['id' => 2, 'name' => 'Medio'],
+            ['id' => 3, 'name' => 'Alto'],
+            ['id' => 4, 'name' => 'Urgente'],
         ];
 
         foreach ($priorities as $priority) {
-            \App\Models\TaskPriority::create($priority);
+            TaskPriority::updateOrCreate(['id' => $priority['id']], $priority);
         }
     }
 }

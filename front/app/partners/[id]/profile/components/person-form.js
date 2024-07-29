@@ -120,7 +120,6 @@ export default function PersonForm({
             setFieldValue("id_type", newValue);
           }}
           value={initialIdType}
-          sx={{ width: 300 }}
           renderInput={(params) => (
             <MDInput
               {...params}

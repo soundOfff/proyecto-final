@@ -11,6 +11,10 @@ use App\Models\Partner;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
+use App\Models\Task;
+use App\Models\TaskRepeat;
+use App\Models\TaskTimer;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -99,6 +103,27 @@ class ProjectController extends Controller
 
         $project->members()->attach($projectMemberIds);
         $project->partners()->attach($partnersToAttach);
+
+        $task = Task::create([
+            'name' => 'Data entry',
+            'hourly_rate' => 0.25,
+            'task_priority_id' => 2,
+            'task_status_id' => 1,
+            'owner_id' => $project->responsiblePerson->id,
+            'taskable_id' => $project->id,
+            'taskable_type' => 'project',
+            'partner_id' => $project->defendant_id,
+            'start_date' => Carbon::now(),
+            'date_added' => Carbon::now(),
+            'repeat_id' => TaskRepeat::CUSTOM,
+        ]);
+
+        TaskTimer::create([
+            'task_id' => $task->id,
+            'start_time' => Carbon::now(),
+            'end_time' => Carbon::now()->add(15, 'minutes'),
+            'staff_id' => $project->responsiblePerson->id,
+        ]);
 
         return response()->json($project, 201);
     }

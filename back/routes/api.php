@@ -50,6 +50,7 @@ use App\Http\Controllers\TableFieldController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPriorityController;
+use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
@@ -155,6 +156,8 @@ Route::get('/task-stats', [TaskController::class, 'stats']);
 Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
+
+Route::get('/task-repeats', [TaskRepeatController::class, 'index']);
 
 Route::get('/tags', [TagController::class, 'index']);
 

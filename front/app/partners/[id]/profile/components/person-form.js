@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Autocomplete,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -14,6 +15,7 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import detailForm from "../schemas/detail-form";
 import MDDatePicker from "/components/MDDatePicker";
 import MDBox from "/components/MDBox";
+import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import { ErrorMessage } from "formik";
 import Select from "/components/Select";
@@ -39,7 +41,6 @@ export default function PersonForm({
         expeditionDate,
         isMale,
         idNumber,
-        idType,
         country,
         isConsolidator,
         nationality,
@@ -94,6 +95,9 @@ export default function PersonForm({
     }
   }, [values.district_id]);
 
+  const idType = ["Cédula", "Pasaporte", "Carnet de Residente"];
+  const initialIdType = idType.includes(values.id_type) ? values.id_type : null;
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
@@ -108,14 +112,26 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[idType.name]}
-          label={idType.label}
-          placeholder={idType.placeholder}
-          name={idType.name}
-          type={idType.type}
-          error={errors[idType.name] && touched[idType.name]}
-          success={values[idType.name]?.length > 0 && !errors[idType.name]}
+        <Autocomplete
+          disablePortal
+          id="id-type-selector"
+          options={idType}
+          onChange={(event, newValue) => {
+            setFieldValue("id_type", newValue);
+          }}
+          value={initialIdType}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Tipo de Identificación"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.idType && touched.idType)}
+              helperText={touched.idType && errors.idType}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

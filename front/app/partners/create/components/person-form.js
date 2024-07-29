@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Autocomplete,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -9,17 +10,19 @@ import {
   MenuItem,
   Select as MuiSelect,
   Switch,
+  TextField,
   TextareaAutosize,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "../schemas/form";
 import MDDatePicker from "/components/MDDatePicker";
 import MDBox from "/components/MDBox";
+import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import { ErrorMessage } from "formik";
 import Select from "/components/Select";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { PANAMA_ID } from "/utils/constants/countries";
 import { getAll as getAllProvinces } from "/actions/provinces";
 import { getAll as getAllDistricts } from "/actions/districts";
@@ -45,7 +48,6 @@ export default function PersonForm({
         birthPlace,
         occupation,
         civilStatus,
-        idType,
         state,
         city,
         district,
@@ -97,6 +99,8 @@ export default function PersonForm({
     }
   }, [values.district_id]);
 
+  const idType = ["Cédula", "Pasaporte", "Carnet de Residente"];
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={4}>
@@ -111,6 +115,30 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={4}>
+        <Autocomplete
+          disablePortal
+          id="id-type-selector"
+          options={idType}
+          onChange={(event, newValue) => {
+            setFieldValue("id_type", newValue);
+          }}
+          value={values[idType]}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Tipo de Identificación"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.idType && touched.idType)}
+              helperText={touched.idType && errors.idType}
+            />
+          )}
+        />
+      </Grid>
+
+      {/* <Grid item xs={12} sm={4}>
         <FormField
           value={values[idType.name]}
           label={idType.label}
@@ -120,7 +148,7 @@ export default function PersonForm({
           error={errors[idType.name] && touched[idType.name]}
           success={values[idType.name]?.length > 0 && !errors[idType.name]}
         />
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} sm={4}>
         <FormField
           value={values[idNumber.name]}

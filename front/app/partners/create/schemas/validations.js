@@ -148,7 +148,7 @@ const validations = {
     [isMale.name]: Yup.boolean().required(isMale.errorMsg),
     [birthPlace.name]: Yup.string().required(birthPlace.errorMsg),
     [personIdNumber.name]: Yup.string().required(personIdNumber.errorMsg),
-    [personIdType.name]: Yup.string().required(personIdType.errorMsg),
+    [personIdType.name]: Yup.string(),
     [emailPerson.name]: Yup.string().email().required(email.errorMsg),
     [phonePerson.name]: Yup.string().required(phone.errorMsg),
     [nationality.name]: Yup.number().required(nationality.errorMsg),

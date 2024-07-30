@@ -26,6 +26,8 @@ export default async function NewExpense() {
     getAllRepeats(),
   ]);
 
+  const apiUrl = process.env.API_URL;
+
   return (
     <Form
       {...{
@@ -36,6 +38,7 @@ export default async function NewExpense() {
         currencies,
         paymentMethods,
         repeats,
+        apiUrl,
       }}
     />
   );

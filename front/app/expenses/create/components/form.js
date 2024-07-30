@@ -15,11 +15,10 @@ import validations from "./schemas/validations";
 import form from "./schemas/form";
 import FileForm from "/components/FileForm";
 
-import { store as storeExpense } from "/actions/expenses";
-
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { EXPENSE_FILEABLE_TYPE } from "/utils/constants/fileableTypes";
+import { revalidateExpenses } from "/actions/expenses";
 
 const steps = ["Nuevo Gasto", "Opciones avanzadas", "Adjuntar archivo"];
 
@@ -30,6 +29,7 @@ export default function FormComponent({
   currencies,
   taxes,
   paymentMethods,
+  apiUrl,
   repeats,
 }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -82,27 +82,29 @@ export default function FormComponent({
 
     files.forEach((rawFile) => {
       formData.append("files[]", rawFile.file);
-      formData.append("filesInfo[]", rawFile.name);
+      formData.append("files_info[]", rawFile.name);
     });
 
     delete values[formField.files.name];
 
     for (const key in values) {
-      formData.append(key, values[key]);
+      if (values[key] === "") continue;
+      if (values[key] == false || values[key] == true) {
+        formData.append(key, values[key] ? 1 : 0);
+      } else {
+        formData.append(key, values[key]);
+      }
     }
 
-    console.log(formData.get("files[]"));
     try {
-      await fetch(`${process.env.API_URL}/expenses`, {
+      await fetch(`${apiUrl}/expenses`, {
         method: "POST",
         body: formData,
         headers: {
           Accept: "application/json",
         },
-        next: { tags: ["create-file"] },
+        next: { tags: ["create-files"] },
       });
-
-      revalidateFiles();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -112,6 +114,7 @@ export default function FormComponent({
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
       submitForm(values, actions);
+      revalidateExpenses();
       returnToSource();
     } else {
       setActiveStep(activeStep + 1);

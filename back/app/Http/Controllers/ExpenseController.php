@@ -69,12 +69,17 @@ class ExpenseController extends Controller
         $expenseFiles = isset($newExpense['files']) ? $newExpense['files'] : [];
         $expenseFilesInfo = isset($newExpense['files_info']) ? $newExpense['files_info'] : [];
 
-        dd($expenseFilesInfo);
-        foreach ($expenseFiles as $file) {
-            Storage::disk('google')->put($file->path . $file->name . '.' . $file->extension(), file_get_contents($file->file));
+        foreach (array_keys($expenseFiles) as $index) {
+            $file = $expenseFiles[$index];
+            $fileInfo = $expenseFilesInfo[$index];
+            $extension = $file->extension();
+            $path = "/expense/$fileInfo" . ($extension ? ".$extension" : '');
 
-            $data['url'] = Storage::disk('google')->path("/expense/" . $file->name . '.' . $file->file->extension());
-            $data['subject'] = $file->name;
+            Storage::disk('google')->put($path, file_get_contents($file));
+            $data['url'] = Storage::disk('google')->path($path);
+            $data['subject'] = $fileInfo;
+            $data['fileable_type'] = "expense";
+            $data['fileable_id'] = $expense->id;
 
             File::create($data);
         }

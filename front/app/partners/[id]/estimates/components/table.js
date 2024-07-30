@@ -73,7 +73,7 @@ export default function Table({ rows, meta }) {
       accessor: "referenceNo",
     },
     {
-      Header: "Tipo de Servicio",
+      Header: "Departamento",
       accessor: "project.serviceType.label",
     },
   ];

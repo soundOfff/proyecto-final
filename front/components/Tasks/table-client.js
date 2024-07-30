@@ -337,7 +337,7 @@ export default function Table({
       <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
         <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
           {project && (
-            <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable, un tipo de servicio y un proceso">
+            <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable, un departamento y un proceso">
               <MDBox>
                 <MDButton
                   variant="gradient"

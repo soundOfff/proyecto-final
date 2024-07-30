@@ -15,7 +15,8 @@ class FileController extends Controller
     {
         $query = QueryBuilder::for(File::class)
             ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable'])
-            ->allowedFilters(['fileable_id', 'fileable_type']);
+            ->allowedFilters(['fileable_id', 'fileable_type'])
+            ->allowedSorts(['fileable_type', 'fileable_id', 'created_at', 'subject']);
 
         $files = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -40,9 +41,9 @@ class FileController extends Controller
         $path = $request->get('path');
         $name = $request->get('name');
 
-        Storage::disk('google')->put($path.$name.'.'.$file->extension(), file_get_contents($file));
+        Storage::disk('google')->put($path . $name . '.' . $file->extension(), file_get_contents($file));
 
-        $data['url'] = Storage::disk('google')->path('/'.$path.$name.'.'.$file->extension());
+        $data['url'] = Storage::disk('google')->path('/' . $path . $name . '.' . $file->extension());
         $data['subject'] = $name;
 
         File::create($data);

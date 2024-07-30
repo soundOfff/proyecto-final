@@ -456,9 +456,7 @@ export default function Aside() {
                 value={assigneds}
                 onChange={(_, newValues) => setAssigneds(newValues)}
                 options={task.taskable.members}
-                getOptionLabel={(option) =>
-                  option.first_name + " " + option.last_name
-                }
+                getOptionLabel={(option) => option.name}
                 renderInput={(params) => (
                   <MDInput
                     {...params}

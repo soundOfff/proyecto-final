@@ -12,7 +12,7 @@ class TaskPriority extends Model
 
     protected $fillable = ['name'];
 
-    public const DEFAULT = 1; 
+    public const DEFAULT = 2;
 
     public function tasks(): HasMany
     {

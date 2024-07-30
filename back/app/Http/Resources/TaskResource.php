@@ -54,9 +54,7 @@ class TaskResource extends JsonResource
             'author' => StaffResource::make($this->whenLoaded('author')),
             'procedure' => $this->procedure ? ProcedureResource::make($this->whenLoaded('procedure')->load('process.forks')) : null,
             'isFinalTask' => $this->isFinalTask(),
-            'isBlocked' => $this->whenLoaded('dependencies', function () {
-                return $this->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
-            }),
+            'isBlocked' => $this->is_blocked,
             'taskable' => $this->whenLoaded('taskable', function () {
                 $taskableTypes = Task::getTaskableTypes();
                 $taskableType = $taskableTypes[$this->taskable_type] ?? null;

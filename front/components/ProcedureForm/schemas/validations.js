@@ -19,7 +19,7 @@ const validations = Yup.object().shape({
   [responsible.name]: Yup.number(),
   [status.name]: Yup.number().nullable(),
   [stepNumber.name]: Yup.number().required(stepNumber.errorMsg),
-  [description.name]: Yup.string(),
+  [description.name]: Yup.string().nullable(),
   [dependencies.name]: Yup.array(),
   [actions.name]: Yup.array(),
   [reminders.name]: Yup.array(),

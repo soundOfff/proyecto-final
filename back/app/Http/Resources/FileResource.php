@@ -24,6 +24,7 @@ class FileResource extends JsonResource
             'subject' => $this->subject,
             'visibleToCustomer' => $this->visible_to_customer,
             'isFileNeeded' => $this->is_file_needed,
+            'fileable' => $this->whenLoaded('fileable'),
         ];
     }
 }

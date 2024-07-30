@@ -30,7 +30,6 @@ export async function update(id, data) {
   });
 
   revalidatePath("/expenses");
-  redirect("/expenses");
 }
 
 export async function store(data) {

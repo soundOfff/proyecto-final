@@ -10,10 +10,10 @@ import FormContent from "./formContent";
 import { useRouter } from "next/navigation";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
+import { revalidateFiles } from "/actions/files";
 
 export default function FormComponent({ apiUrl }) {
   const { formId } = form;
-  const router = useRouter();
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
 
@@ -31,9 +31,10 @@ export default function FormComponent({ apiUrl }) {
         headers: {
           Accept: "application/json",
         },
+        next: { tags: ["create-file"] },
       });
 
-      router.push("/files");
+      revalidateFiles();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

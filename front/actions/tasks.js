@@ -86,6 +86,20 @@ export async function destroy(taskId) {
   revalidatePath("/invoices/[id]");
 }
 
+export async function destroyMany(taskIds) {
+  const url = new URL(`${process.env.API_URL}/tasks-delete-many`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify({ taskIds: taskIds }),
+  });
+
+  revalidatePath("/tasks");
+  revalidatePath("/projects");
+  revalidatePath("/partners/tasks");
+  revalidatePath("/invoices/[id]");
+}
+
 export async function getCountByStatuses(params) {
   const url = new URL(`${process.env.API_URL}/tasks/counts/status`);
   url.search = new URLSearchParams(params);

@@ -11,7 +11,7 @@ export default function ConfirmDelete({
   return (
     <MDBox p={2}>
       <MDTypography variant="h4" mb={5}>
-        ¿Está seguro que desea eliminar este elemento?
+        ¿Está seguro que desea realizar esta acción?
       </MDTypography>
       <MDBox display="flex" justifyContent="end">
         <MDButton

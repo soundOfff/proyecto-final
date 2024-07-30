@@ -75,7 +75,11 @@ export default function FormContent({ values, setFieldValue }) {
         setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
       }
     }
-    setFieldValue(name.name, values[fileableId.name]);
+
+    setFieldValue(
+      name.name,
+      values[fileField.name]?.upload?.filename.split(".")[0]
+    );
   }, [searchParams, fileableId, fileableType, setFieldValue, values, name]);
 
   const options = useMemo(

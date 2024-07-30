@@ -11,6 +11,10 @@ use App\Models\Partner;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
+use App\Models\Task;
+use App\Models\TaskRepeat;
+use App\Models\TaskTimer;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +66,7 @@ class ProjectController extends Controller
                 'lawFirm',
                 'members',
                 'staffs',
+                'partners',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -77,7 +82,12 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+
+        $partnersToAttach = [];
+        foreach ($request->get('partners') as $partner) {
+            $partnersToAttach[$partner['id']] = ['role' => $partner['role']];
+        }
 
         $defendantName = Partner::find($newProject['defendant_id'])->merged_name;
         $plaintiff = Partner::find($newProject['plaintiff_id']);
@@ -89,7 +99,29 @@ class ProjectController extends Controller
 
         $project = Project::create($newProject);
 
-        $project->members()->attach($ids);
+        $project->members()->attach($projectMemberIds);
+        $project->partners()->attach($partnersToAttach);
+
+        $task = Task::create([
+            'name' => 'Data entry',
+            'hourly_rate' => 0.25,
+            'task_priority_id' => 2,
+            'task_status_id' => 1,
+            'owner_id' => $project->responsiblePerson->id,
+            'taskable_id' => $project->id,
+            'taskable_type' => 'project',
+            'partner_id' => $project->defendant_id,
+            'start_date' => Carbon::now(),
+            'date_added' => Carbon::now(),
+            'repeat_id' => TaskRepeat::CUSTOM,
+        ]);
+
+        TaskTimer::create([
+            'task_id' => $task->id,
+            'start_time' => Carbon::now(),
+            'end_time' => Carbon::now()->add(15, 'minutes'),
+            'staff_id' => $project->responsiblePerson->id,
+        ]);
 
         return response()->json($project, 201);
     }
@@ -111,6 +143,7 @@ class ProjectController extends Controller
                 'members',
                 'responsiblePerson',
                 'tasks',
+                'partners',
             ])
             ->find($project->id);
 
@@ -124,8 +157,14 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
-        $project->members()->sync($ids);
+        $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $project->members()->sync($memberIds);
+
+        $partnersToSync = [];
+        foreach ($request->get('partners') as $partner) {
+            $partnersToSync[$partner['id']] = ['role' => $partner['role']];
+        }
+        $project->partners()->sync($partnersToSync);
 
         $defendantName = Partner::find($data['defendant_id'])->merged_name;
         $plaintiff = Partner::find($data['plaintiff_id']);

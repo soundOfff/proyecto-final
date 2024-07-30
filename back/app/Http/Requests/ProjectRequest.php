@@ -35,6 +35,9 @@ class ProjectRequest extends FormRequest
             'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',
             'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
             'project_members' => 'required|array',
+            'partners' => 'nullable|array',
+            'partners.*.id' => 'required|numeric|exists:partners,id',
+            'partners.*.role' => 'required|string',
         ];
     }
 }

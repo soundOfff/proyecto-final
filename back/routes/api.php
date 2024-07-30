@@ -24,6 +24,9 @@ use App\Http\Controllers\ItemGroupController;
 use App\Http\Controllers\JurisdictionController;
 use App\Http\Controllers\LineItemTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MailTemplateController;
+use App\Http\Controllers\MailTemplateGroupController;
+use App\Http\Controllers\MailTemplateLanguageController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
@@ -47,6 +50,7 @@ use App\Http\Controllers\TableFieldController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPriorityController;
+use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
@@ -147,10 +151,13 @@ Route::post('/tasks', [TaskController::class, 'store']);
 Route::put('/tasks/{task}', [TaskController::class, 'update']);
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+Route::post('/tasks-delete-many', [TaskController::class, 'destroyMany']);
 Route::get('/task-stats', [TaskController::class, 'stats']);
 Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
 Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
+
+Route::get('/task-repeats', [TaskRepeatController::class, 'index']);
 
 Route::get('/tags', [TagController::class, 'index']);
 
@@ -235,7 +242,18 @@ Route::get('/activity-logs', [ActivityController::class, 'index']);
 Route::post('/send-notification', [FcmController::class, 'sendNotification']);
 Route::post('/store-token', [FcmController::class, 'storeToken']);
 
+Route::get('/mail-templates', [MailTemplateController::class, 'index']);
+Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
+Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
+
+Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
+
+Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
+
 Route::get('/documents', [DocumentController::class, 'generate']);
+
+Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
+Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

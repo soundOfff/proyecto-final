@@ -14,7 +14,9 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
 
-import { store as storeExpense } from "/actions/expenses";
+import { useSearchParams, useRouter } from "next/navigation";
+
+import { update as updateExpense } from "/actions/expenses";
 
 import { useState } from "react";
 
@@ -36,6 +38,8 @@ export default function FormComponent({
   const { formId, formField } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -58,11 +62,22 @@ export default function FormComponent({
     }
   };
 
+  const returnToSource = () => {
+    const source = searchParams.get("source");
+    if (!source) {
+      router.push("/expenses");
+      return;
+    }
+    router.push(source);
+  };
+
   const handleBack = () => setActiveStep(activeStep - 1);
+
+  const handleCancel = () => returnToSource();
 
   const submitForm = async (values, actions) => {
     try {
-      await storeExpense(values);
+      await updateExpense(expense.id, values);
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -72,6 +87,7 @@ export default function FormComponent({
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
       submitForm(values, actions);
+      returnToSource();
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -141,7 +157,14 @@ export default function FormComponent({
                         justifyContent="space-between"
                       >
                         {activeStep === 0 ? (
-                          <MDBox />
+                          <MDButton
+                            variant="gradient"
+                            color="light"
+                            onClick={handleCancel}
+                          >
+                            {" "}
+                            Cancelar
+                          </MDButton>
                         ) : (
                           <MDButton
                             variant="gradient"

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -23,31 +24,31 @@ class Task extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly([
-            'name',
-            'hourly_rate',
-            'description',
-            'start_date',
-            'due_date',
-            'owner_id',
-            'procedure_id',
-            'milestone_order',
-            'task_priority_id',
-            'partner_id',
-            'task_status_id',
-            'repeat_id',
-            'author_id',
-            'recurring_type',
-            'recurring',
-            'is_infinite',
-            'billable',
-            'total_cycles',
-            'taskable_type',
-            'taskable_id',
-            'visible_to_client',
-            'is_file_needed',
-        ])
-        ->logOnlyDirty();
+            ->logOnly([
+                'name',
+                'hourly_rate',
+                'description',
+                'start_date',
+                'due_date',
+                'owner_id',
+                'procedure_id',
+                'milestone_order',
+                'task_priority_id',
+                'partner_id',
+                'task_status_id',
+                'repeat_id',
+                'author_id',
+                'recurring_type',
+                'recurring',
+                'is_infinite',
+                'billable',
+                'total_cycles',
+                'taskable_type',
+                'taskable_id',
+                'visible_to_client',
+                'is_file_needed',
+            ])
+            ->logOnlyDirty();
     }
 
     protected $fillable = [
@@ -75,11 +76,13 @@ class Task extends Model
         'is_file_needed',
     ];
 
+    public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'start_date', 'description', 'due_date', 'hourly_rate', 'milestone_order'];
+
     public const TASKABLE_PROJECT = 'project';
 
     public const TASKABLE_INVOICE = 'invoice';
 
-    protected $appends = ['can_change_status'];
+    protected $appends = ['can_change_status', 'is_blocked'];
 
     protected function canChangeStatus(): Attribute
     {
@@ -91,7 +94,14 @@ class Task extends Model
         );
     }
 
-    public function procedure()
+    protected function isBlocked(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+        );
+    }
+
+    public function procedure(): BelongsTo
     {
         return $this->belongsTo(Procedure::class);
     }
@@ -106,14 +116,19 @@ class Task extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function partner()
+    public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class);
     }
 
-    public function priority()
+    public function priority(): BelongsTo
     {
         return $this->belongsTo(TaskPriority::class, 'task_priority_id');
+    }
+
+    public function repeat(): BelongsTo
+    {
+        return $this->belongsTo(TaskRepeat::class, 'repeat_id');
     }
 
     public function timers()
@@ -121,12 +136,12 @@ class Task extends Model
         return $this->hasMany(TaskTimer::class)->orderBy('start_time', 'ASC');
     }
 
-    public function status()
+    public function status(): BelongsTo
     {
         return $this->belongsTo(TaskStatus::class, 'task_status_id');
     }
 
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(Staff::class, 'author_id');
     }

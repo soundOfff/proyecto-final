@@ -20,7 +20,7 @@ import MDBadge from "/components/MDBadge";
 import MDSnackbar from "/components/MDSnackbar";
 import Loader from "./loader";
 
-import { destroy, getAll } from "/actions/tasks";
+import { destroy, getAll, destroyMany } from "/actions/tasks";
 import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
@@ -80,9 +80,11 @@ export default function Table({
     errorSB,
     setErrorSB,
     handleDelete,
+    handleDeleteMultiple,
     openDeleteConfirmation,
     setDeleteConfirmed,
-  } = useDeleteRow(destroy);
+    setDeleteIds,
+  } = useDeleteRow(destroy, destroyMany);
 
   useEffect(() => {
     getAll({
@@ -135,23 +137,22 @@ export default function Table({
     {
       Header: "Bloqueada por",
       accessor: "isBlocked",
-      Cell: ({ row }) =>
-        row.original.isBlocked && (
-          <MDBox display="flex">
-            {row.original.dependencies.map((dependency) => (
-              <Grid key={dependency.id}>
-                <MDBadge
-                  variant="gradient"
-                  color={
-                    dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
-                  }
-                  size="lg"
-                  badgeContent={`#${dependency.id}`}
-                />
-              </Grid>
-            ))}
-          </MDBox>
-        ),
+      Cell: ({ row }) => (
+        <MDBox display="flex">
+          {row.original.dependencies.map((dependency) => (
+            <Grid key={dependency.id}>
+              <MDBadge
+                variant="gradient"
+                color={
+                  dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
+                }
+                size="lg"
+                badgeContent={`#${dependency.id}`}
+              />
+            </Grid>
+          ))}
+        </MDBox>
+      ),
     },
     {
       Header: "Nombre",
@@ -362,6 +363,15 @@ export default function Table({
           >
             Crear nueva tarea
           </MDButton>
+          <MDButton
+            variant="gradient"
+            color="error"
+            onClick={() => {
+              handleDeleteMultiple();
+            }}
+          >
+            Eliminar Múltiples
+          </MDButton>
         </MDBox>
         {openEditModal && (
           <Modal
@@ -423,6 +433,8 @@ export default function Table({
         noEndBorder
         isTaskTable={true}
         entriesPerPage={{ defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] }}
+        canMultiSelect={true}
+        setDeleteIds={setDeleteIds}
       />
       <DeleteRow
         {...{

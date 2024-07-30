@@ -173,7 +173,12 @@ export default function Table({ rows, project }) {
             />
           </Tooltip>
           <Link
-            href={`/expenses/${row.original.id}/edit`}
+            href={{
+              pathname: `/expenses/${row.original.id}/edit`,
+              query: {
+                source: `/projects/${project.id}?tab=expenses`,
+              },
+            }}
             sx={{ cursor: "pointer", color: "info", ml: 1 }}
           >
             <Tooltip title="Editar gasto" placement="top">
@@ -217,6 +222,7 @@ export default function Table({ rows, project }) {
             query: {
               projectId: project.id,
               partnerId: project.defendant.id,
+              source: `/projects/${project.id}?tab=expenses`,
             },
           }}
         >

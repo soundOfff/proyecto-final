@@ -7,7 +7,7 @@ import {
   getSelect as getAllDependencies,
 } from "/actions/tasks";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
-import { getAll as getAllRepeats } from "/actions/expense-repeats";
+import { getAll as getAllRepeats } from "/actions/task-repeats";
 import { getAll as getAllTags } from "/actions/tags";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllActionTypes } from "/actions/action-types";
@@ -26,6 +26,7 @@ const include = [
   "responsiblePerson",
   "status",
   "members",
+  "partners",
 ];
 
 export default async function Show({ params }) {

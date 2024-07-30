@@ -213,6 +213,56 @@ export default function Details() {
           ))}
           <UpdateMembers projectId={project.id} staffs={staffs} />
         </Grid>
+        {project.partners?.length > 0 && (
+          <Grid xs={12} pl={2} mt={3}>
+            <MDBox mt={0.5} lineHeight={1.4}>
+              <MDTypography
+                display="block"
+                variant="button"
+                fontWeight="medium"
+                mb={2}
+              >
+                Personas relacionadas
+              </MDTypography>
+            </MDBox>
+            {project.partners?.map((partner) => (
+              <MDBox key={partner.id} display="inline-block" mr={2}>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                  mr={1}
+                >
+                  Nombre:
+                </MDTypography>
+                <MDTypography
+                  variant="button"
+                  fontWeight="bold"
+                  color="text"
+                  mr={5}
+                >
+                  {partner.mergedName}
+                </MDTypography>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                  mr={1}
+                >
+                  Rol:
+                </MDTypography>
+                <MDTypography
+                  variant="button"
+                  fontWeight="bold"
+                  color="text"
+                  mr={2}
+                >
+                  {partner.role}
+                </MDTypography>
+              </MDBox>
+            ))}
+          </Grid>
+        )}
       </Grid>
     </>
   );

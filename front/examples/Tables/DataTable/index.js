@@ -14,11 +14,10 @@ Coded by www.creative-tim.com
 */
 "use client";
 
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, forwardRef, useRef } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-import { setColor } from "/utils/project-state-colors";
 
 // react-table components
 import {
@@ -27,6 +26,7 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
   useSortBy,
+  useRowSelect,
 } from "react-table";
 
 import { DndProvider } from "react-dnd";
@@ -54,7 +54,21 @@ import DataTableBodyCell from "/examples/Tables/components/DataTableBodyCell";
 import ResponsiveTableContent from "/examples/Tables/components/responsive-table-content";
 import DataTableRow from "../components/DataTableRow";
 import withScrolling from "react-dnd-scrolling";
+import { Checkbox } from "@mui/material";
 const ScrollingComponent = withScrolling("div");
+
+const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
+  const defaultRef = useRef();
+  const resolvedRef = ref || defaultRef;
+
+  useEffect(() => {
+    resolvedRef.current.indeterminate = indeterminate;
+  }, [resolvedRef, indeterminate]);
+
+  return <Checkbox ref={resolvedRef} {...rest} />;
+});
+
+IndeterminateCheckbox.displayName = "IndeterminateCheckbox";
 
 function DataTable({
   entriesPerPage = { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
@@ -67,6 +81,8 @@ function DataTable({
   noEndBorder = false,
   className = "desktop",
   moveRow,
+  canMultiSelect = false,
+  setDeleteIds,
 }) {
   const defaultValue = entriesPerPage.defaultValue
     ? entriesPerPage.defaultValue
@@ -77,10 +93,32 @@ function DataTable({
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
   const tableInstance = useTable(
-    { columns, data, initialState: { pageIndex: 0 } },
+    {
+      columns,
+      data,
+      initialState: {
+        pageIndex: 0,
+        hiddenColumns: canMultiSelect ? [] : ["selection"],
+      },
+    },
     useGlobalFilter,
     useSortBy,
-    usePagination
+    usePagination,
+    useRowSelect,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        {
+          id: "selection",
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+          ),
+          Cell: ({ row }) => (
+            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+          ),
+        },
+        ...columns,
+      ]);
+    }
   );
 
   const {
@@ -88,7 +126,6 @@ function DataTable({
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    rows,
     page,
     pageOptions,
     canPreviousPage,
@@ -98,8 +135,26 @@ function DataTable({
     previousPage,
     setPageSize,
     setGlobalFilter,
+    selectedFlatRows,
     state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
+
+  const prevSelectedFlatRowsRef = useRef();
+
+  useEffect(() => {
+    const prevSelectedFlatRows = prevSelectedFlatRowsRef.current;
+    const selectedIds = selectedFlatRows.map((row) => row.original.id);
+
+    if (
+      setDeleteIds &&
+      (!prevSelectedFlatRows ||
+        selectedIds.toString() !== prevSelectedFlatRows.toString())
+    ) {
+      setDeleteIds(selectedIds);
+    }
+
+    prevSelectedFlatRowsRef.current = selectedIds;
+  }, [selectedFlatRows, setDeleteIds]);
 
   // Set the default value for the entries per page when component mounts
   useEffect(() => setPageSize(defaultValue || 10), [defaultValue, setPageSize]);
@@ -257,7 +312,7 @@ function DataTable({
                     key={index}
                     index={index}
                     row={row}
-                    rows={rows}
+                    rows={page}
                     noEndBorder={noEndBorder}
                     isTaskTable={isTaskTable}
                     moveRow={moveRow}
@@ -275,7 +330,7 @@ function DataTable({
                     <TableRow key={key} {...row.getRowProps()}>
                       <DataTableBodyCell
                         key={key}
-                        noBorder={noEndBorder && rows.length - 1 === key}
+                        noBorder={noEndBorder && page.length - 1 === key}
                         {...row.cells[0].getCellProps()}
                       >
                         <ResponsiveTableContent row={row} />
@@ -303,7 +358,7 @@ function DataTable({
               color="secondary"
               fontWeight="regular"
             >
-              Mostrando {entriesStart} a {entriesEnd} de {rows.length} entradas
+              Mostrando {entriesStart} a {entriesEnd} de {page.length} entradas
             </MDTypography>
           </MDBox>
         )}

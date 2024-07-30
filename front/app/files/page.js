@@ -8,7 +8,7 @@ import MDButton from "/components/MDButton";
 export const dynamic = "force-dynamic";
 
 export default async function File({
-  searchParams: { perPage = 10, page = 1 },
+  searchParams: { perPage = 10, page = 1, sort },
 }) {
   const {
     data: { files },
@@ -16,6 +16,8 @@ export default async function File({
   } = await getAll({
     perPage,
     page,
+    sort: sort ? sort : "created_at",
+    include: ["fileable"],
   });
 
   return (

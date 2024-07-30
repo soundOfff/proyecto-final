@@ -25,28 +25,28 @@ class ExpenseController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Expense::class)
-        ->selectRaw('expenses.*')
-        ->allowedIncludes([
-            'partner',
-            'category',
-            'project',
-            'files',
-            'invoice',
-        ])
-        ->allowedFilters([
-            AllowedFilter::exact('partner_id'),
-            AllowedFilter::exact('project_id'),
-            AllowedFilter::custom('is_generic', new IsGenericExpenseFilter()),
-        ])
-        ->defaultSort('-id')
-        ->allowedSorts([
-            'id', 'name', 'amount', 'date',
-            AllowedSort::field('createdFromAction', 'created_from_action'),
-            AllowedSort::custom('partner', new ExpensePartnerSort(), 'partner_name'),
-            AllowedSort::custom('category.name', new ExpenseCategorySort(), 'name'),
-            AllowedSort::custom('project.name', new ExpenseProjectSort(), 'name'),
-            AllowedSort::custom('invoice.id', new ExpenseInvoiceSort(), 'id'),
-        ]);
+            ->selectRaw('expenses.*')
+            ->allowedIncludes([
+                'partner',
+                'category',
+                'project',
+                'files',
+                'invoice',
+            ])
+            ->allowedFilters([
+                AllowedFilter::exact('partner_id'),
+                AllowedFilter::exact('project_id'),
+                AllowedFilter::custom('is_generic', new IsGenericExpenseFilter()),
+            ])
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id', 'name', 'amount', 'date',
+                AllowedSort::field('createdFromAction', 'created_from_action'),
+                AllowedSort::custom('partner', new ExpensePartnerSort(), 'partner_name'),
+                AllowedSort::custom('category.name', new ExpenseCategorySort(), 'name'),
+                AllowedSort::custom('project.name', new ExpenseProjectSort(), 'name'),
+                AllowedSort::custom('invoice.id', new ExpenseInvoiceSort(), 'id'),
+            ]);
 
         $expense = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -79,16 +79,16 @@ class ExpenseController extends Controller
     public function show(Expense $expense)
     {
         $expense = QueryBuilder::for(Expense::class)
-        ->allowedIncludes([
-            'partner',
-            'category',
-            'files',
-            'project',
-            'invoice',
-            'paymentMethod',
-            'currency',
-        ])
-        ->find($expense->id);
+            ->allowedIncludes([
+                'partner',
+                'category',
+                'files',
+                'project',
+                'invoice',
+                'paymentMethod',
+                'currency',
+            ])
+            ->find($expense->id);
 
         return new ExpenseResource($expense);
     }
@@ -96,7 +96,7 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Expense $expense)
+    public function update(ExpenseRequest $request, Expense $expense)
     {
         $updatedExpense = $request->validated();
         $expense->update($updatedExpense);

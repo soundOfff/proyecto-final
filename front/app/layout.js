@@ -10,17 +10,9 @@ import FcmProvider from "/providers/FcmProvider";
 import favicon from "/assets/images/favicon.ico";
 import appleIcon from "/assets/images/apple-icon.png";
 
-import { Roboto } from "next/font/google";
-
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  display: "swap",
-  subsets: ["latin"],
-});
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={roboto.className}>
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href={favicon.src} />

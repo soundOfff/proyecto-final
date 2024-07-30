@@ -6,6 +6,7 @@ use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Http\Resources\FileResourceCollection;
 use App\Models\File;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\QueryBuilder;
 

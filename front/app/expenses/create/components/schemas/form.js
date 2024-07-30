@@ -99,6 +99,10 @@ const form = {
       name: "create_invoice_billable",
       label: "Creación automática de facturas",
     },
+    files: {
+      name: "files",
+      label: "Archivos",
+    },
     sendInvoiceToCustomer: {
       name: "send_invoice_to_customer",
       label: "Enviar la factura al cliente por email cuando el gasto se repite",

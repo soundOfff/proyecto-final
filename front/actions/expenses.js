@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { customFetch } from "./custom-fetch";
 
@@ -51,4 +51,9 @@ export async function destroy(expenseId) {
   });
 
   revalidatePath("/expenses");
+}
+
+export async function revalidateExpenses() {
+  revalidateTag("create-files");
+  revalidatePath("expenses");
 }

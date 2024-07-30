@@ -13,13 +13,14 @@ import Second from "./steps/second";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
-
-import { store as storeExpense } from "/actions/expenses";
+import FileForm from "/components/FileForm";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { EXPENSE_FILEABLE_TYPE } from "/utils/constants/fileableTypes";
+import { revalidateExpenses } from "/actions/expenses";
 
-const steps = ["Nuevo Gasto", "Opciones avanzadas"];
+const steps = ["Nuevo Gasto", "Opciones avanzadas", "Adjuntar archivo"];
 
 export default function FormComponent({
   partners,
@@ -28,6 +29,7 @@ export default function FormComponent({
   currencies,
   taxes,
   paymentMethods,
+  apiUrl,
   repeats,
 }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -52,6 +54,10 @@ export default function FormComponent({
             {...{ currencies, taxes, paymentMethods, repeats }}
           />
         );
+      case 2:
+        return (
+          <FileForm formData={formData} fileableType={EXPENSE_FILEABLE_TYPE} />
+        );
       default:
         return null;
     }
@@ -71,8 +77,34 @@ export default function FormComponent({
   const handleCancel = () => returnToSource();
 
   const submitForm = async (values, actions) => {
+    const formData = new FormData();
+    const files = values[formField.files.name];
+
+    files.forEach((rawFile) => {
+      formData.append("files[]", rawFile.file);
+      formData.append("files_info[]", rawFile.name);
+    });
+
+    delete values[formField.files.name];
+
+    for (const key in values) {
+      if (values[key] === "") continue;
+      if (values[key] == false || values[key] == true) {
+        formData.append(key, values[key] ? 1 : 0);
+      } else {
+        formData.append(key, values[key]);
+      }
+    }
+
     try {
-      await storeExpense(values);
+      await fetch(`${apiUrl}/expenses`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+        next: { tags: ["create-files"] },
+      });
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -82,6 +114,7 @@ export default function FormComponent({
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
       submitForm(values, actions);
+      revalidateExpenses();
       returnToSource();
     } else {
       setActiveStep(activeStep + 1);

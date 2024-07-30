@@ -14,7 +14,7 @@ import MDDropzoneRoot from "/components/MDDropzone/MDDropzoneRoot";
 // NextJS Material Dashboard 2 PRO context
 import { useMaterialUIController } from "/context";
 
-function MDDropzone({ options, setFieldValue, multiple = false }) {
+function MDDropzone({ options, addFields, removeFile, multiple = false }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -38,13 +38,11 @@ function MDDropzone({ options, setFieldValue, multiple = false }) {
       });
 
       dropzoneInstance.current.on("addedfile", (file) => {
-        setFieldValue("file", file);
-        setFieldValue("name", file?.upload?.filename.split(".")[0]);
+        addFields(file);
       });
 
-      dropzoneInstance.current.on("removedfile", () => {
-        setFieldValue("file", null);
-        setFieldValue("name", "");
+      dropzoneInstance.current.on("removedfile", (file) => {
+        removeFile(file);
       });
 
       return dropzoneInstance.current;
@@ -59,7 +57,7 @@ function MDDropzone({ options, setFieldValue, multiple = false }) {
     createDropzone();
 
     return () => removeDropzone();
-  }, [memoizedOptions, setFieldValue]);
+  }, [memoizedOptions]);
 
   return (
     <MDDropzoneRoot

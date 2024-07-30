@@ -16,7 +16,6 @@ export default async function NewExpense() {
     currencies,
     paymentMethods,
     repeats,
-    defaultCurrency,
   ] = await Promise.all([
     getPartnerSelect(),
     getAllCategories(),
@@ -26,6 +25,8 @@ export default async function NewExpense() {
     getAllPaymentMethods(),
     getAllRepeats(),
   ]);
+
+  const apiUrl = process.env.API_URL;
 
   return (
     <Form
@@ -37,6 +38,7 @@ export default async function NewExpense() {
         currencies,
         paymentMethods,
         repeats,
+        apiUrl,
       }}
     />
   );

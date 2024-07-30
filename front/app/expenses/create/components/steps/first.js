@@ -178,6 +178,7 @@ export default function First({ formData, partners, categories }) {
                       setFieldValue(billable.name, e.target.checked)
                     }
                     name={billable.name}
+                    defaultChecked
                   />
                 }
                 label={billable.label}

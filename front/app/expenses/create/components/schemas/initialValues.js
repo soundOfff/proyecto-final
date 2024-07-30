@@ -61,7 +61,7 @@ const initialValues = {
   [isInfinite.name]: true,
   [createInvoiceBillable.name]: false,
   [sendInvoiceToCustomer.name]: false,
-  [billable.name]: false,
+  [billable.name]: true,
 };
 
 export default initialValues;

@@ -127,7 +127,7 @@ export default function Details() {
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
-            title="Tipo De Servicio"
+            title="Departamento"
             description={project.serviceType?.label}
           />
         </Grid>

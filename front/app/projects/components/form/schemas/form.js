@@ -64,8 +64,8 @@ const form = {
     },
     serviceType: {
       name: "project_service_type_id",
-      label: "Tipo de Servicio",
-      errorMsg: "Debe seleccionar un tipo de servicio",
+      label: "Departamento",
+      errorMsg: "Debe seleccionar un departamento",
     },
     billingType: {
       name: "project_billing_type_id",

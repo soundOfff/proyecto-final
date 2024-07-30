@@ -10,17 +10,9 @@ import FcmProvider from "/providers/FcmProvider";
 import favicon from "/assets/images/favicon.ico";
 import appleIcon from "/assets/images/apple-icon.png";
 
-import { Noto_Sans } from "next/font/google";
-
-const notoSans = Noto_Sans({
-  weight: ["300", "400", "500", "700"],
-  display: "swap",
-  subsets: ["latin"],
-});
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={notoSans.className}>
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href={favicon.src} />

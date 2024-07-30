@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import Select from "/components/Select";
 import MDButton from "/components/MDButton";
 import MDInput from "/components/MDInput";
@@ -51,10 +51,13 @@ export default function PartnerForm({
     },
   });
 
-  const clearFields = () => {
+  const clearFields = (methods) => {
     setFieldValue(formField.partner.name, "");
     setFieldValue(formField.role.name, "");
+    methods.resetForm();
   };
+
+  const roles = ["Demandante", "Demandado", "Persona responsable"];
 
   return (
     <>
@@ -74,20 +77,31 @@ export default function PartnerForm({
         />
       </Grid>
       <Grid item xs={12} sm={3}>
-        <MDInput
+        <Autocomplete
+          disablePortal
+          id="role-select"
+          options={roles}
+          onChange={(event, newValue) => {
+            setFieldValue(formField.role.name, newValue);
+          }}
           value={values[formField.role.name]}
-          onChange={(e) => setFieldValue(formField.role.name, e.target.value)}
-          name={formField.role.name}
-          label={formField.role.label}
-          type={formField.role.type}
-          placeholder={formField.role.placeholder}
-          variant="standard"
-          error={errors[formField.role.name] && touched[formField.role.name]}
-          success={
-            values[formField.role.name]?.length > 0 &&
-            !errors[formField.role.name]
-          }
           sx={{ width: "100%" }}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={formField.role.label}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(
+                errors[formField.role.name] && touched[formField.role.name]
+              )}
+              helperText={
+                touched[formField.role.name] && errors[formField.role.name]
+              }
+              sx={{ width: "100%" }}
+            />
+          )}
         />
         <MDBox mt={0.75}>
           <MDTypography

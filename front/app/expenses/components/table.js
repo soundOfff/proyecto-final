@@ -122,7 +122,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Archivos",
       accessor: "files",
-      width: "20%",
+      width: "15%",
       textAlign: "center",
       Cell: ({ row }) => {
         return (
@@ -130,7 +130,7 @@ export default function Table({ rows, meta }) {
             display="flex"
             flexDirection="column"
             alignItems="center"
-            sx={{ gap: 1, width: "100%" }}
+            sx={{ gap: 1 }}
           >
             {row.original.files.map((file) => (
               <MDBox
@@ -138,13 +138,14 @@ export default function Table({ rows, meta }) {
                 borderRadius="lg"
                 display="flex"
                 alignItems="center"
-                width="100%"
                 justifyContent="between"
-                p={0.75}
                 sx={{
                   border: ({ borders: { borderWidth, borderColor } }) =>
                     `${borderWidth[1]} solid ${borderColor}`,
                   gap: 1,
+                  px: 2,
+                  py: 1,
+                  width: "auto",
                 }}
               >
                 <DescriptionOutlined fontSize="medium" color="dark" />

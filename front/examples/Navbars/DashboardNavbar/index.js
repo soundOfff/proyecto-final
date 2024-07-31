@@ -58,13 +58,14 @@ import {
   setCurrentTimer,
 } from "/context";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { getCurrentTimer } from "/actions/timers";
 import { useSession } from "next-auth/react";
 import moment, { utc } from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 import translate from "/locales/es/common.json";
+import { signOut } from "next-auth/react";
 
 export default function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -191,14 +192,6 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
     await updateTimer(currentTimer.id, { end_time: date });
     await refetchCurrentTimer();
-  };
-
-  const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    sessionStorage.removeItem("userSession");
-    router.push("/authentication/sign-in/basic?callbackUrl=%2Flogin");
   };
 
   // Render the notifications menu
@@ -395,7 +388,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
                 disableRipple
                 color="inherit"
                 sx={navbarIconButton}
-                onClick={handleLogout}
+                onClick={() => signOut()}
                 aria-label="logout"
               >
                 <Icon sx={iconsStyle}>logout</Icon>

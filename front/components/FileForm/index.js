@@ -7,7 +7,7 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./form";
 import FileList from "./fileList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function FormComponent({ formData, fileableType }) {
   const { formId } = form;
@@ -17,16 +17,20 @@ export default function FormComponent({ formData, fileableType }) {
     externalValues[files.name] ?? []
   );
 
-  const handleAddFile = (file) => {
-    setModifiedFiles((prev) => [
-      ...prev,
-      {
-        name: file.upload.filename,
-        file: file,
-        path: "/expense",
-      },
-    ]);
+  useEffect(() => {
     setFieldValue(files.name, modifiedFiles);
+  }, [modifiedFiles, setFieldValue, files.name]);
+
+  const handleAddFile = (file) => {
+    setModifiedFiles((prev) => {
+      return [
+        ...prev,
+        {
+          name: file.name,
+          file: file,
+        },
+      ];
+    });
   };
 
   const handleEditFile = (file, text) => {
@@ -40,7 +44,6 @@ export default function FormComponent({ formData, fileableType }) {
       return f;
     });
     setModifiedFiles(editedValues);
-    setFieldValue(files.name, editedValues);
   };
 
   const handleRemoveFile = (file) => {
@@ -49,8 +52,6 @@ export default function FormComponent({ formData, fileableType }) {
         return f.file.upload.uuid !== file.upload.uuid;
       });
     });
-
-    setFieldValue(files.name, modifiedFiles);
   };
 
   return (

@@ -66,7 +66,7 @@ export default function FormComponent({
   const returnToSource = () => {
     const source = searchParams.get("source");
     if (!source) {
-      router.push("/expenses");
+      router.push("/expenses?page=1");
       return;
     }
     router.push(source);

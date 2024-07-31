@@ -19,7 +19,7 @@ export default function FormContent({ handleAddFile, handleRemoveFile }) {
     () => ({
       addRemoveLinks: true,
       uploadMultiple: false,
-      maxFiles: 1,
+      maxFiles: 5,
       url: "nourl",
       autoProcessQueue: false,
     }),
@@ -33,6 +33,7 @@ export default function FormContent({ handleAddFile, handleRemoveFile }) {
           addFields={handleAddFile}
           removeFile={handleRemoveFile}
           options={options}
+          multiple={true}
         />
         <MDBox mt={0.75}>
           <MDTypography

@@ -6,7 +6,7 @@ use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Http\Resources\FileResourceCollection;
 use App\Models\File;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -48,6 +48,31 @@ class FileController extends Controller
         $data['subject'] = $name;
 
         File::create($data);
+
+        return response()->json(null, 201);
+    }
+
+    public function storeMany(Request $request)
+    {
+        $expenseFiles = isset($request['files']) ? $request['files'] : [];
+        $expenseFilesInfo = isset($request['files_info']) ? $request['files_info'] : [];
+        $fileable_type = $request['fileable_type'];
+        $fileable_id = $request['fileable_id'];
+
+        foreach (array_keys($expenseFiles) as $index) {
+            $file = $expenseFiles[$index];
+            $fileInfo = $expenseFilesInfo[$index];
+            $extension = $file->extension();
+            $path = "/$fileable_type/$fileInfo" . ($extension ? ".$extension" : '');
+
+            Storage::disk('google')->put($path, file_get_contents($file));
+            $data['url'] = Storage::disk('google')->path($path);
+            $data['subject'] = $fileInfo;
+            $data['fileable_type'] = $fileable_type;
+            $data['fileable_id'] = $fileable_id;
+
+            File::create($data);
+        }
 
         return response()->json(null, 201);
     }

@@ -124,7 +124,7 @@ export default function FormComponent({
   };
 
   return (
-    <MDBox py={3} mb={20} height="auto">
+    <MDBox py={3} mb={5} height="100%">
       <Grid
         container
         justifyContent="center"

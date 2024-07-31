@@ -1,21 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
+
+import MDTypography from "/components/MDTypography";
 import MDBox from "/components/MDBox";
+
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
+
 import FormContent from "./form";
 import FileList from "./fileList";
-import { useEffect, useState } from "react";
+import UploadFileList from "./uploadFileList";
 
-export default function FormComponent({ formData, fileableType }) {
+import { destroy as deleteFile } from "/actions/files";
+
+export default function FormComponent({ formData, fileableType, data = null }) {
   const { formId } = form;
   const { formField, values: externalValues, setFieldValue } = formData;
   const { files } = formField;
   const [modifiedFiles, setModifiedFiles] = useState(
     externalValues[files.name] ?? []
   );
+  const [uploadedFiles, setUploadedFiles] = useState(data ?? []);
 
   useEffect(() => {
     setFieldValue(files.name, modifiedFiles);
@@ -31,6 +39,17 @@ export default function FormComponent({ formData, fileableType }) {
         },
       ];
     });
+  };
+
+  const handleDeleteUploadedFile = async (fileId) => {
+    try {
+      await deleteFile(fileId);
+      setUploadedFiles((prev) => {
+        return prev.filter((f) => f.id !== fileId);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleEditFile = (file, text) => {
@@ -56,6 +75,12 @@ export default function FormComponent({ formData, fileableType }) {
 
   return (
     <MDBox>
+      {uploadedFiles.length > 0 && (
+        <UploadFileList
+          files={uploadedFiles}
+          handleDeleteFile={handleDeleteUploadedFile}
+        />
+      )}
       <Formik
         initialValues={initialValues}
         validationSchema={validations}
@@ -71,6 +96,14 @@ export default function FormComponent({ formData, fileableType }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
+            <MDTypography
+              variant="body1"
+              fontWeight="medium"
+              color="dark"
+              my={2}
+            >
+              Adjuntar archivos
+            </MDTypography>
             <FormContent
               {...{
                 values,
@@ -90,6 +123,7 @@ export default function FormComponent({ formData, fileableType }) {
       </Formik>
       <FileList
         files={modifiedFiles}
+        uploadedFiles={data}
         handleRemoveFile={handleRemoveFile}
         handleEditFile={handleEditFile}
       />

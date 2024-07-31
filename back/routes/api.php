@@ -192,6 +192,8 @@ Route::get('/files', [FileController::class, 'index']);
 Route::get('/files/{file}', [FileController::class, 'show']);
 Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
+Route::post('/files-store-many', [FileController::class, 'storeMany']);
+
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);

@@ -24,6 +24,7 @@ export default async function EditExpense({ params: { id } }) {
         "partner",
         "category",
         "project",
+        "files",
         "invoice",
         "paymentMethod",
         "currency",
@@ -37,6 +38,9 @@ export default async function EditExpense({ params: { id } }) {
     getAllPaymentMethods(),
     getAllRepeats(),
   ]);
+
+  const apiUrl = process.env.API_URL;
+
   return (
     <FormComponent
       {...{
@@ -44,6 +48,7 @@ export default async function EditExpense({ params: { id } }) {
         partners,
         categories,
         invoices,
+        apiUrl,
         taxes,
         currencies,
         paymentMethods,

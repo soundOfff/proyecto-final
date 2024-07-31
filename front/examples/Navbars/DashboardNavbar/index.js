@@ -65,6 +65,7 @@ import moment, { utc } from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 import translate from "/locales/es/common.json";
+import { signOut } from "next-auth/react";
 
 export default function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -381,6 +382,16 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
                 >
                   <Icon sx={iconsStyle}>access_time</Icon>
                 </MDBadge>
+              </IconButton>
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={() => signOut()}
+                aria-label="logout"
+              >
+                <Icon sx={iconsStyle}>logout</Icon>
               </IconButton>
               {renderMenu()}
             </MDBox>

@@ -84,7 +84,7 @@ const form = {
     },
     recurring: {
       name: "recurring_id",
-      label: "Facturas recurrentes?",
+      label: "¿Facturas recurrentes?",
     },
     discountType: {
       name: "discount_type_id",

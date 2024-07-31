@@ -455,7 +455,9 @@ export default function Aside() {
                 key="assigneds"
                 value={assigneds}
                 onChange={(_, newValues) => setAssigneds(newValues)}
-                options={task.taskable.members}
+                options={task.taskable.members.sort((a, b) =>
+                  a.name.localeCompare(b.name)
+                )}
                 getOptionLabel={(option) => option.name}
                 renderInput={(params) => (
                   <MDInput

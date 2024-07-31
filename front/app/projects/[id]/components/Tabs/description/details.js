@@ -147,9 +147,17 @@ export default function Details() {
 
         <Divider variant="left" sx={{ width: "70%" }} />
 
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Propuesta"
+            description={project.proposal.subject}
+          />
+        </Grid>
+
         {parseProjectDescription(project.description) && (
           <>
-            <Grid xs={12} mt={3}>
+            <Grid xs={12} sm={6} mt={3}>
               <MDBox ml={2} mt={0.5} lineHeight={1.4}>
                 <MDTypography
                   display="block"

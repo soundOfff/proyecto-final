@@ -32,6 +32,7 @@ const {
     startDate,
     deadline,
     partners,
+    proposal,
   },
 } = checkout;
 
@@ -50,6 +51,7 @@ const validations = [
       "Solo se permiten números"
     ),
     [description.name]: Yup.string(),
+    [proposal.name]: Yup.number(),
   }),
   Yup.object().shape({
     [defendant.name]: Yup.string().required(defendant.errorMsg),

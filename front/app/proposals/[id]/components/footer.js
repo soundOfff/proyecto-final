@@ -4,12 +4,11 @@ import { Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import { ITBMS_TAX_NAME, RETAINING_TAX_NAME } from "/utils/constants/taxes";
-import { BEFORE_TAX } from "/utils/constants/discountTypes";
 import numberFormat from "/utils/numberFormat";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useItemTotals } from "/hooks/useItemTotals";
+import { toProject } from "/actions/proposals";
+import { ACCEPTED } from "/utils/constants/proposalStatuses";
 
 export default function Footer({ proposal }) {
   const router = useRouter();
@@ -20,6 +19,10 @@ export default function Footer({ proposal }) {
 
   const handleToEstimate = () => {
     router.push(`/estimates/create/${proposal.id}`);
+  };
+
+  const handleToProject = async () => {
+    await toProject(proposal.id);
   };
 
   return (
@@ -118,6 +121,16 @@ export default function Footer({ proposal }) {
             >
               Convertir a Proforma
             </MDButton>
+            {proposal.statusId == ACCEPTED && (
+              <MDButton
+                variant="gradient"
+                color="warning"
+                onClick={handleToProject}
+                sx={{ mr: 2, displayPrint: "none" }}
+              >
+                Convertir a Caso
+              </MDButton>
+            )}
             <MDButton
               variant="gradient"
               color="dark"

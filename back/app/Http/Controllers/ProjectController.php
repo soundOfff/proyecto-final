@@ -67,6 +67,7 @@ class ProjectController extends Controller
                 'members',
                 'staffs',
                 'partners',
+                'proposal',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -144,6 +145,7 @@ class ProjectController extends Controller
                 'responsiblePerson',
                 'tasks',
                 'partners',
+                'proposal',
             ])
             ->find($project->id);
 

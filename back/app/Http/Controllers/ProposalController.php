@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProposalRequest;
 use App\Http\Resources\ProposalResource;
 use App\Http\Resources\ProposalResourceCollection;
+use App\Http\Resources\ProposalSelectResourceCollection;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
+use App\Models\Project;
+use App\Models\ProjectBillingType;
+use App\Models\ProjectStatus;
 use App\Models\Proposal;
+use App\Models\ProposalStatus;
 use App\Models\Taggable;
 use App\Sorts\ProposablePartnerSort;
 use App\Sorts\ProposalStatusSort;
@@ -17,6 +22,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProposalController extends Controller
 {
+    public function select()
+    {
+        $proposals = Proposal::all();
+
+        return new ProposalSelectResourceCollection($proposals);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -166,5 +178,23 @@ class ProposalController extends Controller
         $proposal->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function toProject(Proposal $proposal)
+    {
+        abort_if($proposal->proposal_status_id !== ProposalStatus::ACCEPTED, 422, 'Proposal must be accepted to convert to project');
+        abort_if($proposal->proposable_type !== 'customer', 422, 'Proposal must be for a customer to convert to project');
+
+        Project::create([
+            'start_date' => now(),
+            'project_status_id' => ProjectStatus::NOT_STARTED,
+            'responsible_person_id' => $proposal->sale_agent_id,
+            'defendant_id' => $proposal->proposable_id,
+            'project_billing_type_id' => ProjectBillingType::FIXED_PRICE,
+            'project_service_type_id' => $proposal->service_type_id,
+            'name' => $proposal->subject,
+        ]);
+
+        return response()->json(null, 201);
     }
 }

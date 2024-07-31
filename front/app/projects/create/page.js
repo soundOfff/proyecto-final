@@ -4,6 +4,7 @@ import { getAll as getAllServiceTypes } from "/actions/project-service-types";
 import { getAll as getAllBillingTypes } from "/actions/project-billing-types";
 import { select as selectMembers } from "/actions/staffs";
 import { store as storeProject } from "/actions/projects";
+import { getSelect as getSelectProposals } from "/actions/proposals";
 import Form from "../components/form/form";
 
 export default async function NewProject() {
@@ -12,6 +13,7 @@ export default async function NewProject() {
   const serviceTypes = await getAllServiceTypes();
   const billingTypes = await getAllBillingTypes();
   const members = await selectMembers();
+  const proposals = await getSelectProposals();
 
   return (
     <Form
@@ -22,6 +24,7 @@ export default async function NewProject() {
         members,
         storeProject,
         billingTypes,
+        proposals,
       }}
     />
   );

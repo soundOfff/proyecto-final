@@ -27,6 +27,7 @@ const include = [
   "status",
   "members",
   "partners",
+  "proposal",
 ];
 
 export default async function Show({ params }) {

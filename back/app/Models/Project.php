@@ -40,6 +40,7 @@ class Project extends Model
         'amount',
         'jury_number',
         'on_schedule',
+        'proposal_id',
     ];
 
     public function stages(): HasMany
@@ -95,6 +96,11 @@ class Project extends Model
     public function billingType(): BelongsTo
     {
         return $this->belongsTo(ProjectBillingType::class, 'project_billing_type_id');
+    }
+
+    public function proposal(): BelongsTo
+    {
+        return $this->belongsTo(Proposal::class);
     }
 
     public function members(): BelongsToMany

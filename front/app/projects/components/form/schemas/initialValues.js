@@ -31,6 +31,7 @@ const {
     startDate,
     deadline,
     partners,
+    proposal,
   },
 } = checkout;
 
@@ -48,6 +49,7 @@ const initialValues = {
   [startDate.name]: "",
   [deadline.name]: "",
   [partners.name]: [],
+  [proposal.name]: "",
 };
 
 export default initialValues;

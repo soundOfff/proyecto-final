@@ -27,6 +27,7 @@ export default function FormComponent({
   serviceTypes,
   members,
   billingTypes,
+  proposals,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
@@ -38,7 +39,9 @@ export default function FormComponent({
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
       case 0:
-        return <First formData={formData} project={project} />;
+        return (
+          <First formData={formData} project={project} proposals={proposals} />
+        );
       case 1:
         return (
           <Second

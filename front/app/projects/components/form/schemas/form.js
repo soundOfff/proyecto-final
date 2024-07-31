@@ -91,6 +91,10 @@ const form = {
       name: "partners",
       label: "Personas Relacionadas",
     },
+    proposal: {
+      name: "proposal_id",
+      label: "Propuesta",
+    },
   },
 };
 

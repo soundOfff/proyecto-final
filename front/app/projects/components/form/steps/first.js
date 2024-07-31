@@ -5,15 +5,16 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import MDTypography from "/components/MDTypography";
 import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
+import Select from "/components/Select";
 
 import { useEffect, useState } from "react";
 import { convertToRaw } from "draft-js";
 import { ErrorMessage } from "formik";
 import { parseEditorState } from "/utils/parseEditorState";
 
-export default function First({ formData, project }) {
+export default function First({ formData, project, proposals }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { cost, estimatedHours, expedient, description } = formField;
+  const { cost, estimatedHours, expedient, description, proposal } = formField;
   const [editorState, setEditorState] = useState(
     parseEditorState(project?.description || "") // TODO change for html to draft when merge
   );
@@ -28,10 +29,19 @@ export default function First({ formData, project }) {
   useEffect(() => {
     if (project) {
       setFieldValue(cost.name, project.cost || "");
+      setFieldValue(proposal.name, project.proposalId || "");
       /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(expedient.name, project.expedient || "");
     }
-  }, [project, cost, estimatedHours, expedient, description, setFieldValue]);
+  }, [
+    project,
+    cost,
+    estimatedHours,
+    expedient,
+    description,
+    proposal,
+    setFieldValue,
+  ]);
 
   return (
     <Grid container spacing={5}>
@@ -60,6 +70,16 @@ export default function First({ formData, project }) {
           }
         />
       </Grid> */}
+      <Grid item xs={12} sm={6}>
+        <Select
+          value={values[proposal.name]}
+          options={proposals}
+          optionLabel={(option) => option.name}
+          fieldName={proposal.name}
+          inputLabel={proposal.label}
+          setFieldValue={setFieldValue}
+        />
+      </Grid>
       <Grid item xs={12} sm={6}>
         <FormField
           value={values[expedient.name]}

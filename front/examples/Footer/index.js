@@ -30,9 +30,8 @@ import typography from "/assets/theme/base/typography";
 function Footer({
   company = { href: "#", name: "BrandFactors" },
   links = [
-    { href: "#", name: "About Us" },
-    { href: "#", name: "Blog" },
-    { href: "#", name: "License" },
+    { href: "https://velo-docs-eta.vercel.app/", name: "Docs" },
+    { href: "https://blog.brandfactors.com/", name: "Blog" },
   ],
 }) {
   const { href, name } = company;
@@ -69,7 +68,7 @@ function Footer({
         px={1.5}
       >
         &copy; {new Date().getFullYear()}, made by
-        <Link href={href} target="_blank">
+        <Link href="https://brandfactors.com/" target="_blank">
           <MDTypography variant="button" fontWeight="medium">
             &nbsp;{name}&nbsp;
           </MDTypography>

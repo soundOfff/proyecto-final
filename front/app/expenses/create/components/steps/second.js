@@ -15,7 +15,7 @@ import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import Select from "/components/Select";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getDefaultCurrency } from "/actions/currencies";
 
 export default function Second({
@@ -47,6 +47,8 @@ export default function Second({
       setFieldValue(currency.name, defaultCurrency.id);
     });
   }, [currency.name, setFieldValue]);
+
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
 
   return (
     <Grid container spacing={5}>
@@ -297,40 +299,44 @@ export default function Second({
         </Grid>
       )}
       <Grid item xs={12}>
-        <MDBox sx={{ display: "flex" }}>
-          <FormControl component="fieldset" variant="standard">
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e) =>
-                      setFieldValue(
-                        createInvoiceBillable.name,
-                        e.target.checked
-                      )
-                    }
-                    name={createInvoiceBillable.name}
-                  />
-                }
-                label={createInvoiceBillable.label}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e) =>
-                      setFieldValue(
-                        sendInvoiceToCustomer.name,
-                        e.target.checked
-                      )
-                    }
-                    name={sendInvoiceToCustomer.name}
-                  />
-                }
-                label={sendInvoiceToCustomer.label}
-              />
-            </FormGroup>
-          </FormControl>
-        </MDBox>
+        {showCheckboxes && (
+          <MDBox sx={{ display: "flex" }}>
+            <FormControl component="fieldset" variant="standard">
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values[createInvoiceBillable.name]}
+                      onChange={(e) =>
+                        setFieldValue(
+                          createInvoiceBillable.name,
+                          e.target.checked
+                        )
+                      }
+                      name={createInvoiceBillable.name}
+                    />
+                  }
+                  label={createInvoiceBillable.label}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values[sendInvoiceToCustomer.name]}
+                      onChange={(e) =>
+                        setFieldValue(
+                          sendInvoiceToCustomer.name,
+                          e.target.checked
+                        )
+                      }
+                      name={sendInvoiceToCustomer.name}
+                    />
+                  }
+                  label={sendInvoiceToCustomer.label}
+                />
+              </FormGroup>
+            </FormControl>
+          </MDBox>
+        )}
       </Grid>
     </Grid>
   );

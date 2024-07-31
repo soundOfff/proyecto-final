@@ -68,7 +68,7 @@ function Footer({
         px={1.5}
       >
         &copy; {new Date().getFullYear()}, made by
-        <Link href={company.href} target="_blank">
+        <Link href={href} target="_blank">
           <MDTypography variant="button" fontWeight="medium">
             &nbsp;{name}&nbsp;
           </MDTypography>

@@ -28,7 +28,7 @@ import MDTypography from "/components/MDTypography";
 import typography from "/assets/theme/base/typography";
 
 function Footer({
-  company = { href: "#", name: "BrandFactors" },
+  company = { href: "https://brandfactors.com/", name: "BrandFactors" },
   links = [
     { href: "https://velo-docs-eta.vercel.app/", name: "Docs" },
     { href: "https://blog.brandfactors.com/", name: "Blog" },
@@ -68,7 +68,7 @@ function Footer({
         px={1.5}
       >
         &copy; {new Date().getFullYear()}, made by
-        <Link href="https://brandfactors.com/" target="_blank">
+        <Link href={company.href} target="_blank">
           <MDTypography variant="button" fontWeight="medium">
             &nbsp;{name}&nbsp;
           </MDTypography>

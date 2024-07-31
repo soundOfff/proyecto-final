@@ -17,6 +17,7 @@ import moment from "moment";
 import checkout from "./form";
 import { WITHOUT_DISCOUNT } from "/utils/constants/discountTypes";
 import { NO_SENT } from "/utils/constants/estimateStatus";
+import { NOT_RECURRING } from "../../../../../utils/constants/recurringBillsIds";
 
 const {
   formField: {
@@ -63,7 +64,7 @@ const initialValues = {
   [discountType.name]: WITHOUT_DISCOUNT,
   [reference.name]: "",
   [agent.name]: "",
-  [recurring.name]: "",
+  [recurring.name]: NOT_RECURRING,
   [adminNote.name]: "",
   [clientNote.name]: "",
   [terms.name]: "",

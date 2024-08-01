@@ -58,6 +58,11 @@ export default styled(Box)(({ theme, ownerState }) => {
       },
     },
 
+    "& .dz-preview .dz-progress": {
+      display: "none !important",
+      opacity: "0 !important",
+    },
+
     "& .dz-error-message": {
       display: "none !important",
     },

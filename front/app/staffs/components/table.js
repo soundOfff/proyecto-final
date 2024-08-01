@@ -54,6 +54,7 @@ export default function Table({ rows, meta }) {
               variant="button"
               fontWeight="regular"
               color="info"
+              fontSize="small"
               mr={2}
             >
               {row.original.firstName} {row.original.lastName}
@@ -66,7 +67,9 @@ export default function Table({ rows, meta }) {
       Header: "Email",
       accessor: "email",
       Cell: ({ row }) => (
-        <MDTypography variant="body2">{row.original.email}</MDTypography>
+        <MDTypography variant="body2" fontSize="small">
+          {row.original.email}
+        </MDTypography>
       ),
     },
     {

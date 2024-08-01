@@ -151,7 +151,7 @@ export default function Details() {
           <DefaultItem
             color="dark"
             title="Propuesta"
-            description={project.proposal.subject}
+            description={project.proposal?.subject || "Sin propuesta asociada."}
           />
         </Grid>
 

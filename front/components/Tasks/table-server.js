@@ -78,6 +78,15 @@ export default function Table({
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
+  const handleOpenModal = (id) => {
+    setTaskId(id);
+    setOpenShowModal(true);
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set("show", "true");
+    currentUrl.searchParams.set("id", id);
+    window.history.pushState({}, "", currentUrl);
+  };
+
   const columns = [
     {
       Header: "#",
@@ -97,6 +106,8 @@ export default function Table({
                 }
                 size="lg"
                 badgeContent={`#${dependency.id}`}
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleOpenModal(dependency.id)}
               />
             </Grid>
           ))}
@@ -118,10 +129,7 @@ export default function Table({
             variant="body2"
             color="info"
             sx={{ cursor: "pointer" }}
-            onClick={() => {
-              setTaskId(row.original.id);
-              setOpenShowModal(true);
-            }}
+            onClick={() => handleOpenModal(row.original.id)}
           >
             {row.original.name}
           </MDTypography>

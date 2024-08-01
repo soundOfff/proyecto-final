@@ -50,6 +50,11 @@ const form = {
       label: "Cliente",
       errorMsg: "Debe seleccionar un cliente",
     },
+    task: {
+      name: "task_id",
+      label: "Asignar a tarea",
+      errorMsg: "Debe seleccionar una tarea",
+    },
     project: {
       name: "project_id",
       label: "Caso",

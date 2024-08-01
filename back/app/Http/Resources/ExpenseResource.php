@@ -37,6 +37,7 @@ class ExpenseResource extends JsonResource
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'category' => ExpenseCategoryResource::make($this->whenLoaded('category')),
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
+            'task' => TaskResource::make($this->whenLoaded('task')),
             'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),
             'paymentMethod' => PaymentMethodResource::make($this->whenLoaded('paymentMethod')),

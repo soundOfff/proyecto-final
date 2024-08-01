@@ -33,6 +33,7 @@ class ExpenseRequest extends FormRequest
             'partner_id' => 'required|numeric|exists:partners,id',
             'is_infinite' => 'required_with:repeat_id|boolean',
             'create_invoice_billable' => 'nullable|boolean',
+            'task_id' => 'nullable|numeric|exists:tasks,id',
             'send_invoice_to_customer' => 'nullable|boolean',
             'total_cycles' => Rule::requiredIf(
                 fn () => isset(request()->repeat_id) && request()->is_infinite == 0

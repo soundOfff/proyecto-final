@@ -18,13 +18,13 @@ export default function Table({ rows, meta }) {
         const assigneds = row.original.assigneds;
         if (assigneds.length === 0 || !assigneds) {
           return (
-            <MDTypography color="info" variant="body2">
+            <MDTypography color="info" variant="body2" fontSize="small">
               Sin asignar
             </MDTypography>
           );
         }
         return assigneds.map((assigned) => (
-          <MDTypography key={assigned.id} variant="body2">
+          <MDTypography key={assigned.id} variant="body2" fontSize="small">
             {assigned.name}
           </MDTypography>
         ));
@@ -134,7 +134,7 @@ export default function Table({ rows, meta }) {
       Header: "Tiempo total",
       accessor: "total_time",
       Cell: ({ row }) => (
-        <MDTypography variant="body2" color="dark">
+        <MDTypography variant="body2" color="dark" fontSize="small">
           {numberFormat(row.original.total_time)} hs
         </MDTypography>
       ),

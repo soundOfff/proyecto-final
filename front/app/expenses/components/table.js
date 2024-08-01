@@ -148,12 +148,13 @@ export default function Table({ rows, meta }) {
                   width: "auto",
                 }}
               >
-                <DescriptionOutlined fontSize="medium" color="dark" />
+                <DescriptionOutlined fontSize="small" color="dark" />
                 <Link href={file.publicUrl}>
                   <MDTypography
                     variant="button"
                     fontWeight="regular"
                     color="dark"
+                    fontSize="small"
                   >
                     {file.subject.length > 10
                       ? file.subject.substring(0, 10) + "..."

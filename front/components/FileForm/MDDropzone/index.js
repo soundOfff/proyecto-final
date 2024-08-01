@@ -72,6 +72,11 @@ function MDDropzone({ options, addFields, removeFile, multiple = false }) {
         "&:hover": {
           backgroundColor: "#f9fafb",
         },
+
+        "&:hover .dz-preview.dz-image-preview": {
+          backgroundColor: "#f9fafb !important",
+        },
+
         "& .dz-preview.dz-image-preview": {
           background: `#ffff !important`,
         },

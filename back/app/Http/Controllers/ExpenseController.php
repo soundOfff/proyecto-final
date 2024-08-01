@@ -30,6 +30,7 @@ class ExpenseController extends Controller
             ->selectRaw('expenses.*')
             ->allowedIncludes([
                 'partner',
+                'task',
                 'category',
                 'project',
                 'files',
@@ -101,6 +102,7 @@ class ExpenseController extends Controller
         $expense = QueryBuilder::for(Expense::class)
             ->allowedIncludes([
                 'partner',
+                'task',
                 'category',
                 'files',
                 'project',

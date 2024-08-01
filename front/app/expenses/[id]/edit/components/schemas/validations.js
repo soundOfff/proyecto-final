@@ -24,6 +24,7 @@ const {
     note,
     date,
     name,
+    task,
     currency,
     partner,
     project,
@@ -44,6 +45,7 @@ const validations = [
   Yup.object().shape({
     [name.name]: Yup.string(),
     [note.name]: Yup.string(),
+    [task.name]: Yup.string().nullable(),
     [category.name]: Yup.string().required(category.errorMsg),
     [date.name]: Yup.date().required(date.errorMsg),
     [amount.name]: Yup.number("El valor debe ser un número")

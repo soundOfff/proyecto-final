@@ -22,6 +22,7 @@ export default async function EditExpense({ params: { id } }) {
     getExpense(id, {
       include: [
         "partner",
+        "task",
         "category",
         "project",
         "files",

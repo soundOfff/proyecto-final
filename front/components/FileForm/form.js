@@ -3,8 +3,6 @@
 import MDDropzone from "./MDDropzone";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import MDButton from "/components/MDButton";
-import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import form from "./schemas/form";
 
 import { ErrorMessage } from "formik";

@@ -1,6 +1,12 @@
 "use client";
 
-import { Autocomplete, Divider, Grid } from "@mui/material";
+import {
+  Autocomplete,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  Grid,
+} from "@mui/material";
 import { ErrorMessage } from "formik";
 import { useEffect, useState } from "react";
 import MDInput from "/components/MDInput";
@@ -93,6 +99,15 @@ export default function Second({
       );
     }
   }, [partnerData, values, plaintiff]);
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setShowDatePicker(event.target.checked);
+    if (!event.target.checked) {
+      setFieldValue(deadline.name, ""); // Clear date if checkbox is unchecked
+    }
+  };
 
   return (
     <Grid container spacing={5}>
@@ -208,28 +223,43 @@ export default function Second({
           </MDTypography>
         </MDBox>
       </Grid>
+
       <Grid item xs={12} sm={6}>
-        <MDDatePicker
-          value={values[deadline.name]}
-          onChange={(date) =>
-            setFieldValue(deadline.name, moment(date[0]).format("YYYY-MM-DD"))
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showDatePicker}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
           }
-          input={{
-            label: "Fecha De Entrega",
-            fullWidth: true,
-          }}
+          label="¿El caso tiene fecha de entrega?"
         />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={deadline.name} />
-          </MDTypography>
-        </MDBox>
       </Grid>
+      {showDatePicker && (
+        <Grid item xs={12} sm={6}>
+          <MDDatePicker
+            value={values[deadline.name]}
+            onChange={(date) =>
+              setFieldValue(deadline.name, moment(date[0]).format("YYYY-MM-DD"))
+            }
+            input={{
+              label: "Fecha De Entrega",
+              fullWidth: true,
+            }}
+          />
+          <MDBox mt={0.75}>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={deadline.name} />
+            </MDTypography>
+          </MDBox>
+        </Grid>
+      )}
       <PartnerForm {...{ values, setFieldValue, partnerData }} />
       <PartnerList
         partners={partnersSelected}

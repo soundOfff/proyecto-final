@@ -27,6 +27,7 @@ import { useSession } from "next-auth/react";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 import useTaskTable from "/hooks/useTaskTable";
 
@@ -68,6 +69,9 @@ export default function Table({
   } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
   const { darkMode } = controller;
   const { data: session } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const {
     setOpenDeleteConfirmation,
@@ -81,10 +85,8 @@ export default function Table({
   const handleOpenModal = (id) => {
     setTaskId(id);
     setOpenShowModal(true);
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set("show", "true");
-    currentUrl.searchParams.set("id", id);
-    window.history.pushState({}, "", currentUrl);
+    const params = new URLSearchParams(searchParams.toString());
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const columns = [

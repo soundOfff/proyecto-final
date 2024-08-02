@@ -73,6 +73,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Etiquetas",
       accessor: "tags",
+      disableSortBy: true,
       Cell: ({ value }) =>
         value.length
           ? value.map((tag) => (
@@ -98,6 +99,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Comentarios",
       accessor: "comments",
+      disableSortBy: true,
       Cell: ({ value }) =>
         value.length
           ? value.map((comment) => comment.content).join(", ")
@@ -106,6 +108,7 @@ export default function Table({ rows, meta }) {
     {
       id: "actions",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Link

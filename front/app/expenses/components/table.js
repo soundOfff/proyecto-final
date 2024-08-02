@@ -149,7 +149,7 @@ export default function Table({ rows, meta }) {
                 }}
               >
                 <DescriptionOutlined fontSize="small" color="dark" />
-                <Link href={file.publicUrl}>
+                <Link href={file.publicUrl} target="_blank">
                   <MDTypography
                     variant="button"
                     fontWeight="regular"

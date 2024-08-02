@@ -69,6 +69,7 @@ export default function Table({ rows, meta }) {
       id: "url",
       Header: "URL",
       accessor: "publicUrl",
+      disableSortBy: true,
       Cell: ({ value }) => (
         <Link href={value} target="_blank" sx={{ color: "info" }}>
           <MDTypography
@@ -92,6 +93,7 @@ export default function Table({ rows, meta }) {
     {
       id: "acciones",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <Tooltip title="Eliminar Archivo">
           <DeleteIcon

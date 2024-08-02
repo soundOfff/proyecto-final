@@ -75,6 +75,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Cargo",
       accessor: "isAdmin",
+      disableSortBy: true,
     },
     {
       Header: "Ultimo acceso",
@@ -92,6 +93,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Activo",
       accessor: "active",
+      disableSortBy: true,
       Cell: ({ value }) => {
         const label = { inputProps: { "aria-label": "Is active switch" } };
         return <Switch {...label} checked={Boolean(value)} />;
@@ -100,7 +102,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Acciones",
       accessor: "actions",
-      noSortBy: true,
+      disableSortBy: true,
       Cell: ({ row }) =>
         false && (
           <Tooltip title="Eliminar un miembro">

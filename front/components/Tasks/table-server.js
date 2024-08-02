@@ -222,6 +222,7 @@ export default function Table({
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Agregar Archivo">

@@ -63,6 +63,7 @@ export default function Table({ rows, meta }) {
     {
       id: "actions",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Link href={`/processes/${row.original.id}/edit`}>

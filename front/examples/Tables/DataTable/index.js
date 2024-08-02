@@ -286,12 +286,16 @@ function DataTable({
                   {headerGroup.headers.map((column, key) => (
                     <DataTableHeadCell
                       key={key}
-                      {...column.getHeaderProps(
-                        isSorted && column.getSortByToggleProps()
-                      )}
-                      width={column.width ? column.width : "auto"}
-                      align={column.align ? column.align : "left"}
-                      sorted={setSortedValue(column)}
+                      {...column.getHeaderProps()}
+                      width={column.width || "auto"}
+                      align={column.align || "left"}
+                      sorted={!column.disableSortBy}
+                      sx={{
+                        cursor: column.disableSortBy ? "default" : "pointer",
+                      }}
+                      onClick={
+                        column.disableSortBy ? null : () => setSort(column)
+                      } // Solo llama a setSort si disableSortBy es falso
                     >
                       {column.render("Header")}
                     </DataTableHeadCell>

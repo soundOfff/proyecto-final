@@ -94,6 +94,7 @@ export default function Table({ rows }) {
       Header: "Acciones",
       accessor: "actions",
       textAlign: "center",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Vista Rápida">

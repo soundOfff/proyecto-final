@@ -27,7 +27,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
-      Header: "name",
+      Header: "Nombre",
       Cell: ({ row }) => (
         <Link
           href={`/credit-notes/${row.original.id}`}
@@ -89,6 +89,7 @@ export default function Table({ rows, meta }) {
     {
       id: "actions",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Link

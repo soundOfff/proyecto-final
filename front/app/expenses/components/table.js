@@ -124,6 +124,7 @@ export default function Table({ rows, meta }) {
       accessor: "files",
       width: "15%",
       textAlign: "center",
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <MDBox
@@ -174,6 +175,7 @@ export default function Table({ rows, meta }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Vista Rápida">

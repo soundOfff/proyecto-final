@@ -26,7 +26,7 @@ class FcmController extends Controller
             $this->fcmService->sendNotification($request->device_token, $request->title, $request->body, $request->staff_id);
 
             return response()->json(null, 204);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
 
             return response()->json($e->getMessage(), 500);
@@ -44,7 +44,7 @@ class FcmController extends Controller
             ->where('device_token', $newTokenDevice['device_token'])
             ->exists();
 
-        if (! $tokenExists) {
+        if (!$tokenExists) {
             StaffDevice::create($newTokenDevice);
         }
 

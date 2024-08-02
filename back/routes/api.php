@@ -27,6 +27,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
@@ -259,6 +260,8 @@ Route::get('/documents', [DocumentController::class, 'generate']);
 
 Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
 Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
+
+Route::get('/notifications', [NotificationController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

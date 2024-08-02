@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_repeats', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('label');
-            $table->integer('days')->nullable();
+            $table->string('title');
+            $table->text('body')->nullable();
+            $table->foreignId('staff_devices_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_repeats');
+        Schema::dropIfExists('notifications');
     }
 };

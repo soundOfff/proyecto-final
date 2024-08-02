@@ -51,7 +51,7 @@ class TaskActions
                     'created_from_action' => 1,
                 ]
             );
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             dd($e->getMessage());
         }
     }

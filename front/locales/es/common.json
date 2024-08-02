@@ -22,5 +22,7 @@
   "edit": "Editar",
   "create": "Crear",
   "task": "Tarea",
-  "changes": "Historial de Cambios"
+  "changes": "Historial de Cambios",
+  "notification": "Notificación",
+  "notifications": "Notificaciones"
 }

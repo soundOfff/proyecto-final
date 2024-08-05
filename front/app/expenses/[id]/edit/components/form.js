@@ -22,6 +22,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { update as updateExpense } from "/actions/expenses";
 
 import { useState } from "react";
+import { revalidateExpenses } from "/actions/expenses";
 
 const steps = ["Nuevo Gasto", "Opciones avanzadas", "Adjuntar archivo"];
 
@@ -108,7 +109,7 @@ export default function FormComponent({
           headers: {
             Accept: "application/json",
           },
-          next: { tags: ["create-files"] },
+          next: { tags: ["update-files"] },
         });
       }
       await updateExpense(expense.id, values);
@@ -118,9 +119,10 @@ export default function FormComponent({
     }
   };
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = async (values, actions) => {
     if (isLastStep) {
-      submitForm(values, actions);
+      await submitForm(values, actions);
+      await revalidateExpenses("update-files");
       returnToSource();
     } else {
       setActiveStep(activeStep + 1);

@@ -53,7 +53,7 @@ export async function destroy(expenseId) {
   revalidatePath("/expenses");
 }
 
-export async function revalidateExpenses() {
-  revalidateTag("create-files");
+export async function revalidateExpenses(tag = "") {
+  revalidateTag(tag);
   revalidatePath("/expenses");
 }

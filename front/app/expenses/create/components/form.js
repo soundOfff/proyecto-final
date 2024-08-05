@@ -111,10 +111,10 @@ export default function FormComponent({
     }
   };
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = async (values, actions) => {
     if (isLastStep) {
-      submitForm(values, actions);
-      revalidateExpenses();
+      await submitForm(values, actions);
+      await revalidateExpenses("create-files");
       returnToSource();
     } else {
       setActiveStep(activeStep + 1);

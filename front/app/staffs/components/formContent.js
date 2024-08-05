@@ -178,29 +178,20 @@ export default function FormContent({ formData, staff = null }) {
           />
         </Grid>
         <Grid item xs={12}>
-          {staff.id === session?.staff.id ? (
-            <FormField
-              name={token.name}
-              label={token.label}
-              type={token.type}
-              placeholder={token.placeholder}
-              value={values[token.name]}
-              error={errors.token && touched.token}
-              success={token.length > 0 && !errors.token}
-              disabled
-            />
-          ) : (
-            <FormField
-              name={token.name}
-              label={token.label}
-              type={token.type}
-              placeholder={token.placeholder}
-              value="Token oculto"
-              error={errors.token && touched.token}
-              success={token.length > 0 && !errors.token}
-              disabled
-            />
-          )}
+          <FormField
+            name={token.name}
+            label={token.label}
+            type={token.type}
+            placeholder={token.placeholder}
+            value={
+              staff.id === session?.staff.id
+                ? values[token.name]
+                : "Token Oculto"
+            }
+            error={errors.token && touched.token}
+            success={token.length > 0 && !errors.token}
+            disabled
+          />
         </Grid>
         <Grid item xs={12}>
           <Select

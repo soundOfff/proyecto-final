@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function ModalContent({ expense }) {
   return (
     <MDBox
-      sx={{ padding: "0px 10px", marginTop: 3, marginBottom: 3 }} // Ajuste de márgenes
+      sx={{ padding: "0px 10px", my: 3 }}
       display="flex"
       flexDirection="column"
       height="100%"

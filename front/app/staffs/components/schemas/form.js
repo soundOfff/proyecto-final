@@ -77,6 +77,10 @@ const form = {
       name: "welcome_email",
       label: "Enviar correo de bienvenida",
     },
+    token: {
+      name: "api_token",
+      label: "API Token",
+    },
     password: {
       name: "password",
       label: "Contraseña",

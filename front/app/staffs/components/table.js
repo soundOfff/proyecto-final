@@ -78,7 +78,7 @@ export default function Table({ rows, meta }) {
       disableSortBy: true,
     },
     {
-      Header: "Ultimo acceso",
+      Header: "Último acceso",
       accessor: "last_login",
       Cell: ({ row }) => {
         return (

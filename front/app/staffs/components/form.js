@@ -75,7 +75,7 @@ export default function StaffForm({ staff = null }) {
             p={2}
           >
             {staff
-              ? `${staff.firstName} ${staff.lastName} - Ultimo acceso: ${staff.lastLogin}`
+              ? `${staff.firstName} ${staff.lastName} - Último acceso: ${staff.lastLogin}`
               : "Nuevo Staff"}
           </MDBox>
           <FormContent

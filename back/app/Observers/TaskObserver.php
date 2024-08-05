@@ -23,13 +23,9 @@ class TaskObserver
      */
     public function updated(Task $task): void
     {
-        if (!$task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) {
-            return;
-        }
-
+        if (!$task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) return;
         // Case 1 - Task is closed.
         $this->dispatchActions($task);
-
         // Case 2 - Task is closed and another task is unlocked.
         $lockedTasks = $task->dependentTasks;
         $recentlyUnlockedTasks = [];
@@ -42,16 +38,15 @@ class TaskObserver
 
         if (count($recentlyUnlockedTasks) > 0) {
             $fcmService = new FcmService();
-            foreach ($recentlyUnlockedTasks as $task) {
-                $this->dispatchActions($task);
-
+            foreach ($recentlyUnlockedTasks as $unlockedTask) {
+                $this->dispatchActions($unlockedTask);
                 // send notification to staff assigneds
-                foreach ($task->assigneds as $assigned) {
+                foreach ($unlockedTask->assigneds as $assigned) {
                     foreach ($assigned->devices as $device) {
                         $fcmService->sendNotification(
                             $device->device_token,
-                            'Tarea Desbloqueada',
-                            "La tarea: \"{$task->name}\" ha sido desbloqueada",
+                            "La tarea #{$unlockedTask->id} ha sido desbloqueada",
+                            "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
                             $assigned->id
                         );
                     }

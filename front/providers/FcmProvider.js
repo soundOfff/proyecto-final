@@ -11,15 +11,35 @@ import {
   DialogTitle,
 } from "@mui/material";
 import MDButton from "/components/MDButton";
+import MDBox from "/components/MDBox";
+import MDTypography from "/components/MDTypography";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import firebaseApp from "/utils/firebase/index";
 import { storeToken } from "/actions/fcm";
+import Link from "next/link";
 
 export default function FCM({ children }) {
   const [payload, setPayload] = useState(null);
   const [token, setToken] = useState("");
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
+
+  const getContent = (payload) => {
+    return (
+      <MDBox width="100%" display="flex" flexDirection="column" gap={2}>
+        <MDTypography variant="caption" color="text">
+          {payload}
+        </MDTypography>
+        <MDBox sx={{ mx: "auto" }}>
+          <Link href="/notifications">
+            <MDButton variant="outlined" size="small" color="error">
+              Ver en notificaciones
+            </MDButton>
+          </Link>
+        </MDBox>
+      </MDBox>
+    );
+  };
 
   const handleAccept = () => {
     if (window !== "undefined") {
@@ -102,7 +122,7 @@ export default function FCM({ children }) {
           color="error"
           icon="warning"
           title={payload.notification.title}
-          content={payload.notification.body}
+          content={getContent(payload.notification.body)}
           open={payload}
           onClose={() => setPayload(null)}
           close={() => setPayload(null)}

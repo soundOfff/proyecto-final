@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-#[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
     use LogsActivity;

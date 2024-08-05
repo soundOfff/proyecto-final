@@ -126,6 +126,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Notificaciones",
+    key: "notifications",
+    route: "/notifications",
+    icon: <Icon fontSize="medium">notifications</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
     name: "Archivos",
     key: "files",
     route: "/files",

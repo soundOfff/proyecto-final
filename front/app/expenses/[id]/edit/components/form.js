@@ -210,7 +210,12 @@ export default function FormComponent({
                             Anterior
                           </MDButton>
                         )}
-                        <MDButton type="submit" variant="gradient" color="dark">
+                        <MDButton
+                          type="submit"
+                          variant="gradient"
+                          color="dark"
+                          disabled={isSubmitting}
+                        >
                           {isLastStep ? "Guardar" : "Siguiente"}
                         </MDButton>
                       </MDBox>

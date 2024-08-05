@@ -19,6 +19,7 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 
 import { Form, Formik, ErrorMessage } from "formik";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function FormContent({ formData, staff = null }) {
   const { values, errors, touched, setFieldValue, isSubmitting, formField } =
@@ -46,6 +47,8 @@ export default function FormContent({ formData, staff = null }) {
   const handleRefreshPassword = () => {
     setFieldValue(password.name, crypto.randomUUID(12).slice(-12));
   };
+
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (staff) {
@@ -175,16 +178,29 @@ export default function FormContent({ formData, staff = null }) {
           />
         </Grid>
         <Grid item xs={12}>
-          <FormField
-            name={token.name}
-            label={token.label}
-            type={token.type}
-            placeholder={token.placeholder}
-            value={values[token.name]}
-            error={errors.token && touched.token}
-            success={token.length > 0 && !errors.token}
-            disabled
-          />
+          {staff.id === session?.staff.id ? (
+            <FormField
+              name={token.name}
+              label={token.label}
+              type={token.type}
+              placeholder={token.placeholder}
+              value={values[token.name]}
+              error={errors.token && touched.token}
+              success={token.length > 0 && !errors.token}
+              disabled
+            />
+          ) : (
+            <FormField
+              name={token.name}
+              label={token.label}
+              type={token.type}
+              placeholder={token.placeholder}
+              value="Token oculto"
+              error={errors.token && touched.token}
+              success={token.length > 0 && !errors.token}
+              disabled
+            />
+          )}
         </Grid>
         <Grid item xs={12}>
           <Select

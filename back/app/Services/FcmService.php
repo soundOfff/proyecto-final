@@ -23,13 +23,15 @@ class FcmService
             ->first()
             ->id;
 
-        Notification::create(
-            [
-                'title' => $title,
-                'body' => $body,
-                'staff_devices_id' => $staffDeviceId
-            ]
-        );
+        if (isset($staffDeviceId)) {
+            Notification::create(
+                [
+                    'title' => $title,
+                    'body' => $body,
+                    'staff_devices_id' => $staffDeviceId
+                ]
+            );
+        }
 
         $message = CloudMessage::fromArray([
             'token' => $deviceToken,

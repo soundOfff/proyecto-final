@@ -4,6 +4,8 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import moment from "moment";
+import "moment/locale/es";
+import { Tooltip } from "@mui/material";
 
 export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
   const columns = [
@@ -25,9 +27,11 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
       Header: "Fecha de envio",
       accessor: "created_at",
       Cell: ({ row }) => (
-        <MDTypography variant="body3">
-          {moment(row.original.createdAt).format("DD/MM/YYYY HH:mm")}
-        </MDTypography>
+        <Tooltip title={moment(row.original.createdAt).format("LLL")}>
+          <MDTypography variant="body3" sx={{ ml: 1 }}>
+            {moment(row.original.createdAt).locale("es").fromNow()}
+          </MDTypography>
+        </Tooltip>
       ),
     },
   ];
@@ -36,9 +40,6 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
 
   return (
     <MDBox>
-      <MDTypography variant="h4" mb={3}>
-        Notificaciones
-      </MDTypography>
       <DataTable
         table={table}
         meta={meta}

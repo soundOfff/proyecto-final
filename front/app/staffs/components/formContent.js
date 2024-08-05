@@ -50,6 +50,14 @@ export default function FormContent({ formData, staff = null }) {
 
   const { data: session } = useSession();
 
+  const getSessionToken = () => {
+    if (!staff || !session) return "Token Oculto";
+
+    return session?.staff?.id === staff?.id
+      ? values[token.name]
+      : "Token Oculto";
+  };
+
   useEffect(() => {
     if (staff) {
       setFieldValue(admin.name, staff.admin);
@@ -177,22 +185,20 @@ export default function FormContent({ formData, staff = null }) {
             success={skype.length > 0 && !errors.skype}
           />
         </Grid>
-        <Grid item xs={12}>
-          <FormField
-            name={token.name}
-            label={token.label}
-            type={token.type}
-            placeholder={token.placeholder}
-            value={
-              staff.id === session?.staff.id
-                ? values[token.name]
-                : "Token Oculto"
-            }
-            error={errors.token && touched.token}
-            success={token.length > 0 && !errors.token}
-            disabled
-          />
-        </Grid>
+        {staff && (
+          <Grid item xs={12}>
+            <FormField
+              name={token.name}
+              label={token.label}
+              type={token.type}
+              placeholder={token.placeholder}
+              value={getSessionToken()}
+              error={errors.token && touched.token}
+              success={token.length > 0 && !errors.token}
+              disabled
+            />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Select
             value={values[defaultLanguage.name]}

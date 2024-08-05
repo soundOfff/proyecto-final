@@ -4,20 +4,21 @@ import MDBox from "/components/MDBox";
 import DefaultItem from "/examples/Items/DefaultItem";
 import moneyFormat from "/utils/moneyFormat";
 import Invoice from "../../../pagesComponents/pages/account/billing/components/Invoice";
+import { DescriptionOutlined } from "@mui/icons-material";
+import Link from "next/link";
 
 export default function ModalContent({ expense }) {
   return (
     <MDBox
-      sx={{ padding: "0px 10px" }}
+      sx={{ padding: "0px 10px", my: 3 }}
       display="flex"
-      justifyContent="center"
       flexDirection="column"
       height="100%"
-      alignContent="center"
+      alignItems="flex-start"
     >
       <Grid container lineHeight={0} ml={2}>
         <Grid item xs={12} md={6}>
-          <MDTypography variant="h4" mr={5} mb={1}>
+          <MDTypography variant="h4" mr={5} mb={2} noWrap>
             {expense.category.name}
           </MDTypography>
           <MDTypography color="text" fontWeight="light" mr={5}>
@@ -58,7 +59,7 @@ export default function ModalContent({ expense }) {
       <Divider sx={{ width: "100%" }} />
 
       <Grid container>
-        <Grid xs={12} md={6} mt={3}>
+        <Grid item xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
             title="Cliente"
@@ -70,7 +71,7 @@ export default function ModalContent({ expense }) {
           />
         </Grid>
         {expense.invoice && (
-          <Grid xs={12} md={6} mt={3}>
+          <Grid item xs={12} md={6} mt={3}>
             <DefaultItem color="dark" title="Factura" />
             <MDBox ml={2}>
               <Invoice
@@ -85,7 +86,7 @@ export default function ModalContent({ expense }) {
 
         <Divider variant="left" sx={{ width: "70%" }} />
 
-        <Grid xs={12} mt={3}>
+        <Grid item xs={12} mt={3}>
           <MDBox ml={2} mt={0.5} lineHeight={1.4}>
             <MDTypography display="block" variant="button" fontWeight="medium">
               Caso
@@ -99,6 +100,53 @@ export default function ModalContent({ expense }) {
               {expense.project?.name ??
                 "No hay descripcion del caso disponible"}
             </MDTypography>
+          </MDBox>
+        </Grid>
+
+        <Divider sx={{ width: "100%" }} />
+
+        <Grid item xs={12} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Archivos"
+            description={expense.files.length ? " " : "Sin archivos"}
+          />
+          <MDBox
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            sx={{ gap: 1, mt: 1, px: 2, mb: 3 }}
+          >
+            {expense.files.map((file) => (
+              <MDBox
+                key={file.id}
+                borderRadius="lg"
+                display="flex"
+                alignItems="center"
+                sx={{
+                  border: ({ borders: { borderWidth, borderColor } }) =>
+                    `${borderWidth[1]} solid ${borderColor}`,
+                  gap: 1,
+                  px: 2,
+                  py: 1,
+                  mb: 1,
+                }}
+              >
+                <DescriptionOutlined fontSize="small" color="dark" />
+                <Link href={file.publicUrl} target="_blank">
+                  <MDTypography
+                    variant="button"
+                    fontWeight="regular"
+                    color="dark"
+                    fontSize="small"
+                  >
+                    {file.subject.length > 20
+                      ? file.subject.substring(0, 20) + "..."
+                      : file.subject}
+                  </MDTypography>
+                </Link>
+              </MDBox>
+            ))}
           </MDBox>
         </Grid>
       </Grid>

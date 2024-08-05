@@ -26,4 +26,5 @@ export async function destroy(fileId) {
   });
 
   revalidatePath("/projects");
+  revalidatePath("/expenses");
 }

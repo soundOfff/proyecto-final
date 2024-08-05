@@ -29,6 +29,7 @@ use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PartnerProjectRoleController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
@@ -75,7 +76,7 @@ Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'inde
 Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
-Route::get('/projects-select/{defendant}', [ProjectController::class, 'select']);
+Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
 Route::post('/projects', [ProjectController::class, 'store']);
 Route::put('/projects/{project}', [ProjectController::class, 'update']);
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
@@ -112,6 +113,8 @@ Route::get('/partner-stats', [PartnerController::class, 'stats']);
 Route::get('/partners-select', [PartnerController::class, 'select']);
 
 Route::get('/partner-types', [PartnerTypeController::class, 'index']);
+
+Route::get('/partner-project-roles', [PartnerProjectRoleController::class, 'index']);
 
 Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
@@ -197,7 +200,6 @@ Route::get('/files/{file}', [FileController::class, 'show']);
 Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
 Route::post('/files-store-many', [FileController::class, 'storeMany']);
-
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);

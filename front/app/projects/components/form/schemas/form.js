@@ -23,6 +23,16 @@ const form = {
       placeholder: "1000",
       errorMsg: "El costo del caso es requerido",
     },
+    billingType: {
+      name: "project_billing_type_id",
+      label: "Tipo de Facturación",
+      errorMsg: "Debe seleccionar un tipo de facturación",
+    },
+    billablePartner: {
+      name: "billable_partner_id",
+      label: "Cliente Facturable",
+      errorMsg: "Debe seleccionar un cliente facturable",
+    },
     /*  estimatedHours: {
       name: "estimated_hours",
       label: "Horas Estimadas",
@@ -30,28 +40,6 @@ const form = {
       placeholder: "20",
       errorMsg: "La cantidad de horas es requerida",
     }, */
-    expedient: {
-      name: "expedient",
-      label: "Expediente",
-      type: "text",
-      placeholder: "0001",
-      errorMsg: "El expediente es requerido",
-    },
-    description: {
-      name: "description",
-      label: "Descripción del Caso",
-      type: "hidden",
-      errorMsg: "La descripción es requerida",
-    },
-    defendant: {
-      name: "defendant_id",
-      label: "Demandado",
-      errorMsg: "Debe seleccionar un demandado",
-    },
-    plaintiff: {
-      name: "plaintiff_id",
-      label: "Demandante",
-    },
     responsiblePersonId: {
       name: "responsible_person_id",
       label: "Persona Responsable",
@@ -67,15 +55,21 @@ const form = {
       label: "Departamento",
       errorMsg: "Debe seleccionar un departamento",
     },
-    billingType: {
-      name: "project_billing_type_id",
-      label: "Tipo de Facturación",
-      errorMsg: "Debe seleccionar un tipo de facturación",
-    },
     selectedMembers: {
       name: "project_members",
       label: "Miembros Del Caso",
       errorMsg: "Debe seleccionar al menos un miembro",
+    },
+    proposal: {
+      name: "proposal_id",
+      label: "Propuesta",
+    },
+    expedient: {
+      name: "expedient",
+      label: "Expediente",
+      type: "text",
+      placeholder: "0001",
+      errorMsg: "El expediente es requerido",
     },
     startDate: {
       name: "start_date",
@@ -91,9 +85,11 @@ const form = {
       name: "partners",
       label: "Personas Relacionadas",
     },
-    proposal: {
-      name: "proposal_id",
-      label: "Propuesta",
+    description: {
+      name: "description",
+      label: "Descripción del Caso",
+      type: "hidden",
+      errorMsg: "La descripción es requerida",
     },
   },
 };

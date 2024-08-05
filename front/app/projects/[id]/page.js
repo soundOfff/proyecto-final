@@ -18,9 +18,8 @@ import Index from "./components/index";
 const include = [
   "staffs",
   "tasks",
-  "defendant",
+  "billablePartner",
   "tasks",
-  "plaintiff",
   "billingType",
   "serviceType.processes.forks",
   "responsiblePerson",

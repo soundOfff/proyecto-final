@@ -25,7 +25,7 @@ class ProjectRequest extends FormRequest
             'start_date' => 'required|date',
             'project_status_id' => 'required|numeric|exists:project_statuses,id',
             'responsible_person_id' => 'required|numeric|exists:staff,id',
-            'defendant_id' => 'required|numeric|exists:partners,id',
+            'billable_partner_id' => 'required|numeric|exists:partners,id',
             'project_members' => 'required|array',
             'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',
             'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
@@ -35,10 +35,10 @@ class ProjectRequest extends FormRequest
             'description' => 'nullable|string',
             'estimated_hours' => 'nullable|numeric',
             'cost' => 'nullable|numeric',
-            'plaintiff_id' => 'nullable|numeric|exists:partners,id',
             'partners' => 'nullable|array',
             'partners.*.id' => 'required|numeric|exists:partners,id',
-            'partners.*.role' => 'required|string',
+            'partners.*.role_id' => 'required|numeric|exists:partner_project_roles,id',
+            'partners.*.owner_id' => 'nullable|numeric|exists:partners,id',
         ];
     }
 }

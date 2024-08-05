@@ -345,7 +345,7 @@ export default function Table({
                     taskable_id: invoice.id,
                     taskable_type: INVOICE_TYPE,
                     partner_id:
-                      invoice.project?.defendant.id ?? invoice.partner.id,
+                      invoice.project?.billablePartnerId ?? invoice.partner.id,
                   }
                 : task
             }

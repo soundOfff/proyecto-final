@@ -23,8 +23,7 @@ const {
     expedient,
     responsiblePersonId,
     description,
-    defendant,
-    plaintiff,
+    billablePartner,
     status,
     serviceType,
     billingType,
@@ -36,40 +35,35 @@ const {
   },
 } = checkout;
 
-const validations = [
-  Yup.object().shape({
-    /* [estimatedHours.name]: Yup.number("El valor debe ser un número").min(
+const validations = Yup.object().shape({
+  /* [estimatedHours.name]: Yup.number("El valor debe ser un número").min(
       1,
       "Debe ser mayor a 0"
     ), */
-    [cost.name]: Yup.number("El valor debe ser un número").min(
-      1,
-      "Debe ser mayor a 0"
-    ),
-    [expedient.name]: Yup.string().matches(
-      /^[0-9]+$/,
-      "Solo se permiten números"
-    ),
-    [description.name]: Yup.string(),
-    [proposal.name]: Yup.number(),
-  }),
-  Yup.object().shape({
-    [defendant.name]: Yup.string().required(defendant.errorMsg),
-    [plaintiff.name]: Yup.string(),
-    [responsiblePersonId.name]: Yup.string().required(
-      responsiblePersonId.errorMsg
-    ),
-    [status.name]: Yup.string().required(status.errorMsg),
-    [serviceType.name]: Yup.string().required(serviceType.errorMsg),
-    [billingType.name]: Yup.string().required(billingType.errorMsg),
-    [selectedMembers.name]: Yup.array().min(1, selectedMembers.errorMsg),
-    [startDate.name]: Yup.date().required(startDate.errorMsg),
-    [deadline.name]: Yup.date().min(
-      Yup.ref(startDate.name),
-      "La fecha de entrega debe ser mayor a la fecha de inicio"
-    ),
-    [partners.name]: Yup.array(),
-  }),
-];
+  [billablePartner.name]: Yup.string().required(billablePartner.errorMsg),
+  [cost.name]: Yup.number("El valor debe ser un número").min(
+    1,
+    "Debe ser mayor a 0"
+  ),
+  [billingType.name]: Yup.string().required(billingType.errorMsg),
+  [status.name]: Yup.string().required(status.errorMsg),
+  [expedient.name]: Yup.string().matches(
+    /^[0-9]+$/,
+    "Solo se permiten números"
+  ),
+  [startDate.name]: Yup.date().required(startDate.errorMsg),
+  [deadline.name]: Yup.date().min(
+    Yup.ref(startDate.name),
+    "La fecha de entrega debe ser mayor a la fecha de inicio"
+  ),
+  [serviceType.name]: Yup.string().required(serviceType.errorMsg),
+  [responsiblePersonId.name]: Yup.string().required(
+    responsiblePersonId.errorMsg
+  ),
+  [selectedMembers.name]: Yup.array().min(1, selectedMembers.errorMsg),
+  [proposal.name]: Yup.number(),
+  [description.name]: Yup.string(),
+  [partners.name]: Yup.array(),
+});
 
 export default validations;

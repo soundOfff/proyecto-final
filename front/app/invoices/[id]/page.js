@@ -33,7 +33,8 @@ export default async function Show({ params: { id } }) {
       include: [
         "partner",
         "project.serviceType",
-        "project.defendant",
+        "project.billablePartner",
+        "project.partners",
         "currency",
         "estimate",
         "billingCountry",

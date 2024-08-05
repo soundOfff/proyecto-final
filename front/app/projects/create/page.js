@@ -5,7 +5,8 @@ import { getAll as getAllBillingTypes } from "/actions/project-billing-types";
 import { select as selectMembers } from "/actions/staffs";
 import { store as storeProject } from "/actions/projects";
 import { getSelect as getSelectProposals } from "/actions/proposals";
-import Form from "../components/form/form";
+import { getAll as getRoles } from "/actions/partner-project-roles";
+import Index from "../components/form/index";
 
 export default async function NewProject() {
   const partners = await getPartnerSelect();
@@ -14,9 +15,10 @@ export default async function NewProject() {
   const billingTypes = await getAllBillingTypes();
   const members = await selectMembers();
   const proposals = await getSelectProposals();
+  const roles = await getRoles();
 
   return (
-    <Form
+    <Index
       {...{
         partners,
         statuses,
@@ -25,6 +27,7 @@ export default async function NewProject() {
         storeProject,
         billingTypes,
         proposals,
+        roles,
       }}
     />
   );

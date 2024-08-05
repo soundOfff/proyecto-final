@@ -221,7 +221,7 @@ export default function Table({ rows, project }) {
             pathname: `/expenses/create`,
             query: {
               projectId: project.id,
-              partnerId: project.defendant.id,
+              partnerId: project.billablePartner.id,
               source: `/projects/${project.id}?tab=expenses`,
             },
           }}

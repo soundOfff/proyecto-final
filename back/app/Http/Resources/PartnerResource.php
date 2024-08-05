@@ -97,6 +97,9 @@ class PartnerResource extends JsonResource
             'role' => $this->whenPivotLoaded('partner_project', function () {
                 return $this->pivot->role;
             }),
+            'owner' => $this->whenPivotLoaded('partner_project', function () {
+                return $this->pivot->owner;
+            }),
         ];
     }
 }

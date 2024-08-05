@@ -43,7 +43,7 @@ export default function Detail({ project }) {
               {moneyFormat(project.cost)}
             </MDTypography>
           </Grid>
-          {project.defendant && (
+          {project.billablePartner && (
             <Grid item xs={12} xxl={3} display="flex">
               <Image
                 src={HandIcon}
@@ -53,7 +53,7 @@ export default function Detail({ project }) {
                 style={{ marginRight: "10px" }}
               />
               <MDTypography variant="h6" color="text" fontWeight="light">
-                {project.defendant.company}
+                {project.billablePartner.mergedName}
               </MDTypography>
             </Grid>
           )}

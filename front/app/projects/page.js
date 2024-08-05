@@ -14,7 +14,7 @@ const include = [
   "notes",
   "status",
   "files",
-  "defendant",
+  "billablePartner",
   "serviceType.processes",
 ];
 

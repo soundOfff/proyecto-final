@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import moment from "moment";
 import { NOT_STARTED } from "../../../../../utils/constants/projectStatusesIds";
 import checkout from "./form";
 
@@ -22,8 +23,7 @@ const {
     /* estimatedHours, */
     expedient,
     description,
-    defendant,
-    plaintiff,
+    billablePartner,
     status,
     serviceType,
     billingType,
@@ -40,13 +40,12 @@ const initialValues = {
   /* [estimatedHours.name]: "", */
   [expedient.name]: "",
   [description.name]: "",
-  [defendant.name]: "",
-  [plaintiff.name]: "",
+  [billablePartner.name]: "",
   [status.name]: NOT_STARTED,
   [serviceType.name]: "",
   [billingType.name]: "",
   [selectedMembers.name]: [],
-  [startDate.name]: "",
+  [startDate.name]: moment().format("YYYY-MM-DD"),
   [deadline.name]: "",
   [partners.name]: [],
   [proposal.name]: "",

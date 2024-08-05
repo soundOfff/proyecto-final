@@ -50,6 +50,11 @@ const form = {
       label: "Cliente",
       errorMsg: "Debe seleccionar un cliente",
     },
+    task: {
+      name: "task_id",
+      label: "Asignar a tarea",
+      errorMsg: "Debe seleccionar una tarea",
+    },
     project: {
       name: "project_id",
       label: "Caso",
@@ -104,6 +109,10 @@ const form = {
     sendInvoiceToCustomer: {
       name: "send_invoice_to_customer",
       label: "Enviar la factura al cliente por email cuando el gasto se repite",
+    },
+    files: {
+      name: "files",
+      label: "Archivos",
     },
   },
 };

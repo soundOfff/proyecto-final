@@ -5,12 +5,49 @@ import MDTypography from "/components/MDTypography";
 import MDAvatar from "/components/MDAvatar";
 
 import DefaultItem from "/examples/Items/DefaultItem";
-import { Divider, Grid, Step, StepLabel, Stepper } from "@mui/material";
+import { Divider, Grid, Table, TableBody, TableRow } from "@mui/material";
 
 import moneyFormat from "/utils/moneyFormat";
 import { useDataProvider } from "/providers/DataProvider";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
 import SelectedProcesses from "/components/Tasks/selected-processes";
+
+const headers = [
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      px: 1,
+      textAlign: "left",
+    },
+    header: "Nombre",
+  },
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      pr: 1,
+      pl: 3,
+      textAlign: "left",
+    },
+    header: "Rol",
+  },
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      pr: 1,
+      pl: 3,
+      textAlign: "left",
+    },
+    header: "Apoderado",
+  },
+];
+
+const borderBottom = {
+  borderBottom: ({ borders: { borderWidth }, palette: { light } }) =>
+    `${borderWidth[1]} solid ${light.main}`,
+};
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
@@ -91,19 +128,10 @@ export default function Details() {
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
-            title="Demandado"
-            description={project.defendant?.company}
+            title="Cliente Facturable"
+            description={project.billablePartner?.mergedName}
           />
         </Grid>
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Demandante"
-            description={project.plaintiff?.company ?? "Sin Demandante"}
-          />
-        </Grid>
-
-        <Divider variant="left" sx={{ width: "70%" }} />
 
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
@@ -114,6 +142,9 @@ export default function Details() {
             }
           />
         </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -122,15 +153,16 @@ export default function Details() {
           />
         </Grid>
 
-        <Divider variant="left" sx={{ width: "70%" }} />
-
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
-            title="Tipo De Servicio"
+            title="Departamento"
             description={project.serviceType?.label}
           />
         </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -145,11 +177,19 @@ export default function Details() {
           />
         </Grid>
 
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Propuesta"
+            description={project.proposal?.subject || "Sin propuesta asociada."}
+          />
+        </Grid>
+
         <Divider variant="left" sx={{ width: "70%" }} />
 
         {parseProjectDescription(project.description) && (
           <>
-            <Grid xs={12} mt={3}>
+            <Grid xs={12} sm={6} mt={3}>
               <MDBox ml={2} mt={0.5} lineHeight={1.4}>
                 <MDTypography
                   display="block"
@@ -213,6 +253,9 @@ export default function Details() {
           ))}
           <UpdateMembers projectId={project.id} staffs={staffs} />
         </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
         {project.partners?.length > 0 && (
           <Grid xs={12} pl={2} mt={3}>
             <MDBox mt={0.5} lineHeight={1.4}>
@@ -225,42 +268,88 @@ export default function Details() {
                 Personas relacionadas
               </MDTypography>
             </MDBox>
-            {project.partners?.map((partner) => (
-              <MDBox key={partner.id} display="inline-block" mr={2}>
-                <MDTypography
-                  variant="button"
-                  fontWeight="regular"
-                  color="text"
-                  mr={1}
-                >
-                  Nombre:
-                </MDTypography>
-                <MDTypography
-                  variant="button"
-                  fontWeight="bold"
-                  color="text"
-                  mr={5}
-                >
-                  {partner.mergedName}
-                </MDTypography>
-                <MDTypography
-                  variant="button"
-                  fontWeight="regular"
-                  color="text"
-                  mr={1}
-                >
-                  Rol:
-                </MDTypography>
-                <MDTypography
-                  variant="button"
-                  fontWeight="bold"
-                  color="text"
-                  mr={2}
-                >
-                  {partner.role}
-                </MDTypography>
-              </MDBox>
-            ))}
+
+            <MDBox width="100%" overflow="auto">
+              <Table sx={{ minWidth: "32rem" }}>
+                <MDBox component="thead">
+                  <TableRow>
+                    {headers.map(({ box, header }, index) => (
+                      <MDBox
+                        key={`${index}-headers`}
+                        component="th"
+                        width={box.width}
+                        py={box.py}
+                        pl={box.pl}
+                        pr={box.pr}
+                        textAlign={box.textAlign}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="button"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {header}
+                        </MDTypography>
+                      </MDBox>
+                    ))}
+                  </TableRow>
+                </MDBox>
+                <TableBody>
+                  {project.partners?.map((partner) => (
+                    <TableRow key={partner.id}>
+                      <MDBox
+                        component="td"
+                        textAlign="left"
+                        py={1}
+                        pr={1}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="body2"
+                          color="text"
+                          fontWeight="regular"
+                        >
+                          {partner.mergedName}
+                        </MDTypography>
+                      </MDBox>
+                      <MDBox
+                        component="td"
+                        textAlign="left"
+                        py={1}
+                        pr={1}
+                        pl={3}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="body2"
+                          color="text"
+                          fontWeight="regular"
+                        >
+                          {partner.role?.label}
+                        </MDTypography>
+                      </MDBox>
+                      <MDBox
+                        component="td"
+                        textAlign="left"
+                        py={1}
+                        pr={1}
+                        pl={3}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="body2"
+                          color="text"
+                          fontWeight="regular"
+                        >
+                          {partner.owner?.company || partner.owner?.name}
+                        </MDTypography>
+                      </MDBox>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </MDBox>
           </Grid>
         )}
       </Grid>

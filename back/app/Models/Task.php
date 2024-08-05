@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-#[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
     use LogsActivity;
@@ -87,7 +86,7 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || !$this->is_file_needed)
                 && $this->requiredFields->every(
                     fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
@@ -119,6 +118,11 @@ class Task extends Model
     public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class);
+    }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
     }
 
     public function priority(): BelongsTo
@@ -188,7 +192,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (! $this->procedure) {
+        if (!$this->procedure) {
             return false;
         }
 

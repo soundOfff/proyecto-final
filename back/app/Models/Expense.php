@@ -22,6 +22,7 @@ class Expense extends Model
         'amount',
         'tax_id',
         'tax2_id',
+        'task_id',
         'reference_no',
         'note',
         'name',
@@ -50,6 +51,11 @@ class Expense extends Model
     public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class);
+    }
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class);
     }
 
     public function estimate(): BelongsTo

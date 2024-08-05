@@ -15,6 +15,8 @@ class ProjectBillingType extends Model
         'name',
     ];
 
+    public const FIXED_PRICE = 1;
+
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);

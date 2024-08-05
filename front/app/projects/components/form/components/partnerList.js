@@ -6,7 +6,7 @@ import MDButton from "/components/MDButton";
 import DataTable from "/examples/Tables/DataTable";
 
 export default function PartnerList({
-  partners,
+  rows = [],
   setFieldValue,
   partnerField,
   values,
@@ -29,6 +29,10 @@ export default function PartnerList({
       accessor: "role",
     },
     {
+      Header: "Apoderado",
+      accessor: "owner",
+    },
+    {
       Header: "",
       accessor: "actions",
       Cell: ({ row }) => {
@@ -47,17 +51,19 @@ export default function PartnerList({
     },
   ];
 
-  const table = { columns, rows: partners || [] };
+  const table = { columns, rows };
 
   return (
-    <Grid item xs={12} mb={5}>
-      <MDBox
-        py={2}
-        borderRadius="lg"
-        sx={{ border: 1, borderColor: "grey.400" }}
-      >
-        <DataTable table={table} showTotalEntries={false} isSorted={false} />
-      </MDBox>
+    <Grid container spacing={5}>
+      <Grid item xs={12} mb={5}>
+        <MDBox
+          py={2}
+          borderRadius="lg"
+          sx={{ border: 1, borderColor: "grey.400" }}
+        >
+          <DataTable table={table} showTotalEntries={false} isSorted={false} />
+        </MDBox>
+      </Grid>
     </Grid>
   );
 }

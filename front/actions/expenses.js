@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { customFetch } from "./custom-fetch";
 
@@ -8,7 +8,7 @@ export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/expenses`);
   url.search = new URLSearchParams(params);
 
-  const data = await customFetch(url);
+  const data = await customFetch(url, { cache: "no-store" });
 
   return data;
 }
@@ -50,5 +50,10 @@ export async function destroy(expenseId) {
     method: "DELETE",
   });
 
+  revalidatePath("/expenses");
+}
+
+export async function revalidateExpenses(tag = "") {
+  revalidateTag(tag);
   revalidatePath("/expenses");
 }

@@ -34,7 +34,9 @@ const {
     repeat,
     recurring,
     recurringType,
+    task,
     totalCycles,
+    files,
     isInfinite,
     createInvoiceBillable,
     sendInvoiceToCustomer,
@@ -45,6 +47,7 @@ const initialValues = {
   [amount.name]: "",
   [category.name]: "",
   [partner.name]: "",
+  [task.name]: "",
   [project.name]: "",
   [note.name]: "",
   [date.name]: moment().format("YYYY-MM-DD"),
@@ -57,11 +60,12 @@ const initialValues = {
   [repeat.name]: "",
   [recurring.name]: 1,
   [recurringType.name]: 1,
+  [files.name]: [],
   [totalCycles.name]: "",
   [isInfinite.name]: true,
   [createInvoiceBillable.name]: false,
   [sendInvoiceToCustomer.name]: false,
-  [billable.name]: false,
+  [billable.name]: true,
 };
 
 export default initialValues;

@@ -27,7 +27,9 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PartnerProjectRoleController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
@@ -74,7 +76,7 @@ Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'inde
 Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
-Route::get('/projects-select/{defendant}', [ProjectController::class, 'select']);
+Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
 Route::post('/projects', [ProjectController::class, 'store']);
 Route::put('/projects/{project}', [ProjectController::class, 'update']);
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
@@ -112,6 +114,8 @@ Route::get('/partners-select', [PartnerController::class, 'select']);
 
 Route::get('/partner-types', [PartnerTypeController::class, 'index']);
 
+Route::get('/partner-project-roles', [PartnerProjectRoleController::class, 'index']);
+
 Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
@@ -131,12 +135,15 @@ Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
 Route::delete('/estimates/{estimate}', [EstimateController::class, 'destroy']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 
+Route::get('/proposals-select', [ProposalController::class, 'select']);
 Route::get('/proposals', [ProposalController::class, 'index']);
 Route::post('/proposals', [ProposalController::class, 'store']);
 Route::put('/proposals/{proposal}', [ProposalController::class, 'update']);
 Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
 Route::delete('/proposals/{proposal}', [ProposalController::class, 'destroy']);
 Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
+
+Route::get('/proposal-to-project/{proposal}', [ProposalController::class, 'toProject']);
 
 Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
 Route::get('/tasks-status', [TaskStatusController::class, 'index']);
@@ -192,6 +199,7 @@ Route::get('/files', [FileController::class, 'index']);
 Route::get('/files/{file}', [FileController::class, 'show']);
 Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
+Route::post('/files-store-many', [FileController::class, 'storeMany']);
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -254,6 +262,8 @@ Route::get('/documents', [DocumentController::class, 'generate']);
 
 Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
 Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
+
+Route::get('/notifications', [NotificationController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

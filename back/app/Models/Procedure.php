@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Procedure extends Model
 {
@@ -85,12 +84,12 @@ class Procedure extends Model
             'task_status_id' => TaskStatus::PENDING,
             'taskable_id' => $project->id,
             'taskable_type' => Task::TASKABLE_PROJECT,
-            'partner_id' => $project->defendant_id,
+            'partner_id' => $project->billable_partner_id,
             'owner_id' => $project->responsible_person_id,
             'start_date' => now(),
             'description' => $this->description,
             'name' => $this->name,
-            'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder + 1 // Next milestone order,
+            'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder + 1, // Next milestone order,
         ]);
 
         $this->load('dependencies');

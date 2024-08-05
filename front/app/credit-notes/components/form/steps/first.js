@@ -34,7 +34,7 @@ export default function First({ formData, partners, currencies, creditNote }) {
   useEffect(() => {
     if (searchParams.get("projectId")) {
       showProject(searchParams.get("projectId")).then((data) => {
-        setFieldValue(partner.name, data.defendantId);
+        setFieldValue(partner.name, data.billablePartnerId);
         setFieldValue(project.name, data.id);
       });
     }

@@ -9,24 +9,29 @@ import { Formik, Form } from "formik";
 
 import First from "./steps/first";
 import Second from "./steps/second";
+import FileForm from "/components/FileForm";
 
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
+
+import { EXPENSE_FILEABLE_TYPE } from "/utils/constants/fileableTypes";
 
 import { useSearchParams, useRouter } from "next/navigation";
 
 import { update as updateExpense } from "/actions/expenses";
 
 import { useState } from "react";
+import { revalidateExpenses } from "/actions/expenses";
 
-const steps = ["Nuevo Gasto", "Opciones avanzadas"];
+const steps = ["Nuevo Gasto", "Opciones avanzadas", "Adjuntar archivo"];
 
 export default function FormComponent({
   expense,
   partners,
   categories,
   invoices,
+  apiUrl,
   currencies,
   taxes,
   paymentMethods,
@@ -57,6 +62,14 @@ export default function FormComponent({
             {...{ expense, currencies, taxes, paymentMethods, repeats }}
           />
         );
+      case 2:
+        return (
+          <FileForm
+            formData={formData}
+            fileableType={EXPENSE_FILEABLE_TYPE}
+            data={expense?.files}
+          />
+        );
       default:
         return null;
     }
@@ -76,7 +89,29 @@ export default function FormComponent({
   const handleCancel = () => returnToSource();
 
   const submitForm = async (values, actions) => {
+    const formData = new FormData();
+    const files = values[formField.files.name];
+
+    files.forEach((rawFile) => {
+      formData.append("files[]", rawFile.file);
+      formData.append("files_info[]", rawFile.name);
+    });
+    formData.append("fileable_type", EXPENSE_FILEABLE_TYPE);
+    formData.append("fileable_id", expense.id);
+
+    delete values[formField.files.name];
+
     try {
+      if (files.length > 0) {
+        await fetch(`${apiUrl}/files-store-many`, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+          next: { tags: ["update-files"] },
+        });
+      }
       await updateExpense(expense.id, values);
     } catch (error) {
       setErrorMsg(error.message);
@@ -84,9 +119,10 @@ export default function FormComponent({
     }
   };
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = async (values, actions) => {
     if (isLastStep) {
-      submitForm(values, actions);
+      await submitForm(values, actions);
+      await revalidateExpenses("update-files");
       returnToSource();
     } else {
       setActiveStep(activeStep + 1);
@@ -174,7 +210,12 @@ export default function FormComponent({
                             Anterior
                           </MDButton>
                         )}
-                        <MDButton type="submit" variant="gradient" color="dark">
+                        <MDButton
+                          type="submit"
+                          variant="gradient"
+                          color="dark"
+                          disabled={isSubmitting}
+                        >
                           {isLastStep ? "Guardar" : "Siguiente"}
                         </MDButton>
                       </MDBox>

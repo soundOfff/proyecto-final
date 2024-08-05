@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
+use App\Models\PartnerProjectRole;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
@@ -23,9 +24,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function select(Partner $defendant)
+    public function select(Partner $partner)
     {
-        $projects = Project::where('defendant_id', $defendant->id)
+        $projects = Project::where('billable_partner_id', $partner->id)
             ->select('id', 'name')
             ->get();
 
@@ -41,7 +42,7 @@ class ProjectController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('status', 'status.id'),
                 AllowedFilter::scope('search'),
-                AllowedFilter::exact('defendant_id'),
+                AllowedFilter::exact('billable_partner_id'),
                 AllowedFilter::callback(
                     'staff_id',
                     function (Builder $query, $value) {
@@ -59,14 +60,14 @@ class ProjectController extends Controller
                 'status',
                 'jurisdiction',
                 'serviceType.processes',
-                'defendant',
-                'plaintiff',
+                'billablePartner',
                 'responsiblePerson',
                 'files',
                 'lawFirm',
                 'members',
                 'staffs',
                 'partners',
+                'proposal',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -86,21 +87,27 @@ class ProjectController extends Controller
 
         $partnersToAttach = [];
         foreach ($request->get('partners') as $partner) {
-            $partnersToAttach[$partner['id']] = ['role' => $partner['role']];
+            $partnersToAttach[$partner['id']] = [
+                'role_id' => $partner['role_id'],
+                'owner_id' => isset($partner['owner_id']) ? $partner['owner_id'] : null,
+            ];
         }
 
-        $defendantName = Partner::find($newProject['defendant_id'])->merged_name;
-        $plaintiff = Partner::find($newProject['plaintiff_id']);
-        $plaintiffName = $plaintiff ? $plaintiff->merged_name : '';
-        $serviceType = ProjectServiceType::find($newProject['project_service_type_id']);
-        $serviceTypeName = $serviceType ? $serviceType->label : '';
-
-        $newProject['name'] = "$serviceTypeName | $plaintiffName vs $defendantName";
+        $newProject['name'] = 'New project';
 
         $project = Project::create($newProject);
 
         $project->members()->attach($projectMemberIds);
         $project->partners()->attach($partnersToAttach);
+
+        $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
+        $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
+
+        $projectName = $plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
+
+        $project->update([
+            'name' => $projectName,
+        ]);
 
         $task = Task::create([
             'name' => 'Data entry',
@@ -110,7 +117,7 @@ class ProjectController extends Controller
             'owner_id' => $project->responsiblePerson->id,
             'taskable_id' => $project->id,
             'taskable_type' => 'project',
-            'partner_id' => $project->defendant_id,
+            'partner_id' => $project->partners->first()->id ?? 31,
             'start_date' => Carbon::now(),
             'date_added' => Carbon::now(),
             'repeat_id' => TaskRepeat::CUSTOM,
@@ -134,8 +141,7 @@ class ProjectController extends Controller
         $project = QueryBuilder::for(Project::class)
             ->allowedIncludes([
                 'staffs',
-                'defendant',
-                'plaintiff',
+                'billablePartner',
                 'billingType',
                 'serviceType.processes.forks',
                 'files',
@@ -144,6 +150,7 @@ class ProjectController extends Controller
                 'responsiblePerson',
                 'tasks',
                 'partners',
+                'proposal',
             ])
             ->find($project->id);
 
@@ -162,17 +169,17 @@ class ProjectController extends Controller
 
         $partnersToSync = [];
         foreach ($request->get('partners') as $partner) {
-            $partnersToSync[$partner['id']] = ['role' => $partner['role']];
+            $partnersToSync[$partner['id']] = [
+                'role_id' => $partner['role_id'],
+                'owner_id' => isset($partner['owner_id']) ? $partner['owner_id'] : null,
+            ];
         }
         $project->partners()->sync($partnersToSync);
 
-        $defendantName = Partner::find($data['defendant_id'])->merged_name;
-        $plaintiff = Partner::find($data['plaintiff_id']);
-        $plaintiffName = $plaintiff ? $plaintiff->merged_name : '';
-        $serviceType = ProjectServiceType::find($data['project_service_type_id']);
-        $serviceTypeName = $serviceType ? $serviceType->label : '';
+        $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
+        $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
 
-        $data['name'] = "$serviceTypeName | $plaintiffName vs $defendantName";
+        $data['name'] = $plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
 
         $project->update($data);
 
@@ -195,7 +202,7 @@ class ProjectController extends Controller
 
         $countByStatuses = DB::table('project_statuses')
             ->when($partnerId, function ($query, $partnerId) {
-                return $query->selectRaw("label, COUNT(IF(defendant_id = $partnerId, 1, NULL)) as count");
+                return $query->selectRaw("label, COUNT(IF(billable_partner_id = $partnerId, 1, NULL)) as count");
             },
                 function ($query) {
                     return $query->selectRaw('label, COUNT(project_status_id) as count');

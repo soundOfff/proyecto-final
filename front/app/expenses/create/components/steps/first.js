@@ -20,15 +20,26 @@ import { ErrorMessage } from "formik";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSelect as getProjectSelect } from "/actions/projects";
+import { getAll as getTaskSelect } from "/actions/tasks";
 
 export default function First({ formData, partners, categories }) {
   const { formField, values, errors, touched, setFieldValue } = formData;
-  const { name, note, category, date, amount, partner, project, billable } =
-    formField;
+  const {
+    name,
+    note,
+    category,
+    date,
+    amount,
+    partner,
+    task,
+    project,
+    billable,
+  } = formField;
   const searchParams = useSearchParams();
   const partnerId = searchParams.get("partnerId");
   const projectId = searchParams.get("projectId");
   const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     if (partnerId) {
@@ -49,6 +60,15 @@ export default function First({ formData, partners, categories }) {
       );
     }
   }, [values.partner_id, setFieldValue, project]);
+
+  useEffect(() => {
+    if (values.project_id) {
+      getTaskSelect({
+        "filter[taskable_id]": values.project_id,
+        "filter[taskable_type]": "project",
+      }).then(({ data }) => setTasks(data.tasks));
+    }
+  }, [values.project_id, setFieldValue, task]);
 
   return (
     <Grid container spacing={4}>
@@ -122,6 +142,22 @@ export default function First({ formData, partners, categories }) {
         )}
       </Grid>
       <Grid item xs={12} sm={6}>
+        {tasks.length > 0 ? (
+          <Select
+            value={values[task.name]}
+            options={tasks}
+            optionLabel={(option) => option.name}
+            fieldName={task.name}
+            inputLabel={task.label}
+            setFieldValue={setFieldValue}
+          />
+        ) : (
+          <MDTypography variant="caption" color="warning">
+            No hay tareas asociadas a este proyecto
+          </MDTypography>
+        )}
+      </Grid>
+      <Grid item xs={12} sm={6}>
         <Select
           value={values[category.name]}
           options={categories}
@@ -142,7 +178,7 @@ export default function First({ formData, partners, categories }) {
           success={values[amount.name]?.length > 0 && !errors[amount.name]}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
             fullWidth: true,
@@ -178,6 +214,7 @@ export default function First({ formData, partners, categories }) {
                       setFieldValue(billable.name, e.target.checked)
                     }
                     name={billable.name}
+                    defaultChecked
                   />
                 }
                 label={billable.label}

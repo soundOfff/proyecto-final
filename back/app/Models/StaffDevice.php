@@ -16,4 +16,9 @@ class StaffDevice extends Model
     {
         return $this->belongsTo(Staff::class);
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

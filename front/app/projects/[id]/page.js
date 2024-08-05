@@ -18,15 +18,15 @@ import Index from "./components/index";
 const include = [
   "staffs",
   "tasks",
-  "defendant",
+  "billablePartner",
   "tasks",
-  "plaintiff",
   "billingType",
   "serviceType.processes.forks",
   "responsiblePerson",
   "status",
   "members",
   "partners",
+  "proposal",
 ];
 
 export default async function Show({ params }) {

@@ -44,7 +44,7 @@ export default function Table({ rows, meta }) {
     const fetchExpense = async () => {
       setExpense(
         await show(expenseIdShow, {
-          include: ["category", "project", "invoice", "partner"],
+          include: ["category", "project", "invoice", "partner", "files"],
         })
       );
     };
@@ -122,15 +122,16 @@ export default function Table({ rows, meta }) {
     {
       Header: "Archivos",
       accessor: "files",
-      width: "20%",
+      width: "15%",
       textAlign: "center",
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <MDBox
             display="flex"
             flexDirection="column"
             alignItems="center"
-            sx={{ gap: 1, width: "100%" }}
+            sx={{ gap: 1 }}
           >
             {row.original.files.map((file) => (
               <MDBox
@@ -138,21 +139,23 @@ export default function Table({ rows, meta }) {
                 borderRadius="lg"
                 display="flex"
                 alignItems="center"
-                width="100%"
                 justifyContent="between"
-                p={0.75}
                 sx={{
                   border: ({ borders: { borderWidth, borderColor } }) =>
                     `${borderWidth[1]} solid ${borderColor}`,
                   gap: 1,
+                  px: 2,
+                  py: 1,
+                  width: "auto",
                 }}
               >
-                <DescriptionOutlined fontSize="medium" color="dark" />
-                <Link href={file.publicUrl}>
+                <DescriptionOutlined fontSize="small" color="dark" />
+                <Link href={file.publicUrl} target="_blank">
                   <MDTypography
                     variant="button"
                     fontWeight="regular"
                     color="dark"
+                    fontSize="small"
                   >
                     {file.subject.length > 10
                       ? file.subject.substring(0, 10) + "..."
@@ -172,6 +175,7 @@ export default function Table({ rows, meta }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Vista Rápida">

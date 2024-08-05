@@ -12,6 +12,8 @@ class ProposalStatus extends Model
         'label',
     ];
 
+    public const ACCEPTED = 6;
+
     public function proposals(): HasMany
     {
         return $this->hasMany(Proposal::class);

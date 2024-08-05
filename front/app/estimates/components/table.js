@@ -89,13 +89,14 @@ export default function Table({ rows, meta }) {
     },
     {
       id: "serviceType",
-      Header: "Tipo de Servicio",
+      Header: "Departamento",
       accessor: "project.serviceType",
       Cell: ({ row }) => row.original.project?.serviceType?.label,
     },
     {
       id: "actions",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Link

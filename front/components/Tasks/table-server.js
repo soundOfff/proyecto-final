@@ -27,6 +27,7 @@ import { useSession } from "next-auth/react";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 import useTaskTable from "/hooks/useTaskTable";
 
@@ -68,6 +69,9 @@ export default function Table({
   } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
   const { darkMode } = controller;
   const { data: session } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const {
     setOpenDeleteConfirmation,
@@ -77,6 +81,13 @@ export default function Table({
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
+
+  const handleOpenModal = (id) => {
+    setTaskId(id);
+    setOpenShowModal(true);
+    const params = new URLSearchParams(searchParams.toString());
+    router.replace(`${pathname}?${params.toString()}`);
+  };
 
   const columns = [
     {
@@ -97,6 +108,8 @@ export default function Table({
                 }
                 size="lg"
                 badgeContent={`#${dependency.id}`}
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleOpenModal(dependency.id)}
               />
             </Grid>
           ))}
@@ -118,10 +131,7 @@ export default function Table({
             variant="body2"
             color="info"
             sx={{ cursor: "pointer" }}
-            onClick={() => {
-              setTaskId(row.original.id);
-              setOpenShowModal(true);
-            }}
+            onClick={() => handleOpenModal(row.original.id)}
           >
             {row.original.name}
           </MDTypography>
@@ -222,6 +232,7 @@ export default function Table({
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Agregar Archivo">
@@ -334,7 +345,7 @@ export default function Table({
                     taskable_id: invoice.id,
                     taskable_type: INVOICE_TYPE,
                     partner_id:
-                      invoice.project?.defendant.id ?? invoice.partner.id,
+                      invoice.project?.billablePartnerId ?? invoice.partner.id,
                   }
                 : task
             }

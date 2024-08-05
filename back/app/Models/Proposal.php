@@ -107,6 +107,11 @@ class Proposal extends Model
         return $this->hasMany(ProposalComment::class);
     }
 
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
+
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');

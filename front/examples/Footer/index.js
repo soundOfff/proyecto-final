@@ -28,11 +28,10 @@ import MDTypography from "/components/MDTypography";
 import typography from "/assets/theme/base/typography";
 
 function Footer({
-  company = { href: "#", name: "BrandFactors" },
+  company = { href: "https://brandfactors.com/", name: "BrandFactors" },
   links = [
-    { href: "#", name: "About Us" },
-    { href: "#", name: "Blog" },
-    { href: "#", name: "License" },
+    { href: "https://velo-docs-eta.vercel.app/", name: "Docs" },
+    { href: "https://blog.brandfactors.com/", name: "Blog" },
   ],
 }) {
   const { href, name } = company;

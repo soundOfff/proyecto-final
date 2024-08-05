@@ -7,6 +7,7 @@ use App\Http\Resources\PartnerResource;
 use App\Http\Resources\PartnerResourceCollection;
 use App\Http\Resources\PartnerSelectResourceCollection;
 use App\Models\Partner;
+use App\Models\PartnerType;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -18,11 +19,19 @@ class PartnerController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('is_consolidator'),
                 AllowedFilter::callback('is_juridic', function ($query, $value) {
-                    return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? $query->whereNotNull('company') : $query->whereNotNull('name');
+                    return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? $query->whereNotNull('partners.company') : $query->whereNotNull('partners.name');
+                }),
+                AllowedFilter::callback('owners', function ($query, $value) {
+                    return $query
+                            ->select('owners.*')
+                            ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
+                            ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
+                            ->where('related_partner.partner_id', $value)
+                            ->where('related_partner.partner_type_id', PartnerType::OWNER);
                 }),
             ])
             ->where(function ($query) {
-                $query->whereNotNull('company')->orWhereNotNull('name');
+                $query->whereNotNull('partners.company')->orWhereNotNull('partners.name');
             })
             ->get();
 
@@ -79,14 +88,13 @@ class PartnerController extends Controller
 
         $relatedPartnersData = isset($newPartner['related_partners']) ? $newPartner['related_partners'] : [];
 
-
         foreach ($relatedPartnersData as $relatedData) {
             $partner->relatedPartners()->attach($relatedData['related_partner_id'], [
                 'start_date' => $relatedData['start_date'],
                 'end_date' => $relatedData['end_date'],
                 'partner_type_id' => $relatedData['partner_type_id'],
                 'active' => $relatedData['active'],
-            ]);   
+            ]);
         }
 
         return response()->json($partner, 201);
@@ -131,9 +139,9 @@ class PartnerController extends Controller
                 'end_date' => $relatedData['end_date'],
                 'partner_type_id' => $relatedData['partner_type_id'],
                 'active' => $relatedData['active'],
-            ];            
+            ];
         }
-        
+
         $partner->relatedPartners()->sync($pivotData);
         $partner->update($partnerUpdate);
 

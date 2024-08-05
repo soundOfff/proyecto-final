@@ -38,7 +38,7 @@ export default function Table({ rows }) {
   useEffect(() => {
     const fetchProject = async () => {
       setProject(
-        await show(projectIdShow, { include: ["staffs", "defendant"] })
+        await show(projectIdShow, { include: ["staffs", "billablePartner"] })
       );
     };
     if (projectIdShow) {
@@ -94,6 +94,7 @@ export default function Table({ rows }) {
       Header: "Acciones",
       accessor: "actions",
       textAlign: "center",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Vista Rápida">
@@ -135,7 +136,7 @@ export default function Table({ rows }) {
               pathname: `/expenses/create`,
               query: {
                 projectId: row.original.id,
-                partnerId: row.original.defendant.id,
+                partnerId: row.original.billablePartner?.id,
               },
             }}
           >

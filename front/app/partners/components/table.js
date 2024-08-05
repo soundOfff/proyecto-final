@@ -51,6 +51,7 @@ export default function Table({ rows }) {
     {
       Header: "Activo",
       accessor: "active",
+      disableSortBy: true,
       Cell: ({ value }) => {
         const label = { inputProps: { "aria-label": "Is active switch" } };
         return <Switch {...label} checked={Boolean(value)} />;
@@ -62,6 +63,7 @@ export default function Table({ rows }) {
       accessor: "files",
       width: "20%",
       textAlign: "center",
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <MDBox

@@ -10,6 +10,7 @@ import FormContent from "./formContent";
 import { store, update } from "/actions/staffs";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function StaffForm({ staff = null }) {
   const { formField, formId } = form;
@@ -75,7 +76,7 @@ export default function StaffForm({ staff = null }) {
             p={2}
           >
             {staff
-              ? `${staff.firstName} ${staff.lastName} - Ultimo acceso: ${staff.lastLogin}`
+              ? `${staff.firstName} ${staff.lastName} - Último acceso: ${staff.lastLogin}`
               : "Nuevo Staff"}
           </MDBox>
           <FormContent
@@ -91,9 +92,11 @@ export default function StaffForm({ staff = null }) {
           />
           <MDBox p={2}>
             <MDBox width="100%" display="flex" justifyContent="space-between">
-              <MDButton variant="gradient" color="light">
-                Volver
-              </MDButton>
+              <Link href="/staffs">
+                <MDButton variant="gradient" color="light">
+                  Volver
+                </MDButton>
+              </Link>
               <MDButton
                 type="submit"
                 disabled={isSubmitting}

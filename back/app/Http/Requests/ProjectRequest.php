@@ -22,22 +22,23 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'start_date' => 'required|date',
+            'project_status_id' => 'required|numeric|exists:project_statuses,id',
+            'responsible_person_id' => 'required|numeric|exists:staff,id',
+            'billable_partner_id' => 'required|numeric|exists:partners,id',
+            'project_members' => 'required|array',
+            'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',
+            'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
+            'proposal_id' => 'nullable|numeric|exists:proposals,id',
             'expedient' => 'nullable|string',
             'deadline' => 'nullable|date',
             'description' => 'nullable|string',
             'estimated_hours' => 'nullable|numeric',
             'cost' => 'nullable|numeric',
-            'start_date' => 'required|date',
-            'project_status_id' => 'required|numeric|exists:project_statuses,id',
-            'responsible_person_id' => 'required|numeric|exists:staff,id',
-            'defendant_id' => 'required|numeric|exists:partners,id',
-            'plaintiff_id' => 'nullable|numeric|exists:partners,id',
-            'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',
-            'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
-            'project_members' => 'required|array',
             'partners' => 'nullable|array',
             'partners.*.id' => 'required|numeric|exists:partners,id',
-            'partners.*.role' => 'required|string',
+            'partners.*.role_id' => 'required|numeric|exists:partner_project_roles,id',
+            'partners.*.owner_id' => 'nullable|numeric|exists:partners,id',
         ];
     }
 }

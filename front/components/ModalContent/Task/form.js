@@ -98,7 +98,7 @@ export default function TaskForm({
     if (partnerId) setFieldValue(partner_id.name, partnerId || "");
     if (project) {
       setFieldValue(taskableId.name, project.id);
-      setFieldValue(partner_id.name, project.defendantId);
+      setFieldValue(partner_id.name, project.billablePartnerId);
     }
   }, [
     task,

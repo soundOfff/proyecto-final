@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -17,8 +16,6 @@ class Project extends Model
 
     protected $fillable = [
         'project_status_id',
-        'defendant_id',
-        'plaintiff_id',
         'law_firm_id',
         'jurisdiction_id',
         'project_billing_type_id',
@@ -40,6 +37,8 @@ class Project extends Model
         'amount',
         'jury_number',
         'on_schedule',
+        'proposal_id',
+        'billable_partner_id',
     ];
 
     public function stages(): HasMany
@@ -57,24 +56,14 @@ class Project extends Model
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
     }
 
-    public function partner(): BelongsTo
+    public function billablePartner(): BelongsTo
     {
-        return $this->belongsTo(Partner::class);
+        return $this->belongsTo(Partner::class, 'billable_partner_id');
     }
 
     public function jurisdiction(): BelongsTo
     {
         return $this->belongsTo(Jurisdiction::class);
-    }
-
-    public function defendant(): BelongsTo
-    {
-        return $this->belongsTo(Partner::class, 'defendant_id');
-    }
-
-    public function plaintiff(): BelongsTo
-    {
-        return $this->belongsTo(Partner::class, 'plaintiff_id');
     }
 
     public function responsiblePerson(): BelongsTo
@@ -97,6 +86,11 @@ class Project extends Model
         return $this->belongsTo(ProjectBillingType::class, 'project_billing_type_id');
     }
 
+    public function proposal(): BelongsTo
+    {
+        return $this->belongsTo(Proposal::class);
+    }
+
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class, 'project_members');
@@ -109,7 +103,7 @@ class Project extends Model
 
     public function partners(): BelongsToMany
     {
-        return $this->belongsToMany(Partner::class, 'partner_project')->withPivot('role');
+        return $this->belongsToMany(Partner::class, 'partner_project')->using(PartnerProject::class)->withPivot('role_id', 'owner_id');
     }
 
     public function files(): MorphMany

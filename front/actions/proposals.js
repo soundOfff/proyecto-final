@@ -4,6 +4,15 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { customFetch } from "./custom-fetch";
 
+export async function getSelect(params) {
+  const url = new URL(`${process.env.API_URL}/proposals-select`);
+  url.search = new URLSearchParams(params);
+
+  const { data } = await customFetch(url);
+
+  return data.proposals;
+}
+
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/proposals`);
   url.search = new URLSearchParams(params);
@@ -54,4 +63,13 @@ export async function destroy(id) {
   });
 
   revalidatePath("/proposals");
+}
+
+export async function toProject(id) {
+  const url = new URL(`${process.env.API_URL}/proposal-to-project/${id}`);
+
+  await customFetch(url);
+
+  revalidatePath("/projects");
+  redirect("/projects");
 }

@@ -24,6 +24,7 @@ const {
     note,
     date,
     name,
+    task,
     currency,
     partner,
     project,
@@ -36,6 +37,7 @@ const {
     recurringType,
     totalCycles,
     isInfinite,
+    files,
   },
 } = checkout;
 
@@ -43,6 +45,7 @@ const validations = [
   Yup.object().shape({
     [name.name]: Yup.string(),
     [note.name]: Yup.string(),
+    [task.name]: Yup.string().nullable(),
     [category.name]: Yup.string().required(category.errorMsg),
     [date.name]: Yup.date().required(date.errorMsg),
     [amount.name]: Yup.number("El valor debe ser un número")
@@ -55,7 +58,7 @@ const validations = [
     [currency.name]: Yup.string().required(currency.errorMsg),
     [tax.name]: Yup.string().nullable(),
     [tax2.name]: Yup.string().nullable(),
-    [paymentMethod.name]: Yup.string().required(paymentMethod.errorMsg),
+    [paymentMethod.name]: Yup.string().nullable(),
     [reference.name]: Yup.string(),
     [repeat.name]: Yup.number(),
     [recurring.name]: Yup.number().when(repeat.name, {
@@ -85,6 +88,7 @@ const validations = [
           .min(1, "Los ciclos totales deben ser mayor a 0")
           .required('Este campo es requerido si seleccionó "repetir cada"'),
     }),
+    [files.name]: Yup.array().nullable(),
   }),
 ];
 

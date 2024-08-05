@@ -26,7 +26,9 @@ const {
     name,
     currency,
     partner,
+    task,
     project,
+    files,
     reference,
     paymentMethod,
     tax,
@@ -43,6 +45,7 @@ const validations = [
     [name.name]: Yup.string(),
     [note.name]: Yup.string(),
     [partner.name]: Yup.string().required(partner.errorMsg),
+    [task.name]: Yup.string().nullable(),
     [project.name]: Yup.string().nullable(),
     [category.name]: Yup.string().required(category.errorMsg),
     [date.name]: Yup.date().required(date.errorMsg),
@@ -67,6 +70,7 @@ const validations = [
       is: false,
       then: (schema) => schema.min(1, "Los ciclos totales deben ser mayor a 0"),
     }),
+    [files.name]: Yup.array().nullable(),
   }),
 ];
 

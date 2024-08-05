@@ -30,7 +30,7 @@ export default function Table({ rows }) {
   useEffect(() => {
     const fetchProject = async () => {
       setProject(
-        await show(projectIdShow, { include: ["staffs", "defendant"] })
+        await show(projectIdShow, { include: ["staffs", "billablePartner"] })
       );
     };
     if (projectIdShow) {

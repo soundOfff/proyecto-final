@@ -20,9 +20,10 @@ import { getAll as getAllProjects } from "/actions/projects";
 import { getAll as getAllPartners } from "/actions/partners";
 import { getAll as getAllExpenses } from "/actions/expenses";
 import { getAll as getAllTasks } from "/actions/tasks";
+import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { useSearchParams } from "next/navigation";
 
-export default function FormContent({ values, setFieldValue }) {
+export default function FormContent({ values, setFieldValue, errors }) {
   const { formField } = form;
   const { file: fileField, fileableType, fileableId, path, name } = formField;
   const [relations, setRelations] = useState([]);
@@ -75,12 +76,7 @@ export default function FormContent({ values, setFieldValue }) {
         setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
       }
     }
-
-    setFieldValue(
-      name.name,
-      values[fileField.name]?.upload?.filename.split(".")[0]
-    );
-  }, [searchParams, fileableId, fileableType, setFieldValue, values, name]);
+  }, [searchParams, fileableId, fileableType, setFieldValue, values]);
 
   const options = useMemo(
     () => ({
@@ -107,6 +103,17 @@ export default function FormContent({ values, setFieldValue }) {
             <ErrorMessage name={fileField.name} />
           </MDTypography>
         </MDBox>
+      </Grid>
+      <Grid item xs={12} mt={2}>
+        <FormField
+          name={name.name}
+          label={name.label}
+          type={name.type}
+          placeholder="Nombre del archivo"
+          value={values[name.name]}
+          error={errors[name.name] && touched[name.name]}
+          success={values[name.name]?.length > 0 && !errors[name.name]}
+        />
       </Grid>
       <Grid item xs={12} sm={6}>
         <MDBox>

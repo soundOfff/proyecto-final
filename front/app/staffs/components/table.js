@@ -54,6 +54,7 @@ export default function Table({ rows, meta }) {
               variant="button"
               fontWeight="regular"
               color="info"
+              fontSize="small"
               mr={2}
             >
               {row.original.firstName} {row.original.lastName}
@@ -66,15 +67,18 @@ export default function Table({ rows, meta }) {
       Header: "Email",
       accessor: "email",
       Cell: ({ row }) => (
-        <MDTypography variant="body2">{row.original.email}</MDTypography>
+        <MDTypography variant="body2" fontSize="small">
+          {row.original.email}
+        </MDTypography>
       ),
     },
     {
       Header: "Cargo",
       accessor: "isAdmin",
+      disableSortBy: true,
     },
     {
-      Header: "Ultimo acceso",
+      Header: "Último acceso",
       accessor: "last_login",
       Cell: ({ row }) => {
         return (
@@ -89,6 +93,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Activo",
       accessor: "active",
+      disableSortBy: true,
       Cell: ({ value }) => {
         const label = { inputProps: { "aria-label": "Is active switch" } };
         return <Switch {...label} checked={Boolean(value)} />;
@@ -97,7 +102,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Acciones",
       accessor: "actions",
-      noSortBy: true,
+      disableSortBy: true,
       Cell: ({ row }) =>
         false && (
           <Tooltip title="Eliminar un miembro">

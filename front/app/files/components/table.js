@@ -40,7 +40,12 @@ export default function Table({ rows, meta }) {
       id: "fileable_type",
       Header: "Relacionado con",
       Cell: ({ row }) => (
-        <MDTypography variant="button" color="dark" sx={{ display: "flex" }}>
+        <MDTypography
+          variant="button"
+          color="dark"
+          fontSize="small"
+          sx={{ display: "flex" }}
+        >
           {MAPPED_FILEABLE_TYPES[row.original.fileableType].label}
         </MDTypography>
       ),
@@ -54,7 +59,7 @@ export default function Table({ rows, meta }) {
           href={getFileableUrl(row.original)}
           sx={{ cursor: "pointer", color: "link" }}
         >
-          <MDTypography variant="button" color="link">
+          <MDTypography variant="button" color="link" fontSize="small">
             {getFileableLabel(row.original)}
           </MDTypography>
         </Link>
@@ -64,11 +69,13 @@ export default function Table({ rows, meta }) {
       id: "url",
       Header: "URL",
       accessor: "publicUrl",
+      disableSortBy: true,
       Cell: ({ value }) => (
         <Link href={value} target="_blank" sx={{ color: "info" }}>
           <MDTypography
             variant="button"
             color="link"
+            fontSize="small"
             sx={{
               display: "flex",
               alignItems: "center",
@@ -86,6 +93,7 @@ export default function Table({ rows, meta }) {
     {
       id: "acciones",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <Tooltip title="Eliminar Archivo">
           <DeleteIcon

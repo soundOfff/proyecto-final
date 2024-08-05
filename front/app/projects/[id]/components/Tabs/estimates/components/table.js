@@ -85,7 +85,7 @@ export default function Table({ rows }) {
     },
     {
       id: "serviceType",
-      Header: "Tipo de Servicio",
+      Header: "Departamento",
       accessor: "project.serviceType",
       Cell: ({ row }) => row.original.project?.serviceType?.label,
     },

@@ -27,7 +27,7 @@ export default async function PartnerProjects({
     include,
     ...statusFilter,
     ...searchFilter,
-    "filter[defendant_id]": id,
+    "filter[billable_partner_id]": id,
   };
 
   const projects = await getAllProjects(params);

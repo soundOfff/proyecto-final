@@ -33,24 +33,25 @@ class ProjectResource extends JsonResource
             'amount' => $this->amount,
             'juryNumber' => $this->jury_number,
             'onSchedule' => $this->on_schedule,
-            'defendantId' => $this->defendant_id,
+            'billablePartnerId' => $this->billable_partner_id,
+            'proposalId' => $this->proposal_id,
             'files' => FileResource::collection($this->whenLoaded('files')),
             'createdAt' => Carbon::parse($this->created_at)->format('d-m-Y'),
             'billingType' => ProjectBillingTypeResource::make($this->whenLoaded('billingType')),
             'serviceType' => ProjectServiceTypeResource::make($this->whenLoaded('serviceType')),
+            'proposal' => ProposalResource::make($this->whenLoaded('proposal')),
             'stages' => ProjectStageResource::collection($this->whenLoaded('stages')),
             'members' => StaffResource::collection($this->whenLoaded('members')),
             'notes' => ProjectNoteResource::collection($this->whenLoaded('notes')),
             'status' => ProjectStatusResource::make($this->whenLoaded('status')),
             'jurisdiction' => JurisdictionResource::make($this->whenLoaded('jurisdiction')),
-            'defendant' => PartnerResource::make($this->whenLoaded('defendant')),
+            'billablePartner' => PartnerResource::make($this->whenLoaded('billablePartner')),
             'selectedProcesses' => $this->whenLoaded('tasks', function () {
                 return ProcessResource::collection($this->tasks->map(function ($task) {
                     return $task->procedure ? $task->procedure->process : null;
                 })->filter()->unique('id')->values());
             }),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
-            'plaintiff' => PartnerResource::make($this->whenLoaded('plaintiff')),
             'responsiblePerson' => PartnerResource::make($this->whenLoaded('responsiblePerson')),
             'lawFirm' => LawFirmResource::make($this->whenLoaded('lawFirm')),
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),

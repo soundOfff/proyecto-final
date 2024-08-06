@@ -55,7 +55,6 @@ import ResponsiveTableContent from "/examples/Tables/components/responsive-table
 import DataTableRow from "../components/DataTableRow";
 import withScrolling from "react-dnd-scrolling";
 import { Checkbox } from "@mui/material";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const ScrollingComponent = withScrolling("div");
 
@@ -196,26 +195,19 @@ function DataTable({
     setGlobalFilter(value || undefined);
   }, 100);
 
-  const { replace } = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
   // A function that sets the sorted value for the table
   const setSort = (column) => {
-    const params = new URLSearchParams(searchParams);
+    let sortedValue;
 
-    if (params.get("sort") == null) {
-      params.set("sort", column.id);
-    } else if (column.id === params.get("sort")) {
-      params.set("sort", `-${column.id}`);
-    } else if (params.get("sort") === `-${column.id}`) {
-      params.delete("sort");
+    if (isSorted && column.isSorted) {
+      sortedValue = column.isSortedDesc ? "desc" : "asce";
+    } else if (isSorted) {
+      sortedValue = "none";
     } else {
-      params.set("sort", column.id);
+      sortedValue = false;
     }
-    params.delete("page");
 
-    replace(`${pathname}?${params.toString()}`);
+    return sortedValue;
   };
 
   // Setting the entries starting point

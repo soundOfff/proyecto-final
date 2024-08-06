@@ -55,6 +55,8 @@ import ResponsiveTableContent from "/examples/Tables/components/responsive-table
 import DataTableRow from "../components/DataTableRow";
 import withScrolling from "react-dnd-scrolling";
 import { Checkbox } from "@mui/material";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 const ScrollingComponent = withScrolling("div");
 
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -102,7 +104,6 @@ function DataTable({
       },
     },
     useGlobalFilter,
-    useSortBy,
     usePagination,
     useRowSelect,
     (hooks) => {
@@ -195,19 +196,26 @@ function DataTable({
     setGlobalFilter(value || undefined);
   }, 100);
 
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   // A function that sets the sorted value for the table
-  const setSortedValue = (column) => {
-    let sortedValue;
+  const setSort = (column) => {
+    const params = new URLSearchParams(searchParams);
 
-    if (isSorted && column.isSorted) {
-      sortedValue = column.isSortedDesc ? "desc" : "asce";
-    } else if (isSorted) {
-      sortedValue = "none";
+    if (params.get("sort") == null) {
+      params.set("sort", column.id);
+    } else if (column.id === params.get("sort")) {
+      params.set("sort", `-${column.id}`);
+    } else if (params.get("sort") === `-${column.id}`) {
+      params.delete("sort");
     } else {
-      sortedValue = false;
+      params.set("sort", column.id);
     }
+    params.delete("page");
 
-    return sortedValue;
+    replace(`${pathname}?${params.toString()}`);
   };
 
   // Setting the entries starting point
@@ -295,7 +303,7 @@ function DataTable({
                       }}
                       onClick={
                         column.disableSortBy ? null : () => setSort(column)
-                      } // Solo llama a setSort si disableSortBy es falso
+                      }
                     >
                       {column.render("Header")}
                     </DataTableHeadCell>

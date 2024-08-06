@@ -269,6 +269,7 @@ export default function Table({
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       accessor: "",
       Cell: ({ row }) => (
         <MDBox display="flex">

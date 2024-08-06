@@ -159,6 +159,7 @@ export default function Table({ rows, project }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Vista Rápida">

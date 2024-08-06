@@ -104,6 +104,7 @@ export default function Table({ rows }) {
     {
       id: "acciones",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex" alignContent="center">
           <Tooltip title="Asignar un pago">

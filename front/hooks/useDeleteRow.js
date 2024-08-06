@@ -47,6 +47,7 @@ export default function useDeleteRow(destroyCallback, destroyCallbackMultiple) {
 
   return {
     deleteId,
+    deleteIds,
     openDeleteConfirmation,
     deleteConfirmed,
     errorSB,

@@ -84,6 +84,7 @@ export default function Table({
     openDeleteConfirmation,
     setDeleteConfirmed,
     setDeleteIds,
+    deleteIds,
   } = useDeleteRow(destroy, destroyMany);
 
   useEffect(() => {
@@ -367,6 +368,7 @@ export default function Table({
           <MDButton
             variant="gradient"
             color="error"
+            disabled={deleteIds.length === 0}
             onClick={() => {
               handleDeleteMultiple();
             }}

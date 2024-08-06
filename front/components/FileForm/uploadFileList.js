@@ -28,9 +28,14 @@ export default function UploadFileList({ files = null, handleDeleteFile }) {
               width: "auto",
             }}
           >
-            <DescriptionOutlined fontSize="medium" color="dark" />
+            <DescriptionOutlined fontSize="small" color="dark" />
             <Link href={file.publicUrl}>
-              <MDTypography variant="button" fontWeight="regular" color="dark">
+              <MDTypography
+                variant="button"
+                fontWeight="regular"
+                color="dark"
+                fontSize="small"
+              >
                 {file.subject}
               </MDTypography>
             </Link>

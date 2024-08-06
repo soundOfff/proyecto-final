@@ -84,6 +84,7 @@ export default function Table({
     openDeleteConfirmation,
     setDeleteConfirmed,
     setDeleteIds,
+    deleteIds,
   } = useDeleteRow(destroy, destroyMany);
 
   useEffect(() => {
@@ -363,15 +364,17 @@ export default function Table({
           >
             Crear nueva tarea
           </MDButton>
-          <MDButton
-            variant="gradient"
-            color="error"
-            onClick={() => {
-              handleDeleteMultiple();
-            }}
-          >
-            Eliminar Múltiples
-          </MDButton>
+          {deleteIds.length > 0 && (
+            <MDButton
+              variant="gradient"
+              color="error"
+              onClick={() => {
+                handleDeleteMultiple();
+              }}
+            >
+              Eliminar Múltiples
+            </MDButton>
+          )}
         </MDBox>
         {openEditModal && (
           <Modal

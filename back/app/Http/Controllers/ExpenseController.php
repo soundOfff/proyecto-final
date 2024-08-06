@@ -33,6 +33,7 @@ class ExpenseController extends Controller
                 'task',
                 'category',
                 'project',
+                'estimate',
                 'files',
                 'invoice',
             ])
@@ -102,6 +103,7 @@ class ExpenseController extends Controller
         $expense = QueryBuilder::for(Expense::class)
             ->allowedIncludes([
                 'partner',
+                'estimate',
                 'task',
                 'category',
                 'files',

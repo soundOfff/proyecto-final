@@ -34,6 +34,7 @@ class ExpenseResource extends JsonResource
             'total_cycles' => $this->total_cycles,
             'createdFromAction' => $this->created_from_action,
             'files' => FileResource::collection($this->whenLoaded('files')),
+            'estimate' => EstimateResource::make($this->whenLoaded('estimate')),
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'category' => ExpenseCategoryResource::make($this->whenLoaded('category')),
             'partner' => PartnerResource::make($this->whenLoaded('partner')),

@@ -81,6 +81,7 @@ export default function Procedures({ procedures, actionTypes, processId }) {
     {
       id: "acciones",
       Header: "",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Editar Procedimiento">

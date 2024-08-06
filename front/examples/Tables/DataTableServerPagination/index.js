@@ -192,7 +192,7 @@ function DataTable({
                   align={column.align || "left"}
                   sorted={!column.disableSortBy}
                   sx={{ cursor: column.disableSortBy ? "default" : "pointer" }}
-                  onClick={column.disableSortBy ? null : () => setSort(column)} // Solo llama a setSort si disableSortBy es falso
+                  onClick={column.disableSortBy ? null : () => setSort(column)}
                 >
                   {column.render("Header")}
                 </DataTableHeadCell>

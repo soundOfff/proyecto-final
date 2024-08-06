@@ -143,6 +143,7 @@ export default function Table({ rows, project }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <Tooltip title="Vista Rápida">
           <AccessAlarm

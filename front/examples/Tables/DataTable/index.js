@@ -55,6 +55,7 @@ import ResponsiveTableContent from "/examples/Tables/components/responsive-table
 import DataTableRow from "../components/DataTableRow";
 import withScrolling from "react-dnd-scrolling";
 import { Checkbox } from "@mui/material";
+
 const ScrollingComponent = withScrolling("div");
 
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -102,7 +103,6 @@ function DataTable({
       },
     },
     useGlobalFilter,
-    useSortBy,
     usePagination,
     useRowSelect,
     (hooks) => {
@@ -196,7 +196,7 @@ function DataTable({
   }, 100);
 
   // A function that sets the sorted value for the table
-  const setSortedValue = (column) => {
+  const setSort = (column) => {
     let sortedValue;
 
     if (isSorted && column.isSorted) {
@@ -295,7 +295,7 @@ function DataTable({
                       }}
                       onClick={
                         column.disableSortBy ? null : () => setSort(column)
-                      } // Solo llama a setSort si disableSortBy es falso
+                      }
                     >
                       {column.render("Header")}
                     </DataTableHeadCell>

@@ -152,6 +152,7 @@ export default function Table({ rows }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       accessor: "actions",
       textAlign: "center",
       Cell: ({ row }) => (

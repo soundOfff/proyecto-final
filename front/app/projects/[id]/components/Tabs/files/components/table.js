@@ -71,6 +71,7 @@ export default function Table({ project }) {
     {
       id: "acciones",
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <Tooltip title="Eliminar Archivo">
           <DeleteIcon

@@ -364,17 +364,16 @@ export default function Table({
           >
             Crear nueva tarea
           </MDButton>
-          {deleteIds.length > 0 && (
-            <MDButton
-              variant="gradient"
-              color="error"
-              onClick={() => {
-                handleDeleteMultiple();
-              }}
-            >
-              Eliminar Múltiples
-            </MDButton>
-          )}
+          <MDButton
+            variant="gradient"
+            color="error"
+            disabled={deleteIds.length === 0}
+            onClick={() => {
+              handleDeleteMultiple();
+            }}
+          >
+            Eliminar Múltiples
+          </MDButton>
         </MDBox>
         {openEditModal && (
           <Modal

@@ -12,6 +12,7 @@ import { store, update } from "/actions/procedures";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function FormComponent({
   processId,
@@ -57,10 +58,6 @@ export default function FormComponent({
 
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
-  };
-
-  const handleBack = () => {
-    router.push(`/processes/${processId}`);
   };
 
   return (
@@ -111,14 +108,11 @@ export default function FormComponent({
               display="flex"
               justifyContent="space-between"
             >
-              <MDButton
-                variant="gradient"
-                color="light"
-                alignSelf="start"
-                onClick={handleBack}
-              >
-                Volver
-              </MDButton>
+              <Link href={`/processes/${processId}`}>
+                <MDButton variant="gradient" color="light" alignSelf="start">
+                  Volver
+                </MDButton>
+              </Link>
               <MDButton type="submit" variant="gradient" color="dark">
                 Guardar
               </MDButton>

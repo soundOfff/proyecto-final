@@ -14,6 +14,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Miembros del equipo",
       accessor: "staff",
+      disableSortBy: true,
       Cell: ({ row }) => {
         const assigneds = row.original.assigneds;
         if (assigneds.length === 0 || !assigneds) {
@@ -50,6 +51,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Nota",
       accessor: "note",
+      disableSortBy: true,
       Cell: ({ row }) => {
         return row.original.timers.length
           ? row.original.timers[0].note

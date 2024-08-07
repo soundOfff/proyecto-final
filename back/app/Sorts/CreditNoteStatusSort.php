@@ -5,14 +5,14 @@ namespace App\Sorts;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\Sorts\Sort;
 
-class ExpenseProjectSort implements Sort
+class CreditNoteStatusSort implements Sort
 {
     public function __invoke(Builder $query, bool $descending, string $property)
     {
         $direction = $descending ? 'DESC' : 'ASC';
 
         $query
-            ->leftJoin('projects as projects_order', 'expenses.project_id', '=', 'projects_order.id')
-            ->orderByRaw("projects_order.{$property} IS NULL, projects_order.{$property} {$direction}");
+            ->join('credit_note_statuses as credit_note_statuses_order', 'credit_notes.credit_note_status_id', '=', 'credit_note_statuses_order.id')
+            ->orderByRaw("credit_note_statuses_order.{$property} $direction");
     }
 }

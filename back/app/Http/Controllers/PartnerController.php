@@ -66,7 +66,11 @@ class PartnerController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::scope('search'),
-
+            ])
+            ->allowedSorts([
+                'name',
+                'company',
+                'created_at',
             ])
             ->orderBy('id', 'desc');
 

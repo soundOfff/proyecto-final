@@ -103,6 +103,7 @@ function DataTable({
       },
     },
     useGlobalFilter,
+    useSortBy,
     usePagination,
     useRowSelect,
     (hooks) => {
@@ -196,7 +197,7 @@ function DataTable({
   }, 100);
 
   // A function that sets the sorted value for the table
-  const setSort = (column) => {
+  const setSortedValue = (column) => {
     let sortedValue;
 
     if (isSorted && column.isSorted) {
@@ -286,16 +287,13 @@ function DataTable({
                   {headerGroup.headers.map((column, key) => (
                     <DataTableHeadCell
                       key={key}
-                      {...column.getHeaderProps()}
-                      width={column.width || "auto"}
-                      align={column.align || "left"}
-                      sorted={!column.disableSortBy}
-                      sx={{
-                        cursor: column.disableSortBy ? "default" : "pointer",
-                      }}
-                      onClick={
-                        column.disableSortBy ? null : () => setSort(column)
-                      }
+                      {...column.getHeaderProps(
+                        isSorted && column.getSortByToggleProps()
+                      )}
+                      width={column.width ? column.width : "auto"}
+                      align={column.align ? column.align : "left"}
+                      isSortDisabled={column.disableSortBy}
+                      sorted={setSortedValue(column)}
                     >
                       {column.render("Header")}
                     </DataTableHeadCell>

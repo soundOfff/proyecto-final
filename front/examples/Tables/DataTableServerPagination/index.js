@@ -16,17 +16,8 @@ Coded by www.creative-tim.com
 
 import { useMemo, useEffect, useState } from "react";
 
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
-
 // react-table components
-import {
-  useTable,
-  usePagination,
-  useGlobalFilter,
-  useAsyncDebounce,
-  useSortBy,
-} from "react-table";
+import { useTable } from "react-table";
 
 // regenerator-runtime
 import "regenerator-runtime/runtime.js";
@@ -131,6 +122,23 @@ function DataTable({
     </MDPagination>
   ));
 
+  const setSortedValue = (column) => {
+    let sortedValue;
+
+    if (searchParams.has("sort") && searchParams.get("sort") === column.id) {
+      sortedValue = "asce";
+    } else if (
+      searchParams.has("sort") &&
+      searchParams.get("sort") === `-${column.id}`
+    ) {
+      sortedValue = "desc";
+    } else {
+      sortedValue = "none";
+    }
+
+    return sortedValue;
+  };
+
   const setSort = (column) => {
     const params = new URLSearchParams(searchParams);
 
@@ -190,8 +198,8 @@ function DataTable({
                   {...column.getHeaderProps()}
                   width={column.width || "auto"}
                   align={column.align || "left"}
-                  sorted={!column.disableSortBy}
-                  sx={{ cursor: column.disableSortBy ? "default" : "pointer" }}
+                  isSortDisabled={column.disableSortBy}
+                  sorted={setSortedValue(column)}
                   onClick={column.disableSortBy ? null : () => setSort(column)}
                 >
                   {column.render("Header")}

@@ -13,8 +13,8 @@ use App\Sorts\ExpenseCategorySort;
 use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -49,7 +49,7 @@ class ExpenseController extends Controller
                 AllowedSort::custom('partner', new ExpensePartnerSort(), 'partner_name'),
                 AllowedSort::custom('category.name', new ExpenseCategorySort(), 'name'),
                 AllowedSort::custom('project.name', new ExpenseProjectSort(), 'name'),
-                AllowedSort::custom('invoice.id', new ExpenseInvoiceSort(), 'id'),
+                AllowedSort::custom('invoice', new ExpenseInvoiceSort(), 'id'),
             ]);
 
         $expense = request()->has('perPage')
@@ -75,12 +75,12 @@ class ExpenseController extends Controller
             $file = $expenseFiles[$index];
             $fileInfo = $expenseFilesInfo[$index];
             $extension = $file->extension();
-            $path = "/expense/$fileInfo" . ($extension ? ".$extension" : '');
+            $path = "/expense/$fileInfo".($extension ? ".$extension" : '');
 
             Storage::disk('google')->put($path, file_get_contents($file));
             $data['url'] = Storage::disk('google')->path($path);
             $data['subject'] = $fileInfo;
-            $data['fileable_type'] = "expense";
+            $data['fileable_type'] = 'expense';
             $data['fileable_id'] = $expense->id;
 
             File::create($data);

@@ -4,9 +4,11 @@ import MDBox from "/components/MDBox";
 import Table from "./components/table";
 import { getAll } from "/actions/estimates";
 
+export const dynamic = "force-dynamic";
+
 export default async function Estimates({
   params: { id },
-  searchParams: { perPage = 10, page = 1 },
+  searchParams: { perPage = 10, page = 1, sort = "-id" },
 }) {
   const include = [
     "project.serviceType",
@@ -18,7 +20,7 @@ export default async function Estimates({
   const {
     data: { estimates },
     meta,
-  } = await getAll({ include, "filter[partner_id]": id, perPage, page });
+  } = await getAll({ include, "filter[partner_id]": id, perPage, page, sort });
 
   return (
     <MDBox my={3}>

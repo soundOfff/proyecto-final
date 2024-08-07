@@ -13,12 +13,17 @@ use App\Models\TaskStatus;
 use App\Models\TaskTimer;
 use App\Pipes\TaskPipe;
 use App\Services\FcmService;
+use App\Sorts\TaskAuthorSort;
+use App\Sorts\TaskPartnerSort;
+use App\Sorts\TaskPrioritySort;
+use App\Sorts\TaskStatusSort;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Facades\CauserResolver;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
@@ -54,7 +59,15 @@ class TaskController extends Controller
                 'author',
             ])
             ->allowedSorts([
+                'id',
+                'name',
+                'start_date',
+                'due_date',
                 'milestone_order',
+                AllowedSort::custom('status', new TaskStatusSort(), 'name'),
+                AllowedSort::custom('priority', new TaskPrioritySort(), 'name'),
+                AllowedSort::custom('author', new TaskAuthorSort(), 'first_name'),
+                AllowedSort::custom('partner', new TaskPartnerSort()),
             ])
             ->allowedFilters(
                 [
@@ -82,8 +95,7 @@ class TaskController extends Controller
                         )
                     ),
                 ]
-            )
-            ->orderBy('id', 'desc');
+            );
 
         $tasks = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -101,7 +113,7 @@ class TaskController extends Controller
         $newTask['author_id'] = $newTask['owner_id'];
         $defaultDurationMinutes = $newTask['initial_duration_minutes'] ?? 0;
 
-        if (!array_key_exists('milestone_order', $newTask)) {
+        if (! array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getLatestMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']) + 1; // Next milestone order
         }
 

@@ -97,6 +97,7 @@ export default function Table({
     {
       Header: "Bloqueada por",
       accessor: "isBlocked",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           {row.original.dependencies.map((dependency) => (
@@ -169,23 +170,9 @@ export default function Table({
       accessor: "due_date",
     },
     {
-      Header: "Asignar a",
-      accessor: "",
-      Cell: ({ row }) => {
-        return row.original.staff?.map((staff) => (
-          <Link
-            key={staff.id}
-            href={`/partners/${staff.id}`}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            {staff.first_name} {staff.last_name}
-          </Link>
-        ));
-      },
-    },
-    {
       Header: "Etiquetas",
       accessor: "labels",
+      disableSortBy: true,
       Cell: ({ row }) =>
         row.original.tags &&
         row.original.tags.map((tag) => (

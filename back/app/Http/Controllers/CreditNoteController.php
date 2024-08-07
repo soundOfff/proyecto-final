@@ -9,6 +9,11 @@ use App\Models\CreditNote;
 use App\Models\CreditNoteStatus;
 use App\Models\LineItem;
 use App\Models\LineItemTax;
+use App\Sorts\CreditNotePartnerSort;
+use App\Sorts\CreditNotePendingCreditsSort;
+use App\Sorts\CreditNoteProjectSort;
+use App\Sorts\CreditNoteStatusSort;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CreditNoteController extends Controller
@@ -19,7 +24,19 @@ class CreditNoteController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(CreditNote::class)
-            ->allowedIncludes('status', 'partner', 'project', 'credits');
+            ->allowedIncludes('status', 'partner', 'project', 'credits')
+            ->allowedSorts([
+                'id',
+                'number',
+                'date',
+                'total',
+                AllowedSort::field('expiryDate', 'expiry_date'),
+                AllowedSort::field('referenceNo', 'reference_no'),
+                AllowedSort::custom('status', new CreditNoteStatusSort(), 'label'),
+                AllowedSort::custom('partner', new CreditNotePartnerSort(), 'partner_name'),
+                AllowedSort::custom('project', new CreditNoteProjectSort(), 'name'),
+                AllowedSort::custom('pendingCredits', new CreditNotePendingCreditsSort()),
+            ]);
 
         $creditNotes = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

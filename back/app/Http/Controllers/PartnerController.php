@@ -23,11 +23,11 @@ class PartnerController extends Controller
                 }),
                 AllowedFilter::callback('owners', function ($query, $value) {
                     return $query
-                            ->select('owners.*')
-                            ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
-                            ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
-                            ->where('related_partner.partner_id', $value)
-                            ->where('related_partner.partner_type_id', PartnerType::OWNER);
+                        ->select('owners.*')
+                        ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
+                        ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
+                        ->where('related_partner.partner_id', $value)
+                        ->where('related_partner.partner_type_id', PartnerType::OWNER);
                 }),
             ])
             ->where(function ($query) {

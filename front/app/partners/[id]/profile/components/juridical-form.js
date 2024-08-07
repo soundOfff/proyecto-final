@@ -23,6 +23,8 @@ import RelatedPersonFormComponent from "/app/partners/create/components/related-
 export default function JuridicalForm({
   countries,
   consolidators,
+  industries,
+  sections,
   partnerTypes,
   notJuridicEntities,
   errors,
@@ -112,25 +114,23 @@ export default function JuridicalForm({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormField
-          isImportant
+        <Select
           value={values[industry.name]}
-          label={industry.label}
-          name={industry.name}
-          type="text"
-          error={errors[industry.name] && touched[industry.name]}
-          success={values[industry.name]?.length > 0 && !errors[industry.name]}
+          options={industries}
+          optionLabel={(option) => option.label}
+          fieldName={industry.name}
+          inputLabel={industry.label}
+          setFieldValue={setFieldValue}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormField
-          isImportant
+        <Select
           value={values[section.name]}
-          label={section.label}
-          name={section.name}
-          type="text"
-          error={errors[section.name] && touched[section.name]}
-          success={values[section.name]?.length > 0 && !errors[section.name]}
+          options={sections}
+          optionLabel={(option) => option.label}
+          fieldName={section.name}
+          inputLabel={section.label}
+          setFieldValue={setFieldValue}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

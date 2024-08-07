@@ -1,4 +1,9 @@
-import { show, getSelect as getPartnersSelect } from "/actions/partners";
+import {
+  show,
+  getSelect as getPartnersSelect,
+  getAllSections,
+  getAllIndustries,
+} from "/actions/partners";
 import { getSelect as getCountriesSelect } from "/actions/countries";
 import { getAll as getAllPartnerTypes } from "/actions/partner-types";
 import Form from "./components/form";
@@ -25,6 +30,8 @@ export default async function Profile({ params: { id } }) {
 
   const partnerTypes = await getAllPartnerTypes();
   const countries = await getCountriesSelect();
+  const industries = await getAllIndustries();
+  const sections = await getAllSections();
 
   return (
     <Form
@@ -32,6 +39,8 @@ export default async function Profile({ params: { id } }) {
       notJuridicEntities={notJuridicEntities}
       consolidators={consolidators}
       countries={countries}
+      industries={industries}
+      sections={sections}
       partnerTypes={partnerTypes}
     />
   );

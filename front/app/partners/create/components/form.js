@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 export default function FormComponent({
   consolidators,
   notJuridicEntities,
+  sections,
+  industries,
   countries,
   partnerTypes,
 }) {
@@ -75,6 +77,8 @@ export default function FormComponent({
                 {...{
                   consolidators,
                   notJuridicEntities,
+                  sections,
+                  industries,
                   partnerTypes,
                   countries,
                   errors,

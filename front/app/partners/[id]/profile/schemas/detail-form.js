@@ -52,7 +52,7 @@ const detailForm = {
         errorMsg: "Debe seleccionar una provincia",
       },
       industry: {
-        name: "industry",
+        name: "industry_id",
         label: "Industria",
         errorMsg: "Debe ingresar una industria",
       },
@@ -62,7 +62,7 @@ const detailForm = {
         errorMsg: "Debe ingresar un documento",
       },
       section: {
-        name: "section",
+        name: "section_id",
         label: "Sección",
         errorMsg: "Debe ingresar una sección",
       },

@@ -71,6 +71,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
   return {
     backgroundColor: disabled ? `${grey[200]} !important` : transparent.main,
     pointerEvents: disabled ? "none" : "auto",
+    textTransform: "uppercase",
     ...(error && errorStyles()),
     ...(success && successStyles()),
   };

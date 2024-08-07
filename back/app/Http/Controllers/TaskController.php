@@ -10,8 +10,10 @@ use App\Models\Staff;
 use App\Models\Taggable;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\TaskTimer;
 use App\Pipes\TaskPipe;
 use App\Services\FcmService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -97,12 +99,22 @@ class TaskController extends Controller
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
         $newTask['author_id'] = $newTask['owner_id'];
+        $defaultDurationMinutes = $newTask['initial_duration_minutes'] ?? 0;
 
         if (!array_key_exists('milestone_order', $newTask)) {
             $newTask['milestone_order'] = Task::getLatestMilestoneOrder($newTask['taskable_id'], $newTask['taskable_type']) + 1; // Next milestone order
         }
 
         $task = Task::create($newTask);
+
+        if ($defaultDurationMinutes > 0) {
+            TaskTimer::create([
+                'task_id' => $task->id,
+                'start_time' => Carbon::now(),
+                'end_time' => Carbon::now()->add($defaultDurationMinutes, 'minutes'),
+                'staff_id' => $task->owner_id,
+            ]);
+        }
 
         $dependencyIds = array_column($dependencies, 'id');
         $task->dependencies()->sync($dependencyIds);

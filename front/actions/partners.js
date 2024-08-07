@@ -13,6 +13,22 @@ export async function getSelect(params) {
   return data.partners;
 }
 
+export async function getAllSections() {
+  const url = new URL(`${process.env.API_URL}/partner-sections`);
+
+  const { data } = await customFetch(url);
+
+  return data.sections;
+}
+
+export async function getAllIndustries() {
+  const url = new URL(`${process.env.API_URL}/partner-industries`);
+
+  const { data } = await customFetch(url);
+
+  return data.industries;
+}
+
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/partners`);
   url.search = new URLSearchParams(params);

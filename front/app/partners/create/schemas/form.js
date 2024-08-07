@@ -79,19 +79,19 @@ const detailForm = {
         errorMsg: "Debe seleccionar un tipo de servicio",
       },
       industry: {
-        name: "industry",
+        name: "industry_id",
         label: "Industria",
         errorMsg: "Debe ingresar una industria",
+      },
+      section: {
+        name: "section_id",
+        label: "Sección",
+        errorMsg: "Debe ingresar una sección",
       },
       document: {
         name: "document",
         label: "Folio",
         errorMsg: "Debe ingresar un documento",
-      },
-      section: {
-        name: "section",
-        label: "Sección",
-        errorMsg: "Debe ingresar una sección",
       },
       isConsolidator: {
         name: "is_consolidator",

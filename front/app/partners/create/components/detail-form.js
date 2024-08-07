@@ -10,6 +10,8 @@ export default function DetailFormComponent({
   consolidators,
   countries,
   notJuridicEntities,
+  sections,
+  industries,
   errors,
   values,
   touched,
@@ -40,6 +42,8 @@ export default function DetailFormComponent({
             <JuridicalForm
               {...{
                 countries,
+                sections,
+                industries,
                 consolidators,
                 partnerTypes,
                 notJuridicEntities,

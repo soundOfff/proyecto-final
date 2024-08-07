@@ -59,8 +59,8 @@ const detailForm = {
       },
       jurisdiction: {
         name: "jurisdiction_id",
-        label: "Jurisdicción",
-        errorMsg: "Debe seleccionar una jurisdicción",
+        label: "Corregimiento",
+        errorMsg: "Debe seleccionar un corregimiento",
       },
       zip: {
         name: "zip",

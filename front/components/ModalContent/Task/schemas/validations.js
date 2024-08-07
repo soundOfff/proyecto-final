@@ -24,6 +24,7 @@ const {
     name,
     hourlyRate,
     startDate,
+    initialDurationMinutes,
     dueDate,
     task_priority_id,
     task_status_id,
@@ -92,6 +93,7 @@ const validations = Yup.object().shape({
         .required('Este campo es requerido si seleccionó "repetir cada"'),
   }),
   [actions.name]: Yup.array(),
+  [initialDurationMinutes.name]: Yup.number().nullable(),
   [requiredFields.name]: Yup.array(),
   [isFileNeeded.name]: Yup.boolean(),
 });

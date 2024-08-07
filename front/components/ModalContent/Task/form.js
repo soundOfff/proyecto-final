@@ -51,6 +51,7 @@ export default function TaskForm({
     recurringType,
     dependencies,
     isInfinite,
+    initialDurationMinutes,
     totalCycles,
     taskableId,
     partner_id,
@@ -108,6 +109,7 @@ export default function TaskForm({
     setFieldValue,
     description.name,
     taskableId.name,
+    initialDurationMinutes.name,
     taskableType.name,
     recurring.name,
     recurringType.name,
@@ -220,7 +222,7 @@ export default function TaskForm({
               </FormControl>
             </MDBox>
           </Grid>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={task ? 8 : 12}>
             <FormField
               name={name.name}
               label={name.label}
@@ -231,7 +233,7 @@ export default function TaskForm({
               success={name.length > 0 && !errors.name}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={task ? 4 : 6}>
             <FormField
               name={hourlyRate.name}
               label={hourlyRate.label}
@@ -240,6 +242,17 @@ export default function TaskForm({
               value={values[hourlyRate.name]}
             />
           </Grid>
+          {!task && (
+            <Grid item xs={12} sm={6}>
+              <FormField
+                name={initialDurationMinutes.name}
+                label={initialDurationMinutes.label}
+                type={initialDurationMinutes.type}
+                placeholder={initialDurationMinutes.placeholder}
+                value={values[initialDurationMinutes.name]}
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sm={6}>
             <MDDatePicker
               input={{

@@ -27,6 +27,7 @@ class TaskRequest extends FormRequest
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date',
             'repeat_id' => 'nullable|exists:expense_repeats,id',
+            'initial_duration_minutes' => 'nullable|numeric',
             'is_file_needed' => 'nullable|boolean',
             'recurring_type' => 'nullable|numeric',
             'task_priority_id' => 'sometimes|required|numeric|exists:task_priorities,id',

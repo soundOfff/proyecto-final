@@ -16,6 +16,7 @@ Coded by www.creative-tim.com
 import * as Yup from "yup";
 import checkout from "./form";
 import { CUSTOM } from "/utils/constants/repeats";
+import { MAX_AMOUNT } from "../../../../../utils/constants/maxInputNumber";
 
 const {
   formField: {
@@ -51,7 +52,8 @@ const validations = [
     [date.name]: Yup.date().required(date.errorMsg),
     [amount.name]: Yup.number("El valor debe ser un número")
       .required(amount.errorMsg)
-      .min(1, "Debe ser mayor a 0"),
+      .min(1, "Debe ser mayor a 0")
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
   }),
   Yup.object().shape({
     [currency.name]: Yup.string().required(currency.errorMsg),
@@ -68,7 +70,10 @@ const validations = [
     [isInfinite.name]: Yup.boolean(),
     [totalCycles.name]: Yup.number().when(isInfinite.name, {
       is: false,
-      then: (schema) => schema.min(1, "Los ciclos totales deben ser mayor a 0"),
+      then: (schema) =>
+        schema
+          .min(1, "Los ciclos totales deben ser mayor a 0")
+          .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
     }),
     [files.name]: Yup.array().nullable(),
   }),

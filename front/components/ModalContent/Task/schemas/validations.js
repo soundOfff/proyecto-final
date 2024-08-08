@@ -16,6 +16,7 @@ Coded by www.creative-tim.com
 import * as Yup from "yup";
 import checkout from "./form";
 import { CUSTOM } from "/utils/constants/repeats";
+import { MAX_AMOUNT } from "../../../../../utils/constants/maxInputNumber";
 
 const {
   formField: {
@@ -58,7 +59,9 @@ const validations = Yup.object().shape({
   [description.name]: Yup.string(),
   [isPublic.name]: Yup.boolean(),
   [billable.name]: Yup.boolean(),
-  [hourlyRate.name]: Yup.number().required(hourlyRate.errorMsg),
+  [hourlyRate.name]: Yup.number()
+    .required(hourlyRate.errorMsg)
+    .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
   [dueDate.name]: Yup.date().min(
     Yup.ref(startDate.name),
     "La fecha desde debe ser anterior a la fecha hasta"
@@ -72,13 +75,13 @@ const validations = Yup.object().shape({
     then: (schema) =>
       schema
         .min(1, "Debe ser mayor a 0")
-        .required("Este campo es requerido si se selecciono Personalizado"),
+        .required("Este campo es requerido si se seleccionó Personalizado"),
     otherwise: (schema) => schema.nullable(),
   }),
   [recurringType.name]: Yup.number().when(repeat.name, {
     is: CUSTOM,
     then: (schema) =>
-      schema.required("Este campo es requerido si se selecciono Personalizado"),
+      schema.required("Este campo es requerido si se seleccionó Personalizado"),
     otherwise: (schema) => schema.nullable(),
   }),
   [isInfinite.name]: Yup.boolean().when(repeat.name, {
@@ -90,7 +93,8 @@ const validations = Yup.object().shape({
     then: (schema) =>
       schema
         .min(1, "Los ciclos totales deben ser mayor a 0")
-        .required('Este campo es requerido si seleccionó "repetir cada"'),
+        .required('Este campo es requerido si seleccionó "repetir cada"')
+        .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
   }),
   [actions.name]: Yup.array(),
   [initialDurationMinutes.name]: Yup.number().nullable(),

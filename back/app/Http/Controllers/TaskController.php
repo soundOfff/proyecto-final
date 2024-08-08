@@ -306,10 +306,12 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        Task::where('taskable_id', $task->taskable_id)
-            ->where('taskable_type', $task->taskable_type)
-            ->where('milestone_order', '>', $task->milestone_order)
-            ->decrement('milestone_order');
+        if ($task->milestone_order) {
+            Task::where('taskable_id', $task->taskable_id)
+                ->where('taskable_type', $task->taskable_type)
+                ->where('milestone_order', '>', $task->milestone_order)
+                ->decrement('milestone_order');
+        }
 
         $task->dependencies()->detach();
         $task->delete();
@@ -326,12 +328,12 @@ class TaskController extends Controller
 
         foreach ($taskIds as $taskId) {
             $task = Task::find($taskId);
-            Task::where('taskable_id', $task->taskable_id)
-                ->where('taskable_type', $task->taskable_type)
-                ->when($task->milestone_order, function ($query) use ($task) {
-                    return $query->where('milestone_order', '>', $task->milestoneOrder);
-                })
-                ->decrement('milestone_order');
+            if ($task->milestone_order) {
+                Task::where('taskable_id', $task->taskable_id)
+                    ->where('taskable_type', $task->taskable_type)
+                    ->where('milestone_order', '>', $task->milestone_order)
+                    ->decrement('milestone_order');
+            }
             $task->dependencies()->detach();
             $task->delete();
         }

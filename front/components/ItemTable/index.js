@@ -17,7 +17,11 @@ export default function Table({ formData, types }) {
     },
     {
       Header: "Descripción",
-      accessor: "long_description",
+      accessor: "longDescription",
+      width: "40%",
+      Cell: ({ value, row }) => {
+        return value ?? row.original.long_description;
+      },
     },
     {
       Header: "Tipo de articulo",
@@ -28,6 +32,7 @@ export default function Table({ formData, types }) {
     {
       Header: () => values[formField.unit.name],
       accessor: "quantity",
+      Cell: ({ value }) => <MDBox textAlign="center">{value}</MDBox>,
     },
     {
       Header: "Precio",

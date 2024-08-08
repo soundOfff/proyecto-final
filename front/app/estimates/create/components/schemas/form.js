@@ -65,7 +65,7 @@ const form = {
       errorMsg: "Debe seleccionar una Moneda",
     },
     status: {
-      name: "status_id",
+      name: "estimate_status_id",
       label: "Estado",
       errorMsg: "Debe seleccionar un estado",
     },

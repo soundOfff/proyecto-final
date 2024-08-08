@@ -34,7 +34,6 @@ export default function Third({
   useEffect(() => {
     if (proposal) {
       setFieldValue(adjustment.name, proposal.adjustment);
-      setFieldValue(items.name, proposal.items);
     }
   }, [proposal, items, adjustment, setFieldValue]);
 

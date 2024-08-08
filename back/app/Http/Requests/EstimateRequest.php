@@ -33,7 +33,7 @@ class EstimateRequest extends FormRequest
             'reference_no' => 'required|string',
             'date' => 'required|date',
             'expiry_date' => 'required|date',
-            'status_id' => 'nullable|numeric|exists:estimate_statuses,id',
+            'estimate_status_id' => 'nullable|numeric|exists:estimate_statuses,id',
             'reference_no' => 'nullable|string',
             'admin_note' => 'nullable|string',
             'is_expiry_notified' => 'nullable|boolean',

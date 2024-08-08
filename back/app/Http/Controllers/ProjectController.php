@@ -13,7 +13,9 @@ use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
 use App\Models\Task;
+use App\Models\TaskPriority;
 use App\Models\TaskRepeat;
+use App\Models\TaskStatus;
 use App\Models\TaskTimer;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -112,8 +114,8 @@ class ProjectController extends Controller
         $task = Task::create([
             'name' => 'Data entry',
             'hourly_rate' => 0.25,
-            'task_priority_id' => 2,
-            'task_status_id' => 1,
+            'task_priority_id' => TaskPriority::DEFAULT,
+            'task_status_id' => TaskStatus::COMPLETED,
             'owner_id' => $project->responsiblePerson->id,
             'taskable_id' => $project->id,
             'taskable_type' => 'project',

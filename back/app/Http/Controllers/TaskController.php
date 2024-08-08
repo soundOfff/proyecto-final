@@ -328,7 +328,9 @@ class TaskController extends Controller
             $task = Task::find($taskId);
             Task::where('taskable_id', $task->taskable_id)
                 ->where('taskable_type', $task->taskable_type)
-                ->where('milestone_order', '>', $task->milestone_order)
+                ->when($task->milestone_order, function ($query) use ($task) {
+                    return $query->where('milestone_order', '>', $task->milestoneOrder);
+                })
                 ->decrement('milestone_order');
             $task->dependencies()->detach();
             $task->delete();

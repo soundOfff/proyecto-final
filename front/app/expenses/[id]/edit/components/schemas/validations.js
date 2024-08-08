@@ -17,6 +17,8 @@ import * as Yup from "yup";
 import checkout from "./form";
 import { CUSTOM } from "/utils/constants/repeats";
 
+const MAX_AMOUNT = 999999.99;
+
 const {
   formField: {
     amount,
@@ -50,7 +52,8 @@ const validations = [
     [date.name]: Yup.date().required(date.errorMsg),
     [amount.name]: Yup.number("El valor debe ser un número")
       .required(amount.errorMsg)
-      .min(1, "Debe ser mayor a 0"),
+      .min(1, "Debe ser mayor a 0")
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
     [partner.name]: Yup.string().required(partner.errorMsg),
     [project.name]: Yup.string().nullable(),
   }),
@@ -86,7 +89,8 @@ const validations = [
       then: (schema) =>
         schema
           .min(1, "Los ciclos totales deben ser mayor a 0")
-          .required('Este campo es requerido si seleccionó "repetir cada"'),
+          .required('Este campo es requerido si seleccionó "repetir cada"')
+          .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
     }),
     [files.name]: Yup.array().nullable(),
   }),

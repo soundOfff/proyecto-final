@@ -16,6 +16,8 @@ Coded by www.creative-tim.com
 import * as Yup from "yup";
 import checkout from "./form";
 
+const MAX_AMOUNT = 999999.99;
+
 const {
   formField: {
     department,
@@ -29,7 +31,9 @@ const {
 
 const validations = Yup.object().shape({
   [name.name]: Yup.string().required(name.errorMsg),
-  [stepQuantity.name]: Yup.number().required(stepQuantity.errorMsg),
+  [stepQuantity.name]: Yup.number()
+    .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
+    .required(stepQuantity.errorMsg),
   [department.name]: Yup.string(),
   [description.name]: Yup.string(),
   [projectServiceType.name]: Yup.number().required(projectServiceType.errorMsg),

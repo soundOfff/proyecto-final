@@ -15,8 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
-
-const MAX_AMOUNT = 999999.99;
+import { MAX_AMOUNT } from "../../../../../utils/constants/maxInputNumber";
 
 const {
   formField: {

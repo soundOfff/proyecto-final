@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
-import { MAX_AMOUNT } from "../../../../../utils/constants/maxInputNumber";
+import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 const {
   formField: { description, longDescription, rate, tax, tax2, itemGroupId },

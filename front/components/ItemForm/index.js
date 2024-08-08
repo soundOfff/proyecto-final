@@ -17,7 +17,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { MAX_AMOUNT } from "../../../../../utils/constants/maxInputNumber";
+import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 export default function ItemForm({ formData, item, taxesData, types }) {
   const units = ["Cantidad", "Horas", "Cantidad/Horas"];

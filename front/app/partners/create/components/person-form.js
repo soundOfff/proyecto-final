@@ -285,7 +285,7 @@ export default function PersonForm({
         <Select
           value={values[nationality.name]}
           options={countries}
-          optionLabel={(option) => option.shortName}
+          optionLabel={(option) => option.nationality}
           fieldName={nationality.name}
           inputLabel={nationality.label}
           setFieldValue={setFieldValue}

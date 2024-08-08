@@ -35,7 +35,7 @@ export default function Partners({
   return (
     <MDBox>
       <TabContext value={tab}>
-        <MDBox my={2}>
+        <MDBox mt={2}>
           <Tabs setTabIndex={setTab} />
         </MDBox>
         <TabPanel value="partners">

@@ -13,6 +13,7 @@ import { ErrorMessage } from "formik";
 import form from "./schemas/form";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
 
 export default function FormComponent({
   formData,
@@ -25,7 +26,7 @@ export default function FormComponent({
   statuses,
   members,
 }) {
-  const { values, errors, touched, setFieldValue } = formData;
+  const { values, errors, touched, setFieldValue, setFieldError } = formData;
   const { formField } = form;
   const {
     billablePartner,
@@ -60,6 +61,29 @@ export default function FormComponent({
       setFieldValue(deadline.name, "");
     }
   };
+
+  useEffect(() => {
+    const defendants = values.partners.filter(
+      (partner) => partner.role_id === DEFENDANT
+    );
+    const plaintiffs = values.partners.filter(
+      (partner) => partner.role_id === PLAINTIFF
+    );
+
+    const isValid = defendants.length > 0 && plaintiffs.length > 0;
+
+    if (!isValid && !errors.partners) {
+      setFieldError(
+        "partners",
+        "Debe elegir al menos un demandado y un demandante"
+      );
+    } else if (
+      isValid &&
+      errors.partners === "Debe elegir al menos un demandado y un demandante"
+    ) {
+      setFieldError("partners", undefined);
+    }
+  }, [values.partners, touched.partners, errors.partners, setFieldError]);
 
   useEffect(() => {
     if (project) {
@@ -306,6 +330,16 @@ export default function FormComponent({
               description,
             }}
           />
+          <MDBox>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={partners.name} />
+            </MDTypography>
+          </MDBox>
         </Grid>
         <Grid item xs={12}>
           <MDBox display="flex" justifyContent="end">

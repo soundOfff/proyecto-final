@@ -29,12 +29,12 @@ export default function Third({
 
   const getMappedFieldValues = estimate.items.map((item) => ({
     description: item.description,
-    long_description: item.longDescription,
+    long_description: item.longDescription || item.long_description,
     quantity: item.quantity,
     rate: item.rate,
     taxes: item.taxes ?? [],
     discount: item.discount,
-    type: item.lineItemType,
+    line_item_type_id: item.lineItemType || item.line_item_type_id,
     unit: item.unit,
   }));
 

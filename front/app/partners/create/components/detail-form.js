@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { Card, FormControlLabel, FormGroup, Grid, Switch } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import PersonForm from "./person-form";
@@ -12,30 +12,47 @@ export default function DetailFormComponent({
   notJuridicEntities,
   sections,
   industries,
+  partnerTypes,
   errors,
   values,
   touched,
   setFieldValue,
   isJuridic,
-  partnerTypes,
   setIsJuridic,
+  isRequired,
+  setIsRequired,
 }) {
   return (
     <Card sx={{ overflow: "visible", my: 3 }}>
-      <MDBox p={3} display="flex" justifyContent="space-between">
-        <MDTypography variant="h5">Crear Cliente</MDTypography>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isJuridic}
-                onChange={(e) => setIsJuridic(e.target.checked)}
-              />
-            }
-            label="Es Persona Jurídica"
-          />
-        </FormGroup>
-      </MDBox>
+      <Grid container spacing={3} p={3}>
+        <Grid item xs={6}>
+          <MDTypography variant="h5">Crear Cliente</MDTypography>
+        </Grid>
+        <Grid item xs={6} display="flex" justifyContent="right">
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isRequired}
+                  onChange={(e) => setIsRequired(e.target.checked)}
+                />
+              }
+              label="Campos Requeridos"
+            />
+          </FormGroup>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isJuridic}
+                  onChange={(e) => setIsJuridic(e.target.checked)}
+                />
+              }
+              label="Es Persona Jurídica"
+            />
+          </FormGroup>
+        </Grid>
+      </Grid>
       <MDBox pb={3} px={3}>
         {isJuridic === true && (
           <>
@@ -51,6 +68,7 @@ export default function DetailFormComponent({
                 values,
                 touched,
                 setFieldValue,
+                isRequired,
               }}
             />
           </>

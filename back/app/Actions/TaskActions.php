@@ -42,7 +42,7 @@ class TaskActions
                     'date' => now(),
                     'amount' => 100,
                     'name' => $action->name,
-                    'description' => $action->description,
+                    'note' => $action->description,
                     'billable' => $task->billable,
                     'partner_id' => $task->partner_id,
                     'is_infinite' => $task->is_infinite,

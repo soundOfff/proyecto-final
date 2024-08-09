@@ -9,7 +9,7 @@ import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Partners from "./components/partners";
-import { ErrorMessage } from "formik";
+import { ErrorMessage, Field } from "formik";
 import form from "./schemas/form";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -62,28 +62,23 @@ export default function FormComponent({
     }
   };
 
-  useEffect(() => {
-    const defendants = values.partners.filter(
+  const validatePartners = (partners) => {
+    let error;
+
+    const defendants = partners.filter(
       (partner) => partner.role_id === DEFENDANT
     );
-    const plaintiffs = values.partners.filter(
+    const plaintiffs = partners.filter(
       (partner) => partner.role_id === PLAINTIFF
     );
 
-    const isValid = defendants.length > 0 && plaintiffs.length > 0;
-
-    if (!isValid && !errors.partners) {
-      setFieldError(
-        "partners",
-        "Debe elegir al menos un demandado y un demandante"
-      );
-    } else if (
-      isValid &&
-      errors.partners === "Debe elegir al menos un demandado y un demandante"
-    ) {
-      setFieldError("partners", undefined);
+    if (defendants.length === 0 || plaintiffs.length === 0) {
+      error = "Debe elegir al menos un demandado y un demandante";
+      setFieldError("partners", error);
     }
-  }, [values.partners, touched.partners, errors.partners, setFieldError]);
+
+    return error;
+  };
 
   useEffect(() => {
     if (project) {
@@ -331,6 +326,11 @@ export default function FormComponent({
             }}
           />
           <MDBox>
+            <Field
+              name={partners.name}
+              validate={validatePartners}
+              style={{ display: "none" }}
+            />
             <MDTypography
               component="div"
               variant="caption"

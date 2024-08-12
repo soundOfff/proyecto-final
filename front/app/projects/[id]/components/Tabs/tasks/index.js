@@ -1,6 +1,5 @@
 "use client";
 
-import { useDataProvider } from "/providers/DataProvider";
 import { Autocomplete, Grid } from "@mui/material";
 import Table from "/components/Tasks/table-client";
 import MDBox from "/components/MDBox";
@@ -9,7 +8,10 @@ import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
+
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useDataProvider } from "/providers/DataProvider";
 import { attachTasks } from "/actions/projects";
 
 export default function Tasks() {
@@ -32,11 +34,12 @@ export default function Tasks() {
   const [errorSB, setErrorSB] = useState(false);
   const [createdSB, setCreatedSB] = useState(false);
   const process = project.serviceType?.processes?.at(-1) ?? null;
+  const { data: session } = useSession();
 
   const handleSelectNextStep = async () => {
     setIsAttachingTasks(true);
     try {
-      await attachTasks(project.id, selectedProcess.id);
+      await attachTasks(project.id, selectedProcess.id, session.staff.id);
       setCreatedSB(true);
     } catch (error) {
       setErrorSB(true);
@@ -51,7 +54,7 @@ export default function Tasks() {
   };
 
   return (
-    <MDBox py={3}>
+    <MDBox p={0}>
       <Stats />
       <Grid container spacing={3}>
         <Grid item xs={12}>

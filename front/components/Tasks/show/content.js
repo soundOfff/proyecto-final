@@ -73,7 +73,7 @@ export default function Content({ selectedFork }) {
   const handleSelectNextStep = async () => {
     setIsAttachingTasks(true);
     try {
-      await attachTasks(task.taskable.id, selectedProcess.id);
+      await attachTasks(task.taskable.id, selectedProcess.id, session.staff.id);
       setCreatedSB(true);
     } catch (error) {
       setErrorSB(true);

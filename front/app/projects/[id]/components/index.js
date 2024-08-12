@@ -26,15 +26,15 @@ export default function IndexComponent(props) {
     <DataProvider value={{ ...props }}>
       <MDBox>
         <TabContext value={tab}>
-          <MDBox my={2}>
+          <MDBox my={1}>
             <Tabs setTabIndex={setTab} />
           </MDBox>
-          <Card sx={{ p: 2 }}>
+          <Card sx={{ p: 1 }}>
             <TabPanel value="description">
               <Header />
               <Details />
             </TabPanel>
-            <TabPanel value="tasks">
+            <TabPanel value="tasks" sx={{ padding: "12px" }}>
               <Tasks />
             </TabPanel>
             <TabPanel value="timers">

@@ -58,7 +58,8 @@ export async function update(id, data) {
   revalidatePath("/projects");
 }
 
-export async function attachTasks(projectId, processId = null, staffId = null) {
+export async function attachTasks(params) {
+  const { projectId, processId, staffId } = params;
   const url = new URL(
     `${process.env.API_URL}/projects/${projectId}/tasks-attach`
   );

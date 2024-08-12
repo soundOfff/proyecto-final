@@ -109,7 +109,10 @@ export default function useTaskTable({
   const handleCreateTasks = async () => {
     setIsFetching(true);
     try {
-      const { createdTasks } = await attachTasks(project?.id, null, staffId);
+      const { createdTasks } = await attachTasks({
+        projectId: project?.id,
+        staffId,
+      });
       setIsToastOpen(true);
       setAreTasksAttached(Boolean(createdTasks));
     } catch (error) {

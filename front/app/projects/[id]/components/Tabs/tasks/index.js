@@ -39,7 +39,11 @@ export default function Tasks() {
   const handleSelectNextStep = async () => {
     setIsAttachingTasks(true);
     try {
-      await attachTasks(project.id, selectedProcess.id, session.staff.id);
+      await attachTasks({
+        projectId: project.id,
+        processId: selectedProcess.id,
+        staffId: session.staff.id,
+      });
       setCreatedSB(true);
     } catch (error) {
       setErrorSB(true);
@@ -54,7 +58,7 @@ export default function Tasks() {
   };
 
   return (
-    <MDBox p={0}>
+    <MDBox>
       <Stats />
       <Grid container spacing={3}>
         <Grid item xs={12}>

@@ -22,6 +22,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
+      id: "name",
       Header: "Nombre",
       Cell: ({ row }) => (
         <Link
@@ -36,6 +37,7 @@ export default function Table({ rows, meta }) {
       ),
     },
     {
+      id: "projectServiceType",
       Header: "Tipo de Caso",
       accessor: "projectServiceType.label",
     },

@@ -27,9 +27,26 @@ export default function Third({
   const [isOpen, setOpen] = useState(false);
   const [item, setItem] = useState(null);
 
+  const getMappedFieldValues = estimate.items.map((item) => ({
+    description: item.description,
+    long_description: item.longDescription || item.long_description,
+    quantity: item.quantity,
+    rate: item.rate,
+    taxes: item.taxes ?? [],
+    discount: item.discount,
+    line_item_type_id: item.lineItemType || item.line_item_type_id,
+    unit: item.unit,
+  }));
+
   useEffect(() => {
     setFieldValue(adjustment.name, estimate.adjustment);
   }, [estimate, adjustment, setFieldValue]);
+
+  useEffect(() => {
+    if (estimate) {
+      setFieldValue(items.name, getMappedFieldValues);
+    }
+  }, [estimate, items, setFieldValue]);
 
   const handleClose = () => {
     setOpen(false);

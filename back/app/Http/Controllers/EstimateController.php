@@ -15,6 +15,7 @@ use App\Models\Taggable;
 use App\Sorts\EstimatePartnerSort;
 use App\Sorts\EstimateProjectServiceTypeSort;
 use App\Sorts\EstimateProjectSort;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -96,7 +97,10 @@ class EstimateController extends Controller
             AllowedSort::custom('project', new EstimateProjectSort(), 'name'),
             AllowedSort::custom('serviceType', new EstimateProjectServiceTypeSort(), 'label'),
         ])
-        ->allowedFilters(['partner_id', 'project_id'])
+        ->allowedFilters([
+            AllowedFilter::exact('partner_id'),
+            AllowedFilter::exact('project_id'),
+        ])
         ->orderBy('id', 'desc');
 
         $estimates = request()->has('perPage')

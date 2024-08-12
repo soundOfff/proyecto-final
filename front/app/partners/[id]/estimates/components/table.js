@@ -6,6 +6,9 @@ import MDButton from "/components/MDButton";
 import moneyFormat from "/utils/moneyFormat";
 import { useMaterialUIController } from "/context";
 import Link from "next/link";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Tooltip } from "@mui/material";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -13,7 +16,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
-      Header: "Proforma #",
+      Header: "id",
       accessor: "id",
       Cell: ({ value }) => (
         <Link
@@ -35,18 +38,19 @@ export default function Table({ rows, meta }) {
       Cell: ({ value }) => moneyFormat(value),
     },
     {
-      id: "partner_name",
+      id: "partner",
       Header: "Nombre",
       Cell: ({ row }) => (
         <Link
           href={`/partners/${row.original.partner?.id}/profile`}
           sx={{ cursor: "pointer", color: "info" }}
         >
-          {row.original.partner?.company}
+          {row.original.partner?.company ?? row.original.partner?.name}
         </Link>
       ),
     },
     {
+      id: "project",
       Header: "Caso",
       accessor: "project.name",
       Cell: ({ row }) => {
@@ -73,8 +77,37 @@ export default function Table({ rows, meta }) {
       accessor: "referenceNo",
     },
     {
+      id: "serviceType",
       Header: "Departamento",
-      accessor: "project.serviceType.label",
+      accessor: "project.serviceType",
+      Cell: ({ row }) => row.original.project?.serviceType?.label,
+    },
+    {
+      id: "actions",
+      Header: "Acciones",
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <MDBox display="flex">
+          <Link
+            href={`/estimates/${row.original.id}/edit`}
+            sx={{ cursor: "pointer", color: "info" }}
+          >
+            <Tooltip title="Editar" placement="top">
+              <EditIcon fontSize="medium" color="warning" />
+            </Tooltip>
+          </Link>
+          <Tooltip title="Eliminar">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{ ml: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </MDBox>
+      ),
     },
   ];
 

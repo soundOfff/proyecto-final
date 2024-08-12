@@ -27,6 +27,7 @@ export default function Table({ rows, meta }) {
 
   const columns = [
     {
+      id: "number",
       Header: "Nombre",
       Cell: ({ row }) => (
         <Link

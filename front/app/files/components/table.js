@@ -39,6 +39,7 @@ export default function Table({ rows, meta }) {
     {
       id: "fileable_type",
       Header: "Relacionado con",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDTypography
           variant="button"
@@ -53,6 +54,7 @@ export default function Table({ rows, meta }) {
     {
       id: "fileable_id",
       Header: "Nombre relacionado",
+      disableSortBy: true,
       width: "30%",
       Cell: ({ row }) => (
         <Link

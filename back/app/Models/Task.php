@@ -201,17 +201,6 @@ class Task extends Model
         return $relatedProcedures->first()->id === $this->procedure->id;
     }
 
-    // If logic is needed, uncomment this method
-    // public function finalTask() {
-    //     $latestTask = self::where('taskable_id', $this->taskable_id)
-    //         ->where('taskable_type', $this->taskable_type)
-    //         ->whereNotNull('milestone_order')
-    //         ->orderBy('milestone_order', 'DESC')
-    //         ->first();
-
-    //     return $latestTask;
-    // }
-
     public function requiredFields()
     {
         return $this->hasMany(TaskRequiredField::class);

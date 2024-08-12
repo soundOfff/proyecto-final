@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Grid } from "@mui/material";
+import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import Select from "/components/Select";
 import MDTypography from "/components/MDTypography";
@@ -9,10 +9,11 @@ import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Partners from "./components/partners";
-import { ErrorMessage } from "formik";
+import { ErrorMessage, Field } from "formik";
 import form from "./schemas/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
+import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
 
 export default function FormComponent({
   formData,
@@ -25,7 +26,7 @@ export default function FormComponent({
   statuses,
   members,
 }) {
-  const { values, errors, touched, setFieldValue } = formData;
+  const { values, errors, touched, setFieldValue, setFieldError } = formData;
   const { formField } = form;
   const {
     billablePartner,
@@ -51,6 +52,33 @@ export default function FormComponent({
       owner: partnerData.find((p) => p.id === partner.owner_id)?.name,
     };
   });
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setShowDatePicker(event.target.checked);
+    if (!event.target.checked) {
+      setFieldValue(deadline.name, "");
+    }
+  };
+
+  const validatePartners = (partners) => {
+    let error;
+
+    const defendants = partners.filter(
+      (partner) => partner.role_id === DEFENDANT
+    );
+    const plaintiffs = partners.filter(
+      (partner) => partner.role_id === PLAINTIFF
+    );
+
+    if (defendants.length === 0 || plaintiffs.length === 0) {
+      error = "Debe elegir al menos un demandado y un demandante";
+      setFieldError("partners", error);
+    }
+
+    return error;
+  };
 
   useEffect(() => {
     if (project) {
@@ -183,27 +211,44 @@ export default function FormComponent({
           </MDBox>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <MDDatePicker
-            value={values[deadline.name]}
-            onChange={(date) =>
-              setFieldValue(deadline.name, moment(date[0]).format("YYYY-MM-DD"))
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showDatePicker}
+                onChange={handleCheckboxChange}
+                color="primary"
+              />
             }
-            input={{
-              label: "Fecha De Entrega",
-              fullWidth: true,
-            }}
+            label="¿El caso tiene fecha de entrega?"
           />
-          <MDBox mt={0.75}>
-            <MDTypography
-              component="div"
-              variant="caption"
-              color="error"
-              fontWeight="regular"
-            >
-              <ErrorMessage name={deadline.name} />
-            </MDTypography>
-          </MDBox>
         </Grid>
+        {showDatePicker && (
+          <Grid item xs={12} sm={6}>
+            <MDDatePicker
+              value={values[deadline.name]}
+              onChange={(date) =>
+                setFieldValue(
+                  deadline.name,
+                  moment(date[0]).format("YYYY-MM-DD")
+                )
+              }
+              input={{
+                label: "Fecha De Entrega",
+                fullWidth: true,
+              }}
+            />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={deadline.name} />
+              </MDTypography>
+            </MDBox>
+          </Grid>
+        )}
         <Grid item xs={12} sm={6}>
           <Select
             value={values[serviceType.name]}
@@ -280,6 +325,21 @@ export default function FormComponent({
               description,
             }}
           />
+          <MDBox>
+            <Field
+              name={partners.name}
+              validate={validatePartners}
+              style={{ display: "none" }}
+            />
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={partners.name} />
+            </MDTypography>
+          </MDBox>
         </Grid>
         <Grid item xs={12}>
           <MDBox display="flex" justifyContent="end">

@@ -27,6 +27,7 @@ export default async function Reports({ searchParams }) {
     staffId,
     perPage = 10,
     page = 1,
+    sort = "-id",
   } = searchParams;
   const session = await getServerSession(authOptions);
 
@@ -52,6 +53,7 @@ export default async function Reports({ searchParams }) {
     ...staffFilter,
     perPage,
     page,
+    sort,
   };
 
   const {

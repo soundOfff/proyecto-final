@@ -24,6 +24,10 @@ const form = {
       name: "billable",
       label: "Facturable",
     },
+    initialDurationMinutes: {
+      name: "initial_duration_minutes",
+      label: "Duración inicial de la tarea (en minutos)",
+    },
     name: {
       name: "name",
       label: "Tema",

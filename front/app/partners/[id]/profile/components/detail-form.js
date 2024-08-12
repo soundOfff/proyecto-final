@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 export default function DetailFormComponent({
   partner,
   consolidators,
+  industries,
+  sections,
   notJuridicEntities,
   partnerTypes,
   countries,
@@ -63,8 +65,8 @@ export default function DetailFormComponent({
     [country.name]: partner.countryId ?? "",
     [province.name]: partner.jurisdiction?.district?.province?.id ?? "",
     [district.name]: partner.jurisdiction?.district?.id ?? "",
-    [industry.name]: partner.industry ?? "",
-    [section.name]: partner.section ?? "",
+    [industry.name]: partner.industryId ?? "",
+    [section.name]: partner.sectionId ?? "",
     [document.name]: partner.document ?? "",
     [jurisdiction.name]: partner.jurisdiction?.id ?? "",
     [isConsolidator.name]: partner.isConsolidator ?? "",
@@ -146,6 +148,8 @@ export default function DetailFormComponent({
                 <JuridicalForm
                   {...{
                     countries,
+                    industries,
+                    sections,
                     consolidators,
                     partnerTypes,
                     notJuridicEntities,

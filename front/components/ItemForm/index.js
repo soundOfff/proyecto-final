@@ -1,19 +1,23 @@
 "use client";
 
-import { useFormik } from "formik";
-import { Autocomplete, Grid } from "@mui/material";
 import { useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 import FormField from "./FormField";
+
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+
+import { Autocomplete, Grid } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import * as Yup from "yup";
+import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 export default function ItemForm({ formData, item, taxesData, types }) {
   const units = ["Cantidad", "Horas", "Cantidad/Horas"];
@@ -38,17 +42,23 @@ export default function ItemForm({ formData, item, taxesData, types }) {
     [description.name]: Yup.string().required(description.errorMsg),
     [quantity.name]: Yup.number()
       .min(1, "Debe ser mayor que 0")
-      .required(quantity.errorMsg),
+      .required(quantity.errorMsg)
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
     [rate.name]: Yup.number().required(rate.errorMsg),
     [longDescription.name]: Yup.string().nullable(),
     [type.name]: Yup.string().nullable(),
     [taxes.name]: Yup.array().of(
       Yup.object().shape({
         name: Yup.string(),
-        rate: Yup.number(),
+        rate: Yup.number().max(
+          MAX_AMOUNT,
+          `El valor no puede ser mayor a ${MAX_AMOUNT}`
+        ),
       })
     ),
-    [discount.name]: Yup.number().nullable(),
+    [discount.name]: Yup.number()
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
+      .nullable(),
   });
 
   const { values, errors, touched, handleSubmit, setFieldValue } = useFormik({

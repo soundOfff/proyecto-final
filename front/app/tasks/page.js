@@ -20,7 +20,7 @@ import { authOptions } from "/pages/api/auth/[...nextauth]";
 import { getSelect as getSelectTasks } from "/actions/tasks";
 
 export default async function Tasks({
-  searchParams: { perPage = 10, page = 1 },
+  searchParams: { perPage = 10, page = 1, sort = "-id" },
 }) {
   const session = await getServerSession(authOptions);
   const tableName = "projects";
@@ -45,6 +45,7 @@ export default async function Tasks({
     getAllTasks({
       perPage: perPage,
       page: page,
+      sort,
       include: ["assigneds", "tags", "status", "dependencies", "author"],
     }),
     getAllTags(),

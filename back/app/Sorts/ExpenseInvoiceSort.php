@@ -13,6 +13,6 @@ class ExpenseInvoiceSort implements Sort
 
         $query
             ->leftJoin('invoices as invoices_order', 'expenses.invoice_id', '=', 'invoices_order.id')
-            ->orderBy("invoices_order.{$property}", $direction);
+            ->orderByRaw("invoices_order.{$property} IS NULL, invoices_order.{$property} {$direction}");
     }
 }

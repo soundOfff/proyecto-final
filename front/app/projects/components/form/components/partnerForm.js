@@ -8,7 +8,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import MDTypography from "/components/MDTypography";
 import { PLAINTIFF } from "/utils/constants/PartnerProjectRoles";
-import { OWNER } from "/utils/constants/relatedPartnerTypes";
 import { getSelect as getOwners } from "/actions/partners";
 
 export default function PartnerForm({

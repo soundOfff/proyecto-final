@@ -13,6 +13,6 @@ class ExpenseProjectSort implements Sort
 
         $query
             ->leftJoin('projects as projects_order', 'expenses.project_id', '=', 'projects_order.id')
-            ->orderBy("projects_order.{$property}", $direction);
+            ->orderByRaw("projects_order.{$property} IS NULL, projects_order.{$property} {$direction}");
     }
 }

@@ -18,11 +18,14 @@ import { useRouter } from "next/navigation";
 export default function FormComponent({
   consolidators,
   notJuridicEntities,
+  sections,
+  industries,
   countries,
   partnerTypes,
 }) {
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(true);
+  const [isRequired, setIsRequired] = useState(true);
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
@@ -44,7 +47,11 @@ export default function FormComponent({
 
   const getCurrentValidation = () => {
     if (isJuridic) {
-      return validations.juridical;
+      if (isRequired) {
+        return validations.juridical;
+      } else {
+        return validations.juridicalOptional;
+      }
     } else {
       return validations.person;
     }
@@ -75,6 +82,8 @@ export default function FormComponent({
                 {...{
                   consolidators,
                   notJuridicEntities,
+                  sections,
+                  industries,
                   partnerTypes,
                   countries,
                   errors,
@@ -83,6 +92,8 @@ export default function FormComponent({
                   setFieldValue,
                   isJuridic,
                   setIsJuridic,
+                  isRequired,
+                  setIsRequired,
                 }}
               />
             ) : (

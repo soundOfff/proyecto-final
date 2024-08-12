@@ -17,17 +17,27 @@ export default function Table({ formData, types }) {
     },
     {
       Header: "Descripción",
-      accessor: "long_description",
+      accessor: "longDescription",
+      width: "40%",
+      Cell: ({ value, row }) => {
+        return value ?? row.original.long_description;
+      },
     },
     {
       Header: "Tipo de articulo",
       accessor: "line_item_type_id",
-      Cell: ({ value }) =>
-        value ? types.find((type) => type.id === value)?.label : null,
+      Cell: ({ value, row }) => {
+        return value
+          ? types.find((type) => type.id === value)?.label
+          : row.original.type
+          ? types.find((type) => type.id === row.original.type)?.label
+          : null;
+      },
     },
     {
       Header: () => values[formField.unit.name],
       accessor: "quantity",
+      Cell: ({ value }) => <MDBox textAlign="center">{value}</MDBox>,
     },
     {
       Header: "Precio",

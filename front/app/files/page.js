@@ -16,7 +16,7 @@ export default async function File({
   } = await getAll({
     perPage,
     page,
-    sort: sort ? sort : "created_at",
+    sort: sort ? sort : "-created_at",
     include: ["fileable"],
   });
 

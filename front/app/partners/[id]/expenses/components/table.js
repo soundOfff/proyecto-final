@@ -81,6 +81,7 @@ export default function Table({ rows }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <Tooltip title="Vista Rápida">
           <FlashOnOutlined

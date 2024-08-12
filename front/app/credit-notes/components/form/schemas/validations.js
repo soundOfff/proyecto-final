@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
+import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 const {
   formField: {
@@ -44,7 +45,9 @@ const {
 
 const validations = [
   Yup.object().shape({
-    [number.name]: Yup.number().required(number.errorMsg),
+    [number.name]: Yup.number()
+      .required(number.errorMsg)
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
     [date.name]: Yup.date().required(date.errorMsg),
     [partner.name]: Yup.number().required(partner.errorMsg),
     [project.name]: Yup.number().required(project.errorMsg),
@@ -74,15 +77,26 @@ const validations = [
           description: Yup.string(),
           longDescription: Yup.string().nullable(),
           type: Yup.number().nullable(),
-          quantity: Yup.number(),
-          rate: Yup.number(),
+          quantity: Yup.number().max(
+            MAX_AMOUNT,
+            `El valor no puede ser mayor a ${MAX_AMOUNT}`
+          ),
+          rate: Yup.number().max(
+            MAX_AMOUNT,
+            `El valor no puede ser mayor a ${MAX_AMOUNT}`
+          ),
           taxes: Yup.array().of(
             Yup.object().shape({
               name: Yup.string(),
-              rate: Yup.number(),
+              rate: Yup.number().max(
+                MAX_AMOUNT,
+                `El valor no puede ser mayor a ${MAX_AMOUNT}`
+              ),
             })
           ),
-          discount: Yup.number().nullable(),
+          discount: Yup.number()
+            .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
+            .nullable(),
         })
       )
       .min(1, "Debe agregar al menos un item"),

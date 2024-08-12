@@ -126,12 +126,13 @@ export default function Table({ rows }) {
                   gap: 1,
                 }}
               >
-                <DescriptionOutlined fontSize="medium" color="dark" />
+                <DescriptionOutlined fontSize="small" color="dark" />
                 <Link href={file.publicUrl}>
                   <MDTypography
                     variant="button"
                     fontWeight="regular"
                     color="dark"
+                    fontSize="small"
                   >
                     {file.subject.length > 10
                       ? file.subject.substring(0, 10) + "..."
@@ -151,6 +152,7 @@ export default function Table({ rows }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       accessor: "actions",
       textAlign: "center",
       Cell: ({ row }) => (

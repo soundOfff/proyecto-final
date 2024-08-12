@@ -23,12 +23,15 @@ import RelatedPersonFormComponent from "./related-person-form";
 export default function JuridicalForm({
   countries,
   consolidators,
+  sections,
+  industries,
   notJuridicEntities,
   partnerTypes,
   errors,
   values,
   touched,
   setFieldValue,
+  isRequired,
 }) {
   const {
     formField: {
@@ -101,7 +104,7 @@ export default function JuridicalForm({
         <Grid item xs={12} sm={6}>
           <FormField
             value={values[company.name]}
-            isImportant
+            isImportant={isRequired}
             label={company.label}
             placeholder={company.placeholder}
             name={company.name}
@@ -111,32 +114,28 @@ export default function JuridicalForm({
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
+          <Select
             value={values[industry.name]}
-            label={industry.label}
-            name={industry.name}
-            type={industry.type}
-            error={errors[industry.name] && touched[industry.name]}
-            success={
-              values[industry.name]?.length > 0 && !errors[industry.name]
-            }
+            options={industries}
+            optionLabel={(option) => option.label}
+            fieldName={industry.name}
+            inputLabel={industry.label}
+            setFieldValue={setFieldValue}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormField
-            isImportant
+          <Select
             value={values[section.name]}
-            label={section.label}
-            name={section.name}
-            type={section.type}
-            error={errors[section.name] && touched[section.name]}
-            success={values[section.name]?.length > 0 && !errors[section.name]}
+            options={sections}
+            optionLabel={(option) => option.label}
+            fieldName={section.name}
+            inputLabel={section.label}
+            setFieldValue={setFieldValue}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
-            isImportant
+            isImportant={isRequired}
             value={values[document.name]}
             label={document.label}
             name={document.name}
@@ -149,7 +148,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
-            isImportant
+            isImportant={isRequired}
             label={phone.label}
             placeholder={phone.placeholder}
             name={phone.name}
@@ -161,7 +160,7 @@ export default function JuridicalForm({
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormField
-            isImportant
+            isImportant={isRequired}
             label={email.label}
             placeholder={email.placeholder}
             name={email.name}
@@ -243,7 +242,7 @@ export default function JuridicalForm({
         <Grid item xs={12} sm={6}>
           <FormField
             multiline
-            isImportant
+            isImportant={isRequired}
             rows={3}
             value={values[address.name]}
             label={address.label}
@@ -348,7 +347,7 @@ export default function JuridicalForm({
             label={ruc.label}
             name={ruc.name}
             type={ruc.type}
-            isImportant
+            isImportant={isRequired}
             value={values[ruc.name]}
             error={errors[ruc.name] && touched[ruc.name]}
             success={values[ruc.name]?.length > 0 && !errors[ruc.name]}
@@ -359,7 +358,7 @@ export default function JuridicalForm({
             label={dv.label}
             placeholder={dv.placeholder}
             name={dv.name}
-            isImportant
+            isImportant={isRequired}
             type={dv.type}
             value={values[dv.name]}
             error={errors[dv.name] && touched[dv.name]}

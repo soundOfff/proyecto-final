@@ -251,7 +251,6 @@ export default function Details() {
               </MDTypography>
             </MDBox>
           ))}
-          <UpdateMembers projectId={project.id} staffs={staffs} />
         </Grid>
 
         <Divider variant="left" sx={{ width: "70%" }} />

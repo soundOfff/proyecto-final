@@ -14,7 +14,14 @@ export default function Expenses() {
   useEffect(() => {
     getAll({
       "filter[project_id]": project.id,
-      include: ["category", "project", "invoice", "partner", "files"],
+      include: [
+        "category",
+        "project",
+        "invoice",
+        "partner",
+        "estimate",
+        "files",
+      ],
     }).then((data) => {
       setExpenses(data.data.expenses);
       setIsLoading(false);

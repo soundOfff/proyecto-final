@@ -40,6 +40,11 @@ export default function Select({
             inputProps={{ ...params.inputProps }}
           />
         )}
+        ListboxProps={{
+          style: {
+            textTransform: "uppercase",
+          },
+        }}
       />
       <MDBox mt={0.75}>
         <MDTypography

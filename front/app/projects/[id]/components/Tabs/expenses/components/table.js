@@ -35,7 +35,6 @@ export default function Table({ rows, project }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-
   const handleDeleteFile = async (fileId) => {
     await destroyFile(fileId);
   };
@@ -80,19 +79,15 @@ export default function Table({ rows, project }) {
       accessor: "date",
     },
     {
-      Header: "Caso",
-      accessor: "project.name",
-      width: "25%",
-      Cell: ({ value, row }) => {
-        return row.original.project ? (
-          <Link
-            href={`/projects/${row.original.project?.id}`}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            {row.original.project.name}
+      Header: "Proforma",
+      accessor: "estimate",
+      Cell: ({ row }) => (
+        <MDBox sx={{ textAlign: "center", mr: 4 }}>
+          <Link href={`/estimates/${row.original.estimate?.id}`}>
+            {row.original.estimate?.id}
           </Link>
-        ) : null;
-      },
+        </MDBox>
+      ),
     },
     {
       Header: "Cliente",
@@ -105,6 +100,11 @@ export default function Table({ rows, project }) {
     {
       Header: "Factura",
       accessor: "invoice.id",
+      Cell: ({ value }) => (
+        <MDBox sx={{ textAlign: "center", mr: 4 }}>
+          <Link href={`/estimates/${value}`}>{value}</Link>
+        </MDBox>
+      ),
     },
     {
       Header: "Archivos",
@@ -134,12 +134,13 @@ export default function Table({ rows, project }) {
                   gap: 1,
                 }}
               >
-                <DescriptionOutlined fontSize="medium" color="dark" />
+                <DescriptionOutlined fontSize="small" color="dark" />
                 <Link href={file.publicUrl}>
                   <MDTypography
                     variant="button"
                     fontWeight="regular"
                     color="dark"
+                    fontSize="small"
                   >
                     {file.subject.length > 10
                       ? file.subject.substring(0, 10) + "..."
@@ -159,6 +160,7 @@ export default function Table({ rows, project }) {
     },
     {
       Header: "Acciones",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Tooltip title="Vista Rápida">

@@ -30,6 +30,8 @@ class StaffController extends Controller
         $query = QueryBuilder::for(Staff::class)
             ->allowedSorts(
                 [
+                    'id',
+                    'first_name',
                     AllowedSort::field('email'),
                     AllowedSort::field('created_at'),
                     AllowedSort::field('updated_at'),

@@ -27,7 +27,8 @@ import { useMaterialUIController } from "/context";
 
 function DataTableHeadCell({
   width = "auto",
-  sorted = true,
+  isSortDisabled = false,
+  sorted = "none",
   align = "left",
   children,
   ...rest
@@ -55,39 +56,37 @@ function DataTableHeadCell({
           fontSize: size.xxs,
           fontWeight: fontWeightBold,
           textTransform: "uppercase",
-          cursor: sorted && "pointer",
+          cursor: sorted && !isSortDisabled && "pointer",
           userSelect: sorted && "none",
         })}
       >
-        {
-          <MDBox display="flex">
-            <MDBox>{children}</MDBox>
-            {sorted && (
+        <MDBox display="flex">
+          <MDBox>{children}</MDBox>
+          {sorted && !isSortDisabled && (
+            <MDBox
+              sx={({ typography: { size } }) => ({
+                fontSize: size.lg,
+              })}
+            >
               <MDBox
-                sx={({ typography: { size } }) => ({
-                  fontSize: size.lg,
-                })}
+                position="absolute"
+                top={-6}
+                color={sorted === "asce" ? "text" : "secondary"}
+                opacity={sorted === "asce" ? 1 : 0.5}
               >
-                <MDBox
-                  position="absolute"
-                  top={-6}
-                  color={sorted === "asce" ? "text" : "secondary"}
-                  opacity={sorted === "asce" ? 1 : 0.5}
-                >
-                  <Icon>arrow_drop_up</Icon>
-                </MDBox>
-                <MDBox
-                  position="absolute"
-                  top={0}
-                  color={sorted === "desc" ? "text" : "secondary"}
-                  opacity={sorted === "desc" ? 1 : 0.5}
-                >
-                  <Icon>arrow_drop_down</Icon>
-                </MDBox>
+                <Icon>arrow_drop_up</Icon>
               </MDBox>
-            )}
-          </MDBox>
-        }
+              <MDBox
+                position="absolute"
+                top={0}
+                color={sorted === "desc" ? "text" : "secondary"}
+                opacity={sorted === "desc" ? 1 : 0.5}
+              >
+                <Icon>arrow_drop_down</Icon>
+              </MDBox>
+            </MDBox>
+          )}
+        </MDBox>
       </MDBox>
     </MDBox>
   );

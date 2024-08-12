@@ -52,6 +52,7 @@ export default function Table({
   const { currentTimer, darkMode } = controller;
   const [isLoading, setIsLoading] = useState(true);
   const [rows, setRows] = useState([]);
+  const { data: session } = useSession();
 
   const {
     optimisticRows,
@@ -61,6 +62,7 @@ export default function Table({
     stopTimer,
     startTimer,
     isToastOpen,
+    areTasksAttached,
     isFetching,
     setOpenEditModal,
     handleCloseEditModal,
@@ -73,7 +75,13 @@ export default function Table({
     setTaskId,
     handleCreateTasks,
     setOpenShowModal,
-  } = useTaskTable({ rows, dispatch, project, statuses });
+  } = useTaskTable({
+    rows,
+    dispatch,
+    project,
+    statuses,
+    staffId: session?.staff?.id,
+  });
 
   const {
     setOpenDeleteConfirmation,
@@ -98,8 +106,6 @@ export default function Table({
       setIsLoading(false);
     });
   }, [project, setIsLoading]);
-
-  const { data: session } = useSession();
 
   const moveRow = (dragIndex, hoverIndex) => {
     const dragRow = rows[dragIndex];
@@ -327,10 +333,18 @@ export default function Table({
   ) : (
     <MDBox width="100%">
       <MDSnackbar
-        color="success"
+        color={areTasksAttached ? "success" : "warning"}
         icon="info"
-        title="Tareas creadas correctamente"
-        content="Se han creado todas las tareas del proceso correctamente"
+        title={
+          areTasksAttached
+            ? "Tareas creadas correctamente"
+            : "Las tareas ya han sido creadas"
+        }
+        content={
+          areTasksAttached
+            ? "Se han creado todas las tareas del proceso correctamente"
+            : "No se han creado tareas, ya han sido creadas en su totalidad"
+        }
         open={isToastOpen}
         onClose={() => setIsToastOpen(false)}
         close={() => setIsToastOpen(false)}
@@ -339,7 +353,7 @@ export default function Table({
       <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
         <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
           {project && (
-            <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un responsable, un departamento y un proceso">
+            <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un departamento y un proceso">
               <MDBox>
                 <MDButton
                   variant="gradient"

@@ -12,6 +12,7 @@ use App\Models\PartnerProjectRole;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectServiceType;
+use App\Models\Staff;
 use App\Models\Task;
 use App\Models\TaskPriority;
 use App\Models\TaskRepeat;
@@ -51,7 +52,7 @@ class ProjectController extends Controller
                         $query
                             ->whereHas(
                                 'members',
-                                fn (Builder $query) => $query->where('staff_id', $value)
+                                fn(Builder $query) => $query->where('staff_id', $value)
                             );
                     }
                 ),
@@ -85,7 +86,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $projectMemberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
 
         $partnersToAttach = [];
         foreach ($request->get('partners') as $partner) {
@@ -105,7 +106,7 @@ class ProjectController extends Controller
         $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
         $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
 
-        $projectName = $plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
+        $projectName = $plaintiffs->implode('merged_name', ', ') . ' vs ' . $defendants->implode('merged_name', ', ');
 
         $project->update([
             'name' => $projectName,
@@ -166,7 +167,7 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $memberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($memberIds);
 
         $partnersToSync = [];
@@ -181,7 +182,7 @@ class ProjectController extends Controller
         $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
         $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
 
-        $data['name'] = $plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
+        $data['name'] = $plaintiffs->implode('merged_name', ', ') . ' vs ' . $defendants->implode('merged_name', ', ');
 
         $project->update($data);
 
@@ -203,12 +204,15 @@ class ProjectController extends Controller
         $partnerId = $request->input('partner_id');
 
         $countByStatuses = DB::table('project_statuses')
-            ->when($partnerId, function ($query, $partnerId) {
-                return $query->selectRaw("label, COUNT(IF(billable_partner_id = $partnerId, 1, NULL)) as count");
-            },
+            ->when(
+                $partnerId,
+                function ($query, $partnerId) {
+                    return $query->selectRaw("label, COUNT(IF(billable_partner_id = $partnerId, 1, NULL)) as count");
+                },
                 function ($query) {
                     return $query->selectRaw('label, COUNT(project_status_id) as count');
-                })
+                }
+            )
 
             ->leftJoin('projects', 'projects.project_status_id', '=', 'project_statuses.id')
             ->groupBy('label')
@@ -220,18 +224,23 @@ class ProjectController extends Controller
     public function attachTasks(Project $project, Request $request)
     {
         $process = Process::find($request->get('processId')); // != null means that is from a child process
+        $staff = Staff::find($request->get('staffId'));
+
+        abort_if(!$staff, 404, 'Staff not found');
 
         if (is_null($process)) { // == null means that is from a root process
             $process = $project->load('serviceType.processes')->serviceType->processes->first();
         }
 
         $procedures = $process->load('procedures')->procedures->sortBy('step_number');
+        $createdTasks = false;
 
         foreach ($procedures as $procedure) {
-            $procedure->convertToTask($project);
+            $task = $procedure->convertToTask($project, $staff->id);
+            if ($task) $createdTasks = true;
         }
 
-        return response()->json($project->tasks, 201);
+        return response()->json(["createdTasks" => $createdTasks], 201);
     }
 
     /**
@@ -241,7 +250,7 @@ class ProjectController extends Controller
     {
         $request->validated();
 
-        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $ids = array_map(fn($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($ids);
 
         return response()->json($project, 201);

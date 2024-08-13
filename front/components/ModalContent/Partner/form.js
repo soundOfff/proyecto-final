@@ -10,7 +10,6 @@ import {
   MenuItem,
   Select as MuiSelect,
   Switch,
-  TextareaAutosize,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDDatePicker from "/components/MDDatePicker";
@@ -97,6 +96,10 @@ export default function PersonForm({
   }, [values.district_id]);
 
   const civilStatuses = ["Soltero/a", "Casado/a", "Divorciado/a", "Viudo/a"];
+  const idTypes = ["Cédula", "Pasaporte", "Carnet de Residente"];
+  const initialIdType = idTypes.includes(values.id_type)
+    ? values.id_type
+    : null;
 
   return (
     <Grid container spacing={5}>
@@ -112,14 +115,25 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={4}>
-        <FormField
-          value={values[idType.name]}
-          label={idType.label}
-          placeholder={idType.placeholder}
-          name={idType.name}
-          type={idType.type}
-          error={errors[idType.name] && touched[idType.name]}
-          success={values[idType.name]?.length > 0 && !errors[idType.name]}
+        <Autocomplete
+          disablePortal
+          id="id-type-selector"
+          options={idTypes}
+          onChange={(event, newValue) => {
+            setFieldValue(idType.name, newValue);
+          }}
+          value={initialIdType}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Tipo de Identificación"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.idType && touched.idType)}
+              helperText={touched.idType && errors.idType}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -163,7 +177,7 @@ export default function PersonForm({
           onChange={(event, newValue) => {
             setFieldValue("civil_status", newValue);
           }}
-          value={values[civilStatuses]}
+          value={values[civilStatus.name]}
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -176,6 +190,16 @@ export default function PersonForm({
             />
           )}
         />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            <ErrorMessage name={civilStatus.name} />
+          </MDTypography>
+        </MDBox>
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormField

@@ -58,7 +58,7 @@ export default function FormComponent({
     };
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(!!values[deadline.name]);
 
   const handleCheckboxChange = (event) => {
     setShowDatePicker(event.target.checked);
@@ -89,8 +89,8 @@ export default function FormComponent({
     if (project) {
       setFieldValue(cost.name, project.cost || "");
       setFieldValue(proposal.name, project.proposalId || "");
-      /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(expedient.name, project.expedient || "");
+      /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(billablePartner.name, project.billablePartnerId || "");
       setFieldValue(status.name, project.status.id);
       setFieldValue(serviceType.name, project.serviceType?.id || "");
@@ -117,6 +117,7 @@ export default function FormComponent({
           };
         })
       );
+      setShowDatePicker(!!project.deadline);
     }
   }, [
     project,

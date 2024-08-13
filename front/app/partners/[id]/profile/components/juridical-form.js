@@ -53,7 +53,6 @@ export default function JuridicalForm({
         address,
         isResidential,
         phone,
-        buildingNumber,
         fileNumber,
         imageNumber,
         rollNumber,
@@ -278,20 +277,6 @@ export default function JuridicalForm({
           value={values[email.name]}
           error={errors[email.name] && touched[email.name]}
           success={values[email.name]?.length > 0 && !errors[email.name]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
-          success={
-            values[buildingNumber.name]?.length > 0 &&
-            !errors[buildingNumber.name]
-          }
         />
       </Grid>
       <Grid item xs={12} sm={6}>

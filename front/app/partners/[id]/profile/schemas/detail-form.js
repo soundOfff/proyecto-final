@@ -126,10 +126,6 @@ const detailForm = {
         name: "is_residential",
         label: "Tipo",
       },
-      buildingNumber: {
-        name: "building_number",
-        label: "Número de casa/apartamento/edificio",
-      },
       fileNumber: {
         name: "file_number",
         label: "Número de Archivo",
@@ -253,11 +249,6 @@ const detailForm = {
       isResidential: {
         name: "is_residential",
         label: "Tipo",
-      },
-      buildingNumber: {
-        name: "building_number",
-        label: "Número de casa/apartamento/edificio",
-        type: "text",
       },
     },
   },

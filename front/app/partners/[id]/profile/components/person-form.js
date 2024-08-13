@@ -54,7 +54,6 @@ export default function PersonForm({
         phone,
         email,
         isResidential,
-        buildingNumber,
       },
     },
   } = detailForm;
@@ -363,20 +362,6 @@ export default function PersonForm({
             </MDTypography>
           </MDBox>
         </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
-          success={
-            values[buildingNumber.name]?.length > 0 &&
-            !errors[buildingNumber.name]
-          }
-        />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="center">
         <FormGroup>

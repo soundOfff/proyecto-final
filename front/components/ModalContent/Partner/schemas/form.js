@@ -133,12 +133,6 @@ const notJuridicalPartnerForm = {
       label: "Tipo",
       errorMsg: "Debe seleccionar un tipo",
     },
-    buildingNumber: {
-      name: "building_number",
-      label: "Número de casa/apartamento/edificio",
-      type: "text",
-      errorMsg: "El número de casa/apartamento/edificio es requerido",
-    },
   },
 };
 

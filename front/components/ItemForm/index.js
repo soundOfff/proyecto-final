@@ -44,7 +44,9 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       .min(1, "Debe ser mayor que 0")
       .required(quantity.errorMsg)
       .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
-    [rate.name]: Yup.number().required(rate.errorMsg),
+    [rate.name]: Yup.number()
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
+      .required(rate.errorMsg),
     [longDescription.name]: Yup.string().nullable(),
     [type.name]: Yup.string().nullable(),
     [taxes.name]: Yup.array().of(

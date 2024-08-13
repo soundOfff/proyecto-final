@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
+import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 const {
   formField: {
@@ -43,10 +44,9 @@ const validations = Yup.object().shape({
       "Debe ser mayor a 0"
     ), */
   [billablePartner.name]: Yup.string().required(billablePartner.errorMsg),
-  [cost.name]: Yup.number("El valor debe ser un número").min(
-    1,
-    "Debe ser mayor a 0"
-  ),
+  [cost.name]: Yup.number("El valor debe ser un número")
+    .min(1, "Debe ser mayor a 0")
+    .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
   [billingType.name]: Yup.string().required(billingType.errorMsg),
   [type.name]: Yup.string(),
   [process.name]: Yup.number(),

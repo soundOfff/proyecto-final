@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Estimate extends Model
 {
+    static $SPANISH_CLASS_NAME = "proforma";
     protected $fillable = [
         'id',
         'partner_id',

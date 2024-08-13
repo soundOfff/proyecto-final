@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Blade::directive('money_format', function ($money): string {
+            return "<?php echo '$' . number_format($money, 2); ?>";
+        });
+
         Relation::enforceMorphMap([
             'project' => 'App\Models\Project',
             'estimate' => 'App\Models\Estimate',
@@ -61,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
 
                 return new \Illuminate\Filesystem\FilesystemAdapter($driver, $adapter);
             });
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
 

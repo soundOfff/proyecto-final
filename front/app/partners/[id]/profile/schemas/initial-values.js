@@ -122,8 +122,8 @@ const initialValues = {
   [jurisdiction.name]: "",
   [province.name]: "",
   [rollNumber.name]: "",
-  [birthPlace.name]: "",
-  [nationality.name]: "",
+  [birthPlace.name]: PANAMA_ID,
+  [nationality.name]: PANAMA_ID,
   [dv.name]: "",
 };
 

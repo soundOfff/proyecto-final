@@ -66,8 +66,8 @@ const initialValues = {
   [phone.name]: "",
   [province.name]: "",
   [state.name]: "",
-  [birthPlace.name]: "",
-  [nationality.name]: "",
+  [birthPlace.name]: PANAMA_ID,
+  [nationality.name]: PANAMA_ID,
 };
 
 export default initialValues;

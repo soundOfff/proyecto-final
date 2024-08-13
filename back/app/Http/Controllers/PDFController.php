@@ -36,6 +36,6 @@ class PDFController extends Controller
         ];
 
         $pdf = PDF::loadView('document', $data);
-        return $pdf->download('document.pdf');
+        return $pdf->download("bill-" . now() . ".pdf");
     }
 }

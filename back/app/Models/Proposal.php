@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Proposal extends Model
 {
+    static $SPANISH_CLASS_NAME = "proforma";
     protected $fillable = [
         'id',
         'estimate_id',

@@ -6,11 +6,16 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import numberFormat from "/utils/numberFormat";
 import { useItemTotals } from "/hooks/useItemTotals";
+import usePrint from "/hooks/usePrint";
 
 export default function Footer({ invoice }) {
   const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
     items: invoice.items,
     discountType: invoice.discountType,
+  });
+  const { isGeneratingPdf, handlePrint } = usePrint({
+    documentType: "invoice",
+    documentId: invoice.id,
   });
 
   return (
@@ -113,10 +118,11 @@ export default function Footer({ invoice }) {
             <MDButton
               variant="gradient"
               color="dark"
-              onClick={() => window.print(this)}
+              onClick={handlePrint}
+              disabled={isGeneratingPdf}
               sx={{ displayPrint: "none" }}
             >
-              Imprimir
+              {isGeneratingPdf ? "Generando..." : "Imprimir"}
             </MDButton>
           </MDBox>
         </Grid>

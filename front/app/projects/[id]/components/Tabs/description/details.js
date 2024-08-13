@@ -214,7 +214,7 @@ export default function Details() {
           </>
         )}
 
-        <Grid xs={12} pl={2} mt={3}>
+        <Grid xs={12} sm={6} pl={2} mt={3}>
           <MDBox mt={0.5} lineHeight={1.4}>
             <MDTypography
               display="block"
@@ -251,6 +251,14 @@ export default function Details() {
               </MDTypography>
             </MDBox>
           ))}
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Proceso"
+            description={project.process?.name || "Sin propuesta asociada."}
+          />
         </Grid>
 
         <Divider variant="left" sx={{ width: "70%" }} />

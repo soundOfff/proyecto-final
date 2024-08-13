@@ -16,12 +16,16 @@ class Process extends Model
         'step_quantity',
         'name',
         'description',
-        'department',
     ];
 
-    public function projectServiceType(): BelongsTo
+    public function projectServiceType(): BelongsTo // Departamento
     {
         return $this->belongsTo(ProjectServiceType::class);
+    }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 
     public function procedures(): HasMany

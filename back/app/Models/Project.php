@@ -39,6 +39,8 @@ class Project extends Model
         'on_schedule',
         'proposal_id',
         'billable_partner_id',
+        'process_id',
+        'type',
     ];
 
     public function stages(): HasMany
@@ -91,6 +93,11 @@ class Project extends Model
         return $this->belongsTo(Proposal::class);
     }
 
+    public function process(): BelongsTo
+    {
+        return $this->belongsTo(Process::class);
+    }
+
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class, 'project_members');
@@ -126,5 +133,20 @@ class Project extends Model
         return $query->when($search, function ($query) use ($search) {
             $query->where('name', 'like', "%$search%");
         });
+    }
+
+    public function setName(): void
+    {
+        $department = $this->serviceType->label;
+        $type = $this->type ? ', '.$this->type : '';
+        $process = $this->process ? ', '.$this->process->name : '';
+        $defendants = $this->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
+        $plaintiffs = $this->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
+
+        $name = $department.$type.$process.' | '.$plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
+
+        $this->update([
+            'name' => $name,
+        ]);
     }
 }

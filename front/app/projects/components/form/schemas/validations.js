@@ -24,6 +24,8 @@ const {
     responsiblePersonId,
     description,
     billablePartner,
+    type,
+    process,
     status,
     serviceType,
     billingType,
@@ -46,6 +48,8 @@ const validations = Yup.object().shape({
     "Debe ser mayor a 0"
   ),
   [billingType.name]: Yup.string().required(billingType.errorMsg),
+  [type.name]: Yup.string(),
+  [process.name]: Yup.number(),
   [status.name]: Yup.string().required(status.errorMsg),
   [expedient.name]: Yup.string().matches(
     /^[0-9]+$/,

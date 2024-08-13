@@ -55,6 +55,14 @@ const form = {
       label: "Departamento",
       errorMsg: "Debe seleccionar un departamento",
     },
+    process: {
+      name: "process_id",
+      label: "Proceso",
+    },
+    type: {
+      name: "type",
+      label: "Tipo De Caso",
+    },
     selectedMembers: {
       name: "project_members",
       label: "Miembros Del Caso",

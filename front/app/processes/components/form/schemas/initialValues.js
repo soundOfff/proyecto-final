@@ -16,18 +16,10 @@ Coded by www.creative-tim.com
 import checkout from "./form";
 
 const {
-  formField: {
-    department,
-    description,
-    name,
-    stepQuantity,
-    projectServiceType,
-    forks,
-  },
+  formField: { description, name, stepQuantity, projectServiceType, forks },
 } = checkout;
 
 const initialValues = {
-  [department.name]: "",
   [description.name]: "",
   [name.name]: "",
   [stepQuantity.name]: "",

@@ -14,6 +14,7 @@ import form from "./schemas/form";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
+import { getAll as getAllProcesses } from "/actions/processes";
 
 export default function FormComponent({
   formData,
@@ -32,6 +33,8 @@ export default function FormComponent({
     billablePartner,
     cost,
     billingType,
+    process,
+    type,
     status,
     expedient,
     startDate,
@@ -43,6 +46,8 @@ export default function FormComponent({
     description,
     partners,
   } = formField;
+
+  const [processes, setProcesses] = useState([]);
 
   const partnerList = values[partners.name].map((partner) => {
     return {
@@ -90,6 +95,8 @@ export default function FormComponent({
       setFieldValue(status.name, project.status.id);
       setFieldValue(serviceType.name, project.serviceType?.id || "");
       setFieldValue(billingType.name, project.billingType?.id || "");
+      setFieldValue(type.name, project.type || "");
+      setFieldValue(process.name, project.processId || "");
       setFieldValue(
         responsiblePersonId.name,
         project.responsiblePerson?.id || ""
@@ -115,6 +122,8 @@ export default function FormComponent({
     project,
     cost,
     expedient,
+    type,
+    process,
     billablePartner,
     status,
     serviceType,
@@ -127,6 +136,18 @@ export default function FormComponent({
     proposal,
     setFieldValue,
   ]);
+
+  useEffect(() => {
+    if (values.project_service_type_id) {
+      const params = {
+        "filter[project_service_type_id]": values.project_service_type_id,
+      };
+
+      getAllProcesses(params).then((response) => {
+        setProcesses(response.data.processes);
+      });
+    }
+  }, [values.project_service_type_id]);
 
   return (
     <MDBox p={5}>
@@ -257,6 +278,27 @@ export default function FormComponent({
             fieldName={serviceType.name}
             inputLabel={serviceType.label}
             setFieldValue={setFieldValue}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Select
+            value={values[process.name]}
+            options={processes}
+            optionLabel={(option) => option.name}
+            fieldName={process.name}
+            inputLabel={process.label}
+            setFieldValue={setFieldValue}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormField
+            value={values[type.name]}
+            name={type.name}
+            label={type.label}
+            type={type.type}
+            placeholder={type.placeholder}
+            error={errors[type.name] && touched[type.name]}
+            success={values[type.name]?.length > 0 && !errors[type.name]}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

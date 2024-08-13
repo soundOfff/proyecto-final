@@ -360,7 +360,7 @@ export default function Table({
                   color={"info"}
                   disabled={
                     !project?.responsiblePerson ||
-                    !project?.serviceType?.processes[0] ||
+                    !project?.process ||
                     isFetching
                   }
                   onClick={handleCreateTasks}

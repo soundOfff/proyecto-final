@@ -27,6 +27,8 @@ const {
     status,
     serviceType,
     billingType,
+    type,
+    process,
     selectedMembers,
     startDate,
     deadline,
@@ -38,6 +40,8 @@ const {
 const initialValues = {
   [cost.name]: "",
   /* [estimatedHours.name]: "", */
+  [type.name]: "",
+  [process.name]: "",
   [expedient.name]: "",
   [description.name]: "",
   [billablePartner.name]: "",

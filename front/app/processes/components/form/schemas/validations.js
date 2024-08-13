@@ -18,14 +18,7 @@ import checkout from "./form";
 import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 const {
-  formField: {
-    department,
-    description,
-    name,
-    stepQuantity,
-    projectServiceType,
-    forks,
-  },
+  formField: { description, name, stepQuantity, projectServiceType, forks },
 } = checkout;
 
 const validations = Yup.object().shape({
@@ -33,7 +26,6 @@ const validations = Yup.object().shape({
   [stepQuantity.name]: Yup.number()
     .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
     .required(stepQuantity.errorMsg),
-  [department.name]: Yup.string(),
   [description.name]: Yup.string(),
   [projectServiceType.name]: Yup.number().required(projectServiceType.errorMsg),
   [forks.name]: Yup.array(),

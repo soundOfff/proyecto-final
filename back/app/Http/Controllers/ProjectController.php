@@ -71,6 +71,7 @@ class ProjectController extends Controller
                 'staffs',
                 'partners',
                 'proposal',
+                'process',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -103,14 +104,7 @@ class ProjectController extends Controller
         $project->members()->attach($projectMemberIds);
         $project->partners()->attach($partnersToAttach);
 
-        $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
-        $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
-
-        $projectName = $plaintiffs->implode('merged_name', ', ') . ' vs ' . $defendants->implode('merged_name', ', ');
-
-        $project->update([
-            'name' => $projectName,
-        ]);
+        $project->setName(); 
 
         $task = Task::create([
             'name' => 'Data entry',
@@ -154,6 +148,7 @@ class ProjectController extends Controller
                 'tasks',
                 'partners',
                 'proposal',
+                'process',
             ])
             ->find($project->id);
 
@@ -179,12 +174,9 @@ class ProjectController extends Controller
         }
         $project->partners()->sync($partnersToSync);
 
-        $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
-        $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
-
-        $data['name'] = $plaintiffs->implode('merged_name', ', ') . ' vs ' . $defendants->implode('merged_name', ', ');
-
         $project->update($data);
+
+        $project->setName();
 
         return response()->json($project, 201);
     }
@@ -229,7 +221,7 @@ class ProjectController extends Controller
         abort_if(!$staff, 404, 'Staff not found');
 
         if (is_null($process)) { // == null means that is from a root process
-            $process = $project->load('serviceType.processes')->serviceType->processes->first();
+            $process = $project->load('process')->process;
         }
 
         $procedures = $process->load('procedures')->procedures->sortBy('step_number');

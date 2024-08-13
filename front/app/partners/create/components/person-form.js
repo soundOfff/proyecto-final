@@ -100,6 +100,7 @@ export default function PersonForm({
   }, [values.district_id]);
 
   const idType = ["Cédula", "Pasaporte", "Carnet de Residente"];
+  const civilStatuses = ["Soltero/a", "Casado/a", "Divorciado/a", "Viudo/a"];
 
   return (
     <Grid container spacing={5}>
@@ -182,16 +183,25 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[civilStatus.name]}
-          label={civilStatus.label}
-          placeholder={civilStatus.placeholder}
-          name={civilStatus.name}
-          type={civilStatus.type}
-          error={errors[civilStatus.name] && touched[civilStatus.name]}
-          success={
-            values[civilStatus.name]?.length > 0 && !errors[civilStatus.name]
-          }
+        <Autocomplete
+          disablePortal
+          id="id-type-selector"
+          options={civilStatuses}
+          onChange={(event, newValue) => {
+            setFieldValue("civil_status", newValue);
+          }}
+          value={values[civilStatuses]}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Estado civil"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.civilStatuses && touched.civilStatuses)}
+              helperText={touched.civilStatuses && errors.civilStatuses}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

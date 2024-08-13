@@ -14,26 +14,24 @@ Coded by www.creative-tim.com
 */
 
 import Link from "next/link";
-
-// prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
-
-// @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import { usePathname } from "next/navigation";
-
 import Icon from "@mui/material/Icon";
-
-// NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import translate from "/locales/es/common.json";
 import { matchedRoutes } from "../../utils/constants/matchedRoutes";
+import useCaseName from "../../hooks/useCaseName";
 
 function Breadcrumbs({ icon, title, route, light = false }) {
   const pathname = usePathname();
   const segments = route.slice(0, -1).filter((el) => el.length > 0);
   const pathRoutes = pathname.split("/").filter((el) => el.length > 0);
+
+  // Obtener el ID del caso de la ruta
+  const caseId = pathRoutes.find((el) => el.match(/\d+/));
+  const { caseName, loading } = useCaseName(caseId);
 
   const getPageTitle = () =>
     "Velo CRM - " +
@@ -84,7 +82,7 @@ function Breadcrumbs({ icon, title, route, light = false }) {
               opacity={light ? 0.8 : 0.5}
               sx={{ lineHeight: 0 }}
             >
-              {translate[el] ?? el}
+              {el === "projects" && caseName ? caseName : translate[el] ?? el}
             </MDTypography>
           </Link>
         ))}

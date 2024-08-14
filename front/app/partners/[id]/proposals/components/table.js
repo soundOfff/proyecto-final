@@ -72,6 +72,7 @@ export default function Table({ rows, meta, partnerId }) {
     {
       Header: "Etiquetas",
       accessor: "tags",
+      disableSortBy: true,
       Cell: ({ value }) =>
         value.length
           ? value.map((tag) => (
@@ -97,6 +98,7 @@ export default function Table({ rows, meta, partnerId }) {
     {
       Header: "Comentarios",
       accessor: "comments",
+      disableSortBy: true,
       Cell: ({ value }) =>
         value.length
           ? value.map((comment) => comment.content).join(", ")

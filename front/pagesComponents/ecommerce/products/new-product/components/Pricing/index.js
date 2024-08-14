@@ -72,13 +72,7 @@ function Pricing() {
                 "Sale",
               ]}
               renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  inputProps={{
-                    style: { textTransform: "uppercase" },
-                  }}
-                />
+                <MDInput {...params} variant="standard" />
               )}
             />
           </Grid>

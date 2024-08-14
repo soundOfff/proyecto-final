@@ -37,6 +37,7 @@ export default function Select({
             label={inputLabel}
             fullWidth
             InputLabelProps={{ shrink: true, style: { fontSize: 18 } }}
+            inputProps={{ ...params.inputProps }}
           />
         )}
         ListboxProps={{

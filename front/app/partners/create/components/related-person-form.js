@@ -107,7 +107,7 @@ export default function RelatedPersonFormComponent({
       Header: "Nombre",
       accessor: "name",
       Cell: ({ row }) => (
-        <MDTypography variant="caption" sx={{ textTransform: "uppercase" }}>
+        <MDTypography variant="caption">
           {
             notJuridicalEntities.find(
               (partner) => partner.id === row.original.related_partner_id
@@ -120,7 +120,7 @@ export default function RelatedPersonFormComponent({
       Header: "Cargo de la Persona",
       accessor: "partner_type_id",
       Cell: ({ row }) => (
-        <MDTypography variant="caption" sx={{ textTransform: "uppercase" }}>
+        <MDTypography variant="caption">
           {
             partnerTypes.find(
               (partnerType) => partnerType.id === row.original.partner_type_id

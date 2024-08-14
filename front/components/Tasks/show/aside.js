@@ -382,6 +382,7 @@ export default function Aside() {
                       label="Recordatorio Para"
                       fullWidth
                       InputLabelProps={{ shrink: true }}
+                      inputProps={{ ...params.inputProps }}
                     />
                   )}
                 />
@@ -465,6 +466,7 @@ export default function Aside() {
                     label="Asignar a"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
+                    inputProps={{ ...params.inputProps }}
                   />
                 )}
               />
@@ -512,6 +514,7 @@ export default function Aside() {
                   label="Asignar a"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
+                  inputProps={{ ...params.inputProps }}
                 />
               )}
             />

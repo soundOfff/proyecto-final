@@ -36,9 +36,6 @@ export default function Permissions({ values, setFieldValue }) {
             fullWidth
             InputLabelProps={{ shrink: true }}
             sx={{ my: 2 }}
-            inputProps={{
-              style: { textTransform: "uppercase" },
-            }}
           />
         )}
       />

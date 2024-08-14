@@ -172,9 +172,6 @@ export default function First({
               label={tags.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
-              inputProps={{
-                style: { textTransform: "uppercase" },
-              }}
             />
           )}
         />

@@ -106,13 +106,7 @@ function ProductInfo() {
                     "Real Estate",
                   ]}
                   renderInput={(params) => (
-                    <MDInput
-                      {...params}
-                      variant="standard"
-                      inputProps={{
-                        style: { textTransform: "uppercase" },
-                      }}
-                    />
+                    <MDInput {...params} variant="standard" />
                   )}
                 />
               </MDBox>
@@ -131,13 +125,7 @@ function ProductInfo() {
                 defaultValue="Black"
                 options={["Black", "Blue", "Green", "Orange", "White"]}
                 renderInput={(params) => (
-                  <MDInput
-                    {...params}
-                    variant="standard"
-                    inputProps={{
-                      style: { textTransform: "uppercase" },
-                    }}
-                  />
+                  <MDInput {...params} variant="standard" />
                 )}
               />
             </Grid>

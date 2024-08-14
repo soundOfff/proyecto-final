@@ -182,10 +182,6 @@ export default function InvoiceFormComponent({
                     label={billingCountry.label}
                     fullWidth
                     InputLabelProps={{ shrink: true }}
-                    inputProps={{
-                      ...params.inputProps,
-                      style: { textTransform: "uppercase" },
-                    }}
                   />
                 </>
               )}
@@ -221,10 +217,6 @@ export default function InvoiceFormComponent({
                     label={shippingCountry.label}
                     fullWidth
                     InputLabelProps={{ shrink: true }}
-                    inputProps={{
-                      ...params.inputProps,
-                      style: { textTransform: "uppercase" },
-                    }}
                   />
                 </>
               )}

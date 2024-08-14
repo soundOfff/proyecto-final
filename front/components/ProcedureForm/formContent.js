@@ -163,9 +163,6 @@ export default function FormContent({
               label={dependencies.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
-              inputProps={{
-                style: { textTransform: "uppercase" },
-              }}
             />
           )}
         />

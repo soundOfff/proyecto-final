@@ -132,10 +132,6 @@ export default function PersonForm({
               InputLabelProps={{ shrink: true }}
               error={Boolean(errors.idType && touched.idType)}
               helperText={touched.idType && errors.idType}
-              inputProps={{
-                ...params.inputProps,
-                style: { textTransform: "uppercase" },
-              }}
             />
           )}
         />
@@ -203,10 +199,6 @@ export default function PersonForm({
               InputLabelProps={{ shrink: true }}
               error={Boolean(errors.civilStatuses && touched.civilStatuses)}
               helperText={touched.civilStatuses && errors.civilStatuses}
-              inputProps={{
-                ...params.inputProps,
-                style: { textTransform: "uppercase" },
-              }}
             />
           )}
         />

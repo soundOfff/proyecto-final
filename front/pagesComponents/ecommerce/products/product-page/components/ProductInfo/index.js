@@ -121,13 +121,7 @@ function ProductInfo() {
               defaultValue="Steel"
               options={["Aluminium", "Carbon", "Steel", "Wood"]}
               renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  inputProps={{
-                    style: { textTransform: "uppercase" },
-                  }}
-                />
+                <MDInput {...params} variant="standard" />
               )}
             />
           </Grid>
@@ -146,13 +140,7 @@ function ProductInfo() {
               defaultValue="White"
               options={["Black", "Blue", "Grey", "Pink", "Red", "White"]}
               renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  inputProps={{
-                    style: { textTransform: "uppercase" },
-                  }}
-                />
+                <MDInput {...params} variant="standard" />
               )}
             />
           </Grid>

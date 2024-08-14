@@ -194,9 +194,6 @@ export default function ItemForm({ formData, item, taxesData, types }) {
               label={type.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
-              inputProps={{
-                style: { textTransform: "uppercase" },
-              }}
             />
           )}
         />
@@ -258,9 +255,6 @@ export default function ItemForm({ formData, item, taxesData, types }) {
               label={taxes.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
-              inputProps={{
-                style: { textTransform: "uppercase" },
-              }}
             />
           )}
         />

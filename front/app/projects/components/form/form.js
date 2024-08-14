@@ -329,9 +329,6 @@ export default function FormComponent({
                 label="Miembros Del Caso"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
-                inputProps={{
-                  style: { textTransform: "uppercase" },
-                }}
               />
             )}
           />

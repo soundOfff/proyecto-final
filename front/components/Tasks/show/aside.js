@@ -316,9 +316,6 @@ export default function Aside() {
                   label={tags.label}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{
-                    style: { textTransform: "uppercase" },
-                  }}
                 />
               )}
             />
@@ -385,10 +382,6 @@ export default function Aside() {
                       label="Recordatorio Para"
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                      inputProps={{
-                        ...params.inputProps,
-                        style: { textTransform: "uppercase" },
-                      }}
                     />
                   )}
                 />
@@ -472,10 +465,6 @@ export default function Aside() {
                     label="Asignar a"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
-                    inputProps={{
-                      ...params.inputProps,
-                      style: { textTransform: "uppercase" },
-                    }}
                   />
                 )}
               />
@@ -523,10 +512,6 @@ export default function Aside() {
                   label="Asignar a"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{
-                    ...params.inputProps,
-                    style: { textTransform: "uppercase" },
-                  }}
                 />
               )}
             />

@@ -121,9 +121,6 @@ export default function ModalContentForm({
                       label={tax.label}
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                      inputProps={{
-                        style: { textTransform: "uppercase" },
-                      }}
                     />
                   )}
                 />
@@ -167,9 +164,6 @@ export default function ModalContentForm({
                       label={tax2.label}
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                      inputProps={{
-                        style: { textTransform: "uppercase" },
-                      }}
                     />
                   )}
                 />

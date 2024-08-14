@@ -246,14 +246,7 @@ function DataTable({
                 }}
                 size="small"
                 sx={{ width: "5rem" }}
-                renderInput={(params) => (
-                  <MDInput
-                    {...params}
-                    inputProps={{
-                      style: { textTransform: "uppercase" },
-                    }}
-                  />
-                )}
+                renderInput={(params) => <MDInput {...params} />}
               />
               <MDTypography variant="caption" color="secondary">
                 &nbsp;&nbsp;entradas por página

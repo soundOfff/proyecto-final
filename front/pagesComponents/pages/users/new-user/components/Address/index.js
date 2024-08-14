@@ -84,14 +84,7 @@ function Address({ formData }) {
             <Autocomplete
               options={["State 1", "State 2", "State 3"]}
               renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  label="State"
-                  inputProps={{
-                    style: { textTransform: "uppercase" },
-                  }}
-                />
+                <MDInput {...params} variant="standard" label="State" />
               )}
             />
           </Grid>

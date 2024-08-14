@@ -139,6 +139,7 @@ export default function FormContent({ values, setFieldValue, errors }) {
                 label={fileableType.label}
                 fullWidth
                 InputLabelProps={{ shrink: true }}
+                inputProps={{ ...params.inputProps }}
               />
             )}
           />

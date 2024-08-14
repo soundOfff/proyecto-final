@@ -182,6 +182,7 @@ export default function InvoiceFormComponent({
                     label={billingCountry.label}
                     fullWidth
                     InputLabelProps={{ shrink: true }}
+                    inputProps={{ ...params.inputProps }}
                   />
                 </>
               )}

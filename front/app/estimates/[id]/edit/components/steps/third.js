@@ -96,6 +96,9 @@ export default function Third({
               label={items.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />

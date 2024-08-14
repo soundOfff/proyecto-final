@@ -125,6 +125,9 @@ export default function FormContent({
               label={tags.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />

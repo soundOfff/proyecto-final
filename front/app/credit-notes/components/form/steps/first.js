@@ -94,6 +94,9 @@ export default function First({ formData, partners, currencies, creditNote }) {
               label={currency.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />

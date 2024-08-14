@@ -43,7 +43,13 @@ function Pricing() {
                 defaultValue="USD"
                 options={["BTC", "CNY", "EUR", "GBP", "INR", "USD"]}
                 renderInput={(params) => (
-                  <MDInput {...params} variant="standard" />
+                  <MDInput
+                    {...params}
+                    variant="standard"
+                    inputProps={{
+                      style: { textTransform: "uppercase" },
+                    }}
+                  />
                 )}
               />
             </Grid>
@@ -76,7 +82,13 @@ function Pricing() {
                   "Sale",
                 ]}
                 renderInput={(params) => (
-                  <MDInput {...params} variant="standard" />
+                  <MDInput
+                    {...params}
+                    variant="standard"
+                    inputProps={{
+                      style: { textTransform: "uppercase" },
+                    }}
+                  />
                 )}
               />
             </Grid>

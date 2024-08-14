@@ -91,6 +91,9 @@ export default function Second({
               label={tax.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />
@@ -132,6 +135,9 @@ export default function Second({
               label={tax2.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />
@@ -160,6 +166,9 @@ export default function Second({
               label={paymentMethod.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />
@@ -201,6 +210,9 @@ export default function Second({
               label={repeat.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />
@@ -249,6 +261,9 @@ export default function Second({
                   variant="standard"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
+                  inputProps={{
+                    style: { textTransform: "uppercase" },
+                  }}
                 />
               )}
             />

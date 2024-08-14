@@ -246,7 +246,14 @@ function DataTable({
                 }}
                 size="small"
                 sx={{ width: "5rem" }}
-                renderInput={(params) => <MDInput {...params} />}
+                renderInput={(params) => (
+                  <MDInput
+                    {...params}
+                    inputProps={{
+                      style: { textTransform: "uppercase" },
+                    }}
+                  />
+                )}
               />
               <MDTypography variant="caption" color="secondary">
                 &nbsp;&nbsp;entradas por página
@@ -334,6 +341,7 @@ function DataTable({
                         key={key}
                         noBorder={noEndBorder && page.length - 1 === key}
                         {...row.cells[0].getCellProps()}
+                        sx={{ textTransform: "uppercase" }}
                       >
                         <ResponsiveTableContent row={row} />
                       </DataTableBodyCell>

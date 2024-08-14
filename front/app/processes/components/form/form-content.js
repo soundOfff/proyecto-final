@@ -116,6 +116,9 @@ export default function First({
               label={forks.label}
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />

@@ -127,6 +127,9 @@ export default function Filters({ partners, projects, staffs }) {
               label="Clientes"
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />
@@ -148,6 +151,9 @@ export default function Filters({ partners, projects, staffs }) {
               label="Casos"
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />
@@ -169,6 +175,9 @@ export default function Filters({ partners, projects, staffs }) {
               label="Staff"
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
         />

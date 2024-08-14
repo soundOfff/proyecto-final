@@ -199,7 +199,14 @@ export default function Table({
           sx={{ width: "150px" }}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
-            <MDInput {...params} variant="standard" fullWidth />
+            <MDInput
+              {...params}
+              variant="standard"
+              fullWidth
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
+            />
           )}
         />
       ),
@@ -263,6 +270,9 @@ export default function Table({
               variant="standard"
               fullWidth
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                style: { textTransform: "uppercase" },
+              }}
             />
           )}
           sx={{ width: "150px" }}

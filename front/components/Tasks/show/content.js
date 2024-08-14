@@ -286,6 +286,9 @@ export default function Content({ selectedFork }) {
                         label={"Paso anterior"}
                         fullWidth
                         InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                          style: { textTransform: "uppercase" },
+                        }}
                       />
                     )}
                   />
@@ -305,6 +308,9 @@ export default function Content({ selectedFork }) {
                         label={"Siguiente paso"}
                         fullWidth
                         InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                          style: { textTransform: "uppercase" },
+                        }}
                       />
                     )}
                   />

@@ -53,6 +53,9 @@ function BasicInfo() {
                       {...params}
                       label="I'm"
                       InputLabelProps={{ shrink: true }}
+                      inputProps={{
+                        style: { textTransform: "uppercase" },
+                      }}
                     />
                   )}
                 />
@@ -68,6 +71,9 @@ function BasicInfo() {
                           {...params}
                           label="Birth Date"
                           InputLabelProps={{ shrink: true }}
+                          inputProps={{
+                            style: { textTransform: "uppercase" },
+                          }}
                         />
                       )}
                     />
@@ -80,6 +86,9 @@ function BasicInfo() {
                         <FormField
                           {...params}
                           InputLabelProps={{ shrink: true }}
+                          inputProps={{
+                            style: { textTransform: "uppercase" },
+                          }}
                         />
                       )}
                     />
@@ -92,6 +101,9 @@ function BasicInfo() {
                         <FormField
                           {...params}
                           InputLabelProps={{ shrink: true }}
+                          inputProps={{
+                            style: { textTransform: "uppercase" },
+                          }}
                         />
                       )}
                     />

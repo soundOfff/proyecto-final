@@ -418,6 +418,9 @@ export default function TaskForm({
                   label={tags.label}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
+                  inputProps={{
+                    style: { textTransform: "uppercase" },
+                  }}
                 />
               )}
             />
@@ -450,6 +453,9 @@ export default function TaskForm({
                   label={dependencies.label}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
+                  inputProps={{
+                    style: { textTransform: "uppercase" },
+                  }}
                 />
               )}
             />
@@ -484,6 +490,9 @@ export default function TaskForm({
                   label={requiredFields.label}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
+                  inputProps={{
+                    style: { textTransform: "uppercase" },
+                  }}
                 />
               )}
             />

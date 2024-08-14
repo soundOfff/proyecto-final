@@ -31,7 +31,10 @@ export default function UpdateMembersComponent({ projectId, staffs }) {
             label="Asignar a"
             fullWidth
             InputLabelProps={{ shrink: true }}
-            inputProps={{ ...params.inputProps }}
+            inputProps={{
+              ...params.inputProps,
+              style: { textTransform: "uppercase" },
+            }}
             sx={{ width: "250px" }}
           />
         )}

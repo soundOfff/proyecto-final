@@ -176,7 +176,14 @@ function DataTable({
                 }}
                 size="small"
                 sx={{ width: "5rem" }}
-                renderInput={(params) => <MDInput {...params} />}
+                renderInput={(params) => (
+                  <MDInput
+                    {...params}
+                    inputProps={{
+                      style: { textTransform: "uppercase" },
+                    }}
+                  />
+                )}
               />
               <MDTypography variant="caption" color="secondary" ml={2}>
                 filas por página

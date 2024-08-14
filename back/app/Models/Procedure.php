@@ -104,12 +104,6 @@ class Procedure extends Model
             $task->dependencies()->sync($tasksId);
         }
 
-        $this->load('reminders');
-        if ($this->reminders->isNotEmpty()) {
-            $reminders = $this->reminders->makeHidden('id')->toArray();
-            $task->reminders()->createMany($reminders);
-        }
-
         $this->load('actions');
         if ($this->actions->isNotEmpty()) {
             $actions = $this->actions->makeHidden('id')->toArray();

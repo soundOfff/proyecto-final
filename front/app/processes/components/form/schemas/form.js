@@ -38,7 +38,7 @@ const form = {
     },
     forks: {
       name: "forks",
-      label: "Procesos Hijos",
+      label: "Subprocesos",
     },
   },
 };

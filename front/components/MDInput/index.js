@@ -27,6 +27,9 @@ const MDInput = forwardRef(({ error, success, disabled, ...rest }, ref) => {
       {...rest}
       ref={ref}
       ownerState={{ error, success, disabled }}
+      sx={{
+        "& input": { textTransform: "uppercase" },
+      }}
     />
   );
 });

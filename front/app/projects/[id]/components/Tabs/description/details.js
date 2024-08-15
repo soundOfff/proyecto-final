@@ -51,7 +51,6 @@ const borderBottom = {
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
-
   const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
 
   return (
@@ -225,12 +224,20 @@ export default function Details() {
               Miembros Del Caso
             </MDTypography>
           </MDBox>
-          {project.members.map((member) => (
-            <MDBox key={member.id} display="inline-block" mr={2}>
-              {member.profileImage && (
+          {project.members.map((member) => {
+            const isExternalUrl =
+              member.profileImage.startsWith("http://") ||
+              member.profileImage.startsWith("https://");
+
+            return (
+              <MDBox key={member.id} display="inline-block" mr={2}>
                 <MDAvatar
-                  src={`/images/staff/${member.profileImage}`}
-                  alt="profile-image"
+                  src={
+                    isExternalUrl
+                      ? member.profileImage
+                      : `/images/staff/${member.profileImage}`
+                  }
+                  alt={"profile-image"}
                   size="md"
                   shadow="sm"
                   sx={{
@@ -239,18 +246,18 @@ export default function Details() {
                     marginRight: "0.5rem",
                     marginBottom: "0.5rem",
                   }}
-                />
-              )}
-              <MDTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                mr={2}
-              >
-                {member.firstName + " " + member.lastName}
-              </MDTypography>
-            </MDBox>
-          ))}
+                ></MDAvatar>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                  mr={2}
+                >
+                  {member.firstName + " " + member.lastName}
+                </MDTypography>
+              </MDBox>
+            );
+          })}
         </Grid>
 
         <Grid xs={12} md={6} mt={3}>

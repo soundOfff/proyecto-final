@@ -25,6 +25,7 @@ const {
     date,
     openTill,
     tags,
+    contact,
     currency,
     discountType,
     allowComments,
@@ -58,6 +59,7 @@ const {
 const initialValues = {
   [partner.name]: "",
   [subject.name]: "",
+  [contact.name]: "",
   [date.name]: moment().format("YYYY/MM/DD"),
   [openTill.name]: moment().add(1, "week").format("YYYY/MM/DD"),
   [tags.name]: [],

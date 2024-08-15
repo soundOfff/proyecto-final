@@ -39,6 +39,7 @@ class ProposalController extends Controller
             ->allowedIncludes([
                 'currency',
                 'estimate',
+                'contact',
                 'invoice',
                 'status',
                 'lineItems.taxes',
@@ -50,7 +51,10 @@ class ProposalController extends Controller
                 AllowedFilter::exact('proposable_id'),
             ])
             ->allowedSorts([
-                'id', 'subject', 'total', 'date',
+                'id',
+                'subject',
+                'total',
+                'date',
                 AllowedSort::field('openTill', 'open_till'),
                 AllowedSort::field('createdAt', 'created_at'),
                 AllowedSort::custom('proposable', new ProposablePartnerSort(), 'partner_name'),
@@ -116,6 +120,8 @@ class ProposalController extends Controller
                 'lineItems.taxes',
                 'tags',
                 'proposable.primaryContact',
+                'proposable.contacts',
+                'contact',
                 'comments',
                 'saleAgent',
                 'country',

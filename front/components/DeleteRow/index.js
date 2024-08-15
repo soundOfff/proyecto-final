@@ -31,8 +31,8 @@ export default function DeleteRow({
       <MDSnackbar
         color="error"
         icon="warning"
-        title={errorMsg.title}
-        content={errorMsg.content}
+        title={errorMsg?.title}
+        content={errorMsg?.content}
         open={errorSB}
         onClose={() => setErrorSB(false)}
         close={() => setErrorSB(false)}

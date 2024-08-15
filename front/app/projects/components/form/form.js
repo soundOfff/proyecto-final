@@ -27,7 +27,14 @@ export default function FormComponent({
   statuses,
   members,
 }) {
-  const { values, errors, touched, setFieldValue, setFieldError } = formData;
+  const {
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    isSubmitting,
+    setFieldError,
+  } = formData;
   const { formField } = form;
   const {
     billablePartner,
@@ -390,6 +397,7 @@ export default function FormComponent({
               type="submit"
               variant="gradient"
               color="dark"
+              disabled={isSubmitting}
               sx={{ mr: 5 }}
             >
               Guardar

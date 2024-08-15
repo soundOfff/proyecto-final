@@ -38,14 +38,12 @@ export async function getCountByStatuses(params) {
 
 export async function store(data) {
   const url = new URL(`${process.env.API_URL}/projects`);
-
-  await customFetch(url, {
+  const project = await customFetch(url, {
     method: "POST",
     body: JSON.stringify(data),
   });
-
   revalidatePath("/projects");
-  redirect("/projects");
+  return project;
 }
 
 export async function update(id, data) {

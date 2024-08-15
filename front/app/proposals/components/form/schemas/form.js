@@ -97,6 +97,11 @@ const form = {
       type: "text",
       errorMsg: "El email es requerido",
     },
+    contact: {
+      name: "contact_id",
+      label: "Contacto",
+      errorMsg: "Debe seleccionar un contacto",
+    },
     country: {
       name: "country_id",
       label: "País",

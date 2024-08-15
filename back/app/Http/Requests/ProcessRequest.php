@@ -27,7 +27,6 @@ class ProcessRequest extends FormRequest
             'name' => 'required|string',
             'description' => 'nullable|string',
             'step_quantity' => 'required|numeric',
-            'department' => 'nullable|string',
             'forks' => 'nullable|array',
             'forks.*.id' => 'required|numeric|exists:processes,id',
         ];

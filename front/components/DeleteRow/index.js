@@ -8,6 +8,7 @@ export default function DeleteRow({
   setOpenDeleteConfirmation,
   errorSB,
   setErrorSB,
+  errorMsg,
   openDeleteConfirmation,
   setDeleteConfirmed,
 }) {
@@ -30,8 +31,8 @@ export default function DeleteRow({
       <MDSnackbar
         color="error"
         icon="warning"
-        title="Eliminado con éxito"
-        content="Se ha eliminado correctamente"
+        title={errorMsg?.title}
+        content={errorMsg?.content}
         open={errorSB}
         onClose={() => setErrorSB(false)}
         close={() => setErrorSB(false)}

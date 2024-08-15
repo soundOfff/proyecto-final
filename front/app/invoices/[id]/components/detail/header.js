@@ -92,7 +92,7 @@ export default function Header({ invoice }) {
           <MDBox width="100%" textAlign={{ xs: "left", md: "right" }}>
             <MDBox mt={1}>
               <MDTypography variant="h6" fontWeight="medium">
-                Para: {invoice.partner.company ?? "---"}
+                Para: {invoice?.partner?.company ?? "---"}
               </MDTypography>
             </MDBox>
             <MDBox mb={1}>

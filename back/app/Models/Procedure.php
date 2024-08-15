@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Procedure extends Model
@@ -64,7 +65,7 @@ class Procedure extends Model
         return $this->morphMany(Reminder::class, 'reminderable');
     }
 
-    public function convertToTask(Project $project): void
+    public function convertToTask(Project $project, int $staff_id): Task | null
     {
         $isAlreadyCreated = Task::where('procedure_id', $this->id)
             ->where('taskable_id', $project->id)
@@ -72,7 +73,7 @@ class Procedure extends Model
             ->exists();
 
         if ($isAlreadyCreated) {
-            return;
+            return null;
         }
 
         $latestMilestoneOrder = Task::getLatestMilestoneOrder($project->id, Task::TASKABLE_PROJECT);
@@ -86,6 +87,7 @@ class Procedure extends Model
             'taskable_type' => Task::TASKABLE_PROJECT,
             'partner_id' => $project->billable_partner_id,
             'owner_id' => $project->responsible_person_id,
+            'author_id' => $staff_id,
             'start_date' => now(),
             'description' => $this->description,
             'name' => $this->name,
@@ -96,16 +98,10 @@ class Procedure extends Model
         if ($this->dependencies->isNotEmpty()) {
             $procedureDependencies = array_column($this->dependencies->toArray(), 'id');
             $tasksId = array_map(
-                fn ($id) => Task::where('procedure_id', $id)->first()->id,
+                fn($id) => Task::where('procedure_id', $id)->first()->id,
                 $procedureDependencies
             );
             $task->dependencies()->sync($tasksId);
-        }
-
-        $this->load('reminders');
-        if ($this->reminders->isNotEmpty()) {
-            $reminders = $this->reminders->makeHidden('id')->toArray();
-            $task->reminders()->createMany($reminders);
         }
 
         $this->load('actions');
@@ -113,5 +109,7 @@ class Procedure extends Model
             $actions = $this->actions->makeHidden('id')->toArray();
             $task->actions()->createMany($actions);
         }
+
+        return $task;
     }
 }

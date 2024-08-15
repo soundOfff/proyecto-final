@@ -17,6 +17,8 @@ import {
 } from "/actions/projects";
 import FormComponent from "./form";
 
+import { useRouter } from "next/navigation";
+
 export default function Index({
   project,
   partners: partnerData,
@@ -30,13 +32,16 @@ export default function Index({
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
 
   const submitForm = async (values, actions) => {
     try {
       if (project) {
         await updateProject(project.id, values);
+        router.push(`/projects/${project.id}?tab=description`);
       } else {
-        await storeProject(values);
+        const newProject = await storeProject(values);
+        router.push(`/projects/${newProject.id}?tab=description`);
       }
     } catch (error) {
       setErrorMsg(error.message);

@@ -9,7 +9,6 @@ const {
     stepNumber,
     dependencies,
     actions,
-    reminders,
   },
 } = checkout;
 
@@ -21,7 +20,6 @@ const initialValues = {
   [stepNumber.name]: "",
   [dependencies.name]: [],
   [actions.name]: [],
-  [reminders.name]: [],
 };
 
 export default initialValues;

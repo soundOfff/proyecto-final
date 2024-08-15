@@ -9,12 +9,17 @@ import { useRouter } from "next/navigation";
 import { useItemTotals } from "/hooks/useItemTotals";
 import { toProject } from "/actions/proposals";
 import { ACCEPTED } from "/utils/constants/proposalStatuses";
+import usePrint from "/hooks/usePrint";
 
 export default function Footer({ proposal }) {
   const router = useRouter();
   const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
     items: proposal.items,
     discountType: proposal.discountType,
+  });
+  const { isGeneratingPdf, handlePrint } = usePrint({
+    documentType: "proposal",
+    documentId: proposal.id,
   });
 
   const handleToEstimate = () => {
@@ -134,10 +139,11 @@ export default function Footer({ proposal }) {
             <MDButton
               variant="gradient"
               color="dark"
-              onClick={() => window.print(this)}
+              onClick={handlePrint}
+              disabled={isGeneratingPdf}
               sx={{ displayPrint: "none" }}
             >
-              Imprimir
+              {isGeneratingPdf ? "Generando..." : "Imprimir"}
             </MDButton>
           </MDBox>
         </Grid>

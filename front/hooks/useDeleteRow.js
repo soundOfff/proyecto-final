@@ -6,15 +6,28 @@ export default function useDeleteRow(destroyCallback, destroyCallbackMultiple) {
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [deleteConfirmed, setDeleteConfirmed] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
+  const [errorMsg, setErrorMsg] = useState({
+    title: "Eliminado con éxito",
+    content: "Se ha eliminado correctamente",
+  });
 
   useEffect(() => {
     const destroy = async () => {
-      await destroyCallback(deleteId);
-      setErrorSB(true);
-      resetValues();
+      try {
+        await destroyCallback(deleteId);
+        setErrorSB(true);
+        resetValues();
+      } catch (error) {
+        setErrorSB(true);
+        setErrorMsg({
+          title: "Error al eliminar",
+          content: error.message.split("Message: ")[1],
+        });
+      }
     };
     if (deleteConfirmed && destroyCallback && deleteId > 0) {
       destroy();
+      setDeleteConfirmed(false);
     }
   }, [deleteId, deleteConfirmed, destroyCallback]);
 
@@ -26,6 +39,7 @@ export default function useDeleteRow(destroyCallback, destroyCallbackMultiple) {
     };
     if (deleteConfirmed && destroyCallbackMultiple && deleteIds.length > 0) {
       destroy(deleteIds);
+      setDeleteConfirmed(false);
     }
   }, [deleteIds, deleteConfirmed, destroyCallbackMultiple]);
 
@@ -51,11 +65,13 @@ export default function useDeleteRow(destroyCallback, destroyCallbackMultiple) {
     openDeleteConfirmation,
     deleteConfirmed,
     errorSB,
+    errorMsg,
     handleDelete,
     handleDeleteMultiple,
     setDeleteConfirmed,
     setOpenDeleteConfirmation,
     setErrorSB,
+    setErrorMsg,
     setDeleteIds,
   };
 }

@@ -20,14 +20,7 @@ export default function First({
   processes,
 }) {
   const {
-    formField: {
-      department,
-      description,
-      name,
-      stepQuantity,
-      projectServiceType,
-      forks,
-    },
+    formField: { description, name, stepQuantity, projectServiceType, forks },
   } = form;
 
   useEffect(() => {
@@ -35,7 +28,6 @@ export default function First({
       setFieldValue(name.name, process.name || "");
       setFieldValue(description.name, process.description || "");
       setFieldValue(stepQuantity.name, process.stepQuantity || "");
-      setFieldValue(department.name, process.department || "");
       setFieldValue(
         projectServiceType.name,
         process.projectServiceType?.id || ""
@@ -48,7 +40,6 @@ export default function First({
     name,
     description,
     stepQuantity,
-    department,
     projectServiceType,
     forks,
   ]);
@@ -98,20 +89,6 @@ export default function First({
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[department.name]}
-          name={department.name}
-          label={department.label}
-          type={department.type}
-          placeholder={department.placeholder}
-          error={errors[department.name] && touched[department.name]}
-          success={
-            values[department.name]?.length > 0 && !errors[department.name]
-          }
-        />
-      </Grid>
-
-      <Grid item xs={12}>
         <Select
           value={values[projectServiceType.name]}
           options={projectServiceTypes}
@@ -128,7 +105,9 @@ export default function First({
           onChange={(e, forksSelected) =>
             setFieldValue(forks.name, forksSelected)
           }
-          options={processes}
+          options={processes.filter(
+            (p) => p.projectServiceTypeId !== values[projectServiceType.name]
+          )}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <MDInput

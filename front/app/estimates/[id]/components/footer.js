@@ -7,11 +7,16 @@ import MDButton from "/components/MDButton";
 import numberFormat from "/utils/numberFormat";
 import { toInvoice } from "/actions/estimates";
 import { useItemTotals } from "/hooks/useItemTotals";
+import usePrint from "/hooks/usePrint";
 
 export default function Footer({ estimate }) {
   const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
     items: estimate.items,
     discountType: estimate.discountType,
+  });
+  const { isGeneratingPdf, handlePrint } = usePrint({
+    documentType: "estimate",
+    documentId: estimate.id,
   });
 
   const handleToInvoice = async () => {
@@ -119,10 +124,11 @@ export default function Footer({ estimate }) {
             <MDButton
               variant="gradient"
               color="dark"
-              onClick={() => window.print(this)}
+              onClick={handlePrint}
+              disabled={isGeneratingPdf}
               sx={{ displayPrint: "none" }}
             >
-              Imprimir
+              {isGeneratingPdf ? "Generando..." : "Imprimir"}
             </MDButton>
           </MDBox>
         </Grid>

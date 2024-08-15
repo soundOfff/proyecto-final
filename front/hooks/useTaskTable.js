@@ -13,12 +13,14 @@ export default function useTaskTable({
   currentTaskId,
   statuses = [],
   project,
+  staffId = null,
 }) {
   const [taskId, setTaskId] = useState(currentTaskId || null);
   const [task, setTask] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openShowModal, setOpenShowModal] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const [areTasksAttached, setAreTasksAttached] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [optimisticRows, updateOptimisticRows] = useOptimistic(
     rows,
@@ -107,8 +109,12 @@ export default function useTaskTable({
   const handleCreateTasks = async () => {
     setIsFetching(true);
     try {
-      await attachTasks(project?.id);
+      const { createdTasks } = await attachTasks({
+        projectId: project?.id,
+        staffId,
+      });
       setIsToastOpen(true);
+      setAreTasksAttached(Boolean(createdTasks));
     } catch (error) {
       setIsToastOpen(false);
       console.error(error);
@@ -150,6 +156,7 @@ export default function useTaskTable({
     optimisticRows,
     isFetching,
     isToastOpen,
+    areTasksAttached,
     handleCloseEditModal,
     handleCloseShowModal,
     setIsFetching,

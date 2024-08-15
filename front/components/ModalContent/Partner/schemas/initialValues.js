@@ -23,7 +23,6 @@ const {
     expeditionDate,
     isMale,
     address,
-    buildingNumber,
     city,
     district,
     email,
@@ -56,7 +55,6 @@ const initialValues = {
   [idType.name]: "",
   [civilStatus.name]: "",
   [address.name]: "",
-  [buildingNumber.name]: "",
   [city.name]: "",
   [district.name]: "",
   [email.name]: "",
@@ -66,8 +64,8 @@ const initialValues = {
   [phone.name]: "",
   [province.name]: "",
   [state.name]: "",
-  [birthPlace.name]: "",
-  [nationality.name]: "",
+  [birthPlace.name]: PANAMA_ID,
+  [nationality.name]: PANAMA_ID,
 };
 
 export default initialValues;

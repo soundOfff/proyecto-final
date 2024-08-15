@@ -35,6 +35,7 @@ use App\Http\Controllers\PartnerSectionController;
 use App\Http\Controllers\PartnerTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\ProcedureStatusController;
@@ -266,10 +267,13 @@ Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
 Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
 Route::get('/notifications', [NotificationController::class, 'index']);
+Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
 
 Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 
 Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
+
+Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

@@ -31,11 +31,28 @@ export default function Third({
     setOpen(false);
   };
 
+  const getMappedFieldValues = proposal?.items.map((item) => ({
+    description: item.description,
+    long_description: item.longDescription || item.long_description,
+    quantity: item.quantity,
+    rate: item.rate,
+    taxes: item.taxes ?? [],
+    discount: item.discount,
+    line_item_type_id: item.lineItemType || item.line_item_type_id,
+    unit: item.unit,
+  }));
+
   useEffect(() => {
     if (proposal) {
       setFieldValue(adjustment.name, proposal.adjustment);
     }
   }, [proposal, items, adjustment, setFieldValue]);
+
+  useEffect(() => {
+    if (proposal) {
+      setFieldValue(items.name, getMappedFieldValues);
+    }
+  }, [proposal, items, setFieldValue]);
 
   return (
     <Grid container spacing={2} p={5}>

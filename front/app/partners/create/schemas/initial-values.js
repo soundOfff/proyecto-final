@@ -34,7 +34,6 @@ const {
       language,
       website,
       consolidator,
-      buildingNumber,
       district,
       email,
       fileNumber,
@@ -112,7 +111,6 @@ const initialValues = {
   [shippingState.name]: "",
   [shippingStreet.name]: "",
   [shippingZip.name]: "",
-  [buildingNumber.name]: "",
   [district.name]: "",
   [email.name]: "",
   [fileNumber.name]: "",
@@ -121,8 +119,8 @@ const initialValues = {
   [jurisdiction.name]: "",
   [province.name]: "",
   [rollNumber.name]: "",
-  [birthPlace.name]: "",
-  [nationality.name]: "",
+  [birthPlace.name]: PANAMA_ID,
+  [nationality.name]: PANAMA_ID,
   [dv.name]: "",
 };
 

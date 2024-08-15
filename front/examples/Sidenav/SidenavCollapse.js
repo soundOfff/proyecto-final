@@ -1,17 +1,4 @@
-/**
-=========================================================
-* NextJS Material Dashboard 2 PRO - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/nextjs-material-dashboard-pro
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
+"use client";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -25,6 +12,7 @@ import Icon from "@mui/material/Icon";
 
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
+import MDBadge from "/components/MDBadge";
 
 // Custom styles for the SidenavCollapse
 import {
@@ -37,8 +25,13 @@ import {
 
 // NextJS Material Dashboard 2 PRO context
 import { useMaterialUIController } from "/context";
+import { useCallback, useEffect, useState } from "react";
 
-function SidenavCollapse({
+import { getIsNotSeenCount } from "/actions/notifications";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+
+export default function SidenavCollapse({
   icon,
   name,
   children = false,
@@ -50,6 +43,53 @@ function SidenavCollapse({
   const [controller] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } =
     controller;
+
+  const [isNotSeenCount, setIsNotSeenCount] = useState(0);
+
+  const { data: session } = useSession();
+
+  const pathname = usePathname();
+
+  const renderListItemIcon = () => {
+    return (
+      <ListItemIcon
+        sx={(theme) =>
+          collapseIconBox(theme, {
+            transparentSidenav,
+            whiteSidenav,
+            darkMode,
+          })
+        }
+      >
+        {typeof icon === "string" ? (
+          <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
+        ) : (
+          icon
+        )}
+      </ListItemIcon>
+    );
+  };
+
+  const fetchIsNotSeenCount = useCallback(async () => {
+    if (session && session.staff) {
+      const count = await getIsNotSeenCount({ staff_id: session.staff.id });
+      setIsNotSeenCount(count);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (name === "Notificaciones") {
+      fetchIsNotSeenCount();
+    }
+  }, [name, session, fetchIsNotSeenCount]);
+
+  useEffect(() => {
+    if (pathname === "/notificaciones") {
+      setIsNotSeenCount(0);
+    } else {
+      fetchIsNotSeenCount();
+    }
+  }, [pathname, fetchIsNotSeenCount]);
 
   return (
     <>
@@ -65,23 +105,18 @@ function SidenavCollapse({
             })
           }
         >
-          <ListItemIcon
-            sx={(theme) =>
-              collapseIconBox(theme, {
-                transparentSidenav,
-                whiteSidenav,
-                darkMode,
-              })
-            }
-          >
-            {typeof icon === "string" ? (
-              <Icon sx={(theme) => collapseIcon(theme, { active })}>
-                {icon}
-              </Icon>
-            ) : (
-              icon
-            )}
-          </ListItemIcon>
+          {name === "Notificaciones" && isNotSeenCount !== 0 ? (
+            <MDBadge
+              badgeContent={isNotSeenCount}
+              color="error"
+              size="xs"
+              circular
+            >
+              {renderListItemIcon()}
+            </MDBadge>
+          ) : (
+            renderListItemIcon()
+          )}
 
           <ListItemText
             primary={name}
@@ -130,5 +165,3 @@ SidenavCollapse.propTypes = {
   noCollapse: PropTypes.bool,
   open: PropTypes.bool,
 };
-
-export default SidenavCollapse;

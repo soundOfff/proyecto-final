@@ -47,13 +47,9 @@ export default function FormComponent({
 
   const getCurrentValidation = () => {
     if (isJuridic) {
-      if (isRequired) {
-        return validations.juridical;
-      } else {
-        return validations.juridicalOptional;
-      }
+      return isRequired ? validations.juridical : validations.juridicalOptional;
     } else {
-      return validations.person;
+      return isRequired ? validations.person : validations.personOptional;
     }
   };
 

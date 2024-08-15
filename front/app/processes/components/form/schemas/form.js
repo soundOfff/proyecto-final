@@ -31,18 +31,14 @@ const form = {
       label: "Cantidad de Pasos",
       errorMsg: "La Cantidad de Pasos es obligatoria",
     },
-    department: {
-      name: "department",
-      label: "Departamento",
-    },
     projectServiceType: {
       name: "project_service_type_id",
-      label: "Tipo de Caso",
+      label: "Departamento",
       errorMsg: "El Tipo de Caso es obligatorio",
     },
     forks: {
       name: "forks",
-      label: "Procesos Hijos",
+      label: "Subprocesos",
     },
   },
 };

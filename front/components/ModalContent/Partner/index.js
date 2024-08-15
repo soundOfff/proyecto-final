@@ -2,23 +2,26 @@
 
 import { useState } from "react";
 import { Form, Formik } from "formik";
-import { Grid } from "@mui/material";
+import { FormControlLabel, FormGroup, Grid, Switch } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
 import MDTypography from "/components/MDTypography";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
+import notRequiredValidations from "./schemas/notRequiredValidations";
 import PersonForm from "./form";
 import { store as storePartner } from "/actions/partners";
 
-export default function Index({ countries, handleClose }) {
+export default function Index({ countries, handleClose, setFieldValue }) {
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const [isRequired, setIsRequired] = useState(true);
 
   const submitForm = async (values, actions) => {
     try {
-      await storePartner(values);
+      const partner = await storePartner(values);
+      setFieldValue("related_partner_id", partner.id);
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -44,12 +47,23 @@ export default function Index({ countries, handleClose }) {
       >
         Nueva persona relacionada
       </MDBox>
-      <MDBox mb={2}>
+      <MDBox display="flex" justifyContent="space-between" mb={2}>
         <MDTypography variant="h6">Datos Personales</MDTypography>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isRequired}
+                onChange={(e) => setIsRequired(e.target.checked)}
+              />
+            }
+            label="Campos Requeridos"
+          />
+        </FormGroup>
       </MDBox>
       <Formik
         initialValues={initialValues}
-        validationSchema={validations}
+        validationSchema={isRequired ? validations : notRequiredValidations}
         onSubmit={handleSubmit}
       >
         {({ errors, values, touched, setFieldValue }) => (

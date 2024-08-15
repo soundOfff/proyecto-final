@@ -34,6 +34,7 @@ const {
     deadline,
     partners,
     proposal,
+    responsiblePersonId,
   },
 } = checkout;
 
@@ -53,6 +54,7 @@ const initialValues = {
   [deadline.name]: "",
   [partners.name]: [],
   [proposal.name]: "",
+  [responsiblePersonId.name]: "",
 };
 
 export default initialValues;

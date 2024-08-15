@@ -7,7 +7,7 @@ import MDTypography from "/components/MDTypography";
 import { Link, Switch } from "@mui/material";
 import { DescriptionOutlined } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { destroy } from "../../../actions/files";
+import { destroy } from "/actions/files";
 
 export default function Table({ rows }) {
   const handleDeleteFile = async (fileId) => {

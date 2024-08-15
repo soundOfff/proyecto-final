@@ -26,6 +26,7 @@ export default function Procedures({ procedures, actionTypes, processId }) {
     setOpenDeleteConfirmation,
     errorSB,
     setErrorSB,
+    errorMsg,
     handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
@@ -155,6 +156,7 @@ export default function Procedures({ procedures, actionTypes, processId }) {
           setOpenDeleteConfirmation,
           errorSB,
           setErrorSB,
+          errorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

@@ -56,7 +56,7 @@ const MDTypography = forwardRef(
           darkMode,
         }}
         sx={{
-          "& input": { textTransform: "uppercase" },
+          textTransform: "uppercase",
         }}
       >
         {children}

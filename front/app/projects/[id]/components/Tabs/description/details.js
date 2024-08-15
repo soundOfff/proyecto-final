@@ -107,7 +107,7 @@ export default function Details() {
             color="dark"
             title="Fin"
             icon="date_range"
-            description={project.deadline ?? "Sin Fecha Fin"}
+            description={project.deadline ?? "Sin Fecha de Fin"}
           />
         </Grid>
       </Grid>
@@ -165,14 +165,26 @@ export default function Details() {
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
-            title="Abogado Principal"
-            description={
-              project.staffs.length > 0
-                ? project.staffs.at(-1)?.firstName +
-                  " " +
-                  project.staffs.at(-1)?.lastName
-                : "Sin abogado principal"
-            }
+            title="Proceso"
+            description={project.process?.name || "Sin proceso asociado"}
+          />
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Tipo de caso"
+            description={project.type || "Sin tipo de caso"}
+          />
+        </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Persona responsable"
+            description={project.responsiblePerson.name}
           />
         </Grid>
 
@@ -180,7 +192,7 @@ export default function Details() {
           <DefaultItem
             color="dark"
             title="Propuesta"
-            description={project.proposal?.subject || "Sin propuesta asociada."}
+            description={project.proposal?.subject || "Sin propuesta asociada"}
           />
         </Grid>
 
@@ -263,8 +275,14 @@ export default function Details() {
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
-            title="Proceso"
-            description={project.process?.name || "Sin propuesta asociada."}
+            title="Abogado Principal"
+            description={
+              project.staffs.length > 0
+                ? project.staffs.at(-1)?.firstName +
+                  " " +
+                  project.staffs.at(-1)?.lastName
+                : "Sin abogado principal"
+            }
           />
         </Grid>
 

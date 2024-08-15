@@ -267,6 +267,7 @@ Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
 Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
 Route::get('/notifications', [NotificationController::class, 'index']);
+Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
 
 Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 

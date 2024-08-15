@@ -80,7 +80,7 @@ class Partner extends Model
     protected function mergedName(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->company ? $this->company : $this->name
+            get: fn() => $this->company ? $this->company : $this->name
         );
     }
 

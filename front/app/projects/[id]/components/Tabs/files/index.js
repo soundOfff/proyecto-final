@@ -16,7 +16,10 @@ export default function Files() {
           <Link
             href={{
               pathname: "/files/create",
-              query: { projectId: project.id },
+              query: {
+                projectId: project.id,
+                source: `/projects/${project.id}`,
+              },
             }}
           >
             <MDButton variant="gradient" color="dark">

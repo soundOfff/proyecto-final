@@ -35,13 +35,14 @@ class AppServiceProvider extends ServiceProvider
             'expense' => 'App\Models\Expense',
             'invoice' => 'App\Models\Invoice',
             'proposal' => 'App\Models\Proposal',
-            'customer' => 'App\Models\Partner',
             'lead' => 'App\Models\Lead',
             'task' => 'App\Models\Task',
             'staff' => 'App\Models\Staff',
             'credit_note' => 'App\Models\CreditNote',
             'procedure' => 'App\Models\Procedure',
         ]);
+
+        Relation::morphMap(['customer' => 'App\Models\Partner']);
 
         try {
             Storage::extend('google', function ($app, $config) {

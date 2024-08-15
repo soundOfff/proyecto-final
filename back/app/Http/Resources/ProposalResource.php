@@ -61,6 +61,7 @@ class ProposalResource extends JsonResource
             'createdAt' => Carbon::parse($this->created_at)->format('d/m/Y g:i A'),
             'staffAssigned' => StaffResource::make($this->whenLoaded('staffAssigned')),
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),
+            'contact' => ContactResource::make($this->whenLoaded('contact')),
             'invoice' => InvoiceResource::make($this->whenLoaded('invoice')),
             'status' => ProposalStatusResource::make($this->whenLoaded('status')),
             'country' => CountryResource::make($this->whenLoaded('country')),

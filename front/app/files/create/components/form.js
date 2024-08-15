@@ -7,7 +7,7 @@ import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
 import { revalidateFiles } from "/actions/files";
@@ -16,6 +16,17 @@ export default function FormComponent({ apiUrl }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const returnToSource = () => {
+    const source = searchParams.get("source");
+    if (!source) {
+      router.push("/files");
+      return;
+    }
+    router.push(source);
+  };
 
   const submitForm = async (values, actions) => {
     const formData = new FormData();
@@ -35,6 +46,7 @@ export default function FormComponent({ apiUrl }) {
       });
 
       revalidateFiles();
+      returnToSource();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

@@ -238,8 +238,9 @@ export default function Details() {
           </MDBox>
           {project.members.map((member) => {
             const isExternalUrl =
-              member.profileImage.startsWith("http://") ||
-              member.profileImage.startsWith("https://");
+              member.profileImage &&
+              (member.profileImage.startsWith("http://") ||
+                member.profileImage.startsWith("https://"));
 
             return (
               <MDBox key={member.id} display="inline-block" mr={2}>

@@ -184,28 +184,6 @@ export default function PersonForm({
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormField
-          label={phone.label}
-          placeholder={phone.placeholder}
-          name={phone.name}
-          type={phone.type}
-          value={values[phone.name]}
-          error={errors[phone.name] && touched[phone.name]}
-          success={values[phone.name]?.length > 0 && !errors[phone.name]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={email.label}
-          placeholder={email.placeholder}
-          name={email.name}
-          type={email.type}
-          value={values[email.name]}
-          error={errors[email.name] && touched[email.name]}
-          success={values[email.name]?.length > 0 && !errors[email.name]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
         <Autocomplete
           disablePortal
           id="id-type-selector"
@@ -225,6 +203,28 @@ export default function PersonForm({
               helperText={touched.civilStatuses && errors.civilStatuses}
             />
           )}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={phone.label}
+          placeholder={phone.placeholder}
+          name={phone.name}
+          type={phone.type}
+          value={values[phone.name]}
+          error={errors[phone.name] && touched[phone.name]}
+          success={values[phone.name]?.length > 0 && !errors[phone.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormField
+          label={email.label}
+          placeholder={email.placeholder}
+          name={email.name}
+          type={email.type}
+          value={values[email.name]}
+          error={errors[email.name] && touched[email.name]}
+          success={values[email.name]?.length > 0 && !errors[email.name]}
         />
       </Grid>
       <Grid item xs={12} sm={6}>

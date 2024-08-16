@@ -29,6 +29,7 @@ const MDInput = forwardRef(({ error, success, disabled, ...rest }, ref) => {
       ownerState={{ error, success, disabled }}
       sx={{
         "& input": { textTransform: "uppercase" },
+        "& textarea": { textTransform: "uppercase" },
       }}
     />
   );

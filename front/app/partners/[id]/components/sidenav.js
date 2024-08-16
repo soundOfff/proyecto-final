@@ -119,14 +119,21 @@ export default function Sidenav() {
               }),
 
               "&:hover": {
-                pointerEvents: disabled ? "none" : null,
+                pointerEvents: disabled ? "none" : "auto",
                 backgroundColor: disabled ? null : light.main,
               },
             })}
           >
-            <MDBox mr={1.5} lineHeight={1} color={darkMode ? "white" : "dark"}>
-              <Icon fontSize="small">{icon}</Icon>
-            </MDBox>
+            <Icon
+              fontSize="small"
+              sx={{
+                mr: 1.5,
+                color: darkMode ? "white" : "dark",
+                verticalAlign: "middle",
+              }}
+            >
+              {icon}
+            </Icon>
             {label}
           </MDTypography>
         </MDBox>

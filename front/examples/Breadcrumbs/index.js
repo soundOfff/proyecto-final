@@ -50,10 +50,16 @@ function Breadcrumbs({ icon, title, route, light = false }) {
   };
 
   return (
-    <MDBox mr={{ xs: 0, xl: 8 }}>
+    <MDBox mr={{ xs: 0, xl: 8 }} sx={{ width: "100%" }}>
       <title>{getPageTitle()}</title>
       <MuiBreadcrumbs
         sx={{
+          maxWidth: "800px",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          display: "inline-block",
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) =>
               light ? white.main : grey[600],
@@ -82,7 +88,7 @@ function Breadcrumbs({ icon, title, route, light = false }) {
               opacity={light ? 0.8 : 0.5}
               sx={{ lineHeight: 0 }}
             >
-              {el === "projects" && caseName ? caseName : translate[el] ?? el}
+              {translate[el] ?? el}
             </MDTypography>
           </Link>
         ))}
@@ -91,20 +97,13 @@ function Breadcrumbs({ icon, title, route, light = false }) {
           fontWeight="regular"
           textTransform="capitalize"
           color={light ? "white" : "dark"}
-          sx={{ lineHeight: 0 }}
+          sx={{
+            lineHeight: 0,
+          }}
         >
-          {title.replace("-", " ")}
+          {segments[0] === "projects" ? caseName : title.replace("-", " ")}
         </MDTypography>
       </MuiBreadcrumbs>
-      <MDTypography
-        fontWeight="bold"
-        textTransform="capitalize"
-        variant="h6"
-        color={light ? "white" : "dark"}
-        noWrap
-      >
-        {title.replace("-", " ")}
-      </MDTypography>
     </MDBox>
   );
 }

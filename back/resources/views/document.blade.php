@@ -12,6 +12,10 @@
             width: 100%;
         }
 
+        header {
+            width: 100%;
+        }
+
         p {
             margin: 0;
         }
@@ -29,6 +33,12 @@
 
         th {
             background-color: #f2f2f2;
+        }
+
+        table .description {
+            max-width: 300px;
+            white-space: wordwrap;
+            overflow-wrap: break-word;
         }
 
         .table-footer {
@@ -55,18 +65,81 @@
             font-weight: bold;
         }
 
-        .header-date {
+        .header-info {
             margin: 25px 0;
+        }
+
+        .header-info :first-child {
+            color: 0;
+        }
+
+        .table-container {
+            width: 100%;
+        }
+
+        .table-container td {
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .data {
+            margin-top: 20px;
+            color: rgba(105, 105, 109, 1);
+        }
+
+        .title {
+            font-weight: bold;
+            color: black;
+        }
+
+        .header-table,
+        .header-table td {
+            border: none !important;
+            vertical-align: top;
+        }
+
+        h1 {
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
+    <header>
+        <img src="@get_public_file(velo-logo.png)" width="200" height="72" />
+        <table class="header-table" style="width: 100%;" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="width: 50%;">
+                    <div class="data">
+                        <p class="title">Veló Legal</p>
+                        <p>Av. Cincuentenario, Oficina 5B</p>
+                        <p>San Francisco Panama</p>
+                        <p>República de Panamá</p>
+                        <p>RUC: 25040265-3-2019 D.V.50</p>
+                    </div>
+                </td>
+                <td style="width: auto; text-align: right;">
+                    <div class="data">
+                        <p class="title">Para</p>
+                        <p>{{ $partner['name'] }}</p>
+                        <p>{{ $partner['country_info'] }}</p>
+                        <p>{{ $partner['address'] }}</p>
+                        <p>{{$partner['zip']}}</p>
+                        <p>{{$partner['phone']}}</p>
+                        <p>{{$partner['email']}}</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </header>
+
+
     <div class="header">
         <h2>#{{ $title }}-{{ $number }}</h2>
         <p>{{ $project_name }}</p>
     </div>
-    <div class="header-date">
+    <div class="header-info">
         <p>Fecha: {{ $start_date }}</p>
         <p>Valida hasta: {{ $end_date }}</p>
     </div>
@@ -85,7 +158,7 @@
             @foreach($items as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td><b>{{$item->description}}</b></br>{{$item->long_description}}</td>
+                <td class="description"><b>{{$item->description}}</b></br>{{$item->long_description}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>
                     <p>@money_format($item->rate)</p>

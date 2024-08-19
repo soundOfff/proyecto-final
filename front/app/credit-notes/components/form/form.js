@@ -22,7 +22,7 @@ import { useState } from "react";
 const steps = [
   "Nueva Nota de Crédito",
   "Opcionales de Nota de Crédito",
-  "Detalles de articulos",
+  "Detalles de artículos",
 ];
 
 export default function FormComponent({

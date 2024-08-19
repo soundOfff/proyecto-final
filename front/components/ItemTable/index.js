@@ -12,7 +12,7 @@ export default function Table({ formData, types }) {
 
   const columns = [
     {
-      Header: "Articulo",
+      Header: "Artículo",
       accessor: "description",
     },
     {
@@ -24,7 +24,7 @@ export default function Table({ formData, types }) {
       },
     },
     {
-      Header: "Tipo de articulo",
+      Header: "Tipo de artículo",
       accessor: "line_item_type_id",
       Cell: ({ value, row }) => {
         return value

@@ -22,7 +22,7 @@ import { useState } from "react";
 const steps = [
   "Nueva proforma",
   "Opcionales de proforma",
-  "Detalles de articulos",
+  "Detalles de artículos",
 ];
 
 export default function FormComponent({

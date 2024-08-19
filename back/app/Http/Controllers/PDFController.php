@@ -41,10 +41,10 @@ class PDFController extends Controller
             'name' => $modelPartner->mergedName,
             'country' => $modelPartner->country->short_name ?? null,
             'country_info' => strtoupper($modelPartner->country->short_name) . ", " . $state,
-            'address' => $model->partner->address,
+            'address' => $model->partner->address ?? null,
             'zip' => $modelPartner->zip ? "CO" . $modelPartner->zip : null,
-            'phone' => $modelPartner->phone_number,
-            'email' => $modelPartner->email,
+            'phone' => $modelPartner->phone_number ?? null,
+            'email' => $modelPartner->email ?? null,
         ];
 
         $data = [

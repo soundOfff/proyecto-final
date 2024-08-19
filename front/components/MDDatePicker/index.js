@@ -25,11 +25,11 @@ import "flatpickr/dist/flatpickr.css";
 // NextJS Material Dashboard 2 PRO components
 import MDInput from "/components/MDInput";
 
-function MDDatePicker({ input = {}, ...rest }) {
+function MDDatePicker({ input = {}, options = { allowInput: true }, ...rest }) {
   return (
     <Flatpickr
       {...rest}
-      options={{ allowInput: true }}
+      options={options}
       render={({ defaultValue }, ref) => (
         <MDInput
           {...input}

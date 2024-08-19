@@ -362,7 +362,6 @@ export default function Aside() {
             {showReminderForm && (
               <MDBox display="flex" flexDirection="column" gap={5} mt={2}>
                 <Autocomplete
-                  key="staff"
                   value={
                     staffs.find((staff) => staff.id === reminderStaffId) || {
                       id: "",

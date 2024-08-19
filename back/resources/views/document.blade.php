@@ -111,16 +111,16 @@
             <tr>
                 <td style="width: 50%;">
                     <div class="data">
-                        <p class="title">Veló Legal</p>
-                        <p>Av. Cincuentenario, Oficina 5B</p>
-                        <p>San Francisco Panama</p>
-                        <p>República de Panamá</p>
+                        <p class="title">VELO LEGAL</p>
+                        <p>AV. CINCUENTENARIO, OFICINA 5B</p>
+                        <p>SAN FRANCISCO PANAMÁ</p>
+                        <p>REPUBLICA DE PANAMÁ</p>
                         <p>RUC: 25040265-3-2019 D.V.50</p>
                     </div>
                 </td>
                 <td style="width: auto; text-align: right;">
                     <div class="data">
-                        <p class="title">Para</p>
+                        <p class="title">PARA</p>
                         <p>{{ $partner['name'] }}</p>
                         <p>{{ $partner['country_info'] }}</p>
                         <p>{{ $partner['address'] }}</p>
@@ -140,8 +140,8 @@
         <p>{{ $project_name }}</p>
     </div>
     <div class="header-info">
-        <p>Fecha: {{ $start_date }}</p>
-        <p>Valida hasta: {{ $end_date }}</p>
+        <p>FECHA: {{ $start_date }}</p>
+        <p>VALIDA HASTA: {{ $end_date }}</p>
     </div>
     <table>
         <thead>
@@ -158,7 +158,7 @@
             @foreach($items as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td class="description"><b>{{$item->description}}</b></br>{{$item->long_description}}</td>
+                <td class="description"><b>{{mb_strtoupper($item->description)}}</b></br>{{mb_strtoupper($item->long_description)}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>
                     <p>@money_format($item->rate)</p>

@@ -25,35 +25,35 @@ class PDFController extends Controller
         $number = $model->number ?? $model->id;
         $projectName = $model->project->name ?? $model->subject;
         $modelPartner = $model->partner ?? $model->proposable;
-        $projectName = $model->project->name ?? "N/A";
+        $projectName = $model->project->name ? mb_strtoupper($model->project->name) : "N/A";
 
         $state = null;
         if ($modelPartner->jurisdiction) {
             $district = $modelPartner->jurisdiction->district;
-            $state = ucfirst(strtolower("{$district->province->name}, {$district->name}, {$modelPartner->jurisdiction->name}"));
+            $state = mb_strtoupper("{$district->province->name}, {$district->name}, {$modelPartner->jurisdiction->name}");
         } elseif ($modelPartner->state) {
-            $state = ucfirst(strtolower("{$modelPartner->state}, {$modelPartner->city}"));
+            $state = mb_strtoupper("{$modelPartner->state}, {$modelPartner->city}");
         } else {
-            $state = ucfirst(strtolower($modelPartner->city)) ?? null;
+            $state = mb_strtoupper($modelPartner->city) ?? null;
         }
 
         $partnerData = [
-            'name' => $modelPartner->mergedName,
-            'country' => $modelPartner->country->short_name ?? null,
-            'country_info' => ucfirst(strtolower($modelPartner->country->short_name)) . ", " . $state,
-            'address' => $model->partner->address ?? null,
+            'name' => mb_strtoupper($modelPartner->mergedName),
+            'country' => mb_strtoupper($modelPartner->country->short_name) ?? null,
+            'country_info' => mb_strtoupper($modelPartner->country->short_name) . ", " . $state,
+            'address' => mb_strtoupper($model->partner->address) ?? null,
             'zip' => $modelPartner->zip ? "CO" . $modelPartner->zip : null,
             'phone' => $modelPartner->phone_number ?? null,
-            'email' => $modelPartner->email ?? null,
+            'email' => mb_strtoupper($modelPartner->email) ?? null,
         ];
 
         $data = [
-            'title' => strtoupper($model::$SPANISH_CLASS_NAME),
+            'title' => mb_strtoupper($model::$SPANISH_CLASS_NAME),
             'start_date' => $model->date ?? now(),
             'end_date' => $endDate,
             'number' => $number,
             'total' => $model->total,
-            'project_name' => $projectName,
+            'project_name' => mb_strtoupper($projectName),
             'items' => $model->lineItems,
             'partner' => $partnerData,
         ];

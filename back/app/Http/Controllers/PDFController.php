@@ -32,15 +32,15 @@ class PDFController extends Controller
             $district = $modelPartner->jurisdiction->district;
             $state = "{$district->province->name}, {$district->name}, {$modelPartner->jurisdiction->name}";
         } elseif ($modelPartner->state) {
-            $state = "{$modelPartner->state}, {$modelPartner->city}";
+            $state = strtoupper("{$modelPartner->state}, {$modelPartner->city}");
         } else {
-            $state = $modelPartner->city ?? null;
+            $state = strtoupper($modelPartner->city) ?? null;
         }
 
         $partnerData = [
             'name' => $modelPartner->mergedName,
-            'country' => $modelPartner->country->name,
-            'state' => $state,
+            'country' => $modelPartner->country->short_name ?? null,
+            'country_info' => strtoupper($modelPartner->country->short_name) . ", " . $state,
             'address' => $model->partner->address,
             'zip' => $modelPartner->zip ? "CO" . $modelPartner->zip : null,
             'phone' => $modelPartner->phone_number,

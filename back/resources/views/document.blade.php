@@ -122,8 +122,8 @@
                     <div class="data">
                         <p class="title">Para</p>
                         <p>{{ $partner['name'] }}</p>
+                        <p>{{ $partner['country_info'] }}</p>
                         <p>{{ $partner['address'] }}</p>
-                        <p>{{ $partner['state'] }}</p>
                         <p>{{$partner['zip']}}</p>
                         <p>{{$partner['phone']}}</p>
                         <p>{{$partner['email']}}</p>

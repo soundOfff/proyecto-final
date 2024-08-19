@@ -394,7 +394,7 @@ export default function Table({
           <Modal
             open={openEditModal}
             onClose={handleCloseEditModal}
-            width="40%"
+            width="80%"
           >
             <ModalContentForm
               priorities={priorities}

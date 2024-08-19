@@ -132,7 +132,7 @@ export default function Aside() {
 
   return (
     <Grid item xs={4}>
-      <MDBox bgColor="light" px={5} py={2} height="100%">
+      <MDBox bgColor="light" px={6} py={2} height="100%">
         {task.recurring && (
           <>
             <MDBadge
@@ -400,6 +400,7 @@ export default function Aside() {
                       .tz("America/Panama")
                       .format("YYYY-MM-DD HH:mm:ss"),
                     enableTime: true,
+                    position: "auto right",
                     static: true,
                   }}
                 />

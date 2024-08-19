@@ -16,6 +16,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 
 import { useEffect, useState } from "react";
 import { destroy, getAll } from "/actions/files";
+import { Box } from "@mui/material";
 
 export default function Table({ project }) {
   const [rows, setRows] = useState([]);
@@ -69,7 +70,7 @@ export default function Table({ project }) {
         </MDTypography>
       ),
     },
-    {
+    /* {
       id: "fileable_id",
       Header: "Nombre relacionado",
       disableSortBy: true,
@@ -84,7 +85,7 @@ export default function Table({ project }) {
           </MDTypography>
         </Link>
       ),
-    },
+    }, */
     {
       id: "url",
       Header: "URL",
@@ -92,21 +93,24 @@ export default function Table({ project }) {
       disableSortBy: true,
       Cell: ({ value }) => (
         <Link href={value} target="_blank" sx={{ color: "info" }}>
-          <MDTypography
-            variant="button"
-            color="link"
-            fontSize="small"
+          <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: "4px",
-              cursor: "pointer",
+              gap: "8px",
               color: "info",
             }}
           >
-            Ver archivo
+            <MDTypography
+              variant="button"
+              color="inherit"
+              fontSize="small"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              Ver archivo
+            </MDTypography>
             <PictureAsPdfIcon fontSize="small" />
-          </MDTypography>
+          </Box>
         </Link>
       ),
     },

@@ -29,7 +29,7 @@ const form = {
     date: {
       name: "date",
       label: "Fecha",
-      errorMsg: "Debe ingresar un numero de proforma",
+      errorMsg: "Debe ingresar un número de proforma",
     },
     openTill: {
       name: "open_till",

@@ -24,6 +24,22 @@ class PDFController extends Controller
         $endDate = $model->open_till ?? $model->expiry_date ?? $model->due_date;
         $number = $model->number ?? $model->id;
         $projectName = $model->project->name ?? $model->subject;
+        $modelPartner = $model->partner ?? $model->proposable;
+        $projectName = $model->project->name ?? "N/A";
+        $state = $modelPartner->jurisdiction ?
+            $modelPartner->jurisdiction->name . ", "
+            . $modelPartner->jurisdiction->district->name . ", "
+            . $modelPartner->jurisdiction->district->province->name
+            : $modelPartner->state;
+
+        $partnerData = [
+            'name' => $modelPartner->mergedName,
+            'address' => $model->partner->address,
+            'state' => $state,
+            'zip' => $modelPartner->zip ? "CO" . $modelPartner->zip : null,
+            'phone' => $modelPartner->phone_number,
+            'email' => $modelPartner->email,
+        ];
 
         $data = [
             'title' => strtoupper($model::$SPANISH_CLASS_NAME),
@@ -33,6 +49,7 @@ class PDFController extends Controller
             'total' => $model->total,
             'project_name' => $projectName,
             'items' => $model->lineItems,
+            'partner' => $partnerData,
         ];
 
         $pdf = PDF::loadView('document', $data);

@@ -33,7 +33,7 @@ import Icon from "@mui/material/Icon";
 import MDBox from "/components/MDBox";
 
 // NextJS Material Dashboard 2 PRO examples
-import Sidenav from "/examples/Sidenav";
+// import Sidenav from "/examples/Sidenav";
 import Configurator from "/examples/Configurator";
 
 // NextJS Material Dashboard 2 PRO themes
@@ -135,14 +135,14 @@ function Main({ Component, pageProps }) {
       <Component {...pageProps} />
       {layout === "dashboard" && (
         <>
-          <Sidenav
+          {/* <Sidenav
             color={sidenavColor}
             brand={brandIcon}
             brandName="Velo Legal"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
-          />
+          /> */}
           <Configurator />
           {configsButton}
         </>

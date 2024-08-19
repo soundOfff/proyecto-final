@@ -28,6 +28,14 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo '$' . number_format($money, 2); ?>";
         });
 
+        Blade::directive('get_public_file', function (string $filename): string {
+            $path = public_path() . "/$filename";
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            return "<?php echo '$base64'; ?>";
+        });
+
         Relation::enforceMorphMap([
             'project' => 'App\Models\Project',
             'estimate' => 'App\Models\Estimate',

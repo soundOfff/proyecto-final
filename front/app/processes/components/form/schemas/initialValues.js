@@ -16,7 +16,14 @@ Coded by www.creative-tim.com
 import checkout from "./form";
 
 const {
-  formField: { description, name, stepQuantity, projectServiceType, forks },
+  formField: {
+    description,
+    name,
+    stepQuantity,
+    projectServiceType,
+    forks,
+    staffs,
+  },
 } = checkout;
 
 const initialValues = {
@@ -25,6 +32,7 @@ const initialValues = {
   [stepQuantity.name]: "",
   [projectServiceType.name]: "",
   [forks.name]: [],
+  [staffs.name]: [],
 };
 
 export default initialValues;

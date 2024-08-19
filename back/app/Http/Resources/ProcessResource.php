@@ -29,6 +29,7 @@ class ProcessResource extends JsonResource
             'author' => StaffResource::make($this->whenLoaded('author')),
             'forks' => ProcessResource::collection($this->whenLoaded('forks')),
             'forkedFrom' => ProcessResource::make($this->whenLoaded('forkedFrom')),
+            'toNotify' => StaffResource::collection($this->whenLoaded('toNotify')),
         ];
     }
 }

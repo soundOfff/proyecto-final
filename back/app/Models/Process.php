@@ -52,4 +52,9 @@ class Process extends Model
     {
         return $this->belongsTo(Staff::class, 'author_id');
     }
+
+    public function toNotify()
+    {
+        return $this->belongsToMany(Staff::class, 'process_staff_to_notify', 'process_id', 'staff_id');
+    }
 }

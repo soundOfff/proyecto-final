@@ -138,12 +138,11 @@ class Project extends Model
     public function setName(): void
     {
         $department = $this->serviceType->label;
-        $type = $this->type ? ', '.$this->type : '';
         $process = $this->process ? ', '.$this->process->name : '';
         $defendants = $this->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
         $plaintiffs = $this->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
 
-        $name = $department.$type.$process.' | '.$plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
+        $name = $department.$process.' | '.$plaintiffs->implode('merged_name', ', ').' vs '.$defendants->implode('merged_name', ', ');
 
         $this->update([
             'name' => $name,

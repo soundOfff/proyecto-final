@@ -9,6 +9,8 @@ import { ErrorMessage } from "formik";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import StaffForm from "./staff-form";
+import StaffList from "./staff-list";
 
 export default function First({
   values,
@@ -18,10 +20,23 @@ export default function First({
   projectServiceTypes,
   process,
   processes,
+  staffData,
 }) {
   const {
-    formField: { description, name, stepQuantity, projectServiceType, forks },
+    formField: {
+      description,
+      name,
+      stepQuantity,
+      projectServiceType,
+      forks,
+      staffs,
+    },
   } = form;
+
+  const staffsSelected = values[staffs.name].map((staff) => ({
+    id: staff.id,
+    name: staffData.find((s) => s.id == staff.id).name,
+  }));
 
   useEffect(() => {
     if (process) {
@@ -33,6 +48,7 @@ export default function First({
         process.projectServiceType?.id || ""
       );
       setFieldValue(forks.name, process.forks || "");
+      setFieldValue(staffs.name, process.toNotify || "");
     }
   }, [
     process,
@@ -42,6 +58,7 @@ export default function First({
     stepQuantity,
     projectServiceType,
     forks,
+    staffs,
   ]);
 
   return (
@@ -129,6 +146,26 @@ export default function First({
             <ErrorMessage name={forks.name} />
           </MDTypography>
         </MDBox>
+      </Grid>
+
+      <Grid item xs={12}>
+        <MDTypography variant="h6" fontWeight="bold" mt={2}>
+          Notificar a
+        </MDTypography>
+        <StaffForm
+          setFieldValue={setFieldValue}
+          values={values}
+          staffData={staffData}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <StaffList
+          rows={staffsSelected}
+          setFieldValue={setFieldValue}
+          staffsField={staffs}
+          values={values}
+        />
       </Grid>
     </Grid>
   );

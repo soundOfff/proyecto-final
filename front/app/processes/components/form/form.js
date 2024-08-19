@@ -23,6 +23,7 @@ export default function FormComponent({
   projectServiceTypes,
   process,
   processes,
+  staffData,
 }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
@@ -89,6 +90,7 @@ export default function FormComponent({
                           projectServiceTypes,
                           process,
                           processes,
+                          staffData,
                         }}
                       />
                       <MDBox display="flex" justifyContent="end" mt={5}>

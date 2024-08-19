@@ -40,6 +40,10 @@ const form = {
       name: "forks",
       label: "Subprocesos",
     },
+    staffs: {
+      name: "staffs",
+      label: "Notificar a",
+    },
   },
 };
 

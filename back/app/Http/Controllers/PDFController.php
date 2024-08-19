@@ -27,10 +27,10 @@ class PDFController extends Controller
         $modelPartner = $model->partner ?? $model->proposable;
         $projectName = $model->project->name ?? "N/A";
         $state = $modelPartner->jurisdiction ?
-            $modelPartner->jurisdiction->name . ", "
+            $modelPartner->jurisdiction->district->province->name . ", "
             . $modelPartner->jurisdiction->district->name . ", "
-            . $modelPartner->jurisdiction->district->province->name
-            : $modelPartner->state;
+            . $modelPartner->jurisdiction->name
+            : $modelPartner->state . ", " . $modelPartner->city;
 
         $partnerData = [
             'name' => $modelPartner->mergedName,

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import DataTable from "/examples/Tables/DataTable";
+import DataTable from "/examples/Tables/DataTableServerPagination";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
@@ -22,7 +22,7 @@ import Detail from "./detail";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 
-export default function Table({ rows }) {
+export default function Table({ rows, meta }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [project, setProject] = useState(null);
   const [openShow, setOpenShow] = useState(false);
@@ -169,6 +169,7 @@ export default function Table({ rows }) {
       )}
       <DataTable
         table={table}
+        meta={meta}
         entriesPerPage={false}
         showTotalEntries={true}
         isSorted={true}

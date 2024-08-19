@@ -14,7 +14,9 @@ export default async function Profile() {
   const params = { include, ...filter };
   const stats = await getStats({ ownerId: session.staff.id });
 
-  const projects = await getAllProjects(params);
+  const {
+    data: { projects },
+  } = await getAllProjects(params);
   return (
     <MDBox>
       <Info />

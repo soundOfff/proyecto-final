@@ -33,7 +33,9 @@ export default async function Tasks({
     tagsData,
     repeats,
     priorities,
-    taskableItems,
+    {
+      data: { projects: taskableItems },
+    },
     statuses,
     partners,
     currentTimer,

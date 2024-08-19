@@ -16,8 +16,10 @@ export async function getSelect(partnerId, params) {
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/projects`);
   url.search = new URLSearchParams(params);
-  const { data } = await customFetch(url);
-  return data.projects;
+
+  const data = await customFetch(url);
+
+  return data;
 }
 
 export async function show(id, params) {

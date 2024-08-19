@@ -37,7 +37,9 @@ export default async function Show({ params }) {
     tagsData,
     repeats,
     priorities,
-    taskableItems,
+    {
+      data: { projects: taskableItems },
+    },
     statuses,
     partners,
     actionsData,

@@ -30,7 +30,9 @@ export default async function PartnerProjects({
     "filter[billable_partner_id]": id,
   };
 
-  const projects = await getAllProjects(params);
+  const {
+    data: { projects },
+  } = await getAllProjects(params);
   const statuses = await getAllStatuses();
   const countByStatuses = await getCountByStatuses({ partner_id: id });
 

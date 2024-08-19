@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: "Helvetica", "Arial", sans-serif;
-            font-size: 10px;
+            font-size: 12px;
         }
 
         table {

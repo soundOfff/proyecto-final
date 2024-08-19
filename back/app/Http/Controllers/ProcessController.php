@@ -23,6 +23,7 @@ class ProcessController extends Controller
             'procedures.responsible',
             'forks',
             'author',
+            'toNotify',
         ])
         ->allowedFilters([
             AllowedFilter::exact('project_service_type_id'),
@@ -54,6 +55,7 @@ class ProcessController extends Controller
             'procedures.responsible',
             'forks',
             'author',
+            'toNotify',
         ])
         ->allowedFilters([
             AllowedFilter::exact('project_id'),
@@ -67,9 +69,11 @@ class ProcessController extends Controller
     {
         $newProcess = $request->validated();
         $forkIds = array_column($newProcess['forks'], 'id');
+        $staffs = array_column($newProcess['staffs'], 'id');
 
         $process = Process::create($newProcess);
         $process->forks()->sync($forkIds);
+        $process->toNotify()->sync($staffs);
 
         return response()->json(null, 201);
     }
@@ -78,9 +82,11 @@ class ProcessController extends Controller
     {
         $updatedProcess = $request->validated();
         $forkIds = array_column($updatedProcess['forks'], 'id');
+        $staffs = array_column($updatedProcess['staffs'], 'id');
 
         $process->update($updatedProcess);
         $process->forks()->sync($forkIds);
+        $process->toNotify()->sync($staffs);
 
         return response()->json(null, 204);
     }

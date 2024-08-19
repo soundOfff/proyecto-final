@@ -21,7 +21,7 @@ const include = [
 export const dynamic = "force-dynamic";
 
 export default async function Projects({ searchParams }) {
-  const { statusId, search } = searchParams;
+  const { statusId, search, perPage = 10, page = 1 } = searchParams;
 
   const statusFilter = statusId ? { "filter[status]": statusId } : null;
   const searchFilter = search ? { "filter[search]": search } : null;
@@ -30,9 +30,14 @@ export default async function Projects({ searchParams }) {
     include,
     ...statusFilter,
     ...searchFilter,
+    perPage,
+    page,
   };
 
-  const projects = await getAllProjects(params);
+  const {
+    meta,
+    data: { projects },
+  } = await getAllProjects(params);
   const statuses = await getAllStatuses();
   const countByStatuses = await getCountByStatuses();
 
@@ -44,7 +49,7 @@ export default async function Projects({ searchParams }) {
             <Stats countByStatuses={countByStatuses} />
             <Filters statuses={statuses} />
             <MDBox py={1}>
-              <Table rows={projects} />
+              <Table rows={projects} meta={meta} />
             </MDBox>
           </Grid>
         </Grid>

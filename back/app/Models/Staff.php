@@ -119,4 +119,9 @@ class Staff extends Authenticatable
     {
         return $this->hasMany(StaffDevice::class);
     }
+
+    public function toNotify()
+    {
+        return $this->belongsToMany(Process::class, 'process_staff_to_notify', 'staff_id', 'process_id');
+    }
 }

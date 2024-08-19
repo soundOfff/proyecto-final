@@ -8,16 +8,15 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
-use App\Models\PartnerProjectRole;
 use App\Models\Process;
 use App\Models\Project;
-use App\Models\ProjectServiceType;
 use App\Models\Staff;
 use App\Models\Task;
 use App\Models\TaskPriority;
 use App\Models\TaskRepeat;
 use App\Models\TaskStatus;
 use App\Models\TaskTimer;
+use App\Services\FcmService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -27,6 +26,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
     public function select(Partner $partner)
     {
         $projects = Project::where('billable_partner_id', $partner->id)
@@ -126,6 +128,17 @@ class ProjectController extends Controller
             'end_time' => Carbon::now()->add(15, 'minutes'),
             'staff_id' => $project->responsiblePerson->id,
         ]);
+
+        foreach($project->process->toNotify as $staff){
+            foreach($staff->devices as $device){
+                $this->fcmService->sendNotification(
+                    $device->device_token,
+                    'Se ha creado un nuevo caso',
+                    "Nombre Del Caso: $project->name",
+                    $staff->id
+                );
+            }
+        }
 
         return response()->json($project, 201);
     }

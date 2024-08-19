@@ -18,7 +18,14 @@ import checkout from "./form";
 import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 const {
-  formField: { description, name, stepQuantity, projectServiceType, forks },
+  formField: {
+    description,
+    name,
+    stepQuantity,
+    projectServiceType,
+    forks,
+    staffs,
+  },
 } = checkout;
 
 const validations = Yup.object().shape({
@@ -29,6 +36,7 @@ const validations = Yup.object().shape({
   [description.name]: Yup.string(),
   [projectServiceType.name]: Yup.number().required(projectServiceType.errorMsg),
   [forks.name]: Yup.array(),
+  [staffs.name]: Yup.array(),
 });
 
 export default validations;

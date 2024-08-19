@@ -29,7 +29,7 @@ const form = {
     date: {
       name: "date",
       label: "Fecha",
-      errorMsg: "Debe ingresar un numero de proforma",
+      errorMsg: "Debe ingresar un número de proforma",
     },
     openTill: {
       name: "open_till",
@@ -120,7 +120,7 @@ const form = {
     },
     type: {
       name: "line_item_type_id",
-      label: "Tipo de articulo",
+      label: "Tipo de artículo",
     },
     quantity: {
       name: "quantity",
@@ -156,7 +156,7 @@ const form = {
     },
     items: {
       name: "items",
-      label: "Articulos",
+      label: "Artículos",
       errorMsg: "Debe seleccionar al menos un item",
     },
     totalDiscount: {

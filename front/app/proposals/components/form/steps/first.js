@@ -187,7 +187,7 @@ export default function First({
         </MDBox>
       </Grid>
 
-      <Grid item xs={12} sm={6}>
+      {/*  <Grid item xs={12} sm={6}>
         <FormGroup>
           <FormControlLabel
             control={
@@ -201,7 +201,7 @@ export default function First({
             label={allowComments.label}
           />
         </FormGroup>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

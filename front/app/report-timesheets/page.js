@@ -61,7 +61,9 @@ export default async function Reports({ searchParams }) {
     meta,
   } = await getAllTasks(params);
   const partners = await getAllPartners();
-  const projects = await getAllProjects();
+  const {
+    data: { projects },
+  } = await getAllProjects();
   const staffs = await getStaffsSelect();
   const stats = await getStats({ ownerId: session.staff.id });
 

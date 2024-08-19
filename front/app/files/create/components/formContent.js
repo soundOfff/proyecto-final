@@ -37,7 +37,7 @@ export default function FormContent({ values, setFieldValue, errors }) {
 
   const getRelation = (fileableType) => {
     if (fileableType === PROJECT_FILEABLE_TYPE) {
-      getAllProjects().then((data) => setRelations(data));
+      getAllProjects().then((data) => setRelations(data.data.projects));
     }
     if (fileableType === PARTNER_FILEABLE_TYPE) {
       getAllPartners().then((data) => setRelations(data));

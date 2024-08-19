@@ -29,6 +29,8 @@ class ProcessRequest extends FormRequest
             'step_quantity' => 'required|numeric',
             'forks' => 'nullable|array',
             'forks.*.id' => 'required|numeric|exists:processes,id',
+            'staffs' => 'nullable|array',
+            'staffs.*.id' => 'required|numeric|exists:staff,id',
         ];
     }
 }

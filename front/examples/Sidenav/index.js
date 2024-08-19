@@ -54,7 +54,6 @@ import {
 import { Skeleton } from "@mui/material";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { customFetch } from "../../actions/custom-fetch";
 
 function Sidenav({
   color = "dark",

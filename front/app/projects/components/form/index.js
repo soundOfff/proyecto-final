@@ -40,7 +40,8 @@ export default function Index({
         await updateProject(project.id, values);
         router.push(`/projects/${project.id}?tab=description`);
       } else {
-        await storeProject(values);
+        const newProject = await storeProject(values);
+        router.push(`/projects/${newProject.id}?tab=description`);
       }
     } catch (error) {
       setErrorMsg(error.message);

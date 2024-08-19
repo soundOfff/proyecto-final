@@ -8,16 +8,15 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
-use App\Models\PartnerProjectRole;
 use App\Models\Process;
 use App\Models\Project;
-use App\Models\ProjectServiceType;
 use App\Models\Staff;
 use App\Models\Task;
 use App\Models\TaskPriority;
 use App\Models\TaskRepeat;
 use App\Models\TaskStatus;
 use App\Models\TaskTimer;
+use App\Services\FcmService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -27,6 +26,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
     public function select(Partner $partner)
     {
         $projects = Project::where('billable_partner_id', $partner->id)
@@ -71,6 +73,7 @@ class ProjectController extends Controller
                 'staffs',
                 'partners',
                 'proposal',
+                'process',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -103,14 +106,7 @@ class ProjectController extends Controller
         $project->members()->attach($projectMemberIds);
         $project->partners()->attach($partnersToAttach);
 
-        $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
-        $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
-
-        $projectName = $plaintiffs->implode('merged_name', ', ') . ' vs ' . $defendants->implode('merged_name', ', ');
-
-        $project->update([
-            'name' => $projectName,
-        ]);
+        $project->setName(); 
 
         $task = Task::create([
             'name' => 'Data entry',
@@ -133,6 +129,17 @@ class ProjectController extends Controller
             'staff_id' => $project->responsiblePerson->id,
         ]);
 
+        foreach($project->process->toNotify as $staff){
+            foreach($staff->devices as $device){
+                $this->fcmService->sendNotification(
+                    $device->device_token,
+                    'Se ha creado un nuevo caso',
+                    "Nombre Del Caso: $project->name",
+                    $staff->id
+                );
+            }
+        }
+
         return response()->json($project, 201);
     }
 
@@ -154,6 +161,7 @@ class ProjectController extends Controller
                 'tasks',
                 'partners',
                 'proposal',
+                'process',
             ])
             ->find($project->id);
 
@@ -179,12 +187,9 @@ class ProjectController extends Controller
         }
         $project->partners()->sync($partnersToSync);
 
-        $defendants = $project->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
-        $plaintiffs = $project->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
-
-        $data['name'] = $plaintiffs->implode('merged_name', ', ') . ' vs ' . $defendants->implode('merged_name', ', ');
-
         $project->update($data);
+
+        $project->setName();
 
         return response()->json($project, 201);
     }
@@ -229,7 +234,7 @@ class ProjectController extends Controller
         abort_if(!$staff, 404, 'Staff not found');
 
         if (is_null($process)) { // == null means that is from a root process
-            $process = $project->load('serviceType.processes')->serviceType->processes->first();
+            $process = $project->load('process')->process;
         }
 
         $procedures = $process->load('procedures')->procedures->sortBy('step_number');

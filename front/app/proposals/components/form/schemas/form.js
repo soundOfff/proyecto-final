@@ -97,6 +97,11 @@ const form = {
       type: "text",
       errorMsg: "El email es requerido",
     },
+    contact: {
+      name: "contact_id",
+      label: "Contacto",
+      errorMsg: "Debe seleccionar un contacto",
+    },
     country: {
       name: "country_id",
       label: "País",
@@ -115,7 +120,7 @@ const form = {
     },
     type: {
       name: "line_item_type_id",
-      label: "Tipo de articulo",
+      label: "Tipo de artículo",
     },
     quantity: {
       name: "quantity",
@@ -151,7 +156,7 @@ const form = {
     },
     items: {
       name: "items",
-      label: "Articulos",
+      label: "Artículos",
       errorMsg: "Debe seleccionar al menos un item",
     },
     totalDiscount: {

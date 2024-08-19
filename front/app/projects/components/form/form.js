@@ -14,6 +14,7 @@ import form from "./schemas/form";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
+import { getAll as getAllProcesses } from "/actions/processes";
 
 export default function FormComponent({
   formData,
@@ -26,12 +27,21 @@ export default function FormComponent({
   statuses,
   members,
 }) {
-  const { values, errors, touched, setFieldValue, setFieldError } = formData;
+  const {
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    isSubmitting,
+    setFieldError,
+  } = formData;
   const { formField } = form;
   const {
     billablePartner,
     cost,
     billingType,
+    process,
+    type,
     status,
     expedient,
     startDate,
@@ -44,6 +54,8 @@ export default function FormComponent({
     partners,
   } = formField;
 
+  const [processes, setProcesses] = useState([]);
+
   const partnerList = values[partners.name].map((partner) => {
     return {
       id: partner.id,
@@ -53,7 +65,7 @@ export default function FormComponent({
     };
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(!!values[deadline.name]);
 
   const handleCheckboxChange = (event) => {
     setShowDatePicker(event.target.checked);
@@ -84,12 +96,14 @@ export default function FormComponent({
     if (project) {
       setFieldValue(cost.name, project.cost || "");
       setFieldValue(proposal.name, project.proposalId || "");
-      /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(expedient.name, project.expedient || "");
+      /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(billablePartner.name, project.billablePartnerId || "");
       setFieldValue(status.name, project.status.id);
       setFieldValue(serviceType.name, project.serviceType?.id || "");
       setFieldValue(billingType.name, project.billingType?.id || "");
+      setFieldValue(type.name, project.type || "");
+      setFieldValue(process.name, project.processId || "");
       setFieldValue(
         responsiblePersonId.name,
         project.responsiblePerson?.id || ""
@@ -110,11 +124,14 @@ export default function FormComponent({
           };
         })
       );
+      setShowDatePicker(!!project.deadline);
     }
   }, [
     project,
     cost,
     expedient,
+    type,
+    process,
     billablePartner,
     status,
     serviceType,
@@ -127,6 +144,18 @@ export default function FormComponent({
     proposal,
     setFieldValue,
   ]);
+
+  useEffect(() => {
+    if (values.project_service_type_id) {
+      const params = {
+        "filter[project_service_type_id]": values.project_service_type_id,
+      };
+
+      getAllProcesses(params).then((response) => {
+        setProcesses(response.data.processes);
+      });
+    }
+  }, [values.project_service_type_id]);
 
   return (
     <MDBox p={5}>
@@ -261,6 +290,27 @@ export default function FormComponent({
         </Grid>
         <Grid item xs={12} sm={6}>
           <Select
+            value={values[process.name]}
+            options={processes}
+            optionLabel={(option) => option.name}
+            fieldName={process.name}
+            inputLabel={process.label}
+            setFieldValue={setFieldValue}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormField
+            value={values[type.name]}
+            name={type.name}
+            label={type.label}
+            type={type.type}
+            placeholder={type.placeholder}
+            error={errors[type.name] && touched[type.name]}
+            success={values[type.name]?.length > 0 && !errors[type.name]}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Select
             value={values[responsiblePersonId.name]}
             options={members}
             optionLabel={(option) => option.name}
@@ -347,6 +397,7 @@ export default function FormComponent({
               type="submit"
               variant="gradient"
               color="dark"
+              disabled={isSubmitting}
               sx={{ mr: 5 }}
             >
               Guardar

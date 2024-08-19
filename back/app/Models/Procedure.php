@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Procedure extends Model
@@ -101,12 +102,6 @@ class Procedure extends Model
                 $procedureDependencies
             );
             $task->dependencies()->sync($tasksId);
-        }
-
-        $this->load('reminders');
-        if ($this->reminders->isNotEmpty()) {
-            $reminders = $this->reminders->makeHidden('id')->toArray();
-            $task->reminders()->createMany($reminders);
         }
 
         $this->load('actions');

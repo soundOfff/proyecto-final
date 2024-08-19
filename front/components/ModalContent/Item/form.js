@@ -49,7 +49,7 @@ export default function ModalContentForm({
             opacity={1}
             p={2}
           >
-            Nuevo articulo
+            Nuevo artículo
           </MDBox>
           <MDBox sx={{ p: 5 }}>
             <Grid container lineHeight={0} spacing={2}>

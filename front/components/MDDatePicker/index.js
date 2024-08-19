@@ -29,6 +29,7 @@ function MDDatePicker({ input = {}, ...rest }) {
   return (
     <Flatpickr
       {...rest}
+      options={{ allowInput: true }}
       render={({ defaultValue }, ref) => (
         <MDInput
           {...input}

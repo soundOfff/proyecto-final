@@ -27,6 +27,7 @@ const include = [
   "members",
   "partners",
   "proposal",
+  "process",
 ];
 
 export default async function Show({ params }) {
@@ -36,7 +37,9 @@ export default async function Show({ params }) {
     tagsData,
     repeats,
     priorities,
-    taskableItems,
+    {
+      data: { projects: taskableItems },
+    },
     statuses,
     partners,
     actionsData,

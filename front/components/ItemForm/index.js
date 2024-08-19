@@ -44,7 +44,9 @@ export default function ItemForm({ formData, item, taxesData, types }) {
       .min(1, "Debe ser mayor que 0")
       .required(quantity.errorMsg)
       .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
-    [rate.name]: Yup.number().required(rate.errorMsg),
+    [rate.name]: Yup.number()
+      .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
+      .required(rate.errorMsg),
     [longDescription.name]: Yup.string().nullable(),
     [type.name]: Yup.string().nullable(),
     [taxes.name]: Yup.array().of(
@@ -149,148 +151,162 @@ export default function ItemForm({ formData, item, taxesData, types }) {
           </FormControl>
         </MDBox>
       </Grid>
-      <Grid item xs={12} sm={2}>
-        <FormField
-          value={values[description.name]}
-          onChange={(e) => setFieldValue(description.name, e.target.value)}
-          name={description.name}
-          label={description.label}
-          type={description.type}
-          errors={errors}
-          touched={touched}
-          success={
-            values[description.name]?.length > 0 && !errors[description.name]
-          }
-        />
-      </Grid>
-      <Grid item xs={12} sm={2}>
-        <FormField
-          value={values[longDescription.name]}
-          onChange={(e) => setFieldValue(longDescription.name, e.target.value)}
-          name={longDescription.name}
-          label={longDescription.label}
-          type={longDescription.type}
-          errors={errors}
-          touched={touched}
-          success={
-            values[longDescription.name]?.length > 0 &&
-            !errors[longDescription.name]
-          }
-        />
-      </Grid>
-      <Grid item xs={12} sm={2}>
-        <Autocomplete
-          key={`${externalValues.items.length}-types`}
-          onChange={(e, typeSelected) =>
-            setFieldValue(type.name, typeSelected?.id ?? null)
-          }
-          options={types}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={type.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
+      <Grid container spacing={2} mb={4}>
+        <Grid item xs={12}>
+          <FormField
+            value={values[description.name]}
+            onChange={(e) => setFieldValue(description.name, e.target.value)}
+            name={description.name}
+            label={description.label}
+            type={description.type}
+            errors={errors}
+            touched={touched}
+            success={
+              values[description.name]?.length > 0 && !errors[description.name]
+            }
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            value={values[longDescription.name]}
+            multiline
+            rows={3}
+            onChange={(e) =>
+              setFieldValue(longDescription.name, e.target.value)
+            }
+            name={longDescription.name}
+            label={longDescription.label}
+            type={longDescription.type}
+            errors={errors}
+            touched={touched}
+            success={
+              values[longDescription.name]?.length > 0 &&
+              !errors[longDescription.name]
+            }
+          />
+        </Grid>
+        <Grid item xs={12} container spacing={2}>
+          <Grid item xs={12} sm={2}>
+            <Autocomplete
+              key={`${externalValues.items.length}-types`}
+              onChange={(e, typeSelected) =>
+                setFieldValue(type.name, typeSelected?.id ?? null)
+              }
+              options={types}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  label={type.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
             />
-          )}
-        />
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <FormField
-          name={quantity.name}
-          label={quantity.label}
-          type={quantity.type}
-          errors={errors}
-          touched={touched}
-          success={values[quantity.name]?.length > 0 && !errors[quantity.name]}
-          value={values[quantity.name]}
-          onChange={(e) => setFieldValue(quantity.name, e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <FormField
-          name={rate.name}
-          label={rate.label}
-          type={rate.type}
-          errors={errors}
-          touched={touched}
-          success={values[rate.name]?.length > 0 && !errors[rate.name]}
-          value={values[rate.name]}
-          onChange={(e) => setFieldValue(rate.name, e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sm={2}>
-        <Autocomplete
-          key={`${externalValues.items.length}-taxes`}
-          multiple
-          value={values[taxes.name]}
-          onChange={(e, selected) => setFieldValue(taxes.name, selected)}
-          options={taxesData}
-          getOptionLabel={(option) =>
-            option ? `${option.rate}% | ${option.name}` : null
-          }
-          isOptionEqualToValue={(option, value) => option.id === value?.id}
-          renderOption={(props, option) => (
-            <MDBox {...props}>
-              <MDTypography variant="body" display="inline">
-                {option.rate}%
-              </MDTypography>
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <FormField
+              name={quantity.name}
+              label={quantity.label}
+              type={quantity.type}
+              errors={errors}
+              touched={touched}
+              success={
+                values[quantity.name]?.length > 0 && !errors[quantity.name]
+              }
+              value={values[quantity.name]}
+              onChange={(e) => setFieldValue(quantity.name, e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <FormField
+              name={rate.name}
+              label={rate.label}
+              type={rate.type}
+              errors={errors}
+              touched={touched}
+              success={values[rate.name]?.length > 0 && !errors[rate.name]}
+              value={values[rate.name]}
+              onChange={(e) => setFieldValue(rate.name, e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <Autocomplete
+              key={`${externalValues.items.length}-taxes`}
+              multiple
+              value={values[taxes.name]}
+              onChange={(e, selected) => setFieldValue(taxes.name, selected)}
+              options={taxesData}
+              getOptionLabel={(option) =>
+                option ? `${option.rate}% | ${option.name}` : null
+              }
+              isOptionEqualToValue={(option, value) => option.id === value?.id}
+              renderOption={(props, option) => (
+                <MDBox {...props}>
+                  <MDTypography variant="body" display="inline">
+                    {option.rate}%
+                  </MDTypography>
+                  <MDTypography
+                    variant="caption"
+                    display="inline"
+                    color="text"
+                    ml={2}
+                  >
+                    {option.name}
+                  </MDTypography>
+                </MDBox>
+              )}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  label={taxes.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+            <MDBox mt={0.75}>
               <MDTypography
+                component="div"
                 variant="caption"
-                display="inline"
-                color="text"
-                ml={2}
+                color="error"
+                fontWeight="regular"
               >
-                {option.name}
+                {errors[taxes.name] && touched[taxes.name]
+                  ? errors[taxes.name]
+                  : null}
               </MDTypography>
             </MDBox>
-          )}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={taxes.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <FormField
+              name={discount.name}
+              placeholder={discount.placeholder}
+              label={discount.label}
+              type={discount.type}
+              errors={errors}
+              touched={touched}
+              success={
+                values[discount.name]?.length > 0 && !errors[discount.name]
+              }
+              value={values[discount.name]}
+              onChange={(e) => setFieldValue(discount.name, e.target.value)}
             />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            {errors[taxes.name] && touched[taxes.name]
-              ? errors[taxes.name]
-              : null}
-          </MDTypography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <FormField
-          name={discount.name}
-          placeholder={discount.placeholder}
-          label={discount.label}
-          type={discount.type}
-          errors={errors}
-          touched={touched}
-          success={values[discount.name]?.length > 0 && !errors[discount.name]}
-          value={values[discount.name]}
-          onChange={(e) => setFieldValue(discount.name, e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <MDButton
-          onClick={handleSubmit}
-          size="small"
-          color="success"
-          sx={{ mt: 1.5 }}
-        >
-          Agregar
-        </MDButton>
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <Grid container justifyContent="center">
+              <MDButton
+                onClick={handleSubmit}
+                size="small"
+                color="success"
+                sx={{ mt: 1.5 }}
+              >
+                Agregar
+              </MDButton>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </>
   );

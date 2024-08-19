@@ -85,7 +85,7 @@ export default function RelatedPersonFormComponent({
       [partnerTypeId.name]: "",
       [startDate.name]: "",
       [endDate.name]: "",
-      [active.name]: false,
+      [active.name]: true,
     },
     validationSchema: addRelatedPersonValidationSchema,
     onSubmit: (values, methods) => {
@@ -278,6 +278,7 @@ export default function RelatedPersonFormComponent({
         <PersonForm
           countries={countries}
           handleClose={() => setOpenModal(false)}
+          setFieldValue={setFieldValue}
         />
       </Modal>
     </>

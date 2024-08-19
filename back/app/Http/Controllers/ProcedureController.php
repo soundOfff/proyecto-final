@@ -115,6 +115,8 @@ class ProcedureController extends Controller
 
     public function destroy(Procedure $procedure)
     {
+        abort_if($procedure->dependencies()->exists(), 422, 'Eliminar las dependencias primero');
+
         $procedure->delete();
 
         return response()->json(null, 204);

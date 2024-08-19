@@ -14,7 +14,10 @@ export default async function Notifications({
 }) {
   const session = await getServerSession(authOptions);
 
-  const notifications = await getAllNotifications({
+  const {
+    data: { notifications },
+    meta,
+  } = await getAllNotifications({
     "filter[staffId]": session.staff.id,
     page,
     perPage,
@@ -26,7 +29,7 @@ export default async function Notifications({
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Table rows={notifications} />
+            <Table rows={notifications} meta={meta} />
           </Grid>
         </Grid>
       </Card>

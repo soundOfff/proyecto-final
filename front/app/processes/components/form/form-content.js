@@ -9,6 +9,8 @@ import { ErrorMessage } from "formik";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
+import StaffForm from "./staff-form";
+import StaffList from "./staff-list";
 
 export default function First({
   values,
@@ -18,29 +20,35 @@ export default function First({
   projectServiceTypes,
   process,
   processes,
+  staffData,
 }) {
   const {
     formField: {
-      department,
       description,
       name,
       stepQuantity,
       projectServiceType,
       forks,
+      staffs,
     },
   } = form;
+
+  const staffsSelected = values[staffs.name].map((staff) => ({
+    id: staff.id,
+    name: staffData.find((s) => s.id == staff.id).name,
+  }));
 
   useEffect(() => {
     if (process) {
       setFieldValue(name.name, process.name || "");
       setFieldValue(description.name, process.description || "");
       setFieldValue(stepQuantity.name, process.stepQuantity || "");
-      setFieldValue(department.name, process.department || "");
       setFieldValue(
         projectServiceType.name,
         process.projectServiceType?.id || ""
       );
       setFieldValue(forks.name, process.forks || "");
+      setFieldValue(staffs.name, process.toNotify || "");
     }
   }, [
     process,
@@ -48,9 +56,9 @@ export default function First({
     name,
     description,
     stepQuantity,
-    department,
     projectServiceType,
     forks,
+    staffs,
   ]);
 
   return (
@@ -98,20 +106,6 @@ export default function First({
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[department.name]}
-          name={department.name}
-          label={department.label}
-          type={department.type}
-          placeholder={department.placeholder}
-          error={errors[department.name] && touched[department.name]}
-          success={
-            values[department.name]?.length > 0 && !errors[department.name]
-          }
-        />
-      </Grid>
-
-      <Grid item xs={12}>
         <Select
           value={values[projectServiceType.name]}
           options={projectServiceTypes}
@@ -128,7 +122,9 @@ export default function First({
           onChange={(e, forksSelected) =>
             setFieldValue(forks.name, forksSelected)
           }
-          options={processes}
+          options={processes.filter(
+            (p) => p.projectServiceTypeId !== values[projectServiceType.name]
+          )}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <MDInput
@@ -150,6 +146,26 @@ export default function First({
             <ErrorMessage name={forks.name} />
           </MDTypography>
         </MDBox>
+      </Grid>
+
+      <Grid item xs={12}>
+        <MDTypography variant="h6" fontWeight="bold" mt={2}>
+          Notificar a
+        </MDTypography>
+        <StaffForm
+          setFieldValue={setFieldValue}
+          values={values}
+          staffData={staffData}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <StaffList
+          rows={staffsSelected}
+          setFieldValue={setFieldValue}
+          staffsField={staffs}
+          values={values}
+        />
       </Grid>
     </Grid>
   );

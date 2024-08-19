@@ -7,7 +7,7 @@ import MDTypography from "/components/MDTypography";
 import { Link, Switch } from "@mui/material";
 import { DescriptionOutlined } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { destroy } from "../../../actions/files";
+import { destroy } from "/actions/files";
 
 export default function Table({ rows }) {
   const handleDeleteFile = async (fileId) => {
@@ -78,7 +78,7 @@ export default function Table({ rows }) {
                 borderRadius="lg"
                 display="flex"
                 alignItems="center"
-                width="100%"
+                width="auto"
                 justifyContent="between"
                 p={0.75}
                 sx={{
@@ -88,12 +88,18 @@ export default function Table({ rows }) {
                 }}
               >
                 <DescriptionOutlined fontSize="small" color="dark" />
-                <Link href={file.publicUrl}>
+                <Link href={file.publicUrl} target="_blank">
                   <MDTypography
                     variant="button"
-                    fontWeight="regular"
-                    color="dark"
+                    color="link"
                     fontSize="small"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      cursor: "pointer",
+                      color: "info",
+                    }}
                   >
                     {file.subject.length > 10
                       ? file.subject.substring(0, 10) + "..."

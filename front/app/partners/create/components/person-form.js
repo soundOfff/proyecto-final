@@ -58,7 +58,6 @@ export default function PersonForm({
         phone,
         email,
         isResidential,
-        buildingNumber,
       },
     },
   } = form;
@@ -100,6 +99,21 @@ export default function PersonForm({
   }, [values.district_id]);
 
   const idType = ["Cédula", "Pasaporte", "Carnet de Residente"];
+
+  const civilStatusesMale = ["Soltero", "Casado", "Divorciado", "Viudo"];
+  const civilStatusesFemale = ["Soltera", "Casada", "Divorciada", "Viuda"];
+
+  const [filteredCivilStatuses, setFilteredCivilStatuses] = useState([]);
+
+  useEffect(() => {
+    const isMaleSelected = values[isMale.name];
+    if (isMaleSelected) {
+      setFilteredCivilStatuses(civilStatusesMale);
+    } else {
+      setFilteredCivilStatuses(civilStatusesFemale);
+    }
+    setFieldValue("civil_status", null);
+  }, [values[isMale.name]]);
 
   return (
     <Grid container spacing={5}>
@@ -160,6 +174,52 @@ export default function PersonForm({
         />
       </Grid>
       <Grid item xs={12} sm={6}>
+        <FormControl variant="standard" fullWidth>
+          <InputLabel>Género</InputLabel>
+          <MuiSelect
+            value={values[isMale.name]}
+            label="Género"
+            onChange={(e) => setFieldValue(isMale.name, e.target.value)}
+            sx={{ height: "2rem" }}
+          >
+            <MenuItem value={true}>Masculino</MenuItem>
+            <MenuItem value={false}>Femenino</MenuItem>
+          </MuiSelect>
+          <MDBox mt={0.75}>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={isMale.name} />
+            </MDTypography>
+          </MDBox>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Autocomplete
+          disablePortal
+          id="id-type-selector"
+          options={filteredCivilStatuses}
+          onChange={(event, newValue) => {
+            setFieldValue("civil_status", newValue);
+          }}
+          value={values.civil_status}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Estado civil"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.civilStatuses && touched.civilStatuses)}
+              helperText={touched.civilStatuses && errors.civilStatuses}
+            />
+          )}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
         <FormField
           label={phone.label}
           placeholder={phone.placeholder}
@@ -179,19 +239,6 @@ export default function PersonForm({
           value={values[email.name]}
           error={errors[email.name] && touched[email.name]}
           success={values[email.name]?.length > 0 && !errors[email.name]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[civilStatus.name]}
-          label={civilStatus.label}
-          placeholder={civilStatus.placeholder}
-          name={civilStatus.name}
-          type={civilStatus.type}
-          error={errors[civilStatus.name] && touched[civilStatus.name]}
-          success={
-            values[civilStatus.name]?.length > 0 && !errors[civilStatus.name]
-          }
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -257,30 +304,7 @@ export default function PersonForm({
           </MDTypography>
         </MDBox>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl variant="standard" fullWidth>
-          <InputLabel>Género</InputLabel>
-          <MuiSelect
-            value={values[isMale.name]}
-            label="Género"
-            onChange={(e) => setFieldValue(isMale.name, e.target.value)}
-            sx={{ height: "2rem" }}
-          >
-            <MenuItem value={true}>Masculino</MenuItem>
-            <MenuItem value={false}>Femenino</MenuItem>
-          </MuiSelect>
-          <MDBox mt={0.75}>
-            <MDTypography
-              component="div"
-              variant="caption"
-              color="error"
-              fontWeight="regular"
-            >
-              <ErrorMessage name={isMale.name} />
-            </MDTypography>
-          </MDBox>
-        </FormControl>
-      </Grid>
+
       <Grid item xs={12} sm={6}>
         <Select
           value={values[nationality.name]}
@@ -406,20 +430,6 @@ export default function PersonForm({
             </MDTypography>
           </MDBox>
         </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={3} alignSelf="end">
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
-          success={
-            values[buildingNumber.name]?.length > 0 &&
-            !errors[buildingNumber.name]
-          }
-        />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="end">
         <FormGroup>

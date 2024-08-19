@@ -75,6 +75,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Relacionado",
       accessor: "taskable",
+      disableSortBy: true,
       Cell: ({ row }) =>
         row.original.taskable ? (
           <Link href={`projects/${row.original.taskable.id}`} color="info">
@@ -89,6 +90,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Nro del caso",
       accessor: "",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDTypography variant="body2" fontSize="small">
           {row.original.taskable ? row.original.taskable.id : "Sin caso"}
@@ -98,6 +100,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Fecha",
       accessor: "start_date",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDTypography variant="body2" fontSize="small">
           {moment(row.original.start_date).format("DD/MM/YYYY")}
@@ -107,6 +110,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Hora de inicio",
       accessor: "start_time",
+      disableSortBy: true,
       width: 200,
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
@@ -119,6 +123,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Hora de Fin",
       accessor: "end_time",
+      disableSortBy: true,
       width: 200,
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
@@ -135,6 +140,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Tiempo total",
       accessor: "total_time",
+      disableSortBy: true,
       Cell: ({ row }) => (
         <MDTypography variant="body2" color="dark" fontSize="small">
           {numberFormat(row.original.total_time)} hs

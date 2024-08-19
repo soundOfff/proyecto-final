@@ -69,7 +69,9 @@ export async function getServerSideProps(context) {
     ...filter,
   };
 
-  const projects = await getAllProjects(params);
+  const {
+    data: { projects },
+  } = await getAllProjects(params);
   const statuses = await getAllStatuses();
 
   return {

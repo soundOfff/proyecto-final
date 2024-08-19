@@ -54,7 +54,6 @@ export default function PersonForm({
         phone,
         email,
         isResidential,
-        buildingNumber,
       },
     },
   } = detailForm;
@@ -97,6 +96,21 @@ export default function PersonForm({
 
   const idType = ["Cédula", "Pasaporte", "Carnet de Residente"];
   const initialIdType = idType.includes(values.id_type) ? values.id_type : null;
+
+  const civilStatusesMale = ["Soltero", "Casado", "Divorciado", "Viudo"];
+  const civilStatusesFemale = ["Soltera", "Casada", "Divorciada", "Viuda"];
+
+  const [filteredCivilStatuses, setFilteredCivilStatuses] = useState([]);
+
+  useEffect(() => {
+    const isMaleSelected = values[isMale.name];
+    if (isMaleSelected) {
+      setFilteredCivilStatuses(civilStatusesMale);
+    } else {
+      setFilteredCivilStatuses(civilStatusesFemale);
+    }
+    setFieldValue("civil_status", null);
+  }, [values[isMale.name]]);
 
   return (
     <Grid container spacing={5}>
@@ -143,6 +157,52 @@ export default function PersonForm({
           type={idNumber.type}
           error={errors[idNumber.name] && touched[idNumber.name]}
           success={values[idNumber.name]?.length > 0 && !errors[idNumber.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl variant="standard" fullWidth>
+          <InputLabel>Género</InputLabel>
+          <MuiSelect
+            value={values[isMale.name]}
+            label="Género"
+            onChange={(e) => setFieldValue(isMale.name, e.target.value)}
+            sx={{ height: "2rem" }}
+          >
+            <MenuItem value={1}>Masculino</MenuItem>
+            <MenuItem value={0}>Femenino</MenuItem>
+          </MuiSelect>
+          <MDBox mt={0.75}>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={isMale.name} />
+            </MDTypography>
+          </MDBox>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Autocomplete
+          disablePortal
+          id="id-type-selector"
+          options={filteredCivilStatuses}
+          onChange={(event, newValue) => {
+            setFieldValue("civil_status", newValue);
+          }}
+          value={values.civil_status}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Estado civil"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.civilStatuses && touched.civilStatuses)}
+              helperText={touched.civilStatuses && errors.civilStatuses}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -215,30 +275,6 @@ export default function PersonForm({
             <ErrorMessage name={expeditionDate.name} />
           </MDTypography>
         </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl variant="standard" fullWidth>
-          <InputLabel>Género</InputLabel>
-          <MuiSelect
-            value={values[isMale.name]}
-            label="Género"
-            onChange={(e) => setFieldValue(isMale.name, e.target.value)}
-            sx={{ height: "2rem" }}
-          >
-            <MenuItem value={1}>Masculino</MenuItem>
-            <MenuItem value={0}>Femenino</MenuItem>
-          </MuiSelect>
-          <MDBox mt={0.75}>
-            <MDTypography
-              component="div"
-              variant="caption"
-              color="error"
-              fontWeight="regular"
-            >
-              <ErrorMessage name={isMale.name} />
-            </MDTypography>
-          </MDBox>
-        </FormControl>
       </Grid>
       <Grid item xs={12} sm={6}>
         <Select
@@ -363,20 +399,6 @@ export default function PersonForm({
             </MDTypography>
           </MDBox>
         </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormField
-          label={buildingNumber.label}
-          placeholder={buildingNumber.placeholder}
-          name={buildingNumber.name}
-          type={buildingNumber.type}
-          value={values[buildingNumber.name]}
-          error={errors[buildingNumber.name] && touched[buildingNumber.name]}
-          success={
-            values[buildingNumber.name]?.length > 0 &&
-            !errors[buildingNumber.name]
-          }
-        />
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="center">
         <FormGroup>

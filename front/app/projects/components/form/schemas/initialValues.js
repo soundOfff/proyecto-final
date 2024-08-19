@@ -27,17 +27,22 @@ const {
     status,
     serviceType,
     billingType,
+    type,
+    process,
     selectedMembers,
     startDate,
     deadline,
     partners,
     proposal,
+    responsiblePersonId,
   },
 } = checkout;
 
 const initialValues = {
   [cost.name]: "",
   /* [estimatedHours.name]: "", */
+  [type.name]: "",
+  [process.name]: "",
   [expedient.name]: "",
   [description.name]: "",
   [billablePartner.name]: "",
@@ -49,6 +54,7 @@ const initialValues = {
   [deadline.name]: "",
   [partners.name]: [],
   [proposal.name]: "",
+  [responsiblePersonId.name]: "",
 };
 
 export default initialValues;

@@ -1,9 +1,14 @@
 "use client";
 
-import { Grid } from "@mui/material";
+import { Grid, Autocomplete } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
-import { useEffect } from "react";
+import MDInput from "/components/MDInput";
+import MDTypography from "/components/MDTypography";
+import MDBox from "/components/MDBox";
+import { ErrorMessage } from "formik";
+
+import { useEffect, useState } from "react";
 import { show as getPartner } from "/actions/partners";
 import { useSearchParams } from "next/navigation";
 
@@ -23,11 +28,12 @@ export default function Second({
     state,
     city,
     zip,
-    email,
+    contact,
     phone,
     partner,
   } = formField;
   const searchParams = useSearchParams();
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
@@ -37,8 +43,6 @@ export default function Second({
       setFieldValue(partner.name, Number(partnerId));
     }
   }, [setFieldValue, partner.name, searchParams]);
-
-  useEffect(() => {}, [proposal, staffAssigned, setFieldValue, partner, email]);
 
   useEffect(() => {
     if (proposal) {
@@ -53,19 +57,23 @@ export default function Second({
       setFieldValue(city.name, proposal.city ?? "");
       setFieldValue(state.name, proposal.state ?? "");
       setFieldValue(zip.name, proposal.zip ?? "");
-      setFieldValue(email.name, proposal.email);
+      setFieldValue(contact.name, proposal.contact?.id ?? "");
       setFieldValue(phone.name, proposal.phone ?? "");
+      setFieldValue(contact.name, proposal.contact?.id ?? "");
+      setContacts(proposal.proposable?.contacts ?? []);
     } else {
-      getPartner(values.partner_id).then((partner) => {
-        setFieldValue(proposalTo.name, partner.company ?? partner.name ?? "");
-        setFieldValue(country.name, partner.countryId ?? "");
-        setFieldValue(address.name, partner.address ?? "");
-        setFieldValue(city.name, partner.city ?? "");
-        setFieldValue(state.name, partner.state ?? "");
-        setFieldValue(zip.name, partner.zip ?? "");
-        setFieldValue(email.name, partner.email ?? "");
-        setFieldValue(phone.name, partner.phoneNumber ?? "");
-      });
+      getPartner(values.partner_id, { include: ["contacts"] }).then(
+        (partner) => {
+          setContacts(partner?.contacts ?? []);
+          setFieldValue(proposalTo.name, partner.company ?? partner.name ?? "");
+          setFieldValue(country.name, partner.countryId ?? "");
+          setFieldValue(address.name, partner.address ?? "");
+          setFieldValue(city.name, partner.city ?? "");
+          setFieldValue(state.name, partner.state ?? "");
+          setFieldValue(zip.name, partner.zip ?? "");
+          setFieldValue(phone.name, partner.phoneNumber ?? "");
+        }
+      );
     }
   }, [
     proposal,
@@ -79,10 +87,9 @@ export default function Second({
     city,
     state,
     zip,
-    email,
+    contact,
     phone,
   ]);
-
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
@@ -181,14 +188,13 @@ export default function Second({
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[email.name]}
-          name={email.name}
-          label={email.label}
-          type={email.type}
-          placeholder={email.placeholder}
-          error={errors[email.name] && touched[email.name]}
-          success={values[email.name]?.length > 0 && !errors[email.name]}
+        <Select
+          value={values[contact.name]}
+          options={contacts}
+          optionLabel={(option) => `${option.name} - ${option.email}`}
+          fieldName={contact.name}
+          inputLabel={contact.label}
+          setFieldValue={setFieldValue}
         />
       </Grid>
 

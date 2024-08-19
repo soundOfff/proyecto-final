@@ -334,6 +334,7 @@ function DataTable({
                         key={key}
                         noBorder={noEndBorder && page.length - 1 === key}
                         {...row.cells[0].getCellProps()}
+                        sx={{ textTransform: "uppercase" }}
                       >
                         <ResponsiveTableContent row={row} />
                       </DataTableBodyCell>

@@ -28,7 +28,10 @@ export default async function Tasks({ searchParams }) {
 
   let data = null;
   if (type === "myProjects") {
-    data = await getAllProjects(params);
+    const {
+      data: { projects },
+    } = await getAllProjects(params);
+    data = projects;
   } else {
     const {
       data: { tasks },

@@ -13,10 +13,17 @@ import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import DeleteRow from "/components/DeleteRow";
-import { Switch, Tooltip } from "@mui/material";
-
+import { Tooltip } from "@mui/material";
+import Switch from "@mui/material/Switch";
+import {
+  alpha,
+  createTheme,
+  styled,
+  ThemeProvider,
+} from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { orange } from "@mui/material/colors";
 
 export default function Procedures({ procedures, actionTypes, processId }) {
   const [controller] = useMaterialUIController();
@@ -26,10 +33,30 @@ export default function Procedures({ procedures, actionTypes, processId }) {
     setOpenDeleteConfirmation,
     errorSB,
     setErrorSB,
+    errorMsg,
     handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
+
+  const theme = createTheme({
+    components: {
+      MuiSwitch: {
+        styleOverrides: {
+          root: {
+            "& .MuiSwitch-switchBase": {
+              "&.Mui-checked": {
+                color: "#4caf50",
+                "&:hover": {
+                  backgroundColor: alpha("#4caf50", 0.08),
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 
   const getActionsColumns = () => {
     return actionTypes.map((actionType) => {
@@ -39,14 +66,15 @@ export default function Procedures({ procedures, actionTypes, processId }) {
         Cell: ({ row }) => {
           return (
             <MDBox display="flex" justifyContent="center" width="100%">
-              <Switch
-                name={actionType.name}
-                label={actionType.label}
-                disabled={true}
-                checked={row.original.actions.some(
-                  (action) => action.type.id === actionType.id
-                )}
-              />
+              <ThemeProvider theme={theme}>
+                <Switch
+                  name={actionType.name}
+                  disabled={true} // Puedes ajustar este valor según sea necesario
+                  checked={row.original.actions.some(
+                    (action) => action.type.id === actionType.id
+                  )}
+                />
+              </ThemeProvider>
             </MDBox>
           );
         },
@@ -155,6 +183,7 @@ export default function Procedures({ procedures, actionTypes, processId }) {
           setOpenDeleteConfirmation,
           errorSB,
           setErrorSB,
+          errorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

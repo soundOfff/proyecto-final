@@ -54,7 +54,6 @@ import {
 import { Skeleton } from "@mui/material";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { customFetch } from "../../actions/custom-fetch";
 
 function Sidenav({
   color = "dark",
@@ -153,13 +152,18 @@ function Sidenav({
                 ? setOpenNestedCollapse(false)
                 : setOpenNestedCollapse(key)
             }
+            sx={{ textTransform: "none !important" }}
           >
             {renderNestedCollapse(collapse)}
           </SidenavItem>
         );
       } else {
         returnValue = route ? (
-          <Link href={route} key={key} sx={{ textDecoration: "none" }}>
+          <Link
+            href={route}
+            key={key}
+            sx={{ textDecoration: "none", textTransform: "none !important" }}
+          >
             <SidenavItem color={color} name={name} active={key === itemName} />
           </Link>
         ) : (
@@ -295,7 +299,7 @@ function Sidenav({
       {...rest}
       variant="permanent"
       ownerState={{ transparentSidenav, whiteSidenav, miniSidenav, darkMode }}
-      sx={{ displayPrint: "none" }}
+      sx={{ displayPrint: "none", textTransform: "none !important" }}
     >
       <MDBox pt={3} pb={1} px={4} textAlign="center">
         <MDBox
@@ -305,7 +309,7 @@ function Sidenav({
           right={0}
           p={1.625}
           onClick={closeSidenav}
-          sx={{ cursor: "pointer" }}
+          sx={{ cursor: "pointer", textTransform: "none !important" }}
         >
           <MDTypography variant="h6" color="secondary">
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>

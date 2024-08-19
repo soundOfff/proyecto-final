@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Invoice extends Model
 {
+    static $SPANISH_CLASS_NAME = "factura";
     protected $fillable = [
         'added_from',
         'adjustment',
@@ -73,7 +74,7 @@ class Invoice extends Model
     protected function pendingToPay(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->total - $this->credits->sum('amount') - $this->payments->sum('pivot.amount')
+            get: fn() => $this->total - $this->credits->sum('amount') - $this->payments->sum('pivot.amount')
         );
     }
 

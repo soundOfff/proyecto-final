@@ -17,22 +17,22 @@ import checkout from "./form";
 
 const {
   formField: {
-    department,
     description,
     name,
     stepQuantity,
     projectServiceType,
     forks,
+    staffs,
   },
 } = checkout;
 
 const initialValues = {
-  [department.name]: "",
   [description.name]: "",
   [name.name]: "",
   [stepQuantity.name]: "",
   [projectServiceType.name]: "",
   [forks.name]: [],
+  [staffs.name]: [],
 };
 
 export default initialValues;

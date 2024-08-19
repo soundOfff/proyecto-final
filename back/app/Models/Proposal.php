@@ -11,12 +11,14 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Proposal extends Model
 {
+    static $SPANISH_CLASS_NAME = "proforma";
     protected $fillable = [
         'id',
         'estimate_id',
         'invoice_id',
         'currency_id',
         'country_id',
+        'contact_id',
         'proposal_status_id',
         'staff_assigned_id',
         'proposable_id',
@@ -75,6 +77,11 @@ class Proposal extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function contact(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class);
     }
 
     public function invoice(): BelongsTo

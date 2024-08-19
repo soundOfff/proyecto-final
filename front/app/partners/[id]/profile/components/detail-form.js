@@ -39,7 +39,6 @@ export default function DetailFormComponent({
         section,
         document,
         phone,
-        buildingNumber,
         isResidential,
         fileNumber,
         rollNumber,
@@ -80,7 +79,6 @@ export default function DetailFormComponent({
     [birthPlace.name]: partner.birthPlaceId ?? "",
     [nationality.name]: partner.nationalityId ?? "",
     [phone.name]: partner.phoneNumber ?? "",
-    [buildingNumber.name]: partner.buildingNumber ?? "",
     [relatedPartners.name]:
       partner.relatedPartners.map((partner) => partner.pivot) ?? [],
     [isResidential.name]: partner.isResidential ?? "",

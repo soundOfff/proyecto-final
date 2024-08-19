@@ -34,17 +34,17 @@ class PDFController extends Controller
         } elseif ($modelPartner->state) {
             $state = mb_strtoupper("{$modelPartner->state}, {$modelPartner->city}");
         } else {
-            $state = mb_strtoupper($modelPartner->city) ?? null;
+            $state = mb_strtoupper($modelPartner->city ?? "") ?? null;
         }
 
         $partnerData = [
             'name' => mb_strtoupper($modelPartner->mergedName),
-            'country' => mb_strtoupper($modelPartner->country->short_name) ?? null,
+            'country' => mb_strtoupper($modelPartner->country->short_name),
             'country_info' => mb_strtoupper($modelPartner->country->short_name) . ", " . $state,
-            'address' => mb_strtoupper($model->partner->address) ?? null,
+            'address' => mb_strtoupper($model->partner->address ?? ""),
             'zip' => $modelPartner->zip ? "CO" . $modelPartner->zip : null,
             'phone' => $modelPartner->phone_number ?? null,
-            'email' => mb_strtoupper($modelPartner->email) ?? null,
+            'email' => mb_strtoupper($modelPartner->email ?? null),
         ];
 
         $data = [

@@ -29,7 +29,7 @@ const form = {
     number: {
       name: "number",
       label: "Número de Proforma",
-      errorMsg: "Debe ingresar un numero de proforma",
+      errorMsg: "Debe ingresar un número de proforma",
     },
     dateFrom: {
       name: "date",

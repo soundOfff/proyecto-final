@@ -244,7 +244,7 @@ export default function PersonForm({
             fullWidth: true,
             label: "Fecha de Expedición",
           }}
-          options={{ maxDate: moment().format("YYYY-MM-DD") }}
+          options={{ maxDate: moment().format("YYYY-MM-DD"), allowInput: true }}
           value={values[expeditionDate.name]}
           onChange={(value) =>
             setFieldValue(

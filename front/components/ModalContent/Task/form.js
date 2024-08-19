@@ -284,7 +284,7 @@ export default function TaskForm({
                 label: "Fecha De Cierre",
                 fullWidth: true,
               }}
-              options={{ minDate: values[startDate.name] }}
+              options={{ minDate: values[startDate.name], allowInput: true }}
               value={values[dueDate.name]}
               onChange={(date) =>
                 setFieldValue(

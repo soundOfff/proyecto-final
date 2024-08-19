@@ -101,7 +101,7 @@ export default function Filters({ partners, projects, staffs }) {
           </MDTypography>
         </MDBox>
         <MDDatePicker
-          options={{ mode: "range" }}
+          options={{ mode: "range", allowInput: true }}
           format="YYYY/MM/DD"
           value={period}
           onChange={(dates) => {

@@ -7,10 +7,11 @@ export default function usePrint({ documentType, documentId }) {
   const handlePrint = async () => {
     setIsGeneratingPdf(true);
     try {
-      await generatePdf({
+      const pdfUrl = await generatePdf({
         document_type: documentType,
         document_id: documentId,
       });
+      window.open(pdfUrl, "_blank");
     } catch (error) {
       console.log(error);
     }

@@ -13,7 +13,16 @@ export default function ConfirmDelete({
       <MDTypography variant="h4" mb={5}>
         ¿Está seguro que desea realizar esta acción?
       </MDTypography>
-      <MDBox display="flex" justifyContent="end">
+      <MDBox display="flex" justifyContent="space-between">
+        <MDButton
+          variant="gradient"
+          color="light"
+          onClick={() => {
+            setOpenDeleteConfirmation(false);
+          }}
+        >
+          Cancelar
+        </MDButton>
         <MDButton
           variant="gradient"
           color="error"

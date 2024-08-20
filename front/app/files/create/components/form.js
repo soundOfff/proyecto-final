@@ -95,7 +95,15 @@ export default function FormComponent({ apiUrl }) {
                 setFieldError,
               }}
             />
-            <MDBox mt={5} display="flex" justifyContent="end">
+            <MDBox mt={5} display="flex" justifyContent="space-between">
+              <MDButton
+                type="button"
+                variant="gradient"
+                color="light"
+                onClick={returnToSource}
+              >
+                Volver
+              </MDButton>
               <MDButton type="submit" variant="gradient" color="dark">
                 Guardar
               </MDButton>

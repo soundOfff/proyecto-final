@@ -1,16 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
-import Link from "next/link";
+import MDTypography from "/components/MDTypography";
+
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import CopyButton from "/components/CopyButton";
+
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
-import { destroy } from "/actions/files";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import MDTypography from "/components/MDTypography";
+
 import { MAPPED_FILEABLE_TYPES } from "/utils/constants/fileableTypes";
+import { destroy } from "/actions/files";
 
 export default function Table({ rows, meta }) {
   const getFileableLabel = (row) =>
@@ -97,16 +101,19 @@ export default function Table({ rows, meta }) {
       Header: "Acciones",
       disableSortBy: true,
       Cell: ({ row }) => (
-        <Tooltip title="Eliminar Archivo">
-          <DeleteIcon
-            color="error"
-            fontSize="medium"
-            onClick={() => {
-              handleDelete(row.original.id);
-            }}
-            sx={{ mx: 1, cursor: "pointer" }}
-          />
-        </Tooltip>
+        <>
+          <CopyButton url={row.original.publicUrl} />
+          <Tooltip title="Eliminar Archivo">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{ mx: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </>
       ),
     },
   ];

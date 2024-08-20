@@ -12,6 +12,35 @@ import moment from "moment";
 export default function Table({ rows, meta }) {
   const columns = [
     {
+      Header: "Cliente",
+      accessor: "partner",
+      Cell: ({ row }) => {
+        return (
+          <Link
+            href={`partners/${row.original.partner.id}/profile`}
+            color="info"
+          >
+            {row.original.partner.company}
+          </Link>
+        );
+      },
+    },
+    {
+      Header: "Caso",
+      accessor: "taskable",
+      disableSortBy: true,
+      Cell: ({ row }) =>
+        row.original.taskable ? (
+          <Link href={`projects/${row.original.taskable.id}`} color="info">
+            {row.original.taskable.name + " - #" + row.original.taskable.id}
+          </Link>
+        ) : (
+          <MDTypography variant="body2" fontSize="small">
+            No hay caso relacionado
+          </MDTypography>
+        ),
+    },
+    {
       Header: "Miembros del equipo",
       accessor: "staff",
       disableSortBy: true,
@@ -57,45 +86,6 @@ export default function Table({ rows, meta }) {
           ? row.original.timers[0].note
           : "Sin notas";
       },
-    },
-    {
-      Header: "Cliente",
-      accessor: "partner",
-      Cell: ({ row }) => {
-        return (
-          <Link
-            href={`partners/${row.original.partner.id}/profile`}
-            color="info"
-          >
-            {row.original.partner.company}
-          </Link>
-        );
-      },
-    },
-    {
-      Header: "Relacionado",
-      accessor: "taskable",
-      disableSortBy: true,
-      Cell: ({ row }) =>
-        row.original.taskable ? (
-          <Link href={`projects/${row.original.taskable.id}`} color="info">
-            {row.original.taskable.name}
-          </Link>
-        ) : (
-          <MDTypography variant="body2" fontSize="small">
-            No hay caso relacionado
-          </MDTypography>
-        ),
-    },
-    {
-      Header: "Nro del caso",
-      accessor: "",
-      disableSortBy: true,
-      Cell: ({ row }) => (
-        <MDTypography variant="body2" fontSize="small">
-          {row.original.taskable ? row.original.taskable.id : "Sin caso"}
-        </MDTypography>
-      ),
     },
     {
       Header: "Fecha",

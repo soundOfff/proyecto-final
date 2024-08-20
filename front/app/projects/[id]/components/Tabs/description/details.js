@@ -51,7 +51,6 @@ const borderBottom = {
 
 export default function Details() {
   const { project, staffs } = useDataProvider();
-  console.log(project);
   const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
 
   const getInitials = (firstName) => {

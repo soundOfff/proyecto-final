@@ -18,6 +18,8 @@ import form from "./schemas/form";
 import { store as storeEstimate } from "/actions/estimates";
 
 import { useState } from "react";
+import CancelModal from "/components/CancelModal";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const steps = [
   "Nueva proforma",
@@ -42,12 +44,15 @@ export default function FormComponent({
   maxEstimateId,
   defaultCurrency,
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
   const { number, currency } = formField;
   const [errorSB, setErrorSB] = useState(false);
+  const [cancelSB, setCancelSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   initialValues[number.name] = `00${Number(maxEstimateId) + 1}`;
   initialValues[currency.name] = defaultCurrency.id;
@@ -94,6 +99,15 @@ export default function FormComponent({
       default:
         return null;
     }
+  };
+
+  const returnToSource = () => {
+    const source = searchParams.get("source");
+    if (!source) {
+      router.push("/estimates");
+      return;
+    }
+    router.push(source);
   };
 
   const handleBack = () => setActiveStep(activeStep - 1);
@@ -147,6 +161,11 @@ export default function FormComponent({
                     close={() => setErrorSB(false)}
                     bgWhite
                   />
+                  <CancelModal
+                    setOpenConfirmation={setCancelSB}
+                    openConfirmation={cancelSB}
+                    returnToSource={returnToSource}
+                  />
                   <MDBox mx={2} mt={-3}>
                     <Stepper activeStep={activeStep} alternativeLabel>
                       {steps.map((label) => (
@@ -184,9 +203,24 @@ export default function FormComponent({
                             Anterior
                           </MDButton>
                         )}
-                        <MDButton type="submit" variant="gradient" color="dark">
-                          {isLastStep ? "Guardar" : "Siguiente"}
-                        </MDButton>
+                        <MDBox>
+                          <MDButton
+                            type="button"
+                            variant="gradient"
+                            color="error"
+                            sx={{ mr: 8 }}
+                            onClick={() => setCancelSB(true)}
+                          >
+                            Cancelar
+                          </MDButton>
+                          <MDButton
+                            type="submit"
+                            variant="gradient"
+                            color="dark"
+                          >
+                            {isLastStep ? "Guardar" : "Siguiente"}
+                          </MDButton>
+                        </MDBox>
                       </MDBox>
                     </MDBox>
                   </MDBox>

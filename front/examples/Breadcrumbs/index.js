@@ -14,26 +14,24 @@ Coded by www.creative-tim.com
 */
 
 import Link from "next/link";
-
-// prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
-
-// @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import { usePathname } from "next/navigation";
-
 import Icon from "@mui/material/Icon";
-
-// NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import translate from "/locales/es/common.json";
 import { matchedRoutes } from "../../utils/constants/matchedRoutes";
+import useCaseName from "../../hooks/useCaseName";
 
 function Breadcrumbs({ icon, title, route, light = false }) {
   const pathname = usePathname();
   const segments = route.slice(0, -1).filter((el) => el.length > 0);
   const pathRoutes = pathname.split("/").filter((el) => el.length > 0);
+
+  // Obtener el ID del caso de la ruta
+  const caseId = pathRoutes.find((el) => el.match(/\d+/));
+  const { caseName, loading } = useCaseName(caseId);
 
   const getPageTitle = () =>
     "Velo CRM - " +
@@ -52,10 +50,16 @@ function Breadcrumbs({ icon, title, route, light = false }) {
   };
 
   return (
-    <MDBox mr={{ xs: 0, xl: 8 }}>
+    <MDBox mr={{ xs: 0, xl: 8 }} sx={{ width: "100%" }}>
       <title>{getPageTitle()}</title>
       <MuiBreadcrumbs
         sx={{
+          maxWidth: "800px",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          display: "inline-block",
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) =>
               light ? white.main : grey[600],
@@ -93,20 +97,13 @@ function Breadcrumbs({ icon, title, route, light = false }) {
           fontWeight="regular"
           textTransform="capitalize"
           color={light ? "white" : "dark"}
-          sx={{ lineHeight: 0 }}
+          sx={{
+            lineHeight: 0,
+          }}
         >
-          {title.replace("-", " ")}
+          {segments[0] === "projects" ? caseName : title.replace("-", " ")}
         </MDTypography>
       </MuiBreadcrumbs>
-      <MDTypography
-        fontWeight="bold"
-        textTransform="capitalize"
-        variant="h6"
-        color={light ? "white" : "dark"}
-        noWrap
-      >
-        {title.replace("-", " ")}
-      </MDTypography>
     </MDBox>
   );
 }

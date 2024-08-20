@@ -115,6 +115,7 @@ export default function FormComponent({
   const submitForm = async (values, actions) => {
     try {
       await storeEstimate(values);
+      returnToSource();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

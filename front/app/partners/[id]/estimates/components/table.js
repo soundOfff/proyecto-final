@@ -89,7 +89,10 @@ export default function Table({ rows, meta, partnerId }) {
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Link
-            href={`/estimates/${row.original.id}/edit`}
+            href={{
+              pathname: `/estimates/${row.original.id}/edit`,
+              query: { source: `/partners/${partnerId}/estimates` },
+            }}
             sx={{ cursor: "pointer", color: "info" }}
           >
             <Tooltip title="Editar" placement="top">

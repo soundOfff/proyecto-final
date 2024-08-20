@@ -41,7 +41,11 @@ export default function Estimates() {
           </MDButton>
         </Link>
       </MDBox>
-      {isLoading ? <Loader /> : <Table rows={estimates} />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Table rows={estimates} projectId={project.id} />
+      )}
     </MDBox>
   );
 }

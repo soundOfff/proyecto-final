@@ -15,6 +15,7 @@ import DeleteRow from "/components/DeleteRow";
 
 import { MAPPED_FILEABLE_TYPES } from "/utils/constants/fileableTypes";
 import { destroy } from "/actions/files";
+import { Box } from "@mui/material";
 
 export default function Table({ rows, meta }) {
   const getFileableLabel = (row) =>
@@ -77,22 +78,29 @@ export default function Table({ rows, meta }) {
       accessor: "publicUrl",
       disableSortBy: true,
       Cell: ({ value }) => (
-        <Link href={value} target="_blank" sx={{ color: "info" }}>
-          <MDTypography
-            variant="button"
-            color="link"
-            fontSize="small"
+        <Link
+          href={value}
+          target="_blank"
+          sx={{ color: "info", textDecoration: "none" }}
+        >
+          <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: "4px",
-              cursor: "pointer",
+              gap: "8px",
               color: "info",
             }}
           >
-            Ver archivo
+            <MDTypography
+              variant="button"
+              color="inherit"
+              fontSize="small"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              Ver archivo
+            </MDTypography>
             <PictureAsPdfIcon fontSize="small" />
-          </MDTypography>
+          </Box>
         </Link>
       ),
     },

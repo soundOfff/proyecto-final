@@ -19,6 +19,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import { useEffect, useState } from "react";
 import { destroy, getAll } from "/actions/files";
 import CopyButton from "/components/CopyButton";
+import { Box } from "@mui/material";
 
 export default function Table({ project }) {
   const [rows, setRows] = useState([]);
@@ -58,28 +59,25 @@ export default function Table({ project }) {
       disableSortBy: true,
       Cell: ({ value }) => (
         <Link href={value} target="_blank" sx={{ color: "info" }}>
-          <MDTypography
-            variant="button"
-            color="link"
-            fontSize="small"
+          <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: "4px",
-              cursor: "pointer",
+              gap: "8px",
               color: "info",
             }}
           >
             <MDTypography
               variant="button"
               color="link"
-              fontSize="small"
               mr={0.5}
+              fontSize="small"
+              sx={{ display: "flex", alignItems: "center" }}
             >
               Ver archivo
             </MDTypography>
             <PictureAsPdfIcon fontSize="small" />
-          </MDTypography>
+          </Box>
         </Link>
       ),
     },

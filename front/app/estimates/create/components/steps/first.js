@@ -61,6 +61,10 @@ export default function First({
         setFieldValue(project.name, data.id);
       });
     }
+
+    if (searchParams.get("partnerId")) {
+      setFieldValue(partner.name, Number(searchParams.get("partnerId")));
+    }
   }, [searchParams, setFieldValue, project, partner]);
 
   return (

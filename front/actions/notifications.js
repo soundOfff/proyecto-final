@@ -14,6 +14,17 @@ export async function getAll(params) {
   return data;
 }
 
+export async function updateMany(ids = []) {
+  const url = new URL(`${process.env.API_URL}/notifications-update-many`);
+
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(ids),
+  });
+
+  revalidatePath("/notifications");
+}
+
 export async function getIsNotSeenCount(body) {
   const url = new URL(`${process.env.API_URL}/notifications/is-not-seen-count`);
 

@@ -6,7 +6,7 @@ export default function Header() {
   const { task } = useDataProvider();
   return (
     <MDBox bgColor="dark" variant="gradient" px={5} py={4}>
-      <MDTypography variant="h2" color="white">
+      <MDTypography variant="h4" color="white">
         {task.name}
       </MDTypography>
     </MDBox>

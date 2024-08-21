@@ -20,7 +20,7 @@ export default function Stats() {
   }, [project]);
 
   return (
-    <Grid container>
+    <Grid container maxWidth={"50%"}>
       {stats &&
         stats.length > 0 &&
         stats.map((item) => (

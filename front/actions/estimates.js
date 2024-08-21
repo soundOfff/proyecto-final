@@ -21,7 +21,6 @@ export async function store(data) {
   });
 
   revalidatePath("/estimates");
-  redirect("/estimates");
 }
 
 export async function update(id, data) {
@@ -33,7 +32,6 @@ export async function update(id, data) {
   });
 
   revalidatePath("/estimates");
-  redirect("/estimates");
 }
 
 export async function show(id, params) {

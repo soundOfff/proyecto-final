@@ -30,7 +30,10 @@ export default function Estimates() {
         <Link
           href={{
             pathname: "/estimates/create",
-            query: { projectId: project.id },
+            query: {
+              projectId: project.id,
+              source: `/projects/${project.id}?tab=estimates`,
+            },
           }}
         >
           <MDButton variant="gradient" color="dark">
@@ -38,7 +41,11 @@ export default function Estimates() {
           </MDButton>
         </Link>
       </MDBox>
-      {isLoading ? <Loader /> : <Table rows={estimates} />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Table rows={estimates} projectId={project.id} />
+      )}
     </MDBox>
   );
 }

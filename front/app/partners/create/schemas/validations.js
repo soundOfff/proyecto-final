@@ -183,7 +183,7 @@ const validations = {
     [birthPlace.name]: Yup.string().required(birthPlace.errorMsg),
     [personIdNumber.name]: Yup.string().required(personIdNumber.errorMsg),
     [personIdType.name]: Yup.string(),
-    [emailPerson.name]: Yup.string().email().required(email.errorMsg),
+    [emailPerson.name]: Yup.string().required(email.errorMsg),
     [phonePerson.name]: Yup.string().required(phone.errorMsg),
     [nationality.name]: Yup.number().required(nationality.errorMsg),
     [provincePerson.name]: Yup.number().when([countryPerson.name], {

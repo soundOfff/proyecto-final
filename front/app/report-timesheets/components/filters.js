@@ -88,17 +88,14 @@ export default function Filters({ partners, projects, staffs }) {
           xs: "150px",
           sm: "160px",
           md: "20%",
-          paddingBottom: "21px",
         }}
       >
         <MDBox>
-          <MDTypography
-            variant="body"
-            color="secondary"
-            sx={{ fontSize: "small" }}
+          <span
+            style={{ fontSize: "small", display: "block", color: "#7b809a" }}
           >
             Fechas
-          </MDTypography>
+          </span>
         </MDBox>
         <MDDatePicker
           options={{ mode: "range", allowInput: true }}

@@ -11,6 +11,7 @@ export default function DataTableRow({
   noEndBorder,
   moveRow,
   isTaskTable = false,
+  isNotificable = false,
 }) {
   const DND_ITEM_TYPE = "row";
   const dropRef = useRef(null);
@@ -71,6 +72,11 @@ export default function DataTableRow({
   preview(drop(dropRef));
   drag(dragRef);
 
+  const getNotificationRowColor = () => {
+    if (row.original.isSeen) return "white";
+    return "#eee7e7";
+  };
+
   const getLevelColor = () => {
     if (!row.original.procedure) return "white";
 
@@ -112,6 +118,8 @@ export default function DataTableRow({
           ? "#f0f0f0"
           : isTaskTable
           ? getLevelColor()
+          : isNotificable
+          ? getNotificationRowColor()
           : "white",
         cursor: isDragging ? "grabbing" : "default",
         transition: "all 0.5s ease",

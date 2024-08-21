@@ -10,7 +10,7 @@ import { authOptions } from "/pages/api/auth/[...nextauth]";
 export const dynamic = "force-dynamic";
 
 export default async function Notifications({
-  searchParams: { perPage = 10, page = 1, sort = "-created_at" },
+  searchParams: { perPage = 10, page = 1, sort = "is_seen" },
 }) {
   const session = await getServerSession(authOptions);
 

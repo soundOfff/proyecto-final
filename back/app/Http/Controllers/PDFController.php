@@ -25,7 +25,7 @@ class PDFController extends Controller
         $number = $model->number ?? $model->id;
         $projectName = $model->project->name ?? $model->subject;
         $modelPartner = $model->partner ?? $model->proposable;
-        $projectName = $model->project ? mb_strtoupper($model->project->name ?? "") : "N/A";
+        $projectName = $model->project ? mb_strtoupper($model->project->name ?? "") : null;
 
         $state = null;
         if ($modelPartner->jurisdiction) {
@@ -48,6 +48,7 @@ class PDFController extends Controller
         ];
 
         $data = [
+            'type' => class_basename($model),
             'title' => mb_strtoupper($model::$SPANISH_CLASS_NAME),
             'start_date' => $model->date ?? now(),
             'end_date' => $endDate,
@@ -56,6 +57,8 @@ class PDFController extends Controller
             'project_name' => mb_strtoupper($projectName),
             'items' => $model->lineItems,
             'partner' => $partnerData,
+            'notes' => $model->client_note ?? 'No se encontraron notas para este documento',
+            'terms' => $model->terms ?? 'No se encontraron terminos y condiciones para este documento',
         ];
 
         $pdf = PDF::loadView('document', $data);

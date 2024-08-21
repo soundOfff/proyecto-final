@@ -20,6 +20,7 @@ class NotificationResource extends JsonResource
             'body' => $this->body,
             'createdAt' => $this->created_at,
             'staffDevice' => StaffDeviceResource::make($this->whenLoaded('staffDevice')),
+            'isSeen' => $this->is_seen,
         ];
     }
 }

@@ -28,6 +28,7 @@ class ProvinceSeeder extends Seeder
             ['id' => 11, 'name' => 'COMARCA EMBERA'],
             ['id' => 12, 'name' => 'COMARCA NGABE'],
             ['id' => 13, 'name' => 'PANAMA OESTE'],
+            ['id' => 14, 'name' => 'Desconocido']
         ];
 
         foreach ($provinces as $province) {

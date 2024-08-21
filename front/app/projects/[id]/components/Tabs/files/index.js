@@ -18,7 +18,7 @@ export default function Files() {
               pathname: "/files/create",
               query: {
                 projectId: project.id,
-                source: `/projects/${project.id}`,
+                source: `/projects/${project.id}?tab=files`,
               },
             }}
           >

@@ -151,7 +151,7 @@ export default function Content({ selectedFork }) {
       />
       <MDBox px={5} py={2}>
         <MDBox py={2} container display="flex" flexDirection="column">
-          <MDTypography variant="body1" fontWeight="bold" display="inline">
+          <MDTypography variant="body2" fontWeight="bold" display="inline">
             Relacionado:
           </MDTypography>{" "}
           {task.taskable_type === PROJECT_TYPE ? (
@@ -159,14 +159,28 @@ export default function Content({ selectedFork }) {
               href={`/projects/${task.taskable.id}`}
               sx={{ overflow: "wrap" }}
             >
-              {task.taskable.name}
+              <MDTypography
+                variant="body2"
+                fontWeight="bold"
+                color="info"
+                display="inline"
+              >
+                {task.taskable.name}
+              </MDTypography>
             </Link>
           ) : (
             <Link
               href={`/invoices/${task.taskable.id}`}
               sx={{ overflow: "wrap" }}
             >
-              Factura # {task.taskable.id}
+              <MDTypography
+                variant="body2"
+                fontWeight="bold"
+                color="info"
+                display="inline"
+              >
+                Factura # {task.taskable.id}
+              </MDTypography>
             </Link>
           )}
           <MDBox

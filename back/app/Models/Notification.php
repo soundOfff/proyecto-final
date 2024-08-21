@@ -11,6 +11,7 @@ class Notification extends Model
         'title',
         'body',
         'staff_devices_id',
+        'is_seen',
     ];
 
     public function staffDevice()

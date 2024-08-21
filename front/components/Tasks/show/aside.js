@@ -21,6 +21,7 @@ import {
   FlashOn,
   Lock,
   Notifications,
+  LabelImportant,
   Remove,
   StarHalf,
 } from "@mui/icons-material";
@@ -131,8 +132,8 @@ export default function Aside() {
   }, [followers, task.id]);
 
   return (
-    <Grid item xs={4}>
-      <MDBox bgColor="light" px={6} py={2} height="100%">
+    <Grid item xs={5}>
+      <MDBox bgColor="light" pr={2} pl={4} py={2} height="100%">
         {task.recurring && (
           <>
             <MDBadge
@@ -147,13 +148,13 @@ export default function Aside() {
           </>
         )}
 
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <MDBox display="flex">
+        <Grid container spacing={3}>
+          <Grid item lg={6} md={12} my="auto">
+            <MDBox display="flex" alignContent="center">
               <StarHalf />
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="button"
                 fontWeight="bold"
                 ml={1}
               >
@@ -161,7 +162,7 @@ export default function Aside() {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <FormControl sx={{ width: "100%" }}>
               <InputLabel id="status">Estado</InputLabel>
               <Select
@@ -180,12 +181,12 @@ export default function Aside() {
             </FormControl>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12} my="auto">
             <MDBox display="flex">
               <CalendarToday />
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="button"
                 fontWeight="bold"
                 ml={1}
               >
@@ -193,7 +194,7 @@ export default function Aside() {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <MDDatePicker
               value={startDate}
               onChange={(date) =>
@@ -203,12 +204,12 @@ export default function Aside() {
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12} my="auto">
             <MDBox display="flex">
               <Event />
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="button"
                 fontWeight="bold"
                 ml={1}
               >
@@ -216,7 +217,7 @@ export default function Aside() {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <MDDatePicker
               value={dueDate}
               onChange={(date) =>
@@ -226,12 +227,12 @@ export default function Aside() {
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12} my="auto">
             <MDBox display="flex">
               <FlashOn />
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="button"
                 fontWeight="bold"
                 ml={1}
               >
@@ -239,7 +240,7 @@ export default function Aside() {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <FormControl sx={{ width: "100%" }}>
               <InputLabel id="status">Prioridad</InputLabel>
               <Select
@@ -257,12 +258,12 @@ export default function Aside() {
             </FormControl>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12} my="auto">
             <MDBox display="flex">
               <AccessTime />
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="button"
                 fontWeight="bold"
                 ml={1}
               >
@@ -270,7 +271,7 @@ export default function Aside() {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <FormField
               value={hourlyRate}
               type="number"
@@ -281,12 +282,12 @@ export default function Aside() {
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12} my="auto">
             <MDBox display="flex">
               <CreditCard />
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="button"
                 fontWeight="bold"
                 ml={1}
               >
@@ -294,14 +295,17 @@ export default function Aside() {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <Switch
               checked={billable}
               onChange={(e) => setBillable(e.target.checked)}
             />
           </Grid>
-
-          <Grid xs={12} my={2}>
+          <Grid xs={12} my={2} mx={2}>
+            <MDTypography variant="button" fontWeight="bold" ml={2} mb={2}>
+              <LabelImportant sx={{ mr: 1 }} />
+              Etiquetas
+            </MDTypography>
             <Autocomplete
               key="tags"
               multiple
@@ -323,10 +327,10 @@ export default function Aside() {
 
           <Divider sx={{ width: "100%" }} />
 
-          <Grid xs={12}>
+          <Grid xs={12} mx={3}>
             <MDBox display="flex" mt={2} mb={1}>
               <Notifications />
-              <MDTypography variant="h6" fontWeight="bold" ml={1}>
+              <MDTypography variant="button" fontWeight="bold" ml={1}>
                 Recordatorios
               </MDTypography>
               {showReminderForm ? (
@@ -346,10 +350,10 @@ export default function Aside() {
             {reminders &&
               reminders.map((reminder) => (
                 <MDBox key={reminder.id} display="flex">
-                  <MDTypography key={reminder.id} variant="body2">
+                  <MDTypography key={reminder.id} variant="button">
                     {reminder.date}
                   </MDTypography>
-                  <MDTypography key={reminder.id} variant="body2" ml={2}>
+                  <MDTypography key={reminder.id} variant="button" ml={2}>
                     {reminder.description}
                   </MDTypography>
                   <Clear
@@ -425,10 +429,10 @@ export default function Aside() {
           </Grid>
           <Divider sx={{ width: "100%" }} />
 
-          <Grid xs={12}>
+          <Grid xs={12} mx={3}>
             <MDBox display="flex" mt={2} mb={1}>
               <Lock />
-              <MDTypography variant="h6" fontWeight="bold" ml={1}>
+              <MDTypography variant="button" fontWeight="bold" ml={1}>
                 Responsables
               </MDTypography>
             </MDBox>
@@ -474,10 +478,10 @@ export default function Aside() {
           </Grid>
           <Divider sx={{ width: "100%" }} />
 
-          <Grid xs={12}>
+          <Grid xs={12} mx={3}>
             <MDBox display="flex" mt={2} mb={1}>
               <Lock />
-              <MDTypography variant="h6" fontWeight="bold" ml={1}>
+              <MDTypography variant="button" fontWeight="bold" ml={1}>
                 Seguidores
               </MDTypography>
             </MDBox>

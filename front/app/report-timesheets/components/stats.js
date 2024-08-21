@@ -7,16 +7,16 @@ import { Grid } from "@mui/material";
 
 export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
   return (
-    <Grid container>
-      <Grid
-        item
-        key="total-time"
-        margin="auto"
-        minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
-      >
-        <MDBox my={2}>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid item xs={12} sm={4} md={4}>
+        <MDBox
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          my={2}
+        >
           <MDTypography
-            variant="h3"
+            variant="h5"
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
           >
@@ -29,23 +29,22 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             size="xs"
             container
             sx={{
-              ml: { xs: 0, sm: 2 },
-              mb: 1,
+              ml: 2,
               height: "2rem",
-              minWidth: "108px",
+              minWidth: "100px",
             }}
           />
         </MDBox>
       </Grid>
-      <Grid
-        item
-        key="total-month-time"
-        margin="auto"
-        minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
-      >
-        <MDBox my={2}>
+      <Grid item xs={12} sm={4} md={4}>
+        <MDBox
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          my={2}
+        >
           <MDTypography
-            variant="h3"
+            variant="h5"
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
           >
@@ -58,23 +57,22 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             size="xs"
             container
             sx={{
-              ml: { xs: 0, sm: 2 },
-              mb: 1,
+              ml: 2,
               height: "2rem",
-              minWidth: "108px",
+              minWidth: "100px",
             }}
           />
         </MDBox>
       </Grid>
-      <Grid
-        item
-        key="total-week-time"
-        margin="auto"
-        minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
-      >
-        <MDBox my={2}>
+      <Grid item xs={12} sm={4} md={4}>
+        <MDBox
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          my={2}
+        >
           <MDTypography
-            variant="h3"
+            variant="h5"
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
           >
@@ -87,10 +85,9 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             size="xs"
             container
             sx={{
-              ml: { xs: 0, sm: 2 },
-              mb: 1,
+              ml: 2,
               height: "2rem",
-              minWidth: "108px",
+              minWidth: "100px",
             }}
           />
         </MDBox>

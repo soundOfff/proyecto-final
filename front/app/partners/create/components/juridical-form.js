@@ -353,9 +353,7 @@ export default function JuridicalForm({
         )}
         <Grid item xs={10} sm={4}>
           <FormField
-            multiline
             isImportant={isRequired}
-            rows={3}
             value={values[address.name]}
             label={address.label}
             placeholder={address.placeholder}
@@ -381,7 +379,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={12} sm={3} alignSelf="end" mb={1.5}>
+        <Grid item xs={12} sm={6} alignSelf="end" mb={1.5}>
           <FormControl variant="standard" fullWidth>
             <InputLabel>{isResidential.label}</InputLabel>
             <MuiSelect

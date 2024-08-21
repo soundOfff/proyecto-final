@@ -5,7 +5,9 @@ import { Form, Formik } from "formik";
 import { Grid } from "@mui/material";
 import { store as storePartner } from "/actions/partners";
 import MDBox from "/components/MDBox";
+import Modal from "/components/Modal";
 import MDButton from "/components/MDButton";
+import MDTypography from "/components/MDTypography";
 import DetailForm from "./detail-form";
 import InvoiceForm from "./invoice-form";
 import Tabs from "./tabs";
@@ -30,6 +32,7 @@ export default function FormComponent({
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const submitForm = async (values, actions) => {
     try {
@@ -103,13 +106,53 @@ export default function FormComponent({
                 }}
               />
             )}
-            <Grid item xs={12}>
-              <MDBox display="flex" justifyContent="end">
-                <MDButton color="dark" type="submit">
-                  Guardar
-                </MDButton>
+            {isRequired && (
+              <Grid item xs={12}>
+                <MDBox display="flex" justifyContent="end">
+                  <MDButton color="dark" type="submit">
+                    Guardar
+                  </MDButton>
+                </MDBox>
+              </Grid>
+            )}
+            {!isRequired && (
+              <Grid item xs={12}>
+                <MDBox display="flex" justifyContent="end">
+                  <MDButton
+                    color="dark"
+                    onClick={() => {
+                      setOpenConfirmation(true);
+                    }}
+                  >
+                    Guardar
+                  </MDButton>
+                </MDBox>
+              </Grid>
+            )}
+            <Modal
+              width="max-content"
+              height="min-content"
+              border="0px solid transparent"
+              open={openConfirmation}
+              onClose={() => {
+                setOpenConfirmation(false);
+              }}
+            >
+              <MDBox p={2}>
+                <MDTypography variant="h4" mb={5}>
+                  ¿Faltan campos, está seguro que desea realizar esta acción?
+                </MDTypography>
+                <MDBox display="flex" justifyContent="end">
+                  <MDButton
+                    variant="gradient"
+                    color="dark"
+                    onClick={() => handleSubmit(values)}
+                  >
+                    Confirmar
+                  </MDButton>
+                </MDBox>
               </MDBox>
-            </Grid>
+            </Modal>
           </Form>
         )}
       </Formik>

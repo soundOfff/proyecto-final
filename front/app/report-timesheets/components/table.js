@@ -30,7 +30,7 @@ export default function Table({ rows, meta }) {
       accessor: "taskable",
       disableSortBy: true,
       Cell: ({ row }) =>
-        row.original.taskable ? (
+        row.original.taskable && row.original.taskable_type === "project" ? (
           <Link href={`projects/${row.original.taskable.id}`} color="info">
             {row.original.taskable.name + " - #" + row.original.taskable.id}
           </Link>

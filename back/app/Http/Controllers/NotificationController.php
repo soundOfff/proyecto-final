@@ -7,6 +7,7 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class NotificationController extends Controller
@@ -18,7 +19,17 @@ class NotificationController extends Controller
     {
         $query = QueryBuilder::for(Notification::class)
             ->allowedIncludes(['staffDevice'])
-            ->allowedSorts(['title', 'body', 'created_at'])
+            ->allowedSorts([
+                'title',
+                'body',
+                'created_at',
+                AllowedSort::callback('is_seen', function ($query, $descending) {
+                    $direction = $descending ? 'DESC' : 'ASC';
+                    $query
+                        ->orderBy('is_seen', $direction)
+                        ->orderBy('created_at', "DESC");
+                }),
+            ])
             ->allowedFilters([
                 AllowedFilter::callback('search', function ($query, $search) {
                     $query->where('title', 'LIKE', "%{$search}%")
@@ -30,8 +41,6 @@ class NotificationController extends Controller
                     });
                 }),
             ]);
-
-        $query->update(['is_seen' => true]);
 
         $notifications = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -47,7 +56,7 @@ class NotificationController extends Controller
             'staff_id' => 'nullable|numeric|exists:staff,id',
         ]);
 
-        $query = 
+        $query =
             DB::table('notifications')
             ->selectRaw('count(*) as count')
             ->where('is_seen', false)
@@ -75,9 +84,7 @@ class NotificationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
-    {
-    }
+    public function show() {}
 
     /**
      * Update the specified resource in storage.
@@ -85,6 +92,23 @@ class NotificationController extends Controller
     public function update(Request $request)
     {
         //
+    }
+
+    public function updateMany(Request $request)
+    {
+        $notificationsIds = $request->validate([
+            'notification_ids' => 'required|array',
+            'notification_ids.*' => 'required|exists:notifications,id',
+        ])['notification_ids'];
+
+        foreach ($notificationsIds as $notificationId) {
+            $notification = Notification::find($notificationId);
+            if ($notification) {
+                $notification->update(['is_seen' => 1]);
+            }
+        }
+
+        return response()->json(null, 204);
     }
 
     /**

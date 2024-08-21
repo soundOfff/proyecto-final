@@ -79,6 +79,7 @@ function DataTable({
   pagination = { variant: "gradient", color: "dark" },
   isSorted = true,
   isTaskTable = false,
+  isNotificable = false,
   noEndBorder = false,
   className = "desktop",
   moveRow,
@@ -317,6 +318,7 @@ function DataTable({
                     rows={page}
                     noEndBorder={noEndBorder}
                     isTaskTable={isTaskTable}
+                    isNotificable={isNotificable}
                     moveRow={moveRow}
                   />
                 );

@@ -25,7 +25,7 @@ class PDFController extends Controller
         $number = $model->number ?? $model->id;
         $projectName = $model->project->name ?? $model->subject;
         $modelPartner = $model->partner ?? $model->proposable;
-        $projectName = $model->project ? mb_strtoupper($model->project->name ?? "") : "N/A";
+        $projectName = $model->project ? mb_strtoupper($model->project->name ?? "") : null;
 
         $state = null;
         if ($modelPartner->jurisdiction) {

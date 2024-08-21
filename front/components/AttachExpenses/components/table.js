@@ -7,7 +7,11 @@ import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
 import DataTable from "/examples/Tables/DataTable";
 import { Checkbox } from "@mui/material";
-export default function TableComponent({ rows, formData }) {
+export default function TableComponent({
+  rows,
+  formData,
+  setSelectedExpenses,
+}) {
   const { values, setFieldValue } = formData;
 
   const columns = [
@@ -22,10 +26,14 @@ export default function TableComponent({ rows, formData }) {
           onChange={(e) => {
             if (e.target.checked) {
               setFieldValue("expenses", [...values.expenses, row.original.id]);
+              setSelectedExpenses((prev) => [...prev, row.original]);
             } else {
               setFieldValue(
                 "expenses",
                 values.expenses.filter((id) => id != row.original.id)
+              );
+              setSelectedExpenses((prev) =>
+                prev.filter((id) => id != row.original)
               );
             }
           }}

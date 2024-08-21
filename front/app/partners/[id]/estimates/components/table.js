@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 
-export default function Table({ rows, meta }) {
+export default function Table({ rows, meta, partnerId }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -89,7 +89,10 @@ export default function Table({ rows, meta }) {
       Cell: ({ row }) => (
         <MDBox display="flex">
           <Link
-            href={`/estimates/${row.original.id}/edit`}
+            href={{
+              pathname: `/estimates/${row.original.id}/edit`,
+              query: { source: `/partners/${partnerId}/estimates` },
+            }}
             sx={{ cursor: "pointer", color: "info" }}
           >
             <Tooltip title="Editar" placement="top">
@@ -116,7 +119,12 @@ export default function Table({ rows, meta }) {
   return (
     <MDBox>
       <MDBox display="flex" justifyContent="flex-end">
-        <Link href="/estimates/create">
+        <Link
+          href={{
+            pathname: "/estimates/create",
+            query: { partnerId, source: `/partners/${partnerId}/estimates` },
+          }}
+        >
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Proforma
           </MDButton>

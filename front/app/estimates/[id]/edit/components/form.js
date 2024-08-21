@@ -10,10 +10,13 @@ import { Formik, Form } from "formik";
 import First from "./steps/first";
 import Second from "./steps/second";
 import Third from "./steps/third";
+import CancelModal from "/components/CancelModal";
 
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
+
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { update as updateEstimate } from "/actions/estimates";
 
@@ -46,7 +49,19 @@ export default function FormComponent({
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
   const [errorSB, setErrorSB] = useState(false);
+  const [cancelSB, setCancelSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const returnToSource = () => {
+    const source = searchParams.get("source");
+    if (!source) {
+      router.push("/estimates");
+      return;
+    }
+    router.push(source);
+  };
 
   const getStepContent = (stepIndex, formData) => {
     switch (stepIndex) {
@@ -100,6 +115,7 @@ export default function FormComponent({
   const submitForm = async (values, actions) => {
     try {
       await updateEstimate(estimate.id, values);
+      returnToSource();
     } catch (error) {
       setErrorSB(true);
       setErrorMsg(error.message);
@@ -148,6 +164,11 @@ export default function FormComponent({
                       close={() => setErrorSB(false)}
                       bgWhite
                     />
+                    <CancelModal
+                      setOpenConfirmation={setCancelSB}
+                      openConfirmation={cancelSB}
+                      returnToSource={returnToSource}
+                    />
                     <Stepper activeStep={activeStep} alternativeLabel>
                       {steps.map((label) => (
                         <Step key={label}>
@@ -184,9 +205,24 @@ export default function FormComponent({
                             Anterior
                           </MDButton>
                         )}
-                        <MDButton type="submit" variant="gradient" color="dark">
-                          {isLastStep ? "Guardar" : "Siguiente"}
-                        </MDButton>
+                        <MDBox>
+                          <MDButton
+                            type="button"
+                            variant="gradient"
+                            color="error"
+                            sx={{ mr: 8 }}
+                            onClick={() => setCancelSB(true)}
+                          >
+                            Cancelar
+                          </MDButton>
+                          <MDButton
+                            type="submit"
+                            variant="gradient"
+                            color="dark"
+                          >
+                            {isLastStep ? "Guardar" : "Siguiente"}
+                          </MDButton>
+                        </MDBox>
                       </MDBox>
                     </MDBox>
                   </MDBox>

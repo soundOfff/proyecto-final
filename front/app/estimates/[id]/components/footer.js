@@ -133,6 +133,18 @@ export default function Footer({ estimate }) {
           </MDBox>
         </Grid>
       </Grid>
+      <MDBox mt={3}>
+        <MDTypography variant="h6">Notas:</MDTypography>
+        <MDTypography variant="caption" color="text" sx={{ fontSize: "12px" }}>
+          {estimate.clientNote ?? "No hay notas"}
+        </MDTypography>
+        <MDTypography mt={3} variant="h6">
+          Terminos y condiciones:
+        </MDTypography>
+        <MDTypography variant="caption" color="text">
+          {estimate.terms ?? "No hay terminos y condiciones"}
+        </MDTypography>
+      </MDBox>
     </MDBox>
   );
 }

@@ -27,7 +27,7 @@ export default async function Estimates({
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Table rows={estimates} meta={meta} />
+            <Table rows={estimates} meta={meta} partnerId={id} />
           </Grid>
         </Grid>
       </Card>

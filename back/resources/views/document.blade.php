@@ -4,7 +4,9 @@
 <head>
     <style>
         @page {
-            margin-top: 10px;
+            margin: 0 1cm;
+            padding: 0;
+            size: A4;
         }
 
         body {
@@ -12,6 +14,7 @@
             font-size: 12px;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         table {
@@ -47,7 +50,7 @@
 
         table .description {
             max-width: 300px;
-            white-space: wordwrap;
+            word-wrap: break-word;
             overflow-wrap: break-word;
         }
 
@@ -111,6 +114,39 @@
         h1 {
             text-align: center;
         }
+
+        .content {
+            padding-bottom: 50px;
+        }
+
+        footer {
+            position: relative;
+            margin-top: 50px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: auto;
+            text-align: left;
+            line-height: 0.75cm;
+        }
+
+        aside {
+            margin: 20px 0;
+        }
+
+        aside h2 {
+            color: black;
+            border: none;
+            border-width: 0 0 1px;
+            color: black;
+            border-color: #999;
+            border-bottom-style: solid;
+        }
+
+        aside p {
+            font-size: 10px;
+            color: rgba(105, 105, 109, 1);
+        }
     </style>
 </head>
 
@@ -144,62 +180,80 @@
 
     </header>
 
+    <div class="content">
+        <div class="header">
+            <h2>#{{ $title }}-{{ $number }}</h2>
+            <p>{{ $project_name }}</p>
+        </div>
+        <div class="header-info">
+            <p>FECHA: {{ $start_date }}</p>
+            <p>VALIDA HASTA: {{ $end_date }}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Artículo</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Impuesto</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($items as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td class="description"><b>{{mb_strtoupper($item->description)}}</b></br>{{mb_strtoupper($item->long_description)}}</td>
+                    <td>{{$item->quantity}}</td>
+                    <td>
+                        <p>@money_format($item->rate)</p>
+                    </td>
 
-    <div class="header">
-        <h2>#{{ $title }}-{{ $number }}</h2>
-        <p>{{ $project_name }}</p>
+                    @if(count($item->taxes) > 0)
+                    <td>
+                        @foreach($item->taxes as $tax)
+                        <p class="tax-col">{{$tax->name . " " . $tax->rate }}</p>
+                        @endforeach
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    <td>
+                        <p>@money_format($item->getTotalAmount())</p>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="table-footer">Total neto:</td>
+                    <td>
+                        <p>@money_format($total)</p>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-    <div class="header-info">
-        <p>FECHA: {{ $start_date }}</p>
-        <p>VALIDA HASTA: {{ $end_date }}</p>
-    </div>
-    <table class="items-table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Artículo</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Impuesto</th>
-                <th>Importe</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($items as $index => $item)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td class="description"><b>{{mb_strtoupper($item->description)}}</b></br>{{mb_strtoupper($item->long_description)}}</td>
-                <td>{{$item->quantity}}</td>
-                <td>
-                    <p>@money_format($item->rate)</p>
-                </td>
-
-                @if(count($item->taxes) > 0)
-                <td>
-                    @foreach($item->taxes as $tax)
-                    <p class="tax-col">{{$tax->name . " " . $tax->rate }}</p>
-                    @endforeach
-                </td>
-                @else
-                <td></td>
-                @endif
-
-                <td>
-                    <p>@money_format($item->getTotalAmount())</p>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="table-footer">Total neto:</td>
-                <td>
-                    <p>@money_format($total)</p>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-
+    @if($type == "Estimate")
+    <footer>
+        <div>
+            <aside>
+                <h2><span>Notas</span></h2>
+                <div>
+                    <p>{{ $notes }}</p>
+                </div>
+            </aside>
+            <aside>
+                <h2><span>Terminos y condiciones</span></h2>
+                <div>
+                    <p>{{ $terms }}</p>
+                </div>
+            </aside>
+        </div>
+    </footer>
+    @endif
 </body>
 
 </html>

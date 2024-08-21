@@ -350,8 +350,8 @@ export default function Table({
         close={() => setIsToastOpen(false)}
         bgWhite
       />
-      <MDBox display="flex" justifyContent="flex-end" mr={5} mt={2}>
-        <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
+      <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-10}>
+        <MDBox width="50%" display="flex" gap={5} justifyContent="flex-end">
           {project && (
             <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un departamento y un proceso">
               <MDBox>

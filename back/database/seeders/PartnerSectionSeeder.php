@@ -15,6 +15,7 @@ class PartnerSectionSeeder extends Seeder
         $sections = [
             ['id' => 1, 'name' => 'mercantile', 'label' => 'Mercantil'],
             ['id' => 2, 'name' => 'others', 'label' => 'Otros'],
+            ['id' => 3, 'name' => 'unknown', 'label' => 'Desconocido'],
         ];
 
         foreach ($sections as $section) {

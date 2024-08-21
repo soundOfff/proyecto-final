@@ -32,7 +32,8 @@ class PartnerIndustrySeeder extends Seeder
             ['id' => 17, 'label' => 'Hospitalidad y Turismo', 'name' => 'hospitality_and_tourism'],
             ['id' => 18, 'label' => 'Consultoría y Servicios Profesionales', 'name' => 'consulting_and_professional_services'],
             ['id' => 19, 'label' => 'Alimentos y Bebidas', 'name' => 'food_and_beverage'],
-            ['id' => 20, 'label' => 'Minería', 'name' => 'mining']
+            ['id' => 20, 'label' => 'Minería', 'name' => 'mining'],
+            ['id' => 21, 'label' => 'Desconocido', 'name' => 'unknown'],
         ];
 
         foreach ($industries as $industry) {

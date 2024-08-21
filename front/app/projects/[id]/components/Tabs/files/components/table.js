@@ -5,10 +5,12 @@ import MDBox from "/components/MDBox";
 import Link from "next/link";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import LoopIcon from "@mui/icons-material/Loop";
+import CheckIcon from "@mui/icons-material/Check";
 
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import MDTypography from "/components/MDTypography";
-import { MAPPED_FILEABLE_TYPES } from "/utils/constants/fileableTypes";
 import DeleteRow from "/components/DeleteRow";
 import Loader from "/components/Loader";
 
@@ -16,22 +18,17 @@ import useDeleteRow from "/hooks/useDeleteRow";
 
 import { useEffect, useState } from "react";
 import { destroy, getAll } from "/actions/files";
+import CopyButton from "/components/CopyButton";
 import { Box } from "@mui/material";
 
 export default function Table({ project }) {
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getFileableLabel = (row) =>
-    row.fileable
-      ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType].key]
-      : "Sin nombre";
-  const getFileableUrl = (row) =>
-    `${MAPPED_FILEABLE_TYPES[row.fileableType].url}${row.fileableId}`;
-
   const {
     setOpenDeleteConfirmation,
     errorSB,
+    errorMsg,
     setErrorSB,
     handleDelete,
     openDeleteConfirmation,
@@ -56,37 +53,6 @@ export default function Table({ project }) {
       width: "20%",
     },
     {
-      id: "fileable_type",
-      Header: "Relacionado con",
-      disableSortBy: true,
-      Cell: ({ row }) => (
-        <MDTypography
-          variant="button"
-          color="dark"
-          fontSize="small"
-          sx={{ display: "flex" }}
-        >
-          {MAPPED_FILEABLE_TYPES[row.original.fileableType].label}
-        </MDTypography>
-      ),
-    },
-    /* {
-      id: "fileable_id",
-      Header: "Nombre relacionado",
-      disableSortBy: true,
-      width: "30%",
-      Cell: ({ row }) => (
-        <Link
-          href={getFileableUrl(row.original)}
-          sx={{ cursor: "pointer", color: "link" }}
-        >
-          <MDTypography variant="button" color="link" fontSize="small">
-            {getFileableLabel(row.original)}
-          </MDTypography>
-        </Link>
-      ),
-    }, */
-    {
       id: "url",
       Header: "URL",
       accessor: "publicUrl",
@@ -103,7 +69,8 @@ export default function Table({ project }) {
           >
             <MDTypography
               variant="button"
-              color="inherit"
+              color="link"
+              mr={0.5}
               fontSize="small"
               sx={{ display: "flex", alignItems: "center" }}
             >
@@ -119,16 +86,19 @@ export default function Table({ project }) {
       Header: "Acciones",
       disableSortBy: true,
       Cell: ({ row }) => (
-        <Tooltip title="Eliminar Archivo">
-          <DeleteIcon
-            color="error"
-            fontSize="medium"
-            onClick={() => {
-              handleDelete(row.original.id);
-            }}
-            sx={{ mx: 1, cursor: "pointer" }}
-          />
-        </Tooltip>
+        <>
+          <CopyButton url={row.original.publicUrl} />
+          <Tooltip title="Eliminar Archivo">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{ mx: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        </>
       ),
     },
   ];
@@ -149,6 +119,7 @@ export default function Table({ project }) {
         {...{
           setOpenDeleteConfirmation,
           errorSB,
+          errorMsg,
           setErrorSB,
           openDeleteConfirmation,
           setDeleteConfirmed,

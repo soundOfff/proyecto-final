@@ -57,6 +57,12 @@ export default function FormContent({ values, setFieldValue, errors }) {
     }
   }, [values, fileableType, setFieldValue, path.name]);
 
+  const isFromAnotherSource =
+    searchParams.get("projectId") ||
+    searchParams.get("partnerId") ||
+    searchParams.get("expenseId") ||
+    searchParams.get("taskId");
+
   useEffect(() => {
     if (!values[fileableType.name]) {
       if (searchParams.get("projectId")) {
@@ -115,58 +121,62 @@ export default function FormContent({ values, setFieldValue, errors }) {
           success={values[name.name]?.length > 0 && !errors[name.name]}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <MDBox>
-          <Autocomplete
-            value={
-              FILEABLE_TYPES.find(
-                (option) => option.value === values[fileableType.name]
-              ) ?? null
-            }
-            onChange={(_, newFileableType) =>
-              setFieldValue(fileableType.name, newFileableType?.value ?? "")
-            }
-            options={FILEABLE_TYPES}
-            isOptionEqualToValue={(option, value) =>
-              option.value === value.value
-            }
-            getOptionLabel={(option) => option.label}
-            key={(option) => option?.value}
-            renderInput={(params) => (
-              <MDInput
-                {...params}
-                variant="standard"
-                label={fileableType.label}
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                inputProps={{ ...params.inputProps }}
+      {!isFromAnotherSource && (
+        <>
+          <Grid item xs={12} sm={6}>
+            <MDBox>
+              <Autocomplete
+                value={
+                  FILEABLE_TYPES.find(
+                    (option) => option.value === values[fileableType.name]
+                  ) ?? null
+                }
+                onChange={(_, newFileableType) =>
+                  setFieldValue(fileableType.name, newFileableType?.value ?? "")
+                }
+                options={FILEABLE_TYPES}
+                isOptionEqualToValue={(option, value) =>
+                  option.value === value.value
+                }
+                getOptionLabel={(option) => option.label}
+                key={(option) => option?.value}
+                renderInput={(params) => (
+                  <MDInput
+                    {...params}
+                    variant="standard"
+                    label={fileableType.label}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    inputProps={{ ...params.inputProps }}
+                  />
+                )}
+              />
+              <MDBox mt={0.75}>
+                <MDTypography
+                  component="div"
+                  variant="caption"
+                  color="error"
+                  fontWeight="regular"
+                >
+                  <ErrorMessage name={fileableType.name} />
+                </MDTypography>
+              </MDBox>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {relations.length > 0 && (
+              <Select
+                value={values[fileableId.name]}
+                options={relations}
+                optionLabel={(option) => getOptionLabel(option)}
+                fieldName={fileableId.name}
+                inputLabel={fileableId.label}
+                setFieldValue={setFieldValue}
               />
             )}
-          />
-          <MDBox mt={0.75}>
-            <MDTypography
-              component="div"
-              variant="caption"
-              color="error"
-              fontWeight="regular"
-            >
-              <ErrorMessage name={fileableType.name} />
-            </MDTypography>
-          </MDBox>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        {relations.length > 0 && (
-          <Select
-            value={values[fileableId.name]}
-            options={relations}
-            optionLabel={(option) => getOptionLabel(option)}
-            fieldName={fileableId.name}
-            inputLabel={fileableId.label}
-            setFieldValue={setFieldValue}
-          />
-        )}
-      </Grid>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }

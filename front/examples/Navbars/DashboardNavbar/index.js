@@ -334,7 +334,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
             route={segments}
             light={light}
           />
-          <IconButton
+          {/* <IconButton
             sx={navbarDesktopMenu}
             onClick={handleMiniSidenav}
             size="small"
@@ -343,7 +343,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
             <Icon fontSize="medium" sx={iconsStyle}>
               {miniSidenav ? "menu_open" : "menu"}
             </Icon>
-          </IconButton>
+          </IconButton> */}
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
@@ -353,7 +353,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
               </Link>
-              <IconButton
+              {/*  <IconButton
                 size="small"
                 disableRipple
                 color="inherit"
@@ -363,7 +363,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
                 <Icon sx={iconsStyle} fontSize="medium">
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 size="small"
                 disableRipple

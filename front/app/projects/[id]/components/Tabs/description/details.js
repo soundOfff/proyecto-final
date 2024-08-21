@@ -53,6 +53,11 @@ export default function Details() {
   const { project, staffs } = useDataProvider();
   const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
 
+  const getInitials = (firstName) => {
+    const initials = firstName[0] || "";
+    return initials.toUpperCase();
+  };
+
   return (
     <>
       <Grid container ml={2}>
@@ -243,30 +248,52 @@ export default function Details() {
                 member.profileImage.startsWith("https://"));
 
             return (
-              <MDBox key={member.id} display="inline-block" mr={2}>
+              <MDBox
+                key={member.id}
+                display="flex"
+                alignItems="center"
+                mb={2}
+                mr={2}
+              >
                 <MDAvatar
                   src={
                     isExternalUrl
                       ? member.profileImage
-                      : `/images/staff/${member.profileImage}`
+                      : member.profileImage
+                      ? `/images/staff/${member.profileImage}`
+                      : undefined
                   }
-                  alt={"profile-image"}
+                  alt={member.name}
                   size="md"
                   shadow="sm"
                   sx={{
-                    display: "inline-block",
-                    verticalAlign: "middle",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor:
+                      !member.profileImage && !isExternalUrl
+                        ? "grey.400"
+                        : undefined,
+                    color:
+                      !member.profileImage && !isExternalUrl
+                        ? "white"
+                        : undefined,
+                    textAlign: "center",
+                    lineHeight: "initial",
                     marginRight: "0.5rem",
-                    marginBottom: "0.5rem",
+                    fontSize: "25px",
                   }}
-                ></MDAvatar>
+                >
+                  {!isExternalUrl &&
+                    !member.profileImage &&
+                    getInitials(member.name)}
+                </MDAvatar>
                 <MDTypography
                   variant="button"
                   fontWeight="regular"
                   color="text"
-                  mr={2}
                 >
-                  {member.firstName + " " + member.lastName}
+                  {member.name}
                 </MDTypography>
               </MDBox>
             );

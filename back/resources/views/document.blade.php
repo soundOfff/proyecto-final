@@ -15,7 +15,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            position: relative;
         }
 
         table {
@@ -39,11 +38,14 @@
         th {
             border: 1px solid #ddd;
             text-align: left;
-            padding: 8px;
         }
 
         th {
             background-color: #f2f2f2;
+        }
+
+        .items-table {
+            font-size: 10px;
         }
 
         table .description {

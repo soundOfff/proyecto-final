@@ -3,9 +3,15 @@
 
 <head>
     <style>
+        @page {
+            margin-top: 10px;
+        }
+
         body {
             font-family: "Helvetica", "Arial", sans-serif;
             font-size: 12px;
+            margin: 0;
+            padding: 0;
         }
 
         table {
@@ -29,11 +35,14 @@
         th {
             border: 1px solid #ddd;
             text-align: left;
-            padding: 8px;
         }
 
         th {
             background-color: #f2f2f2;
+        }
+
+        .items-table {
+            font-size: 10px;
         }
 
         table .description {
@@ -144,7 +153,7 @@
         <p>FECHA: {{ $start_date }}</p>
         <p>VALIDA HASTA: {{ $end_date }}</p>
     </div>
-    <table>
+    <table class="items-table">
         <thead>
             <tr>
                 <th>#</th>

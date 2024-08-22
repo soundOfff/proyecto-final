@@ -13,7 +13,7 @@ export default function ConfirmDelete({
       <MDTypography variant="h4" mb={5}>
         ¿Está seguro que desea realizar esta acción?
       </MDTypography>
-      <MDBox display="flex" justifyContent="space-between">
+      <MDBox display="flex" justifyContent="end" gap={6}>
         <MDButton
           variant="gradient"
           color="light"

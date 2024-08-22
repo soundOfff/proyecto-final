@@ -54,7 +54,7 @@ class PartnerRequest extends FormRequest
             'expiration_date' => 'nullable|date',
             'is_male' => 'nullable|boolean',
             'is_residential' => 'nullable|boolean',
-            'email' => 'nullable|email',
+            'email' => 'nullable|string',
             'building_number' => 'nullable|string',
             'billing_city' => 'nullable|string',
             'billing_state' => 'nullable|string',

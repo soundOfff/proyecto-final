@@ -7,8 +7,10 @@ import MDInput from "/components/MDInput";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import { ErrorMessage } from "formik";
 import form from "../schemas/form";
+import { useEffect } from "react";
 
 export default function InvoiceFormComponent({
+  partner,
   countries,
   errors,
   values,
@@ -31,6 +33,34 @@ export default function InvoiceFormComponent({
       },
     },
   } = form;
+
+  useEffect(() => {
+    if (partner) {
+      setFieldValue(billingCountry.name, partner.billingCountryId ?? "");
+      setFieldValue(shippingCountry.name, partner.shippingCountryId ?? "");
+      setFieldValue(billingCity.name, partner.billingCity ?? "");
+      setFieldValue(shippingCity.name, partner.shippingCity ?? "");
+      setFieldValue(billingState.name, partner.billingState ?? "");
+      setFieldValue(shippingState.name, partner.shippingState ?? "");
+      setFieldValue(billingZip.name, partner.billingZip ?? "");
+      setFieldValue(shippingZip.name, partner.shippingZip ?? "");
+      setFieldValue(billingStreet.name, partner.billingStreet ?? "");
+      setFieldValue(shippingStreet.name, partner.shippingStreet ?? "");
+    }
+  }, [
+    partner,
+    setFieldValue,
+    billingCountry,
+    shippingCountry,
+    billingCity,
+    shippingCity,
+    billingState,
+    shippingState,
+    billingZip,
+    shippingZip,
+    billingStreet,
+    shippingStreet,
+  ]);
 
   return (
     <Card sx={{ overflow: "visible", my: 3 }}>

@@ -31,6 +31,7 @@ class NotificationController extends Controller
                 }),
             ])
             ->allowedFilters([
+                AllowedFilter::exact('is_archived'),
                 AllowedFilter::callback('search', function ($query, $search) {
                     $query->where('title', 'LIKE', "%{$search}%")
                         ->orWhere('body', 'LIKE', "%{$search}%");
@@ -105,6 +106,23 @@ class NotificationController extends Controller
             $notification = Notification::find($notificationId);
             if ($notification) {
                 $notification->update(['is_seen' => 1]);
+            }
+        }
+
+        return response()->json(null, 204);
+    }
+
+    public function archiveMany(Request $request)
+    {
+        $notificationsIds = $request->validate([
+            'notification_ids' => 'required|array',
+            'notification_ids.*' => 'required|exists:notifications,id',
+        ])['notification_ids'];
+
+        foreach ($notificationsIds as $notificationId) {
+            $notification = Notification::find($notificationId);
+            if ($notification) {
+                $notification->update(['is_archived' => 1]);
             }
         }
 

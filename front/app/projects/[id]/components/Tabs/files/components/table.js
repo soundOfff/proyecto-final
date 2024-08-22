@@ -30,6 +30,8 @@ export default function Table({ project }) {
     errorSB,
     errorMsg,
     setErrorSB,
+    errorMsg,
+    setErrorMsg,
     handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
@@ -121,6 +123,8 @@ export default function Table({ project }) {
           errorSB,
           errorMsg,
           setErrorSB,
+          errorMsg,
+          setErrorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

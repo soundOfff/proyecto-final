@@ -7,7 +7,7 @@ import { Grid } from "@mui/material";
 
 export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
   return (
-    <Grid container spacing={2} justifyContent="center">
+    <Grid container justifyContent="center" wrap="nowrap">
       <Grid item xs={12} sm={4} md={4}>
         <MDBox
           display="flex"
@@ -16,9 +16,10 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
           my={2}
         >
           <MDTypography
-            variant="h5"
+            variant="h4"
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
+            sx={{ whiteSpace: "nowrap" }}
           >
             {`${numberFormat(totalTime)} hs`}
           </MDTypography>
@@ -29,9 +30,9 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
             size="xs"
             container
             sx={{
-              ml: 2,
+              ml: { xs: 0, sm: 2 },
               height: "2rem",
-              minWidth: "100px",
+              minWidth: "108px",
             }}
           />
         </MDBox>
@@ -44,22 +45,23 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
           my={2}
         >
           <MDTypography
-            variant="h5"
+            variant="h4"
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
+            sx={{ whiteSpace: "nowrap" }}
           >
             {`${numberFormat(totalMonthTime)} hs`}
           </MDTypography>
           <MDBadge
             variant="contained"
-            badgeContent="Tiempo total registrado mes actual"
+            badgeContent="Tiempo total mes actual"
             color="primary"
             size="xs"
             container
             sx={{
-              ml: 2,
+              ml: { xs: 0, sm: 2 },
               height: "2rem",
-              minWidth: "100px",
+              minWidth: "108px",
             }}
           />
         </MDBox>
@@ -72,22 +74,23 @@ export default function Stats({ totalTime, totalWeekTime, totalMonthTime }) {
           my={2}
         >
           <MDTypography
-            variant="h5"
+            variant="h4"
             display="inline-block"
             minWidth={{ xs: "150px", sm: "auto" }}
+            sx={{ whiteSpace: "nowrap" }}
           >
             {`${numberFormat(totalWeekTime)} hs`}
           </MDTypography>
           <MDBadge
             variant="contained"
-            badgeContent="Tiempo total registrado semana actual"
+            badgeContent="Tiempo total semana actual"
             color="warning"
             size="xs"
             container
             sx={{
-              ml: 2,
+              ml: { xs: 0, sm: 2 },
               height: "2rem",
-              minWidth: "100px",
+              minWidth: "108px",
             }}
           />
         </MDBox>

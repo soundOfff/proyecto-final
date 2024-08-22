@@ -19,19 +19,49 @@ export default function Table({ rows, project }) {
 
   const columns = [
     {
+      Header: "Cliente",
+      accessor: "partner",
+      Cell: ({ row }) => {
+        return (
+          <Link
+            href={`partners/${row.original.partner.id}/profile`}
+            color="info"
+          >
+            {row.original.partner.company}
+          </Link>
+        );
+      },
+    },
+    {
+      Header: "Caso",
+      accessor: "taskable",
+      disableSortBy: true,
+      Cell: ({ row }) =>
+        row.original.taskable && row.original.taskable_type === "project" ? (
+          <Link href={`projects/${row.original.taskable.id}`} color="info">
+            {row.original.taskable.name + " - #" + row.original.taskable.id}
+          </Link>
+        ) : (
+          <MDTypography variant="body2" fontSize="small">
+            No hay caso relacionado
+          </MDTypography>
+        ),
+    },
+    {
       Header: "Miembros del equipo",
       accessor: "staff",
+      disableSortBy: true,
       Cell: ({ row }) => {
         const assigneds = row.original.assigneds;
         if (assigneds.length === 0 || !assigneds) {
           return (
-            <MDTypography color="info" variant="body2">
+            <MDTypography color="info" variant="body2" fontSize="small">
               Sin asignar
             </MDTypography>
           );
         }
         return assigneds.map((assigned) => (
-          <MDTypography key={assigned.id} variant="body2">
+          <MDTypography key={assigned.id} variant="body2" fontSize="small">
             {assigned.name}
           </MDTypography>
         ));
@@ -57,6 +87,7 @@ export default function Table({ rows, project }) {
     {
       Header: "Nota",
       accessor: "note",
+      disableSortBy: true,
       Cell: ({ row }) => {
         return row.original.timers.length
           ? row.original.timers[0].note
@@ -64,42 +95,11 @@ export default function Table({ rows, project }) {
       },
     },
     {
-      Header: "Cliente",
-      accessor: "partner",
-      Cell: ({ row }) => {
-        return (
-          <Link
-            href={`partners/${row.original.partner.id}/profile`}
-            color="info"
-          >
-            {row.original.partner.company}
-          </Link>
-        );
-      },
-    },
-    {
-      Header: "Relacionado",
-      accessor: "taskable",
-      Cell: ({ row }) => (
-        <Link href={`projects/${row.original.taskable.id}`} color="info">
-          {row.original.taskable.name}
-        </Link>
-      ),
-    },
-    {
-      Header: "Nro del caso",
-      accessor: "",
-      Cell: ({ row }) => (
-        <MDTypography variant="body2" fontSize="medium">
-          {row.original.taskable.id}
-        </MDTypography>
-      ),
-    },
-    {
       Header: "Fecha",
       accessor: "start_date",
+      disableSortBy: true,
       Cell: ({ row }) => (
-        <MDTypography variant="body2" fontSize="medium">
+        <MDTypography variant="body2" fontSize="small">
           {moment(row.original.start_date).format("DD/MM/YYYY")}
         </MDTypography>
       ),
@@ -107,6 +107,7 @@ export default function Table({ rows, project }) {
     {
       Header: "Hora de inicio",
       accessor: "start_time",
+      disableSortBy: true,
       width: 200,
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
@@ -119,6 +120,7 @@ export default function Table({ rows, project }) {
     {
       Header: "Hora de Fin",
       accessor: "end_time",
+      disableSortBy: true,
       width: 200,
       Cell: ({ row }) => {
         return row.original.timers.map((timer) => (
@@ -135,27 +137,11 @@ export default function Table({ rows, project }) {
     {
       Header: "Tiempo total",
       accessor: "total_time",
-      Cell: ({ row }) => (
-        <MDTypography variant="body2" color="dark">
-          {numberFormat(row.original.total_time)} hs
-        </MDTypography>
-      ),
-    },
-    {
-      Header: "Acciones",
       disableSortBy: true,
       Cell: ({ row }) => (
-        <Tooltip title="Vista Rápida">
-          <AccessAlarm
-            color="success"
-            fontSize="medium"
-            onClick={() => {
-              setOpen(true);
-              setTaskId(row.original.id);
-            }}
-            sx={{ mr: 1, cursor: "pointer" }}
-          />
-        </Tooltip>
+        <MDTypography variant="body2" color="dark" fontSize="small">
+          {numberFormat(row.original.total_time)} hs
+        </MDTypography>
       ),
     },
   ];

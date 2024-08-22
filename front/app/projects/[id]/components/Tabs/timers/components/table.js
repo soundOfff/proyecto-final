@@ -12,41 +12,13 @@ import moment from "moment";
 import { useState } from "react";
 import { AccessAlarm } from "@mui/icons-material";
 import Form from "./form/form";
+import { getColor } from "/utils/project-state-colors";
 
 export default function Table({ rows, project }) {
   const [open, setOpen] = useState(false);
   const [taskId, setTaskId] = useState(null);
 
   const columns = [
-    {
-      Header: "Cliente",
-      accessor: "partner",
-      Cell: ({ row }) => {
-        return (
-          <Link
-            href={`partners/${row.original.partner.id}/profile`}
-            color="info"
-          >
-            {row.original.partner.company}
-          </Link>
-        );
-      },
-    },
-    {
-      Header: "Caso",
-      accessor: "taskable",
-      disableSortBy: true,
-      Cell: ({ row }) =>
-        row.original.taskable && row.original.taskable_type === "project" ? (
-          <Link href={`projects/${row.original.taskable.id}`} color="info">
-            {row.original.taskable.name + " - #" + row.original.taskable.id}
-          </Link>
-        ) : (
-          <MDTypography variant="body2" fontSize="small">
-            No hay caso relacionado
-          </MDTypography>
-        ),
-    },
     {
       Header: "Miembros del equipo",
       accessor: "staff",
@@ -76,8 +48,8 @@ export default function Table({ rows, project }) {
             {row.original.name}
           </Link>
           <MDBadge
-            variant="gradient"
-            color="primary"
+            variant="contained"
+            color={getColor(row.original.status.id)}
             size="md"
             badgeContent={row.original.status.name}
           />

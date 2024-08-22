@@ -28,7 +28,6 @@ export default function Table({ project }) {
   const {
     setOpenDeleteConfirmation,
     errorSB,
-    errorMsg,
     setErrorSB,
     errorMsg,
     setErrorMsg,

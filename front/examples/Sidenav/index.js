@@ -315,26 +315,47 @@ function Sidenav({
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </MDTypography>
         </MDBox>
-        <Link href="/">
-          <MDBox display="flex" alignItems="center">
-            {brand && brand.src ? (
-              <Image
-                src={brand.src}
-                alt={brand.alt}
-                width={miniSidenav ? 50 : 220}
-                height={
-                  process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS ? 20 : 30
-                }
-              />
-            ) : (
-              brand
-            )}
-            <MDBox
-              width={!brandName && "100%"}
-              sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
-            ></MDBox>
+        <MDBox pt={3} pb={1} px={4} textAlign="center">
+          <MDBox
+            display={{ xs: "block", xl: "none" }}
+            position="absolute"
+            top={0}
+            right={0}
+            p={1.625}
+            onClick={closeSidenav}
+            sx={{ cursor: "pointer", textTransform: "none !important" }}
+          >
+            <MDTypography variant="h6" color="secondary">
+              <Icon sx={{ fontWeight: "bold" }}>close</Icon>
+            </MDTypography>
           </MDBox>
-        </Link>
+          <Link href="/">
+            <MDBox display="flex" alignItems="center">
+              {!miniSidenav && (
+                <>
+                  {brand && brand.src ? (
+                    <Image
+                      src={brand.src}
+                      alt={brand.alt}
+                      width={miniSidenav ? 50 : 220}
+                      height={
+                        process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS
+                          ? 20
+                          : 30
+                      }
+                    />
+                  ) : (
+                    brand
+                  )}
+                  <MDBox
+                    width={!brandName && "100%"}
+                    sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
+                  ></MDBox>
+                </>
+              )}
+            </MDBox>
+          </Link>
+        </MDBox>
       </MDBox>
       <Divider
         light={

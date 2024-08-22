@@ -334,36 +334,31 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
             route={segments}
             light={light}
           />
-          {/* <IconButton
-            sx={navbarDesktopMenu}
-            onClick={handleMiniSidenav}
-            size="small"
-            disableRipple
-          >
-            <Icon fontSize="medium" sx={iconsStyle}>
-              {miniSidenav ? "menu_open" : "menu"}
-            </Icon>
-          </IconButton> */}
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox color={light ? "white" : "inherit"}>
+            <MDBox
+              color={light ? "white" : "inherit"}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleMiniSidenav}
+                aria-label="toggle-sidebar"
+              >
+                <Icon sx={iconsStyle} fontSize="medium">
+                  {miniSidenav ? "menu_open" : "menu"}
+                </Icon>
+              </IconButton>
               <Link href="/profile" passHref legacyBehavior>
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
               </Link>
-              {/*  <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton> */}
+
               <IconButton
                 size="small"
                 disableRipple
@@ -393,8 +388,8 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon sx={iconsStyle}>logout</Icon>
               </IconButton>
-              {renderMenu()}
             </MDBox>
+            {renderMenu()}
           </MDBox>
         )}
       </Toolbar>

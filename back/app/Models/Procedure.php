@@ -98,7 +98,10 @@ class Procedure extends Model
         if ($this->dependencies->isNotEmpty()) {
             $procedureDependencies = array_column($this->dependencies->toArray(), 'id');
             $tasksId = array_map(
-                fn($id) => Task::where('procedure_id', $id)->first()->id,
+                fn($id) => Task::where('procedure_id', $id)
+                    ->where('taskable_id', $project->id)
+                    ->where('taskable_type', Task::TASKABLE_PROJECT)
+                    ->first()->id,
                 $procedureDependencies
             );
             $task->dependencies()->sync($tasksId);

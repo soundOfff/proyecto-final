@@ -184,7 +184,7 @@ const detailForm = {
       nationality: {
         name: "nationality_id",
         label: "Nacionalidad",
-        errorMsg: "Debe seleccionar un país",
+        errorMsg: "Debe seleccionar una nacionalidad",
       },
       birthPlace: {
         name: "birth_place_id",

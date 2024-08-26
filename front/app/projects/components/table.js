@@ -29,10 +29,12 @@ export default function Table({ rows, meta }) {
   const {
     openDeleteConfirmation,
     errorSB,
+    setErrorSB,
+    errorMsg,
+    setErrorMsg,
     handleDelete,
     setDeleteConfirmed,
     setOpenDeleteConfirmation,
-    setErrorSB,
   } = useDeleteRow(destroy);
 
   useEffect(() => {
@@ -180,6 +182,8 @@ export default function Table({ rows, meta }) {
           setOpenDeleteConfirmation,
           errorSB,
           setErrorSB,
+          errorMsg,
+          setErrorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

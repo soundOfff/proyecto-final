@@ -28,8 +28,9 @@ export default function Table({ project }) {
   const {
     setOpenDeleteConfirmation,
     errorSB,
-    errorMsg,
     setErrorSB,
+    errorMsg,
+    setErrorMsg,
     handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
@@ -50,12 +51,13 @@ export default function Table({ project }) {
       id: "subject",
       Header: "Nombre",
       accessor: "subject",
-      width: "20%",
+      width: "45%",
     },
     {
       id: "url",
       Header: "URL",
       accessor: "publicUrl",
+      width: "45%",
       disableSortBy: true,
       Cell: ({ value }) => (
         <Link href={value} target="_blank" sx={{ color: "info" }}>
@@ -85,8 +87,9 @@ export default function Table({ project }) {
       id: "acciones",
       Header: "Acciones",
       disableSortBy: true,
+      width: "10%",
       Cell: ({ row }) => (
-        <>
+        <MDBox>
           <CopyButton url={row.original.publicUrl} />
           <Tooltip title="Eliminar Archivo">
             <DeleteIcon
@@ -98,7 +101,7 @@ export default function Table({ project }) {
               sx={{ mx: 1, cursor: "pointer" }}
             />
           </Tooltip>
-        </>
+        </MDBox>
       ),
     },
   ];
@@ -121,6 +124,8 @@ export default function Table({ project }) {
           errorSB,
           errorMsg,
           setErrorSB,
+          errorMsg,
+          setErrorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

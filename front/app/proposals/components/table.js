@@ -21,6 +21,8 @@ export default function Table({ rows, meta }) {
     setOpenDeleteConfirmation,
     errorSB,
     setErrorSB,
+    errorMsg,
+    setErrorMsg,
     handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
@@ -159,6 +161,8 @@ export default function Table({ rows, meta }) {
           setOpenDeleteConfirmation,
           errorSB,
           setErrorSB,
+          errorMsg,
+          setErrorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

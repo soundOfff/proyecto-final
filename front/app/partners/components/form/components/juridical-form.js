@@ -22,6 +22,7 @@ import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
 import RelatedPersonFormComponent from "./related-person-form";
 
 export default function JuridicalForm({
+  partner,
   countries,
   consolidators,
   sections,
@@ -59,6 +60,7 @@ export default function JuridicalForm({
         rollNumber,
         ruc,
         dv,
+        relatedPartners,
       },
     },
   } = form;
@@ -67,8 +69,6 @@ export default function JuridicalForm({
   const [jurisdictions, setJurisdictions] = useState([]);
 
   const [companyChecked, setCompanyChecked] = useState(false);
-  const [industryChecked, setIndustryChecked] = useState(false);
-  const [sectionChecked, setSectionChecked] = useState(false);
   const [documentChecked, setDocumentChecked] = useState(false);
   const [phoneChecked, setPhoneChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
@@ -81,6 +81,117 @@ export default function JuridicalForm({
   const [rucChecked, setRucChecked] = useState(false);
   const [dvChecked, setDvChecked] = useState(false);
   const [rollNumberChecked, setRollNumberChecked] = useState(false);
+
+  useEffect(() => {
+    if (partner) {
+      setFieldValue(company.name, partner.company || "");
+      setFieldValue(industry.name, partner.industryId || "");
+      setFieldValue(section.name, partner.sectionId || "");
+      setFieldValue(document.name, partner.document || "");
+      setFieldValue(phone.name, partner.phone || "");
+      setFieldValue(email.name, partner.email || "");
+      setFieldValue(country.name, partner.countryId || "");
+      setFieldValue(province.name, partner.provinceId || "");
+      setFieldValue(district.name, partner.districtId || "");
+      setFieldValue(jurisdiction.name, partner.jurisdictionId || "");
+      setFieldValue(state.name, partner.state || "");
+      setFieldValue(city.name, partner.city || "");
+      setFieldValue(address.name, partner.address || "");
+      setFieldValue(isResidential.name, partner.isResidential || false);
+      setFieldValue(zip.name, partner.zip || "");
+      setFieldValue(consolidator.name, partner.consolidatorId || "");
+      setFieldValue(fileNumber.name, partner.fileNumber || "");
+      setFieldValue(rollNumber.name, partner.rollNumber || "");
+      setFieldValue(imageNumber.name, partner.imageNumber || "");
+      setFieldValue(ruc.name, partner.ruc || "");
+      setFieldValue(dv.name, partner.dv.toString() || "");
+      setFieldValue(
+        relatedPartners.name,
+        partner.relatedPartners?.map((relatedPartner) => ({
+          related_partner_id: relatedPartner.pivot.related_partner_id,
+          partner_type_id: relatedPartner.pivot.partner_type_id,
+          start_date: relatedPartner.pivot.start_date,
+          end_date: relatedPartner.pivot.end_date,
+          active: relatedPartner.pivot.active,
+        })) || []
+      );
+    }
+  }, [
+    partner,
+    setFieldValue,
+    company,
+    industry,
+    section,
+    document,
+    phone,
+    email,
+    country,
+    province,
+    district,
+    jurisdiction,
+    state,
+    city,
+    address,
+    isResidential,
+    zip,
+    consolidator,
+    fileNumber,
+    rollNumber,
+    imageNumber,
+    ruc,
+    dv,
+    relatedPartners,
+  ]);
+
+  useEffect(() => {
+    if (partner) {
+      if (partner.company === "Desconocido") {
+        setCompanyChecked(true);
+      }
+      if (partner.document === "Desconocido") {
+        setDocumentChecked(true);
+      }
+      if (partner.phone === "Desconocido") {
+        setPhoneChecked(true);
+      }
+      if (partner.email === "Desconocido") {
+        setEmailChecked(true);
+      }
+      if (partner.state === "Desconocido") {
+        setStateChecked(true);
+      }
+      if (partner.city === "Desconocido") {
+        setCityChecked(true);
+      }
+      if (partner.address === "Desconocido") {
+        setAddressChecked(true);
+      }
+      if (partner.zip === "Desconocido") {
+        setZipChecked(true);
+      }
+      if (partner.fileNumber === "Desconocido") {
+        setFileNumberChecked(true);
+      }
+      if (partner.rollNumber === "Desconocido") {
+        setRollNumberChecked(true);
+      }
+      if (partner.imageNumber === "Desconocido") {
+        setImageNumberChecked(true);
+      }
+      if (partner.ruc === "Desconocido") {
+        setRucChecked(true);
+      }
+      if (partner.dv === "Desconocido") {
+        setDvChecked(true);
+      }
+    }
+  }, [partner]);
+
+  useEffect(() => {
+    return () => {
+      setFieldValue(company.name, "");
+    };
+  }, [setFieldValue, company]);
 
   useEffect(() => {
     if (values.country_id === PANAMA_ID) {
@@ -117,7 +228,7 @@ export default function JuridicalForm({
   return (
     <>
       <Grid container spacing={3}>
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             value={values[company.name]}
             isImportant={isRequired}
@@ -129,8 +240,6 @@ export default function JuridicalForm({
             success={values[company.name]?.length > 0 && !errors[company.name]}
             disabled={companyChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={companyChecked}
             handleChange={(e) => {
@@ -166,7 +275,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             isImportant={isRequired}
             value={values[document.name]}
@@ -179,8 +288,6 @@ export default function JuridicalForm({
             }
             disabled={documentChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={documentChecked}
             handleChange={(e) => {
@@ -195,7 +302,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             isImportant={isRequired}
             label={phone.label}
@@ -207,8 +314,6 @@ export default function JuridicalForm({
             success={values[phone.name]?.length > 0 && !errors[phone.name]}
             disabled={phoneChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={phoneChecked}
             handleChange={(e) => {
@@ -223,20 +328,17 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             isImportant={isRequired}
             label={email.label}
             placeholder={email.placeholder}
             name={email.name}
-            type={email.type}
             value={values[email.name]}
             error={errors[email.name] && touched[email.name]}
             success={values[email.name]?.length > 0 && !errors[email.name]}
             disabled={emailChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={emailChecked}
             handleChange={(e) => {
@@ -296,7 +398,7 @@ export default function JuridicalForm({
           </>
         ) : (
           <>
-            <Grid item xs={10} sm={4}>
+            <Grid item xs={10} sm={6}>
               <FormField
                 value={values[state.name]}
                 label={state.label}
@@ -307,8 +409,6 @@ export default function JuridicalForm({
                 success={values[state.name]?.length > 0 && !errors[state.name]}
                 disabled={stateChecked}
               />
-            </Grid>
-            <Grid item xs={2}>
               <Checkbox
                 checked={stateChecked}
                 handleChange={(e) => {
@@ -323,7 +423,7 @@ export default function JuridicalForm({
               />
             </Grid>
 
-            <Grid item xs={10} sm={4} alignSelf="end">
+            <Grid item xs={10} sm={6} alignSelf="end">
               <FormField
                 value={values[city.name]}
                 label={city.label}
@@ -334,8 +434,6 @@ export default function JuridicalForm({
                 success={values[city.name]?.length > 0 && !errors[city.name]}
                 disabled={cityChecked}
               />
-            </Grid>
-            <Grid item xs={2}>
               <Checkbox
                 checked={cityChecked}
                 handleChange={(e) => {
@@ -351,7 +449,7 @@ export default function JuridicalForm({
             </Grid>
           </>
         )}
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             isImportant={isRequired}
             value={values[address.name]}
@@ -363,8 +461,6 @@ export default function JuridicalForm({
             success={values[address.name]?.length > 0 && !errors[address.name]}
             disabled={addressChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={addressChecked}
             handleChange={(e) => {
@@ -396,7 +492,7 @@ export default function JuridicalForm({
           </FormControl>
         </Grid>
 
-        <Grid item xs={10} sm={4} alignSelf="end">
+        <Grid item xs={10} sm={6} alignSelf="end">
           <FormField
             value={values[zip.name]}
             label={zip.label}
@@ -406,8 +502,6 @@ export default function JuridicalForm({
             success={values[zip.name]?.length > 0 && !errors[zip.name]}
             disabled={zipChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={zipChecked}
             handleChange={(e) => {
@@ -432,7 +526,7 @@ export default function JuridicalForm({
             setFieldValue={setFieldValue}
           />
         </Grid>
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             label={fileNumber.label}
             placeholder={fileNumber.placeholder}
@@ -445,8 +539,6 @@ export default function JuridicalForm({
             }
             disabled={fileNumberChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={fileNumberChecked}
             handleChange={(e) => {
@@ -461,7 +553,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             label={rollNumber.label}
             placeholder={rollNumber.placeholder}
@@ -474,8 +566,6 @@ export default function JuridicalForm({
             }
             disabled={rollNumberChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={rollNumberChecked}
             handleChange={(e) => {
@@ -490,7 +580,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             label={imageNumber.label}
             placeholder={imageNumber.placeholder}
@@ -503,8 +593,6 @@ export default function JuridicalForm({
             }
             disabled={imageNumberChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={imageNumberChecked}
             handleChange={(e) => {
@@ -519,7 +607,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             label={ruc.label}
             name={ruc.name}
@@ -530,8 +618,6 @@ export default function JuridicalForm({
             success={values[ruc.name]?.length > 0 && !errors[ruc.name]}
             disabled={rucChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={rucChecked}
             handleChange={(e) => {
@@ -546,7 +632,7 @@ export default function JuridicalForm({
           />
         </Grid>
 
-        <Grid item xs={10} sm={4}>
+        <Grid item xs={10} sm={6}>
           <FormField
             label={dv.label}
             placeholder={dv.placeholder}
@@ -558,8 +644,6 @@ export default function JuridicalForm({
             success={values[dv.name]?.length > 0 && !errors[dv.name]}
             disabled={dvChecked}
           />
-        </Grid>
-        <Grid item xs={2}>
           <Checkbox
             checked={dvChecked}
             handleChange={(e) => {

@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { Form, Formik } from "formik";
 import { Grid } from "@mui/material";
-import { store as storePartner } from "/actions/partners";
+import {
+  store as storePartner,
+  update as updatePartner,
+} from "/actions/partners";
 import MDBox from "/components/MDBox";
 import Modal from "/components/Modal";
 import MDButton from "/components/MDButton";
@@ -18,6 +21,7 @@ import MDSnackbar from "/components/MDSnackbar";
 import { useRouter } from "next/navigation";
 
 export default function FormComponent({
+  partner,
   consolidators,
   notJuridicEntities,
   sections,
@@ -26,7 +30,7 @@ export default function FormComponent({
   partnerTypes,
 }) {
   const [tabIndex, setTabIndex] = useState(0);
-  const [isJuridic, setIsJuridic] = useState(true);
+  const [isJuridic, setIsJuridic] = useState(Boolean(partner?.company));
   const [isRequired, setIsRequired] = useState(true);
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
@@ -36,7 +40,11 @@ export default function FormComponent({
 
   const submitForm = async (values, actions) => {
     try {
-      await storePartner(values);
+      if (partner) {
+        await updatePartner(partner.id, values);
+      } else {
+        await storePartner(values);
+      }
       router.push("/partners");
     } catch (error) {
       setErrorMsg(error.message);
@@ -93,11 +101,13 @@ export default function FormComponent({
                   setIsJuridic,
                   isRequired,
                   setIsRequired,
+                  partner,
                 }}
               />
             ) : (
               <InvoiceForm
                 {...{
+                  partner,
                   countries,
                   errors,
                   values,

@@ -20,6 +20,8 @@ export default function Table({ rows }) {
     setOpenDeleteConfirmation,
     errorSB,
     setErrorSB,
+    errorMsg,
+    setErrorMsg,
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(() => {});
@@ -116,6 +118,8 @@ export default function Table({ rows }) {
           setOpenDeleteConfirmation,
           errorSB,
           setErrorSB,
+          errorMsg,
+          setErrorMsg,
           openDeleteConfirmation,
           setDeleteConfirmed,
         }}

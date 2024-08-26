@@ -7,9 +7,10 @@ export default async function CreateProcess() {
   const projectServiceTypes = await getAllProjectServiceTypes();
   const {
     data: { processes },
-  } = await getAll();
+  } = await getAll({
+    include: "projectServiceType",
+  });
   const staffData = await selectStaff();
-
   return (
     <Form
       projectServiceTypes={projectServiceTypes}

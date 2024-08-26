@@ -1,7 +1,7 @@
 "use client";
 
 import form from "./schemas/form";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Autocomplete, Grid } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDBox from "/components/MDBox";
@@ -21,12 +21,17 @@ export default function FormContent({
   errors,
   touched,
   procedures,
-  staffs,
   procedure,
   actionTypes: actionsOptions,
 }) {
   const { formField } = form;
   const { name, description, stepNumber, dependencies, actions } = formField;
+
+  const gtrProcedures = useCallback(() => {
+    return procedure
+      ? procedures.filter((p) => p.stepNumber < procedure.stepNumber)
+      : procedures;
+  }, [procedure, procedures]);
 
   const deleteAction = (index) => {
     setFieldValue(actions.name, [
@@ -152,7 +157,7 @@ export default function FormContent({
             setFieldValue(dependencies.name, selectedTask)
           }
           value={values[dependencies.name]}
-          options={procedures}
+          options={gtrProcedures()}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (

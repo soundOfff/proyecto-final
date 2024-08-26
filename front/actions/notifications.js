@@ -25,6 +25,17 @@ export async function updateMany(ids = []) {
   revalidatePath("/notifications");
 }
 
+export async function archiveMany(ids = []) {
+  const url = new URL(`${process.env.API_URL}/notifications-archive-many`);
+
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(ids),
+  });
+
+  revalidatePath("/notifications");
+}
+
 export async function getIsNotSeenCount(body) {
   const url = new URL(`${process.env.API_URL}/notifications/is-not-seen-count`);
 

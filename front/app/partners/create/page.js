@@ -5,7 +5,7 @@ import {
 } from "/actions/partners";
 import { getSelect as getCountriesSelect } from "/actions/countries";
 import { getAll as getAllPartnerTypes } from "/actions/partner-types";
-import Form from "./components/form";
+import Form from "../components/form/components/form";
 
 export default async function Create() {
   const consolidators = await getPartnersSelect({

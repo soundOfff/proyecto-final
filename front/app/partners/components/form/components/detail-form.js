@@ -7,6 +7,7 @@ import PersonForm from "./person-form";
 import JuridicalForm from "./juridical-form";
 
 export default function DetailFormComponent({
+  partner,
   consolidators,
   countries,
   notJuridicEntities,
@@ -26,7 +27,9 @@ export default function DetailFormComponent({
     <Card sx={{ overflow: "visible", my: 3 }}>
       <Grid container spacing={3} p={3}>
         <Grid item xs={6}>
-          <MDTypography variant="h5">Crear Cliente</MDTypography>
+          <MDTypography variant="h5">
+            {partner ? "Editar CLiente" : "Crear Cliente"}
+          </MDTypography>
         </Grid>
         <Grid item xs={6} display="flex" justifyContent="right">
           <FormGroup>
@@ -58,6 +61,7 @@ export default function DetailFormComponent({
           <>
             <JuridicalForm
               {...{
+                partner,
                 countries,
                 sections,
                 industries,
@@ -76,6 +80,7 @@ export default function DetailFormComponent({
         {isJuridic === false && (
           <PersonForm
             {...{
+              partner,
               countries,
               consolidators,
               errors,

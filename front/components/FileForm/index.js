@@ -16,9 +16,15 @@ import UploadFileList from "./uploadFileList";
 
 import { destroy as deleteFile } from "/actions/files";
 
-export default function FormComponent({ formData, fileableType, data = null }) {
+export default function FormComponent({
+  formData,
+  formField,
+  fileableType,
+  data = null,
+}) {
   const { formId } = form;
-  const { formField, values: externalValues, setFieldValue } = formData;
+  const { values: externalValues, setFieldValue: setFieldValueExternal } =
+    formData;
   const { files } = formField;
   const [modifiedFiles, setModifiedFiles] = useState(
     externalValues[files.name] ?? []
@@ -26,8 +32,8 @@ export default function FormComponent({ formData, fileableType, data = null }) {
   const [uploadedFiles, setUploadedFiles] = useState(data ?? []);
 
   useEffect(() => {
-    setFieldValue(files.name, modifiedFiles);
-  }, [modifiedFiles, setFieldValue, files.name]);
+    setFieldValueExternal(files.name, modifiedFiles);
+  }, [modifiedFiles, setFieldValueExternal, files]);
 
   const handleAddFile = (file) => {
     setModifiedFiles((prev) => {

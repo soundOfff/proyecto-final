@@ -142,7 +142,7 @@ export default function Footer({ estimate }) {
           Terminos y condiciones:
         </MDTypography>
         <MDTypography variant="caption" color="text">
-          {estimate.terms ?? "No hay terminos y condiciones"}
+          {estimate.terms ?? "No hay términos y condiciones"}
         </MDTypography>
       </MDBox>
     </MDBox>

@@ -5,8 +5,8 @@ import { getSelect as getSelectInvoices } from "/actions/invoices";
 import { getAll as getAllTaxes } from "/actions/taxes";
 import { getAll as getAllCurrencies } from "/actions/currencies";
 import { getAll as getAllPaymentMethods } from "/actions/payment-methods";
-import FormComponent from "./components/form";
 import { show as getExpense } from "/actions/expenses";
+import Form from "../../components/form/form";
 
 export default async function EditExpense({ params: { id } }) {
   const [
@@ -43,7 +43,7 @@ export default async function EditExpense({ params: { id } }) {
   const apiUrl = process.env.API_URL;
 
   return (
-    <FormComponent
+    <Form
       {...{
         expense,
         partners,

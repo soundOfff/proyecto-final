@@ -23,6 +23,7 @@ export default function Timers() {
   useEffect(() => {
     const params = {
       include,
+      sort: "-start_date",
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
     };

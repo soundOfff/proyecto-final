@@ -187,7 +187,7 @@
         </div>
         <div class="header-info">
             <p>FECHA: {{ $start_date }}</p>
-            <p>VALIDA HASTA: {{ $end_date }}</p>
+            <p>VÁLIDA HASTA: {{ $end_date }}</p>
         </div>
         <table>
             <thead>
@@ -240,13 +240,13 @@
     <footer>
         <div>
             <aside>
-                <h2><span>Notas</span></h2>
+                <h2><span>NOTAS</span></h2>
                 <div>
                     <p>{{ $notes }}</p>
                 </div>
             </aside>
             <aside>
-                <h2><span>Terminos y condiciones</span></h2>
+                <h2><span>TÉRMINOS Y CONDICIONES</span></h2>
                 <div>
                     <p>{{ $terms }}</p>
                 </div>

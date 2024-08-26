@@ -12,7 +12,8 @@ import {
   Switch,
 } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
-import detailForm from "../schemas/detail-form";
+import form from "../schemas/form";
+import Checkbox from "/components/Checkbox";
 import MDDatePicker from "/components/MDDatePicker";
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
@@ -27,6 +28,7 @@ import { getAll as getAllDistricts } from "/actions/districts";
 import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
 
 export default function PersonForm({
+  partner,
   countries,
   errors,
   values,
@@ -42,25 +44,140 @@ export default function PersonForm({
         isMale,
         idNumber,
         country,
-        isConsolidator,
         nationality,
         birthPlace,
+        occupation,
         state,
         city,
         district,
         jurisdiction,
         province,
         address,
+        isConsolidator,
         phone,
         email,
         isResidential,
+        idType,
+        civilStatus,
       },
     },
-  } = detailForm;
+  } = form;
 
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [jurisdictions, setJurisdictions] = useState([]);
+
+  const [nameChecked, setNameChecked] = useState(false);
+  const [idNumberChecked, setIdNumberChecked] = useState(false);
+  const [stateChecked, setStateChecked] = useState(false);
+  const [cityChecked, setCityChecked] = useState(false);
+  const [phoneChecked, setPhoneChecked] = useState(false);
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [occupationChecked, setOccupationChecked] = useState(false);
+  const [addressChecked, setAddressChecked] = useState(false);
+
+  useEffect(() => {
+    if (partner) {
+      setFieldValue(name.name, partner.name || "");
+
+      setFieldValue(idNumber.name, partner.idNumber || "");
+
+      setFieldValue(isMale.name, partner.isMale || false);
+      setFieldValue(civilStatus.name, partner.civilStatus || "");
+      setFieldValue(phone.name, partner.phone || "");
+      if (partner.phone == "Desconocido") {
+        setPhoneChecked(true);
+      }
+      setFieldValue(email.name, partner.email || "");
+      if (partner.email == "Desconocido") {
+        setEmailChecked(true);
+      }
+      setFieldValue(occupation.name, partner.occupation || "");
+      if (partner.occupation == "Desconocido") {
+        setOccupationChecked(true);
+      }
+      setFieldValue(birthDate.name, partner.birthDate || "");
+      setFieldValue(expeditionDate.name, partner.expeditionDate || "");
+      setFieldValue(idType.name, partner.idType || "");
+      setFieldValue(nationality.name, partner.nationality || "");
+      setFieldValue(birthPlace.name, partner.birthPlace || "");
+      setFieldValue(country.name, partner.country || "");
+      setFieldValue(state.name, partner.state || "");
+      if (partner.state == "Desconocido") {
+        setStateChecked(true);
+      }
+      setFieldValue(city.name, partner.city || "");
+      if (partner.city == "Desconocido") {
+        setCityChecked(true);
+      }
+      setFieldValue(district.name, partner.district || "");
+      setFieldValue(jurisdiction.name, partner.jurisdiction || "");
+      setFieldValue(province.name, partner.province || "");
+      setFieldValue(address.name, partner.address || "");
+    }
+  }, [
+    partner,
+    setFieldValue,
+    name,
+    idNumber,
+    isMale,
+    civilStatus,
+    phone,
+    email,
+    occupation,
+    birthDate,
+    expeditionDate,
+    idType,
+    nationality,
+    birthPlace,
+    country,
+    state,
+    city,
+    district,
+    jurisdiction,
+    province,
+    address,
+  ]);
+
+  useEffect(() => {
+    if (partner) {
+      if (partner.name == "Desconocido") {
+        setNameChecked(true);
+      }
+      if (partner.idNumber == "Desconocido") {
+        setIdNumberChecked(true);
+      }
+      if (partner.state == "Desconocido") {
+        setStateChecked(true);
+      }
+      if (partner.city == "Desconocido") {
+        setCityChecked(true);
+      }
+      if (partner.phone == "Desconocido") {
+        setPhoneChecked(true);
+      }
+      if (partner.email == "Desconocido") {
+        setEmailChecked(true);
+      }
+      if (partner.occupation == "Desconocido") {
+        setOccupationChecked(true);
+      }
+      if (partner.address == "Desconocido") {
+        setAddressChecked(true);
+      }
+    }
+  }, [
+    setFieldValue,
+    partner,
+    name,
+    idNumber,
+    state,
+    city,
+    phone,
+    email,
+    occupation,
+    address,
+  ]);
 
   useEffect(() => {
     if (values.country_id === PANAMA_ID) {
@@ -94,23 +211,35 @@ export default function PersonForm({
     }
   }, [values.district_id]);
 
-  const idType = ["Cédula", "Pasaporte", "Carnet de Residente"];
-  const initialIdType = idType.includes(values.id_type) ? values.id_type : null;
-
-  const civilStatusesMale = ["Soltero", "Casado", "Divorciado", "Viudo"];
-  const civilStatusesFemale = ["Soltera", "Casada", "Divorciada", "Viuda"];
+  const idTypes = ["Cédula", "Pasaporte", "Carnet de Residente", "Desconocido"];
 
   const [filteredCivilStatuses, setFilteredCivilStatuses] = useState([]);
 
   useEffect(() => {
-    const isMaleSelected = values[isMale.name];
+    const civilStatusesMale = [
+      "Soltero",
+      "Casado",
+      "Divorciado",
+      "Viudo",
+      "Desconocido",
+    ];
+    const civilStatusesFemale = [
+      "Soltera",
+      "Casada",
+      "Divorciada",
+      "Viuda",
+      "Desconocida",
+    ];
+    const isMaleSelected = values.is_male;
+
     if (isMaleSelected) {
       setFilteredCivilStatuses(civilStatusesMale);
     } else {
       setFilteredCivilStatuses(civilStatusesFemale);
     }
-    setFieldValue("civil_status", null);
-  }, [values[isMale.name]]);
+
+    setFieldValue(civilStatus.name, "");
+  }, [values.is_male, setFieldValue, civilStatus]);
 
   return (
     <Grid container spacing={5}>
@@ -123,17 +252,30 @@ export default function PersonForm({
           type={name.type}
           error={errors[name.name] && touched[name.name]}
           success={values[name.name]?.length > 0 && !errors[name.name]}
+          disabled={nameChecked}
+        />
+        <Checkbox
+          checked={nameChecked}
+          handleChange={(e) => {
+            if (e.target.checked) {
+              setFieldValue(name.name, "Desconocido");
+            } else {
+              setFieldValue(name.name, "");
+            }
+            setNameChecked(e.target.checked);
+          }}
+          label="Desconocido"
         />
       </Grid>
+
       <Grid item xs={12} sm={6}>
         <Autocomplete
           disablePortal
-          id="id-type-selector"
-          options={idType}
+          options={idTypes}
           onChange={(event, newValue) => {
-            setFieldValue("id_type", newValue);
+            setFieldValue(idType.name, newValue);
           }}
-          value={initialIdType}
+          value={values[idType.name]}
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -141,24 +283,38 @@ export default function PersonForm({
               label={"Tipo de Identificación"}
               fullWidth
               InputLabelProps={{ shrink: true }}
-              error={Boolean(errors.idType && touched.idType)}
-              helperText={touched.idType && errors.idType}
+              error={Boolean(errors.id_type && touched.id_type)}
+              helperText={touched.id_type && errors.id_type}
             />
           )}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+
+      <Grid item xs={10} sm={6}>
         <FormField
           value={values[idNumber.name]}
-          autocomplete="off"
           label={idNumber.label}
           placeholder={idNumber.placeholder}
           name={idNumber.name}
           type={idNumber.type}
           error={errors[idNumber.name] && touched[idNumber.name]}
           success={values[idNumber.name]?.length > 0 && !errors[idNumber.name]}
+          disabled={idNumberChecked}
+        />
+        <Checkbox
+          checked={idNumberChecked}
+          handleChange={(e) => {
+            if (e.target.checked) {
+              setFieldValue(idNumber.name, "Desconocido");
+            } else {
+              setFieldValue(idNumber.name, "");
+            }
+            setIdNumberChecked(e.target.checked);
+          }}
+          label="Desconocido"
         />
       </Grid>
+
       <Grid item xs={12} sm={6}>
         <FormControl variant="standard" fullWidth>
           <InputLabel>Género</InputLabel>
@@ -168,8 +324,8 @@ export default function PersonForm({
             onChange={(e) => setFieldValue(isMale.name, e.target.value)}
             sx={{ height: "2rem" }}
           >
-            <MenuItem value={1}>Masculino</MenuItem>
-            <MenuItem value={0}>Femenino</MenuItem>
+            <MenuItem value={true}>Masculino</MenuItem>
+            <MenuItem value={false}>Femenino</MenuItem>
           </MuiSelect>
           <MDBox mt={0.75}>
             <MDTypography
@@ -186,12 +342,11 @@ export default function PersonForm({
       <Grid item xs={12} sm={6}>
         <Autocomplete
           disablePortal
-          id="id-type-selector"
           options={filteredCivilStatuses}
           onChange={(event, newValue) => {
-            setFieldValue("civil_status", newValue);
+            setFieldValue(civilStatus.name, newValue);
           }}
-          value={values.civil_status}
+          value={values[civilStatus.name]}
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -205,7 +360,8 @@ export default function PersonForm({
           )}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+
+      <Grid item xs={10} sm={6}>
         <FormField
           label={phone.label}
           placeholder={phone.placeholder}
@@ -214,22 +370,78 @@ export default function PersonForm({
           value={values[phone.name]}
           error={errors[phone.name] && touched[phone.name]}
           success={values[phone.name]?.length > 0 && !errors[phone.name]}
+          disabled={phoneChecked}
+        />
+        <Checkbox
+          checked={phoneChecked}
+          handleChange={(e) => {
+            if (e.target.checked) {
+              setFieldValue(phone.name, "Desconocido");
+            } else {
+              setFieldValue(phone.name, "");
+            }
+            setPhoneChecked(e.target.checked);
+          }}
+          label="Desconocido"
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+
+      <Grid item xs={10} sm={6}>
         <FormField
           label={email.label}
           placeholder={email.placeholder}
           name={email.name}
-          type={email.type}
           value={values[email.name]}
           error={errors[email.name] && touched[email.name]}
           success={values[email.name]?.length > 0 && !errors[email.name]}
+          disabled={emailChecked}
+        />
+        <Checkbox
+          checked={emailChecked}
+          handleChange={(e) => {
+            if (e.target.checked) {
+              setFieldValue(email.name, "Desconocido");
+            } else {
+              setFieldValue(email.name, "");
+            }
+
+            setEmailChecked(e.target.checked);
+          }}
+          label="Desconocido"
         />
       </Grid>
+
+      <Grid item xs={10} sm={6}>
+        <FormField
+          value={values[occupation.name]}
+          label={occupation.label}
+          placeholder={occupation.placeholder}
+          name={occupation.name}
+          type={occupation.type}
+          error={errors[occupation.name] && touched[occupation.name]}
+          success={
+            values[occupation.name]?.length > 0 && !errors[occupation.name]
+          }
+          disabled={occupationChecked}
+        />
+        <Checkbox
+          checked={occupationChecked}
+          handleChange={(e) => {
+            if (e.target.checked) {
+              setFieldValue(occupation.name, "Desconocido");
+            } else {
+              setFieldValue(occupation.name, "");
+            }
+            setOccupationChecked(e.target.checked);
+          }}
+          label="Desconocido"
+        />
+      </Grid>
+
       <Grid item xs={12} sm={6}>
         <MDDatePicker
           input={{
+            backgroundColor: "black",
             fullWidth: true,
             label: "Fecha de Nacimiento",
           }}
@@ -276,6 +488,7 @@ export default function PersonForm({
           </MDTypography>
         </MDBox>
       </Grid>
+
       <Grid item xs={12} sm={6}>
         <Select
           value={values[nationality.name]}
@@ -328,7 +541,7 @@ export default function PersonForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} alignSelf="end" pb={0.75}>
             <Select
               value={values[jurisdiction.name]}
               options={jurisdictions}
@@ -341,7 +554,7 @@ export default function PersonForm({
         </>
       ) : (
         <>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={10} sm={6}>
             <FormField
               value={values[state.name]}
               label={state.label}
@@ -350,9 +563,23 @@ export default function PersonForm({
               type={state.type}
               error={errors[state.name] && touched[state.name]}
               success={values[state.name]?.length > 0 && !errors[state.name]}
+              disabled={stateChecked}
+            />
+            <Checkbox
+              checked={stateChecked}
+              handleChange={(e) => {
+                if (e.target.checked) {
+                  setFieldValue(state.name, "Desconocido");
+                } else {
+                  setFieldValue(state.name, "");
+                }
+                setStateChecked(e.target.checked);
+              }}
+              label="Desconocido"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+
+          <Grid item xs={10} sm={6} alignSelf="end">
             <FormField
               value={values[city.name]}
               label={city.label}
@@ -361,32 +588,60 @@ export default function PersonForm({
               type={city.type}
               error={errors[city.name] && touched[city.name]}
               success={values[city.name]?.length > 0 && !errors[city.name]}
+              disabled={cityChecked}
+            />
+            <Checkbox
+              checked={cityChecked}
+              handleChange={(e) => {
+                if (e.target.checked) {
+                  setFieldValue(city.name, "Desconocido");
+                } else {
+                  setFieldValue(city.name, "");
+                }
+                setCityChecked(e.target.checked);
+              }}
+              label="Desconocido"
             />
           </Grid>
         </>
       )}
-      <Grid item xs={12} sm={6}>
+
+      <Grid item xs={10} sm={6}>
         <FormField
-          value={values[address.name]}
           label={address.label}
           placeholder={address.placeholder}
           name={address.name}
           type={address.type}
+          value={values[address.name]}
           error={errors[address.name] && touched[address.name]}
           success={values[address.name]?.length > 0 && !errors[address.name]}
+          disabled={addressChecked}
+        />
+        <Checkbox
+          checked={addressChecked}
+          handleChange={(e) => {
+            if (e.target.checked) {
+              setFieldValue(address.name, "Desconocido");
+            } else {
+              setFieldValue(address.name, "");
+            }
+            setAddressChecked(e.target.checked);
+          }}
+          label="Desconocido"
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl variant="standard" sx={{ mt: -2.3 }} fullWidth>
+
+      <Grid item xs={12} sm={6} mb={0.75} alignSelf="end">
+        <FormControl variant="standard" fullWidth>
           <InputLabel>{isResidential.label}</InputLabel>
           <MuiSelect
-            value={Number(values[isResidential.name])}
+            value={values[isResidential.name]}
             label={isResidential.label}
             onChange={(e) => setFieldValue(isResidential.name, e.target.value)}
             sx={{ height: "3rem" }}
           >
-            <MenuItem value={1}>Residencial</MenuItem>
-            <MenuItem value={0}>Edificio</MenuItem>
+            <MenuItem value={true}>Residencial</MenuItem>
+            <MenuItem value={false}>Edificio</MenuItem>
           </MuiSelect>
           <MDBox mt={0.75}>
             <MDTypography
@@ -400,7 +655,7 @@ export default function PersonForm({
           </MDBox>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6} display="flex" alignItems="center">
+      <Grid item xs={12} sm={6} display="flex" alignItems="end">
         <FormGroup>
           <FormControlLabel
             control={

@@ -4,7 +4,7 @@ import { Autocomplete, Grid } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
 import form from "./schemas/form";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ErrorMessage } from "formik";
 import MDInput from "/components/MDInput";
 import MDBox from "/components/MDBox";
@@ -32,11 +32,25 @@ export default function First({
       staffs,
     },
   } = form;
+  const [forksOptions, setForksOptions] = useState([]);
 
   const staffsSelected = values[staffs.name].map((staff) => ({
     id: staff.id,
     name: staffData.find((s) => s.id == staff.id).name,
   }));
+
+  useEffect(() => {
+    if (values.project_service_type_id) {
+      setForksOptions(
+        processes.filter(
+          (p) =>
+            p.projectServiceTypeId == values.project_service_type_id &&
+            values.forks.find((f) => f.id == p.id) == undefined &&
+            p.id != process?.id
+        )
+      );
+    }
+  }, [values.project_service_type_id, processes, process?.id]);
 
   useEffect(() => {
     if (process) {
@@ -122,9 +136,7 @@ export default function First({
           onChange={(e, forksSelected) =>
             setFieldValue(forks.name, forksSelected)
           }
-          options={processes.filter(
-            (p) => p.projectServiceTypeId !== values[projectServiceType.name]
-          )}
+          options={forksOptions}
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <MDInput

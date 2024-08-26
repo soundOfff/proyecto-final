@@ -25,23 +25,25 @@ export default function FormContent({ handleAddFile, handleRemoveFile }) {
   );
 
   return (
-    <Grid container spacing={2}>
+    <Grid container>
       <Grid item xs={12}>
-        <MDDropzone
-          addFields={handleAddFile}
-          removeFile={handleRemoveFile}
-          options={options}
-          multiple={true}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={fileField.name} />
-          </MDTypography>
+        <MDBox>
+          <MDDropzone
+            addFields={handleAddFile}
+            removeFile={handleRemoveFile}
+            options={options}
+            multiple={true}
+          />
+          <MDBox mt={0.75}>
+            <MDTypography
+              component="div"
+              variant="caption"
+              color="error"
+              fontWeight="regular"
+            >
+              <ErrorMessage name={fileField.name} />
+            </MDTypography>
+          </MDBox>
         </MDBox>
       </Grid>
     </Grid>

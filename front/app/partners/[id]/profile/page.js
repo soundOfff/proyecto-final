@@ -6,7 +6,7 @@ import {
 } from "/actions/partners";
 import { getSelect as getCountriesSelect } from "/actions/countries";
 import { getAll as getAllPartnerTypes } from "/actions/partner-types";
-import Form from "./components/form";
+import Form from "/app/partners/components/form/components/form";
 
 export default async function Profile({ params: { id } }) {
   const partner = await show(id, {

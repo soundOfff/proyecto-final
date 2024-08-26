@@ -115,6 +115,7 @@ class ProjectController extends Controller
             'taskable_id' => $project->id,
             'taskable_type' => 'project',
             'partner_id' => $project->partners->first()->id ?? 31,
+            'milestone_order' => 0,
             'start_date' => Carbon::now(),
             'date_added' => Carbon::now(),
             'repeat_id' => TaskRepeat::CUSTOM,

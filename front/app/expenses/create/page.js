@@ -5,7 +5,7 @@ import { getSelect as getSelectInvoices } from "/actions/invoices";
 import { getAll as getAllTaxes } from "/actions/taxes";
 import { getAll as getAllCurrencies } from "/actions/currencies";
 import { getAll as getAllPaymentMethods } from "/actions/payment-methods";
-import Form from "./components/form";
+import Form from "../components/form/form";
 
 export default async function NewExpense() {
   const [

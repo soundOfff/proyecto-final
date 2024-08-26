@@ -10,7 +10,6 @@ import numberFormat from "/utils/numberFormat";
 import { Link, Tooltip } from "@mui/material";
 import moment from "moment";
 import { useState } from "react";
-import { AccessAlarm } from "@mui/icons-material";
 import Form from "./form/form";
 import { getColor } from "/utils/project-state-colors";
 
@@ -20,55 +19,9 @@ export default function Table({ rows, project }) {
 
   const columns = [
     {
-      Header: "Miembros del equipo",
-      accessor: "staff",
-      disableSortBy: true,
-      Cell: ({ row }) => {
-        const assigneds = row.original.assigneds;
-        if (assigneds.length === 0 || !assigneds) {
-          return (
-            <MDTypography color="info" variant="body2" fontSize="small">
-              Sin asignar
-            </MDTypography>
-          );
-        }
-        return assigneds.map((assigned) => (
-          <MDTypography key={assigned.id} variant="body2" fontSize="small">
-            {assigned.name}
-          </MDTypography>
-        ));
-      },
-    },
-    {
-      Header: "Tarea",
-      accessor: "name",
-      Cell: ({ row }) => (
-        <MDBox display="flex" flexDirection="row" alignItems="center">
-          <Link href={`/tasks?taskId=${row.original.id}`}>
-            {row.original.name}
-          </Link>
-          <MDBadge
-            variant="contained"
-            color={getColor(row.original.status.id)}
-            size="md"
-            badgeContent={row.original.status.name}
-          />
-        </MDBox>
-      ),
-    },
-    {
-      Header: "Nota",
-      accessor: "note",
-      disableSortBy: true,
-      Cell: ({ row }) => {
-        return row.original.timers.length
-          ? row.original.timers[0].note
-          : "Sin notas";
-      },
-    },
-    {
       Header: "Fecha",
       accessor: "start_date",
+      align: "left",
       disableSortBy: true,
       Cell: ({ row }) => (
         <MDTypography variant="body2" fontSize="small">
@@ -104,6 +57,53 @@ export default function Table({ rows, project }) {
             </MDTypography>
           </MDBox>
         ));
+      },
+    },
+    {
+      Header: "Miembros del equipo",
+      accessor: "staff",
+      disableSortBy: true,
+      Cell: ({ row }) => {
+        const assigneds = row.original.assigneds;
+        if (assigneds.length === 0 || !assigneds) {
+          return (
+            <MDTypography variant="body2" fontSize="small">
+              Sin responsables
+            </MDTypography>
+          );
+        }
+        return assigneds.map((assigned) => (
+          <MDTypography key={assigned.id} variant="body2" fontSize="small">
+            {assigned.name}
+          </MDTypography>
+        ));
+      },
+    },
+    {
+      Header: "Tarea",
+      accessor: "name",
+      Cell: ({ row }) => (
+        <MDBox display="flex" flexDirection="row" alignItems="center">
+          <Link href={`/tasks?taskId=${row.original.id}`}>
+            {row.original.name}
+          </Link>
+          <MDBadge
+            variant="contained"
+            color={getColor(row.original.status.id)}
+            size="md"
+            badgeContent={row.original.status.name}
+          />
+        </MDBox>
+      ),
+    },
+    {
+      Header: "Nota",
+      accessor: "note",
+      disableSortBy: true,
+      Cell: ({ row }) => {
+        return row.original.timers.length
+          ? row.original.timers[0].note
+          : "Sin notas";
       },
     },
     {

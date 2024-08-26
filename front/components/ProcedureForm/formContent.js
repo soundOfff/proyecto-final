@@ -30,7 +30,7 @@ export default function FormContent({
   const gtrProcedures = useCallback(() => {
     return procedure
       ? procedures.filter((p) => p.stepNumber < procedure.stepNumber)
-      : [];
+      : procedures;
   }, [procedure, procedures]);
 
   const deleteAction = (index) => {

@@ -7,13 +7,18 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import { Tooltip } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import LinkIcon from "@mui/icons-material/Link";
 import ArchiveIcon from "@mui/icons-material/Archive";
+
 import MDSnackbar from "/components/MDSnackbar";
 
 import moment from "moment";
 import "moment/locale/es";
 
 import { updateMany, archiveMany } from "/actions/notifications";
+import Link from "next/link";
+import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
 export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -26,9 +31,12 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
     (rowId) => rows.find((row) => row.id === rowId)?.isSeen
   );
 
-  const handleMarkAsSeen = async (id) => {
+  const getResourceUrl = (notifiableType, notifiableId) =>
+    MAPPED_NOTIFIABLE_TYPES[notifiableType].url + notifiableId;
+
+  const handleUpdateSeen = async (id, isSeen) => {
     try {
-      await updateMany({ notification_ids: [id] });
+      await updateMany({ notification_ids: [id], is_seen: Number(isSeen) });
       setSuccessSB(true);
       setInfoSB("Notificacion marcada como vista");
     } catch (error) {
@@ -38,10 +46,13 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
     }
   };
 
-  const handleMarkAsSeenMultiple = async () => {
+  const handleMarkAsSeenMultiple = async (isSeen = true) => {
     setIsUpdating(true);
     try {
-      await updateMany({ notification_ids: selectedNotificationIds });
+      await updateMany({
+        notification_ids: selectedNotificationIds,
+        is_seen: Number(isSeen),
+      });
       setSuccessSB(true);
       setInfoSB("Notificaciones marcadas como vistas");
     } catch (error) {
@@ -66,10 +77,13 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
     }
   };
 
-  const handleArchiveMultiple = async () => {
+  const handleArchiveMultiple = async (isSeen = true) => {
     setIsUpdating(true);
     try {
-      await archiveMany({ notification_ids: selectedNotificationIds });
+      await archiveMany({
+        notification_ids: selectedNotificationIds,
+        is_seen: Number(isSeen),
+      });
       setSuccessSB(true);
       setInfoSB("Notificaciones archivadas correctamente");
     } catch (error) {
@@ -150,21 +164,50 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
       accessor: "actions",
       Cell: ({ row }) => (
         <MDBox display="flex" ml={1} gap={2}>
-          <Tooltip title="Marcar como vista" placement="top">
-            <button
-              disabled={row.original.isSeen}
-              style={{
-                backgroundColor: "transparent",
-                border: "none",
-                cursor: row.original.isSeen ? "normal" : "pointer",
-              }}
-            >
-              <RemoveRedEyeIcon
-                fontSize="medium"
-                color={row.original.isSeen ? "text" : "info"}
-                onClick={() => handleMarkAsSeen(row.original.id)}
-              />
-            </button>
+          {row.original.notifiableType.length > 0 &&
+            row.original.notifiableId != 0 && (
+              <Tooltip title="Ir al recurso" placement="top">
+                <Link
+                  target="_blank"
+                  href={getResourceUrl(
+                    row.original.notifiableType,
+                    row.original.notifiableId
+                  )}
+                >
+                  <LinkIcon my="auto" fontSize="medium" color="success" />
+                </Link>
+              </Tooltip>
+            )}
+          <Tooltip title="marcar como no leido" placement="top">
+            {row.original.isSeen ? (
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <VisibilityOffIcon
+                  fontSize="medium"
+                  color={row.original.isSeen ? "text" : "info"}
+                  onClick={() => handleUpdateSeen(row.original.id, false)}
+                />
+              </button>
+            ) : (
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <RemoveRedEyeIcon
+                  fontSize="medium"
+                  color={row.original.isSeen ? "text" : "info"}
+                  onClick={() => handleUpdateSeen(row.original.id, true)}
+                />
+              </button>
+            )}
           </Tooltip>
           <Tooltip title="Archivar" placement="top">
             <ArchiveIcon
@@ -189,8 +232,8 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
           color="info"
           size="small"
           variant="contained"
+          onClick={() => handleMarkAsSeenMultiple()}
           sx={{ mb: 2 }}
-          onClick={handleMarkAsSeenMultiple}
           disabled={
             isUpdating || selectedNotificationIds.length === 0 || allRowsAreSeen
           }
@@ -225,8 +268,8 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
         showTotalEntries={false}
         isSorted={true}
         noEndBorder
-        isNotificable={true}
         entriesPerPage={{ defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] }}
+        isNotificable={true}
         canMultiSelect={true}
         setDeleteIds={setSelectedNotificationIds}
       />

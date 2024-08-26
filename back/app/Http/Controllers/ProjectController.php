@@ -26,9 +26,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected FcmService $fcmService)
-    {
-    }
+    public function __construct(protected FcmService $fcmService) {}
     public function select(Partner $partner)
     {
         $projects = Project::where('billable_partner_id', $partner->id)
@@ -106,7 +104,7 @@ class ProjectController extends Controller
         $project->members()->attach($projectMemberIds);
         $project->partners()->attach($partnersToAttach);
 
-        $project->setName(); 
+        $project->setName();
 
         $task = Task::create([
             'name' => 'Data entry',
@@ -129,13 +127,15 @@ class ProjectController extends Controller
             'staff_id' => $project->responsiblePerson->id,
         ]);
 
-        foreach($project->process->toNotify as $staff){
-            foreach($staff->devices as $device){
+        foreach ($project->process->toNotify as $staff) {
+            foreach ($staff->devices as $device) {
                 $this->fcmService->sendNotification(
                     $device->device_token,
                     'Se ha creado un nuevo caso',
                     "Nombre Del Caso: $project->name",
-                    $staff->id
+                    $staff->id,
+                    $project->id,
+                    'project',
                 );
             }
         }

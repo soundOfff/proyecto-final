@@ -9,7 +9,8 @@ export default function useTabs({ TAB_TYPES }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(
-    TAB_TYPES.find((tab) => searchParams.get("type") === tab.value)?.tabIndex
+    TAB_TYPES.find((tab) => searchParams.get("type") === tab.value)?.tabIndex ??
+      0
   );
 
   const handleChange = (_, newValue) => {

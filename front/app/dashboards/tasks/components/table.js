@@ -1,8 +1,6 @@
 "use client";
 
 import moment from "moment";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
 import DataTable from "/examples/Tables/DataTable";
@@ -16,31 +14,25 @@ import MaterialLink from "@mui/material/Link";
 import MDBadge from "/components/MDBadge";
 import { setColor } from "/utils/project-state-colors";
 import Loading from "./skeleton";
+import useTabs from "/hooks/useTabs";
+
+const TAB_TYPES = [
+  {
+    tabIndex: 0,
+    label: "Mis tareas",
+    value: "myTasks",
+  },
+  {
+    tabIndex: 1,
+    label: "Mis casos",
+    value: "myProjects",
+  },
+];
 
 export default function Table({ rows, meta }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(
-    searchParams.get("type") === "myProjects" ? 1 : 0
-  );
-
-  const TAB_TYPES = useMemo(
-    () => [
-      {
-        tabIndex: 0,
-        label: "Mis tareas",
-        value: "myTasks",
-      },
-      {
-        tabIndex: 1,
-        label: "Mis casos",
-        value: "myProjects",
-      },
-    ],
-    []
-  );
+  const { isLoading, handleChange, selectedTab } = useTabs({
+    TAB_TYPES,
+  });
 
   const projectColumns = [
     {
@@ -240,36 +232,9 @@ export default function Table({ rows, meta }) {
   ];
 
   const table = {
-    columns:
-      selectedTab === 0 // TODO: improve this
-        ? taskColumns
-        : projectColumns,
+    columns: selectedTab ? projectColumns : taskColumns,
     rows,
   };
-
-  const handleChange = (_, newValue) => {
-    setIsLoading(true);
-    setSelectedTab(newValue);
-    setTimeout(() => {
-      // TODO: get a better solution
-      setIsLoading(false);
-    }, 1500);
-  };
-
-  useEffect(() => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
-    if (selectedTab !== undefined) {
-      const tab = TAB_TYPES.find((tab) => tab.tabIndex === selectedTab);
-      params.set("type", tab.value);
-    } else {
-      params.delete("type");
-    }
-
-    const queryParams = params.toString();
-    const query = queryParams ? `?${queryParams}` : "";
-
-    router.push(`${pathname}${query}`);
-  }, [selectedTab, router, pathname, searchParams, TAB_TYPES]);
 
   return (
     <>

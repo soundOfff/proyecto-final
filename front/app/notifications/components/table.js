@@ -1,31 +1,53 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+
+import moment from "moment";
+import "moment/locale/es";
 
 import DataTable from "/examples/Tables/DataTable";
+import Loading from "./skeleton";
+
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import { Tooltip } from "@mui/material";
+import MDSnackbar from "/components/MDSnackbar";
+
+import { Tooltip, Tabs, Tab } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LinkIcon from "@mui/icons-material/Link";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
-import MDSnackbar from "/components/MDSnackbar";
-
-import moment from "moment";
-import "moment/locale/es";
-
-import { updateMany, archiveMany } from "/actions/notifications";
-import Link from "next/link";
 import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
-export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
+import { updateMany, archiveMany } from "/actions/notifications";
+import useTabs from "/hooks/useTabs";
+
+const TAB_TYPES = [
+  {
+    tabIndex: 0,
+    label: "Notificaciones",
+    value: "notifications",
+  },
+  {
+    tabIndex: 1,
+    label: "Archivadas",
+    value: "archived",
+  },
+];
+
+export default function Table({ rows }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [successSB, setSuccessSB] = useState(false);
   const [infoSB, setInfoSB] = useState("");
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
+
+  const { handleChange, selectedTab, isLoading } = useTabs({
+    TAB_TYPES,
+  });
 
   const allRowsAreSeen = selectedNotificationIds.every(
     (rowId) => rows.find((row) => row.id === rowId)?.isSeen
@@ -225,8 +247,7 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
   const table = { columns, rows };
 
   return (
-    <MDBox>
-      {renderSnackbar()}
+    <>
       <MDBox width="100%" display="flex" justifyContent="end" gap={4}>
         <MDButton
           color="info"
@@ -263,16 +284,33 @@ export default function Table({ rows, meta = { per_page: 5, page: 1 } }) {
           />
         </MDButton>
       </MDBox>
-      <DataTable
-        table={table}
-        showTotalEntries={false}
-        isSorted={true}
-        noEndBorder
-        entriesPerPage={{ defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] }}
-        isNotificable={true}
-        canMultiSelect={true}
-        setDeleteIds={setSelectedNotificationIds}
-      />
-    </MDBox>
+      <MDBox py={4} px={2}>
+        <Tabs value={selectedTab} centered onChange={handleChange}>
+          {TAB_TYPES.map((tab) => (
+            <Tab key={tab.tabIndex} label={tab.label} />
+          ))}
+        </Tabs>
+      </MDBox>
+      <MDBox>
+        {renderSnackbar()}
+        {isLoading ? (
+          <Loading count={table.rows?.length} />
+        ) : (
+          <DataTable
+            table={table}
+            showTotalEntries={false}
+            isSorted={true}
+            noEndBorder
+            entriesPerPage={{
+              defaultValue: 50,
+              entries: [5, 10, 15, 20, 25, 50],
+            }}
+            isNotificable={true}
+            canMultiSelect={true}
+            setDeleteIds={setSelectedNotificationIds}
+          />
+        )}
+      </MDBox>
+    </>
   );
 }

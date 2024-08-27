@@ -90,6 +90,10 @@ const form = {
       name: "discount_type_id",
       label: "Tipo de descuento",
     },
+    readyForBill: {
+      name: "ready_for_bill",
+      label: "¿Está lista para facturar?",
+    },
     adminNote: {
       name: "admin_note",
       label: "Notas del admin",

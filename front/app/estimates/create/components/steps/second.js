@@ -11,6 +11,7 @@ import {
 import MDBox from "/components/MDBox";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
+import { useEffect, useState } from "react";
 
 export default function Second({
   formData,
@@ -30,7 +31,20 @@ export default function Second({
     adminNote,
     clientNote,
     terms,
+    readyForBill,
   } = formField;
+
+  const [isChecked, setIsChecked] = useState(readyForBill);
+
+  useEffect(() => {
+    setIsChecked(readyForBill);
+  }, [readyForBill]);
+
+  const handleCheckboxChange = (event) => {
+    const newCheckedValue = event.target.checked;
+    setIsChecked(newCheckedValue);
+    setFieldValue("readyForBill", newCheckedValue);
+  };
 
   return (
     <Grid container spacing={5}>
@@ -87,7 +101,18 @@ export default function Second({
           success={reference.length > 0 && !errors.reference}
         />
       </Grid>
-
+      <Grid item xs={12} sm={6}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+          }
+          label="¿Está lista para ser facturada?"
+        />
+      </Grid>
       <Grid item xs={12}>
         <FormField
           name={adminNote.name}

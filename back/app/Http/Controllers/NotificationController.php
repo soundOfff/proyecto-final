@@ -100,12 +100,13 @@ class NotificationController extends Controller
         $notificationsIds = $request->validate([
             'notification_ids' => 'required|array',
             'notification_ids.*' => 'required|exists:notifications,id',
+            'is_seen' => 'required|boolean',
         ])['notification_ids'];
 
         foreach ($notificationsIds as $notificationId) {
             $notification = Notification::find($notificationId);
             if ($notification) {
-                $notification->update(['is_seen' => 1]);
+                $notification->update(['is_seen' => $request->is_seen]);
             }
         }
 

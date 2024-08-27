@@ -30,7 +30,7 @@ class TaskObserver
         $lockedTasks = $task->dependentTasks;
         $recentlyUnlockedTasks = [];
         foreach ($lockedTasks as $lt) {
-            $isBlocked = $lt->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
+            $isBlocked = $lt->dependencies->contains(fn(Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
             if (!$isBlocked) {
                 $recentlyUnlockedTasks[] = $lt;
             }
@@ -47,7 +47,9 @@ class TaskObserver
                             $device->device_token,
                             "La tarea #{$unlockedTask->id} ha sido desbloqueada",
                             "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
-                            $assigned->id
+                            $assigned->id,
+                            'task',
+                            $unlockedTask->id
                         );
                     }
                 }
@@ -81,6 +83,6 @@ class TaskObserver
 
     private function dispatchActions(Task $task)
     {
-        $task->actions->each(fn ($action) => TaskActions::handleAction($task, $action));
+        $task->actions->each(fn($action) => TaskActions::handleAction($task, $action));
     }
 }

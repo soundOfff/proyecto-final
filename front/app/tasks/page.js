@@ -24,7 +24,6 @@ export default async function Tasks({
 }) {
   const session = await getServerSession(authOptions);
   const tableName = "projects";
-
   const [
     {
       data: { tasks },
@@ -62,7 +61,6 @@ export default async function Tasks({
     getAllStaffs(),
     getSelectTasks(),
   ]);
-
   return (
     <MDBox mb={3}>
       <Card>

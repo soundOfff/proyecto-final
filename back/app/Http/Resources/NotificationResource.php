@@ -21,6 +21,8 @@ class NotificationResource extends JsonResource
             'createdAt' => $this->created_at,
             'staffDevice' => StaffDeviceResource::make($this->whenLoaded('staffDevice')),
             'isSeen' => $this->is_seen,
+            'notifiableId' => $this->notifiable_id,
+            'notifiableType' => $this->notifiable_type,
         ];
     }
 }

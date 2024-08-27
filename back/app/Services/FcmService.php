@@ -9,7 +9,7 @@ use Kreait\Firebase\Messaging\Notification as MessagingNotification;
 
 class FcmService
 {
-    public function sendNotification($deviceToken, $title, $body, $staffId)
+    public function sendNotification($deviceToken, $title, $body, $staffId, $modelName, $modelId)
     {
         $messaging = app('firebase.messaging');
 
@@ -28,7 +28,9 @@ class FcmService
                 [
                     'title' => $title,
                     'body' => $body,
-                    'staff_devices_id' => $staffDeviceId
+                    'staff_devices_id' => $staffDeviceId,
+                    'notifiable_id' => $modelId,
+                    'notifiable_type' => $modelName,
                 ]
             );
         }

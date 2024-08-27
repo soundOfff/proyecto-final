@@ -18,7 +18,7 @@ class FileService
             $publicUrl = "https://drive.google.com/file/d/$id/view?usp=sharing";
 
             return $publicUrl;
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return '';
         }
     }

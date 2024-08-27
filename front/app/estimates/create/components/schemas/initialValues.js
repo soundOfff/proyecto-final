@@ -17,7 +17,7 @@ import moment from "moment";
 import checkout from "./form";
 import { WITHOUT_DISCOUNT } from "/utils/constants/discountTypes";
 import { NO_SENT } from "/utils/constants/estimateStatus";
-import { NOT_RECURRING } from "../../../../../utils/constants/recurringBillsIds";
+import { NOT_RECURRING } from "/utils/constants/recurringBillsIds";
 
 const {
   formField: {

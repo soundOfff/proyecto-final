@@ -62,6 +62,7 @@ class EstimateResource extends JsonResource
             'signature' => $this->signature,
             'cancelOverdueReminders' => $this->cancel_overdue_reminders,
             'hasRetainingAgent' => $this->has_retaining_agent,
+            'is_ready_for_bill' => $this->is_ready_for_bill,
             'saleAgent' => PartnerResource::make($this->whenLoaded('saleAgent')),
             'recurring' => RecurringResource::make($this->whenLoaded('recurring')),
             'partner' => PartnerResource::make($this->whenLoaded('partner')),

@@ -28,6 +28,7 @@ import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { getColor, getPriorityColor } from "/utils/project-state-colors";
 
 import useTaskTable from "/hooks/useTaskTable";
 
@@ -145,7 +146,8 @@ export default function Table({
       accessor: "status",
       Cell: ({ row }) => {
         return (
-          <Autocomplete
+          {
+            /* <Autocomplete
             value={statuses?.find(
               (status) => status.id === row.original.status.id
             )}
@@ -159,7 +161,18 @@ export default function Table({
             renderInput={(params) => (
               <MDInput {...params} variant="standard" fullWidth />
             )}
-          />
+          /> */
+          },
+          (
+            <MDBox display="flex" flexDirection="row" alignItems="center">
+              <MDBadge
+                variant="contained"
+                color={getColor(row.original.status.id)}
+                size="md"
+                badgeContent={row.original.status.name}
+              />
+            </MDBox>
+          )
         );
       },
     },
@@ -193,7 +206,8 @@ export default function Table({
       accessor: "priority",
       width: 200,
       Cell: ({ row }) => (
-        <Autocomplete
+        {
+          /* <Autocomplete
           value={priorities.find(
             (priority) => priority.id === row.original.priority.id
           )}
@@ -211,7 +225,18 @@ export default function Table({
             />
           )}
           sx={{ width: "150px" }}
-        />
+        /> */
+        },
+        (
+          <MDBox display="flex" flexDirection="row" alignItems="center">
+            <MDBadge
+              variant="contained"
+              color={getPriorityColor(row.original.priority.name)}
+              size="md"
+              badgeContent={row.original.priority.name}
+            />
+          </MDBox>
+        )
       ),
     },
     {

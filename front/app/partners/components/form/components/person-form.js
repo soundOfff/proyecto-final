@@ -101,7 +101,7 @@ export default function PersonForm({
       setFieldValue(idType.name, partner.idType || "");
       setFieldValue(nationality.name, partner.nationality || "");
       setFieldValue(birthPlace.name, partner.birthPlace || "");
-      setFieldValue(country.name, partner.country_id || null);
+      setFieldValue(country.name, partner.country_id || "");
       setFieldValue(state.name, partner.state || "");
       if (partner.state == "Desconocido") {
         setStateChecked(true);

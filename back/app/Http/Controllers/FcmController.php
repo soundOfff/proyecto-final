@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use App\Models\StaffDevice;
+use App\Models\Task;
 use App\Services\FcmService;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class FcmController extends Controller
                 'task_id' => 'required|exists:tasks,id',
             ]);
 
-            $this->fcmService->sendNotification($request->device_token, $request->title, $request->body, $request->staff_id, 'task', $request->task_id);
+            $this->fcmService->sendNotification($request->device_token, $request->title, $request->body, $request->staff_id, strtolower(class_basename(Task::class)), $request->task_id);
 
             return response()->json(null, 204);
         } catch (\Exception $e) {

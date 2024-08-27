@@ -243,7 +243,7 @@ class TaskController extends Controller
                         'Tarea Completada',
                         "La tarea \"$taskName\" ha sido completada, puede elegir el siguiente proceso",
                         $staff->id,
-                        'task',
+                        strtolower(class_basename(Task::class)),
                         $task->id
                     );
                 }

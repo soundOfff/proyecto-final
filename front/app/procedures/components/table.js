@@ -8,6 +8,7 @@ import { editSteps } from "/actions/procedures";
 import { useMaterialUIController } from "/context";
 import update from "immutability-helper";
 import useDeleteRow from "/hooks/useDeleteRow";
+import MDTypography from "/components/MDTypography";
 
 import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
@@ -24,6 +25,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { orange } from "@mui/material/colors";
+import { show } from "/actions/processes";
 
 export default function Procedures({ procedures, actionTypes, processId }) {
   const [controller] = useMaterialUIController();
@@ -39,6 +41,30 @@ export default function Procedures({ procedures, actionTypes, processId }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
+
+  const [process, setProcess] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!processId) return;
+
+    const fetchProcess = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const data = await show(processId, {});
+        setProcess(data);
+      } catch (error) {
+        setError("Error fetching process data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProcess();
+  }, [processId]);
 
   const theme = createTheme({
     components: {
@@ -70,7 +96,7 @@ export default function Procedures({ procedures, actionTypes, processId }) {
               <ThemeProvider theme={theme}>
                 <Switch
                   name={actionType.name}
-                  disabled={true} // Puedes ajustar este valor según sea necesario
+                  disabled={true}
                   checked={row.original.actions.some(
                     (action) => action.type.id === actionType.id
                   )}
@@ -164,7 +190,29 @@ export default function Procedures({ procedures, actionTypes, processId }) {
 
   return (
     <>
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+      <MDBox
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={5}
+      >
+        <MDBox display="flex" alignItems="center">
+          {loading && (
+            <MDTypography variant="h4" color="textSecondary">
+              Cargando...
+            </MDTypography>
+          )}
+          {error && (
+            <MDTypography variant="h4" color="error">
+              {error}
+            </MDTypography>
+          )}
+          {process && (
+            <MDTypography variant="h4" color="textPrimary">
+              {process.name}
+            </MDTypography>
+          )}
+        </MDBox>
         <Link href={{ pathname: "/procedures/create", query: { processId } }}>
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Agregar Procedimiento

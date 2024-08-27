@@ -48,7 +48,7 @@ class TaskObserver
                             "La tarea #{$unlockedTask->id} ha sido desbloqueada",
                             "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
                             $assigned->id,
-                            'task',
+                            strtolower(class_basename(Task::class)),
                             $unlockedTask->id
                         );
                     }

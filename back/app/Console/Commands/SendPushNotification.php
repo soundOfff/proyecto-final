@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Reminder;
+use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Services\FcmService;
 use Carbon\Carbon;
@@ -49,7 +50,7 @@ class SendPushNotification extends Command
         foreach ($notifies as $notify) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id);
+                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->id);
                 Reminder::find($notify->reminder_id)->update(['is_notified' => true]);
             }
         }

@@ -34,16 +34,9 @@ export default function Second({
     readyForBill,
   } = formField;
 
-  const [isChecked, setIsChecked] = useState(readyForBill);
-
-  useEffect(() => {
-    setIsChecked(readyForBill);
-  }, [readyForBill]);
-
   const handleCheckboxChange = (event) => {
     const newCheckedValue = event.target.checked;
-    setIsChecked(newCheckedValue);
-    setFieldValue("readyForBill", newCheckedValue);
+    setFieldValue(readyForBill.name, newCheckedValue);
   };
 
   return (
@@ -105,7 +98,7 @@ export default function Second({
         <FormControlLabel
           control={
             <Checkbox
-              checked={isChecked}
+              checked={values[readyForBill.name]}
               onChange={handleCheckboxChange}
               color="primary"
             />

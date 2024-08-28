@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Estimate extends Model
 {
-    static $SPANISH_CLASS_NAME = "proforma";
+    public static $SPANISH_CLASS_NAME = 'proforma';
+
     protected $fillable = [
         'id',
         'partner_id',
@@ -67,6 +68,7 @@ class Estimate extends Model
         'signature',
         'cancel_overdue_reminders',
         'created_at',
+        'is_ready_for_bill',
     ];
 
     public function partner(): BelongsTo

@@ -91,7 +91,7 @@ const form = {
       label: "Tipo de descuento",
     },
     readyForBill: {
-      name: "ready_for_bill",
+      name: "is_ready_for_bill",
       label: "¿Está lista para facturar?",
     },
     adminNote: {

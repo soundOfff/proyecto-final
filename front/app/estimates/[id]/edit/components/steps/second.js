@@ -40,7 +40,7 @@ export default function Second({
     setFieldValue(recurring.name, estimate.recurring?.id ?? null);
     setFieldValue(agent.name, estimate.saleAgent?.id ?? null);
     setFieldValue(reference.name, estimate.referenceNo);
-    setFieldValue(readyForBill.name, estimate.readyForBill);
+    setFieldValue(readyForBill.name, estimate.isReadyForBill);
     setFieldValue(adminNote.name, estimate.adminNote);
     setFieldValue(clientNote.name, estimate.clientNote);
     setFieldValue(terms.name, estimate.terms);
@@ -60,12 +60,9 @@ export default function Second({
     setFieldValue,
   ]);
 
-  const [isChecked, setIsChecked] = useState(estimate.readyForBill);
-
   const handleCheckboxChange = (event) => {
     const newCheckedValue = event.target.checked;
-    setIsChecked(newCheckedValue);
-    setFieldValue("readyForBill", newCheckedValue);
+    setFieldValue(readyForBill.name, newCheckedValue);
   };
 
   return (
@@ -130,7 +127,7 @@ export default function Second({
         <FormControlLabel
           control={
             <Checkbox
-              checked={isChecked}
+              checked={values[readyForBill.name]}
               onChange={handleCheckboxChange}
               color="primary"
             />

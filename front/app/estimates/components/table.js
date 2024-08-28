@@ -12,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { destroy } from "/actions/estimates";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
+import { useEffect } from "react";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -26,6 +27,10 @@ export default function Table({ rows, meta }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
+
+  useEffect(() => {
+    console.log(rows); // Log rows whenever the component updates
+  }, [rows]);
 
   const columns = [
     {
@@ -88,6 +93,15 @@ export default function Table({ rows, meta }) {
     {
       Header: "Referencia #",
       accessor: "referenceNo",
+    },
+    {
+      id: "readyForBill",
+      Header: "Lista para facturar",
+      accessor: "estimate.readyForBill",
+      Cell: ({ row }) => {
+        // Assuming `row.original.readyForBill` can be 0 or 1
+        return row.original.isReadyForBill === 1 ? "Sí" : "No";
+      },
     },
     {
       id: "serviceType",

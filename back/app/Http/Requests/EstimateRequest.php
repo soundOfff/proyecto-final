@@ -40,6 +40,7 @@ class EstimateRequest extends FormRequest
             'client_note' => 'nullable|string',
             'terms' => 'nullable|string',
             'adjustment' => 'nullable|numeric',
+            'is_ready_for_bill' => 'nullable|boolean',
             'tags' => 'nullable|array',
             'tags.*.id' => 'nullable|numeric|exists:tags,id',
             'items' => 'required|array',

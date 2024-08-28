@@ -10,7 +10,7 @@ import {
 import MDBox from "/components/MDBox";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Second({
   formData,
@@ -28,6 +28,7 @@ export default function Second({
     agent,
     recurring,
     discountType,
+    readyForBill,
     adminNote,
     clientNote,
     terms,
@@ -39,6 +40,7 @@ export default function Second({
     setFieldValue(recurring.name, estimate.recurring?.id ?? null);
     setFieldValue(agent.name, estimate.saleAgent?.id ?? null);
     setFieldValue(reference.name, estimate.referenceNo);
+    setFieldValue(readyForBill.name, estimate.isReadyForBill);
     setFieldValue(adminNote.name, estimate.adminNote);
     setFieldValue(clientNote.name, estimate.clientNote);
     setFieldValue(terms.name, estimate.terms);
@@ -51,11 +53,17 @@ export default function Second({
     agent,
     recurring,
     discountType,
+    readyForBill,
     adminNote,
     clientNote,
     terms,
     setFieldValue,
   ]);
+
+  const handleCheckboxChange = (event) => {
+    const newCheckedValue = event.target.checked;
+    setFieldValue(readyForBill.name, newCheckedValue);
+  };
 
   return (
     <Grid container spacing={5}>
@@ -115,7 +123,18 @@ export default function Second({
           }
         />
       </Grid>
-
+      <Grid item xs={12} sm={6}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={values[readyForBill.name]}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+          }
+          label={readyForBill.label}
+        />
+      </Grid>
       <Grid item xs={12}>
         <FormField
           name={adminNote.name}

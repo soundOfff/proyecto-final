@@ -11,6 +11,7 @@ import {
 import MDBox from "/components/MDBox";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
+import { useEffect, useState } from "react";
 
 export default function Second({
   formData,
@@ -30,7 +31,13 @@ export default function Second({
     adminNote,
     clientNote,
     terms,
+    readyForBill,
   } = formField;
+
+  const handleCheckboxChange = (event) => {
+    const newCheckedValue = event.target.checked;
+    setFieldValue(readyForBill.name, newCheckedValue);
+  };
 
   return (
     <Grid container spacing={5}>
@@ -87,7 +94,18 @@ export default function Second({
           success={reference.length > 0 && !errors.reference}
         />
       </Grid>
-
+      <Grid item xs={12} sm={6}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={values[readyForBill.name]}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+          }
+          label={readyForBill.label}
+        />
+      </Grid>
       <Grid item xs={12}>
         <FormField
           name={adminNote.name}

@@ -61,6 +61,7 @@ class NotificationController extends Controller
             DB::table('notifications')
             ->selectRaw('count(*) as count')
             ->where('is_seen', false)
+            ->whereNull('notifications.deleted_at')
             ->when($request->get('staff_id'), function ($query, $staffId) {
                 return $query
                     ->join('staff_devices', 'notifications.staff_devices_id', '=', 'staff_devices.id')

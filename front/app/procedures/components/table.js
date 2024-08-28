@@ -24,7 +24,6 @@ import {
 } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { orange } from "@mui/material/colors";
 import { show } from "/actions/processes";
 
 export default function Procedures({ procedures, actionTypes, processId }) {

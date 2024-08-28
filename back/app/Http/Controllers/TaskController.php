@@ -184,6 +184,8 @@ class TaskController extends Controller
         if ($comments) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
+        } elseif ($comments === []) {
+            $task->comments()->delete();
         }
 
         if ($dependencies) {
@@ -194,6 +196,8 @@ class TaskController extends Controller
         if ($checklistItems) {
             $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
+        } elseif ($checklistItems === []) {
+            $task->checklistItems()->delete();
         }
 
         if ($assigneds) {
@@ -209,6 +213,8 @@ class TaskController extends Controller
         if ($reminders) {
             $task->reminders()->delete();
             $task->reminders()->createMany($reminders);
+        } elseif ($reminders === []) {
+            $task->reminders()->delete();
         }
 
         if ($tags) {
@@ -224,6 +230,8 @@ class TaskController extends Controller
         if ($requiredFields) {
             $task->requiredFields()->delete();
             $task->requiredFields()->createMany($requiredFields);
+        } elseif ($requiredFields === []) {
+            $task->requiredFields()->delete();
         }
 
         if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {

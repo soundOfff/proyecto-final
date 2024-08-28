@@ -18,11 +18,13 @@ import { Tooltip, Tabs, Tab } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LinkIcon from "@mui/icons-material/Link";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
 
 import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
-import { updateMany, archiveMany } from "/actions/notifications";
+import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 
 const TAB_TYPES = [
@@ -53,8 +55,16 @@ export default function Table({ rows }) {
     (rowId) => rows.find((row) => row.id === rowId)?.isSeen
   );
 
-  const getResourceUrl = (notifiableType, notifiableId) =>
-    MAPPED_NOTIFIABLE_TYPES[notifiableType].url + notifiableId;
+  const allRowsAreArchived = selectedNotificationIds.every(
+    (rowId) => rows.find((row) => row.id === rowId)?.isArchived
+  );
+
+  const getResourceUrl = (notifiableType, notifiableId) => {
+    if (notifiableId == 0) {
+      return "#";
+    }
+    return MAPPED_NOTIFIABLE_TYPES[notifiableType].url + notifiableId;
+  };
 
   const handleUpdateSeen = async (id, isSeen) => {
     try {
@@ -65,6 +75,18 @@ export default function Table({ rows }) {
       console.error(error);
       setErrorSB(true);
       setInfoSB("Error al marcar la notificacion como vista");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await destroy(id);
+      setSuccessSB(true);
+      setInfoSB("Notificacion eliminada correctamente");
+    } catch (error) {
+      console.error(error);
+      setErrorSB(true);
+      setInfoSB("Error al eliminar la notificacion");
     }
   };
 
@@ -87,9 +109,12 @@ export default function Table({ rows }) {
     setIsUpdating(false);
   };
 
-  const handleArchive = async (id) => {
+  const handleArchive = async (id, isArchived = true) => {
     try {
-      await archiveMany({ notification_ids: [id] });
+      await archiveMany({
+        notification_ids: [id],
+        is_archived: Number(isArchived),
+      });
       setSuccessSB(true);
       setInfoSB("Notificacion archivada correctamente");
     } catch (error) {
@@ -99,12 +124,12 @@ export default function Table({ rows }) {
     }
   };
 
-  const handleArchiveMultiple = async (isSeen = true) => {
+  const handleArchiveMultiple = async (isArchived = true) => {
     setIsUpdating(true);
     try {
       await archiveMany({
         notification_ids: selectedNotificationIds,
-        is_seen: Number(isSeen),
+        is_archived: Number(isArchived),
       });
       setSuccessSB(true);
       setInfoSB("Notificaciones archivadas correctamente");
@@ -185,23 +210,30 @@ export default function Table({ rows }) {
       Header: "Acciones",
       accessor: "actions",
       Cell: ({ row }) => (
-        <MDBox display="flex" ml={1} gap={2}>
-          {row.original.notifiableType.length > 0 &&
-            row.original.notifiableId != 0 && (
-              <Tooltip title="Ir al recurso" placement="top">
-                <Link
-                  target="_blank"
-                  href={getResourceUrl(
-                    row.original.notifiableType,
-                    row.original.notifiableId
-                  )}
-                >
-                  <LinkIcon my="auto" fontSize="medium" color="success" />
-                </Link>
-              </Tooltip>
-            )}
-          <Tooltip title="marcar como no leido" placement="top">
-            {row.original.isSeen ? (
+        <MDBox display="flex" mx={1} gap={2}>
+          <Tooltip title="Ir al recurso" placement="top">
+            <Link
+              target="_blank"
+              href={getResourceUrl(
+                row.original.notifiableType,
+                row.original.notifiableId
+              )}
+              aria-disabled={row.original.notifiableId == 0}
+              tabIndex={row.original.notifiableId == 0 ? -1 : 0}
+              style={{
+                pointerEvents: row.original.notifiableId == 0 ? "none" : "null",
+              }}
+            >
+              <LinkIcon
+                my="auto"
+                fontSize="medium"
+                color={row.original.notifiableId != 0 ? "success" : "text"}
+              />
+            </Link>
+          </Tooltip>
+
+          {row.original.isSeen ? (
+            <Tooltip title="marcar como no leido" placement="top">
               <button
                 style={{
                   backgroundColor: "transparent",
@@ -215,7 +247,9 @@ export default function Table({ rows }) {
                   onClick={() => handleUpdateSeen(row.original.id, false)}
                 />
               </button>
-            ) : (
+            </Tooltip>
+          ) : (
+            <Tooltip title="marcar como leido" placement="top">
               <button
                 style={{
                   backgroundColor: "transparent",
@@ -229,14 +263,54 @@ export default function Table({ rows }) {
                   onClick={() => handleUpdateSeen(row.original.id, true)}
                 />
               </button>
-            )}
-          </Tooltip>
-          <Tooltip title="Archivar" placement="top">
-            <ArchiveIcon
-              sx={{ cursor: "pointer" }}
+            </Tooltip>
+          )}
+          {row.original.isArchived ? (
+            <Tooltip title="Desarchivar" placement="top">
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <UnarchiveIcon
+                  sx={{ cursor: "pointer" }}
+                  fontSize="medium"
+                  color="dark"
+                  onClick={() => handleArchive(row.original.id, false)}
+                />
+              </button>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Archivar" placement="top">
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <ArchiveIcon
+                  sx={{ cursor: "pointer" }}
+                  fontSize="medium"
+                  color="dark"
+                  onClick={() => handleArchive(row.original.id, true)}
+                />
+              </button>
+            </Tooltip>
+          )}
+          <Tooltip title="Eliminar" placement="top">
+            <DeleteIcon
+              color="error"
               fontSize="medium"
-              color="dark"
-              onClick={() => handleArchive(row.original.id)}
+              onClick={() => {
+                handleDelete(row.original.id);
+              }}
+              sx={{
+                cursor: "pointer",
+                display: row.original.isBlocked ? "none" : "block",
+              }}
             />
           </Tooltip>
         </MDBox>
@@ -271,9 +345,13 @@ export default function Table({ rows }) {
           color="dark"
           size="small"
           variant="contained"
-          disabled={isUpdating || selectedNotificationIds.length === 0}
+          disabled={
+            isUpdating ||
+            selectedNotificationIds.length === 0 ||
+            allRowsAreArchived
+          }
           sx={{ mb: 2 }}
-          onClick={handleArchiveMultiple}
+          onClick={() => handleArchiveMultiple()}
         >
           Archivar
           <ArchiveIcon

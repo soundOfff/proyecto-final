@@ -37,6 +37,7 @@ import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { useDataProvider } from "/providers/DataProvider";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { update } from "/actions/tasks";
+import { useSession } from "next-auth/react";
 import moment from "moment-timezone";
 
 export default function Aside() {
@@ -55,6 +56,7 @@ export default function Aside() {
   const [reminderDate, setReminderDate] = useState("");
   const [assigneds, setAssigneds] = useState(task.assigneds);
   const [followers, setFollowers] = useState(task.followers);
+  const { data: session } = useSession();
 
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(
@@ -76,6 +78,7 @@ export default function Aside() {
         date: reminderDate,
         description: reminderDescription,
         staff_id: reminderStaffId,
+        creator: session?.staff?.id,
       },
     ]);
     update(task.id, {
@@ -87,6 +90,7 @@ export default function Aside() {
           date: reminderDate,
           description: reminderDescription,
           staff_id: reminderStaffId,
+          creator: session?.staff?.id,
         },
       ],
     });

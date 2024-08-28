@@ -56,6 +56,7 @@ class TaskRequest extends FormRequest
             'reminders.*.date' => 'nullable|date',
             'reminders.*.is_notified' => 'nullable|boolean',
             'reminders.*.staff_id' => 'nullable|numeric|exists:staff,id',
+            'reminders.*.creator' => 'nullable|numeric|exists:staff,id',
             'reminders.*.reminderable_id' => 'nullable|numeric',
             'reminders.*.reminderable_type' => 'nullable|string',
             'comments' => 'nullable|array',

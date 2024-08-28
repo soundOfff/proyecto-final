@@ -9,6 +9,7 @@ use App\Services\FcmService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SendPushNotification extends Command
 {
@@ -30,6 +31,7 @@ class SendPushNotification extends Command
         $notifies = DB::table('reminders')
             ->select(
                 'reminders.id as reminder_id',
+                'reminders.creator as creator',
                 'staff.id as staff_id',
                 'tasks.id as task_id',
                 'tasks.name as task_name',
@@ -47,11 +49,10 @@ class SendPushNotification extends Command
             // ->where('reminders.is_notified', false)
             ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED)
             ->get();
-
         foreach ($notifies as $notify) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id);
+                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id, $notify->creator);
                 Reminder::find($notify->reminder_id)->update(['is_notified' => true]);
             }
         }

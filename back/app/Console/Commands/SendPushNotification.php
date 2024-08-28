@@ -9,7 +9,6 @@ use App\Services\FcmService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SendPushNotification extends Command
 {

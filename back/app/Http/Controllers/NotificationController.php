@@ -23,6 +23,8 @@ class NotificationController extends Controller
                 'title',
                 'body',
                 'created_at',
+                'created_by',
+                'staff_id',
                 AllowedSort::callback('is_seen', function ($query, $descending) {
                     $direction = $descending ? 'DESC' : 'ASC';
                     $query

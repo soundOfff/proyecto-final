@@ -6,6 +6,13 @@ import {
   FINALIZED,
 } from "/utils/constants/projectStatusLabels";
 
+import {
+  LOW_PRIORITY,
+  MEDIUM_PROPRITY,
+  HIGH_PRIORITY,
+  URGENT_PRIORITY,
+} from "/utils/constants/taskPriorityLabels";
+
 const COLORS = ["info", "primary", "warning", "error", "success", "dark"];
 
 const LEVELS = [
@@ -35,4 +42,18 @@ export function setColor(label) {
 
 export function getColor(id = 0) {
   return COLORS[id % COLORS.length];
+}
+
+export function getPriorityColor(label) {
+  if (label === LOW_PRIORITY) {
+    return "success";
+  } else if (label === MEDIUM_PROPRITY) {
+    return "info";
+  } else if (label === HIGH_PRIORITY) {
+    return "primary";
+  } else if (label === URGENT_PRIORITY) {
+    return "error";
+  } else {
+    return "dark";
+  }
 }

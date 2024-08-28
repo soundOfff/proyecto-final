@@ -11,13 +11,7 @@ export default async function Procedures({ searchParams: { processId } }) {
     data: { procedures },
   } = await getAllProcedures({
     "filter[process_id]": processId,
-    include: [
-      "status",
-      "responsible",
-      "dependencies",
-      "actions.type",
-      "author",
-    ],
+    include: ["status", "dependencies", "actions.type", "author"],
   });
 
   const actionTypes = await getAllActionTypes();

@@ -46,3 +46,13 @@ export async function getIsNotSeenCount(body) {
 
   return response.count;
 }
+
+export async function destroy(notificationId) {
+  const url = new URL(`${process.env.API_URL}/notifications/${notificationId}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/notifications");
+}

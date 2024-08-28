@@ -118,12 +118,13 @@ class NotificationController extends Controller
         $notificationsIds = $request->validate([
             'notification_ids' => 'required|array',
             'notification_ids.*' => 'required|exists:notifications,id',
+            'is_archived' => 'required|boolean',
         ])['notification_ids'];
 
         foreach ($notificationsIds as $notificationId) {
             $notification = Notification::find($notificationId);
             if ($notification) {
-                $notification->update(['is_archived' => 1]);
+                $notification->update(['is_archived' => $request->is_archived]);
             }
         }
 
@@ -133,8 +134,10 @@ class NotificationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(Notification $notification)
     {
-        //
+        $notification->delete();
+
+        return response()->json(null, 204);
     }
 }

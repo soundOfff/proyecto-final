@@ -110,7 +110,7 @@ export default function Second({
               color="primary"
             />
           }
-          label="¿Está lista para ser facturada?"
+          label={readyForBill.label}
         />
       </Grid>
       <Grid item xs={12}>

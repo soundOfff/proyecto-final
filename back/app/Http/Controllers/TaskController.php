@@ -62,8 +62,8 @@ class TaskController extends Controller
                 'start_date',
                 'due_date',
                 'milestone_order',
-                AllowedSort::custom('status', new TaskStatusSort(), 'name'),
-                AllowedSort::custom('priority', new TaskPrioritySort(), 'name'),
+                AllowedSort::custom('status', new TaskStatusSort(), 'id'),
+                AllowedSort::custom('priority', new TaskPrioritySort(), 'id'),
                 AllowedSort::custom('author', new TaskAuthorSort(), 'first_name'),
                 AllowedSort::custom('partner', new TaskPartnerSort()),
             ])

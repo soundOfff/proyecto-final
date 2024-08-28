@@ -34,6 +34,7 @@ import { editSteps } from "/actions/tasks";
 import update from "immutability-helper";
 import useTaskTable from "/hooks/useTaskTable";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
+import { getColor, getPriorityColor } from "/utils/project-state-colors";
 
 export default function Table({
   statuses,
@@ -190,21 +191,37 @@ export default function Table({
     {
       Header: "Estado",
       accessor: "status",
-      Cell: ({ row }) => (
-        <Autocomplete
-          value={statuses.find((status) => status.id == row.original.status.id)}
-          onChange={(e, status) => {
-            handleStatusChange(row.original.id, status.id);
-          }}
-          disabled={row.original.isBlocked}
-          options={statuses}
-          sx={{ width: "150px" }}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDInput {...params} variant="standard" fullWidth />
-          )}
-        />
-      ),
+      Cell: ({ row }) => {
+        return (
+          {
+            /* <Autocomplete
+            value={statuses?.find(
+              (status) => status.id === row.original.status.id
+            )}
+            disabled={row.original.isBlocked || !row.original.canChangeStatus}
+            onChange={(e, status) => {
+              handleStatusChange(row.original.id, status.id);
+            }}
+            options={statuses}
+            sx={{ width: "150px" }}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <MDInput {...params} variant="standard" fullWidth />
+            )}
+          /> */
+          },
+          (
+            <MDBox display="flex" flexDirection="row" alignItems="center">
+              <MDBadge
+                variant="contained"
+                color={getColor(row.original.status.id)}
+                size="md"
+                badgeContent={row.original.status.name}
+              />
+            </MDBox>
+          )
+        );
+      },
     },
     {
       Header: "Fecha de inicio",
@@ -250,7 +267,8 @@ export default function Table({
       accessor: "priority",
       width: 200,
       Cell: ({ row }) => (
-        <Autocomplete
+        {
+          /* <Autocomplete
           value={priorities.find(
             (priority) => priority.id === row.original.priority.id
           )}
@@ -268,7 +286,18 @@ export default function Table({
             />
           )}
           sx={{ width: "150px" }}
-        />
+        /> */
+        },
+        (
+          <MDBox display="flex" flexDirection="row" alignItems="center">
+            <MDBadge
+              variant="contained"
+              color={getPriorityColor(row.original.priority.name)}
+              size="md"
+              badgeContent={row.original.priority.name}
+            />
+          </MDBox>
+        )
       ),
     },
     {

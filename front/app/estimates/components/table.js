@@ -28,10 +28,6 @@ export default function Table({ rows, meta }) {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
-  useEffect(() => {
-    console.log(rows); // Log rows whenever the component updates
-  }, [rows]);
-
   const columns = [
     {
       Header: "id",
@@ -97,9 +93,7 @@ export default function Table({ rows, meta }) {
     {
       id: "readyForBill",
       Header: "Lista para facturar",
-      accessor: "estimate.readyForBill",
       Cell: ({ row }) => {
-        // Assuming `row.original.readyForBill` can be 0 or 1
         return row.original.isReadyForBill === 1 ? "Sí" : "No";
       },
     },

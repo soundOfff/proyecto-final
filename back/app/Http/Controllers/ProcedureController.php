@@ -19,7 +19,6 @@ class ProcedureController extends Controller
             ->allowedIncludes([
                 'process',
                 'status',
-                'responsible',
                 'actions',
                 'actions.type',
                 'dependencies',
@@ -48,7 +47,6 @@ class ProcedureController extends Controller
                 'actions',
                 'actions.type',
                 'status',
-                'responsible',
                 'author',
                 'reminders.staff',
             ])

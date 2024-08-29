@@ -5,7 +5,6 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
-import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
 import { DataProvider } from "/providers/DataProvider";
@@ -16,7 +15,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalContentForm from "/components/ModalContent/Task";
-import { Autocomplete, Grid, Tooltip } from "@mui/material";
+import { Backdrop, CircularProgress, Grid, Tooltip } from "@mui/material";
 
 import { destroy } from "/actions/tasks";
 

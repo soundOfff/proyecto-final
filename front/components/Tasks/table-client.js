@@ -25,7 +25,6 @@ import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
 import ModalContentForm from "/components/ModalContent/Task";
-import ShowLoader from "/components/Loader";
 import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
 import { useEffect, useState } from "react";

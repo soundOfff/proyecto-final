@@ -19,11 +19,13 @@ class NotificationResource extends JsonResource
             'title' => $this->title,
             'body' => $this->body,
             'createdAt' => $this->created_at,
-            'staffDevice' => StaffDeviceResource::make($this->whenLoaded('staffDevice')),
             'isSeen' => $this->is_seen,
             'isArchived' => $this->is_archived,
             'notifiableId' => $this->notifiable_id,
             'notifiableType' => $this->notifiable_type,
+            'creator' => StaffResource::make($this->whenLoaded('creator')),
+            'staff' => StaffResource::make($this->whenLoaded('staff')),
+            'staffDevice' => StaffDeviceResource::make($this->whenLoaded('staffDevice')),
         ];
     }
 }

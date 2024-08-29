@@ -15,6 +15,8 @@ class Notification extends Model
         'title',
         'body',
         'staff_devices_id',
+        'created_by',
+        'staff_id',
         'is_seen',
         'is_archived',
         'notifiable_id',
@@ -24,6 +26,16 @@ class Notification extends Model
     public function staffDevice()
     {
         return $this->belongsTo(StaffDevice::class, 'staff_devices_id');
+    }
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(Staff::class, 'created_by');
     }
 
     public function notifiable(): MorphTo

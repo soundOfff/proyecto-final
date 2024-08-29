@@ -180,31 +180,54 @@ export default function Table({ rows }) {
     {
       Header: "#",
       accessor: "id",
+      width: "5%",
     },
     {
       Header: "Nombre",
       accessor: "title",
+      width: "20%",
       Cell: ({ row }) => (
-        <MDTypography variant="body3" fontWeight="medium">
+        <MDTypography variant="body2" fontWeight="medium">
           {row.original.title}
         </MDTypography>
       ),
     },
     {
       Header: "Descripción",
-      width: "50%",
+      width: "30%",
       accessor: "body",
+      Cell: ({ row }) => (
+        <MDTypography variant="body2" fontWeight="medium">
+          {row.original.body}
+        </MDTypography>
+      ),
+    },
+    {
+      Header: "Creado por",
+      accessor: "creator",
+      Cell: ({ row }) => (
+        <MDTypography variant="body3" fontWeight="medium" color="text">
+          {row.original.creator?.name}
+        </MDTypography>
+      ),
     },
     {
       Header: "Fecha de envio",
       accessor: "created_at",
-      Cell: ({ row }) => (
-        <Tooltip title={moment(row.original.createdAt).format("LLL")}>
-          <MDTypography variant="body3" sx={{ ml: 1 }}>
-            {moment(row.original.createdAt).locale("es").fromNow()}
-          </MDTypography>
-        </Tooltip>
-      ),
+      Cell: ({ row }) => {
+        const notificationDate = moment(row.original.createdAt);
+        const isToday = notificationDate.isSame(moment(), "day");
+
+        return (
+          <Tooltip title={notificationDate.format("LLL")}>
+            <MDTypography variant="body3" sx={{ ml: 1 }}>
+              {isToday
+                ? notificationDate.locale("es").fromNow()
+                : notificationDate.format("LLL")}
+            </MDTypography>
+          </Tooltip>
+        );
+      },
     },
     {
       Header: "Acciones",

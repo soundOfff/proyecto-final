@@ -428,7 +428,7 @@ export default function Content({ selectedFork }) {
             onChange={(e) => setCommentContent(e.target.value)}
             sx={{ mb: 2, width: "100%" }}
           />
-          <MDBox display="flex" justifyContent="end">
+          <MDBox display="flex" justifyContent="end" mt={2}>
             <MDButton
               variant="gradient"
               color="dark"

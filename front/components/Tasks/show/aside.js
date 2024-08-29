@@ -10,6 +10,7 @@ import {
   InputLabel,
   Switch,
   Autocomplete,
+  Box,
 } from "@mui/material";
 import {
   AccessTime,
@@ -143,9 +144,8 @@ export default function Aside() {
   useEffect(() => {
     update(task.id, { followers: followers });
   }, [followers, task.id]);
-
   return (
-    <Grid item xs={5}>
+    <Grid item xs={7} lg={5}>
       <MDBox bgColor="light" pr={2} pl={4} py={2} height="100%">
         {task.recurring && (
           <>
@@ -213,7 +213,13 @@ export default function Aside() {
               onChange={(date) =>
                 setStartDate(moment(date[0]).format("YYYY-MM-DD"))
               }
-              sx={{ ml: 1, height: "40px" }}
+              sx={{
+                ml: 1,
+                height: "40px",
+                "& .flatpickr-calendar": {
+                  left: "-100px !important",
+                },
+              }}
             />
           </Grid>
 
@@ -417,7 +423,7 @@ export default function Aside() {
                       .tz("America/Panama")
                       .format("YYYY-MM-DD HH:mm:ss"),
                     enableTime: true,
-                    position: "auto right",
+                    position: "right top",
                     static: true,
                   }}
                 />

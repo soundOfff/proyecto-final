@@ -38,6 +38,17 @@ const flatpickr = {
     },
   },
 
+  ".flatpickr-calendar.static": {
+    "@media (max-width: 1020px)": {
+      // xs, sm, md (up to 1020px)
+      left: "-60px !important",
+    },
+    "@media (min-width: 1020px)": {
+      // lg and up
+      left: "0 !important",
+    },
+  },
+
   ".flatpickr-day.selected, .flatpickr-day.selected:hover, .flatpickr-day.nextMonthDay.selected, .flatpickr-day.nextMonthDay.selected:hover, .flatpickr-day.nextMonthDay.selected:focus":
     {
       background: `${gradients.dark.state} !important`,

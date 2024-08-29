@@ -25,6 +25,7 @@ import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
 import ModalContentForm from "/components/ModalContent/Task";
+import ShowLoader from "/components/Loader";
 import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ import update from "immutability-helper";
 import useTaskTable from "/hooks/useTaskTable";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { getColor, getPriorityColor } from "/utils/project-state-colors";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function Table({
   statuses,
@@ -76,6 +78,7 @@ export default function Table({
     setTaskId,
     handleCreateTasks,
     setOpenShowModal,
+    isLoadingShow,
   } = useTaskTable({
     rows,
     dispatch,
@@ -207,33 +210,14 @@ export default function Table({
       accessor: "status",
       Cell: ({ row }) => {
         return (
-          {
-            /* <Autocomplete
-            value={statuses?.find(
-              (status) => status.id === row.original.status.id
-            )}
-            disabled={row.original.isBlocked || !row.original.canChangeStatus}
-            onChange={(e, status) => {
-              handleStatusChange(row.original.id, status.id);
-            }}
-            options={statuses}
-            sx={{ width: "150px" }}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <MDInput {...params} variant="standard" fullWidth />
-            )}
-          /> */
-          },
-          (
-            <MDBox display="flex" flexDirection="row" alignItems="center">
-              <MDBadge
-                variant="contained"
-                color={getColor(row.original.status.id)}
-                size="md"
-                badgeContent={row.original.status.name}
-              />
-            </MDBox>
-          )
+          <MDBox display="flex" flexDirection="row" alignItems="center">
+            <MDBadge
+              variant="contained"
+              color={getColor(row.original.status.id)}
+              size="md"
+              badgeContent={row.original.status.name}
+            />
+          </MDBox>
         );
       },
     },
@@ -281,37 +265,14 @@ export default function Table({
       accessor: "priority",
       width: 200,
       Cell: ({ row }) => (
-        {
-          /* <Autocomplete
-          value={priorities.find(
-            (priority) => priority.id === row.original.priority.id
-          )}
-          onChange={(e, priority) => {
-            handlePriorityChange(row.original.id, priority.id);
-          }}
-          options={priorities}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-          sx={{ width: "150px" }}
-        /> */
-        },
-        (
-          <MDBox display="flex" flexDirection="row" alignItems="center">
-            <MDBadge
-              variant="contained"
-              color={getPriorityColor(row.original.priority.name)}
-              size="md"
-              badgeContent={row.original.priority.name}
-            />
-          </MDBox>
-        )
+        <MDBox display="flex" flexDirection="row" alignItems="center">
+          <MDBadge
+            variant="contained"
+            color={getPriorityColor(row.original.priority.name)}
+            size="md"
+            badgeContent={row.original.priority.name}
+          />
+        </MDBox>
       ),
     },
     {
@@ -468,7 +429,11 @@ export default function Table({
             width="70%"
             sx={{ overflow: "scroll" }}
           >
-            {task && (
+            {isLoadingShow || !task ? (
+              <Backdrop open={true} sx={{ background: "white" }}>
+                <CircularProgress size={80} color="black" />
+              </Backdrop>
+            ) : (
               <DataProvider
                 value={{
                   task,

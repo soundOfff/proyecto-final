@@ -104,24 +104,33 @@ export default function Aside() {
   };
 
   useEffect(() => {
-    update(task.id, { task_status_id: statusId });
-  }, [statusId, task.id]);
+    if (statusId != task.status.id) {
+      update(task.id, { task_status_id: statusId });
+    }
+  }, [statusId, task.id, task.status.id]);
 
   useEffect(() => {
-    update(task.id, { start_date: startDate });
-  }, [startDate, task.id]);
+    if (startDate != task.start_date)
+      update(task.id, { start_date: startDate });
+  }, [startDate, task.id, task.start_date]);
 
   useEffect(() => {
-    update(task.id, { due_date: dueDate });
-  }, [dueDate, task.id]);
+    if (dueDate != task.due_date) {
+      update(task.id, { due_date: dueDate });
+    }
+  }, [dueDate, task.id, task.due_date]);
 
   useEffect(() => {
-    update(task.id, { task_priority_id: priorityId });
-  }, [priorityId, task.id]);
+    if (priorityId != task.priority_id) {
+      update(task.id, { task_priority_id: priorityId });
+    }
+  }, [priorityId, task.id, task.priority_id]);
 
   useEffect(() => {
-    update(task.id, { billable: billable });
-  }, [billable, task.id]);
+    if (billable != task.billable) {
+      update(task.id, { billable: billable });
+    }
+  }, [billable, task.id, task.billable]);
 
   useEffect(() => {
     update(task.id, { tags: tags });

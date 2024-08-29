@@ -40,6 +40,7 @@ class TaskResource extends JsonResource
             'is_file_needed' => $this->is_file_needed,
             'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'total_time' => $this->getTotalTime(),
+            'parsed_total_time' => $this->getParsedTotalTime(),
             'timers' => TaskTimerResource::collection($this->whenLoaded('timers')),
             'priority' => TaskPriorityResource::make($this->whenLoaded('priority')),
             'status' => TaskStatusResource::make($this->whenLoaded('status')),

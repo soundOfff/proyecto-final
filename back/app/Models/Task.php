@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -86,9 +87,9 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn() => (($this->files->count() > 0 && $this->is_file_needed) || !$this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
                 && $this->requiredFields->every(
-                    fn(TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
+                    fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
         );
     }
@@ -96,7 +97,7 @@ class Task extends Model
     protected function isBlocked(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->dependencies->contains(fn(self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+            get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
         );
     }
 
@@ -197,7 +198,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (!$this->procedure) {
+        if (! $this->procedure) {
             return false;
         }
 
@@ -214,6 +215,18 @@ class Task extends Model
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function getParsedTotalTime()
+    {
+        if ($this->timers->isEmpty()) {
+            return null;
+        }
+
+        $startDate = $this->timers->first()->start_time ?: null;
+        $endDate = $this->timers->last()->end_time ?: null;
+
+        return Carbon::parse($startDate)->diff($endDate)->format('%H:%I');
     }
 
     public function getTotalTime($startDate = null, $endDate = null)

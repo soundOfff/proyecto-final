@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\TaskResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,5 +42,15 @@ class Notification extends Model
     public function notifiable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public static function getNotifiableTypes(): array
+    {
+        return [
+            'task' => [
+                'resource' => TaskResource::class,
+                'load' => ['taskable'],
+            ]
+        ];
     }
 }

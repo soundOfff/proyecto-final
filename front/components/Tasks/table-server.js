@@ -61,13 +61,12 @@ export default function Table({
     handleCloseShowModal,
     stopTimer,
     startTimer,
-    handleStatusChange,
-    handlePriorityChange,
     getSelectedFork,
     handleCompleteTask,
     setOpenShowModal,
     setOpenEditModal,
     setTaskId,
+    isLoadingShow,
   } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
   const { darkMode } = controller;
   const { data: session } = useSession();
@@ -408,7 +407,11 @@ export default function Table({
           width="70%"
           sx={{ overflow: "scroll" }}
         >
-          {task && (
+          {isLoadingShow || !task ? (
+            <Backdrop open={true} sx={{ background: "white" }}>
+              <CircularProgress size={80} color="black" />
+            </Backdrop>
+          ) : (
             <DataProvider
               value={{
                 task,

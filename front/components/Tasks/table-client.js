@@ -127,6 +127,20 @@ export default function Table({
     );
   };
 
+  const handleOpenModal = (id) => {
+    setTaskId(id);
+    setOpenShowModal(true);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("taskId", id);
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const removeParams = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("taskId");
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
   useEffect(() => {
     if (rows.length > 0) {
       setTimeout(() => {
@@ -424,7 +438,10 @@ export default function Table({
         {openEditModal && (
           <Modal
             open={openEditModal}
-            onClose={handleCloseEditModal}
+            onClose={() => {
+              handleCloseEditModal();
+              removeParams();
+            }}
             width="80%"
           >
             <ModalContentForm

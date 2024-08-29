@@ -1,4 +1,9 @@
 import {
+  IN_PROGRESS_ID,
+  PENDING_ID,
+  DONE_STATUS_ID,
+} from "./constants/taskStatuses";
+import {
   NOT_STARTED,
   DEVELOPING,
   WAITING,
@@ -52,6 +57,18 @@ export function getPriorityColor(label) {
   } else if (label === HIGH_PRIORITY) {
     return "primary";
   } else if (label === URGENT_PRIORITY) {
+    return "error";
+  } else {
+    return "dark";
+  }
+}
+
+export function getStatusColor(label) {
+  if (label === DONE_STATUS_ID) {
+    return "success";
+  } else if (label === IN_PROGRESS_ID) {
+    return "warning";
+  } else if (label === PENDING_ID) {
     return "error";
   } else {
     return "dark";

@@ -12,6 +12,7 @@ class TaskStatusSort implements Sort
         $direction = $descending ? 'DESC' : 'ASC';
 
         $query
+            ->select('tasks.*')
             ->leftJoin('task_statuses as task_statuses_order', 'tasks.task_status_id', '=', 'task_statuses_order.id')
             ->orderByRaw("task_statuses_order.{$property} IS NULL, task_statuses_order.{$property} {$direction}");
     }

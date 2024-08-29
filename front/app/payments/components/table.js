@@ -50,15 +50,16 @@ export default function Table({ rows }) {
           {row.original.invoices && row.original.invoices.length > 0 ? (
             row.original.invoices.map((invoice) => (
               <MDBox key={invoice.id}>
-                <Link href={`/invoices/${invoice.id}`}>
-                  <MDTypography variant="button" fontWeight="regular">
-                    {invoice.number}
-                  </MDTypography>
-                </Link>
+                <Link href={`/invoices/${invoice.id}`}>{invoice.number}</Link>
               </MDBox>
             ))
           ) : (
-            <MDTypography variant="button" fontWeight="regular" color="text">
+            <MDTypography
+              variant="caption"
+              fontWeight="regular"
+              color="text"
+              fontSize="small"
+            >
               Sin facturas relacionadas
             </MDTypography>
           )}
@@ -70,10 +71,12 @@ export default function Table({ rows }) {
       accessor: "paymentMethod.name",
       Cell: ({ row }) => (
         <MDTypography
-          variant="button"
+          variant="caption"
           display="flex"
           justifyContent="center"
           fontWeight="regular"
+          fontSize="small"
+          color="text"
         >
           {row.original.paymentMethod.name.toUpperCase()}
         </MDTypography>
@@ -89,9 +92,7 @@ export default function Table({ rows }) {
       accessor: "partner.name",
       Cell: ({ row }) => (
         <Link href={`/partners/${row.original.partner.id}`}>
-          <MDTypography variant="button" fontWeight="regular" color="dark">
-            {row.original.partner.company}
-          </MDTypography>
+          {row.original.partner.company}
         </Link>
       ),
     },

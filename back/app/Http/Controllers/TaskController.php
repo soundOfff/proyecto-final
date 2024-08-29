@@ -28,9 +28,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    public function __construct(protected FcmService $fcmService)
-    {
-    }
+    public function __construct(protected FcmService $fcmService) {}
 
     public function select()
     {
@@ -64,8 +62,8 @@ class TaskController extends Controller
                 'start_date',
                 'due_date',
                 'milestone_order',
-                AllowedSort::custom('status', new TaskStatusSort(), 'name'),
-                AllowedSort::custom('priority', new TaskPrioritySort(), 'name'),
+                AllowedSort::custom('status', new TaskStatusSort(), 'id'),
+                AllowedSort::custom('priority', new TaskPrioritySort(), 'id'),
                 AllowedSort::custom('author', new TaskAuthorSort(), 'first_name'),
                 AllowedSort::custom('partner', new TaskPartnerSort()),
             ])
@@ -83,15 +81,15 @@ class TaskController extends Controller
                             $query
                                 ->whereHas(
                                     'assigneds',
-                                    fn (Builder $query) => $query->where('staff_id', $value)
+                                    fn(Builder $query) => $query->where('staff_id', $value)
                                 );
                         }
                     ),
                     AllowedFilter::callback(
                         'period',
-                        fn (Builder $query, $value) => $query->whereHas(
+                        fn(Builder $query, $value) => $query->whereHas(
                             'timers',
-                            fn (Builder $query) => $query->whereBetween('start_time', $value)
+                            fn(Builder $query) => $query->whereBetween('start_time', $value)
                         )
                     ),
                 ]
@@ -186,6 +184,8 @@ class TaskController extends Controller
         if ($comments) {
             $task->comments()->delete();
             $task->comments()->createMany($comments);
+        } elseif ($comments === []) {
+            $task->comments()->delete();
         }
 
         if ($dependencies) {
@@ -196,6 +196,8 @@ class TaskController extends Controller
         if ($checklistItems) {
             $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
+        } elseif ($checklistItems === []) {
+            $task->checklistItems()->delete();
         }
 
         if ($assigneds) {
@@ -211,6 +213,8 @@ class TaskController extends Controller
         if ($reminders) {
             $task->reminders()->delete();
             $task->reminders()->createMany($reminders);
+        } elseif ($reminders === []) {
+            $task->reminders()->delete();
         }
 
         if ($tags) {
@@ -226,6 +230,8 @@ class TaskController extends Controller
         if ($requiredFields) {
             $task->requiredFields()->delete();
             $task->requiredFields()->createMany($requiredFields);
+        } elseif ($requiredFields === []) {
+            $task->requiredFields()->delete();
         }
 
         if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {
@@ -244,7 +250,9 @@ class TaskController extends Controller
                         $device->device_token,
                         'Tarea Completada',
                         "La tarea \"$taskName\" ha sido completada, puede elegir el siguiente proceso",
-                        $staff->id
+                        $staff->id,
+                        strtolower(class_basename(Task::class)),
+                        $task->id
                     );
                 }
             }
@@ -371,22 +379,22 @@ class TaskController extends Controller
             }
         );
 
-        $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
+        $totalTime = $tasks->sum(fn($task) => $task->getTotalTime());
 
         $totalDayTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($dayStart, $dayEnd));
+            ->sum(fn($task) => $task->getTotalTime($dayStart, $dayEnd));
 
         $totalWeekTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
+            ->sum(fn($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
 
         $totalLastWeekTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
+            ->sum(fn($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
 
         $totalMonthTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
+            ->sum(fn($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
 
         $totalLastMonthTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
+            ->sum(fn($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
 
         $monthlyPercentage = $totalLastMonthTime
             ? (($totalMonthTime - $totalLastMonthTime) / $totalLastMonthTime) * 100

@@ -222,7 +222,7 @@ function DataTable({
   if (pageIndex === 0) {
     entriesEnd = pageSize;
   } else if (pageIndex === pageOptions.length - 1) {
-    entriesEnd = rows.length;
+    entriesEnd = table.rows.length;
   } else {
     entriesEnd = pageSize * (pageIndex + 1);
   }

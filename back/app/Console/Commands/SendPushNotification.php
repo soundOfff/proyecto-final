@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Reminder;
+use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Services\FcmService;
 use Carbon\Carbon;
@@ -30,6 +31,7 @@ class SendPushNotification extends Command
             ->select(
                 'reminders.id as reminder_id',
                 'staff.id as staff_id',
+                'tasks.id as task_id',
                 'tasks.name as task_name',
                 'reminders.description as description',
                 'staff_devices.device_token as device_token',
@@ -42,14 +44,14 @@ class SendPushNotification extends Command
                     ->on('reminders.reminderable_id', '=', 'tasks.id')
                     ->on('reminders.reminderable_type', '=', DB::raw('"task"'));
             })
-            // ->where('reminders.is_notified', false) commented for notification test, uncomment for production
+            // ->where('reminders.is_notified', false)
             ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED)
             ->get();
 
         foreach ($notifies as $notify) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id);
+                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id);
                 Reminder::find($notify->reminder_id)->update(['is_notified' => true]);
             }
         }

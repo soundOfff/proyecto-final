@@ -10,7 +10,7 @@ import { authOptions } from "/pages/api/auth/[...nextauth]";
 export const dynamic = "force-dynamic";
 
 export default async function Notifications({
-  searchParams: { perPage = 10, page = 1, sort = "is_seen" },
+  searchParams: { perPage = 10, page = 1, sort = "is_seen", type },
 }) {
   const session = await getServerSession(authOptions);
 
@@ -18,8 +18,8 @@ export default async function Notifications({
     data: { notifications },
     meta,
   } = await getAllNotifications({
-    "filter[staffId]": session.staff.id,
-    "filter[is_archived]": 0, // filter out archived notifications
+    "filter[staffId]": session?.staff?.id,
+    "filter[is_archived]": type == "archived" ? true : false,
     page,
     perPage,
     sort,

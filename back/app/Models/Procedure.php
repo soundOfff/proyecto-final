@@ -13,11 +13,11 @@ class Procedure extends Model
         'id',
         'process_id',
         'procedure_status_id',
-        'responsible_id',
         'author_id',
         'step_number',
         'name',
         'description',
+        'responsible',
     ];
 
     public function process(): BelongsTo
@@ -33,11 +33,6 @@ class Procedure extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(ProcedureStatus::class, 'procedure_status_id');
-    }
-
-    public function responsible(): BelongsTo
-    {
-        return $this->belongsTo(Staff::class, 'responsible_id');
     }
 
     public function actions()
@@ -98,7 +93,7 @@ class Procedure extends Model
         if ($this->dependencies->isNotEmpty()) {
             $procedureDependencies = array_column($this->dependencies->toArray(), 'id');
             $tasksId = array_map(
-                fn($id) => Task::where('procedure_id', $id)
+                fn ($id) => Task::where('procedure_id', $id)
                     ->where('taskable_id', $project->id)
                     ->where('taskable_type', Task::TASKABLE_PROJECT)
                     ->first()->id,

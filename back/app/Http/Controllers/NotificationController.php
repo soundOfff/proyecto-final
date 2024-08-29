@@ -61,6 +61,7 @@ class NotificationController extends Controller
             DB::table('notifications')
             ->selectRaw('count(*) as count')
             ->where('is_seen', false)
+            ->whereNull('notifications.deleted_at')
             ->when($request->get('staff_id'), function ($query, $staffId) {
                 return $query
                     ->join('staff_devices', 'notifications.staff_devices_id', '=', 'staff_devices.id')
@@ -100,12 +101,13 @@ class NotificationController extends Controller
         $notificationsIds = $request->validate([
             'notification_ids' => 'required|array',
             'notification_ids.*' => 'required|exists:notifications,id',
+            'is_seen' => 'required|boolean',
         ])['notification_ids'];
 
         foreach ($notificationsIds as $notificationId) {
             $notification = Notification::find($notificationId);
             if ($notification) {
-                $notification->update(['is_seen' => 1]);
+                $notification->update(['is_seen' => $request->is_seen]);
             }
         }
 
@@ -117,12 +119,13 @@ class NotificationController extends Controller
         $notificationsIds = $request->validate([
             'notification_ids' => 'required|array',
             'notification_ids.*' => 'required|exists:notifications,id',
+            'is_archived' => 'required|boolean',
         ])['notification_ids'];
 
         foreach ($notificationsIds as $notificationId) {
             $notification = Notification::find($notificationId);
             if ($notification) {
-                $notification->update(['is_archived' => 1]);
+                $notification->update(['is_archived' => $request->is_archived]);
             }
         }
 
@@ -132,8 +135,10 @@ class NotificationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(Notification $notification)
     {
-        //
+        $notification->delete();
+
+        return response()->json(null, 204);
     }
 }

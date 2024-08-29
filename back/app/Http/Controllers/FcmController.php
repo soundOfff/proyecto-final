@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use App\Models\StaffDevice;
+use App\Models\Task;
 use App\Services\FcmService;
 use Illuminate\Http\Request;
 
 class FcmController extends Controller
 {
-    public function __construct(protected FcmService $fcmService)
-    {
-    }
+    public function __construct(protected FcmService $fcmService) {}
 
     public function sendNotification(Request $request)
     {
@@ -21,9 +20,10 @@ class FcmController extends Controller
                 'title' => 'required|string',
                 'body' => 'required|string',
                 'staff_id' => 'required|exists:staff,id',
+                'task_id' => 'required|exists:tasks,id',
             ]);
 
-            $this->fcmService->sendNotification($request->device_token, $request->title, $request->body, $request->staff_id);
+            $this->fcmService->sendNotification($request->device_token, $request->title, $request->body, $request->staff_id, strtolower(class_basename(Task::class)), $request->task_id);
 
             return response()->json(null, 204);
         } catch (\Exception $e) {

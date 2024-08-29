@@ -28,8 +28,10 @@ import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { getColor, getPriorityColor } from "/utils/project-state-colors";
 
 import useTaskTable from "/hooks/useTaskTable";
+import { useEffect } from "react";
 
 export default function Table({
   rows,
@@ -84,12 +86,30 @@ export default function Table({
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
+  const removeParams = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("taskId");
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
   const handleOpenModal = (id) => {
     setTaskId(id);
     setOpenShowModal(true);
     const params = new URLSearchParams(searchParams.toString());
+    params.set("taskId", id);
     router.replace(`${pathname}?${params.toString()}`);
   };
+
+  useEffect(() => {
+    const taskId = parseInt(searchParams.get("taskId"));
+
+    if (Number.isNaN(taskId)) return;
+
+    if (taskId !== currentTaskId && taskId !== task?.id) {
+      setTaskId(Number(searchParams.get("taskId")));
+      setOpenShowModal(true);
+    }
+  }, [searchParams, setTaskId, setOpenShowModal]);
 
   const columns = [
     {
@@ -145,7 +165,8 @@ export default function Table({
       accessor: "status",
       Cell: ({ row }) => {
         return (
-          <Autocomplete
+          {
+            /* <Autocomplete
             value={statuses?.find(
               (status) => status.id === row.original.status.id
             )}
@@ -159,7 +180,18 @@ export default function Table({
             renderInput={(params) => (
               <MDInput {...params} variant="standard" fullWidth />
             )}
-          />
+          /> */
+          },
+          (
+            <MDBox display="flex" flexDirection="row" alignItems="center">
+              <MDBadge
+                variant="contained"
+                color={getColor(row.original.status.id)}
+                size="md"
+                badgeContent={row.original.status.name}
+              />
+            </MDBox>
+          )
         );
       },
     },
@@ -193,7 +225,8 @@ export default function Table({
       accessor: "priority",
       width: 200,
       Cell: ({ row }) => (
-        <Autocomplete
+        {
+          /* <Autocomplete
           value={priorities.find(
             (priority) => priority.id === row.original.priority.id
           )}
@@ -211,7 +244,18 @@ export default function Table({
             />
           )}
           sx={{ width: "150px" }}
-        />
+        /> */
+        },
+        (
+          <MDBox display="flex" flexDirection="row" alignItems="center">
+            <MDBadge
+              variant="contained"
+              color={getPriorityColor(row.original.priority.name)}
+              size="md"
+              badgeContent={row.original.priority.name}
+            />
+          </MDBox>
+        )
       ),
     },
     {
@@ -320,7 +364,14 @@ export default function Table({
         </MDButton>
       </MDBox>
       {openEditModal && (
-        <Modal open={openEditModal} onClose={handleCloseEditModal} width="40%">
+        <Modal
+          open={openEditModal}
+          onClose={() => {
+            handleCloseEditModal();
+            removeParams();
+          }}
+          width="40%"
+        >
           <ModalContentForm
             priorities={priorities}
             repeats={repeats}
@@ -348,7 +399,10 @@ export default function Table({
       {openShowModal && (
         <Modal
           open={openShowModal}
-          onClose={handleCloseShowModal}
+          onClose={() => {
+            handleCloseShowModal();
+            removeParams();
+          }}
           px={0}
           py={0}
           width="70%"

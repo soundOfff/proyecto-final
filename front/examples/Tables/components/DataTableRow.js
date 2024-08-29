@@ -92,7 +92,7 @@ export default function DataTableRow({
       if (currentProcessId !== previousProcessId) {
         currentColor =
           currentColor === "rgb(225, 225, 225, 0.4)"
-            ? "rgb(200, 200, 255, 0.4)"
+            ? "rgb(180, 210, 255, 0.4)"
             : "rgb(225, 225, 225, 0.4)";
         previousProcessId = currentProcessId;
       }

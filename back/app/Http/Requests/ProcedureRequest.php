@@ -27,7 +27,7 @@ class ProcedureRequest extends FormRequest
             'author_id' => 'required|numeric|exists:staff,id',
             'step_number' => 'required|numeric',
             'name' => 'required|string',
-            'responsible_id' => 'nullable|numeric|exists:staff,id',
+            'responsible' => 'nullable|string',
             'description' => 'nullable|string',
             'dependencies' => 'nullable|array',
             'dependencies.*.id' => 'numeric|exists:procedures,id',

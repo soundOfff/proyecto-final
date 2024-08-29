@@ -31,7 +31,7 @@ const form = {
       errorMsg: "Debe seleccionar un estado",
     },
     responsible: {
-      name: "responsible_id",
+      name: "responsible",
       label: "Responsable",
       errorMsg: "Debe seleccionar un responsable",
     },

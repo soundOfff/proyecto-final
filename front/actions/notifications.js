@@ -14,23 +14,23 @@ export async function getAll(params) {
   return data;
 }
 
-export async function updateMany(ids = []) {
+export async function updateMany(body) {
   const url = new URL(`${process.env.API_URL}/notifications-update-many`);
 
   await customFetch(url, {
     method: "PUT",
-    body: JSON.stringify(ids),
+    body: JSON.stringify(body),
   });
 
   revalidatePath("/notifications");
 }
 
-export async function archiveMany(ids = []) {
+export async function archiveMany(body) {
   const url = new URL(`${process.env.API_URL}/notifications-archive-many`);
 
   await customFetch(url, {
     method: "PUT",
-    body: JSON.stringify(ids),
+    body: JSON.stringify(body),
   });
 
   revalidatePath("/notifications");
@@ -45,4 +45,14 @@ export async function getIsNotSeenCount(body) {
   });
 
   return response.count;
+}
+
+export async function destroy(notificationId) {
+  const url = new URL(`${process.env.API_URL}/notifications/${notificationId}`);
+
+  await customFetch(url, {
+    method: "DELETE",
+  });
+
+  revalidatePath("/notifications");
 }

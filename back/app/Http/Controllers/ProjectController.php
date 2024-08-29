@@ -134,7 +134,9 @@ class ProjectController extends Controller
                     $device->device_token,
                     'Se ha creado un nuevo caso',
                     "Nombre Del Caso: $project->name",
-                    $staff->id
+                    $staff->id,
+                    $project->id,
+                    strtolower(class_basename(Project::class)),
                 );
             }
         }

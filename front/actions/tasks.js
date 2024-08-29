@@ -46,7 +46,7 @@ export async function store(data) {
 
   revalidatePath("/tasks");
   revalidatePath("/projects");
-  revalidatePath("/invoices/[id]");
+  revalidatePath("/invoices");
 }
 
 export async function update(taskId, data) {
@@ -60,7 +60,7 @@ export async function update(taskId, data) {
   revalidatePath("/tasks");
   revalidatePath("/projects");
   revalidatePath("/partners/tasks");
-  revalidatePath("/invoices/[id]");
+  revalidatePath("/invoices");
   revalidatePath("/expenses");
 }
 
@@ -83,7 +83,7 @@ export async function destroy(taskId) {
   revalidatePath("/tasks");
   revalidatePath("/projects");
   revalidatePath("/partners/tasks");
-  revalidatePath("/invoices/[id]");
+  revalidatePath("/invoices");
 }
 
 export async function destroyMany(taskIds) {
@@ -97,7 +97,7 @@ export async function destroyMany(taskIds) {
   revalidatePath("/tasks");
   revalidatePath("/projects");
   revalidatePath("/partners/tasks");
-  revalidatePath("/invoices/[id]");
+  revalidatePath("/invoices");
 }
 
 export async function getCountByStatuses(params) {

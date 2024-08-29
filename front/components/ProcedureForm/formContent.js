@@ -25,7 +25,8 @@ export default function FormContent({
   actionTypes: actionsOptions,
 }) {
   const { formField } = form;
-  const { name, description, stepNumber, dependencies, actions } = formField;
+  const { name, description, stepNumber, dependencies, actions, responsible } =
+    formField;
 
   const gtrProcedures = useCallback(() => {
     return procedure
@@ -47,6 +48,7 @@ export default function FormContent({
       setFieldValue(stepNumber.name, procedure.stepNumber);
       setFieldValue(dependencies.name, procedure.dependencies || []);
       setFieldValue(actions.name, procedure.actions || []);
+      setFieldValue(responsible.name, procedure.responsible || "");
     }
   }, [
     procedure,
@@ -56,6 +58,7 @@ export default function FormContent({
     stepNumber.name,
     dependencies.name,
     actions.name,
+    responsible.name,
   ]);
 
   const validateStepNumberNotExist = (stepNumber) => {
@@ -112,6 +115,8 @@ export default function FormContent({
     }
   }, [values, stepNumber, procedure, procedures, setFieldError, errors]);
 
+  const responsibles = ["Cliente", "Velo", "Juzgado", "Otros"];
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} sm={6}>
@@ -148,6 +153,26 @@ export default function FormContent({
           success={description.length > 0 && !errors.description}
           multiline
           rows={4}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <Autocomplete
+          options={responsibles}
+          onChange={(event, newValue) => {
+            setFieldValue(responsible.name, newValue);
+          }}
+          value={values[responsible.name]}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Responsable"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.responsible && touched.responsible)}
+              helperText={touched.responsible && errors.responsible}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12}>

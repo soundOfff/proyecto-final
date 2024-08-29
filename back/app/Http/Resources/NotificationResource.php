@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,6 +27,14 @@ class NotificationResource extends JsonResource
             'creator' => StaffResource::make($this->whenLoaded('creator')),
             'staff' => StaffResource::make($this->whenLoaded('staff')),
             'staffDevice' => StaffDeviceResource::make($this->whenLoaded('staffDevice')),
+            'notifiable' => $this->whenLoaded('notifiable', function () {
+                $notifiableTypes = Notification::getNotifiableTypes();
+                $notifiableType = $notifiableTypes[$this->notifiable_type] ?? null;
+                return $notifiableType
+                    ? $notifiableType['resource']::make($this->whenLoaded('notifiable'))->load($notifiableType['load'])
+                    : null;
+            }),
+
         ];
     }
 }

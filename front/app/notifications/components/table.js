@@ -26,6 +26,7 @@ import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
 import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
+import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
 
 const TAB_TYPES = [
   {
@@ -64,6 +65,16 @@ export default function Table({ rows }) {
       return "#";
     }
     return MAPPED_NOTIFIABLE_TYPES[notifiableType].url + notifiableId;
+  };
+
+  const getTaskableUrl = (row) => {
+    if (row.notifiable) {
+      return getResourceUrl(
+        row.notifiable.taskable.name ? PROJECT_TYPE : INVOICE_TYPE,
+        row.notifiable.taskable.id
+      );
+    }
+    return "#";
   };
 
   const handleUpdateSeen = async (id, isSeen) => {
@@ -209,6 +220,22 @@ export default function Table({ rows }) {
         <MDTypography variant="body3" fontWeight="medium" color="text">
           {row.original.creator?.name}
         </MDTypography>
+      ),
+    },
+    {
+      Header: "Caso",
+      accessor: "case",
+      width: "15%",
+      Cell: ({ row }) => (
+        <Link href={getTaskableUrl(row.original)} target="_blank">
+          <MDTypography variant="body3" fontWeight="medium" color="link">
+            {row.original.notifiable
+              ? row.original.notifiable.taskable
+                ? row.original.notifiable.taskable.name
+                : `#${row.original.notifiable.number}`
+              : "N/A"}
+          </MDTypography>
+        </Link>
       ),
     },
     {

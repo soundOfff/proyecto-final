@@ -133,6 +133,11 @@ class Invoice extends Model
         return $this->morphMany(LineItem::class, 'line_itemable');
     }
 
+    public function notifications(): MorphMany
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
+
     public static function getNextNumber()
     {
         $lastInvoice = self::orderBy('id', 'desc')->first();

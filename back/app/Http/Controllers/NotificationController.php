@@ -18,7 +18,7 @@ class NotificationController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Notification::class)
-            ->allowedIncludes(['staffDevice', 'staff', 'creator'])
+            ->allowedIncludes(['staffDevice', 'staff', 'creator', 'notifiable'])
             ->allowedSorts([
                 'title',
                 'body',

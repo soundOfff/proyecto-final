@@ -54,7 +54,7 @@ export default function Table({ rows, meta }) {
           fontSize="small"
           sx={{ display: "flex" }}
         >
-          {MAPPED_FILEABLE_TYPES[row.original.fileableType].label}
+          {MAPPED_FILEABLE_TYPES[row.original.fileableType]?.label ?? ""}
         </MDTypography>
       ),
     },

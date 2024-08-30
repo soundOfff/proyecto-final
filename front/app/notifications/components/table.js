@@ -199,33 +199,29 @@ export default function Table({ rows }) {
       width: "20%",
       Cell: ({ row }) => (
         <MDBox display="flex" gap={2} mt={1}>
-          <MDTypography variant="body2" fontWeight="medium">
-            {row.original.title}
-          </MDTypography>
           {row.original.notifiableId != 0 &&
-            row.original.notifiableType.length > 0 && (
-              <Tooltip title="Ir al recurso" placement="top">
-                <Link
-                  target="_blank"
-                  href={getResourceUrl(
-                    row.original.notifiableType,
-                    row.original.notifiableId
-                  )}
-                  aria-disabled={row.original.notifiableId == 0}
-                  tabIndex={row.original.notifiableId == 0 ? -1 : 0}
-                  style={{
-                    pointerEvents:
-                      row.original.notifiableId == 0 ? "none" : "null",
-                  }}
-                >
-                  <LinkIcon
-                    my="auto"
-                    fontSize="medium"
-                    color={row.original.notifiableId != 0 ? "success" : "text"}
-                  />
-                </Link>
-              </Tooltip>
-            )}
+          row.original.notifiableType.length > 0 ? (
+            <Link
+              target="_blank"
+              href={getResourceUrl(
+                row.original.notifiableType,
+                row.original.notifiableId
+              )}
+              aria-disabled={row.original.notifiableId == 0}
+              tabIndex={row.original.notifiableId == 0 ? -1 : 0}
+              style={{
+                pointerEvents: row.original.notifiableId == 0 ? "none" : "null",
+              }}
+            >
+              <MDTypography variant="body2" fontWeight="medium" color="link">
+                {row.original.title}
+              </MDTypography>
+            </Link>
+          ) : (
+            <MDTypography variant="body2" fontWeight="medium" color="text">
+              {row.original.title}
+            </MDTypography>
+          )}
         </MDBox>
       ),
     },

@@ -148,14 +148,15 @@ export default function Table({
             </MDTypography>
           </MDBox>
         ) : (
-          <MDTypography
-            variant="body2"
-            color="info"
-            sx={{ cursor: "pointer" }}
-            onClick={() => handleOpenModal(row.original.id)}
-          >
-            {row.original.name}
-          </MDTypography>
+          <MDBox sx={{ cursor: "pointer" }}>
+            <MDTypography
+              variant="body2"
+              color="info"
+              onClick={() => handleOpenModal(row.original.id)}
+            >
+              {row.original.name}
+            </MDTypography>
+          </MDBox>
         ),
     },
     {
@@ -214,6 +215,7 @@ export default function Table({
               color="dark"
               size="md"
               badgeContent={tag.name}
+              sx={{ my: 1 }}
             />
           </Grid>
         )),

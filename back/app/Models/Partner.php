@@ -70,17 +70,17 @@ class Partner extends Model
         'roll_number',
         'image_number',
         'ruc',
+        'occupation',
     ];
 
-    static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'number', 'company', 'website', 'dv', 'ruc'];
-
+    public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'number', 'company', 'website', 'dv', 'ruc'];
 
     protected $appends = ['merged_name'];
 
     protected function mergedName(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->company ? $this->company : $this->name
+            get: fn () => $this->company ? $this->company : $this->name
         );
     }
 

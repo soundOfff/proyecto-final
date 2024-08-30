@@ -69,6 +69,7 @@ class PartnerRequest extends FormRequest
             'image_number' => 'nullable|string',
             'dv' => 'nullable|string',
             'ruc' => 'nullable|string',
+            'occupation' => 'nullable|string',
         ];
     }
 }

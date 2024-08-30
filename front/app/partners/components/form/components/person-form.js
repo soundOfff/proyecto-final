@@ -84,8 +84,8 @@ export default function PersonForm({
 
       setFieldValue(isMale.name, partner.isMale || false);
       setFieldValue(civilStatus.name, partner.civilStatus || "");
-      setFieldValue(phone.name, partner.phone || "");
-      if (partner.phone == "Desconocido") {
+      setFieldValue(phone.name, partner.phoneNumber || "");
+      if (partner.phoneNumber == "Desconocido") {
         setPhoneChecked(true);
       }
       setFieldValue(email.name, partner.email || "");
@@ -99,9 +99,9 @@ export default function PersonForm({
       setFieldValue(birthDate.name, partner.birthDate || "");
       setFieldValue(expeditionDate.name, partner.expeditionDate || "");
       setFieldValue(idType.name, partner.idType || "");
-      setFieldValue(nationality.name, partner.nationality || "");
-      setFieldValue(birthPlace.name, partner.birthPlace || "");
-      setFieldValue(country.name, partner.country_id || "");
+      setFieldValue(nationality.name, partner.nationalityId || "");
+      setFieldValue(birthPlace.name, partner.birthPlaceId || "");
+      setFieldValue(country.name, partner.countryId || "");
       setFieldValue(state.name, partner.state || "");
       if (partner.state == "Desconocido") {
         setStateChecked(true);
@@ -114,6 +114,7 @@ export default function PersonForm({
       setFieldValue(jurisdiction.name, partner.jurisdiction || "");
       setFieldValue(province.name, partner.province || "");
       setFieldValue(address.name, partner.address || "");
+      setFieldValue(isResidential.name, partner.isResidential || true);
     }
   }, [
     partner,
@@ -137,6 +138,7 @@ export default function PersonForm({
     jurisdiction,
     province,
     address,
+    isResidential,
   ]);
 
   useEffect(() => {

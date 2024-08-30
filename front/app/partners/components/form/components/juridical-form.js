@@ -104,7 +104,7 @@ export default function JuridicalForm({
       setFieldValue(rollNumber.name, partner.rollNumber || "");
       setFieldValue(imageNumber.name, partner.imageNumber || "");
       setFieldValue(ruc.name, partner.ruc || "");
-      setFieldValue(dv.name, partner.dv.toString() || "");
+      setFieldValue(dv.name, partner.dv?.toString() || "");
       setFieldValue(
         relatedPartners.name,
         partner.relatedPartners?.map((relatedPartner) => ({
@@ -151,7 +151,7 @@ export default function JuridicalForm({
       if (partner.document === "Desconocido") {
         setDocumentChecked(true);
       }
-      if (partner.phone === "Desconocido") {
+      if (partner.phoneNumber === "Desconocido") {
         setPhoneChecked(true);
       }
       if (partner.email === "Desconocido") {

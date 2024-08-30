@@ -4,14 +4,13 @@ namespace App\Services;
 
 use App\Models\Notification;
 use App\Models\StaffDevice;
-use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Exception\Messaging as MessagingErrors;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as MessagingNotification;
 
 class FcmService
 {
-    public function sendNotification($deviceToken, $title, $body, $staffId, $modelName, $modelId, $createdBy = null)
+    public function sendNotification($deviceToken, $title, $body, $staffId, $modelName, $modelId, $createdBy = null): void
     {
         try {
             $messaging = app('firebase.messaging');
@@ -31,6 +30,15 @@ class FcmService
 
             $messaging->send($message);
 
+            $isNotificationAlreadyCreated = Notification::where('staff_id', $staffId)
+                ->where('notifiable_id', $modelId)
+                ->where('notifiable_type', $modelName)
+                ->where('title', $title)
+                ->where('body', $body)
+                ->whereBetween('created_at', [now()->subMinutes(1), now()->addMinutes(1)])
+                ->exists();
+            if ($isNotificationAlreadyCreated) return;
+
             $notification = Notification::create([
                 'title' => $title,
                 'body' => $body,
@@ -40,7 +48,6 @@ class FcmService
                 'notifiable_type' => $modelName,
                 'created_by' => $createdBy,
             ]);
-            Log::info("test: " . $notification->id);
         } catch (MessagingErrors\NotFound $e) {
             StaffDevice::where('device_token', $deviceToken)->delete();
         }

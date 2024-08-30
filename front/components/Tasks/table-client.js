@@ -182,11 +182,10 @@ export default function Table({
               </MDTypography>
             </MDBox>
           ) : (
-            <MDBox>
+            <MDBox sx={{ cursor: "pointer" }}>
               <MDTypography
                 variant="body2"
                 color="info"
-                sx={{ cursor: "pointer" }}
                 onClick={() => {
                   setTaskId(row.original.id);
                   setOpenShowModal(true);

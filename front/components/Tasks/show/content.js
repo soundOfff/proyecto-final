@@ -153,10 +153,10 @@ export default function Content({ selectedFork }) {
         <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" display="inline">
             Relacionado:
-          </MDTypography>{" "}
+          </MDTypography>
           {task.taskable_type === PROJECT_TYPE ? (
             <Link
-              href={`/projects/${task.taskable.id}`}
+              href={`/projects/${task.taskable?.id}`}
               sx={{ overflow: "wrap" }}
             >
               <MDTypography

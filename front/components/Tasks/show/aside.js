@@ -320,8 +320,11 @@ export default function Aside() {
               onChange={(e) => setBillable(e.target.checked)}
             />
           </Grid>
+
+          <Divider sx={{ width: "100%" }} />
+
           <Grid xs={12} my={2} mx={2}>
-            <MDTypography variant="button" fontWeight="bold" ml={2} mb={2}>
+            <MDTypography variant="button" fontWeight="bold" ml={1} mb={2}>
               <LabelImportant sx={{ mr: 1 }} />
               Etiquetas
             </MDTypography>

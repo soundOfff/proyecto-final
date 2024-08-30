@@ -11,10 +11,8 @@ import DeleteRow from "/components/DeleteRow";
 import Grid from "@mui/material/Grid";
 import AccessAlarm from "@mui/icons-material/AccessAlarm";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
-import Autocomplete from "@mui/material/Autocomplete";
 
 import MDTypography from "/components/MDTypography";
-import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
 import MDSnackbar from "/components/MDSnackbar";
@@ -34,7 +32,8 @@ import { editSteps } from "/actions/tasks";
 import update from "immutability-helper";
 import useTaskTable from "/hooks/useTaskTable";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
-import { getColor, getPriorityColor } from "/utils/project-state-colors";
+import { getPriorityColor, getStatusColor } from "/utils/project-state-colors";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function Table({
@@ -55,6 +54,9 @@ export default function Table({
   const [isLoading, setIsLoading] = useState(true);
   const [rows, setRows] = useState([]);
   const { data: session } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const {
     optimisticRows,
@@ -127,6 +129,8 @@ export default function Table({
         milestone_order: index + 1,
       }))
     );
+
+    editSteps({ tasks: rows });
   };
 
   const handleOpenModal = (id) => {
@@ -143,14 +147,6 @@ export default function Table({
     router.replace(`${pathname}?${params.toString()}`);
   };
 
-  useEffect(() => {
-    if (rows.length > 0) {
-      setTimeout(() => {
-        editSteps({ tasks: rows });
-      }, 1000);
-    }
-  }, [rows]);
-
   const columns = [
     {
       Header: "ID",
@@ -161,64 +157,91 @@ export default function Table({
       accessor: "milestone_order",
     },
     {
-      Header: "Bloqueada por",
-      accessor: "isBlocked",
-      Cell: ({ row }) => (
-        <MDBox display="flex">
-          {row.original.dependencies.map((dependency) => (
-            <Grid key={dependency.id}>
-              <MDBadge
-                variant="gradient"
-                color={
-                  dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
-                }
-                size="lg"
-                badgeContent={`#${dependency.id}`}
-              />
-            </Grid>
-          ))}
-        </MDBox>
-      ),
-    },
-    {
       Header: "Nombre",
       accessor: "name",
-      Cell: ({ row }) =>
-        row.original.isBlocked ? (
-          <MDBox width="100%" display="flex" justifyContent="start">
-            <MDTypography variant="body2" color="dark">
-              {row.original.name}
-            </MDTypography>
-          </MDBox>
-        ) : (
-          <MDTypography
-            variant="body2"
-            color="info"
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              setTaskId(row.original.id);
-              setOpenShowModal(true);
-            }}
-          >
-            {row.original.name}
-          </MDTypography>
-        ),
-    },
-    {
-      Header: "Estado",
-      accessor: "status",
-      Cell: ({ row }) => {
-        return (
-          <MDBox display="flex" flexDirection="row" alignItems="center">
-            <MDBadge
-              variant="contained"
-              color={getColor(row.original.status.id)}
-              size="md"
-              badgeContent={row.original.status.name}
-            />
-          </MDBox>
-        );
-      },
+      width: "40%",
+      Cell: ({ row }) => (
+        <MDBox>
+          {row.original.isBlocked ? (
+            <MDBox width="100%" display="flex" justifyContent="start">
+              <MDTypography variant="body2" color="dark">
+                {row.original.name}
+                <MDBadge
+                  variant="contained"
+                  color={getStatusColor(row.original.status.id)}
+                  size="md"
+                  badgeContent={row.original.status.name}
+                  sx={{ ml: 2 }}
+                />
+                <MDBadge
+                  variant="contained"
+                  color={getPriorityColor(row.original.priority.name)}
+                  size="md"
+                  badgeContent={row.original.priority.name}
+                />
+              </MDTypography>
+            </MDBox>
+          ) : (
+            <MDBox>
+              <MDTypography
+                variant="body2"
+                color="info"
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  setTaskId(row.original.id);
+                  setOpenShowModal(true);
+                }}
+              >
+                {row.original.name}
+                <MDBadge
+                  variant="contained"
+                  color={getStatusColor(row.original.status.id)}
+                  size="md"
+                  badgeContent={row.original.status.name}
+                  sx={{ ml: 2 }}
+                />
+                <MDBadge
+                  variant="contained"
+                  color={getPriorityColor(row.original.priority.name)}
+                  size="md"
+                  badgeContent={row.original.priority.name}
+                />
+              </MDTypography>
+            </MDBox>
+          )}
+          {row.original.assigneds?.length > 0 && (
+            <MDBox display="flex" flexDirection="column" my={2}>
+              {row.original.assigneds?.map((staff) => (
+                <Link
+                  key={staff.id}
+                  href={`/staffs/${staff.id}`}
+                  sx={{ cursor: "pointer", color: "info", my: 2, mr: 2 }}
+                >
+                  {staff.name}
+                </Link>
+              ))}
+            </MDBox>
+          )}
+          {row.original.dependencies?.length > 0 && (
+            <MDBox display="flex">
+              {row.original.dependencies.map((dependency) => (
+                <MDBadge
+                  key={dependency.id}
+                  variant="gradient"
+                  color={
+                    dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
+                  }
+                  size="sm"
+                  badgeContent={`#${dependency.id}`}
+                  container={true}
+                  sx={{ mr: 1, my: 1, cursor: "pointer" }}
+                  onClick={() => handleOpenModal(dependency.id)}
+                />
+              ))}
+            </MDBox>
+          )}
+        </MDBox>
+      ),
     },
     {
       Header: "Fecha de inicio",
@@ -227,57 +250,6 @@ export default function Table({
     {
       Header: "Fecha de vencimiento",
       accessor: "due_date",
-    },
-    {
-      Header: "Asignar a",
-      accessor: "",
-      Cell: ({ row }) => {
-        return row.original.staff?.map((staff) => (
-          <Link
-            key={staff.id}
-            href={`/partners/${staff.id}`}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            {staff.first_name} {staff.last_name}
-          </Link>
-        ));
-      },
-    },
-    {
-      Header: "Etiquetas",
-      accessor: "labels",
-      Cell: ({ row }) =>
-        row.original.tags &&
-        row.original.tags.map((tag) => (
-          <Grid key={tag.id}>
-            <MDBadge
-              variant="gradient"
-              color="dark"
-              size="md"
-              badgeContent={tag.name}
-            />
-          </Grid>
-        )),
-    },
-    {
-      Header: "Prioridad",
-      accessor: "priority",
-      width: 200,
-      Cell: ({ row }) => (
-        <MDBox display="flex" flexDirection="row" alignItems="center">
-          <MDBadge
-            variant="contained"
-            color={getPriorityColor(row.original.priority.name)}
-            size="md"
-            badgeContent={row.original.priority.name}
-          />
-        </MDBox>
-      ),
-    },
-    {
-      Header: "Autor",
-      accessor: "author",
-      Cell: ({ value }) => value && value.name,
     },
     {
       Header: "Acciones",

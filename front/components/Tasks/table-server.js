@@ -107,7 +107,7 @@ export default function Table({
       setTaskId(Number(searchParams.get("taskId")));
       setOpenShowModal(true);
     }
-  }, [searchParams, setTaskId, setOpenShowModal]);
+  }, [searchParams, setTaskId, setOpenShowModal, currentTaskId, task]);
 
   const columns = [
     {

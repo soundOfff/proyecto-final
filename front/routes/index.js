@@ -169,7 +169,7 @@ const routes = [
         type: "collapse",
         name: "Juzgados",
         key: "courts",
-        route: "/court",
+        route: "/courts",
         noCollapse: true,
       },
       {

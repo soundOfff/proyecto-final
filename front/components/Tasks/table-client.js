@@ -164,7 +164,7 @@ export default function Table({
         <MDBox>
           {row.original.isBlocked ? (
             <MDBox width="100%" display="flex" justifyContent="start">
-              <MDTypography variant="body2" color="dark">
+              <MDTypography variant="body2" color="dark" fontSize="small">
                 {row.original.name}
                 <MDBadge
                   variant="contained"
@@ -186,6 +186,7 @@ export default function Table({
               <MDTypography
                 variant="body2"
                 color="info"
+                fontSize="small"
                 onClick={() => {
                   setTaskId(row.original.id);
                   setOpenShowModal(true);

@@ -42,7 +42,7 @@ export default function Search() {
   }, [router, pathname, searchParams, search]);
 
   return (
-    <MDBox my={5}>
+    <MDBox my={2}>
       <Grid container spacing={5}>
         <Grid item xs={12} sm={6}>
           <FormControl sx={{ width: "50%" }}>

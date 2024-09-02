@@ -71,13 +71,13 @@ class Notification extends Model
                     ->orWhere(function ($query) use ($search) {
                         $query->whereHasMorph(
                             'notifiable',
-                            array_keys($this->getNotifiableTypes()),
+                            '*',
                             function ($query, $type) use ($search) {
                                 if ($type == Task::class) {
                                     // todo: check if the notification is morphed from another resource and search for invoice number
                                     $query->whereHasMorph(
                                         'taskable',
-                                        array_keys(Task::getTaskableTypes()),
+                                        '*',
                                         function ($query, $type) use ($search) {
                                             if ($type == Project::class) {
                                                 $query->where('name', 'like', "%$search%");

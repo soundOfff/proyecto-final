@@ -1,0 +1,138 @@
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+body {
+  text-transform: uppercase;
+}
+
+@media print {
+  .display-hidden-print {
+    display: none !important;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+
+  .container-print {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100%;
+    max-height: min-content;
+    size: portrait;
+  }
+
+  .MuiCard-root {
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    background-color: white !important;
+    box-shadow: none !important;
+  }
+
+  .container-print tbody th,
+  .container-print tbody td {
+    border-collapse: collapse;
+    width: 100px !important;
+    padding: 1rem !important;
+    margin: 1rem !important;
+    font-size: 12px !important;
+  }
+
+  .container-print tbody tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+    padding: 1rem !important;
+    margin: 0 !important;
+  }
+
+  .container-print thead tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+    padding-right: 1rem !important;
+    margin: 0 !important;
+  }
+
+  .container-print h1,
+  .container-print h2,
+  .container-print h3,
+  .container-print h4,
+  .container-print h5,
+  .container-print h6,
+  .container-print p {
+    font-size: 12px !important;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .table-print {
+    max-width: 100% !important;
+    width: 100% !important;
+    display: flex;
+    font-size: small;
+    margin: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 0 !important;
+  }
+
+  .table-print thead tr {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .table-print thead tr th {
+    width: auto !important;
+    text-align: center;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .table-print tbody tr {
+    max-height: min-content;
+    page-break-inside: avoid;
+    page-break-after: avoid;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .table-print tbody tr p {
+    font-size: 10px !important;
+    text-align: center;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-overflow: ellipsis;
+  }
+
+  .footer-print {
+    display: block;
+    width: 100%;
+    height: 28rem;
+    float: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: small;
+    justify-content: center;
+    align-items: center;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+
+  .footer-print button {
+    display: none;
+    font-size: small;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+
+  .footer-print h6 {
+    width: auto;
+    display: block;
+    font-size: smaller !important;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+}

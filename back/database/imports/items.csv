@@ -1,0 +1,139 @@
+id,description,long_description,rate,tax_id,tax2_id,unit,item_group_id
+8,Honorarios Legales - Departamento Corporativo,Honorarios Legales en concepto de Agente Residente de _____________. ,250.0,1,,,14
+9,Servicio de Directores,Honorarios Legales por servicio anual de Directores,150.0,1,,,
+10,Incorporación de Fundación de Interés Privado ,Honorarios Legales y gastos por incorporación en el registro público de Fundación de Interés Privado,1300.0,1,,,
+19,Honorarios Legales por Certificado de Acciones,,50.0,1,,,
+22,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios Legales por la solicitud de Registro una clase ante la Dirección General de Propiedad Industrial (DIGERPI),275.0,1,,,19
+23,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios Legales por la solicitud de Renovación de marca ante la Dirección General de la Propiedad Industrial.,220.0,1,,,19
+29,Permiso de Trabajo,Honorarios profesionales por solicitud de permiso de trabajo para extranjero contratado por empresa en virtud del Acuerdo de Marrakech.,475.0,1,,,
+37,Permiso de Trabajo,Honorarios profesionales por tramitación de permiso de trabajo,850.0,1,,,
+48,Paz y Salvo,Honorarios Profesionales por tramitación de paz y salvo ante el Municipio,50.0,1,,,
+61,"Proceso de Lanzamiento - BANCO DELTA, S.A.",HONORARIOS LEGALES POR ATENCIÓN DE PROCESO DE LANZAMIENTO POR INTRUSO O DESALOJO ,1375.0,1,,,
+62,Plan Básico Veló Emprende ¡Empieza tu negocio!,"1. Constitución de Sociedad Anónima  
+2. Inscripción ante la Dirección General de Ingresos  
+3. Inscripción ante el Municipio de Panamá  
+4. Solicitud de Aviso de Operaciones   
+5. Certificado de Registro Público   
+6. Reunión por 30 minutos con Veló Legal ",565.0,1,,,
+63,Plan Premium Veló Emprende ¡Empieza tu negocio!,"1. Constitución de Sociedad Anónima  
+2. Inscripción ante la Dirección General de Ingresos  
+3. Inscripción ante el Municipio de Panamá  
+4. Solicitud de Aviso de Operaciones   
+5. Certificado de Registro Público   
+6. Registro de Marca 
+7. Modelo de Acuerdo de Socios 
+8. Reunión por 30 minutos con Veló Legal ",965.0,,,,
+64,Plan Básico E-Commerce Veló Emprende,"1. Constitución de Sociedad Anónima    
+2. Inscripción ante la Dirección General de Ingresos    
+3. Inscripción ante el Municipio de Panamá    
+4. Solicitud de Aviso de Operaciones     
+5. Certificado de Registro Público     
+6. Modelo de Políticas de Privacidad    
+7. Modelo de Términos y Condiciones de Uso Web   
+8. Reunión por 30 minutos con Veló Legal ",1065.0,1,,,
+65,Plan Premium E-Commerce Veló Emprende ,"1. Constitución de Sociedad Anónima   
+2. Inscripción ante la Dirección General de Ingresos   
+3. Inscripción ante el Municipio de Panamá   
+4. Solicitud de Aviso de Operaciones    
+5. Certificado de Registro Público    
+6. Registro de Marca  
+7. Modelo de Acuerdo de Socios  
+8. Modelo de Políticas de Privacidad   
+9. Modelo de Términos y Condiciones de Uso Web  
+10. Reunión por 30 minutos con Veló Legal ",1415.0,1,,,
+67,Gasto Transporte - Colón,Gasto en combustible a Colón,12.0,,,,
+68,Gasto Transporte - Chorrera,Gasto en combustible a Chorrera,8.0,,,,
+70,Gasto Transporte - Las Tablas,Gasto en combustible a Las Tablas,44.0,,,,
+71,Gasto Transporte - Santiago,Gasto en combustible a Santiago,39.0,,,,
+73,Gasto Transporte - David,Gasto en combustible a David,68.0,,,,
+76,Pagos a Terceros,Pago ante la Dirección General de Ingresos de Panamá de Tasa Unica de sociedad anónima 2023 ,300.0,,,,
+77,Pagos a Terceros,Pago ante la Dirección General de Ingresos de Panamá de Tasa Unica de fundación de interés privado 2023 ,400.0,,,,
+78,Honorarios Legales - Departamento Corporativo,Honorarios por el servicio de Directores Nominales,150.0,1,,,14
+79,Debida Diligencia,,100.0,,,,
+80,Pagos a Terceros,Gastos a incurrir por la solicitud de Registro de Marca en una sola clase ante la Dirección General de Propiedad Industrial.,200.0,,,,
+81,Pagos a Terceros,Gastos por las Solicitudes de Registros de la renovación de la marca ante la Dirección General de la Propiedad Industrial.,160.0,,,,
+82,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios legales por la solicitud de Registro de Derecho de Autor,495.0,1,,,19
+83,Honorarios Legales - Departamento de Propiedad Intelectual,Solicitud de copia de certificado de marca (resuelto),85.0,1,,,19
+84,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios legales por la confección del contrato de cesión de marca y notificación a la Dirección General de la Propiedad Industrial (DIGERPI) por la cesión.,450.0,1,,,19
+85,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios legales por la solicitud de cancelación voluntaria de Marca,275.0,,,,19
+86,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios legales por consultas sobre Derecho de Propiedad Intelectual,165.0,,,,19
+87,Honorarios Legales - Departamento de Propiedad Intelectual,Honorarios legales por consulta sobre Derecho de Autor,165.0,,,,19
+88,Honorarios Legales - Departamento Corporativo,Honorarios Legales por la incorporación de una sociedad anónima panameña,700.0,,,,14
+89,Honorarios Legales - Departamento Corporativo,Honorarios legales por la ecisión de sociedades,850.0,1,,,15
+90,Honorarios Legales - Departamento Corporativo,Honorarios legales por enmienda al Pacto social de una sociedad anónima,385.0,1,,,15
+91,Honorarios Legales - Departamento Corporativo,Honorarios legales por la confección de Poder General o Especial ,297.0,1,,,15
+92,Honorarios Legales - Departamento Corporativo,"Honorarios legales por la confección, protocolización e inscripción de Poder General o Especial ante el Registro Público de Panamá",385.0,1,,,15
+93,Honorarios Legales - Departamento Corporativo,Honorarios legales por la solicitud de certificado de Registro Público,45.0,1,,,15
+94,Honorarios Legales - Departamento Corporativo,Honorarios legales por la disolución de sociedad anónima ante el Registro Público de Panamá,375.0,1,,,15
+95,Honorarios Legales - Departamento Corporativo,Honorarios legales por la notificación de disolución de sociedad anónima ante la Dirección General de Ingresos,525.0,1,,,15
+96,Honorarios Legales - Departamento Corporativo,Honorarios legales por la confección e inscripción del Acta de Accionistas en donde se resuelve la disolución de la sociedad,385.0,1,,,15
+97,Honorarios Legales - Departamento Corporativo,Honorarios legales por la notificación de la disolución de la sociedad ante la Dirección General de Ingresos,525.0,1,,,15
+98,Honorarios Legales - Departamento Corporativo,Honorarios legales por el apoyo con la documentación legal para la apertura de cuenta bancaria en Panamá. ,1800.0,,,,15
+99,Honorarios Legales - Departamento Corporativo,Honorarios legales por la inscripción de Minuta de cancelación de Hipoteca,200.0,1,,,15
+100,Honorarios Legales - Departamento Corporativo,Honorarios legales por la firma de documento por director nominal,75.0,1,,,15
+101,Honorarios Legales - Departamento Corporativo,Honorarios legales por la emisión de un nuevo certificado de acción,25.0,1,,,15
+102,Honorarios Legales - Departamento Corporativo,Honorarios legales por la confección de un Acuerdo de Confidencialidad,275.0,1,,,15
+103,Honorarios Legales - Departamento Corporativo,Honorarios legales por la emisión de Certificación de Agente Residente,125.0,1,,,15
+104,Honorarios Legales - Departamento Corporativo,Honorarios legales por la elaboración de Memorando de Entendimiento (MOU),375.0,1,,,15
+105,Honorarios Legales - Departamento Corporativo,Honorarios legales por la elaboración de Finiquito,275.0,1,,,15
+106,Honorarios Legales - Departamento Corporativo,Honorarios legales por la elaboración de Políticas de Privacidad para pagina web,225.0,1,,,15
+107,Honorarios Legales - Departamento Corporativo,Honorarios legales por la elaboración de Términos y Condiciones para página web,550.0,1,,,15
+108,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de apostilla de documento ante el Ministerio de Relaciones Exteriores de Panamá,80.0,1,,,16
+109,Honorarios Legales - Departamento Derecho Administrativo,Obtención de Paz y Salvo,50.0,1,,,16
+110,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de estado de cuenta ante la [Dirección General de Ingresos] [Municipio de Panamá] (online),50.0,1,,,16
+113,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de estado de cuenta ante la [Dirección General de Ingresos] [Municipio de Panamá] (presencial),185.0,1,,,16
+114,Honorarios Legales - Departamento Derecho Administrativo,Inscripción de Persona [Jurídica] [Natural] ante la Dirección General de Ingresos,125.0,1,,,16
+115,Honorarios Legales - Departamento Derecho Administrativo,"Honorarios legales por la solicitud de asociación de nuevo correo para solicitud de NIT de [Persona Jurídica, Natural o bien inmueble]",175.0,1,,,16
+116,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la actualización de valores y nuevo propietario ante la Autoridad Nacional de Administración de Tierras (Anati),130.0,1,,,16
+117,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por el refrendo de [minuta o acta] ,55.0,,,,16
+118,Honorarios Legales - Departamento Derecho Administrativo,"Honorarios legales por la protocolización, cierre e inscripción de Escritura contentiva de compraventa de bienes inmuebles ante el Registro Público.",475.0,1,,,16
+119,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de aprobación de promociones comerciales ante la Junta de Control de Juegos del Ministerio de Economía y Finanzas,370.0,1,,,16
+120,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por el pagos de Impuestos ante la Dirección General de Ingresos ,50.0,1,,,16
+123,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la aplicación al beneficio del Patrimonio Familiar o Vivienda Principal ante la Dirección General de Ingresos,100.0,1,,,16
+124,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la elaboración de formularios para pago de impuestos del 2% y 3%,147.0,1,,,16
+125,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de arreglo de pago ante la Dirección General de Ingresos ,260.0,1,,,16
+126,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud y seguimiento de cierre de negocio ante el Municipio de Panamá,850.0,1,,,16
+127,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la inscripción de Negocio ante el Municipio de Panamá ,150.0,1,,,16
+128,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la autenticación de cédula ante Tribunal Electoral ,75.0,1,,,16
+129,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la autenticación de partidas de nacimiento ante el Tribunal Electoral,80.0,1,,,16
+130,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por el pago de cuenta ante el Idaan,50.0,1,,,16
+131,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la actualización de RUC ante la Dirección General de Ingresos,80.0,1,,,16
+132,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la adición de Usuarios al Sistema Informático de Gestión Aduanera (SIGA),450.0,1,,,16
+133,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por el análisis jurídico del pliego de cargos y revisión de oferta previamente elaborada por el cliente.,2500.0,1,,,16
+134,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de obtención de Autorización para tala de árboles ante Mi Ambiente,450.0,1,,,16
+135,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Avalúo Voluntario ante la Autoridad Nacional de Administración de Tierras (ANATI),700.0,1,,,16
+136,Honorarios Legales - Departamento Derecho Administrativo,Solicitud de cancelación de Licencia de Corredor de Seguros ante la Superintendencia de Seguros de Panamá,125.0,,,,16
+137,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de Registro Sanitario de producto,500.0,1,,,16
+138,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de Permiso Sanitario de operación para local,475.0,1,,,16
+139,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Constancia Sanitaria ante el Centro de Salud,300.0,1,,,16
+140,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Inspección Sanitaria Anual ante el Ministerio de Salud,250.0,1,,,16
+141,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la inscripción de Matrimonio ante la Dirección Nacional del Registro Civil,400.0,1,,,16
+142,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Certificado de Matrimonio,125.0,1,,,16
+143,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de Licencia de Operación de Agencia de Distribución ante la Dirección Nacional de Farmacia y Drogas del Ministerio de Salud,2500.0,1,,,16
+144,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la inscripcion de Negocio ante la AMPYME,250.0,1,,,16
+145,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por el refrendo de Contrato de Trabajo,80.0,1,,,21
+146,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Cambio de Tramitador del Aviso de Operación,50.0,1,,,16
+147,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Certificación de Mejoras ante la Dirección de Propiedad Horizontal del MIVIOT,300.0,1,,,16
+148,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Certificación de No contribuyente ante la Caja del Seguro Social,85.0,1,,,16
+149,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de Certificado de Defunción,75.0,1,,,16
+150,Honorarios Legales - Departamento Derecho Administrativo,Actualización de Código de Ubicación. Los honorarios incluyen: Certificación del correcto código de ubicación de la finca ante la Dirección Nacional de Mensura Catastral de la Autoridad Nacional de Administración de Tierras (Anati) y Protocolización y levantamiento de escritura pública a fin de registrar la certificación emitida por la Autoridad Nacional de Administración de Tierras a fin de corregir o actualizar el código de ubicación de finca.,650.0,1,,,16
+151,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la cancelación de permiso de Publicidad Exterior ante el Municipio donde se encuentre la publicidad. ,275.0,1,,,16
+152,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la cancelación de RUC duplicado,250.0,1,,,16
+153,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de certificación de No Testamento ante diversas notarias del Circuito de Panamá,350.0,1,,,16
+154,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la protocolización e inscripción de la minuta contentiva de la declaración de mejoras ante el Registro Público (depende de la cuantía de las mejoras y su complejidad),400.0,1,,,16
+155,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de donación de bien inmueble ante la Dirección General de Ingresos,1500.0,1,,,16
+156,Honorarios Legales - Departamento Derecho Administrativo,"Honorarios legales por la elaboración de minuta de dación en pago, su protocolización e inscripción en el Registro Público",350.0,1,,,16
+157,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la obtención de Record Policivo,50.0,1,,,16
+158,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la solicitud de copia de plano ante la Autoridad Nacional de Administración de Tierras (Anati),65.0,1,,,16
+159,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la inscripción del empleador ante la Caja de Seguro Social (CSS) ,250.0,1,,,16
+160,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la reactivación de Patrono ante la Caja del Seguro Social,135.0,1,,,16
+161,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la autenticación de firma ante Notaria,16.0,1,,,16
+162,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por le cotejo de documentos ante Notaria,50.0,1,,,16
+163,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por elevar a escritura pública declaración jurada ante Notario,160.0,1,,,16
+164,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la Solicitud de Certificado de Registro Público,50.0,1,,,16
+165,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la gesitón de autorizacion de Salida de Menores ante Notario,75.0,1,,,16
+166,Honorarios Legales - Departamento Derecho Administrativo,Honorarios legales por la confección de Testamento,600.0,1,,,16
+167,Honorarios Legales - Departamento Corporativo,Registro de la sociedad ante la Dirección General de Ingresos.,150.0,1,,,15
+168,Honorarios Legales - Departamento Corporativo,Honorarios legales por la confección de Acta de Accionistas donde se resuelve el asignar un nuevo agente residente de la sociedad,250.0,1,,,15
+169,Honorarios Legales - Departamento Corporativo,Honorarios legales por la redacción de contrato,750.0,1,,,15
+170,Honorarios Legales - Departamento Corporativo,Honorarios Legales en concepto de actualización de Nit ante la Dirección General de Ingresos,25.0,,,,

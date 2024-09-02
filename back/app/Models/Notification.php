@@ -59,4 +59,15 @@ class Notification extends Model
             ]
         ];
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query
+                    ->where('title', 'like', "%$search%")
+                    ->orWhere('body', 'like', "%$search%");
+            });
+        });
+    }
 }

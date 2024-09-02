@@ -12,6 +12,7 @@ import { getAll as getAllStaffs } from "/actions/staffs";
 import { getCurrentTimer } from "/actions/timers";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
+import { getAllPriorities as getAllNotificationPriorities } from "/actions/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,7 @@ export default async function PartnerTasks({
   const statuses = await getTaskStatus();
   const partners = await getAllPartners();
   const currentTimer = await getCurrentTimer(session.staff.id);
+  const notificationPriorities = await getAllNotificationPriorities();
 
   return (
     <MDBox my={3}>
@@ -58,6 +60,7 @@ export default async function PartnerTasks({
               staffs={staffs}
               currentTimer={currentTimer}
               partnerId={Number(id)}
+              notificationPriorities={notificationPriorities}
             />
           </Grid>
         </Grid>

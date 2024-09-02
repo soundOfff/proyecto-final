@@ -48,6 +48,7 @@ export default function Table({
   partners,
   actionsData,
   tableFields,
+  notificationPriorities = [],
 }) {
   const [controller, dispatch] = useMaterialUIController();
   const { currentTimer, darkMode } = controller;
@@ -71,9 +72,7 @@ export default function Table({
     setOpenEditModal,
     handleCloseEditModal,
     handleCloseShowModal,
-    handleStatusChange,
     getSelectedFork,
-    handlePriorityChange,
     handleCompleteTask,
     setIsToastOpen,
     setTaskId,
@@ -418,6 +417,7 @@ export default function Table({
                   stopTimer,
                   startTimer,
                   getSelectedFork,
+                  notificationPriorities,
                 }}
               >
                 <Show />

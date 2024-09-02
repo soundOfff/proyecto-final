@@ -49,6 +49,7 @@ export default function Table({
   tableFields,
   partnerId,
   invoice,
+  notificationPriorities = [],
 }) {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -382,6 +383,7 @@ export default function Table({
                 stopTimer,
                 startTimer,
                 getSelectedFork,
+                notificationPriorities,
               }}
             >
               <Show />

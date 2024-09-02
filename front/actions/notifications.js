@@ -14,6 +14,14 @@ export async function getAll(params) {
   return data;
 }
 
+export async function getAllPriorities() {
+  const url = new URL(`${process.env.API_URL}/notification-priorities`);
+
+  const { data } = await customFetch(url);
+
+  return data?.priorities;
+}
+
 export async function updateMany(body) {
   const url = new URL(`${process.env.API_URL}/notifications-update-many`);
 

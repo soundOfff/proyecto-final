@@ -40,10 +40,16 @@ import FormField from "/pagesComponents/ecommerce/products/new-product/component
 import { update } from "/actions/tasks";
 import { useSession } from "next-auth/react";
 import moment from "moment-timezone";
-import { NOTIFICATION_PRIORITIES } from "/utils/constants/notifiableTypes";
 
 export default function Aside() {
-  const { statuses, priorities, staffs, tagsData, task } = useDataProvider();
+  const {
+    statuses,
+    priorities,
+    staffs,
+    tagsData,
+    task,
+    notificationPriorities,
+  } = useDataProvider();
   const [statusId, setStatusId] = useState(task.status.id);
   const [startDate, setStartDate] = useState(task.start_date);
   const [dueDate, setDueDate] = useState(task.due_date);
@@ -450,7 +456,7 @@ export default function Aside() {
                     onChange={(e) => setReminderPriorityId(e.target.value)}
                     sx={{ height: "40px" }}
                   >
-                    {NOTIFICATION_PRIORITIES.map((priority) => (
+                    {notificationPriorities.map((priority) => (
                       <MenuItem key={priority.id} value={priority.id}>
                         {priority.label}
                       </MenuItem>

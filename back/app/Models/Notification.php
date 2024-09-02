@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\TaskResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -56,7 +57,7 @@ class Notification extends Model
             'task' => [
                 'resource' => TaskResource::class,
                 'load' => ['taskable'],
-            ]
+            ],
         ];
     }
 
@@ -66,7 +67,29 @@ class Notification extends Model
             $query->where(function ($query) use ($search) {
                 $query
                     ->where('title', 'like', "%$search%")
-                    ->orWhere('body', 'like', "%$search%");
+                    ->orWhere('body', 'like', "%$search%")
+                    ->orWhere(function ($query) use ($search) {
+                        $query->whereHasMorph(
+                            'notifiable',
+                            array_keys($this->getNotifiableTypes()),
+                            function ($query, $type) use ($search) {
+                                if ($type == Task::class) {
+                                    // todo: check if the notification is morphed from another resource and search for invoice number
+                                    $query->whereHasMorph(
+                                        'taskable',
+                                        array_keys(Task::getTaskableTypes()),
+                                        function ($query, $type) use ($search) {
+                                            if ($type == Project::class) {
+                                                $query->where('name', 'like', "%$search%");
+                                            } else if ($type == Invoice::class) {
+                                                $query->where('number', 'like', "%$search%");
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    });
             });
         });
     }

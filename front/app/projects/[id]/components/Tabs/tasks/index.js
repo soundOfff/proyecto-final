@@ -16,6 +16,7 @@ export default function Tasks() {
     tagsData,
     partners,
     dependencyTasks,
+    notificationPriorities,
     taskableItems,
     actionsData,
     tableFields,
@@ -40,6 +41,7 @@ export default function Tasks() {
                 taskableItems,
                 actionsData,
                 tableFields,
+                notificationPriorities,
               }}
             />
           </MDBox>

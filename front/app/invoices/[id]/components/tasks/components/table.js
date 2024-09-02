@@ -27,6 +27,7 @@ export default function TableComponent() {
     currentTimer,
     actionsData,
     tableFields,
+    notificationPriorities,
   } = useDataProvider();
 
   useEffect(() => {
@@ -62,6 +63,7 @@ export default function TableComponent() {
               actionsData={actionsData}
               tableFields={tableFields}
               invoice={invoice}
+              notificationPriorities={notificationPriorities}
             />
           </Grid>
         </Grid>

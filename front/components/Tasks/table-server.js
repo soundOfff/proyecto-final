@@ -5,7 +5,6 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
-import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
 import { DataProvider } from "/providers/DataProvider";
@@ -16,7 +15,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalContentForm from "/components/ModalContent/Task";
-import { Autocomplete, Grid, Tooltip } from "@mui/material";
+import { Backdrop, CircularProgress, Grid, Tooltip } from "@mui/material";
 
 import { destroy } from "/actions/tasks";
 
@@ -50,6 +49,7 @@ export default function Table({
   tableFields,
   partnerId,
   invoice,
+  notificationPriorities = [],
 }) {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -61,13 +61,12 @@ export default function Table({
     handleCloseShowModal,
     stopTimer,
     startTimer,
-    handleStatusChange,
-    handlePriorityChange,
     getSelectedFork,
     handleCompleteTask,
     setOpenShowModal,
     setOpenEditModal,
     setTaskId,
+    isLoadingShow,
   } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
   const { darkMode } = controller;
   const { data: session } = useSession();
@@ -109,7 +108,7 @@ export default function Table({
       setTaskId(Number(searchParams.get("taskId")));
       setOpenShowModal(true);
     }
-  }, [searchParams, setTaskId, setOpenShowModal]);
+  }, [searchParams, setTaskId, setOpenShowModal, currentTaskId, task]);
 
   const columns = [
     {
@@ -150,50 +149,30 @@ export default function Table({
             </MDTypography>
           </MDBox>
         ) : (
-          <MDTypography
-            variant="body2"
-            color="info"
-            sx={{ cursor: "pointer" }}
-            onClick={() => handleOpenModal(row.original.id)}
-          >
-            {row.original.name}
-          </MDTypography>
+          <MDBox sx={{ cursor: "pointer" }}>
+            <MDTypography
+              variant="body2"
+              color="info"
+              onClick={() => handleOpenModal(row.original.id)}
+            >
+              {row.original.name}
+            </MDTypography>
+          </MDBox>
         ),
     },
     {
       Header: "Estado",
       accessor: "status",
-      Cell: ({ row }) => {
-        return (
-          {
-            /* <Autocomplete
-            value={statuses?.find(
-              (status) => status.id === row.original.status.id
-            )}
-            disabled={row.original.isBlocked || !row.original.canChangeStatus}
-            onChange={(e, status) => {
-              handleStatusChange(row.original.id, status.id);
-            }}
-            options={statuses}
-            sx={{ width: "150px" }}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <MDInput {...params} variant="standard" fullWidth />
-            )}
-          /> */
-          },
-          (
-            <MDBox display="flex" flexDirection="row" alignItems="center">
-              <MDBadge
-                variant="contained"
-                color={getColor(row.original.status.id)}
-                size="md"
-                badgeContent={row.original.status.name}
-              />
-            </MDBox>
-          )
-        );
-      },
+      Cell: ({ row }) => (
+        <MDBox display="flex" flexDirection="row" alignItems="center">
+          <MDBadge
+            variant="contained"
+            color={getColor(row.original.status.id)}
+            size="md"
+            badgeContent={row.original.status.name}
+          />
+        </MDBox>
+      ),
     },
     {
       Header: "Fecha de inicio",
@@ -216,6 +195,7 @@ export default function Table({
               color="dark"
               size="md"
               badgeContent={tag.name}
+              sx={{ my: 1 }}
             />
           </Grid>
         )),
@@ -225,37 +205,14 @@ export default function Table({
       accessor: "priority",
       width: 200,
       Cell: ({ row }) => (
-        {
-          /* <Autocomplete
-          value={priorities.find(
-            (priority) => priority.id === row.original.priority.id
-          )}
-          onChange={(e, priority) => {
-            handlePriorityChange(row.original.id, priority.id);
-          }}
-          options={priorities}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-          sx={{ width: "150px" }}
-        /> */
-        },
-        (
-          <MDBox display="flex" flexDirection="row" alignItems="center">
-            <MDBadge
-              variant="contained"
-              color={getPriorityColor(row.original.priority.name)}
-              size="md"
-              badgeContent={row.original.priority.name}
-            />
-          </MDBox>
-        )
+        <MDBox display="flex" flexDirection="row" alignItems="center">
+          <MDBadge
+            variant="contained"
+            color={getPriorityColor(row.original.priority.name)}
+            size="md"
+            badgeContent={row.original.priority.name}
+          />
+        </MDBox>
       ),
     },
     {
@@ -408,7 +365,11 @@ export default function Table({
           width="70%"
           sx={{ overflow: "scroll" }}
         >
-          {task && (
+          {isLoadingShow || !task ? (
+            <Backdrop open={true} sx={{ background: "white" }}>
+              <CircularProgress size={80} color="black" />
+            </Backdrop>
+          ) : (
             <DataProvider
               value={{
                 task,
@@ -422,6 +383,7 @@ export default function Table({
                 stopTimer,
                 startTimer,
                 getSelectedFork,
+                notificationPriorities,
               }}
             >
               <Show />

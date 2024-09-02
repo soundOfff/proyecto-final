@@ -189,7 +189,7 @@ export default function Details() {
           <DefaultItem
             color="dark"
             title="Persona responsable"
-            description={project.responsiblePerson.name}
+            description={project.responsiblePerson?.name ?? "Sin responsable"}
           />
         </Grid>
 

@@ -64,6 +64,10 @@ export default function FormComponent({
       } else {
         formData.append(key, values[key]);
       }
+      if (expense) {
+        formData.append("fileable_id", expense.id);
+        formData.append("fileable_type", "expense");
+      }
     }
 
     try {

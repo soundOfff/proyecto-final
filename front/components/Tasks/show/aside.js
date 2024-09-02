@@ -10,6 +10,7 @@ import {
   InputLabel,
   Switch,
   Autocomplete,
+  Box,
 } from "@mui/material";
 import {
   AccessTime,
@@ -37,10 +38,18 @@ import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { useDataProvider } from "/providers/DataProvider";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 import { update } from "/actions/tasks";
+import { useSession } from "next-auth/react";
 import moment from "moment-timezone";
 
 export default function Aside() {
-  const { statuses, priorities, staffs, tagsData, task } = useDataProvider();
+  const {
+    statuses,
+    priorities,
+    staffs,
+    tagsData,
+    task,
+    notificationPriorities,
+  } = useDataProvider();
   const [statusId, setStatusId] = useState(task.status.id);
   const [startDate, setStartDate] = useState(task.start_date);
   const [dueDate, setDueDate] = useState(task.due_date);
@@ -52,9 +61,11 @@ export default function Aside() {
   const [reminders, setReminders] = useState(task.reminders || []);
   const [reminderStaffId, setReminderStaffId] = useState(null);
   const [reminderDescription, setReminderDescription] = useState("");
+  const [reminderPriorityId, setReminderPriorityId] = useState(1);
   const [reminderDate, setReminderDate] = useState("");
   const [assigneds, setAssigneds] = useState(task.assigneds);
   const [followers, setFollowers] = useState(task.followers);
+  const { data: session } = useSession();
 
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(
@@ -75,7 +86,9 @@ export default function Aside() {
         reminderable_type: "task",
         date: reminderDate,
         description: reminderDescription,
+        notification_priority_id: reminderPriorityId,
         staff_id: reminderStaffId,
+        creator: session?.staff?.id,
       },
     ]);
     update(task.id, {
@@ -86,12 +99,15 @@ export default function Aside() {
           reminderable_type: "task",
           date: reminderDate,
           description: reminderDescription,
+          notification_priority_id: reminderPriorityId,
           staff_id: reminderStaffId,
+          creator: session?.staff?.id,
         },
       ],
     });
     setReminderStaffId(null);
     setReminderDescription("");
+    setReminderPriorityId(1);
     setReminderDate("");
   };
 
@@ -100,24 +116,33 @@ export default function Aside() {
   };
 
   useEffect(() => {
-    update(task.id, { task_status_id: statusId });
-  }, [statusId, task.id]);
+    if (statusId != task.status.id) {
+      update(task.id, { task_status_id: statusId });
+    }
+  }, [statusId, task.id, task.status.id]);
 
   useEffect(() => {
-    update(task.id, { start_date: startDate });
-  }, [startDate, task.id]);
+    if (startDate != task.start_date)
+      update(task.id, { start_date: startDate });
+  }, [startDate, task.id, task.start_date]);
 
   useEffect(() => {
-    update(task.id, { due_date: dueDate });
-  }, [dueDate, task.id]);
+    if (dueDate != task.due_date) {
+      update(task.id, { due_date: dueDate });
+    }
+  }, [dueDate, task.id, task.due_date]);
 
   useEffect(() => {
-    update(task.id, { task_priority_id: priorityId });
-  }, [priorityId, task.id]);
+    if (priorityId != task.priority_id) {
+      update(task.id, { task_priority_id: priorityId });
+    }
+  }, [priorityId, task.id, task.priority_id]);
 
   useEffect(() => {
-    update(task.id, { billable: billable });
-  }, [billable, task.id]);
+    if (billable != task.billable) {
+      update(task.id, { billable: billable });
+    }
+  }, [billable, task.id, task.billable]);
 
   useEffect(() => {
     update(task.id, { tags: tags });
@@ -130,9 +155,8 @@ export default function Aside() {
   useEffect(() => {
     update(task.id, { followers: followers });
   }, [followers, task.id]);
-
   return (
-    <Grid item xs={5}>
+    <Grid item xs={7} lg={5}>
       <MDBox bgColor="light" pr={2} pl={4} py={2} height="100%">
         {task.recurring && (
           <>
@@ -200,7 +224,13 @@ export default function Aside() {
               onChange={(date) =>
                 setStartDate(moment(date[0]).format("YYYY-MM-DD"))
               }
-              sx={{ ml: 1, height: "40px" }}
+              sx={{
+                ml: 1,
+                height: "40px",
+                "& .flatpickr-calendar": {
+                  left: "-100px !important",
+                },
+              }}
             />
           </Grid>
 
@@ -301,8 +331,11 @@ export default function Aside() {
               onChange={(e) => setBillable(e.target.checked)}
             />
           </Grid>
+
+          <Divider sx={{ width: "100%" }} />
+
           <Grid xs={12} my={2} mx={2}>
-            <MDTypography variant="button" fontWeight="bold" ml={2} mb={2}>
+            <MDTypography variant="button" fontWeight="bold" ml={1} mb={2}>
               <LabelImportant sx={{ mr: 1 }} />
               Etiquetas
             </MDTypography>
@@ -404,7 +437,7 @@ export default function Aside() {
                       .tz("America/Panama")
                       .format("YYYY-MM-DD HH:mm:ss"),
                     enableTime: true,
-                    position: "auto right",
+                    position: "right top",
                     static: true,
                   }}
                 />
@@ -415,6 +448,22 @@ export default function Aside() {
                   sx={{ height: "40px" }}
                   onChange={(e) => setReminderDescription(e.target.value)}
                 />
+                <FormControl sx={{ width: "100%" }}>
+                  <InputLabel id="status">Prioridad</InputLabel>
+                  <Select
+                    value={reminderPriorityId}
+                    label="Estado"
+                    onChange={(e) => setReminderPriorityId(e.target.value)}
+                    sx={{ height: "40px" }}
+                  >
+                    {notificationPriorities.map((priority) => (
+                      <MenuItem key={priority.id} value={priority.id}>
+                        {priority.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
                 <MDButton
                   variant="gradient"
                   color="dark"

@@ -14,6 +14,7 @@ import { getAll as getAllActionTypes } from "/actions/action-types";
 import { getTableFields } from "/actions/table-field";
 
 import Index from "./components/index";
+import { getAllPriorities } from "/actions/notifications";
 
 const include = [
   "staffs",
@@ -45,6 +46,7 @@ export default async function Show({ params }) {
     actionsData,
     tableFields,
     dependencyTasks,
+    notificationPriorities,
   ] = await Promise.all([
     show(params.id, { include }),
     staffSelect(),
@@ -57,6 +59,7 @@ export default async function Show({ params }) {
     getAllActionTypes(),
     getTableFields({ table: "projects" }),
     getAllDependencies(),
+    getAllPriorities(),
   ]);
 
   return (
@@ -72,6 +75,7 @@ export default async function Show({ params }) {
       actionsData={actionsData}
       tableFields={tableFields}
       dependencyTasks={dependencyTasks}
+      notificationPriorities={notificationPriorities}
     />
   );
 }

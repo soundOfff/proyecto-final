@@ -12,6 +12,7 @@ class TaskPrioritySort implements Sort
         $direction = $descending ? 'DESC' : 'ASC';
 
         $query
+            ->select('tasks.*')
             ->leftJoin('task_priorities as task_priorities_order', 'tasks.task_priority_id', '=', 'task_priorities_order.id')
             ->orderByRaw("task_priorities_order.{$property} IS NULL, task_priorities_order.{$property} {$direction}");
     }

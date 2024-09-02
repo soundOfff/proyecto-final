@@ -22,6 +22,7 @@ export default function useTaskTable({
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [areTasksAttached, setAreTasksAttached] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [isLoadingShow, setIsLoadingShow] = useState(false);
   const [optimisticRows, updateOptimisticRows] = useOptimistic(
     rows,
     (state, editedRow) => {
@@ -145,7 +146,8 @@ export default function useTaskTable({
       );
     };
     if (taskId && !task) {
-      fetchTask();
+      setIsLoadingShow(true);
+      fetchTask().then(() => setIsLoadingShow(false));
     }
   }, [taskId, task]);
 
@@ -172,5 +174,6 @@ export default function useTaskTable({
     stopTimer,
     startTimer,
     handleCreateTasks,
+    isLoadingShow,
   };
 }

@@ -42,9 +42,9 @@ class FileController extends Controller
         $path = $request->get('path');
         $name = $request->get('name');
 
-        Storage::disk('google')->put($path . $name . '.' . $file->extension(), file_get_contents($file));
+        Storage::disk('google')->put($path.$name.'.'.$file->extension(), file_get_contents($file));
 
-        $data['url'] = Storage::disk('google')->path('/' . $path . $name . '.' . $file->extension());
+        $data['url'] = Storage::disk('google')->path('/'.$path.$name.'.'.$file->extension());
         $data['subject'] = $name;
 
         File::create($data);
@@ -63,7 +63,7 @@ class FileController extends Controller
             $file = $expenseFiles[$index];
             $fileInfo = $expenseFilesInfo[$index];
             $extension = $file->extension();
-            $path = "/$fileable_type/$fileInfo" . ($extension ? ".$extension" : '');
+            $path = "/$fileable_type/$fileInfo".($extension ? ".$extension" : '');
 
             Storage::disk('google')->put($path, file_get_contents($file));
             $data['url'] = Storage::disk('google')->path($path);

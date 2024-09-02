@@ -153,10 +153,10 @@ export default function Content({ selectedFork }) {
         <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" display="inline">
             Relacionado:
-          </MDTypography>{" "}
+          </MDTypography>
           {task.taskable_type === PROJECT_TYPE ? (
             <Link
-              href={`/projects/${task.taskable.id}`}
+              href={`/projects/${task.taskable?.id}`}
               sx={{ overflow: "wrap" }}
             >
               <MDTypography
@@ -428,7 +428,7 @@ export default function Content({ selectedFork }) {
             onChange={(e) => setCommentContent(e.target.value)}
             sx={{ mb: 2, width: "100%" }}
           />
-          <MDBox display="flex" justifyContent="end">
+          <MDBox display="flex" justifyContent="end" mt={2}>
             <MDButton
               variant="gradient"
               color="dark"

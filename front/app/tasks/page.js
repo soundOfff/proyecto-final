@@ -18,6 +18,7 @@ import { select as getAllStaffs } from "/actions/staffs";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
 import { getSelect as getSelectTasks } from "/actions/tasks";
+import { getAllPriorities as getAllNotificationPriorities } from "/actions/notifications";
 
 export default async function Tasks({
   searchParams: { perPage = 10, page = 1, sort = "-id" },
@@ -42,6 +43,7 @@ export default async function Tasks({
     tableFields,
     staffs,
     dependencyTasks,
+    notificationPriorities,
   ] = await Promise.all([
     getAllTasks({
       perPage: perPage,
@@ -60,7 +62,9 @@ export default async function Tasks({
     getTableFields({ table: tableName }),
     getAllStaffs(),
     getSelectTasks(),
+    getAllNotificationPriorities(),
   ]);
+
   return (
     <MDBox mb={3}>
       <Card>
@@ -80,6 +84,7 @@ export default async function Tasks({
               currentTimer={currentTimer}
               actionsData={actionsData}
               tableFields={tableFields}
+              notificationPriorities={notificationPriorities}
             />
           </Grid>
         </Grid>

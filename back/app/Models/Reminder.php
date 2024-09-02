@@ -15,8 +15,10 @@ class Reminder extends Model
         'date',
         'description',
         'is_notified',
+        'creator',
         'reminderable_id',
         'reminderable_type',
+        'notification_priority_id',
     ];
 
     public function reminderable(): MorphTo
@@ -27,5 +29,10 @@ class Reminder extends Model
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(Staff::class, 'creator');
     }
 }

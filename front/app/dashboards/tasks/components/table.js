@@ -88,40 +88,6 @@ export default function Table({ rows, meta }) {
 
   const taskColumns = [
     {
-      Header: "Miembros del equipo",
-      accessor: "staff",
-      Cell: ({ row }) => {
-        return row.original.assigneds?.map((member) => (
-          <MDBox key={member.id} display="inline-block" mr={2}>
-            {member.profileImage && (
-              <MDAvatar
-                src={member?.profileImage}
-                alt="profile-image"
-                size="md"
-                shadow="sm"
-                sx={{
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  marginRight: "0.5rem",
-                  marginBottom: "0.5rem",
-                  height: "2rem",
-                  width: "2rem",
-                }}
-              />
-            )}
-            <MDTypography
-              variant="button"
-              fontWeight="regular"
-              color="text"
-              mr={2}
-            >
-              {member.name}
-            </MDTypography>
-          </MDBox>
-        ));
-      },
-    },
-    {
       Header: "Tarea",
       accessor: "name",
       Cell: ({ row }) => (
@@ -222,10 +188,10 @@ export default function Table({ rows, meta }) {
     },
     {
       Header: "Tiempo total",
-      accessor: "total_time",
+      accessor: "parsed_total_time",
       Cell: ({ row }) => (
         <MDTypography variant="body2" color="dark">
-          {numberFormat(row.original.total_time)} hs
+          {row.original.parsed_total_time}
         </MDTypography>
       ),
     },

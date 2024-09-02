@@ -15,6 +15,7 @@ import MDBadge from "/components/MDBadge";
 import { setColor } from "/utils/project-state-colors";
 import Loading from "./skeleton";
 import useTabs from "/hooks/useTabs";
+import { getPriorityColor } from "/utils/project-state-colors";
 
 const TAB_TYPES = [
   {
@@ -88,30 +89,26 @@ export default function Table({ rows, meta }) {
 
   const taskColumns = [
     {
-      Header: "Tarea",
-      accessor: "name",
+      Header: "Fecha",
+      accessor: "start_date",
       Cell: ({ row }) => (
-        <MDBox display="flex" flexDirection="row" alignItems="center">
-          <Link href={`/tasks?taskId=${row.original.id}`}>
-            {row.original.name}
-          </Link>
-          <MDBadge
-            variant="gradient"
-            color="primary"
-            size="md"
-            badgeContent={row.original.status.name}
-          />
-        </MDBox>
+        <MDTypography variant="body2" fontSize="small">
+          {moment(row.original.start_date).format("DD/MM/YYYY")}
+        </MDTypography>
       ),
     },
     {
-      Header: "Nota",
-      accessor: "note",
-      Cell: ({ row }) => {
-        return row.original.timers?.length
-          ? row.original.timers[0]?.note
-          : "Sin notas";
-      },
+      Header: "Nro del caso",
+      accessor: "",
+      Cell: ({ row }) => (
+        <MDTypography
+          variant="body2"
+          fontSize="small"
+          sx={{ textAlign: "center" }}
+        >
+          {row.original.taskable?.id}
+        </MDTypography>
+      ),
     },
     {
       Header: "Cliente",
@@ -128,8 +125,9 @@ export default function Table({ rows, meta }) {
       },
     },
     {
-      Header: "Relacionado",
+      Header: "Caso",
       accessor: "taskable",
+      width: "15%",
       Cell: ({ row }) => (
         <Link href={`projects/${row.original?.taskable?.id}`} color="info">
           {row.original.taskable?.name}
@@ -137,28 +135,48 @@ export default function Table({ rows, meta }) {
       ),
     },
     {
-      Header: "Nro del caso",
-      accessor: "",
-      Cell: ({ row }) => (
-        <MDTypography
-          variant="body2"
-          fontSize="medium"
-          sx={{ textAlign: "center" }}
-        >
-          {row.original.taskable?.id}
-        </MDTypography>
-      ),
+      Header: "Tarea",
+      accessor: "name",
+      Cell: ({ row }) => {
+        return (
+          <MDBox display="flex" flexDirection="row" alignItems="center">
+            <Link href={`/tasks?taskId=${row.original.id}`}>
+              {row.original.name}
+            </Link>
+            <MDBadge
+              variant="gradient"
+              color="primary"
+              size="md"
+              badgeContent={row.original.status.name}
+            />
+          </MDBox>
+        );
+      },
     },
     {
-      Header: "Fecha",
-      accessor: "start_date",
-      Cell: ({ row }) => (
-        <MDTypography variant="body2" fontSize="medium">
-          {moment(row.original.start_date).format("DD/MM/YYYY")}
-        </MDTypography>
-      ),
+      Header: "Nota",
+      accessor: "note",
+      Cell: ({ row }) => {
+        return row.original.timers?.length
+          ? row.original.timers[0]?.note
+          : "Sin notas";
+      },
     },
     {
+      Header: "Prioridad",
+      accessor: "priority",
+      Cell: ({ row }) => {
+        return (
+          <MDBadge
+            variant="contained"
+            color={getPriorityColor(row.original.priority.name)}
+            size="md"
+            badgeContent={row.original.priority.name}
+          />
+        );
+      },
+    },
+    /* {
       Header: "Hora de inicio",
       accessor: "start_time",
       width: 200,
@@ -185,7 +203,7 @@ export default function Table({ rows, meta }) {
           </MDBox>
         ));
       },
-    },
+    }, */
     {
       Header: "Tiempo total",
       accessor: "parsed_total_time",
@@ -211,7 +229,7 @@ export default function Table({ rows, meta }) {
           ))}
         </Tabs>
       </MDBox>
-      <MDBox>
+      <MDBox py={2} px={2}>
         {isLoading ? (
           <Loading count={table.rows?.length > 3 ? 5 : 3} />
         ) : (

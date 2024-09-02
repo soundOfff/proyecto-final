@@ -2,5 +2,5 @@
 Repositorio para el proyecto final de Ing. en sistemas de la informacion.
 
 ### Integrantes
-Tomas Brasca
+Tomas Brasca ||
 Luca Braccani

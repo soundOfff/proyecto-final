@@ -91,7 +91,7 @@ const routes = [
     type: "collapse",
     name: "Ventas",
     key: "sales",
-    icon: <Icon fontSize="medium">balance</Icon>,
+    icon: <Icon fontSize="medium">paymentMethod</Icon>,
     collapse: [
       {
         name: "Propuestas",
@@ -134,14 +134,6 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Archivos",
-    key: "files",
-    route: "/files",
-    icon: <Icon fontSize="medium">insert_drive_file</Icon>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
     name: "Informes",
     key: "reports",
     icon: <Icon fontSize="medium">leaderboard</Icon>,
@@ -155,27 +147,47 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Procesos",
-    key: "processes",
-    route: "/processes",
-    icon: <Icon fontSize="medium">playlist_add_check</Icon>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Equipo",
-    key: "staffs",
-    route: "/staffs",
-    icon: <Icon fontSize="medium">people</Icon>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Plantilla de Emails",
-    key: "mail-templates",
-    route: "/mail-templates",
-    icon: <Icon fontSize="medium">mail</Icon>,
-    noCollapse: true,
+    name: "Utilidades",
+    key: "utilities",
+    icon: <Icon fontSize="medium">archive</Icon>,
+    collapse: [
+      {
+        type: "collapse",
+        name: "Archivos",
+        key: "files",
+        route: "/files",
+        noCollapse: true,
+      },
+      {
+        type: "collapse",
+        name: "Procesos",
+        key: "processes",
+        route: "/processes",
+        noCollapse: true,
+      },
+      {
+        type: "collapse",
+        name: "Juzgados",
+        key: "courts",
+        route: "/court",
+        noCollapse: true,
+      },
+      {
+        type: "collapse",
+        name: "Equipo",
+        key: "staffs",
+        route: "/staffs",
+        icon: <Icon fontSize="medium">people</Icon>,
+        noCollapse: true,
+      },
+      {
+        type: "collapse",
+        name: "Plantilla de Emails",
+        key: "mail-templates",
+        route: "/mail-templates",
+        noCollapse: true,
+      },
+    ],
   },
 ];
 

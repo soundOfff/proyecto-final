@@ -40,6 +40,7 @@ import FormField from "/pagesComponents/ecommerce/products/new-product/component
 import { update } from "/actions/tasks";
 import { useSession } from "next-auth/react";
 import moment from "moment-timezone";
+import { NOTIFICATION_PRIORITIES } from "/utils/constants/notifiableTypes";
 
 export default function Aside() {
   const { statuses, priorities, staffs, tagsData, task } = useDataProvider();
@@ -54,6 +55,7 @@ export default function Aside() {
   const [reminders, setReminders] = useState(task.reminders || []);
   const [reminderStaffId, setReminderStaffId] = useState(null);
   const [reminderDescription, setReminderDescription] = useState("");
+  const [reminderPriorityId, setReminderPriorityId] = useState(1);
   const [reminderDate, setReminderDate] = useState("");
   const [assigneds, setAssigneds] = useState(task.assigneds);
   const [followers, setFollowers] = useState(task.followers);
@@ -78,6 +80,7 @@ export default function Aside() {
         reminderable_type: "task",
         date: reminderDate,
         description: reminderDescription,
+        notification_priority_id: reminderPriorityId,
         staff_id: reminderStaffId,
         creator: session?.staff?.id,
       },
@@ -90,6 +93,7 @@ export default function Aside() {
           reminderable_type: "task",
           date: reminderDate,
           description: reminderDescription,
+          notification_priority_id: reminderPriorityId,
           staff_id: reminderStaffId,
           creator: session?.staff?.id,
         },
@@ -97,6 +101,7 @@ export default function Aside() {
     });
     setReminderStaffId(null);
     setReminderDescription("");
+    setReminderPriorityId(1);
     setReminderDate("");
   };
 
@@ -437,6 +442,22 @@ export default function Aside() {
                   sx={{ height: "40px" }}
                   onChange={(e) => setReminderDescription(e.target.value)}
                 />
+                <FormControl sx={{ width: "100%" }}>
+                  <InputLabel id="status">Prioridad</InputLabel>
+                  <Select
+                    value={reminderPriorityId}
+                    label="Estado"
+                    onChange={(e) => setReminderPriorityId(e.target.value)}
+                    sx={{ height: "40px" }}
+                  >
+                    {NOTIFICATION_PRIORITIES.map((priority) => (
+                      <MenuItem key={priority.id} value={priority.id}>
+                        {priority.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
                 <MDButton
                   variant="gradient"
                   color="dark"

@@ -18,7 +18,7 @@ class NotificationController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Notification::class)
-            ->allowedIncludes(['staffDevice', 'staff', 'creator', 'notifiable'])
+            ->allowedIncludes(['staffDevice', 'staff', 'creator', 'notifiable', 'priority'])
             ->allowedSorts([
                 'title',
                 'body',
@@ -27,8 +27,10 @@ class NotificationController extends Controller
                 'staff_id',
                 AllowedSort::callback('is_seen', function ($query, $descending) {
                     $direction = $descending ? 'DESC' : 'ASC';
+                    $opDirection = $descending ? 'ASC' : 'DESC';
                     $query
                         ->orderBy('is_seen', $direction)
+                        ->orderBy('notification_priority_id', $opDirection)
                         ->orderBy('created_at', "DESC");
                 }),
             ])

@@ -18,6 +18,7 @@ class Reminder extends Model
         'creator',
         'reminderable_id',
         'reminderable_type',
+        'notification_priority_id',
     ];
 
     public function reminderable(): MorphTo

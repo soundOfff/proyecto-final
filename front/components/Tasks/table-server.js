@@ -162,37 +162,16 @@ export default function Table({
     {
       Header: "Estado",
       accessor: "status",
-      Cell: ({ row }) => {
-        return (
-          {
-            /* <Autocomplete
-            value={statuses?.find(
-              (status) => status.id === row.original.status.id
-            )}
-            disabled={row.original.isBlocked || !row.original.canChangeStatus}
-            onChange={(e, status) => {
-              handleStatusChange(row.original.id, status.id);
-            }}
-            options={statuses}
-            sx={{ width: "150px" }}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <MDInput {...params} variant="standard" fullWidth />
-            )}
-          /> */
-          },
-          (
-            <MDBox display="flex" flexDirection="row" alignItems="center">
-              <MDBadge
-                variant="contained"
-                color={getColor(row.original.status.id)}
-                size="md"
-                badgeContent={row.original.status.name}
-              />
-            </MDBox>
-          )
-        );
-      },
+      Cell: ({ row }) => (
+        <MDBox display="flex" flexDirection="row" alignItems="center">
+          <MDBadge
+            variant="contained"
+            color={getColor(row.original.status.id)}
+            size="md"
+            badgeContent={row.original.status.name}
+          />
+        </MDBox>
+      ),
     },
     {
       Header: "Fecha de inicio",
@@ -225,37 +204,14 @@ export default function Table({
       accessor: "priority",
       width: 200,
       Cell: ({ row }) => (
-        {
-          /* <Autocomplete
-          value={priorities.find(
-            (priority) => priority.id === row.original.priority.id
-          )}
-          onChange={(e, priority) => {
-            handlePriorityChange(row.original.id, priority.id);
-          }}
-          options={priorities}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-          sx={{ width: "150px" }}
-        /> */
-        },
-        (
-          <MDBox display="flex" flexDirection="row" alignItems="center">
-            <MDBadge
-              variant="contained"
-              color={getPriorityColor(row.original.priority.name)}
-              size="md"
-              badgeContent={row.original.priority.name}
-            />
-          </MDBox>
-        )
+        <MDBox display="flex" flexDirection="row" alignItems="center">
+          <MDBadge
+            variant="contained"
+            color={getPriorityColor(row.original.priority.name)}
+            size="md"
+            badgeContent={row.original.priority.name}
+          />
+        </MDBox>
       ),
     },
     {

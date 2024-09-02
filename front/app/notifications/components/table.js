@@ -1,8 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-
 import moment from "moment";
 import "moment/locale/es";
 
@@ -13,11 +11,11 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
+import MDBadge from "/components/MDBadge";
 
 import { Tooltip, Tabs, Tab } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import LinkIcon from "@mui/icons-material/Link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
@@ -27,6 +25,7 @@ import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
+import { getPriorityColor } from "/utils/project-state-colors";
 
 const TAB_TYPES = [
   {
@@ -222,6 +221,12 @@ export default function Table({ rows }) {
               {row.original.title}
             </MDTypography>
           )}
+          <MDBadge
+            variant="contained"
+            color={getPriorityColor(row.original?.priority?.label)}
+            size="md"
+            badgeContent={row.original?.priority?.label}
+          />
         </MDBox>
       ),
     },

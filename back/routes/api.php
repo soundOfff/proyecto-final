@@ -28,6 +28,7 @@ use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationPriorityController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerIndustryController;
 use App\Http\Controllers\PartnerProjectRoleController;
@@ -59,6 +60,7 @@ use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
+use App\Models\NotificationPriority;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -271,6 +273,8 @@ Route::delete('/notifications/{notification}', [NotificationController::class, '
 Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
 Route::put('/notifications-update-many', [NotificationController::class, 'updateMany']);
 Route::put('/notifications-archive-many', [NotificationController::class, 'archiveMany']);
+
+Route::get('/notification-priorities', [NotificationPriorityController::class, 'select']);
 
 Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 

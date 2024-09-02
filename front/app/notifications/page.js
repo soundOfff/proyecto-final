@@ -20,7 +20,7 @@ export default async function Notifications({
   } = await getAllNotifications({
     "filter[staff_id]": session?.staff?.id,
     "filter[is_archived]": type == "archived" ? true : false,
-    include: ["creator", "notifiable"],
+    include: ["creator", "notifiable", "priority"],
     page,
     perPage,
     sort,

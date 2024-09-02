@@ -1,8 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-
 import moment from "moment";
 import "moment/locale/es";
 
@@ -13,11 +11,16 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
+import MDBadge from "/components/MDBadge";
 
 import { Tooltip, Tabs, Tab } from "@mui/material";
+
+import Icon from "@mui/material/Icon";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import LinkIcon from "@mui/icons-material/Link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
@@ -27,6 +30,7 @@ import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
+import { getPriorityColor } from "/utils/project-state-colors";
 
 const TAB_TYPES = [
   {
@@ -47,6 +51,11 @@ export default function Table({ rows }) {
   const [successSB, setSuccessSB] = useState(false);
   const [infoSB, setInfoSB] = useState("");
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
+  const [menu, setMenu] = useState(null);
+
+  const openMenu = (event) => setMenu(event.currentTarget);
+
+  const closeMenu = () => setMenu(null);
 
   const { handleChange, selectedTab, isLoading } = useTabs({
     TAB_TYPES,
@@ -187,6 +196,26 @@ export default function Table({ rows }) {
     }
   };
 
+  const renderMenu = (
+    <Menu
+      anchorEl={menu}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "left" }}
+      open={Boolean(menu)}
+      onClose={closeMenu}
+      keepMounted
+    >
+      <MenuItem onClick={closeMenu}>Vistas</MenuItem>
+      <MenuItem onClick={closeMenu}>No vistas</MenuItem>
+      <Divider sx={{ margin: "0.5rem 0" }} />
+      <MenuItem onClick={closeMenu}>
+        <MDTypography variant="button" color="error" fontWeight="regular">
+          Remover Filtro
+        </MDTypography>
+      </MenuItem>
+    </Menu>
+  );
+
   const columns = [
     {
       Header: "#",
@@ -222,6 +251,12 @@ export default function Table({ rows }) {
               {row.original.title}
             </MDTypography>
           )}
+          <MDBadge
+            variant="contained"
+            color={getPriorityColor(row.original?.priority?.label)}
+            size="md"
+            badgeContent={row.original?.priority?.label}
+          />
         </MDBox>
       ),
     },
@@ -374,6 +409,18 @@ export default function Table({ rows }) {
   return (
     <>
       <MDBox width="100%" display="flex" justifyContent="end" gap={4}>
+        <MDBox display="flex">
+          <MDButton
+            variant="contained"
+            color="dark"
+            size="small"
+            onClick={openMenu}
+          >
+            Filtros&nbsp;
+            <Icon>keyboard_arrow_down</Icon>
+          </MDButton>
+          {renderMenu}
+        </MDBox>
         <MDButton
           color="info"
           size="small"

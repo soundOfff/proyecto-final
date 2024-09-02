@@ -11,6 +11,7 @@ import { getAll as getAllActionTypes } from "/actions/action-types";
 import { getTableFields } from "/actions/table-field";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
+import { getAllPriorities } from "/actions/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function Show({ params: { id } }) {
     currentTimer,
     actionsData,
     tableFields,
+    notificationPriorities,
   ] = await Promise.all([
     show(id, {
       include: [
@@ -54,6 +56,7 @@ export default async function Show({ params: { id } }) {
     getCurrentTimer(session.staff.id),
     getAllActionTypes(),
     getTableFields({ table: "projects" }),
+    getAllPriorities(),
   ]);
 
   return (
@@ -69,6 +72,7 @@ export default async function Show({ params: { id } }) {
       currentTimer={currentTimer}
       actionsData={actionsData}
       tableFields={tableFields}
+      notificationPriorities={notificationPriorities}
     />
   );
 }

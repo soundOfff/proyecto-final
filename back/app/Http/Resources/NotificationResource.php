@@ -24,6 +24,7 @@ class NotificationResource extends JsonResource
             'isArchived' => $this->is_archived,
             'notifiableId' => $this->notifiable_id,
             'notifiableType' => $this->notifiable_type,
+            'priority' => NotificationPriorityResource::make($this->whenLoaded('priority')),
             'creator' => StaffResource::make($this->whenLoaded('creator')),
             'staff' => StaffResource::make($this->whenLoaded('staff')),
             'staffDevice' => StaffDeviceResource::make($this->whenLoaded('staffDevice')),

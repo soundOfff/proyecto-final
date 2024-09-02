@@ -37,10 +37,8 @@ class NotificationController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('is_archived'),
                 AllowedFilter::exact('staff_id'),
-                AllowedFilter::callback('search', function ($query, $search) {
-                    $query->where('title', 'LIKE', "%{$search}%")
-                        ->orWhere('body', 'LIKE', "%{$search}%");
-                }),
+                AllowedFilter::exact('is_seen'),
+                AllowedFilter::scope('search'),
             ]);
 
         $notifications = request()->has('perPage')

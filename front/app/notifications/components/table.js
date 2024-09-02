@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import moment from "moment";
 import "moment/locale/es";
@@ -12,8 +12,9 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
+import MDInput from "/components/MDInput";
 
-import { Tooltip, Tabs, Tab } from "@mui/material";
+import { Tooltip, Tabs, Tab, Grid } from "@mui/material";
 
 import Icon from "@mui/material/Icon";
 import Menu from "@mui/material/Menu";
@@ -31,6 +32,7 @@ import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getPriorityColor } from "/utils/project-state-colors";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const TAB_TYPES = [
   {
@@ -52,10 +54,12 @@ export default function Table({ rows }) {
   const [infoSB, setInfoSB] = useState("");
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
   const [menu, setMenu] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [search, setSearch] = useState(null);
 
-  const openMenu = (event) => setMenu(event.currentTarget);
-
-  const closeMenu = () => setMenu(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const { handleChange, selectedTab, isLoading } = useTabs({
     TAB_TYPES,
@@ -68,6 +72,57 @@ export default function Table({ rows }) {
   const allRowsAreArchived = selectedNotificationIds.every(
     (rowId) => rows.find((row) => row.id === rowId)?.isArchived
   );
+
+  const openMenu = (event) => setMenu(event.currentTarget);
+
+  const closeMenu = () => setMenu(null);
+
+  const updateQueryParams = (params) => {
+    const queryParams = params.toString();
+    const query = queryParams ? `?${queryParams}` : "";
+    router.push(`${pathname}${query}`);
+  };
+
+  const handleFilterIsSeen = (isSeen = true) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("isSeen", Boolean(isSeen));
+    setSelectedFilter(isSeen ? "Vistas" : "No vistas");
+    closeMenu();
+    updateQueryParams(params);
+  };
+
+  const removeIsSeenFilter = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("isSeen");
+    setSelectedFilter(null);
+    closeMenu();
+    updateQueryParams(params);
+  };
+
+  const handleSearch = (e) => {
+    const searchValue = e.target.value;
+    setTimeout(() => {
+      setSearch(searchValue.length > 1 ? searchValue : null);
+    }, 300);
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+
+    if (params.get("isSeen")) {
+      setSelectedFilter(
+        params.get("isSeen") === "true" ? "Vistas" : "No vistas"
+      );
+    }
+
+    if (search) {
+      params.set("search", search);
+    } else {
+      params.delete("search");
+    }
+
+    updateQueryParams(params);
+  }, [search]);
 
   const getResourceUrl = (notifiableType, notifiableId) => {
     if (notifiableId == 0) {
@@ -205,10 +260,10 @@ export default function Table({ rows }) {
       onClose={closeMenu}
       keepMounted
     >
-      <MenuItem onClick={closeMenu}>Vistas</MenuItem>
-      <MenuItem onClick={closeMenu}>No vistas</MenuItem>
+      <MenuItem onClick={() => handleFilterIsSeen(true)}>Vistas</MenuItem>
+      <MenuItem onClick={() => handleFilterIsSeen(false)}>No vistas</MenuItem>
       <Divider sx={{ margin: "0.5rem 0" }} />
-      <MenuItem onClick={closeMenu}>
+      <MenuItem onClick={() => removeIsSeenFilter()}>
         <MDTypography variant="button" color="error" fontWeight="regular">
           Remover Filtro
         </MDTypography>
@@ -408,58 +463,75 @@ export default function Table({ rows }) {
 
   return (
     <>
-      <MDBox width="100%" display="flex" justifyContent="end" gap={4}>
-        <MDBox display="flex">
+      <Grid width="100%" display="flex" alignItems="center" container>
+        <Grid
+          display="flex"
+          item
+          xs={12}
+          sm={6}
+          justifyContent="start"
+          gap={2}
+          my={2}
+        >
+          <MDInput label="Buscar" onChange={handleSearch} />
           <MDButton
             variant="contained"
             color="dark"
             size="small"
             onClick={openMenu}
           >
-            Filtros&nbsp;
+            {selectedFilter ? selectedFilter : "Seleccionar filtro"}&nbsp;
             <Icon>keyboard_arrow_down</Icon>
           </MDButton>
           {renderMenu}
-        </MDBox>
-        <MDButton
-          color="info"
-          size="small"
-          variant="contained"
-          onClick={() => handleMarkAsSeenMultiple()}
-          sx={{ mb: 2 }}
-          disabled={
-            isUpdating || selectedNotificationIds.length === 0 || allRowsAreSeen
-          }
+        </Grid>
+        <Grid
+          display="flex"
+          item
+          xs={12}
+          sm={6}
+          justifyContent="end"
+          gap={2}
+          my={2}
         >
-          Marcar como vistas
-          <RemoveRedEyeIcon
-            sx={{
-              ml: 1,
-              mb: 0.5,
-            }}
-          />
-        </MDButton>
-        <MDButton
-          color="dark"
-          size="small"
-          variant="contained"
-          disabled={
-            isUpdating ||
-            selectedNotificationIds.length === 0 ||
-            allRowsAreArchived
-          }
-          sx={{ mb: 2 }}
-          onClick={() => handleArchiveMultiple()}
-        >
-          Archivar
-          <ArchiveIcon
-            sx={{
-              ml: 1,
-              mb: 0.5,
-            }}
-          />
-        </MDButton>
-      </MDBox>
+          <MDButton
+            color="info"
+            variant="contained"
+            onClick={() => handleMarkAsSeenMultiple()}
+            disabled={
+              isUpdating ||
+              selectedNotificationIds.length === 0 ||
+              allRowsAreSeen
+            }
+          >
+            Marcar como vistas
+            <RemoveRedEyeIcon
+              sx={{
+                ml: 1,
+                mb: 0.5,
+              }}
+            />
+          </MDButton>
+          <MDButton
+            color="dark"
+            variant="contained"
+            disabled={
+              isUpdating ||
+              selectedNotificationIds.length === 0 ||
+              allRowsAreArchived
+            }
+            onClick={() => handleArchiveMultiple()}
+          >
+            Archivar
+            <ArchiveIcon
+              sx={{
+                ml: 1,
+                mb: 0.5,
+              }}
+            />
+          </MDButton>
+        </Grid>
+      </Grid>
       <MDBox py={4} px={2}>
         <Tabs value={selectedTab} centered onChange={handleChange}>
           {TAB_TYPES.map((tab) => (

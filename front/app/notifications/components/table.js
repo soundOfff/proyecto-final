@@ -14,6 +14,11 @@ import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 
 import { Tooltip, Tabs, Tab } from "@mui/material";
+
+import Icon from "@mui/material/Icon";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -46,6 +51,11 @@ export default function Table({ rows }) {
   const [successSB, setSuccessSB] = useState(false);
   const [infoSB, setInfoSB] = useState("");
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
+  const [menu, setMenu] = useState(null);
+
+  const openMenu = (event) => setMenu(event.currentTarget);
+
+  const closeMenu = () => setMenu(null);
 
   const { handleChange, selectedTab, isLoading } = useTabs({
     TAB_TYPES,
@@ -185,6 +195,26 @@ export default function Table({ rows }) {
       );
     }
   };
+
+  const renderMenu = (
+    <Menu
+      anchorEl={menu}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "left" }}
+      open={Boolean(menu)}
+      onClose={closeMenu}
+      keepMounted
+    >
+      <MenuItem onClick={closeMenu}>Vistas</MenuItem>
+      <MenuItem onClick={closeMenu}>No vistas</MenuItem>
+      <Divider sx={{ margin: "0.5rem 0" }} />
+      <MenuItem onClick={closeMenu}>
+        <MDTypography variant="button" color="error" fontWeight="regular">
+          Remover Filtro
+        </MDTypography>
+      </MenuItem>
+    </Menu>
+  );
 
   const columns = [
     {
@@ -379,6 +409,18 @@ export default function Table({ rows }) {
   return (
     <>
       <MDBox width="100%" display="flex" justifyContent="end" gap={4}>
+        <MDBox display="flex">
+          <MDButton
+            variant="contained"
+            color="dark"
+            size="small"
+            onClick={openMenu}
+          >
+            Filtros&nbsp;
+            <Icon>keyboard_arrow_down</Icon>
+          </MDButton>
+          {renderMenu}
+        </MDBox>
         <MDButton
           color="info"
           size="small"

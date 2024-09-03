@@ -344,6 +344,7 @@ export default function PersonForm({
       <Grid item xs={12} sm={6}>
         <Autocomplete
           disablePortal
+          autocomplete={false}
           options={filteredCivilStatuses}
           onChange={(event, newValue) => {
             setFieldValue(civilStatus.name, newValue);
@@ -358,6 +359,7 @@ export default function PersonForm({
               InputLabelProps={{ shrink: true }}
               error={Boolean(errors.civilStatuses && touched.civilStatuses)}
               helperText={touched.civilStatuses && errors.civilStatuses}
+              autoComplete="off"
             />
           )}
         />

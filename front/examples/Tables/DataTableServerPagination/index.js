@@ -163,7 +163,7 @@ function DataTable({
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          p={3}
+          p={1}
         >
           {entries && (
             <MDBox display="flex" alignItems="center">

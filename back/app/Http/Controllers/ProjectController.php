@@ -135,8 +135,8 @@ class ProjectController extends Controller
                     'Se ha creado un nuevo caso',
                     "Nombre Del Caso: $project->name",
                     $staff->id,
-                    $project->id,
                     strtolower(class_basename(Project::class)),
+                    $project->id,
                 );
             }
         }

@@ -310,9 +310,9 @@ export default function Detail({ project }) {
             title="Abogado Principal"
             description={
               project.staffs.length > 0
-                ? project.staffs.at(-1)?.firstName +
+                ? project.staffs.at(1)?.firstName +
                   " " +
-                  project.staffs.at(-1)?.lastName
+                  project.staffs.at(1)?.lastName
                 : "Sin abogado principal"
             }
           />

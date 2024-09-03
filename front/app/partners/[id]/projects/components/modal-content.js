@@ -112,13 +112,12 @@ export default function ModalComponent({ project }) {
           mx={{ xl: 10, xs: 0 }}
           justifyContent="center"
         >
-          {
-            <Grid item xs={6}>
-              <MDTypography variant="body2" fontWeight="medium">
-                Fecha De Creación
-              </MDTypography>
-            </Grid>
-          }
+          <Grid item xs={6}>
+            <MDTypography variant="body2" fontWeight="medium">
+              Fecha De Creación
+            </MDTypography>
+          </Grid>
+
           <Grid item xs={6}>
             <MDTypography variant="body2" color="text">
               {project.startDate}

@@ -24,21 +24,20 @@ export default function Stats({ countByStatuses }) {
             >
               {status.count}
             </MDTypography>
-            {
-              <MDBadge
-                variant="contained"
-                badgeContent={`${status.label}`}
-                color={setColor(status.label)}
-                size="xs"
-                container
-                sx={{
-                  ml: { xs: 0, sm: 2 },
-                  mb: 1,
-                  height: "2rem",
-                  minWidth: "108px",
-                }}
-              />
-            }
+
+            <MDBadge
+              variant="contained"
+              badgeContent={`${status.label}`}
+              color={setColor(status.label)}
+              size="xs"
+              container
+              sx={{
+                ml: { xs: 0, sm: 2 },
+                mb: 1,
+                height: "2rem",
+                minWidth: "108px",
+              }}
+            />
           </MDBox>
         </Grid>
       ))}

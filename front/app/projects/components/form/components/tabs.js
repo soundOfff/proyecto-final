@@ -34,6 +34,7 @@ export default function TabsComponent({ setTabIndex }) {
     <AppBar position="static" className="display-hidden-print">
       <TabList orientation={tabsOrientation} onChange={handleSetTabValue}>
         <Tab label="Clientes" value="partners" />
+        <Tab label="Descripción" value="description" />
         <Tab label="Notas" value="notes" />
       </TabList>
     </AppBar>

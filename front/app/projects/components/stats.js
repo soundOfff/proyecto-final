@@ -18,12 +18,13 @@ export default function Stats({ countByStatuses }) {
         >
           <MDBox my={2}>
             <MDTypography
-              variant="h3"
+              variant="h4"
               display="inline-block"
               minWidth={{ xs: "150px", sm: "auto" }}
             >
               {status.count}
             </MDTypography>
+
             <MDBadge
               variant="contained"
               badgeContent={`${status.label}`}

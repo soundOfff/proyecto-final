@@ -7,9 +7,11 @@ import MDBox from "/components/MDBox";
 import { useEffect, useState } from "react";
 import PartnerForm from "./partnerForm";
 import PartnerList from "./partnerList";
-import Notes from "./notes";
 import { parseEditorState } from "/utils/parseEditorState";
 import { convertToRaw } from "draft-js";
+import Description from "./description";
+import NoteForm from "./noteForm";
+import NoteList from "./noteList";
 
 export default function Partners({
   partnerData,
@@ -20,18 +22,20 @@ export default function Partners({
   setFieldValue,
   values,
   description,
+  notes,
 }) {
   const [tab, setTab] = useState("partners");
-  const [editorState, setEditorState] = useState(
+  const [descriptionEditorState, setDescriptionEditorState] = useState(
     parseEditorState(project?.description || "")
   );
 
   useEffect(() => {
-    const raw = convertToRaw(editorState.getCurrentContent());
+    const raw = convertToRaw(descriptionEditorState.getCurrentContent());
     const strDescription = JSON.stringify(raw);
 
     setFieldValue(description.name, strDescription);
-  }, [editorState, setFieldValue, description]);
+  }, [descriptionEditorState, setFieldValue, description]);
+
   return (
     <MDBox>
       <TabContext value={tab}>
@@ -47,8 +51,18 @@ export default function Partners({
             values={values}
           />
         </TabPanel>
+        <TabPanel value="description">
+          <Description
+            {...{
+              description,
+              descriptionEditorState,
+              setDescriptionEditorState,
+            }}
+          />
+        </TabPanel>
         <TabPanel value="notes">
-          <Notes {...{ description, editorState, setEditorState }} />
+          <NoteForm {...{ notes, setFieldValue, values }} />
+          <NoteList {...{ notes, setFieldValue, values }} />
         </TabPanel>
       </TabContext>
     </MDBox>

@@ -40,7 +40,18 @@ export default function Table({ rows, meta }) {
   useEffect(() => {
     const fetchProject = async () => {
       setProject(
-        await show(projectIdShow, { include: ["staffs", "billablePartner"] })
+        await show(projectIdShow, {
+          include: [
+            "staffs",
+            "billablePartner",
+            "billingType",
+            "serviceType",
+            "members",
+            "responsiblePerson",
+            "partners",
+            "proposal",
+          ],
+        })
       );
     };
     if (projectIdShow) {
@@ -107,7 +118,7 @@ export default function Table({ rows, meta }) {
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
-          <Link href={`/projects/${row.original.id}/edit`}>
+          {/*  <Link href={`/projects/${row.original.id}/edit`}>
             <Tooltip title="Editar">
               <EditIcon
                 color="secondary"
@@ -115,7 +126,7 @@ export default function Table({ rows, meta }) {
                 sx={{ mr: 3, cursor: "pointer" }}
               />
             </Tooltip>
-          </Link>
+          </Link> */}
           <Link href={`/projects/create-notes/${row.original.id}`}>
             <Tooltip title="Agregar Notas">
               <EditNoteIcon
@@ -125,15 +136,7 @@ export default function Table({ rows, meta }) {
               />
             </Tooltip>
           </Link>
-          <Tooltip title="Eliminar">
-            <DeleteIcon
-              color="error"
-              fontSize="medium"
-              onClick={() => handleDelete(row.original.id)}
-              sx={{ mr: 3, cursor: "pointer" }}
-            />
-          </Tooltip>
-          <Link
+          {/* <Link
             href={{
               pathname: `/expenses/create`,
               query: {
@@ -149,7 +152,15 @@ export default function Table({ rows, meta }) {
                 sx={{ mr: 3, cursor: "pointer" }}
               />
             </Tooltip>
-          </Link>
+          </Link> */}
+          <Tooltip title="Eliminar">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={() => handleDelete(row.original.id)}
+              sx={{ mr: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
         </MDBox>
       ),
     },

@@ -61,13 +61,13 @@ export default function Filters({ statuses }) {
   }, [status, router, pathname, searchParams, search]);
 
   return (
-    <Grid container spacing={3} my={3}>
+    <Grid container spacing={3} my={1}>
       <Grid item xs={12} sm={4}>
         <FormControl
           sx={{
             width: { lg: "80%", xs: "100%" },
             height: "45px",
-            mb: 3,
+            mb: 2,
           }}
         >
           <InputLabel id="status">Estado</InputLabel>
@@ -101,7 +101,7 @@ export default function Filters({ statuses }) {
           sx={{
             width: { lg: "80%", xs: "100%" },
             height: "50px",
-            mb: 3,
+            mb: 2,
             display: "flex",
             justifyItems: "end",
           }}

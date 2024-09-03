@@ -117,6 +117,7 @@ export default function ModalComponent({ project }) {
               Fecha De Creación
             </MDTypography>
           </Grid>
+
           <Grid item xs={6}>
             <MDTypography variant="body2" color="text">
               {project.startDate}

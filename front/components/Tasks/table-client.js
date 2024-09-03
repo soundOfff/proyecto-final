@@ -163,7 +163,7 @@ export default function Table({
         <MDBox>
           {row.original.isBlocked ? (
             <MDBox width="100%" display="flex" justifyContent="start">
-              <MDTypography variant="body2" color="dark">
+              <MDTypography variant="body2" color="dark" fontSize="small">
                 {row.original.name}
                 <MDBadge
                   variant="contained"
@@ -185,6 +185,7 @@ export default function Table({
               <MDTypography
                 variant="body2"
                 color="info"
+                fontSize="small"
                 onClick={() => {
                   setTaskId(row.original.id);
                   setOpenShowModal(true);
@@ -325,7 +326,7 @@ export default function Table({
         close={() => setIsToastOpen(false)}
         bgWhite
       />
-      <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-10}>
+      <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-9}>
         <MDBox width="50%" display="flex" gap={5} justifyContent="flex-end">
           {project && (
             <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un departamento y un proceso">
@@ -426,17 +427,22 @@ export default function Table({
           </Modal>
         )}
       </MDBox>
-      <DataTable
-        table={table}
-        showTotalEntries={false}
-        isSorted={false}
-        moveRow={moveRow}
-        noEndBorder
-        isTaskTable={true}
-        entriesPerPage={{ defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] }}
-        canMultiSelect={true}
-        setDeleteIds={setDeleteIds}
-      />
+      <MDBox mt={3}>
+        <DataTable
+          table={table}
+          showTotalEntries={false}
+          isSorted={false}
+          moveRow={moveRow}
+          noEndBorder
+          isTaskTable={true}
+          entriesPerPage={{
+            defaultValue: 50,
+            entries: [5, 10, 15, 20, 25, 50],
+          }}
+          canMultiSelect={true}
+          setDeleteIds={setDeleteIds}
+        />
+      </MDBox>
       <DeleteRow
         {...{
           setOpenDeleteConfirmation,

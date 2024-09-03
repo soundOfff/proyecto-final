@@ -41,6 +41,9 @@ class ProjectRequest extends FormRequest
             'partners.*.id' => 'required|numeric|exists:partners,id',
             'partners.*.role_id' => 'required|numeric|exists:partner_project_roles,id',
             'partners.*.owner_id' => 'nullable|numeric|exists:partners,id',
+            'notes' => 'nullable|array',
+            'notes.*.content' => 'required|string',
+            'notes.*.staff_id' => 'required|numeric|exists:staff,id',
         ];
     }
 }

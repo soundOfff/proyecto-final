@@ -6,7 +6,11 @@ import MDEditor from "/components/MDEditor";
 import MDBox from "/components/MDBox";
 import { ErrorMessage } from "formik";
 
-export default function Notes({ description, editorState, setEditorState }) {
+export default function Description({
+  description,
+  descriptionEditorState,
+  setDescriptionEditorState,
+}) {
   return (
     <Grid item xs={12}>
       <MDTypography variant="body2" color="text">
@@ -14,8 +18,8 @@ export default function Notes({ description, editorState, setEditorState }) {
       </MDTypography>
       <MDEditor
         editorStyle={{ minHeight: "20vh" }}
-        editorState={editorState}
-        setEditorState={setEditorState}
+        editorState={descriptionEditorState}
+        setEditorState={setDescriptionEditorState}
       />
       <MDBox mt={0.75}>
         <MDTypography

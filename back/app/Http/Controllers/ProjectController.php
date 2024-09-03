@@ -91,6 +91,7 @@ class ProjectController extends Controller
     {
         $newProject = $request->validated();
         $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
+        $notes = $request['notes'] ?: [];
 
         $partnersToAttach = [];
         foreach ($request->get('partners') as $partner) {
@@ -106,6 +107,7 @@ class ProjectController extends Controller
 
         $project->members()->attach($projectMemberIds);
         $project->partners()->attach($partnersToAttach);
+        $project->notes()->createMany($notes);
 
         $project->setName();
 
@@ -168,6 +170,7 @@ class ProjectController extends Controller
                 'partners',
                 'proposal',
                 'process',
+                'notes',
             ])
             ->find($project->id);
 
@@ -183,6 +186,10 @@ class ProjectController extends Controller
 
         $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($memberIds);
+
+        $notes = $request['notes'] ?: [];
+        $project->notes()->delete();
+        $project->notes()->createMany($notes);
 
         $partnersToSync = [];
         foreach ($request->get('partners') as $partner) {

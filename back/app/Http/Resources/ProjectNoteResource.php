@@ -16,6 +16,7 @@ class ProjectNoteResource extends JsonResource
     {
         return [
             'content' => $this->content,
+            'staffId' => $this->staff_id,
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'staff' => StaffResource::make($this->whenLoaded('staff')),
         ];

@@ -144,7 +144,7 @@ export default function Table({
       Cell: ({ row }) =>
         row.original.isBlocked ? (
           <MDBox width="100%" display="flex" justifyContent="start">
-            <MDTypography variant="body2" color="dark">
+            <MDTypography variant="body2" color="dark" fontSize="small">
               {row.original.name}
             </MDTypography>
           </MDBox>
@@ -153,6 +153,7 @@ export default function Table({
             <MDTypography
               variant="body2"
               color="info"
+              fontSize="small"
               onClick={() => handleOpenModal(row.original.id)}
             >
               {row.original.name}

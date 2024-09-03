@@ -6,15 +6,54 @@ import Grid from "@mui/material/Grid";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import DateRangeIcon from "@mui/icons-material/DateRange";
 import moneyFormat from "/utils/moneyFormat";
-import { Divider } from "@mui/material";
-import HandIcon from "/assets/logo/Black/hand.svg";
-import Image from "next/image";
+import { Divider, Table, TableBody, TableRow } from "@mui/material";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
+import MDAvatar from "/components/MDAvatar";
+import DefaultItem from "/examples/Items/DefaultItem";
+
+const headers = [
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      px: 1,
+      textAlign: "left",
+    },
+    header: "Nombre",
+  },
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      pr: 1,
+      pl: 3,
+      textAlign: "left",
+    },
+    header: "Rol",
+  },
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      pr: 1,
+      pl: 3,
+      textAlign: "left",
+    },
+    header: "Apoderado",
+  },
+];
+
+const borderBottom = {
+  borderBottom: ({ borders: { borderWidth }, palette: { light } }) =>
+    `${borderWidth[1]} solid ${light.main}`,
+};
 
 export default function Detail({ project }) {
+  const getInitials = (firstName) => {
+    const initials = firstName[0] || "";
+    return initials.toUpperCase();
+  };
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -36,137 +75,348 @@ export default function Detail({ project }) {
             sx={{ maxHeight: "40px", marginTop: "0" }}
           />
         </MDBox>
-        <Grid container mt={3}>
-          {project.cost && (
-            <Grid item xs={12} xxl={2} display="flex">
-              <MonetizationOnOutlinedIcon sx={{ mr: 1 }} />
-              <MDTypography variant="h6" color="text" fontWeight="light">
-                {moneyFormat(project.cost)}
-              </MDTypography>
-            </Grid>
-          )}
-          {project.billablePartner && (
-            <Grid item xs={12} xxl={3} display="flex">
-              <Image
-                src={HandIcon}
-                width="20"
-                height="17"
-                alt="Hand Icon"
-                style={{ marginRight: "10px" }}
-              />
-              <MDTypography variant="h6" color="text" fontWeight="light">
-                {project.billablePartner.mergedName}
-              </MDTypography>
-            </Grid>
-          )}
-          <Grid item xs={12} xxl={3} mr={5} display="flex">
-            <DateRangeIcon />
-            <MDTypography variant="h6" fontWeight="light" sx={{ mx: 1 }}>
-              Desde
-            </MDTypography>
-            <MDTypography variant="h6" color="text" fontWeight="light">
-              {project.startDate}
-            </MDTypography>
+        <Grid container my={3} mx={2}>
+          <Grid item xs={12} md={6} xxl={3} whiteSpace="nowrap">
+            <DefaultItem
+              color="dark"
+              title="Costo"
+              icon="monetization_on_outlined"
+              description={moneyFormat(project.cost)}
+            />
           </Grid>
-          {project.deadline && (
-            <Grid item xs={12} xxl={3} display="flex">
-              <DateRangeIcon />
-              <MDTypography
-                variant="h6"
-                color="caption"
-                fontWeight="light"
-                sx={{ mx: 1 }}
-              >
-                Hasta
-              </MDTypography>
-              <MDTypography variant="h6" color="text" fontWeight="light">
-                {project.deadline}
-              </MDTypography>
-            </Grid>
-          )}
+
+          <Grid
+            item
+            xs={12}
+            md={6}
+            xxl={3}
+            mt={{ xxl: 0, md: 0, xs: 3 }}
+            whiteSpace="nowrap"
+          >
+            <DefaultItem
+              color="dark"
+              title="Creado"
+              icon="date_range"
+              description={project.createdAt}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            xxl={3}
+            mt={{ xxl: 0, md: 3, xs: 3 }}
+            whiteSpace="nowrap"
+          >
+            <DefaultItem
+              color="dark"
+              title="Comienzo"
+              icon="date_range"
+              description={project.startDate}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            xxl={3}
+            mt={{ xxl: 0, md: 3, xs: 3 }}
+            whiteSpace="nowrap"
+          >
+            <DefaultItem
+              color="dark"
+              title="Fin"
+              icon="date_range"
+              description={project.deadline ?? "Sin Fecha de Fin"}
+            />
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {project.estimatedHours && (
-          <Grid
-            container
-            spacing={5}
-            mx={{ xl: 10, xs: 0 }}
-            mt={{ xl: 3, xs: 0 }}
-            justifyContent="center"
-          >
-            <Grid item xs={6}>
-              <MDTypography variant="body2" fontWeight="medium">
-                Horas Estimadas
-              </MDTypography>
+      <Grid container>
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Cliente Facturable"
+            description={project.billablePartner?.mergedName}
+          />
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Tipo De Facturación"
+            description={
+              project.billingType?.label ?? "Sin Tipo de Facturación"
+            }
+          />
+        </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Horas Estimadas"
+            description={project.estimatedHours ?? "Sin estimación"}
+          />
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Departamento"
+            description={project.serviceType?.label}
+          />
+        </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Proceso"
+            description={project.process?.name || "Sin proceso asociado"}
+          />
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Tipo de caso"
+            description={project.type || "Sin tipo de caso"}
+          />
+        </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Persona responsable"
+            description={project.responsiblePerson?.name ?? "Sin responsable"}
+          />
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Propuesta"
+            description={project.proposal?.subject || "Sin propuesta asociada"}
+          />
+        </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        {parseProjectDescription(project.description) && (
+          <>
+            <Grid xs={12} sm={6} mt={3}>
+              <MDBox ml={2} mt={0.5} lineHeight={1.4}>
+                <MDTypography
+                  display="block"
+                  variant="button"
+                  fontWeight="medium"
+                >
+                  Descripción
+                </MDTypography>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      parseProjectDescription(project.description) ??
+                      "Sin descripción",
+                  }}
+                />
+              </MDBox>
             </Grid>
-            <Grid item xs={6}>
-              <MDTypography variant="body2" color="text">
-                {project.estimatedHours}
+            <Divider variant="left" sx={{ width: "70%" }} />
+          </>
+        )}
+
+        <Grid xs={12} sm={6} pl={2} mt={3}>
+          <MDBox mt={0.5} lineHeight={1.4}>
+            <MDTypography
+              display="block"
+              variant="button"
+              fontWeight="medium"
+              mb={2}
+            >
+              Miembros Del Caso
+            </MDTypography>
+          </MDBox>
+          {project.members.map((member) => {
+            const isExternalUrl =
+              member.profileImage &&
+              (member.profileImage.startsWith("http://") ||
+                member.profileImage.startsWith("https://"));
+
+            return (
+              <MDBox
+                key={member.id}
+                display="flex"
+                alignItems="center"
+                mb={2}
+                mr={2}
+              >
+                <MDAvatar
+                  src={
+                    isExternalUrl
+                      ? member.profileImage
+                      : member.profileImage
+                      ? `/images/staff/${member.profileImage}`
+                      : undefined
+                  }
+                  alt={member.name}
+                  size="md"
+                  shadow="sm"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor:
+                      !member.profileImage && !isExternalUrl
+                        ? "grey.400"
+                        : undefined,
+                    color:
+                      !member.profileImage && !isExternalUrl
+                        ? "white"
+                        : undefined,
+                    textAlign: "center",
+                    lineHeight: "initial",
+                    marginRight: "0.5rem",
+                    fontSize: "25px",
+                  }}
+                >
+                  {!isExternalUrl &&
+                    !member.profileImage &&
+                    getInitials(member.name)}
+                </MDAvatar>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                >
+                  {member.name}
+                </MDTypography>
+              </MDBox>
+            );
+          })}
+        </Grid>
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Abogado Principal"
+            description={
+              project.staffs.length > 0
+                ? project.staffs.at(-1)?.firstName +
+                  " " +
+                  project.staffs.at(-1)?.lastName
+                : "Sin abogado principal"
+            }
+          />
+        </Grid>
+
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        {project.partners?.length > 0 && (
+          <Grid xs={12} pl={2} mt={3}>
+            <MDBox mt={0.5} lineHeight={1.4}>
+              <MDTypography
+                display="block"
+                variant="button"
+                fontWeight="medium"
+                mb={2}
+              >
+                Personas relacionadas
               </MDTypography>
-            </Grid>
+            </MDBox>
+
+            <MDBox width="100%" overflow="auto">
+              <Table sx={{ minWidth: "32rem" }}>
+                <MDBox component="thead">
+                  <TableRow>
+                    {headers.map(({ box, header }, index) => (
+                      <MDBox
+                        key={`${index}-headers`}
+                        component="th"
+                        width={box.width}
+                        py={box.py}
+                        pl={box.pl}
+                        pr={box.pr}
+                        textAlign={box.textAlign}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="button"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {header}
+                        </MDTypography>
+                      </MDBox>
+                    ))}
+                  </TableRow>
+                </MDBox>
+                <TableBody>
+                  {project.partners?.map((partner) => (
+                    <TableRow key={partner.id}>
+                      <MDBox
+                        component="td"
+                        textAlign="left"
+                        py={1}
+                        pr={1}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="body2"
+                          color="text"
+                          fontWeight="regular"
+                        >
+                          {partner.mergedName}
+                        </MDTypography>
+                      </MDBox>
+                      <MDBox
+                        component="td"
+                        textAlign="left"
+                        py={1}
+                        pr={1}
+                        pl={3}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="body2"
+                          color="text"
+                          fontWeight="regular"
+                        >
+                          {partner.role?.label}
+                        </MDTypography>
+                      </MDBox>
+                      <MDBox
+                        component="td"
+                        textAlign="left"
+                        py={1}
+                        pr={1}
+                        pl={3}
+                        sx={borderBottom}
+                      >
+                        <MDTypography
+                          variant="body2"
+                          color="text"
+                          fontWeight="regular"
+                        >
+                          {partner.owner?.company || partner.owner?.name}
+                        </MDTypography>
+                      </MDBox>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </MDBox>
           </Grid>
         )}
-        <Divider fullWidth />
       </Grid>
-      <Grid item xs={12}>
-        <Grid
-          container
-          spacing={5}
-          mx={{ xl: 10, xs: 0 }}
-          justifyContent="center"
-        >
-          <Grid item xs={6}>
-            <MDTypography variant="body2" fontWeight="medium">
-              Fecha De Creación
-            </MDTypography>
-          </Grid>
-          <Grid item xs={6}>
-            <MDTypography variant="body2" color="text">
-              {project.startDate}
-            </MDTypography>
-          </Grid>
-        </Grid>
-        <Divider fullWidth />
-      </Grid>
-      {project.staffs > 0 && (
-        <Grid item xs={12}>
-          <Grid
-            container
-            spacing={5}
-            mx={{ xl: 10, xs: 0 }}
-            justifyContent="center"
-          >
-            <Grid item xs={6}>
-              <MDTypography variant="body2" fontWeight="medium">
-                Abogado Principal
-              </MDTypography>
-            </Grid>
-            <Grid item xs={6}>
-              <MDTypography variant="body2" color="text">
-                {project.staffs[0]?.firstName} {project.staffs[0]?.lastName}
-              </MDTypography>
-            </Grid>
-          </Grid>
-        </Grid>
-      )}
-      {parseProjectDescription(project.description) && (
-        <MDBox m={5} lineHeight={1}>
-          <MDTypography variant="h4" textAlign="center" my={2}>
-            Descripción
-          </MDTypography>
-          <MDTypography
-            variant="body2"
-            textTransform="capitalize"
-            paragraph
-            dangerouslySetInnerHTML={{
-              __html:
-                parseProjectDescription(project.description) ??
-                "Sin descripción",
-            }}
-          ></MDTypography>
-        </MDBox>
-      )}
     </Grid>
   );
 }

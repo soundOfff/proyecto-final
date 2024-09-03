@@ -26,7 +26,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected FcmService $fcmService) {}
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
+
     public function select(Partner $partner)
     {
         $projects = Project::where('billable_partner_id', $partner->id)
@@ -52,7 +55,7 @@ class ProjectController extends Controller
                         $query
                             ->whereHas(
                                 'members',
-                                fn(Builder $query) => $query->where('staff_id', $value)
+                                fn (Builder $query) => $query->where('staff_id', $value)
                             );
                     }
                 ),
@@ -87,7 +90,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $projectMemberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
 
         $partnersToAttach = [];
         foreach ($request->get('partners') as $partner) {
@@ -128,16 +131,18 @@ class ProjectController extends Controller
             'staff_id' => $project->responsiblePerson->id,
         ]);
 
-        foreach ($project->process->toNotify as $staff) {
-            foreach ($staff->devices as $device) {
-                $this->fcmService->sendNotification(
-                    $device->device_token,
-                    'Se ha creado un nuevo caso',
-                    "Nombre Del Caso: $project->name",
-                    $staff->id,
-                    $project->id,
-                    strtolower(class_basename(Project::class)),
-                );
+        if ($project->process) {
+            foreach ($project->process->toNotify as $staff) {
+                foreach ($staff->devices as $device) {
+                    $this->fcmService->sendNotification(
+                        $device->device_token,
+                        'Se ha creado un nuevo caso',
+                        "Nombre Del Caso: $project->name",
+                        $staff->id,
+                        $project->id,
+                        strtolower(class_basename(Project::class)),
+                    );
+                }
             }
         }
 
@@ -176,7 +181,7 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $memberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($memberIds);
 
         $partnersToSync = [];
@@ -232,7 +237,7 @@ class ProjectController extends Controller
         $process = Process::find($request->get('processId')); // != null means that is from a child process
         $staff = Staff::find($request->get('staffId'));
 
-        abort_if(!$staff, 404, 'Staff not found');
+        abort_if(! $staff, 404, 'Staff not found');
 
         if (is_null($process)) { // == null means that is from a root process
             $process = $project->load('process')->process;
@@ -243,10 +248,12 @@ class ProjectController extends Controller
 
         foreach ($procedures as $procedure) {
             $task = $procedure->convertToTask($project, $staff->id);
-            if ($task) $createdTasks = true;
+            if ($task) {
+                $createdTasks = true;
+            }
         }
 
-        return response()->json(["createdTasks" => $createdTasks], 201);
+        return response()->json(['createdTasks' => $createdTasks], 201);
     }
 
     /**
@@ -256,7 +263,7 @@ class ProjectController extends Controller
     {
         $request->validated();
 
-        $ids = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($ids);
 
         return response()->json($project, 201);

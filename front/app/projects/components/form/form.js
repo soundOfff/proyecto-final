@@ -52,6 +52,7 @@ export default function FormComponent({
     proposal,
     description,
     partners,
+    notes,
   } = formField;
 
   const [processes, setProcesses] = useState([]);
@@ -125,6 +126,13 @@ export default function FormComponent({
         })
       );
       setShowDatePicker(!!project.deadline);
+      setFieldValue(
+        notes.name,
+        project.notes.map((note) => ({
+          content: note.content,
+          staff_id: note.staffId,
+        })) ?? []
+      );
     }
   }, [
     project,
@@ -142,6 +150,7 @@ export default function FormComponent({
     deadline,
     partners,
     proposal,
+    notes,
     setFieldValue,
   ]);
 
@@ -373,6 +382,7 @@ export default function FormComponent({
               partnerList,
               partners,
               description,
+              notes,
             }}
           />
           <MDBox>

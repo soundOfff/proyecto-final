@@ -35,6 +35,7 @@ const {
     deadline,
     partners,
     proposal,
+    notes,
   },
 } = checkout;
 
@@ -68,6 +69,7 @@ const validations = Yup.object().shape({
   [proposal.name]: Yup.number(),
   [description.name]: Yup.string(),
   [partners.name]: Yup.array(),
+  [notes.name]: Yup.array(),
 });
 
 export default validations;

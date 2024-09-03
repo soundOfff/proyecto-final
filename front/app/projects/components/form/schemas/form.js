@@ -99,6 +99,10 @@ const form = {
       type: "hidden",
       errorMsg: "La descripción es requerida",
     },
+    notes: {
+      name: "notes",
+      label: "Notas",
+    },
   },
 };
 

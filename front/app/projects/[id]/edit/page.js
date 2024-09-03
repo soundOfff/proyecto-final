@@ -31,6 +31,7 @@ export default async function Update({ params: { id } }) {
       "responsiblePerson",
       "partners",
       "proposal",
+      "notes",
     ],
   });
 

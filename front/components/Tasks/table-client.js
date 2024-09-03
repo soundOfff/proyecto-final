@@ -34,7 +34,7 @@ import useTaskTable from "/hooks/useTaskTable";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { getPriorityColor, getStatusColor } from "/utils/project-state-colors";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Backdrop, Box, CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function Table({
   statuses,
@@ -427,7 +427,7 @@ export default function Table({
           </Modal>
         )}
       </MDBox>
-      <Box mt={3}>
+      <MDBox mt={3}>
         <DataTable
           table={table}
           showTotalEntries={false}
@@ -442,7 +442,7 @@ export default function Table({
           canMultiSelect={true}
           setDeleteIds={setDeleteIds}
         />
-      </Box>
+      </MDBox>
       <DeleteRow
         {...{
           setOpenDeleteConfirmation,

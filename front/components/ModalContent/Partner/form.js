@@ -131,19 +131,17 @@ export default function PersonForm({
 
   return (
     <Grid container spacing={5}>
-      {
-        <Grid item xs={12} sm={4}>
-          <FormField
-            value={values[name.name]}
-            label={name.label}
-            placeholder={name.placeholder}
-            name={name.name}
-            type={name.type}
-            error={errors[name.name] && touched[name.name]}
-            success={values[name.name]?.length > 0 && !errors[name.name]}
-          />
-        </Grid>
-      }
+      <Grid item xs={12} sm={4}>
+        <FormField
+          value={values[name.name]}
+          label={name.label}
+          placeholder={name.placeholder}
+          name={name.name}
+          type={name.type}
+          error={errors[name.name] && touched[name.name]}
+          success={values[name.name]?.length > 0 && !errors[name.name]}
+        />
+      </Grid>
       <Grid item xs={12} sm={4}>
         <Autocomplete
           disablePortal

@@ -314,7 +314,7 @@ export default function TaskForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <Select
               value={values[repeat.name]}
               options={repeats}
@@ -377,7 +377,7 @@ export default function TaskForm({
                 </MDBox>
               </MDBox>
             </Grid>
-          )}
+          )} */}
           <Grid item xs={12} sm={6}>
             <Select
               value={values[partner_id.name]}
@@ -464,7 +464,7 @@ export default function TaskForm({
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={12}>
+          {/*  <Grid item xs={12}>
             <Autocomplete
               multiple
               onChange={(e, requiredFieldsSelected) =>
@@ -497,7 +497,7 @@ export default function TaskForm({
                 <ErrorMessage name={requiredFields.name} />
               </MDTypography>
             </MDBox>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <FormGroup>
               <FormControlLabel

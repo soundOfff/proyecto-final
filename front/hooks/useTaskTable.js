@@ -23,6 +23,9 @@ export default function useTaskTable({
   const [areTasksAttached, setAreTasksAttached] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [isLoadingShow, setIsLoadingShow] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [successOnSaveSB, setSuccessOnSaveSB] = useState(false);
+  const [errorOnSaveSB, setErrorOnSaveSB] = useState(false);
   const [optimisticRows, updateOptimisticRows] = useOptimistic(
     rows,
     (state, editedRow) => {
@@ -123,6 +126,20 @@ export default function useTaskTable({
     setIsFetching(false);
   };
 
+  const saveTask = async (taskId, data) => {
+    if (!data || !taskId) return;
+    setIsSaving(true);
+    try {
+      await updateTask(taskId, data);
+      setSuccessOnSaveSB(true);
+    } catch (error) {
+      setErrorOnSaveSB(true);
+      console.log(error);
+    }
+    setIsSaving(false);
+    handleCloseShowModal();
+  };
+
   useEffect(() => {
     const fetchTask = async () => {
       setTask(
@@ -175,5 +192,11 @@ export default function useTaskTable({
     startTimer,
     handleCreateTasks,
     isLoadingShow,
+    saveTask,
+    isSaving,
+    successOnSaveSB,
+    setSuccessOnSaveSB,
+    errorOnSaveSB,
+    setErrorOnSaveSB,
   };
 }

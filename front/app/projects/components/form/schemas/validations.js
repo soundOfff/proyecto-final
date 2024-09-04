@@ -32,6 +32,7 @@ const {
     billingType,
     selectedMembers,
     startDate,
+    hasDeadline,
     deadline,
     partners,
     proposal,
@@ -57,10 +58,17 @@ const validations = Yup.object().shape({
     "Solo se permiten números"
   ),
   [startDate.name]: Yup.date().required(startDate.errorMsg),
-  [deadline.name]: Yup.date().min(
-    Yup.ref(startDate.name),
-    "La fecha de entrega debe ser mayor a la fecha de inicio"
-  ),
+  [hasDeadline.name]: Yup.boolean(),
+  [deadline.name]: Yup.date().when(hasDeadline.name, {
+    is: true,
+    then: Yup.date()
+      .required(deadline.errorMsg)
+      .min(
+        Yup.ref(startDate.name),
+        "La fecha de entrega debe ser mayor a la fecha de inicio"
+      ),
+    otherwise: Yup.date().nullable(),
+  }),
   [serviceType.name]: Yup.string().required(serviceType.errorMsg),
   [responsiblePersonId.name]: Yup.string().required(
     responsiblePersonId.errorMsg

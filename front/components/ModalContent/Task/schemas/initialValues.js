@@ -54,7 +54,7 @@ const initialValues = {
   [startDate.name]: "",
   [partner_id.name]: "",
   [dueDate.name]: "",
-  [task_priority_id.name]: "",
+  [task_priority_id.name]: 1,
   [task_status_id.name]: "",
   [repeat.name]: "",
   [recurring.name]: "",

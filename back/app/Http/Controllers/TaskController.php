@@ -147,11 +147,11 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
-        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : null;
+        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : [];
         $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
-        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
-        $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
+        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
+        $followers = isset($newTask['followers']) ? $newTask['followers'] : [];
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
 

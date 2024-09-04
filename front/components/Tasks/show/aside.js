@@ -483,7 +483,6 @@ export default function Aside() {
             {task.taskable && task.taskable_type === PROJECT_TYPE ? (
               <Autocomplete
                 multiple
-                key="assigneds"
                 value={assigneds}
                 onChange={(_, newValues) => setAssigneds(newValues)}
                 options={task.taskable.members.sort((a, b) =>
@@ -533,7 +532,6 @@ export default function Aside() {
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              key="followers"
               value={followers}
               onChange={(_, newValues) => setFollowers(newValues)}
               options={staffs}
@@ -547,6 +545,11 @@ export default function Aside() {
                   InputLabelProps={{ shrink: true }}
                   inputProps={{ ...params.inputProps }}
                 />
+              )}
+              renderOption={(props, option) => (
+                <li {...props} key={option.id}>
+                  <span>{option.name}</span>
+                </li>
               )}
             />
             <Divider sx={{ width: "100%" }} />

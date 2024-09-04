@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import { LOW_ID } from "/utils/constants/taskPriorityLabels";
 import checkout from "./form";
 
 const {
@@ -54,7 +55,7 @@ const initialValues = {
   [startDate.name]: "",
   [partner_id.name]: "",
   [dueDate.name]: "",
-  [task_priority_id.name]: 1,
+  [task_priority_id.name]: LOW_ID,
   [task_status_id.name]: "",
   [repeat.name]: "",
   [recurring.name]: "",

@@ -63,7 +63,7 @@ const form = {
     partner_id: {
       name: "partner_id",
       label: "Cliente",
-      errorMsg: "Debe asignar a un cliente",
+      errorMsg: "Debe seleccionar un cliente",
     },
     repeat: {
       name: "repeat_id",
@@ -95,7 +95,7 @@ const form = {
     taskableId: {
       name: "taskable_id",
       label: "* Caso",
-      errorMsg: "Debe ingresar un ID al que la tarea relacionado",
+      errorMsg: "Debe seleccionar un caso relacionado",
     },
     tags: {
       name: "tags",

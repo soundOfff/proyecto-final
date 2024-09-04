@@ -8,7 +8,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 
-import Grid from "@mui/material/Grid";
 import AccessAlarm from "@mui/icons-material/AccessAlarm";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 
@@ -25,7 +24,7 @@ import Modal from "/components/Modal";
 import ModalContentForm from "/components/ModalContent/Task";
 import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { editSteps } from "/actions/tasks";
@@ -48,6 +47,7 @@ export default function Table({
   partners,
   actionsData,
   tableFields,
+  currentTaskId,
   notificationPriorities = [],
 }) {
   const [controller, dispatch] = useMaterialUIController();
@@ -58,6 +58,7 @@ export default function Table({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isCancelling, startTransition] = useTransition();
 
   const {
     optimisticRows,
@@ -79,6 +80,12 @@ export default function Table({
     handleCreateTasks,
     setOpenShowModal,
     isLoadingShow,
+    saveTask,
+    isSaving,
+    successOnSaveSB,
+    setSuccessOnSaveSB,
+    errorOnSaveSB,
+    setErrorOnSaveSB,
   } = useTaskTable({
     rows,
     dispatch,
@@ -132,7 +139,7 @@ export default function Table({
     editSteps({ tasks: rows });
   };
 
-  const handleOpenModal = (id) => {
+  const handleOpenShowModal = (id) => {
     setTaskId(id);
     setOpenShowModal(true);
     const params = new URLSearchParams(searchParams.toString());
@@ -140,10 +147,54 @@ export default function Table({
     router.replace(`${pathname}?${params.toString()}`);
   };
 
-  const removeParams = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("taskId");
-    router.replace(`${pathname}?${params.toString()}`);
+  const closeShowModal = () => {
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("taskId");
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      handleCloseShowModal();
+    });
+  };
+
+  const handleSaveTask = async (taskId, data) => {
+    await saveTask(taskId, data);
+    closeShowModal();
+  };
+
+  useEffect(() => {
+    const taskId = parseInt(searchParams.get("taskId"));
+
+    if (Number.isNaN(taskId)) return;
+
+    if (taskId !== task?.id && !isCancelling) {
+      handleOpenShowModal(taskId);
+    }
+  }, [searchParams, setTaskId, setOpenShowModal, currentTaskId, task]);
+
+  const renderSaveSnackbar = () => {
+    return successOnSaveSB ? (
+      <MDSnackbar
+        color="success"
+        icon="info"
+        title="La tarea fue actualizada correctamente"
+        content="Se ha actualizado la tarea correctamente"
+        open={successOnSaveSB || errorOnSaveSB}
+        onClose={() => setSuccessOnSaveSB(false)}
+        close={() => setSuccessOnSaveSB(false)}
+        bgWhite
+      />
+    ) : errorOnSaveSB ? (
+      <MDSnackbar
+        color="error"
+        icon="info"
+        title="La tarea no fue actualizada correctamente"
+        content="No se ha podido actualizar la tarea, por favor intente nuevamente"
+        open={errorOnSaveSB}
+        onClose={() => setErrorOnSaveSB(false)}
+        close={() => setErrorOnSaveSB(false)}
+        bgWhite
+      />
+    ) : null;
   };
 
   const columns = [
@@ -186,10 +237,7 @@ export default function Table({
                 variant="body2"
                 color="info"
                 fontSize="small"
-                onClick={() => {
-                  setTaskId(row.original.id);
-                  setOpenShowModal(true);
-                }}
+                onClick={() => handleOpenShowModal(row.original.id)}
               >
                 {row.original.name}
                 <MDBadge
@@ -234,7 +282,7 @@ export default function Table({
                   badgeContent={`#${dependency.id}`}
                   container={true}
                   sx={{ mr: 1, my: 1, cursor: "pointer" }}
-                  onClick={() => handleOpenModal(dependency.id)}
+                  onClick={() => handleOpenShowModal(dependency.id)}
                 />
               ))}
             </MDBox>
@@ -326,6 +374,7 @@ export default function Table({
         close={() => setIsToastOpen(false)}
         bgWhite
       />
+      {renderSaveSnackbar()}
       <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-9}>
         <MDBox width="50%" display="flex" gap={5} justifyContent="flex-end">
           {project && (
@@ -369,10 +418,7 @@ export default function Table({
         {openEditModal && (
           <Modal
             open={openEditModal}
-            onClose={() => {
-              handleCloseEditModal();
-              removeParams();
-            }}
+            onClose={handleCloseEditModal}
             width="80%"
           >
             <ModalContentForm
@@ -393,7 +439,7 @@ export default function Table({
         {openShowModal && (
           <Modal
             open={openShowModal}
-            onClose={handleCloseShowModal}
+            onClose={closeShowModal}
             px={0}
             py={0}
             width="70%"
@@ -419,6 +465,10 @@ export default function Table({
                   startTimer,
                   getSelectedFork,
                   notificationPriorities,
+                  closeShowModal,
+                  handleSaveTask,
+                  isSaving,
+                  isCancelling,
                 }}
               >
                 <Show />

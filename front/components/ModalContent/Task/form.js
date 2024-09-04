@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from "react";
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
-import MDEditor from "/components/MDEditor";
 import MDDatePicker from "/components/MDDatePicker";
 import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
@@ -90,8 +89,7 @@ export default function TaskForm({
       setFieldValue(isPublic.name, Boolean(task.is_public));
       setFieldValue(isInfinite.name, Boolean(task.is_infinite));
       setTaskableItems(task.taskable ? [task.taskable] : []);
-      const parsedDescription = parseEditorState(task.description ?? "");
-      setEditorState(parsedDescription);
+      setFieldValue(description.name, task.description || "");
       setFieldValue(actions.name, task.actions || []);
       setFieldValue(requiredFields.name, task.requiredFields || []);
       setFieldValue(isFileNeeded.name, Boolean(task.is_file_needed));
@@ -156,15 +154,6 @@ export default function TaskForm({
     }
     return dependencyTasks;
   }, [dependencyTasks, task]);
-
-  const handleChange = useCallback(
-    (editorState) => {
-      const raw = convertToRaw(editorState.getCurrentContent());
-      setFieldValue(description.name, JSON.stringify(raw));
-      setEditorState(editorState);
-    },
-    [description.name, setFieldValue]
-  );
 
   return (
     <>
@@ -314,7 +303,7 @@ export default function TaskForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <Select
               value={values[repeat.name]}
               options={repeats}
@@ -377,7 +366,7 @@ export default function TaskForm({
                 </MDBox>
               </MDBox>
             </Grid>
-          )}
+          )} */}
           <Grid item xs={12} sm={6}>
             <Select
               value={values[partner_id.name]}
@@ -464,7 +453,7 @@ export default function TaskForm({
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={12}>
+          {/*  <Grid item xs={12}>
             <Autocomplete
               multiple
               onChange={(e, requiredFieldsSelected) =>
@@ -497,7 +486,7 @@ export default function TaskForm({
                 <ErrorMessage name={requiredFields.name} />
               </MDTypography>
             </MDBox>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <FormGroup>
               <FormControlLabel
@@ -514,24 +503,14 @@ export default function TaskForm({
             </FormGroup>
           </Grid>
           <Grid item xs={12}>
-            <MDTypography variant="body2" color="text">
-              {description.label}
-            </MDTypography>
-            <MDEditor
-              editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
-              editorState={editorState}
-              setEditorState={handleChange}
+            <FormField
+              name={description.name}
+              label={description.label}
+              placeholder={description.placeholder}
+              value={values[description.name]}
+              error={errors.description && touched.description}
+              success={description.length > 0 && !errors.description}
             />
-            <MDBox mt={0.75}>
-              <MDTypography
-                component="div"
-                variant="caption"
-                color="error"
-                fontWeight="regular"
-              >
-                <ErrorMessage name={description.name} />
-              </MDTypography>
-            </MDBox>
           </Grid>
         </Grid>
       </MDBox>

@@ -49,6 +49,10 @@ export default function Aside() {
     tagsData,
     task,
     notificationPriorities,
+    closeShowModal,
+    handleSaveTask,
+    isSaving,
+    isCancelling,
   } = useDataProvider();
   const [statusId, setStatusId] = useState(task.status.id);
   const [startDate, setStartDate] = useState(task.start_date);
@@ -66,6 +70,9 @@ export default function Aside() {
   const [assigneds, setAssigneds] = useState(task.assigneds);
   const [followers, setFollowers] = useState(task.followers);
   const { data: session } = useSession();
+
+  const reminderStaff =
+    staffs.find((staff) => staff.id == reminderStaffId) || null;
 
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(
@@ -115,46 +122,21 @@ export default function Aside() {
     return reminderStaffId && reminderDate && reminderDescription;
   };
 
-  useEffect(() => {
-    if (statusId != task.status.id) {
-      update(task.id, { task_status_id: statusId });
-    }
-  }, [statusId, task.id, task.status.id]);
+  const saveTask = async () => {
+    await handleSaveTask(task.id, {
+      task_status_id: statusId,
+      start_date: startDate,
+      due_date: dueDate,
+      task_priority_id: priorityId,
+      hourly_rate: hourlyRate,
+      billable,
+      tags,
+      reminders,
+      assigneds,
+      followers,
+    });
+  };
 
-  useEffect(() => {
-    if (startDate != task.start_date)
-      update(task.id, { start_date: startDate });
-  }, [startDate, task.id, task.start_date]);
-
-  useEffect(() => {
-    if (dueDate != task.due_date) {
-      update(task.id, { due_date: dueDate });
-    }
-  }, [dueDate, task.id, task.due_date]);
-
-  useEffect(() => {
-    if (priorityId != task.priority_id) {
-      update(task.id, { task_priority_id: priorityId });
-    }
-  }, [priorityId, task.id, task.priority_id]);
-
-  useEffect(() => {
-    if (billable != task.billable) {
-      update(task.id, { billable: billable });
-    }
-  }, [billable, task.id, task.billable]);
-
-  useEffect(() => {
-    update(task.id, { tags: tags });
-  }, [tags, task.id]);
-
-  useEffect(() => {
-    update(task.id, { assigneds: assigneds });
-  }, [assigneds, task.id]);
-
-  useEffect(() => {
-    update(task.id, { followers: followers });
-  }, [followers, task.id]);
   return (
     <Grid item xs={7} lg={5}>
       <MDBox bgColor="light" pr={2} pl={4} py={2} height="100%">
@@ -307,7 +289,6 @@ export default function Aside() {
               type="number"
               placeholder="Precio por Hora"
               onChange={(e) => setHourlyRate(e.target.value)}
-              onBlur={() => update(task.id, { hourly_rate: hourlyRate })}
               sx={{ width: "100%" }}
             />
           </Grid>
@@ -399,13 +380,10 @@ export default function Aside() {
             {showReminderForm && (
               <MDBox display="flex" flexDirection="column" gap={5} mt={2}>
                 <Autocomplete
-                  value={
-                    staffs.find((staff) => staff.id === reminderStaffId) || {
-                      id: "",
-                      name: "",
-                    }
+                  value={reminderStaff}
+                  onChange={(_, newValue) =>
+                    setReminderStaffId(newValue?.id || null)
                   }
-                  onChange={(_, newValue) => setReminderStaffId(newValue?.id)}
                   options={staffs}
                   isOptionEqualToValue={(option, value) =>
                     option.id === value.id
@@ -420,6 +398,11 @@ export default function Aside() {
                       InputLabelProps={{ shrink: true }}
                       inputProps={{ ...params.inputProps }}
                     />
+                  )}
+                  renderOption={(props, option) => (
+                    <li {...props} key={option.id}>
+                      <span>{option.name}</span>
+                    </li>
                   )}
                 />
                 <MDDatePicker
@@ -505,7 +488,6 @@ export default function Aside() {
             {task.taskable && task.taskable_type === PROJECT_TYPE ? (
               <Autocomplete
                 multiple
-                key="assigneds"
                 value={assigneds}
                 onChange={(_, newValues) => setAssigneds(newValues)}
                 options={task.taskable.members.sort((a, b) =>
@@ -555,7 +537,6 @@ export default function Aside() {
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              key="followers"
               value={followers}
               onChange={(_, newValues) => setFollowers(newValues)}
               options={staffs}
@@ -570,8 +551,35 @@ export default function Aside() {
                   inputProps={{ ...params.inputProps }}
                 />
               )}
+              renderOption={(props, option) => (
+                <li {...props} key={option.id}>
+                  <span>{option.name}</span>
+                </li>
+              )}
             />
             <Divider sx={{ width: "100%" }} />
+            <MDBox display="flex" justifyContent="space-between" mt={2}>
+              <MDButton
+                variant="gradient"
+                color="light"
+                type="button"
+                sx={{ maxHeight: "50px" }}
+                onClick={closeShowModal}
+                disabled={isCancelling}
+              >
+                {isCancelling ? "Cancelando..." : "Cancelar"}
+              </MDButton>
+              <MDButton
+                variant="gradient"
+                color="info"
+                type="button"
+                sx={{ maxHeight: "50px" }}
+                disabled={isSaving}
+                onClick={saveTask}
+              >
+                {isSaving ? "Guardando..." : "Guardar"}
+              </MDButton>
+            </MDBox>
           </Grid>
         </Grid>
       </MDBox>

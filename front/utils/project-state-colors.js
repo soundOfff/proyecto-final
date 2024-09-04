@@ -13,7 +13,7 @@ import {
 
 import {
   LOW_PRIORITY,
-  MEDIUM_PROPRITY,
+  MEDIUM_PRIORITY,
   HIGH_PRIORITY,
   URGENT_PRIORITY,
 } from "/utils/constants/taskPriorityLabels";
@@ -52,7 +52,7 @@ export function getColor(id = 0) {
 export function getPriorityColor(label) {
   if (label === LOW_PRIORITY) {
     return "success";
-  } else if (label === MEDIUM_PROPRITY) {
+  } else if (label === MEDIUM_PRIORITY) {
     return "info";
   } else if (label === HIGH_PRIORITY) {
     return "primary";

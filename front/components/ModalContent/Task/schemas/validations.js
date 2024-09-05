@@ -86,7 +86,7 @@ const validations = Yup.object().shape({
   }),
   [isInfinite.name]: Yup.boolean().when(repeat.name, {
     is: true,
-    then: Yup.boolean().required("Este campo es requerido"),
+    then: (schema) => schema.required("Este campo es requerido"),
   }),
   [totalCycles.name]: Yup.number().when([repeat.name, isInfinite.name], {
     is: (repeat_id, is_infinite) => repeat_id && !is_infinite,

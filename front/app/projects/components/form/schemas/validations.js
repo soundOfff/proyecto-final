@@ -61,13 +61,14 @@ const validations = Yup.object().shape({
   [hasDeadline.name]: Yup.boolean(),
   [deadline.name]: Yup.date().when(hasDeadline.name, {
     is: true,
-    then: Yup.date()
-      .required(deadline.errorMsg)
-      .min(
-        Yup.ref(startDate.name),
-        "La fecha de entrega debe ser mayor a la fecha de inicio"
-      ),
-    otherwise: Yup.date().nullable(),
+    then: (schema) =>
+      schema
+        .required(deadline.errorMsg)
+        .min(
+          Yup.ref(startDate.name),
+          "La fecha de entrega debe ser mayor a la fecha de inicio"
+        ),
+    otherwise: (schema) => schema.nullable(),
   }),
   [serviceType.name]: Yup.string().required(serviceType.errorMsg),
   [responsiblePersonId.name]: Yup.string().required(

@@ -84,6 +84,10 @@ const form = {
       label: "Fecha de Inicio",
       errorMsg: "Debe seleccionar una fecha de inicio",
     },
+    hasDeadline: {
+      name: "has_deadline",
+      label: "¿El caso tiene fecha de entrega?",
+    },
     deadline: {
       name: "deadline",
       label: "Fecha de Entrega",

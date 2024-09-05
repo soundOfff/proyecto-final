@@ -45,6 +45,7 @@ export default function FormComponent({
     status,
     expedient,
     startDate,
+    hasDeadline,
     deadline,
     serviceType,
     responsiblePersonId,
@@ -66,11 +67,10 @@ export default function FormComponent({
     };
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(!!values[deadline.name]);
-
   const handleCheckboxChange = (event) => {
-    setShowDatePicker(event.target.checked);
-    if (!event.target.checked) {
+    const isChecked = event.target.checked;
+    setFieldValue(hasDeadline.name, isChecked);
+    if (!isChecked) {
       setFieldValue(deadline.name, "");
     }
   };
@@ -150,7 +150,7 @@ export default function FormComponent({
           };
         })
       );
-      setShowDatePicker(!!project.deadline);
+      setFieldValue(hasDeadline.name, !!project.deadline);
       setFieldValue(
         notes.name,
         project.notes.map((note) => ({
@@ -172,6 +172,7 @@ export default function FormComponent({
     responsiblePersonId,
     selectedMembers,
     startDate,
+    hasDeadline,
     deadline,
     partners,
     proposal,
@@ -277,7 +278,7 @@ export default function FormComponent({
           <FormControlLabel
             control={
               <Checkbox
-                checked={showDatePicker}
+                checked={values[hasDeadline.name]}
                 onChange={handleCheckboxChange}
                 color="primary"
               />
@@ -285,7 +286,7 @@ export default function FormComponent({
             label="¿El caso tiene fecha de entrega?"
           />
         </Grid>
-        {showDatePicker && (
+        {values[hasDeadline.name] && (
           <Grid item xs={12} sm={6}>
             <MDDatePicker
               value={values[deadline.name]}

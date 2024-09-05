@@ -93,6 +93,31 @@ export default function FormComponent({
     return error;
   };
 
+  const types = [
+    "Ejecutivo Hipotecario de Bien Inmueble",
+    "Ejecutivo Hipotecario de Bien Mueble",
+    "Ejecutivo Hipotecaria Mixto",
+    "Ejecutivo Simple con Secuestro",
+    "Ejecutivo Simple",
+    "Sucesión Testada",
+    "Sucesión Intestada",
+    "Sumario",
+    "Ordinario",
+    "Declarativo",
+    "Todos los anteriores puedes ser de mayor o menor cuantía",
+    "Procesos Ejecución de Laudo",
+    "Procesos de Ejecución en el Extranjero",
+    "Proceso Oral",
+    "Lanzamiento Por Intruso",
+    "Lanzamiento Por Vencimiento de Contrato",
+    "Lanzamiento por Mora con Retención de Bienes",
+    "Proceso No Contencioso",
+    "Denuncias",
+    "Querellas",
+    "ACODECO",
+    "Procesos Laborales",
+  ];
+
   useEffect(() => {
     if (project) {
       setFieldValue(cost.name, project.cost || "");
@@ -308,14 +333,24 @@ export default function FormComponent({
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormField
+          <Autocomplete
+            disablePortal
+            options={types}
+            onChange={(event, newValue) => {
+              setFieldValue(type.name, newValue);
+            }}
             value={values[type.name]}
-            name={type.name}
-            label={type.label}
-            type={type.type}
-            placeholder={type.placeholder}
-            error={errors[type.name] && touched[type.name]}
-            success={values[type.name]?.length > 0 && !errors[type.name]}
+            renderInput={(params) => (
+              <MDInput
+                {...params}
+                variant="standard"
+                label={"Tipo de Caso"}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                error={Boolean(errors.type && touched.type)}
+                helperText={touched.type && errors.type}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

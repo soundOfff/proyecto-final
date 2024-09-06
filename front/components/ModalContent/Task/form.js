@@ -511,6 +511,8 @@ export default function TaskForm({
               value={values[description.name]}
               error={errors.description && touched.description}
               success={description.length > 0 && !errors.description}
+              multiline
+              rows={4}
             />
           </Grid>
         </Grid>

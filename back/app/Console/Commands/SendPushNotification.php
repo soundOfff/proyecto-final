@@ -9,6 +9,7 @@ use App\Services\FcmService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SendPushNotification extends Command
 {
@@ -49,6 +50,36 @@ class SendPushNotification extends Command
             // ->where('reminders.is_notified', false)
             ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED)
             ->get();
+
+        $dailyTasks = DB::table('tasks')
+            ->selectRaw(
+                'tasks.id as task_id,
+                tasks.name as task_name,
+                tasks.description as description,
+                tasks.owner_id as owner_id,
+                owner.id as staff_id,
+                CONCAT(author.first_name, " ", author.last_name) as author_name,
+                staff_devices.device_token as device_token,
+                staff_devices.staff_id'
+            )
+            ->join('staff as owner', 'tasks.owner_id', '=', 'owner.id')
+            ->join('staff as author', 'tasks.author_id', '=', 'author.id')
+            ->join('staff_devices', 'owner.id', '=', 'staff_devices.staff_id')
+            ->where('tasks.is_owner_notified', false)
+            ->where('tasks.start_date', '=', Carbon::now()->format('Y-m-d'))
+            ->get();
+
+        foreach ($dailyTasks as $dailyTask) {
+            $this->fcmService->sendNotification(
+                $dailyTask->device_token,
+                "Nueva Tarea: " . $dailyTask->task_name,
+                $dailyTask->author_name . " te ha asignado una nueva tarea " . $dailyTask->task_name,
+                $dailyTask->owner_id,
+                strtolower(class_basename(Task::class)),
+                $dailyTask->task_id
+            );
+            Task::find($dailyTask->task_id)->update(['is_owner_notified' => true]);
+        }
 
         foreach ($notifies as $notify) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));

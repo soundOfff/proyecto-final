@@ -54,7 +54,8 @@ const form = {
     },
     owner_id: {
       name: "owner_id",
-      label: "Propietario",
+      label: "Responsable de la tarea",
+      errorMsg: "Debe seleccionar un responsable",
     },
     task_status_id: {
       name: "status",
@@ -96,10 +97,6 @@ const form = {
       name: "taskable_id",
       label: "* Caso",
       errorMsg: "Debe seleccionar un caso relacionado",
-    },
-    tags: {
-      name: "tags",
-      label: "Etiquetas",
     },
     dependencies: {
       name: "dependencies",

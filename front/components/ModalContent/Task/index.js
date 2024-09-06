@@ -16,10 +16,10 @@ export default function ModalContentForm({
   onClose,
   priorities,
   repeats,
-  tagsData,
   partners,
   dependencyTasks = [],
   partnerId,
+  staffs,
   actionsData = [],
   tableFields = [],
   task = null,
@@ -29,7 +29,7 @@ export default function ModalContentForm({
   const { formId, formField } = form;
   const { data: session } = useSession();
   const router = useRouter();
-  initialValues.owner_id = session.staff.id;
+  initialValues.author_id = session.staff.id;
 
   const handleSubmit = async (values, actions) => {
     await storeItem(values);
@@ -59,7 +59,13 @@ export default function ModalContentForm({
         isSubmitting,
         resetForm,
       }) => (
-        <Form id={formId} autoComplete="off">
+        <Form
+          id={formId}
+          autoComplete="off"
+          style={{
+            height: "100%",
+          }}
+        >
           <TaskForm
             priorities={priorities}
             formData={{
@@ -71,17 +77,17 @@ export default function ModalContentForm({
             }}
             partners={partners}
             repeats={repeats}
-            tagsData={tagsData}
             task={task}
             dependencyTasks={dependencyTasks}
             onClose={onClose}
             mode={mode}
             partnerId={partnerId}
+            staffs={staffs}
             project={project}
             actionsData={actionsData}
             tableFields={tableFields}
           />
-          <MDBox p={3}>
+          <MDBox p={3} mt={4}>
             <MDBox width="100%" display="flex" justifyContent="space-between">
               <MDButton
                 variant="gradient"

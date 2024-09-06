@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 import { LOW_ID } from "/utils/constants/taskPriorityLabels";
 import checkout from "./form";
+import moment from "moment";
 
 const {
   formField: {
@@ -52,7 +53,7 @@ const initialValues = {
   [name.name]: "",
   [initialDurationMinutes.name]: 0,
   [hourlyRate.name]: 0,
-  [startDate.name]: "",
+  [startDate.name]: moment().format("YYYY-MM-DD"),
   [partner_id.name]: "",
   [dueDate.name]: "",
   [task_priority_id.name]: LOW_ID,
@@ -65,7 +66,6 @@ const initialValues = {
   [taskableType.name]: "project",
   [owner_id.name]: "",
   [taskableId.name]: "",
-  [tags.name]: [],
   [dependencies.name]: [],
   [actions.name]: [],
   [requiredFields.name]: [],

@@ -64,11 +64,11 @@ export default function RelatedPersonFormComponent({
   });
 
   const clearFields = (actions) => {
-    setFieldValue(startDate.name, "");
+    setFieldValue(startDate.name, moment().format("YYYY-MM-DD"));
     setFieldValue(endDate.name, "");
     setFieldValue(partnerTypeId.name, "");
     setFieldValue(relatedPartnerId.name, "");
-    setFieldValue(active.name, false);
+    setFieldValue(active.name, true);
     actions.setTouched({});
   };
 
@@ -79,11 +79,11 @@ export default function RelatedPersonFormComponent({
     setFieldValueExternal("related_partners", filteredPartners);
   };
 
-  const { values, handleSubmit, setFieldValue } = useFormik({
+  const { values, errors, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       [relatedPartnerId.name]: "",
       [partnerTypeId.name]: "",
-      [startDate.name]: "",
+      [startDate.name]: moment().format("YYYY-MM-DD"),
       [endDate.name]: "",
       [active.name]: true,
     },
@@ -183,6 +183,16 @@ export default function RelatedPersonFormComponent({
           inputLabel={"Persona Relacionada"}
           setFieldValue={setFieldValue}
         />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            {errors[relatedPartnerId.name]}
+          </MDTypography>
+        </MDBox>
       </Grid>
       <Grid xs={12} sm={3} item>
         <Select
@@ -193,6 +203,16 @@ export default function RelatedPersonFormComponent({
           inputLabel={"Cargo de la Persona"}
           setFieldValue={setFieldValue}
         />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            {errors[partnerTypeId.name]}
+          </MDTypography>
+        </MDBox>
       </Grid>
       <Grid xs={12} sm={2} item>
         <MDDatePicker
@@ -213,7 +233,7 @@ export default function RelatedPersonFormComponent({
             color="error"
             fontWeight="regular"
           >
-            <ErrorMessage name={startDate.name} />
+            {errors[startDate.name]}
           </MDTypography>
         </MDBox>
       </Grid>
@@ -236,7 +256,7 @@ export default function RelatedPersonFormComponent({
             color="error"
             fontWeight="regular"
           >
-            <ErrorMessage name={endDate.name} />
+            {errors[endDate.name]}
           </MDTypography>
         </MDBox>
       </Grid>

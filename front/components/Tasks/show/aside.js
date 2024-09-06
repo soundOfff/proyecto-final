@@ -71,6 +71,9 @@ export default function Aside() {
   const [followers, setFollowers] = useState(task.followers);
   const { data: session } = useSession();
 
+  const reminderStaff =
+    staffs.find((staff) => staff.id == reminderStaffId) || null;
+
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(
       (reminder) => reminder.id !== reminderId
@@ -377,13 +380,10 @@ export default function Aside() {
             {showReminderForm && (
               <MDBox display="flex" flexDirection="column" gap={5} mt={2}>
                 <Autocomplete
-                  value={
-                    staffs.find((staff) => staff.id === reminderStaffId) || {
-                      id: "",
-                      name: "",
-                    }
+                  value={reminderStaff}
+                  onChange={(_, newValue) =>
+                    setReminderStaffId(newValue?.id || null)
                   }
-                  onChange={(_, newValue) => setReminderStaffId(newValue?.id)}
                   options={staffs}
                   isOptionEqualToValue={(option, value) =>
                     option.id === value.id
@@ -398,6 +398,11 @@ export default function Aside() {
                       InputLabelProps={{ shrink: true }}
                       inputProps={{ ...params.inputProps }}
                     />
+                  )}
+                  renderOption={(props, option) => (
+                    <li {...props} key={option.id}>
+                      <span>{option.name}</span>
+                    </li>
                   )}
                 />
                 <MDDatePicker

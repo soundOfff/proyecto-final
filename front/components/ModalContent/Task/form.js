@@ -7,7 +7,7 @@ import {
   FormGroup,
   Switch,
 } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MDBox from "/components/MDBox";
 import MDInput from "/components/MDInput";
 import MDTypography from "/components/MDTypography";
@@ -15,25 +15,21 @@ import MDDatePicker from "/components/MDDatePicker";
 import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import moment from "moment";
-import { CUSTOM, RECURRING_TYPES } from "/utils/constants/repeats";
 import { ErrorMessage } from "formik";
-import { EditorState, convertToRaw } from "draft-js";
 import { getSelect as getProjectSelect } from "/actions/projects";
 import { getSelect as getInvoiceSelect } from "/actions/invoices";
-import { parseEditorState } from "/utils/parseEditorState";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
+import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
+import { getAll } from "/actions/tasks";
 
 export default function TaskForm({
   priorities,
   formData,
-  repeats,
   partners,
-  dependencyTasks,
-  tagsData,
-  tableFields,
   task = null,
   project = null,
   mode,
+  staffs,
   partnerId,
 }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
@@ -54,17 +50,15 @@ export default function TaskForm({
     totalCycles,
     taskableId,
     partner_id,
+    owner_id,
     taskableType,
-    tags,
     description,
     actions,
     requiredFields,
     isFileNeeded,
   } = formField;
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
   const [taskableItems, setTaskableItems] = useState([]);
+  const [dependencyTasks, setDependencyTasks] = useState([]);
 
   useEffect(() => {
     if (task) {
@@ -78,8 +72,7 @@ export default function TaskForm({
       setFieldValue(recurringType.name, task.recurring_type || "");
       setFieldValue(totalCycles.name, task.total_cycles || "");
       setFieldValue(taskableType.name, task.taskable_type || 0);
-      setFieldValue(tags.name, task.tags || []);
-      setFieldValue(dependencies.name, task?.dependencies || []);
+      setFieldValue(dependencies.name, task.dependencies || []);
       setFieldValue(partner_id.name, task.partner_id || "");
       setFieldValue(
         taskableId.name,
@@ -122,7 +115,6 @@ export default function TaskForm({
     isInfinite.name,
     totalCycles.name,
     partner_id.name,
-    tags.name,
     actions.name,
     dependencies.name,
     requiredFields.name,
@@ -142,18 +134,16 @@ export default function TaskForm({
     }
   }, [partner_id, taskableType, values]);
 
-  const filteredDependencyTasks = useCallback(() => {
-    if (task) {
-      return dependencyTasks.filter(
-        (dependency) =>
-          dependency.id !== task.id ||
-          (dependency.milestone_order > task.milestone_order &&
-            task.taskable_type === dependency.taskable_type &&
-            task.taskable_id === dependency.taskable_id) // Check the order in base of the project
-      );
+  useEffect(() => {
+    if (values[taskableType.name] === PROJECT_TYPE && values[taskableId.name]) {
+      getAll({
+        "filter[taskable_id]": values[taskableId.name],
+        "filter[taskable_type]": values[taskableType.name],
+      }).then(({ data }) => {
+        setDependencyTasks(data.tasks);
+      });
     }
-    return dependencyTasks;
-  }, [dependencyTasks, task]);
+  }, [values, taskableType, taskableId]);
 
   return (
     <>
@@ -303,70 +293,6 @@ export default function TaskForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          {/* <Grid item xs={12} sm={6}>
-            <Select
-              value={values[repeat.name]}
-              options={repeats}
-              optionLabel={(option) => option.label}
-              fieldName={repeat.name}
-              inputLabel={repeat.label}
-              setFieldValue={setFieldValue}
-            />
-          </Grid>
-          {values[repeat.name] === CUSTOM && (
-            <>
-              <Grid item xs={12} sm={6}>
-                <FormField
-                  name={recurring.name}
-                  type={recurring.type}
-                  label=""
-                  placeholder={recurring.placeholder}
-                  error={errors.recurring && touched.recurring}
-                  success={recurring.length > 0 && !errors.recurring}
-                  box={{ width: "80%" }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Select
-                  value={values[recurringType.name]}
-                  options={RECURRING_TYPES}
-                  optionLabel={(option) => option.label}
-                  fieldName={recurringType.name}
-                  inputLabel={recurringType.label}
-                  setFieldValue={setFieldValue}
-                />
-              </Grid>
-            </>
-          )}
-          {values[repeat.name] && (
-            <Grid item xs={12}>
-              <MDBox display="flex" alignItems="center">
-                <FormField
-                  name={totalCycles.name}
-                  label={totalCycles.label}
-                  type={totalCycles.type}
-                  placeholder={totalCycles.placeholder}
-                  error={errors.totalCycles && touched.totalCycles}
-                  success={totalCycles.length > 0 && !errors.totalCycles}
-                  box={{ width: "80%" }}
-                  disabled={values[isInfinite.name]}
-                />
-                <MDBox ml={5}>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    checked={values[isInfinite.name]}
-                    onChange={(e) => {
-                      setFieldValue(isInfinite.name, Boolean(e.target.checked));
-                      setFieldValue(totalCycles.name, "");
-                    }}
-                    label="Infinito"
-                    labelPlacement="end"
-                    sx={{ display: "flex", flexWrap: "nowrap" }}
-                  />
-                </MDBox>
-              </MDBox>
-            </Grid>
-          )} */}
           <Grid item xs={12} sm={6}>
             <Select
               value={values[partner_id.name]}
@@ -389,37 +315,15 @@ export default function TaskForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Autocomplete
-              multiple
-              onChange={(e, tagsSelected) =>
-                setFieldValue(tags.name, tagsSelected)
-              }
-              value={values[tags.name]}
-              options={tagsData}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  key={tags.id}
-                  label={tags.label}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
-              )}
+          <Grid item xs={12} sm={6}>
+            <Select
+              value={values[owner_id.name]}
+              options={staffs}
+              optionLabel={(option) => option.name ?? `#${option.id}`}
+              fieldName={owner_id.name}
+              inputLabel={owner_id.label}
+              setFieldValue={setFieldValue}
             />
-            <MDBox mt={0.75}>
-              <MDTypography
-                component="div"
-                variant="caption"
-                color="error"
-                fontWeight="regular"
-              >
-                <ErrorMessage name={tags.name} />
-              </MDTypography>
-            </MDBox>
           </Grid>
           <Grid item xs={12}>
             <Autocomplete
@@ -428,7 +332,7 @@ export default function TaskForm({
                 setFieldValue(dependencies.name, selectedTask)
               }
               value={values[dependencies.name]}
-              options={filteredDependencyTasks()}
+              options={dependencyTasks}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
@@ -454,39 +358,16 @@ export default function TaskForm({
             </MDBox>
           </Grid>
           <Grid item xs={12}>
-            <Autocomplete
-              disabled={true}
-              multiple
-              onChange={(e, requiredFieldsSelected) =>
-                setFieldValue(requiredFields.name, requiredFieldsSelected)
-              }
-              value={values[requiredFields.name]}
-              options={tableFields}
-              isOptionEqualToValue={(option, value) =>
-                option.field === value.field
-              }
-              getOptionLabel={(option) => option.field}
-              renderInput={(params) => (
-                <MDInput
-                  {...params}
-                  variant="standard"
-                  key={requiredFields.id}
-                  label={requiredFields.label}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
-              )}
+            <FormField
+              multiline
+              rows={2}
+              name={description.name}
+              label={description.label}
+              placeholder={description.placeholder}
+              value={values[description.name]}
+              error={errors.description && touched.description}
+              success={description.length > 0 && !errors.description}
             />
-            <MDBox mt={0.75}>
-              <MDTypography
-                component="div"
-                variant="caption"
-                color="error"
-                fontWeight="regular"
-              >
-                <ErrorMessage name={requiredFields.name} />
-              </MDTypography>
-            </MDBox>
           </Grid>
           <Grid item xs={12}>
             <FormGroup>
@@ -502,16 +383,6 @@ export default function TaskForm({
                 label={isFileNeeded.label}
               />
             </FormGroup>
-          </Grid>
-          <Grid item xs={12}>
-            <FormField
-              name={description.name}
-              label={description.label}
-              placeholder={description.placeholder}
-              value={values[description.name]}
-              error={errors.description && touched.description}
-              success={description.length > 0 && !errors.description}
-            />
           </Grid>
         </Grid>
       </MDBox>

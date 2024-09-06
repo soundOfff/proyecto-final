@@ -25,7 +25,19 @@ import MDTypography from "/components/MDTypography";
 import MDProgressRoot from "/components/MDProgress/MDProgressRoot";
 
 const MDProgress = forwardRef(
-  ({ variant, color, value, label, ...rest }, ref) => {
+  (
+    {
+      variant,
+      color,
+      value,
+      label,
+      isBuffered = false,
+      inProgressValue = null,
+      completedValue = null,
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <>
         {label && (
@@ -38,6 +50,9 @@ const MDProgress = forwardRef(
           ref={ref}
           variant="determinate"
           value={value}
+          isBuffered={true}
+          completedPercentage={completedValue}
+          inProgressPercentage={inProgressValue}
           ownerState={{ color, value, variant }}
         />
       </>

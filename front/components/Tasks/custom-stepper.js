@@ -74,8 +74,10 @@ function CustomStepper({ processes, tasks }) {
   const inProgressTasks = taskCounting[IN_PROGRESS_ID];
   const completedTasks = taskCounting[DONE_STATUS_ID];
 
-  const ProgressBar = ({ totalTasks, completedTasks }) => {
-    const percentage = (completedTasks / totalTasks) * 100;
+  const ProgressBar = ({ totalTasks, completedTasks, pendingTasks }) => {
+    const totalPercentage = (completedTasks / totalTasks) * 100;
+    const inProgressPercentage = (pendingTasks / totalTasks) * 100;
+
     return (
       <MDBox
         sx={{
@@ -87,7 +89,14 @@ function CustomStepper({ processes, tasks }) {
           right: "calc(50% + 30px)",
         }}
       >
-        <MDProgress color="warning" value={percentage} />
+        <MDProgress
+          variant="buffer"
+          color="success"
+          isBuffered={true}
+          completedValue={totalPercentage}
+          inProgressValue={inProgressPercentage}
+          value={totalPercentage + inProgressPercentage}
+        />
       </MDBox>
     );
   };
@@ -108,6 +117,8 @@ function CustomStepper({ processes, tasks }) {
     const totalPrevTasks = key === 0 ? 1 : processes[key - 1].realStepQuantity;
     const totalPrevCompletedTasks =
       key === 0 ? 0 : completedTasks[processes[key - 1].id] || 0;
+    const totalPrevInProgressProcessTasks =
+      key === 0 ? 0 : inProgressTasks[processes[key - 1].id] || 0;
 
     return (
       <StyledStepperStep key={key}>
@@ -119,7 +130,7 @@ function CustomStepper({ processes, tasks }) {
                 badgeContent={
                   key !== processes.length - 1
                     ? `${totalPendingProcessTasks}`
-                    : pendingTasks["total"]
+                    : pendingTasks.total
                 }
                 color="primary"
                 size="md"
@@ -131,7 +142,7 @@ function CustomStepper({ processes, tasks }) {
                 badgeContent={
                   key !== processes.length - 1
                     ? `${totalInProgressProcessTasks}`
-                    : inProgressTasks["total"]
+                    : inProgressTasks.total
                 }
                 color="warning"
                 size="md"
@@ -143,7 +154,7 @@ function CustomStepper({ processes, tasks }) {
                 badgeContent={
                   key !== processes.length - 1
                     ? `${totalCompletedProcessTasks}`
-                    : completedTasks["total"]
+                    : completedTasks.total
                 }
                 color="success"
                 size="md"
@@ -180,6 +191,7 @@ function CustomStepper({ processes, tasks }) {
           <ProgressBar
             totalTasks={totalPrevTasks}
             completedTasks={totalPrevCompletedTasks}
+            pendingTasks={totalPrevInProgressProcessTasks}
           />
         )}
       </StyledStepperStep>

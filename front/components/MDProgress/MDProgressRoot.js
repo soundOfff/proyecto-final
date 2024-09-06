@@ -1,45 +1,47 @@
-/**
-=========================================================
-* NextJS Material Dashboard 2 PRO - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/nextjs-material-dashboard-pro
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
 import { styled } from "@mui/material/styles";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export default styled(LinearProgress)(({ theme, ownerState }) => {
-  const { palette, functions } = theme;
-  const { color, value, variant } = ownerState;
+const GradientLinearProgress = styled(LinearProgress)(
+  ({
+    theme,
+    ownerState,
+    isBuffered = false,
+    completedPercentage = 0,
+    inProgressPercentage = 0,
+  }) => {
+    const { palette, functions } = theme;
+    const { color = "primary", variant = "standard", value = 100 } = ownerState;
+    const { text, gradients } = palette;
+    const { linearGradient } = functions;
 
-  const { text, gradients } = palette;
-  const { linearGradient } = functions;
+    const backgroundValue =
+      variant === "gradient"
+        ? gradients[color]
+          ? linearGradient(gradients[color].main, gradients[color].state)
+          : linearGradient(gradients.dark.main, gradients.dark.state)
+        : palette[color]
+        ? palette[color].main
+        : palette.dark.main;
 
-  // background value
-  let backgroundValue;
+    // Change this logic to another component and test the % of completed
+    const barBackground = isBuffered
+      ? completedPercentage === 0 && inProgressPercentage === 0
+        ? null
+        : inProgressPercentage === 0
+        ? `linear-gradient(90deg, rgba(254,200,55,1) -100%, rgba(76,175,80,1) ${completedPercentage}%)`
+        : completedPercentage === 0
+        ? `linear-gradient(90deg, rgba(76,175,80,1) -100%, rgba(254,200,55,1) ${inProgressPercentage}%)`
+        : `linear-gradient(90deg, rgba(76,175,80,1) ${completedPercentage}%, rgba(254,200,55,1) ${inProgressPercentage}%)`
+      : backgroundValue;
 
-  if (variant === "gradient") {
-    backgroundValue = gradients[color]
-      ? linearGradient(gradients[color].main, gradients[color].state)
-      : linearGradient(gradients.dark.main, gradients.dark.state);
-  } else {
-    backgroundValue = palette[color] ? palette[color].main : palette.dark.main;
+    return {
+      "& .MuiLinearProgress-bar": {
+        background: barBackground,
+        width: `${value}%`,
+        color: text.main,
+      },
+    };
   }
+);
 
-  return {
-    "& .MuiLinearProgress-bar": {
-      background: backgroundValue,
-      width: `${value}%`,
-      color: text.main,
-    },
-  };
-});
+export default GradientLinearProgress;

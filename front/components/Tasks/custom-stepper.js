@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 
-import MDProgress from "/components/MDProgress";
+import MDCustomProgress from "./CustomProgress";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
@@ -74,9 +74,25 @@ function CustomStepper({ processes, tasks }) {
   const inProgressTasks = taskCounting[IN_PROGRESS_ID];
   const completedTasks = taskCounting[DONE_STATUS_ID];
 
-  const ProgressBar = ({ totalTasks, completedTasks, pendingTasks }) => {
-    const totalPercentage = (completedTasks / totalTasks) * 100;
-    const inProgressPercentage = (pendingTasks / totalTasks) * 100;
+  const ProgressBar = ({ totalTasks, completedTasks, inProgressTasks }) => {
+    const completedPercentage = (completedTasks / totalTasks) * 100;
+    const inProgressPercentage = (inProgressTasks / totalTasks) * 100;
+    const totalPercentage = Math.min(
+      ((completedTasks + inProgressTasks) / totalTasks) * 100,
+      100
+    );
+
+    // Relative % vales of completed tasks, it is used to calculate the progress bar gradient
+    // where (inProgressTasks + completedTasks) != totalTasks
+    const relativeCompletedPercentage =
+      completedTasks + inProgressTasks > 0
+        ? (completedTasks / (completedTasks + inProgressTasks)) * 100
+        : 0;
+
+    const relativeInProgressPercentage =
+      completedTasks + inProgressTasks > 0
+        ? (inProgressTasks / (completedTasks + inProgressTasks)) * 100
+        : 0;
 
     return (
       <MDBox
@@ -89,13 +105,13 @@ function CustomStepper({ processes, tasks }) {
           right: "calc(50% + 30px)",
         }}
       >
-        <MDProgress
+        <MDCustomProgress
           variant="buffer"
           color="success"
-          isBuffered={true}
-          completedValue={totalPercentage}
-          inProgressValue={inProgressPercentage}
-          value={totalPercentage + inProgressPercentage}
+          multipleColors={true}
+          completedValue={relativeCompletedPercentage}
+          inProgressValue={relativeInProgressPercentage}
+          value={totalPercentage}
         />
       </MDBox>
     );
@@ -191,7 +207,7 @@ function CustomStepper({ processes, tasks }) {
           <ProgressBar
             totalTasks={totalPrevTasks}
             completedTasks={totalPrevCompletedTasks}
-            pendingTasks={totalPrevInProgressProcessTasks}
+            inProgressTasks={totalPrevInProgressProcessTasks}
           />
         )}
       </StyledStepperStep>

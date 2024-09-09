@@ -50,7 +50,7 @@ export default function TaskForm({
     totalCycles,
     taskableId,
     partner_id,
-    owner_id,
+    assigneds,
     taskableType,
     description,
     actions,
@@ -70,6 +70,7 @@ export default function TaskForm({
       setFieldValue(repeat.name, task.repeat_id ?? "");
       setFieldValue(recurring.name, task.recurring || "");
       setFieldValue(recurringType.name, task.recurring_type || "");
+      setFieldValue(assigneds.name, task.assigneds || []);
       setFieldValue(totalCycles.name, task.total_cycles || "");
       setFieldValue(taskableType.name, task.taskable_type || 0);
       setFieldValue(dependencies.name, task.dependencies || []);
@@ -303,7 +304,7 @@ export default function TaskForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <Select
               value={values[taskableId.name]}
               options={taskableItems}
@@ -315,15 +316,37 @@ export default function TaskForm({
               setFieldValue={setFieldValue}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Select
-              value={values[owner_id.name]}
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              onChange={(e, selected) =>
+                setFieldValue(assigneds.name, selected)
+              }
+              value={values[assigneds.name]}
               options={staffs}
-              optionLabel={(option) => option.name ?? `#${option.id}`}
-              fieldName={owner_id.name}
-              inputLabel={owner_id.label}
-              setFieldValue={setFieldValue}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  variant="standard"
+                  key={assigneds.id}
+                  label={assigneds.label}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
             />
+            <MDBox mt={0.75}>
+              <MDTypography
+                component="div"
+                variant="caption"
+                color="error"
+                fontWeight="regular"
+              >
+                <ErrorMessage name={assigneds.name} />
+              </MDTypography>
+            </MDBox>
           </Grid>
           <Grid item xs={12}>
             <Autocomplete

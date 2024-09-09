@@ -384,6 +384,18 @@ export default function TaskForm({
               />
             </FormGroup>
           </Grid>
+          <Grid item xs={12}>
+            <FormField
+              name={description.name}
+              label={description.label}
+              placeholder={description.placeholder}
+              value={values[description.name]}
+              error={errors.description && touched.description}
+              success={description.length > 0 && !errors.description}
+              multiline
+              rows={4}
+            />
+          </Grid>
         </Grid>
       </MDBox>
     </>

@@ -40,6 +40,7 @@ import FormField from "/pagesComponents/ecommerce/products/new-product/component
 import { update } from "/actions/tasks";
 import { useSession } from "next-auth/react";
 import moment from "moment-timezone";
+import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 export default function Aside() {
   const {
@@ -341,125 +342,133 @@ export default function Aside() {
 
           <Divider sx={{ width: "100%" }} />
 
-          <Grid xs={12} mx={3}>
-            <MDBox display="flex" mt={2} mb={1}>
-              <Notifications />
-              <MDTypography variant="button" fontWeight="bold" ml={1}>
-                Recordatorios
-              </MDTypography>
-              {showReminderForm ? (
-                <Remove
-                  color="error"
-                  onClick={() => setShowReminderForm(false)}
-                  sx={{ cursor: "pointer", ml: 1 }}
-                />
-              ) : (
-                <Add
-                  color="success"
-                  onClick={() => setShowReminderForm(true)}
-                  sx={{ cursor: "pointer", ml: 1 }}
-                />
-              )}
-            </MDBox>
-            {reminders &&
-              reminders.map((reminder) => (
-                <MDBox key={reminder.id} display="flex">
-                  <MDTypography key={reminder.id} variant="button">
-                    {reminder.date}
-                  </MDTypography>
-                  <MDTypography key={reminder.id} variant="button" ml={2}>
-                    {reminder.description}
-                  </MDTypography>
-                  <Clear
-                    color="error"
-                    sx={{ cursor: "pointer", ml: 1 }}
-                    onClick={() => handleReminderDelete(task.id, reminder.id)}
-                  />
-                </MDBox>
-              ))}
-            {showReminderForm && (
-              <MDBox display="flex" flexDirection="column" gap={5} mt={2}>
-                <Autocomplete
-                  value={reminderStaff}
-                  onChange={(_, newValue) =>
-                    setReminderStaffId(newValue?.id || null)
-                  }
-                  options={staffs}
-                  isOptionEqualToValue={(option, value) =>
-                    option.id === value.id
-                  }
-                  getOptionLabel={(option) => option.name}
-                  renderInput={(params) => (
-                    <MDInput
-                      {...params}
-                      variant="standard"
-                      label="Recordatorio Para"
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                      inputProps={{ ...params.inputProps }}
+          {statusId !== DONE_STATUS_ID && (
+            <>
+              <Grid xs={12} mx={3}>
+                {statusId !== 3 && (
+                  <MDBox display="flex" mt={2} mb={1}>
+                    <Notifications />
+                    <MDTypography variant="button" fontWeight="bold" ml={1}>
+                      Recordatorios
+                    </MDTypography>
+                    {showReminderForm ? (
+                      <Remove
+                        color="error"
+                        onClick={() => setShowReminderForm(false)}
+                        sx={{ cursor: "pointer", ml: 1 }}
+                      />
+                    ) : (
+                      <Add
+                        color="success"
+                        onClick={() => setShowReminderForm(true)}
+                        sx={{ cursor: "pointer", ml: 1 }}
+                      />
+                    )}
+                  </MDBox>
+                )}
+                {reminders &&
+                  reminders.map((reminder) => (
+                    <MDBox key={reminder.id} display="flex">
+                      <MDTypography key={reminder.id} variant="button">
+                        {reminder.date}
+                      </MDTypography>
+                      <MDTypography key={reminder.id} variant="button" ml={2}>
+                        {reminder.description}
+                      </MDTypography>
+                      <Clear
+                        color="error"
+                        sx={{ cursor: "pointer", ml: 1 }}
+                        onClick={() =>
+                          handleReminderDelete(task.id, reminder.id)
+                        }
+                      />
+                    </MDBox>
+                  ))}
+                {showReminderForm && (
+                  <MDBox display="flex" flexDirection="column" gap={5} mt={2}>
+                    <Autocomplete
+                      value={reminderStaff}
+                      onChange={(_, newValue) =>
+                        setReminderStaffId(newValue?.id || null)
+                      }
+                      options={staffs}
+                      isOptionEqualToValue={(option, value) =>
+                        option.id === value.id
+                      }
+                      getOptionLabel={(option) => option.name}
+                      renderInput={(params) => (
+                        <MDInput
+                          {...params}
+                          variant="standard"
+                          label="Recordatorio Para"
+                          fullWidth
+                          InputLabelProps={{ shrink: true }}
+                          inputProps={{ ...params.inputProps }}
+                        />
+                      )}
+                      renderOption={(props, option) => (
+                        <li {...props} key={option.id}>
+                          <span>{option.name}</span>
+                        </li>
+                      )}
                     />
-                  )}
-                  renderOption={(props, option) => (
-                    <li {...props} key={option.id}>
-                      <span>{option.name}</span>
-                    </li>
-                  )}
-                />
-                <MDDatePicker
-                  value={reminderDate}
-                  input={{
-                    label: "Fecha de Recordatorio",
-                  }}
-                  onChange={(date) =>
-                    setReminderDate(
-                      moment(date[0]).format("YYYY-MM-DD HH:mm:ss")
-                    )
-                  }
-                  options={{
-                    minDate: moment()
-                      .tz("America/Panama")
-                      .format("YYYY-MM-DD HH:mm:ss"),
-                    enableTime: true,
-                    position: "right top",
-                    static: true,
-                  }}
-                />
-                <MDInput
-                  key="reminderDescription"
-                  value={reminderDescription}
-                  placeholder="Descripción"
-                  sx={{ height: "40px" }}
-                  onChange={(e) => setReminderDescription(e.target.value)}
-                />
-                <FormControl sx={{ width: "100%" }}>
-                  <InputLabel id="status">Prioridad</InputLabel>
-                  <Select
-                    value={reminderPriorityId}
-                    label="Estado"
-                    onChange={(e) => setReminderPriorityId(e.target.value)}
-                    sx={{ height: "40px" }}
-                  >
-                    {notificationPriorities.map((priority) => (
-                      <MenuItem key={priority.id} value={priority.id}>
-                        {priority.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                    <MDDatePicker
+                      value={reminderDate}
+                      input={{
+                        label: "Fecha de Recordatorio",
+                      }}
+                      onChange={(date) =>
+                        setReminderDate(
+                          moment(date[0]).format("YYYY-MM-DD HH:mm:ss")
+                        )
+                      }
+                      options={{
+                        minDate: moment()
+                          .tz("America/Panama")
+                          .format("YYYY-MM-DD HH:mm:ss"),
+                        enableTime: true,
+                        position: "right top",
+                        static: true,
+                      }}
+                    />
+                    <MDInput
+                      key="reminderDescription"
+                      value={reminderDescription}
+                      placeholder="Descripción"
+                      sx={{ height: "40px" }}
+                      onChange={(e) => setReminderDescription(e.target.value)}
+                    />
+                    <FormControl sx={{ width: "100%" }}>
+                      <InputLabel id="status">Prioridad</InputLabel>
+                      <Select
+                        value={reminderPriorityId}
+                        label="Estado"
+                        onChange={(e) => setReminderPriorityId(e.target.value)}
+                        sx={{ height: "40px" }}
+                      >
+                        {notificationPriorities.map((priority) => (
+                          <MenuItem key={priority.id} value={priority.id}>
+                            {priority.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
 
-                <MDButton
-                  variant="gradient"
-                  color="dark"
-                  sx={{ ml: 1 }}
-                  onClick={handleReminderSave}
-                  disabled={!canReminderSave()}
-                >
-                  Guardar
-                </MDButton>
-              </MDBox>
-            )}
-          </Grid>
-          <Divider sx={{ width: "100%" }} />
+                    <MDButton
+                      variant="gradient"
+                      color="dark"
+                      sx={{ ml: 1 }}
+                      onClick={handleReminderSave}
+                      disabled={!canReminderSave()}
+                    >
+                      Guardar
+                    </MDButton>
+                  </MDBox>
+                )}
+              </Grid>
+              <Divider sx={{ width: "100%" }} />
+            </>
+          )}
 
           <Grid xs={12} mx={3}>
             <MDBox display="flex" mt={2} mb={1}>

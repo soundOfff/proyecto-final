@@ -28,6 +28,9 @@ import UnarchiveIcon from "@mui/icons-material/Unarchive";
 
 import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
+import useDeleteRow from "/hooks/useDeleteRow";
+import DeleteRow from "/components/DeleteRow";
+
 import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
@@ -56,6 +59,17 @@ export default function Table({ rows }) {
   const [menu, setMenu] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [search, setSearch] = useState(null);
+
+  const {
+    setOpenDeleteConfirmation,
+    errorSB: deleteErrorSB,
+    setErrorSB: setDeleteErrorSB,
+    errorMsg: deleteErrorMsg,
+    setErrorMsg: setDeleteErrorMsg,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -150,18 +164,6 @@ export default function Table({ rows }) {
       console.error(error);
       setErrorSB(true);
       setInfoSB("Error al marcar la notificacion como vista");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await destroy(id);
-      setSuccessSB(true);
-      setInfoSB("Notificacion eliminada correctamente");
-    } catch (error) {
-      console.error(error);
-      setErrorSB(true);
-      setInfoSB("Error al eliminar la notificacion");
     }
   };
 
@@ -297,12 +299,12 @@ export default function Table({ rows }) {
                 pointerEvents: row.original.notifiableId == 0 ? "none" : "null",
               }}
             >
-              <MDTypography variant="body2" fontWeight="medium" color="link">
+              <MDTypography variant="body3" fontWeight="medium" color="link">
                 {row.original.title}
               </MDTypography>
             </Link>
           ) : (
-            <MDTypography variant="body2" fontWeight="medium" color="text">
+            <MDTypography variant="body3" fontWeight="medium" color="text">
               {row.original.title}
             </MDTypography>
           )}
@@ -320,7 +322,7 @@ export default function Table({ rows }) {
       width: "30%",
       accessor: "body",
       Cell: ({ row }) => (
-        <MDTypography variant="body2" fontWeight="medium">
+        <MDTypography variant="body3" fontWeight="medium">
           {row.original.body}
         </MDTypography>
       ),
@@ -473,7 +475,20 @@ export default function Table({ rows }) {
           gap={2}
           my={2}
         >
-          <MDInput label="Buscar" onChange={handleSearch} />
+          <MDBox
+            sx={{
+              width: {
+                sx: "100%",
+                sm: "50%",
+              },
+            }}
+          >
+            <MDInput
+              label="Buscar por titulo, descripcion o caso"
+              onChange={handleSearch}
+              fullWidth
+            />
+          </MDBox>
           <MDButton
             variant="contained"
             color="dark"
@@ -544,19 +559,32 @@ export default function Table({ rows }) {
         {isLoading ? (
           <Loading count={table.rows?.length} />
         ) : (
-          <DataTable
-            table={table}
-            showTotalEntries={false}
-            isSorted={true}
-            noEndBorder
-            entriesPerPage={{
-              defaultValue: 50,
-              entries: [5, 10, 15, 20, 25, 50],
-            }}
-            isNotificable={true}
-            canMultiSelect={true}
-            setDeleteIds={setSelectedNotificationIds}
-          />
+          <>
+            <DataTable
+              table={table}
+              showTotalEntries={false}
+              isSorted={true}
+              noEndBorder
+              entriesPerPage={{
+                defaultValue: 50,
+                entries: [5, 10, 15, 20, 25, 50],
+              }}
+              isNotificable={true}
+              canMultiSelect={true}
+              setDeleteIds={setSelectedNotificationIds}
+            />
+            <DeleteRow
+              {...{
+                setOpenDeleteConfirmation,
+                errorSB: deleteErrorSB,
+                setErrorSB: setDeleteErrorSB,
+                errorMsg: deleteErrorMsg,
+                setErrorMsg: setDeleteErrorMsg,
+                openDeleteConfirmation,
+                setDeleteConfirmed,
+              }}
+            />
+          </>
         )}
       </MDBox>
     </>

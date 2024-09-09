@@ -111,7 +111,7 @@ export default function PersonForm({
         setCityChecked(true);
       }
       setFieldValue(district.name, partner.district || "");
-      setFieldValue(jurisdiction.name, partner.jurisdiction || "");
+      setFieldValue(jurisdiction.name, partner.jurisdictionId || "");
       setFieldValue(province.name, partner.province || "");
       setFieldValue(address.name, partner.address || "");
       setFieldValue(isResidential.name, partner.isResidential || true);
@@ -214,6 +214,32 @@ export default function PersonForm({
   }, [values.district_id]);
 
   const idTypes = ["Cédula", "Pasaporte", "Carnet de Residente", "Desconocido"];
+
+  const occupations = [
+    "Abogado",
+    "Agente de bienes raíces",
+    "Agente de viajes",
+    "Autónomo",
+    "Científico",
+    "Contador",
+    "Comerciante",
+    "Deportista",
+    "Economista",
+    "Empresario",
+    "Escribano",
+    "Empleado",
+    "Ingeniero",
+    "Médico",
+    "Político",
+    "Programador",
+    "Psicólogo",
+    "Profesor",
+    "Secretario",
+    "Transportista",
+    "Veterinario",
+    "Otro",
+    "Desconocido",
+  ];
 
   const [filteredCivilStatuses, setFilteredCivilStatuses] = useState([]);
 
@@ -416,29 +442,26 @@ export default function PersonForm({
       </Grid>
 
       <Grid item xs={10} sm={6}>
-        <FormField
-          value={values[occupation.name]}
-          label={occupation.label}
-          placeholder={occupation.placeholder}
-          name={occupation.name}
-          type={occupation.type}
-          error={errors[occupation.name] && touched[occupation.name]}
-          success={
-            values[occupation.name]?.length > 0 && !errors[occupation.name]
-          }
-          disabled={occupationChecked}
-        />
-        <Checkbox
-          checked={occupationChecked}
-          handleChange={(e) => {
-            if (e.target.checked) {
-              setFieldValue(occupation.name, "Desconocido");
-            } else {
-              setFieldValue(occupation.name, "");
-            }
-            setOccupationChecked(e.target.checked);
+        <Autocomplete
+          disablePortal
+          autocomplete={false}
+          options={occupations}
+          onChange={(event, newValue) => {
+            setFieldValue(occupation.name, newValue);
           }}
-          label="Desconocido"
+          value={values[occupation.name]}
+          renderInput={(params) => (
+            <MDInput
+              {...params}
+              variant="standard"
+              label={"Ocupación"}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              error={Boolean(errors.occupations && touched.occupations)}
+              helperText={touched.occupations && errors.occupations}
+              autoComplete="off"
+            />
+          )}
         />
       </Grid>
 

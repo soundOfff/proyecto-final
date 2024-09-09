@@ -12,11 +12,11 @@ export default function SelectedProcesses({
       <MDTypography variant="button" fontWeight="medium">
         Procesos seleccionados
       </MDTypography>
-      {selectedProcesses.length > 1 ? (
+      {selectedProcesses.length >= 1 ? (
         <CustomStepper
           processes={[
             ...selectedProcesses,
-            { id: selectedProcesses.length, name: "FIN" },
+            { id: selectedProcesses.length, name: "Consolidado" },
           ]}
           tasks={tasks}
         />

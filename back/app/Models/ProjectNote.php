@@ -13,6 +13,7 @@ class ProjectNote extends Model
     protected $fillable = [
         'content',
         'project_id',
+        'staff_id',
     ];
 
     public function project(): BelongsTo

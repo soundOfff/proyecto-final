@@ -50,6 +50,25 @@ class SendPushNotification extends Command
             ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED)
             ->get();
 
+        Task::where('start_date', '=', Carbon::now()->format('Y-m-d'))
+            ->where('is_owner_notified', false)
+            ->with(['assigneds.devices'])
+            ->each(function ($task) {
+                $task->assigneds->each(function ($staff) use ($task) {
+                    $staff->devices->each(function ($device) use ($task) {
+                        $this->fcmService->sendNotification(
+                            $device->device_token,
+                            "Nueva Tarea: " . $task->name,
+                            $task->author->first_name . " " . $task->author->last_name . " te ha asignado una nueva tarea " . $task->name,
+                            $task->owner_id,
+                            strtolower(class_basename(Task::class)),
+                            $task->id
+                        );
+                    });
+                });
+                $task->update(['is_owner_notified' => true]);
+            });
+
         foreach ($notifies as $notify) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
             if ($diffInMinutes == 0) {

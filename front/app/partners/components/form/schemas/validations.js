@@ -141,7 +141,7 @@ const validations = {
     [rollNumber.name]: Yup.string().nullable(),
   }),
   juridicalOptional: Yup.object().shape({
-    [company.name]: Yup.string(),
+    [company.name]: Yup.string().required(),
     [country.name]: Yup.number(),
     [address.name]: Yup.string(),
     [relatedPartners.name]: Yup.array(),
@@ -229,7 +229,7 @@ const validations = {
   }),
   personOptional: Yup.object().shape({
     [name.name]: Yup.string(),
-    [countryPerson.name]: Yup.number(),
+    [countryPerson.name]: Yup.number().required(),
     [isMale.name]: Yup.boolean(),
     [birthPlace.name]: Yup.string(),
     [personIdNumber.name]: Yup.string(),

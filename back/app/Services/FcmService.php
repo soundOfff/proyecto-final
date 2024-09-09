@@ -36,7 +36,9 @@ class FcmService
                 ->where('body', $body)
                 ->whereBetween('created_at', [now()->subMinutes(1), now()->addMinutes(1)])
                 ->exists();
+
             if ($isNotificationAlreadyCreated) return;
+
             $notification = Notification::create([
                 'title' => $title,
                 'body' => $body,

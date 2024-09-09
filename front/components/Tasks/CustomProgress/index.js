@@ -22,7 +22,7 @@ import PropTypes from "prop-types";
 import MDTypography from "/components/MDTypography";
 
 // Custom styles for MDProgress
-import MDProgressRoot from "/components/MDProgress/MDProgressRoot";
+import MDCustomProgressRoot from "./root";
 
 const MDProgress = forwardRef(
   (
@@ -31,7 +31,7 @@ const MDProgress = forwardRef(
       color,
       value,
       label,
-      isBuffered = false,
+      multipleColors = false,
       inProgressValue = null,
       completedValue = null,
       ...rest
@@ -45,12 +45,12 @@ const MDProgress = forwardRef(
             {value}%
           </MDTypography>
         )}
-        <MDProgressRoot
+        <MDCustomProgressRoot
           {...rest}
           ref={ref}
           variant="determinate"
           value={value}
-          isBuffered={true}
+          multipleColors={true}
           completedPercentage={completedValue}
           inProgressPercentage={inProgressValue}
           ownerState={{ color, value, variant }}

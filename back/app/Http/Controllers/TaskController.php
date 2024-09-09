@@ -28,9 +28,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    public function __construct(protected FcmService $fcmService)
-    {
-    }
+    public function __construct(protected FcmService $fcmService) {}
 
     public function select()
     {
@@ -83,15 +81,15 @@ class TaskController extends Controller
                             $query
                                 ->whereHas(
                                     'assigneds',
-                                    fn (Builder $query) => $query->where('staff_id', $value)
+                                    fn(Builder $query) => $query->where('staff_id', $value)
                                 );
                         }
                     ),
                     AllowedFilter::callback(
                         'period',
-                        fn (Builder $query, $value) => $query->whereHas(
+                        fn(Builder $query, $value) => $query->whereHas(
                             'timers',
-                            fn (Builder $query) => $query->whereBetween('start_time', $value)
+                            fn(Builder $query) => $query->whereBetween('start_time', $value)
                         )
                     ),
                 ]
@@ -107,10 +105,9 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
         $newTask = $request->validated();
-        $tags = $newTask['tags'];
+        // $tags = isset($newTask['tags']) ? $newTask['tags'] : [];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
-        $newTask['author_id'] = $newTask['owner_id'];
         $defaultDurationMinutes = $newTask['initial_duration_minutes'] ?? 0;
 
         if (! array_key_exists('milestone_order', $newTask)) {
@@ -133,12 +130,12 @@ class TaskController extends Controller
 
         $task->requiredFields()->createMany($newTask['requiredFields']);
 
-        foreach ($tags as $tag) {
-            $tag['taggable_id'] = $task->id;
-            $tag['taggable_type'] = 'task';
-            $tag['tag_id'] = $tag['id'];
-            Taggable::create($tag);
-        }
+        // foreach ($tags as $tag) {
+        //     $tag['taggable_id'] = $task->id;
+        //     $tag['taggable_type'] = 'task';
+        //     $tag['tag_id'] = $tag['id'];
+        //     Taggable::create($tag);
+        // }
 
         return response()->json(null, 201);
     }
@@ -375,22 +372,22 @@ class TaskController extends Controller
             }
         );
 
-        $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
+        $totalTime = $tasks->sum(fn($task) => $task->getTotalTime());
 
         $totalDayTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($dayStart, $dayEnd));
+            ->sum(fn($task) => $task->getTotalTime($dayStart, $dayEnd));
 
         $totalWeekTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
+            ->sum(fn($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
 
         $totalLastWeekTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
+            ->sum(fn($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
 
         $totalMonthTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
+            ->sum(fn($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
 
         $totalLastMonthTime = $tasks
-            ->sum(fn ($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
+            ->sum(fn($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
 
         $monthlyPercentage = $totalLastMonthTime
             ? (($totalMonthTime - $totalLastMonthTime) / $totalLastMonthTime) * 100

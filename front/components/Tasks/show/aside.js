@@ -313,7 +313,7 @@ export default function Aside() {
             />
           </Grid>
 
-          <Divider sx={{ width: "100%" }} />
+          {/* <Divider sx={{ width: "100%" }} />
 
           <Grid xs={12} my={2} mx={2}>
             <MDTypography variant="button" fontWeight="bold" ml={1} mb={2}>
@@ -337,7 +337,7 @@ export default function Aside() {
                 />
               )}
             />
-          </Grid>
+          </Grid> */}
 
           <Divider sx={{ width: "100%" }} />
 

@@ -61,6 +61,7 @@ class Task extends Model
         'procedure_id',
         'milestone_order',
         'task_priority_id',
+        'is_owner_notified',
         'partner_id',
         'task_status_id',
         'repeat_id',
@@ -87,9 +88,9 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+            get: fn() => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
                 && $this->requiredFields->every(
-                    fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
+                    fn(TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
         );
     }
@@ -97,7 +98,7 @@ class Task extends Model
     protected function isBlocked(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+            get: fn() => $this->dependencies->contains(fn(self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
         );
     }
 
@@ -149,6 +150,11 @@ class Task extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(Staff::class, 'author_id');
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(Staff::class, 'owner_id');
     }
 
     public function comments()

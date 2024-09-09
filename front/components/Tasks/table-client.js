@@ -420,6 +420,7 @@ export default function Table({
             open={openEditModal}
             onClose={handleCloseEditModal}
             width="40%"
+            height="85%"
           >
             <ModalContentForm
               priorities={priorities}
@@ -429,6 +430,7 @@ export default function Table({
               tagsData={tagsData}
               partners={partners}
               task={task}
+              staffs={staffs}
               actionsData={actionsData}
               tableFields={tableFields}
               project={project}

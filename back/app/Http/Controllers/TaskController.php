@@ -106,8 +106,10 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         // $tags = isset($newTask['tags']) ? $newTask['tags'] : [];
+        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
+        $newTask['owner_id'] = $newTask['author_id'];
         $defaultDurationMinutes = $newTask['initial_duration_minutes'] ?? 0;
 
         if (! array_key_exists('milestone_order', $newTask)) {
@@ -127,6 +129,8 @@ class TaskController extends Controller
 
         $dependencyIds = array_column($dependencies, 'id');
         $task->dependencies()->sync($dependencyIds);
+        $assignedIds = array_column($assigneds, 'id');
+        $task->assigneds()->sync($assignedIds);
 
         $task->requiredFields()->createMany($newTask['requiredFields']);
 

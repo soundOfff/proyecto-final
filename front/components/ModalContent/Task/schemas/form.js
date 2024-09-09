@@ -52,11 +52,6 @@ const form = {
       label: "Prioridad",
       errorMsg: "Debe seleccionar una prioridad",
     },
-    owner_id: {
-      name: "owner_id",
-      label: "Responsable de la tarea",
-      errorMsg: "Debe seleccionar un responsable",
-    },
     task_status_id: {
       name: "status",
       label: "Estado",
@@ -117,6 +112,10 @@ const form = {
     isFileNeeded: {
       name: "is_file_needed",
       label: "Se necesita un archivo",
+    },
+    assigneds: {
+      name: "assigneds",
+      label: "Asignados",
     },
   },
 };

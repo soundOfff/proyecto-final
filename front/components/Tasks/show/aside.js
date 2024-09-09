@@ -71,6 +71,9 @@ export default function Aside() {
   const [followers, setFollowers] = useState(task.followers);
   const { data: session } = useSession();
 
+  const reminderStaff =
+    staffs.find((staff) => staff.id == reminderStaffId) || null;
+
   const handleReminderDelete = (taskId, reminderId) => {
     const updatedReminders = reminders.filter(
       (reminder) => reminder.id !== reminderId
@@ -310,7 +313,7 @@ export default function Aside() {
             />
           </Grid>
 
-          <Divider sx={{ width: "100%" }} />
+          {/* <Divider sx={{ width: "100%" }} />
 
           <Grid xs={12} my={2} mx={2}>
             <MDTypography variant="button" fontWeight="bold" ml={1} mb={2}>
@@ -334,7 +337,7 @@ export default function Aside() {
                 />
               )}
             />
-          </Grid>
+          </Grid> */}
 
           <Divider sx={{ width: "100%" }} />
 
@@ -377,13 +380,10 @@ export default function Aside() {
             {showReminderForm && (
               <MDBox display="flex" flexDirection="column" gap={5} mt={2}>
                 <Autocomplete
-                  value={
-                    staffs.find((staff) => staff.id === reminderStaffId) || {
-                      id: "",
-                      name: "",
-                    }
+                  value={reminderStaff}
+                  onChange={(_, newValue) =>
+                    setReminderStaffId(newValue?.id || null)
                   }
-                  onChange={(_, newValue) => setReminderStaffId(newValue?.id)}
                   options={staffs}
                   isOptionEqualToValue={(option, value) =>
                     option.id === value.id
@@ -398,6 +398,11 @@ export default function Aside() {
                       InputLabelProps={{ shrink: true }}
                       inputProps={{ ...params.inputProps }}
                     />
+                  )}
+                  renderOption={(props, option) => (
+                    <li {...props} key={option.id}>
+                      <span>{option.name}</span>
+                    </li>
                   )}
                 />
                 <MDDatePicker
@@ -483,7 +488,6 @@ export default function Aside() {
             {task.taskable && task.taskable_type === PROJECT_TYPE ? (
               <Autocomplete
                 multiple
-                key="assigneds"
                 value={assigneds}
                 onChange={(_, newValues) => setAssigneds(newValues)}
                 options={task.taskable.members.sort((a, b) =>
@@ -533,7 +537,6 @@ export default function Aside() {
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              key="followers"
               value={followers}
               onChange={(_, newValues) => setFollowers(newValues)}
               options={staffs}
@@ -547,6 +550,11 @@ export default function Aside() {
                   InputLabelProps={{ shrink: true }}
                   inputProps={{ ...params.inputProps }}
                 />
+              )}
+              renderOption={(props, option) => (
+                <li {...props} key={option.id}>
+                  <span>{option.name}</span>
+                </li>
               )}
             />
             <Divider sx={{ width: "100%" }} />

@@ -105,10 +105,9 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
         $newTask = $request->validated();
-        $tags = $newTask['tags'];
+        // $tags = isset($newTask['tags']) ? $newTask['tags'] : [];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
-        $newTask['author_id'] = $newTask['owner_id'];
         $defaultDurationMinutes = $newTask['initial_duration_minutes'] ?? 0;
 
         if (! array_key_exists('milestone_order', $newTask)) {
@@ -131,12 +130,12 @@ class TaskController extends Controller
 
         $task->requiredFields()->createMany($newTask['requiredFields']);
 
-        foreach ($tags as $tag) {
-            $tag['taggable_id'] = $task->id;
-            $tag['taggable_type'] = 'task';
-            $tag['tag_id'] = $tag['id'];
-            Taggable::create($tag);
-        }
+        // foreach ($tags as $tag) {
+        //     $tag['taggable_id'] = $task->id;
+        //     $tag['taggable_type'] = 'task';
+        //     $tag['tag_id'] = $tag['id'];
+        //     Taggable::create($tag);
+        // }
 
         return response()->json(null, 201);
     }
@@ -145,11 +144,11 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
-        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : null;
+        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : [];
         $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
-        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
-        $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
+        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
+        $followers = isset($newTask['followers']) ? $newTask['followers'] : [];
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
 
@@ -188,11 +187,6 @@ class TaskController extends Controller
             $task->comments()->delete();
         }
 
-        if ($dependencies) {
-            $dependencyIds = array_column($dependencies, 'id');
-            $task->dependencies()->sync($dependencyIds);
-        }
-
         if ($checklistItems) {
             $task->checklistItems()->delete();
             $task->checklistItems()->createMany($checklistItems);
@@ -200,21 +194,18 @@ class TaskController extends Controller
             $task->checklistItems()->delete();
         }
 
-        if ($assigneds) {
-            $assignedIds = array_column($assigneds, 'id');
-            $task->assigneds()->sync($assignedIds);
-        }
-
-        if ($followers) {
-            $followerIds = array_column($followers, 'id');
-            $task->followers()->sync($followerIds);
-        }
-
         if ($reminders) {
             $task->reminders()->delete();
             $task->reminders()->createMany($reminders);
         } elseif ($reminders === []) {
             $task->reminders()->delete();
+        }
+
+        if ($requiredFields) {
+            $task->requiredFields()->delete();
+            $task->requiredFields()->createMany($requiredFields);
+        } elseif ($requiredFields === []) {
+            $task->requiredFields()->delete();
         }
 
         if ($tags) {
@@ -227,12 +218,14 @@ class TaskController extends Controller
             }
         }
 
-        if ($requiredFields) {
-            $task->requiredFields()->delete();
-            $task->requiredFields()->createMany($requiredFields);
-        } elseif ($requiredFields === []) {
-            $task->requiredFields()->delete();
-        }
+        $dependencyIds = array_column($dependencies, 'id');
+        $task->dependencies()->sync($dependencyIds);
+
+        $assignedIds = array_column($assigneds, 'id');
+        $task->assigneds()->sync($assignedIds);
+
+        $followerIds = array_column($followers, 'id');
+        $task->followers()->sync($followerIds);
 
         if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {
             $staffs = Staff::whereIn(

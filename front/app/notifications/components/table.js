@@ -297,12 +297,12 @@ export default function Table({ rows }) {
                 pointerEvents: row.original.notifiableId == 0 ? "none" : "null",
               }}
             >
-              <MDTypography variant="body2" fontWeight="medium" color="link">
+              <MDTypography variant="body3" fontWeight="medium" color="link">
                 {row.original.title}
               </MDTypography>
             </Link>
           ) : (
-            <MDTypography variant="body2" fontWeight="medium" color="text">
+            <MDTypography variant="body3" fontWeight="medium" color="text">
               {row.original.title}
             </MDTypography>
           )}
@@ -320,7 +320,7 @@ export default function Table({ rows }) {
       width: "30%",
       accessor: "body",
       Cell: ({ row }) => (
-        <MDTypography variant="body2" fontWeight="medium">
+        <MDTypography variant="body3" fontWeight="medium">
           {row.original.body}
         </MDTypography>
       ),

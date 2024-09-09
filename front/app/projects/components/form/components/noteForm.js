@@ -31,7 +31,7 @@ export default function NoteForm({ setFieldValue, values, notes }) {
 
   return (
     <Grid container spacing={2} my={2}>
-      <Grid item xs={10}>
+      <Grid item xs={12}>
         <MDTypography variant="h6">Notas Privadas</MDTypography>
         <MDEditor
           editorState={editorState}
@@ -39,12 +39,10 @@ export default function NoteForm({ setFieldValue, values, notes }) {
           editorStyle={{ height: "200px" }}
         />
       </Grid>
-      <Grid item xs={2} display="flex" alignItems="center">
-        <MDBox>
-          <MDButton variant="gradient" color="success" onClick={handleAddNote}>
-            Agregar Nota
-          </MDButton>
-        </MDBox>
+      <Grid item xs={12} display="flex" justifyContent="end">
+        <MDButton variant="gradient" color="success" onClick={handleAddNote}>
+          Agregar Nota
+        </MDButton>
       </Grid>
     </Grid>
   );

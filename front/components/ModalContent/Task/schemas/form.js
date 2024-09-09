@@ -54,7 +54,8 @@ const form = {
     },
     owner_id: {
       name: "owner_id",
-      label: "Propietario",
+      label: "Responsable de la tarea",
+      errorMsg: "Debe seleccionar un responsable",
     },
     task_status_id: {
       name: "status",
@@ -63,7 +64,7 @@ const form = {
     partner_id: {
       name: "partner_id",
       label: "Cliente",
-      errorMsg: "Debe asignar a un cliente",
+      errorMsg: "Debe seleccionar un cliente",
     },
     repeat: {
       name: "repeat_id",
@@ -95,11 +96,7 @@ const form = {
     taskableId: {
       name: "taskable_id",
       label: "* Caso",
-      errorMsg: "Debe ingresar un ID al que la tarea relacionado",
-    },
-    tags: {
-      name: "tags",
-      label: "Etiquetas",
+      errorMsg: "Debe seleccionar un caso relacionado",
     },
     dependencies: {
       name: "dependencies",

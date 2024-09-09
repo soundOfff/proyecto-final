@@ -377,6 +377,7 @@ export default function Table({
             handleCloseEditModal();
           }}
           width="40%"
+          height="85%"
         >
           <ModalContentForm
             priorities={priorities}
@@ -384,6 +385,7 @@ export default function Table({
             taskableItems={taskableItems}
             dependencyTasks={dependencyTasks}
             tagsData={tagsData}
+            staffs={staffs}
             partners={partners}
             task={
               invoice && !task

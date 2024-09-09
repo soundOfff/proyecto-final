@@ -9,6 +9,7 @@ use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Staff;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -17,7 +18,11 @@ class StaffController extends Controller
 {
     public function select()
     {
-        $staffs = Staff::where('active', true)->orderBy('first_name')->get();
+        $staffs = DB::table('staff')
+            ->selectRaw('id, CONCAT(first_name, " ", last_name) as name')
+            ->where('active', true)
+            ->orderBy('name')
+            ->get();
 
         return new StaffSelectResourceCollection($staffs);
     }

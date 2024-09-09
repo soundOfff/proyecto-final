@@ -51,7 +51,7 @@ const validations = Yup.object().shape({
   [name.name]: Yup.string().required(name.errorMsg),
   [startDate.name]: Yup.date().required(startDate.errorMsg),
   [partner_id.name]: Yup.string().required(partner_id.errorMsg),
-  [owner_id.name]: Yup.number().required(),
+  [owner_id.name]: Yup.number().required(owner_id.errorMsg),
   [taskableId.name]: Yup.string().required(taskableId.errorMsg),
   [task_priority_id.name]: Yup.string().required(task_priority_id.errorMsg),
   [repeat.name]: Yup.string().required(repeat.errorMsg),
@@ -68,7 +68,6 @@ const validations = Yup.object().shape({
   ),
   [task_status_id.name]: Yup.string(),
   [taskableType.name]: Yup.string(),
-  [tags.name]: Yup.array(),
   [repeat.name]: Yup.number(),
   [recurring.name]: Yup.number().when(repeat.name, {
     is: CUSTOM,
@@ -86,7 +85,7 @@ const validations = Yup.object().shape({
   }),
   [isInfinite.name]: Yup.boolean().when(repeat.name, {
     is: true,
-    then: Yup.boolean().required("Este campo es requerido"),
+    then: (schema) => schema.required("Este campo es requerido"),
   }),
   [totalCycles.name]: Yup.number().when([repeat.name, isInfinite.name], {
     is: (repeat_id, is_infinite) => repeat_id && !is_infinite,

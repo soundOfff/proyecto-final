@@ -45,6 +45,7 @@ export default function FormComponent({
     status,
     expedient,
     startDate,
+    hasDeadline,
     deadline,
     serviceType,
     responsiblePersonId,
@@ -66,11 +67,10 @@ export default function FormComponent({
     };
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(!!values[deadline.name]);
-
   const handleCheckboxChange = (event) => {
-    setShowDatePicker(event.target.checked);
-    if (!event.target.checked) {
+    const isChecked = event.target.checked;
+    setFieldValue(hasDeadline.name, isChecked);
+    if (!isChecked) {
       setFieldValue(deadline.name, "");
     }
   };
@@ -92,6 +92,31 @@ export default function FormComponent({
 
     return error;
   };
+
+  const types = [
+    "Ejecutivo Hipotecario de Bien Inmueble",
+    "Ejecutivo Hipotecario de Bien Mueble",
+    "Ejecutivo Hipotecaria Mixto",
+    "Ejecutivo Simple con Secuestro",
+    "Ejecutivo Simple",
+    "Sucesión Testada",
+    "Sucesión Intestada",
+    "Sumario",
+    "Ordinario",
+    "Declarativo",
+    "Todos los anteriores puedes ser de mayor o menor cuantía",
+    "Procesos Ejecución de Laudo",
+    "Procesos de Ejecución en el Extranjero",
+    "Proceso Oral",
+    "Lanzamiento Por Intruso",
+    "Lanzamiento Por Vencimiento de Contrato",
+    "Lanzamiento por Mora con Retención de Bienes",
+    "Proceso No Contencioso",
+    "Denuncias",
+    "Querellas",
+    "ACODECO",
+    "Procesos Laborales",
+  ];
 
   useEffect(() => {
     if (project) {
@@ -125,7 +150,7 @@ export default function FormComponent({
           };
         })
       );
-      setShowDatePicker(!!project.deadline);
+      setFieldValue(hasDeadline.name, !!project.deadline);
       setFieldValue(
         notes.name,
         project.notes.map((note) => ({
@@ -147,6 +172,7 @@ export default function FormComponent({
     responsiblePersonId,
     selectedMembers,
     startDate,
+    hasDeadline,
     deadline,
     partners,
     proposal,
@@ -252,7 +278,7 @@ export default function FormComponent({
           <FormControlLabel
             control={
               <Checkbox
-                checked={showDatePicker}
+                checked={values[hasDeadline.name]}
                 onChange={handleCheckboxChange}
                 color="primary"
               />
@@ -260,7 +286,7 @@ export default function FormComponent({
             label="¿El caso tiene fecha de entrega?"
           />
         </Grid>
-        {showDatePicker && (
+        {values[hasDeadline.name] && (
           <Grid item xs={12} sm={6}>
             <MDDatePicker
               value={values[deadline.name]}
@@ -308,14 +334,24 @@ export default function FormComponent({
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormField
+          <Autocomplete
+            disablePortal
+            options={types}
+            onChange={(event, newValue) => {
+              setFieldValue(type.name, newValue);
+            }}
             value={values[type.name]}
-            name={type.name}
-            label={type.label}
-            type={type.type}
-            placeholder={type.placeholder}
-            error={errors[type.name] && touched[type.name]}
-            success={values[type.name]?.length > 0 && !errors[type.name]}
+            renderInput={(params) => (
+              <MDInput
+                {...params}
+                variant="standard"
+                label={"Tipo de Caso"}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                error={Boolean(errors.type && touched.type)}
+                helperText={touched.type && errors.type}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

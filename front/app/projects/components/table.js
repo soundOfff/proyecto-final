@@ -5,10 +5,9 @@ import DataTable from "/examples/Tables/DataTableServerPagination";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
+import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import EditIcon from "@mui/icons-material/Edit";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import { Tooltip } from "@mui/material";
@@ -100,7 +99,12 @@ export default function Table({ rows, meta }) {
       Header: "Última Nota",
       accessor: "notes",
       Cell: ({ value }) => {
-        return value.length > 0 ? value.at(-1).content : null;
+        return value.length > 0 ? (
+          <MDTypography
+            dangerouslySetInnerHTML={{ __html: value.at(-1).content }}
+            fontSize="small"
+          ></MDTypography>
+        ) : null;
       },
     },
     {

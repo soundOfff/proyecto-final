@@ -75,8 +75,6 @@ function CustomStepper({ processes, tasks }) {
   const completedTasks = taskCounting[DONE_STATUS_ID];
 
   const ProgressBar = ({ totalTasks, completedTasks, inProgressTasks }) => {
-    const completedPercentage = (completedTasks / totalTasks) * 100;
-    const inProgressPercentage = (inProgressTasks / totalTasks) * 100;
     const totalPercentage = Math.min(
       ((completedTasks + inProgressTasks) / totalTasks) * 100,
       100
@@ -146,7 +144,7 @@ function CustomStepper({ processes, tasks }) {
                 badgeContent={
                   key !== processes.length - 1
                     ? `${totalPendingProcessTasks}`
-                    : pendingTasks.total
+                    : pendingTasks?.total ?? "0"
                 }
                 color="primary"
                 size="md"
@@ -158,7 +156,7 @@ function CustomStepper({ processes, tasks }) {
                 badgeContent={
                   key !== processes.length - 1
                     ? `${totalInProgressProcessTasks}`
-                    : inProgressTasks.total
+                    : inProgressTasks?.total ?? "0"
                 }
                 color="warning"
                 size="md"
@@ -170,7 +168,7 @@ function CustomStepper({ processes, tasks }) {
                 badgeContent={
                   key !== processes.length - 1
                     ? `${totalCompletedProcessTasks}`
-                    : completedTasks.total
+                    : completedTasks?.total ?? "0"
                 }
                 color="success"
                 size="md"

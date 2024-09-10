@@ -197,7 +197,11 @@ export default function FormComponent({
     if (values[process.name]) {
       getProcess(values[process.name], { include: ["toNotify"] }).then(
         (res) => {
-          setFieldValue(selectedMembers.name, res.toNotify);
+          const prevValues = values[selectedMembers.name].filter(
+            (val) =>
+              res.toNotify.find((member) => member.id === val.id) === undefined
+          );
+          setFieldValue(selectedMembers.name, [...prevValues, ...res.toNotify]);
         }
       );
     }

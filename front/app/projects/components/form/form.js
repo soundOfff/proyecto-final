@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
 import { getAll as getAllProcesses } from "/actions/processes";
+import { show as getProcess } from "/actions/processes";
 
 export default function FormComponent({
   formData,
@@ -192,6 +193,16 @@ export default function FormComponent({
     }
   }, [values.project_service_type_id]);
 
+  useEffect(() => {
+    if (values[process.name]) {
+      getProcess(values[process.name], { include: ["toNotify"] }).then(
+        (res) => {
+          setFieldValue(selectedMembers.name, res.toNotify);
+        }
+      );
+    }
+  }, [values[process.name]]);
+
   return (
     <MDBox p={5}>
       <Grid container spacing={5}>
@@ -364,7 +375,6 @@ export default function FormComponent({
             setFieldValue={setFieldValue}
           />
         </Grid>
-
         <Grid item xs={12} sm={6}>
           <Autocomplete
             multiple

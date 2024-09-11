@@ -1,4 +1,4 @@
-import Form from "./form";
+import Form from "../components/form/form";
 import { Card } from "@mui/material";
 import MDBox from "/components/MDBox";
 

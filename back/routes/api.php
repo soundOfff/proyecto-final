@@ -183,7 +183,9 @@ Route::get('/invoices-select', [InvoiceController::class, 'select']);
 Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
 
 Route::get('/contacts', [ContactController::class, 'index']);
+Route::get('/contacts/{contact}', [ContactController::class, 'show']);
 Route::post('/contacts', [ContactController::class, 'store']);
+Route::put('/contacts/{contact}', [ContactController::class, 'update']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);

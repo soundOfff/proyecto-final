@@ -6,6 +6,9 @@ import MDAvatar from "/components/MDAvatar";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import { usePathname, useRouter } from "next/navigation";
+import { Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import Link from "next/link";
 
 export default function Table({ rows }) {
   const router = useRouter();
@@ -49,6 +52,22 @@ export default function Table({ rows }) {
     {
       Header: "Dirección",
       accessor: "direction",
+    },
+    {
+      Header: "Acciones",
+      accessor: "",
+      Cell: ({ row }) => (
+        <MDBox display="flex">
+          <Link
+            href={`/partners/${row.original.partnerId}/contacts/${row.original.id}`}
+            sx={{ cursor: "pointer", color: "info" }}
+          >
+            <Tooltip title="Editar" placement="top">
+              <EditIcon fontSize="medium" color="warning" />
+            </Tooltip>
+          </Link>
+        </MDBox>
+      ),
     },
   ];
 

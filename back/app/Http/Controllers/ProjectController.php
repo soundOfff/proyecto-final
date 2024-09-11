@@ -26,7 +26,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected FcmService $fcmService) {}
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
 
     public function select(Partner $partner)
     {
@@ -53,7 +55,7 @@ class ProjectController extends Controller
                         $query
                             ->whereHas(
                                 'members',
-                                fn(Builder $query) => $query->where('staff_id', $value)
+                                fn (Builder $query) => $query->where('staff_id', $value)
                             );
                     }
                 ),
@@ -73,6 +75,7 @@ class ProjectController extends Controller
                 'partners',
                 'proposal',
                 'process',
+                'court',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -88,7 +91,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $projectMemberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $notes = $request['notes'] ?: [];
 
         $partnersToAttach = [];
@@ -169,6 +172,7 @@ class ProjectController extends Controller
                 'proposal',
                 'process',
                 'notes',
+                'court',
             ])
             ->find($project->id);
 
@@ -182,7 +186,7 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $memberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($memberIds);
 
         $notes = $request['notes'] ?: [];
@@ -268,7 +272,7 @@ class ProjectController extends Controller
     {
         $request->validated();
 
-        $ids = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($ids);
 
         return response()->json($project, 201);

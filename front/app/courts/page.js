@@ -1,5 +1,39 @@
 import MDBox from "/components/MDBox";
+import { Card, Grid } from "@mui/material";
+import Table from "./components/table";
+import Link from "next/link";
+import MDButton from "/components/MDButton";
+import { getAll } from "/actions/files";
 
-export default function Page() {
-  return <MDBox>On Dev</MDBox>;
+export default async function Page({
+  searchParams: { perPage = 10, page = 1, sort },
+}) {
+  const {
+    data: { files },
+    meta,
+  } = await getAll({
+    perPage,
+    page,
+    sort: sort ? sort : "-created_at",
+    include: ["fileable"],
+  });
+
+  return (
+    <MDBox mb={3}>
+      <Card>
+        <Grid container spacing={1} p={5}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "end" }}>
+            <Link href="/courts/create">
+              <MDButton variant="gradient" color="dark">
+                Nuevo Juzgado
+              </MDButton>
+            </Link>
+          </Grid>
+          <Grid item xs={12}>
+            <Table rows={files} meta={meta} />
+          </Grid>
+        </Grid>
+      </Card>
+    </MDBox>
+  );
 }

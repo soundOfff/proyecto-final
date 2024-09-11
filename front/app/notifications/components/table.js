@@ -148,8 +148,8 @@ export default function Table({ rows }) {
   const getTaskableUrl = (row) => {
     if (row.notifiable) {
       return getResourceUrl(
-        row.notifiable.taskable.name ? PROJECT_TYPE : INVOICE_TYPE,
-        row.notifiable.taskable.id
+        row.notifiable.taskable?.name ? PROJECT_TYPE : INVOICE_TYPE,
+        row.notifiable.taskable?.id
       );
     }
     return "#";

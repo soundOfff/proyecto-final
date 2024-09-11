@@ -18,13 +18,6 @@ import { destroy } from "/actions/files";
 import { Box } from "@mui/material";
 
 export default function Table({ rows, meta }) {
-  const getFileableLabel = (row) =>
-    row.fileable
-      ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType].key]
-      : "Sin nombre";
-  const getFileableUrl = (row) =>
-    `${MAPPED_FILEABLE_TYPES[row.fileableType].url}${row.fileableId}`;
-
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -35,6 +28,31 @@ export default function Table({ rows, meta }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
+
+  const renderRelatedLink = (row) => {
+    return row.fileableType === "task" ? (
+      <Link href={{ pathname: "tasks", query: { taskId: row.fileableId } }}>
+        <MDTypography variant="button" color="link" fontSize="small">
+          {row.fileable
+            ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType].key]
+            : "Sin nombre"}
+        </MDTypography>
+      </Link>
+    ) : (
+      <Link
+        href={`${MAPPED_FILEABLE_TYPES[row.fileableType].url}/${
+          row.fileableId
+        }`}
+        sx={{ cursor: "pointer", color: "link" }}
+      >
+        <MDTypography variant="button" color="link" fontSize="small">
+          {row.fileable
+            ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType].key]
+            : "Sin nombre"}
+        </MDTypography>
+      </Link>
+    );
+  };
 
   const columns = [
     {
@@ -63,16 +81,7 @@ export default function Table({ rows, meta }) {
       Header: "Nombre relacionado",
       disableSortBy: true,
       width: "30%",
-      Cell: ({ row }) => (
-        <Link
-          href={getFileableUrl(row.original)}
-          sx={{ cursor: "pointer", color: "link" }}
-        >
-          <MDTypography variant="button" color="link" fontSize="small">
-            {getFileableLabel(row.original)}
-          </MDTypography>
-        </Link>
-      ),
+      Cell: ({ row }) => renderRelatedLink(row.original),
     },
     {
       id: "url",

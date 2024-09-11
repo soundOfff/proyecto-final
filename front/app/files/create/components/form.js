@@ -11,6 +11,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
 import { revalidateFiles } from "/actions/files";
+import { CircularProgress } from "@mui/material";
 
 export default function FormComponent({ apiUrl }) {
   const { formId } = form;
@@ -105,7 +106,11 @@ export default function FormComponent({ apiUrl }) {
                 Volver
               </MDButton>
               <MDButton type="submit" variant="gradient" color="dark">
-                Guardar
+                {isSubmitting ? (
+                  <CircularProgress size={24} color="white" />
+                ) : (
+                  "Guardar"
+                )}
               </MDButton>
             </MDBox>
           </Form>

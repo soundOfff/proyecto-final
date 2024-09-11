@@ -56,20 +56,20 @@ class FileController extends Controller
     {
         $expenseFiles = isset($request['files']) ? $request['files'] : [];
         $expenseFilesInfo = isset($request['files_info']) ? $request['files_info'] : [];
-        $fileable_type = $request['fileable_type'];
-        $fileable_id = $request['fileable_id'];
+        $fileableType = $request['fileable_type'];
+        $fileableId = $request['fileable_id'];
 
         foreach (array_keys($expenseFiles) as $index) {
             $file = $expenseFiles[$index];
             $fileInfo = $expenseFilesInfo[$index];
             $extension = $file->extension();
-            $path = "/$fileable_type/$fileInfo".($extension ? ".$extension" : '');
+            $path = "/{$fileableType}s/$fileableId/$fileInfo".($extension ? ".$extension" : '');
 
             Storage::disk('google')->put($path, file_get_contents($file));
             $data['url'] = Storage::disk('google')->path($path);
             $data['subject'] = $fileInfo;
-            $data['fileable_type'] = $fileable_type;
-            $data['fileable_id'] = $fileable_id;
+            $data['fileable_type'] = $fileableType;
+            $data['fileable_id'] = $fileableId;
 
             File::create($data);
         }

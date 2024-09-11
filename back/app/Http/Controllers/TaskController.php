@@ -28,7 +28,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    public function __construct(protected FcmService $fcmService) {}
+    public function __construct(protected FcmService $fcmService)
+    {
+    }
 
     public function select()
     {
@@ -81,15 +83,15 @@ class TaskController extends Controller
                             $query
                                 ->whereHas(
                                     'assigneds',
-                                    fn(Builder $query) => $query->where('staff_id', $value)
+                                    fn (Builder $query) => $query->where('staff_id', $value)
                                 );
                         }
                     ),
                     AllowedFilter::callback(
                         'period',
-                        fn(Builder $query, $value) => $query->whereHas(
+                        fn (Builder $query, $value) => $query->whereHas(
                             'timers',
-                            fn(Builder $query) => $query->whereBetween('start_time', $value)
+                            fn (Builder $query) => $query->whereBetween('start_time', $value)
                         )
                     ),
                 ]
@@ -303,6 +305,7 @@ class TaskController extends Controller
                 'requiredFields',
                 'author',
                 'procedure',
+                'partner',
             ])
             ->find($task->id);
 
@@ -376,22 +379,22 @@ class TaskController extends Controller
             }
         );
 
-        $totalTime = $tasks->sum(fn($task) => $task->getTotalTime());
+        $totalTime = $tasks->sum(fn ($task) => $task->getTotalTime());
 
         $totalDayTime = $tasks
-            ->sum(fn($task) => $task->getTotalTime($dayStart, $dayEnd));
+            ->sum(fn ($task) => $task->getTotalTime($dayStart, $dayEnd));
 
         $totalWeekTime = $tasks
-            ->sum(fn($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
+            ->sum(fn ($task) => $task->getTotalTime($weeklyStart, $weeklyEnd));
 
         $totalLastWeekTime = $tasks
-            ->sum(fn($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
+            ->sum(fn ($task) => $task->getTotalTime($lastWeeklyStart, $lastWeeklyEnd));
 
         $totalMonthTime = $tasks
-            ->sum(fn($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
+            ->sum(fn ($task) => $task->getTotalTime($monthlyStart, $monthlyEnd));
 
         $totalLastMonthTime = $tasks
-            ->sum(fn($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
+            ->sum(fn ($task) => $task->getTotalTime($lastMonthlyStart, $lastMonthlyEnd));
 
         $monthlyPercentage = $totalLastMonthTime
             ? (($totalMonthTime - $totalLastMonthTime) / $totalLastMonthTime) * 100

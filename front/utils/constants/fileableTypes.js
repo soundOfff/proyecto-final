@@ -9,7 +9,7 @@ export const MAPPED_FILEABLE_TYPES = {
   project: { label: "Caso", url: "/projects/", key: "name" },
   customer: { label: "Cliente", url: "/partners/", key: "merged_name" },
   expense: { label: "Gasto", url: "/expenses/", key: "name" },
-  task: { label: "Tarea", url: "/tasks/", key: "name" },
+  task: { label: "Tarea", url: "/tasks", key: "name" },
 };
 
 export const PROJECT_FILEABLE_TYPE = "project";

@@ -28,5 +28,5 @@ export async function store(data) {
     body: JSON.stringify(data),
   });
 
-  revalidatePath("/partners");
+  revalidatePath("/partners", "layout");
 }

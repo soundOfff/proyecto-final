@@ -127,18 +127,11 @@ class TaskController extends Controller
             ]);
         }
 
-        $assignedIds = array_column($assigneds, 'id');
-        if ($task->taskable_type == TASK::TASKABLE_PROJECT) {
-            $project = Project::find($task->taskable_id);
-            $memberIds = $project->members->pluck('id')->toArray();
-            $task->assigneds()->sync(array_merge($assignedIds, $memberIds));
-        } else {
-            $task->assigneds()->sync($assignedIds);
-        }
-
         $dependencyIds = array_column($dependencies, 'id');
         $task->dependencies()->sync($dependencyIds);
 
+        $assignedIds = array_column($assigneds, 'id');
+        $task->assigneds()->sync($assignedIds);
 
         $task->requiredFields()->createMany($newTask['requiredFields']);
 

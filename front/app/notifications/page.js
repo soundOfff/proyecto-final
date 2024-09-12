@@ -3,7 +3,10 @@ import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import MDBox from "/components/MDBox";
 import Table from "./components/table";
-import { getAll as getAllNotifications } from "/actions/notifications";
+import {
+  getAll as getAllNotifications,
+  getAllPriorities,
+} from "/actions/notifications";
 import { getServerSession } from "next-auth";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
 
@@ -38,13 +41,14 @@ export default async function Notifications({
     perPage,
     sort,
   });
+  const priorities = await getAllPriorities();
 
   return (
     <MDBox mb={3}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
-            <Table rows={notifications} meta={meta} />
+            <Table rows={notifications} priorities={priorities} meta={meta} />
           </Grid>
         </Grid>
       </Card>

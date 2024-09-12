@@ -20,7 +20,8 @@ import { getSelect as getProjectSelect } from "/actions/projects";
 import { getSelect as getInvoiceSelect } from "/actions/invoices";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
-import { getAll } from "/actions/tasks";
+import { getAll as getAllDependencies } from "/actions/tasks";
+import { show as getProject } from "../../../actions/projects";
 
 export default function TaskForm({
   priorities,
@@ -137,14 +138,23 @@ export default function TaskForm({
 
   useEffect(() => {
     if (values[taskableType.name] === PROJECT_TYPE && values[taskableId.name]) {
-      getAll({
+      getAllDependencies({
         "filter[taskable_id]": values[taskableId.name],
         "filter[taskable_type]": values[taskableType.name],
       }).then(({ data }) => {
         setDependencyTasks(data.tasks);
       });
+      getProject(values[taskableId.name], { include: "members" }).then(
+        (data) => {
+          const prevValues = values[assigneds.name].filter(
+            (assigned) =>
+              data.members.find((a) => a.id == assigned.id) === undefined
+          );
+          setFieldValue(assigneds.name, [...prevValues, ...data.members]);
+        }
+      );
     }
-  }, [values, taskableType, taskableId]);
+  }, [values[taskableType.name], values[taskableId.name]]);
 
   return (
     <>

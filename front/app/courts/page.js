@@ -3,19 +3,18 @@ import { Card, Grid } from "@mui/material";
 import Table from "./components/table";
 import Link from "next/link";
 import MDButton from "/components/MDButton";
-import { getAll } from "/actions/files";
+import { getAll } from "/actions/courts";
 
 export default async function Page({
   searchParams: { perPage = 10, page = 1, sort },
 }) {
   const {
-    data: { files },
+    data: { courts },
     meta,
   } = await getAll({
     perPage,
     page,
     sort: sort ? sort : "-created_at",
-    include: ["fileable"],
   });
 
   return (
@@ -30,7 +29,7 @@ export default async function Page({
             </Link>
           </Grid>
           <Grid item xs={12}>
-            <Table rows={files} meta={meta} />
+            <Table rows={courts} meta={meta} />
           </Grid>
         </Grid>
       </Card>

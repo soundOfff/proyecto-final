@@ -1,11 +1,11 @@
 import checkout from "./form";
 
 const {
-  formField: { court, number, description },
+  formField: { name, number, description },
 } = checkout;
 
 const initialValues = {
-  [court.name]: "",
+  [name.name]: "",
   [number.name]: "",
   [description.name]: "",
 };

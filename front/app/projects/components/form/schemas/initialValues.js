@@ -49,6 +49,7 @@ const initialValues = {
   [description.name]: "",
   [billablePartner.name]: "",
   [status.name]: NOT_STARTED,
+  [court.name]: "",
   [serviceType.name]: "",
   [billingType.name]: "",
   [selectedMembers.name]: [],

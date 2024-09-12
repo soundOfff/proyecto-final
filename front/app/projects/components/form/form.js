@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
 import { getAll as getAllProcesses } from "/actions/processes";
+import { getAll as getAllCourts } from "/actions/courts";
 import { show as getProcess } from "/actions/processes";
 
 export default function FormComponent({
@@ -55,9 +56,11 @@ export default function FormComponent({
     description,
     partners,
     notes,
+    court,
   } = formField;
 
   const [processes, setProcesses] = useState([]);
+  const [courts, setCourts] = useState([]);
 
   const partnerList = values[partners.name].map((partner) => {
     return {
@@ -159,6 +162,7 @@ export default function FormComponent({
           staff_id: note.staffId,
         })) ?? []
       );
+      setFieldValue(court.name, project.court || "");
     }
   }, [
     project,
@@ -179,6 +183,7 @@ export default function FormComponent({
     proposal,
     notes,
     setFieldValue,
+    court,
   ]);
 
   useEffect(() => {
@@ -254,13 +259,23 @@ export default function FormComponent({
             }
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <Select
             value={values[status.name]}
             options={statuses}
             optionLabel={(option) => option.label}
             fieldName={status.name}
             inputLabel={status.label}
+            setFieldValue={setFieldValue}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Select
+            value={values[court.name]}
+            options={courts}
+            optionLabel={(option) => option.label}
+            fieldName={court.name}
+            inputLabel={court.label}
             setFieldValue={setFieldValue}
           />
         </Grid>

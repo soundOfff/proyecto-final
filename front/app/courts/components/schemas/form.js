@@ -16,8 +16,8 @@ Coded by www.creative-tim.com
 const form = {
   formId: "new-court",
   formField: {
-    court: {
-      name: "court",
+    name: {
+      name: "name",
       label: "Nombre",
       errorMsg: "Debe ingresar un nombre de juzgado",
     },

@@ -10,10 +10,11 @@ import FormContent from "./formContent";
 import { useSearchParams, useRouter } from "next/navigation";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
-import { revalidateFiles } from "/actions/files";
+import { revalidateCourts } from "/actions/courts";
 import { CircularProgress } from "@mui/material";
+import { store, update } from "/actions/courts";
 
-export default function FormComponent({ apiUrl }) {
+export default function FormComponent({ court }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
@@ -23,31 +24,19 @@ export default function FormComponent({ apiUrl }) {
   const returnToSource = () => {
     const source = searchParams.get("source");
     if (!source) {
-      router.push("/files");
+      router.push("/courts");
       return;
     }
     router.push(source);
   };
 
   const submitForm = async (values, actions) => {
-    const formData = new FormData();
-
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
-
     try {
-      await fetch(`${apiUrl}/files`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-        next: { tags: ["create-file"] },
-      });
-
-      revalidateFiles();
-      returnToSource();
+      if (court) {
+        await update(court.id, values);
+      } else {
+        await store(values);
+      }
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -94,6 +83,7 @@ export default function FormComponent({ apiUrl }) {
                 setFieldValue,
                 setFieldTouched,
                 setFieldError,
+                court,
               }}
             />
             <MDBox mt={5} display="flex" justifyContent="space-between">

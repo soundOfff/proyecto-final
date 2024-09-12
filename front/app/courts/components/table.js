@@ -7,7 +7,7 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
-import { destroy } from "/actions/files";
+import { destroy } from "/actions/courts";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function Table({ rows, meta }) {
@@ -32,6 +32,7 @@ export default function Table({ rows, meta }) {
     {
       id: "description",
       Header: "Descripción",
+      accessor: "description",
       disableSortBy: true,
     },
     {

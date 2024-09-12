@@ -14,7 +14,7 @@ import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
 
-import { Tooltip, Tabs, Tab, Grid } from "@mui/material";
+import { Tooltip, Tabs, Tab, Grid, Select } from "@mui/material";
 
 import Icon from "@mui/material/Icon";
 import Menu from "@mui/material/Menu";
@@ -31,7 +31,12 @@ import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 
-import { updateMany, archiveMany, destroy } from "/actions/notifications";
+import {
+  updateMany,
+  archiveMany,
+  destroy,
+  update,
+} from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getPriorityColor } from "/utils/project-state-colors";
@@ -50,7 +55,7 @@ const TAB_TYPES = [
   },
 ];
 
-export default function Table({ rows }) {
+export default function Table({ rows, priorities }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [successSB, setSuccessSB] = useState(false);
@@ -220,6 +225,20 @@ export default function Table({ rows }) {
     setIsUpdating(false);
   };
 
+  const handleUpdatePriority = async (id, value) => {
+    try {
+      await update(id, {
+        notification_priority_id: value,
+      });
+      setSuccessSB(true);
+      setInfoSB("Prioridad actualizada correctamente");
+    } catch (error) {
+      console.error(error);
+      setErrorSB(true);
+      setInfoSB("Error al actualizar la prioridad");
+    }
+  };
+
   const renderSnackbar = () => {
     if (isUpdating) return;
     if (errorSB) {
@@ -308,12 +327,6 @@ export default function Table({ rows }) {
               {row.original.title}
             </MDTypography>
           )}
-          <MDBadge
-            variant="contained"
-            color={getPriorityColor(row.original?.priority?.label)}
-            size="md"
-            badgeContent={row.original?.priority?.label}
-          />
         </MDBox>
       ),
     },
@@ -350,6 +363,35 @@ export default function Table({ rows }) {
               : ""}
           </MDTypography>
         </Link>
+      ),
+    },
+    {
+      Header: "Prioridad",
+      accessor: "priority",
+      Cell: ({ row }) => (
+        <Select
+          value={row.original.priority.id}
+          onChange={(e) =>
+            handleUpdatePriority(row.original.id, e.target.value)
+          }
+          sx={{
+            minWidth: "100px",
+            padding: "0.75rem 0",
+            textAlign: "center",
+          }}
+        >
+          {priorities.map((priority) => (
+            <MenuItem key={priority.id} value={priority.id}>
+              <MDTypography
+                variant="body3"
+                verticalAlign="center"
+                color={getPriorityColor(priority.label)}
+              >
+                {priority.label}
+              </MDTypography>
+            </MenuItem>
+          ))}
+        </Select>
       ),
     },
     {

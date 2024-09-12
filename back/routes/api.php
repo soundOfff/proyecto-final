@@ -273,6 +273,7 @@ Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'a
 Route::get('/notifications', [NotificationController::class, 'index']);
 Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
 Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
+Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
 Route::put('/notifications-update-many', [NotificationController::class, 'updateMany']);
 Route::put('/notifications-archive-many', [NotificationController::class, 'archiveMany']);
 

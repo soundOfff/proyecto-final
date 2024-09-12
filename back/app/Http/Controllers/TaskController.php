@@ -6,6 +6,7 @@ use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskResourceCollection;
 use App\Http\Resources\TaskSelectResourceCollection;
+use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Taggable;
 use App\Models\Task;
@@ -105,7 +106,6 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
         $newTask = $request->validated();
-        // $tags = isset($newTask['tags']) ? $newTask['tags'] : [];
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
         $dependencies = $newTask['dependencies'];
         $newTask['task_status_id'] = TaskStatus::getInProgress()->id;
@@ -127,19 +127,20 @@ class TaskController extends Controller
             ]);
         }
 
+        $assignedIds = array_column($assigneds, 'id');
+        if ($task->taskable_type == TASK::TASKABLE_PROJECT) {
+            $project = Project::find($task->taskable_id);
+            $memberIds = $project->members->pluck('id')->toArray();
+            $task->assigneds()->sync(array_merge($assignedIds, $memberIds));
+        } else {
+            $task->assigneds()->sync($assignedIds);
+        }
+
         $dependencyIds = array_column($dependencies, 'id');
         $task->dependencies()->sync($dependencyIds);
-        $assignedIds = array_column($assigneds, 'id');
-        $task->assigneds()->sync($assignedIds);
+
 
         $task->requiredFields()->createMany($newTask['requiredFields']);
-
-        // foreach ($tags as $tag) {
-        //     $tag['taggable_id'] = $task->id;
-        //     $tag['taggable_type'] = 'task';
-        //     $tag['tag_id'] = $tag['id'];
-        //     Taggable::create($tag);
-        // }
 
         return response()->json(null, 201);
     }

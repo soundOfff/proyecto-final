@@ -16,6 +16,7 @@ class CourtResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'number' => $this->number,
             'description' => $this->description,
             'projects' => ProjectResource::collection($this->whenLoaded('projects')),

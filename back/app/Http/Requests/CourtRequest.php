@@ -22,6 +22,7 @@ class CourtRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|string',
             'number' => 'required|string',
             'description' => 'nullable|string',
         ];

@@ -8,6 +8,7 @@ class Court extends Model
 {
     protected $fillable = [
         'id',
+        'name',
         'number',
         'description',
     ];

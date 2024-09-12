@@ -39,6 +39,7 @@ function DataTableBodyCell({
         typography: { size },
         borders: { borderWidth },
       }) => ({
+        py: 0.5,
         fontSize: size.xs,
         borderBottom: noBorder
           ? "none"

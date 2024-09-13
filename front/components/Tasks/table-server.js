@@ -244,7 +244,7 @@ export default function Table({
               color="dark"
               size="md"
               badgeContent={tag.name}
-              sx={{ my: 1 }}
+              sx={{ my: 0.25 }}
             />
           </Grid>
         )),

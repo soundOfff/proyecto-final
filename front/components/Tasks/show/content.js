@@ -1,6 +1,13 @@
 "use client";
 
-import { Autocomplete, Card, Divider, Grid, Tooltip } from "@mui/material";
+import {
+  Autocomplete,
+  Card,
+  CircularProgress,
+  Divider,
+  Grid,
+  Tooltip,
+} from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
@@ -22,7 +29,8 @@ import { DONE_STATUS_ID, DONE_STATUS } from "/utils/constants/taskStatuses";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
-import { update } from "/actions/tasks";
+import { update, destroy } from "/actions/tasks";
+import { useRouter } from "next/navigation";
 
 export default function Content({ selectedFork }) {
   const {
@@ -32,6 +40,7 @@ export default function Content({ selectedFork }) {
     markAsCompleted,
     stopTimer,
     startTimer,
+    closeShowModal,
   } = useDataProvider();
 
   const [description, setDescription] = useState(
@@ -62,7 +71,9 @@ export default function Content({ selectedFork }) {
     removeItem,
     editItem,
   } = useTodo(task.checklistItems);
+
   const { data: session } = useSession();
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const handleStopTimer = async () => {
     await stopTimer(currentTimerId, note);
@@ -121,6 +132,12 @@ export default function Content({ selectedFork }) {
       task.status.name === DONE_STATUS &&
       task.procedure?.process?.forks?.length !== 0
     );
+  };
+
+  const handleDeleteTask = async () => {
+    setIsDeleteLoading(true);
+    await destroy(task.id);
+    closeShowModal();
   };
 
   return (
@@ -225,6 +242,19 @@ export default function Content({ selectedFork }) {
                 Iniciar temporizador
               </MDButton>
             )}
+
+            <MDButton
+              color="error"
+              size="small"
+              sx={{ maxHeight: "50px" }}
+              onClick={handleDeleteTask}
+            >
+              {isDeleteLoading ? (
+                <CircularProgress size={24} color="white" />
+              ) : (
+                "Eliminar Tarea"
+              )}
+            </MDButton>
             <MDBox display="flex" flexDirection="row" width="60%">
               {isStoppingTimer && (
                 <>

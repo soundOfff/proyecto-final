@@ -47,7 +47,9 @@ export default function Timeline({ changes }) {
           key={change.id}
           color="dark"
           icon="panorama_fish_eye"
-          title={`Tarea Actualizada por ${change.causer.name}`}
+          title={`Tarea Actualizada por ${
+            change.causer?.name ?? "Desconocido"
+          }`}
           dateTime={change.updatedAt}
           firstDescriptionTitle="Valores Anteriores: "
           firstDescription={formatProperties(change.properties.old)}

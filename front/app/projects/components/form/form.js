@@ -56,7 +56,7 @@ export default function FormComponent({
     description,
     partners,
     notes,
-    court,
+    courtId,
   } = formField;
 
   const [processes, setProcesses] = useState([]);
@@ -130,6 +130,7 @@ export default function FormComponent({
       /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(billablePartner.name, project.billablePartnerId || "");
       setFieldValue(status.name, project.status.id);
+      setFieldValue(courtId.name, project.court?.id);
       setFieldValue(serviceType.name, project.serviceType?.id || "");
       setFieldValue(billingType.name, project.billingType?.id || "");
       setFieldValue(type.name, project.type || "");
@@ -162,7 +163,6 @@ export default function FormComponent({
           staff_id: note.staffId,
         })) ?? []
       );
-      setFieldValue(court.name, project.court || "");
     }
   }, [
     project,
@@ -183,7 +183,7 @@ export default function FormComponent({
     proposal,
     notes,
     setFieldValue,
-    court,
+    courtId,
   ]);
 
   useEffect(() => {
@@ -211,6 +211,14 @@ export default function FormComponent({
       );
     }
   }, [values[process.name]]);
+
+  useEffect(() => {
+    const fetchCourts = async () => {
+      const response = await getAllCourts();
+      setCourts(response.data.courts);
+    };
+    fetchCourts();
+  }, []);
 
   return (
     <MDBox p={5}>
@@ -271,11 +279,11 @@ export default function FormComponent({
         </Grid>
         <Grid item xs={6}>
           <Select
-            value={values[court.name]}
+            value={values[courtId.name]}
             options={courts}
-            optionLabel={(option) => option.label}
-            fieldName={court.name}
-            inputLabel={court.label}
+            optionLabel={(option) => option.name}
+            fieldName={courtId.name}
+            inputLabel={courtId.label}
             setFieldValue={setFieldValue}
           />
         </Grid>

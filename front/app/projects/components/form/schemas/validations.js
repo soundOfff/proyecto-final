@@ -28,6 +28,7 @@ const {
     type,
     process,
     status,
+    courtId,
     serviceType,
     billingType,
     selectedMembers,
@@ -53,7 +54,7 @@ const validations = Yup.object().shape({
   [type.name]: Yup.string(),
   [process.name]: Yup.number(),
   [status.name]: Yup.string().required(status.errorMsg),
-  [court.name]: Yup.string().required(court.errorMsg),
+  [courtId.name]: Yup.string().nullable(),
   [expedient.name]: Yup.string().matches(
     /^[0-9]+$/,
     "Solo se permiten números"

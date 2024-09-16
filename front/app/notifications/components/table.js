@@ -318,12 +318,12 @@ export default function Table({ rows, priorities }) {
                 pointerEvents: row.original.notifiableId == 0 ? "none" : "null",
               }}
             >
-              <MDTypography variant="body3" fontWeight="medium" color="link">
+              <MDTypography variant="body3" color="link">
                 {row.original.title}
               </MDTypography>
             </Link>
           ) : (
-            <MDTypography variant="body3" fontWeight="medium" color="text">
+            <MDTypography variant="body3" color="text">
               {row.original.title}
             </MDTypography>
           )}
@@ -335,16 +335,14 @@ export default function Table({ rows, priorities }) {
       width: "30%",
       accessor: "body",
       Cell: ({ row }) => (
-        <MDTypography variant="body3" fontWeight="medium">
-          {row.original.body}
-        </MDTypography>
+        <MDTypography variant="body3">{row.original.body}</MDTypography>
       ),
     },
     {
       Header: "Creado por",
       accessor: "creator",
       Cell: ({ row }) => (
-        <MDTypography variant="body3" fontWeight="medium" color="text">
+        <MDTypography variant="body3" color="text">
           {row.original.creator?.name}
         </MDTypography>
       ),
@@ -355,7 +353,7 @@ export default function Table({ rows, priorities }) {
       width: "15%",
       Cell: ({ row }) => (
         <Link href={getTaskableUrl(row.original)} target="_blank">
-          <MDTypography variant="body3" fontWeight="medium" color="link">
+          <MDTypography variant="body3" color="link">
             {row.original.notifiable
               ? row.original.notifiable.taskable
                 ? row.original.notifiable.taskable.name

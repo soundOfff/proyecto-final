@@ -3,16 +3,16 @@
 import MDBox from "/components/MDBox";
 import MDSnackbar from "/components/MDSnackbar";
 
-import { Card, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Formik, Form } from "formik";
 
-import initialValues from "./schemas/initialValues";
-import validations from "./schemas/validations";
-import form from "./schemas/form";
+import initialValues from "/app/projects/components/form/schemas/initialValues";
+import validations from "/app/projects/components/form/schemas/validations";
+import form from "/app/projects/components/form/schemas/form";
 
 import { useState } from "react";
 import { store as storeProject } from "/actions/projects";
-import FormComponent from "./form";
+import FormComponent from "/app/projects/components/form/form";
 
 import { useRouter } from "next/navigation";
 
@@ -100,6 +100,7 @@ export default function ProjectCopyForm({
                     roles,
                     courts,
                   }}
+                  isCopy={true}
                   closeModal={closeModal}
                 />
               </Form>

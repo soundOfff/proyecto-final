@@ -10,7 +10,6 @@ import FormContent from "./formContent";
 import { useSearchParams, useRouter } from "next/navigation";
 import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
-import { revalidateCourts } from "/actions/courts";
 import { CircularProgress } from "@mui/material";
 import { store, update } from "/actions/courts";
 

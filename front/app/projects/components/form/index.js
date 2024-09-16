@@ -35,7 +35,7 @@ export default function Index({
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       if (project) {
         await updateProject(project.id, values);

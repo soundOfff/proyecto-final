@@ -1,19 +1,13 @@
 "use client";
 
-import {
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  Link,
-  Grid,
-} from "@mui/material";
+import { InputLabel, MenuItem, FormControl, Select, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import MDInput from "/components/MDInput";
 import MDButton from "/components/MDButton";
 import { useMaterialUIController } from "/context";
+import Link from "next/link";
 
 export default function Filters({ statuses }) {
   const defaultStatus = { id: 0, label: "Todos" };
@@ -115,7 +109,11 @@ export default function Filters({ statuses }) {
         sm={4}
         sx={{ display: "flex", justifyContent: "center" }}
       >
-        <Link href="/projects/create">
+        <Link
+          href={{
+            pathname: "/projects/create",
+          }}
+        >
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Nuevo Caso
           </MDButton>

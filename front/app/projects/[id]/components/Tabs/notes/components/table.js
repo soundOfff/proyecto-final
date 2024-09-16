@@ -25,9 +25,10 @@ export default function Table({ rows }) {
       accessor: "content",
       width: "60%",
       Cell: ({ value }) => (
-        <MDTypography variant="body3" color="text">
-          {value}
-        </MDTypography>
+        <MDTypography
+          variant="body3"
+          dangerouslySetInnerHTML={{ __html: value }}
+        />
       ),
     },
     {

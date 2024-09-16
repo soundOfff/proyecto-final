@@ -32,7 +32,7 @@ export async function getAll(params) {
   url.search = new URLSearchParams(params);
 
   const { data } = await customFetch(url, { cache: "no-store" });
-  console.log(data);
+
   return data.courts;
 }
 

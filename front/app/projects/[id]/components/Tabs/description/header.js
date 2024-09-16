@@ -19,6 +19,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import { destroy } from "/actions/projects";
 import { generate } from "/actions/documents";
 import DeleteRow from "/components/DeleteRow";
+import Link from "next/link";
 
 export default function Header() {
   const { project } = useDataProvider();
@@ -108,16 +109,23 @@ export default function Header() {
           >
             Generar Documento
           </MDButton>
-          <MDButton
-            variant="gradient"
-            color="dark"
-            size="small"
-            onClick={handleEditButton}
-            sx={{ height: "40px", width: "130px", ml: 2 }}
+          <Link
+            href={{
+              pathname: `/projects/${project.id}/edit`,
+              query: { source: `/projects/${project.id}?tab=description` },
+            }}
           >
-            Editar
-            <EditIcon sx={{ ml: 1 }} />
-          </MDButton>
+            <MDButton
+              variant="gradient"
+              color="dark"
+              size="small"
+              onClick={handleEditButton}
+              sx={{ height: "40px", width: "130px", ml: 2 }}
+            >
+              Editar
+              <EditIcon sx={{ ml: 1 }} />
+            </MDButton>
+          </Link>
           <MDButton
             variant="gradient"
             color="error"

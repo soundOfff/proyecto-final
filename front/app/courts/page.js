@@ -5,17 +5,8 @@ import Link from "next/link";
 import MDButton from "/components/MDButton";
 import { getAll } from "/actions/courts";
 
-export default async function Page({
-  searchParams: { perPage = 10, page = 1, sort },
-}) {
-  const {
-    data: { courts },
-    meta,
-  } = await getAll({
-    perPage,
-    page,
-    sort: sort ? sort : "-created_at",
-  });
+export default async function Page() {
+  const courts = await getAll();
 
   return (
     <MDBox mb={3}>
@@ -29,7 +20,7 @@ export default async function Page({
             </Link>
           </Grid>
           <Grid item xs={12}>
-            <Table rows={courts} meta={meta} />
+            <Table rows={courts} />
           </Grid>
         </Grid>
       </Card>

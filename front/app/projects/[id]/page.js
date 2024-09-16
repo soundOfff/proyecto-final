@@ -30,6 +30,7 @@ const include = [
   "proposal",
   "process",
   "court",
+  "notes.staff",
 ];
 
 export default async function Show({ params }) {

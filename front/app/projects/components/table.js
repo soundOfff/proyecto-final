@@ -8,33 +8,20 @@ import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import { Tooltip } from "@mui/material";
 
 import { useEffect, useState } from "react";
-import { show, destroy } from "/actions/projects";
+import { show } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
 
 import Detail from "./detail";
-import DeleteRow from "/components/DeleteRow";
-import useDeleteRow from "/hooks/useDeleteRow";
 
 export default function Table({ rows, meta }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [project, setProject] = useState(null);
   const [openShow, setOpenShow] = useState(false);
-  const {
-    openDeleteConfirmation,
-    errorSB,
-    setErrorSB,
-    errorMsg,
-    setErrorMsg,
-    handleDelete,
-    setDeleteConfirmed,
-    setOpenDeleteConfirmation,
-  } = useDeleteRow(destroy);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -111,6 +98,7 @@ export default function Table({ rows, meta }) {
       Header: "Acciones",
       accessor: "actions",
       textAlign: "center",
+      width: "10%",
       disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
@@ -122,15 +110,6 @@ export default function Table({ rows, meta }) {
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
-          {/*  <Link href={`/projects/${row.original.id}/edit`}>
-            <Tooltip title="Editar">
-              <EditIcon
-                color="secondary"
-                fontSize="medium"
-                sx={{ mr: 3, cursor: "pointer" }}
-              />
-            </Tooltip>
-          </Link> */}
           <Link href={`/projects/create-notes/${row.original.id}`}>
             <Tooltip title="Agregar Notas">
               <EditNoteIcon
@@ -140,31 +119,6 @@ export default function Table({ rows, meta }) {
               />
             </Tooltip>
           </Link>
-          {/* <Link
-            href={{
-              pathname: `/expenses/create`,
-              query: {
-                projectId: row.original.id,
-                partnerId: row.original.billablePartner?.id,
-              },
-            }}
-          >
-            <Tooltip title="Registrar Gasto">
-              <DescriptionOutlinedIcon
-                color="success"
-                fontSize="medium"
-                sx={{ mr: 3, cursor: "pointer" }}
-              />
-            </Tooltip>
-          </Link> */}
-          <Tooltip title="Eliminar">
-            <DeleteIcon
-              color="error"
-              fontSize="medium"
-              onClick={() => handleDelete(row.original.id)}
-              sx={{ mr: 3, cursor: "pointer" }}
-            />
-          </Tooltip>
         </MDBox>
       ),
     },
@@ -191,17 +145,6 @@ export default function Table({ rows, meta }) {
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
-      />
-      <DeleteRow
-        {...{
-          setOpenDeleteConfirmation,
-          errorSB,
-          setErrorSB,
-          errorMsg,
-          setErrorMsg,
-          openDeleteConfirmation,
-          setDeleteConfirmed,
-        }}
       />
     </MDBox>
   );

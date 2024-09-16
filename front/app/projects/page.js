@@ -20,11 +20,17 @@ import Filters from "./components/filters";
 import Stats from "./components/stats";
 
 const include = [
-  "notes",
-  "status",
-  "files",
+  "staffs",
   "billablePartner",
-  "serviceType.processes",
+  "billingType",
+  "files",
+  "serviceType",
+  "status",
+  "members",
+  "responsiblePerson",
+  "proposal",
+  "notes",
+  "court",
 ];
 
 export const dynamic = "force-dynamic";

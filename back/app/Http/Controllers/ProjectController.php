@@ -65,6 +65,7 @@ class ProjectController extends Controller
                 'jurisdiction',
                 'serviceType.processes',
                 'billablePartner',
+                "billingType",
                 'responsiblePerson',
                 'files',
                 'lawFirm',

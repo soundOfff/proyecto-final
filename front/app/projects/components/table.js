@@ -7,7 +7,7 @@ import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
 
-import ProjectModalContent from "/components/ModalContent/Project/";
+import ProjectCopyForm from "/components/ModalContent/Project/";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
@@ -24,8 +24,9 @@ import Detail from "./detail";
 export default function Table({ rows, meta, formData }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [project, setProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [openShow, setOpenShow] = useState(false);
-  const [openCopy, setOpenCopy] = useState(false);
+  const [openCopyModal, setOpenCopyModal] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -52,6 +53,16 @@ export default function Table({ rows, meta, formData }) {
   const handleShow = (row) => {
     setProjectIdShow(row.original.id);
     setOpenShow(true);
+  };
+
+  const handleOpenCopyModal = (row) => {
+    setOpenCopyModal(true);
+    setSelectedProject(row);
+  };
+
+  const handleCloseCopyModal = () => {
+    setOpenCopyModal(false);
+    setSelectedProject(null);
   };
 
   const columns = [
@@ -127,7 +138,7 @@ export default function Table({ rows, meta, formData }) {
             <ContentCopyIcon
               color="dark"
               fontSize="medium"
-              onClick={() => setOpenCopy(true)}
+              onClick={() => handleOpenCopyModal(row.original)}
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
@@ -150,14 +161,13 @@ export default function Table({ rows, meta, formData }) {
           <Detail project={project} />
         </Modal>
       )}
-      {openCopy && (
-        <Modal
-          open={openCopy}
-          onClose={() => {
-            setOpenCopy(false);
-          }}
-        >
-          <ProjectModalContent formData={formData} />
+      {openCopyModal && selectedProject && (
+        <Modal open={openCopyModal} onClose={handleCloseCopyModal}>
+          <ProjectCopyForm
+            {...formData}
+            project={selectedProject}
+            closeModal={handleCloseCopyModal}
+          />
         </Modal>
       )}
       <DataTable

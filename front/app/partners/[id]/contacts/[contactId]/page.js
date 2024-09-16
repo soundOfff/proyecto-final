@@ -5,7 +5,7 @@ import { show } from "/actions/contacts";
 
 export default async function Edit({ params: { contactId } }) {
   const contact = await show(contactId, { include: ["permissions"] });
-  console.log(contact);
+
   return (
     <MDBox my={3}>
       <Card>

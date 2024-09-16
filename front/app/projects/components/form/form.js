@@ -1,5 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import moment from "moment";
+import form from "./schemas/form";
+
 import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import Select from "/components/Select";
@@ -10,9 +15,6 @@ import MDButton from "/components/MDButton";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Partners from "./components/partners";
 import { ErrorMessage, Field } from "formik";
-import form from "./schemas/form";
-import { useEffect, useState } from "react";
-import moment from "moment";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
 import { getAll as getAllProcesses } from "/actions/processes";
 import { show as getProcess } from "/actions/processes";
@@ -28,8 +30,9 @@ export default function FormComponent({
   statuses,
   members,
   courts,
+  isCopy = false,
+  closeModal = () => {},
 }) {
-  console.log(courts);
   const {
     values,
     errors,
@@ -61,6 +64,25 @@ export default function FormComponent({
   } = formField;
 
   const [processes, setProcesses] = useState([]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const returnToSource = () => {
+    const source = searchParams.get("source");
+    if (!source) {
+      router.push("/projects");
+      return;
+    }
+    router.push(source);
+  };
+
+  const callCancelAction = () => {
+    if (isCopy) {
+      closeModal();
+    } else {
+      returnToSource();
+    }
+  };
 
   const partnerList = values[partners.name].map((partner) => {
     return {
@@ -127,7 +149,6 @@ export default function FormComponent({
       setFieldValue(cost.name, project.cost || "");
       setFieldValue(proposal.name, project.proposalId || "");
       setFieldValue(expedient.name, project.expedient || "");
-      /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(billablePartner.name, project.billablePartnerId || "");
       setFieldValue(status.name, project.status.id);
       setFieldValue(courtId.name, project.court?.id || "");
@@ -145,16 +166,18 @@ export default function FormComponent({
         moment(project.startDate).format("YYYY-MM-DD")
       );
       setFieldValue(deadline.name, project.deadline ?? "");
-      setFieldValue(
-        partners.name,
-        project.partners.map((partner) => {
-          return {
-            ...partner,
-            role_id: partner.role?.id,
-            owner_id: partner.owner?.id,
-          };
-        })
-      );
+      if (!isCopy) {
+        setFieldValue(
+          partners.name,
+          project.partners.map((partner) => {
+            return {
+              ...partner,
+              role_id: partner.role?.id,
+              owner_id: partner.owner?.id,
+            };
+          })
+        );
+      }
       setFieldValue(hasDeadline.name, !!project.deadline);
       setFieldValue(
         notes.name,
@@ -467,7 +490,16 @@ export default function FormComponent({
           </MDBox>
         </Grid>
         <Grid item xs={12}>
-          <MDBox display="flex" justifyContent="end">
+          <MDBox display="flex" justifyContent="space-between">
+            <MDButton
+              type="button"
+              variant="gradient"
+              onClick={callCancelAction}
+              color="light"
+              sx={{ mr: 5 }}
+            >
+              Cancelar
+            </MDButton>
             <MDButton
               type="submit"
               variant="gradient"

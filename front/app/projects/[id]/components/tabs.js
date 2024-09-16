@@ -54,6 +54,7 @@ export default function TabsComponent({ setTabIndex }) {
         <Tab label="Proformas" value="estimates" />
         <Tab label="Facturas" value="invoices" />
         <Tab label="Gastos" value="expenses" />
+        <Tab label="Notas" value="notes" />
       </TabList>
     </AppBar>
   );

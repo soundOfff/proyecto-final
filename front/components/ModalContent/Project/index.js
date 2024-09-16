@@ -3,23 +3,21 @@
 import MDBox from "/components/MDBox";
 import MDSnackbar from "/components/MDSnackbar";
 
-import { Card, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Formik, Form } from "formik";
 
-import initialValues from "./schemas/initialValues";
-import validations from "./schemas/validations";
-import form from "./schemas/form";
+import initialValues from "/app/projects/components/form/schemas/initialValues";
+import validations from "/app/projects/components/form/schemas/validations";
+import form from "/app/projects/components/form/schemas/form";
 
 import { useState } from "react";
-import {
-  store as storeProject,
-  update as updateProject,
-} from "/actions/projects";
-import FormComponent from "./form";
+import { store as storeProject } from "/actions/projects";
+import FormComponent from "/app/projects/components/form/form";
 
 import { useRouter } from "next/navigation";
 
-export default function Index({
+export default function ProjectCopyForm({
+  closeModal,
   project,
   partners: partnerData,
   statuses,
@@ -37,16 +35,13 @@ export default function Index({
 
   const submitForm = async (values) => {
     try {
-      if (project) {
-        await updateProject(project.id, values);
-        router.push(`/projects/${project.id}?tab=description`);
-      } else {
-        const newProject = await storeProject(values);
-        router.push(`/projects/${newProject.id}?tab=description`);
-      }
+      const newProject = await storeProject(values);
+      router.push(`/projects/${newProject.id}?tab=description`);
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
+    } finally {
+      closeModal();
     }
   };
 
@@ -55,7 +50,19 @@ export default function Index({
   };
 
   return (
-    <MDBox mb={10}>
+    <MDBox mb={2}>
+      <MDBox
+        color="white"
+        bgColor="dark"
+        variant="gradient"
+        borderRadius="lg"
+        shadow="lg"
+        overflow="auto"
+        opacity={1}
+        p={2}
+      >
+        Crear nuevo proyecto desde: {project.name}
+      </MDBox>
       <MDSnackbar
         color="error"
         icon="warning"
@@ -72,7 +79,7 @@ export default function Index({
         alignItems="center"
         sx={{ mt: 4 }}
       >
-        <Grid item xs={12} lg={10}>
+        <Grid item xs={12}>
           <Formik
             initialValues={initialValues}
             validationSchema={validations}
@@ -80,22 +87,22 @@ export default function Index({
           >
             {(formData) => (
               <Form id={formId} autoComplete="off">
-                <Card>
-                  <FormComponent
-                    {...{
-                      formData,
-                      project,
-                      partnerData,
-                      statuses,
-                      serviceTypes,
-                      members,
-                      billingTypes,
-                      proposals,
-                      roles,
-                      courts,
-                    }}
-                  />
-                </Card>
+                <FormComponent
+                  {...{
+                    formData,
+                    project,
+                    partnerData,
+                    statuses,
+                    serviceTypes,
+                    members,
+                    billingTypes,
+                    proposals,
+                    roles,
+                    courts,
+                  }}
+                  isCopy={true}
+                  closeModal={closeModal}
+                />
               </Form>
             )}
           </Formik>

@@ -7,8 +7,11 @@ import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
 
+import ProjectModalContent from "/components/ModalContent/Project/";
+
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Tooltip } from "@mui/material";
 
 import { useEffect, useState } from "react";
@@ -18,10 +21,11 @@ import { setColor } from "/utils/project-state-colors";
 
 import Detail from "./detail";
 
-export default function Table({ rows, meta }) {
+export default function Table({ rows, meta, formData }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [project, setProject] = useState(null);
   const [openShow, setOpenShow] = useState(false);
+  const [openCopy, setOpenCopy] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -119,6 +123,14 @@ export default function Table({ rows, meta }) {
               />
             </Tooltip>
           </Link>
+          <Tooltip title="Copiar caso">
+            <ContentCopyIcon
+              color="dark"
+              fontSize="medium"
+              onClick={() => setOpenCopy(true)}
+              sx={{ mr: 3, cursor: "pointer" }}
+            />
+          </Tooltip>
         </MDBox>
       ),
     },
@@ -136,6 +148,16 @@ export default function Table({ rows, meta }) {
           }}
         >
           <Detail project={project} />
+        </Modal>
+      )}
+      {openCopy && (
+        <Modal
+          open={openCopy}
+          onClose={() => {
+            setOpenCopy(false);
+          }}
+        >
+          <ProjectModalContent formData={formData} />
         </Modal>
       )}
       <DataTable

@@ -28,6 +28,7 @@ export default function Index({
   billingTypes,
   proposals,
   roles,
+  courts,
 }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
@@ -91,6 +92,7 @@ export default function Index({
                       billingTypes,
                       proposals,
                       roles,
+                      courts,
                     }}
                   />
                 </Card>

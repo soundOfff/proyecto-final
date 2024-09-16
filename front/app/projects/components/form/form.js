@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
 import { getAll as getAllProcesses } from "/actions/processes";
-import { getAll as getAllCourts } from "/actions/courts";
 import { show as getProcess } from "/actions/processes";
 
 export default function FormComponent({
@@ -28,7 +27,9 @@ export default function FormComponent({
   serviceTypes,
   statuses,
   members,
+  courts,
 }) {
+  console.log(courts);
   const {
     values,
     errors,
@@ -60,7 +61,6 @@ export default function FormComponent({
   } = formField;
 
   const [processes, setProcesses] = useState([]);
-  const [courts, setCourts] = useState([]);
 
   const partnerList = values[partners.name].map((partner) => {
     return {
@@ -130,7 +130,7 @@ export default function FormComponent({
       /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(billablePartner.name, project.billablePartnerId || "");
       setFieldValue(status.name, project.status.id);
-      setFieldValue(courtId.name, project.court?.id);
+      setFieldValue(courtId.name, project.court?.id || "");
       setFieldValue(serviceType.name, project.serviceType?.id || "");
       setFieldValue(billingType.name, project.billingType?.id || "");
       setFieldValue(type.name, project.type || "");
@@ -212,14 +212,6 @@ export default function FormComponent({
     }
   }, [values[process.name]]);
 
-  useEffect(() => {
-    const fetchCourts = async () => {
-      const response = await getAllCourts();
-      setCourts(response.data.courts);
-    };
-    fetchCourts();
-  }, []);
-
   return (
     <MDBox p={5}>
       <Grid container spacing={5}>
@@ -279,7 +271,7 @@ export default function FormComponent({
         </Grid>
         <Grid item xs={6}>
           <Select
-            value={values[courtId.name]}
+            value={values[courtId.name] ?? " "}
             options={courts}
             optionLabel={(option) => option.name}
             fieldName={courtId.name}

@@ -15,7 +15,6 @@ export default function FormContent({
 }) {
   const { formField } = form;
   const { name, number, description } = formField;
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (court) {

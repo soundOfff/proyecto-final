@@ -136,8 +136,8 @@ class ProjectController extends Controller
                 foreach ($staff->devices as $device) {
                     $this->fcmService->sendNotification(
                         $device->device_token,
-                        'Se ha creado un nuevo caso',
-                        "Nombre Del Caso: $project->name",
+                        "Nuevo caso: $project->name",
+                        "Has sido asignado a un nuevo caso",
                         $staff->id,
                         strtolower(class_basename(Project::class)),
                         $project->id,

@@ -5,6 +5,7 @@ use App\Http\Controllers\ActionTypeController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CourtController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CurrencyController;
@@ -284,6 +285,12 @@ Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
 
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
+
+Route::get('/courts', [CourtController::class, 'index']);
+Route::get('/courts/{court}', [CourtController::class, 'show']);
+Route::post('/courts', [CourtController::class, 'store']);
+Route::put('/courts/{court}', [CourtController::class, 'update']);
+Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

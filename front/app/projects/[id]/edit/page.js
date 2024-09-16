@@ -9,6 +9,7 @@ import { getAll as getAllBillingTypes } from "/actions/project-billing-types";
 import { select as selectMembers } from "/actions/staffs";
 import { getSelect as getSelectProposals } from "/actions/proposals";
 import { getAll as getRoles } from "/actions/partner-project-roles";
+import { getAll as getAllCourts } from "/actions/courts";
 
 export default async function Update({ params: { id } }) {
   const partners = await getPartnerSelect();
@@ -18,6 +19,7 @@ export default async function Update({ params: { id } }) {
   const members = await selectMembers();
   const proposals = await getSelectProposals();
   const roles = await getRoles();
+  const courts = await getAllCourts();
 
   const project = await showProject(id, {
     include: [
@@ -32,6 +34,7 @@ export default async function Update({ params: { id } }) {
       "partners",
       "proposal",
       "notes",
+      "court",
     ],
   });
 
@@ -47,6 +50,7 @@ export default async function Update({ params: { id } }) {
           billingTypes,
           proposals,
           roles,
+          courts,
         }}
       />
     </MDBox>

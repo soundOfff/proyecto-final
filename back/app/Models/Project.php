@@ -98,6 +98,11 @@ class Project extends Model
         return $this->belongsTo(Process::class);
     }
 
+    public function court(): BelongsTo
+    {
+        return $this->belongsTo(Court::class);
+    }
+
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class, 'project_members');

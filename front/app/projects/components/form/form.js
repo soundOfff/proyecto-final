@@ -27,7 +27,9 @@ export default function FormComponent({
   serviceTypes,
   statuses,
   members,
+  courts,
 }) {
+  console.log(courts);
   const {
     values,
     errors,
@@ -55,6 +57,7 @@ export default function FormComponent({
     description,
     partners,
     notes,
+    courtId,
   } = formField;
 
   const [processes, setProcesses] = useState([]);
@@ -127,6 +130,7 @@ export default function FormComponent({
       /*  setFieldValue(estimatedHours.name, project.estimatedHours || ""); */
       setFieldValue(billablePartner.name, project.billablePartnerId || "");
       setFieldValue(status.name, project.status.id);
+      setFieldValue(courtId.name, project.court?.id || "");
       setFieldValue(serviceType.name, project.serviceType?.id || "");
       setFieldValue(billingType.name, project.billingType?.id || "");
       setFieldValue(type.name, project.type || "");
@@ -179,6 +183,7 @@ export default function FormComponent({
     proposal,
     notes,
     setFieldValue,
+    courtId,
   ]);
 
   useEffect(() => {
@@ -254,13 +259,23 @@ export default function FormComponent({
             }
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <Select
             value={values[status.name]}
             options={statuses}
             optionLabel={(option) => option.label}
             fieldName={status.name}
             inputLabel={status.label}
+            setFieldValue={setFieldValue}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Select
+            value={values[courtId.name] ?? " "}
+            options={courts}
+            optionLabel={(option) => option.name}
+            fieldName={courtId.name}
+            inputLabel={courtId.label}
             setFieldValue={setFieldValue}
           />
         </Grid>

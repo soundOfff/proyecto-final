@@ -28,6 +28,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationPriorityController;
 use App\Http\Controllers\PartnerController;
@@ -285,6 +286,10 @@ Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
 
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
+
+Route::get('/notes', [NoteController::class, 'index']);
+Route::post('/notes', [NoteController::class, 'store']);
+Route::delete('/notes/{note}', [NoteController::class, 'destroy']);
 
 Route::get('/courts', [CourtController::class, 'index']);
 Route::get('/courts/{court}', [CourtController::class, 'show']);

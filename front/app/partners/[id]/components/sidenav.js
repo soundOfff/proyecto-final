@@ -26,7 +26,7 @@ export default function Sidenav() {
       href: `contacts`,
       disabled: false,
     },
-    { icon: "note", label: "Notas", href: "notes", disabled: true },
+    { icon: "note", label: "Notas", href: "notes", disabled: false },
     { icon: "bar_chart", label: "Informe", href: "report", disabled: true },
     { icon: "receipt", label: "Facturas", href: "invoices", disabled: false },
     { icon: "trending_up", label: "Pagos", href: "payments", disabled: false },

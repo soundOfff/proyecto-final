@@ -164,27 +164,35 @@ export default function Table({
       accessor: "id",
     },
     {
-      Header: "Bloqueada por",
+      Header: "Nombre del caso",
       accessor: "isBlocked",
       disableSortBy: true,
-      Cell: ({ row }) => (
-        <MDBox display="flex">
-          {row.original.dependencies.map((dependency) => (
-            <Grid key={dependency.id}>
-              <MDBadge
-                variant="gradient"
-                color={
-                  dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
-                }
-                size="lg"
-                badgeContent={`#${dependency.id}`}
-                sx={{ cursor: "pointer" }}
-                onClick={() => handleOpenShowModal(dependency.id)}
-              />
-            </Grid>
-          ))}
-        </MDBox>
-      ),
+      Cell: ({ row }) => {
+        const task = row.original;
+        return (
+          <MDBox display="flex" alignItems="center">
+            {task.taskable_type === "project" ? (
+              <Link
+                href={`/projects/${task.taskable?.id}`}
+                sx={{ overflow: "wrap" }}
+              >
+                <MDTypography
+                  variant="body2"
+                  fontSize="small"
+                  color="info"
+                  display="inline"
+                >
+                  {task.taskable?.name}
+                </MDTypography>
+              </Link>
+            ) : (
+              <MDTypography variant="body2" color="textSecondary">
+                -
+              </MDTypography>
+            )}
+          </MDBox>
+        );
+      },
     },
     {
       Header: "Nombre",
@@ -231,7 +239,7 @@ export default function Table({
       Header: "Fecha de vencimiento",
       accessor: "due_date",
     },
-    {
+    /* {
       Header: "Etiquetas",
       accessor: "labels",
       disableSortBy: true,
@@ -248,7 +256,7 @@ export default function Table({
             />
           </Grid>
         )),
-    },
+    }, */
     {
       Header: "Prioridad",
       accessor: "priority",

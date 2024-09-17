@@ -229,7 +229,7 @@ export default function Table({ rows, meta }) {
           <ModalContent expense={expense} />
         </Modal>
       )}
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+      <MDBox display="flex" justifyContent="flex-end" mb={1}>
         <Link href="/expenses/create">
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Gasto

@@ -142,7 +142,7 @@ export default function Table({ rows, meta }) {
 
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
+      <MDBox display="flex" justifyContent="flex-end">
         <Link href="/proposals/create">
           <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
             Registrar Propuesta

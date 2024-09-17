@@ -29,7 +29,7 @@ export default async function Proposals({
   });
 
   return (
-    <MDBox mb={3}>
+    <MDBox mb={1}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>

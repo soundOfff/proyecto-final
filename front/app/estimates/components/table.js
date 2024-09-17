@@ -12,7 +12,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { destroy } from "/actions/estimates";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
-import { useEffect } from "react";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -32,6 +31,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "id",
       accessor: "id",
+      width: 50,
       Cell: ({ value }) => (
         <Link
           href={`/estimates/${value}`}
@@ -67,6 +67,7 @@ export default function Table({ rows, meta }) {
       id: "project",
       Header: "Caso",
       accessor: "project.name",
+      width: 500,
       Cell: ({ row }) => {
         return row.original.project ? (
           <Link
@@ -87,10 +88,6 @@ export default function Table({ rows, meta }) {
       accessor: "expiryDate",
     },
     {
-      Header: "Referencia #",
-      accessor: "referenceNo",
-    },
-    {
       id: "readyForBill",
       Header: "Lista para facturar",
       Cell: ({ row }) => {
@@ -106,6 +103,7 @@ export default function Table({ rows, meta }) {
     {
       id: "actions",
       Header: "Acciones",
+      width: 50,
       disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
@@ -136,19 +134,19 @@ export default function Table({ rows, meta }) {
 
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link href="/estimates/create">
-          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Registrar Proforma
-          </MDButton>
-        </Link>
-      </MDBox>
       <DataTable
         table={table}
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+        actions={
+          <Link href="/estimates/create">
+            <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+              Registrar Proforma
+            </MDButton>
+          </Link>
+        }
       />
       <DeleteRow
         {...{

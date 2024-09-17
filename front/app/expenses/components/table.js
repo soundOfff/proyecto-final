@@ -47,7 +47,7 @@ export default function Table({ rows, meta }) {
       setExpense(
         await show(expenseIdShow, {
           include: ["category", "project", "invoice", "partner", "files"],
-        })
+        }),
       );
     };
     if (expenseIdShow) {
@@ -81,21 +81,23 @@ export default function Table({ rows, meta }) {
       Header: "Fecha",
       accessor: "date",
     },
-    {
-      Header: "Creado automáticamente",
-      accessor: "createdFromAction",
-      Cell: ({ value }) => (
-        <MDBox display="flex" justifyContent="center">
-          <MDTypography variant="caption" fontWeight="regular">
-            {value ? "Sí" : ""}
-          </MDTypography>
-        </MDBox>
-      ),
-    },
+    // hide this column for now
+    // {
+    //   Header: "Creado automáticamente",
+    //   accessor: "createdFromAction",
+    //   isVisible: false,
+    //   Cell: ({ value }) => (
+    //     <MDBox display="flex" justifyContent="center">
+    //       <MDTypography variant="caption" fontWeight="regular">
+    //         {value ? "Sí" : ""}
+    //       </MDTypography>
+    //     </MDBox>
+    //   ),
+    // },
     {
       Header: "Caso",
       accessor: "project.name",
-      width: "25%",
+      width: 500,
       Cell: ({ row }) => {
         return row.original.project ? (
           <Link
@@ -229,19 +231,20 @@ export default function Table({ rows, meta }) {
           <ModalContent expense={expense} />
         </Modal>
       )}
-      <MDBox display="flex" justifyContent="flex-end" mb={1}>
-        <Link href="/expenses/create">
-          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Registrar Gasto
-          </MDButton>
-        </Link>
-      </MDBox>
+
       <DataTable
         table={table}
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+        actions={
+          <Link href="/expenses/create">
+            <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+              Registrar Gasto
+            </MDButton>
+          </Link>
+        }
       />
       <DeleteRow
         {...{

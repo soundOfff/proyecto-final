@@ -142,19 +142,19 @@ export default function Table({ rows, meta }) {
 
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="flex-end">
-        <Link href="/proposals/create">
-          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Registrar Propuesta
-          </MDButton>
-        </Link>
-      </MDBox>
       <DataTable
         table={table}
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
+        actions={
+          <Link href="/proposals/create">
+            <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+              Registrar Propuesta
+            </MDButton>
+          </Link>
+        }
       />
       <DeleteRow
         {...{

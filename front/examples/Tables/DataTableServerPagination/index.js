@@ -49,6 +49,7 @@ function DataTable({
   noEndBorder = false,
   className = "desktop",
   meta = null,
+  actions = null,
 }) {
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
@@ -71,12 +72,12 @@ function DataTable({
     } else if (meta.current_page + pageSize > meta.last_page) {
       pagination = pagination.slice(
         meta.current_page - pageSize * 2,
-        meta.last_page
+        meta.last_page,
       );
     } else {
       pagination = pagination.slice(
         meta.current_page - pageSize,
-        meta.current_page + pageSize - 1
+        meta.current_page + pageSize - 1,
       );
     }
     setPages(pagination);
@@ -158,7 +159,7 @@ function DataTable({
 
   return (
     <TableContainer sx={{ boxShadow: "none" }} className={className}>
-      {entries || canSearch ? (
+      {entries || canSearch || actions ? (
         <MDBox
           display="flex"
           justifyContent="space-between"
@@ -183,8 +184,15 @@ function DataTable({
               </MDTypography>
             </MDBox>
           )}
+
+          {actions && (
+            <MDBox display="flex" justifyContent="flex-end">
+              {actions}
+            </MDBox>
+          )}
         </MDBox>
       ) : null}
+
       <Table {...getTableProps()}>
         <MDBox
           component="thead"

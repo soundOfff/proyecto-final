@@ -1,45 +1,20 @@
-import MDBox from "/components/MDBox";
-import MDTypography from "/components/MDTypography";
-import MDBadge from "/components/MDBadge";
-
 import { Grid } from "@mui/material";
 
+import StatBox from "/app/components/StatBox";
 import { setColor } from "/utils/project-state-colors";
 
 export default function Stats({ countByStatuses }) {
   return (
     <Grid container>
       {countByStatuses.map((status) => (
-        <Grid
-          item
+        <StatBox
           key={status.label}
-          margin="auto"
-          minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
-        >
-          <MDBox my={0.5} className="flex items-start">
-            <MDTypography
-              variant="h6"
-              display="inline-block"
-              minWidth={{ xs: "150px", sm: "auto" }}
-            >
-              {status.count}
-            </MDTypography>
-
-            <MDBadge
-              variant="contained"
-              badgeContent={`${status.label}`}
-              color={setColor(status.label)}
-              size="xs"
-              container
-              sx={{
-                ml: { xs: 0.5, sm: 1 },
-                mb: 0,
-                height: "1.5rem",
-                minWidth: "70px",
-              }}
-            />
-          </MDBox>
-        </Grid>
+          label={status.label}
+          count={status.count}
+          color={setColor(status.label)}
+          xs={2}
+          lg={2}
+        />
       ))}
     </Grid>
   );

@@ -107,7 +107,7 @@ export default function Filters({ statuses }) {
         item
         xs={12}
         sm={4}
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{ display: "flex", justifyContent: "flex-start" }}
       >
         <Link
           href={{

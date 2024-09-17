@@ -16,9 +16,9 @@ export default function Stats({ countByStatuses }) {
           margin="auto"
           minWidth={{ xs: "150px", sm: "160px", md: "10%" }}
         >
-          <MDBox my={2}>
+          <MDBox my={0.5} className="flex items-start">
             <MDTypography
-              variant="h4"
+              variant="h6"
               display="inline-block"
               minWidth={{ xs: "150px", sm: "auto" }}
             >
@@ -32,10 +32,10 @@ export default function Stats({ countByStatuses }) {
               size="xs"
               container
               sx={{
-                ml: { xs: 0, sm: 2 },
-                mb: 1,
-                height: "2rem",
-                minWidth: "108px",
+                ml: { xs: 0.5, sm: 1 },
+                mb: 0,
+                height: "1.5rem",
+                minWidth: "70px",
               }}
             />
           </MDBox>

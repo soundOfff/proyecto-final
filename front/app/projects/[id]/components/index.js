@@ -11,6 +11,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import Tasks from "./Tabs/tasks";
 import Timers from "./Tabs/timers";
 import Files from "./Tabs/files";
+import Notes from "./Tabs/notes";
 import Estimates from "./Tabs/estimates";
 import Invoices from "./Tabs/invoices";
 import Expenses from "./Tabs/expenses";
@@ -51,6 +52,9 @@ export default function IndexComponent(props) {
             </TabPanel>
             <TabPanel value="expenses">
               <Expenses />
+            </TabPanel>
+            <TabPanel value="notes">
+              <Notes />
             </TabPanel>
           </Card>
         </TabContext>

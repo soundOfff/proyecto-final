@@ -7,34 +7,26 @@ import MDBox from "/components/MDBox";
 import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
 
+import ProjectCopyForm from "/components/ModalContent/Project/";
+
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import DeleteIcon from "@mui/icons-material/Delete";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Tooltip } from "@mui/material";
 
 import { useEffect, useState } from "react";
-import { show, destroy } from "/actions/projects";
+import { show } from "/actions/projects";
 
 import { setColor } from "/utils/project-state-colors";
 
 import Detail from "./detail";
-import DeleteRow from "/components/DeleteRow";
-import useDeleteRow from "/hooks/useDeleteRow";
 
-export default function Table({ rows, meta }) {
+export default function Table({ rows, meta, formData }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [project, setProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [openShow, setOpenShow] = useState(false);
-  const {
-    openDeleteConfirmation,
-    errorSB,
-    setErrorSB,
-    errorMsg,
-    setErrorMsg,
-    handleDelete,
-    setDeleteConfirmed,
-    setOpenDeleteConfirmation,
-  } = useDeleteRow(destroy);
+  const [openCopyModal, setOpenCopyModal] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -61,6 +53,16 @@ export default function Table({ rows, meta }) {
   const handleShow = (row) => {
     setProjectIdShow(row.original.id);
     setOpenShow(true);
+  };
+
+  const handleOpenCopyModal = (row) => {
+    setOpenCopyModal(true);
+    setSelectedProject(row);
+  };
+
+  const handleCloseCopyModal = () => {
+    setOpenCopyModal(false);
+    setSelectedProject(null);
   };
 
   const columns = [
@@ -111,6 +113,7 @@ export default function Table({ rows, meta }) {
       Header: "Acciones",
       accessor: "actions",
       textAlign: "center",
+      width: "10%",
       disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
@@ -122,15 +125,6 @@ export default function Table({ rows, meta }) {
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
-          {/*  <Link href={`/projects/${row.original.id}/edit`}>
-            <Tooltip title="Editar">
-              <EditIcon
-                color="secondary"
-                fontSize="medium"
-                sx={{ mr: 3, cursor: "pointer" }}
-              />
-            </Tooltip>
-          </Link> */}
           <Link href={`/projects/create-notes/${row.original.id}`}>
             <Tooltip title="Agregar Notas">
               <EditNoteIcon
@@ -140,28 +134,11 @@ export default function Table({ rows, meta }) {
               />
             </Tooltip>
           </Link>
-          {/* <Link
-            href={{
-              pathname: `/expenses/create`,
-              query: {
-                projectId: row.original.id,
-                partnerId: row.original.billablePartner?.id,
-              },
-            }}
-          >
-            <Tooltip title="Registrar Gasto">
-              <DescriptionOutlinedIcon
-                color="success"
-                fontSize="medium"
-                sx={{ mr: 3, cursor: "pointer" }}
-              />
-            </Tooltip>
-          </Link> */}
-          <Tooltip title="Eliminar">
-            <DeleteIcon
-              color="error"
+          <Tooltip title="Copiar caso">
+            <ContentCopyIcon
+              color="dark"
               fontSize="medium"
-              onClick={() => handleDelete(row.original.id)}
+              onClick={() => handleOpenCopyModal(row.original)}
               sx={{ mr: 3, cursor: "pointer" }}
             />
           </Tooltip>
@@ -184,6 +161,15 @@ export default function Table({ rows, meta }) {
           <Detail project={project} />
         </Modal>
       )}
+      {openCopyModal && selectedProject && (
+        <Modal open={openCopyModal} onClose={handleCloseCopyModal}>
+          <ProjectCopyForm
+            {...formData}
+            project={selectedProject}
+            closeModal={handleCloseCopyModal}
+          />
+        </Modal>
+      )}
       <DataTable
         table={table}
         meta={meta}
@@ -191,17 +177,6 @@ export default function Table({ rows, meta }) {
         showTotalEntries={true}
         isSorted={true}
         noEndBorder
-      />
-      <DeleteRow
-        {...{
-          setOpenDeleteConfirmation,
-          errorSB,
-          setErrorSB,
-          errorMsg,
-          setErrorMsg,
-          openDeleteConfirmation,
-          setDeleteConfirmed,
-        }}
       />
     </MDBox>
   );

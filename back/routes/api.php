@@ -5,6 +5,7 @@ use App\Http\Controllers\ActionTypeController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CourtController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CurrencyController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationPriorityController;
 use App\Http\Controllers\PartnerController;
@@ -183,7 +185,9 @@ Route::get('/invoices-select', [InvoiceController::class, 'select']);
 Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
 
 Route::get('/contacts', [ContactController::class, 'index']);
+Route::get('/contacts/{contact}', [ContactController::class, 'show']);
 Route::post('/contacts', [ContactController::class, 'store']);
+Route::put('/contacts/{contact}', [ContactController::class, 'update']);
 Route::get('/contact-stats', [ContactController::class, 'stats']);
 
 Route::get('/staffs-select', [StaffController::class, 'select']);
@@ -271,6 +275,7 @@ Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'a
 Route::get('/notifications', [NotificationController::class, 'index']);
 Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
 Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
+Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
 Route::put('/notifications-update-many', [NotificationController::class, 'updateMany']);
 Route::put('/notifications-archive-many', [NotificationController::class, 'archiveMany']);
 
@@ -281,6 +286,16 @@ Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
 
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
+
+Route::get('/notes', [NoteController::class, 'index']);
+Route::post('/notes', [NoteController::class, 'store']);
+Route::delete('/notes/{note}', [NoteController::class, 'destroy']);
+
+Route::get('/courts', [CourtController::class, 'index']);
+Route::get('/courts/{court}', [CourtController::class, 'show']);
+Route::post('/courts', [CourtController::class, 'store']);
+Route::put('/courts/{court}', [CourtController::class, 'update']);
+Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
     return $request->user();

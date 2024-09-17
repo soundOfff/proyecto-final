@@ -29,6 +29,8 @@ const include = [
   "partners",
   "proposal",
   "process",
+  "court",
+  "notes.staff",
 ];
 
 export default async function Show({ params }) {

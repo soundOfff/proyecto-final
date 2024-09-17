@@ -22,6 +22,17 @@ export async function getAllPriorities() {
   return data?.priorities;
 }
 
+export async function update(id, body) {
+  const url = new URL(`${process.env.API_URL}/notifications/${id}`);
+
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+
+  revalidatePath("/notifications");
+}
+
 export async function updateMany(body) {
   const url = new URL(`${process.env.API_URL}/notifications-update-many`);
 

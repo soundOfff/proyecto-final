@@ -9,11 +9,11 @@ use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
 use App\Models\ExpenseRepeat;
 use App\Models\File;
+use App\Models\Project;
 use App\Sorts\ExpenseCategorySort;
 use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -75,7 +75,26 @@ class ExpenseController extends Controller
             $file = $expenseFiles[$index];
             $fileInfo = $expenseFilesInfo[$index];
             $extension = $file->extension();
-            $path = "/expense/$fileInfo".($extension ? ".$extension" : '');
+            if ($expense->project && $expense->partner && $expense->task) {
+                $partnerId = $expense->partner->id;
+                $projectId = $expense->project->id;
+                $taskId = $expense->task->id;
+                $path = "/partners/$partnerId/projects/$projectId/tasks/$taskId/expenses/$expense->id/$fileInfo".($extension ? ".$extension" : '');
+            } elseif ($expense->project && $expense->partner) {
+                $projectId = $expense->project->id;
+                $partnerId = $expense->partner->id;
+                $path = "partners/$partnerId/projects/$projectId/expenses/$expense->id/$fileInfo".($extension ? ".$extension" : '');
+            } elseif ($expense->project && $expense->task) {
+                $projectId = $expense->project->id;
+                $taskId = $expense->task->id;
+                $path = "/projects/$projectId/tasks/$taskId/expenses/$expense->id/$fileInfo".($extension ? ".$extension" : '');
+            } elseif ($expense->task && $expense->partner) {
+                $taskId = $expense->task->id;
+                $partnerId = $expense->partner->id;
+                $path = "/partners/$partnerId/tasks/$taskId/expenses/$expense->id/$fileInfo".($extension ? ".$extension" : '');
+            } else {
+                $path = "/expenses/$expense->id/$fileInfo".($extension ? ".$extension" : '');
+            }
 
             Storage::disk('google')->put($path, file_get_contents($file));
             $data['url'] = Storage::disk('google')->path($path);

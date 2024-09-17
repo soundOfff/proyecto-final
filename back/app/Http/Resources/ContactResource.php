@@ -16,6 +16,7 @@ class ContactResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'partnerId' => $this->partner_id,
             'active' => $this->active,
             'contractEmails' => $this->contract_emails,
             'creditNoteEmails' => $this->credit_note_emails,
@@ -40,8 +41,9 @@ class ContactResource extends JsonResource
             'taskEmails' => $this->task_emails,
             'ticketEmails' => $this->ticket_emails,
             'title' => $this->title,
-            'user' => UserResource::make($this->whenLoaded('user')),
+            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'staff' => StaffResource::make($this->whenLoaded('staff')),
+            'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
         ];
     }
 }

@@ -36,7 +36,7 @@ class TaskRequest extends FormRequest
             'milestone_order' => 'nullable|numeric',
             'is_infinite' => 'nullable|boolean',
             'billable' => 'nullable|boolean',
-            'total_cycles' => 'required_if:is_infinite,false',
+            'total_cycles' => 'nullable|boolean',
             'taskable_type' => 'nullable|string',
             'taskable_id' => 'nullable|numeric',
             'owner_id' => 'nullable|numeric|exists:staff,id',

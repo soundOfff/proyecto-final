@@ -1,25 +1,47 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import Loader from "/components/Loader";
 import { Grid } from "@mui/material";
 import { setColor } from "/utils/project-state-colors";
+
 import MDTypography from "/components/MDTypography";
 import MDBadge from "/components/MDBadge";
-import MDBox from "/components/MDBox";
-import { useDataProvider } from "/providers/DataProvider";
 import MDButton from "/components/MDButton";
+import MDBox from "/components/MDBox";
+
+import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+
+import { useDataProvider } from "/providers/DataProvider";
+import useDeleteRow from "/hooks/useDeleteRow";
+import { destroy } from "/actions/projects";
 import { generate } from "/actions/documents";
-import { useState } from "react";
-import Loader from "/components/Loader";
-import { Edit as EditIcon } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
+import DeleteRow from "/components/DeleteRow";
+import Link from "next/link";
 
 export default function Header() {
   const { project } = useDataProvider();
   const [isLoading, setIsLoading] = useState(false);
+  const {
+    setOpenDeleteConfirmation,
+    errorSB,
+    setErrorSB,
+    errorMsg,
+    setErrorMsg,
+    handleDelete,
+    openDeleteConfirmation,
+    setDeleteConfirmed,
+  } = useDeleteRow(destroy);
   const router = useRouter();
 
   const handleEditButton = () => {
     router.push(`/projects/${project.id}/edit`);
+  };
+
+  const handleProjectDelete = () => {
+    handleDelete(project.id);
   };
 
   const handleGenerateDocument = () => {
@@ -87,18 +109,46 @@ export default function Header() {
           >
             Generar Documento
           </MDButton>
+          <Link
+            href={{
+              pathname: `/projects/${project.id}/edit`,
+              query: { source: `/projects/${project.id}?tab=description` },
+            }}
+          >
+            <MDButton
+              variant="gradient"
+              color="dark"
+              size="small"
+              onClick={handleEditButton}
+              sx={{ height: "40px", width: "130px", ml: 2 }}
+            >
+              Editar
+              <EditIcon sx={{ ml: 1 }} />
+            </MDButton>
+          </Link>
           <MDButton
             variant="gradient"
-            color="dark"
+            color="error"
             size="small"
-            onClick={handleEditButton}
+            onClick={handleProjectDelete}
             sx={{ height: "40px", width: "130px", ml: 2 }}
           >
-            Editar
-            <EditIcon sx={{ ml: 1 }} />
+            Eliminar
+            <DeleteIcon sx={{ ml: 1 }} />
           </MDButton>
         </MDBox>
       </Grid>
+      <DeleteRow
+        {...{
+          setOpenDeleteConfirmation,
+          errorSB,
+          setErrorSB,
+          errorMsg,
+          setErrorMsg,
+          openDeleteConfirmation,
+          setDeleteConfirmed,
+        }}
+      />
     </Grid>
   );
 }

@@ -28,13 +28,14 @@ export default function Index({
   billingTypes,
   proposals,
   roles,
+  courts,
 }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       if (project) {
         await updateProject(project.id, values);
@@ -91,6 +92,7 @@ export default function Index({
                       billingTypes,
                       proposals,
                       roles,
+                      courts,
                     }}
                   />
                 </Card>

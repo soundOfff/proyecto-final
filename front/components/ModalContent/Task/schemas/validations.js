@@ -68,33 +68,33 @@ const validations = Yup.object().shape({
   ),
   [task_status_id.name]: Yup.string(),
   [taskableType.name]: Yup.string(),
-  [repeat.name]: Yup.number(),
-  [recurring.name]: Yup.number().when(repeat.name, {
-    is: CUSTOM,
-    then: (schema) =>
-      schema
-        .min(1, "Debe ser mayor a 0")
-        .required("Este campo es requerido si se seleccionó Personalizado"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  [recurringType.name]: Yup.number().when(repeat.name, {
-    is: CUSTOM,
-    then: (schema) =>
-      schema.required("Este campo es requerido si se seleccionó Personalizado"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  [isInfinite.name]: Yup.boolean().when(repeat.name, {
-    is: true,
-    then: (schema) => schema.required("Este campo es requerido"),
-  }),
-  [totalCycles.name]: Yup.number().when([repeat.name, isInfinite.name], {
-    is: (repeat_id, is_infinite) => repeat_id && !is_infinite,
-    then: (schema) =>
-      schema
-        .min(1, "Los ciclos totales deben ser mayor a 0")
-        .required('Este campo es requerido si seleccionó "repetir cada"')
-        .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
-  }),
+  // [repeat.name]: Yup.number(),
+  // [recurring.name]: Yup.number().when(repeat.name, {
+  //   is: CUSTOM,
+  //   then: (schema) =>
+  //     schema
+  //       .min(1, "Debe ser mayor a 0")
+  //       .required("Este campo es requerido si se seleccionó Personalizado"),
+  //   otherwise: (schema) => schema.nullable(),
+  // }),
+  // [recurringType.name]: Yup.number().when(repeat.name, {
+  //   is: CUSTOM,
+  //   then: (schema) =>
+  //     schema.required("Este campo es requerido si se seleccionó Personalizado"),
+  //   otherwise: (schema) => schema.nullable(),
+  // }),
+  // [isInfinite.name]: Yup.boolean().when(repeat.name, {
+  //   is: true,
+  //   then: (schema) => schema.required("Este campo es requerido"),
+  // }),
+  // [totalCycles.name]: Yup.number().when([repeat.name, isInfinite.name], {
+  //   is: (repeat_id, is_infinite) => repeat_id && !is_infinite,
+  //   then: (schema) =>
+  //     schema
+  //       .min(1, "Los ciclos totales deben ser mayor a 0")
+  //       .required('Este campo es requerido si seleccionó "repetir cada"')
+  //       .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`),
+  // }),
   [actions.name]: Yup.array(),
   [initialDurationMinutes.name]: Yup.number().nullable(),
   [requiredFields.name]: Yup.array(),

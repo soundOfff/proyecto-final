@@ -59,6 +59,7 @@ class ProjectResource extends JsonResource
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),
             'partners' => PartnerResource::collection($this->whenLoaded('partners')),
             'process' => ProcessResource::make($this->whenLoaded('process')),
+            'court' => CourtResource::make($this->whenLoaded('court')),
         ];
     }
 }

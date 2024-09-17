@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Http\Resources\ContactResource;
 use App\Http\Resources\ContactResourceCollection;
 use App\Models\Contact;
 use Illuminate\Http\Request;
@@ -64,15 +65,31 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        //
+        $contact = QueryBuilder::for(Contact::class)
+        ->allowedIncludes([
+            'partner',
+            'staff',
+            'permissions',
+        ])
+        ->find($contact->id);
+
+        return new ContactResource($contact);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contact $contact)
+    public function update(ContactRequest $request, Contact $contact)
     {
-        //
+        $updatedContact = $request->validated();
+
+        $contact->update($updatedContact);
+
+        $permissionIds = array_map(fn ($permission) => $permission['id'], $updatedContact['permissions']);
+
+        $contact->permissions()->sync($permissionIds);
+
+        return response()->json(null, 201);
     }
 
     /**

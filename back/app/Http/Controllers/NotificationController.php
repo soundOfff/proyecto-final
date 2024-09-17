@@ -87,9 +87,15 @@ class NotificationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, Notification $notification)
     {
-        //
+        $updatedNotification = $request->validate([
+            'notification_priority_id' => 'sometimes|required|exists:notification_priorities,id',
+        ]);
+
+        $notification->update($updatedNotification);
+
+        return response()->json(null, 204);
     }
 
     public function updateMany(Request $request)

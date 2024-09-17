@@ -65,6 +65,7 @@ class ProjectController extends Controller
                 'jurisdiction',
                 'serviceType.processes',
                 'billablePartner',
+                "billingType",
                 'responsiblePerson',
                 'files',
                 'lawFirm',
@@ -73,6 +74,7 @@ class ProjectController extends Controller
                 'partners',
                 'proposal',
                 'process',
+                'court',
             ])->orderBy('id', 'desc');
 
         $projects = request()->has('perPage')
@@ -136,8 +138,8 @@ class ProjectController extends Controller
                 foreach ($staff->devices as $device) {
                     $this->fcmService->sendNotification(
                         $device->device_token,
-                        'Se ha creado un nuevo caso',
-                        "Nombre Del Caso: $project->name",
+                        "Nuevo caso: $project->name",
+                        "Has sido asignado a un nuevo caso",
                         $staff->id,
                         strtolower(class_basename(Project::class)),
                         $project->id,
@@ -168,7 +170,8 @@ class ProjectController extends Controller
                 'partners',
                 'proposal',
                 'process',
-                'notes',
+                'notes.staff',
+                'court',
             ])
             ->find($project->id);
 

@@ -4,6 +4,10 @@ import { Grid, Icon } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import DataTable from "/examples/Tables/DataTable";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import MDTypography from "/components/MDTypography";
+import Modal from "/components/Modal";
 
 export default function PartnerList({
   rows = [],
@@ -11,7 +15,11 @@ export default function PartnerList({
   partnerField,
   values,
 }) {
-  const deleteRow = (index) => {
+  const router = useRouter();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [index, setIndex] = useState(null);
+
+  const deleteRow = () => {
     const filteredPartners = values[partnerField.name].filter(
       (_, i) => i !== index
     );
@@ -40,8 +48,20 @@ export default function PartnerList({
           <MDBox mr={1}>
             <MDButton
               variant="text"
+              color="warning"
+              onClick={() =>
+                router.push(`/partners/${row.original.id}/profile`)
+              }
+            >
+              <Icon>edit</Icon>&nbsp;Editar
+            </MDButton>
+            <MDButton
+              variant="text"
               color="error"
-              onClick={() => deleteRow(row.index)}
+              onClick={() => {
+                setIndex(row.index);
+                setShowConfirmModal(true);
+              }}
             >
               <Icon>delete</Icon>&nbsp;Borrar
             </MDButton>
@@ -62,6 +82,38 @@ export default function PartnerList({
           sx={{ border: 1, borderColor: "grey.400" }}
         >
           <DataTable table={table} showTotalEntries={false} isSorted={false} />
+          <Modal
+            open={showConfirmModal}
+            onClose={() => setShowConfirmModal(false)}
+            height="auto"
+          >
+            <MDBox p={2}>
+              <MDTypography variant="h4" mb={5}>
+                ¿Está seguro que desea eliminar el rol del cliente?
+              </MDTypography>
+              <MDBox display="flex" justifyContent="end" gap={6}>
+                <MDButton
+                  variant="gradient"
+                  color="light"
+                  onClick={() => {
+                    setShowConfirmModal(false);
+                  }}
+                >
+                  Cancelar
+                </MDButton>
+                <MDButton
+                  variant="gradient"
+                  color="error"
+                  onClick={() => {
+                    deleteRow();
+                    setShowConfirmModal(false);
+                  }}
+                >
+                  Eliminar
+                </MDButton>
+              </MDBox>
+            </MDBox>
+          </Modal>
         </MDBox>
       </Grid>
     </Grid>

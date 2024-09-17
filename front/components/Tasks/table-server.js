@@ -244,7 +244,7 @@ export default function Table({
               color="dark"
               size="md"
               badgeContent={tag.name}
-              sx={{ my: 1 }}
+              sx={{ my: 0.25 }}
             />
           </Grid>
         )),
@@ -299,7 +299,7 @@ export default function Table({
               sx={{ mr: 1, cursor: "pointer" }}
             />
           </Tooltip>
-          <Tooltip title="Eliminar tarea">
+          {/* <Tooltip title="Eliminar tarea">
             <DeleteIcon
               color="error"
               fontSize="medium"
@@ -312,7 +312,7 @@ export default function Table({
                 display: row.original.isBlocked ? "none" : "block",
               }}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Ver Cambios">
             <Link href={`/tasks/${row.original.id}/changes`}>
               <VisibilityIcon

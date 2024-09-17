@@ -1,6 +1,12 @@
 "use client";
 
-import { Autocomplete, Card, Divider, Grid, Tooltip } from "@mui/material";
+import {
+  Autocomplete,
+  Card,
+  CircularProgress,
+  Divider,
+  Grid,
+} from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
@@ -22,7 +28,8 @@ import { DONE_STATUS_ID, DONE_STATUS } from "/utils/constants/taskStatuses";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
-import { update } from "/actions/tasks";
+import { update, destroy } from "/actions/tasks";
+import Modal from "/components/Modal";
 
 export default function Content({ selectedFork }) {
   const {
@@ -32,6 +39,7 @@ export default function Content({ selectedFork }) {
     markAsCompleted,
     stopTimer,
     startTimer,
+    closeShowModal,
   } = useDataProvider();
 
   const [description, setDescription] = useState(
@@ -62,7 +70,10 @@ export default function Content({ selectedFork }) {
     removeItem,
     editItem,
   } = useTodo(task.checklistItems);
+
   const { data: session } = useSession();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const handleStopTimer = async () => {
     await stopTimer(currentTimerId, note);
@@ -123,6 +134,10 @@ export default function Content({ selectedFork }) {
     );
   };
 
+  const handleDeleteTask = async () => {
+    setShowConfirmModal(true);
+  };
+
   return (
     <Grid item xs={8} wrap="nowrap">
       <MDSnackbar
@@ -149,6 +164,43 @@ export default function Content({ selectedFork }) {
         }}
         bgWhite
       />
+      <Modal
+        open={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        height="auto"
+      >
+        <MDBox p={2}>
+          <MDTypography variant="h4" mb={5}>
+            ¿Está seguro que desea eliminar la tarea?
+          </MDTypography>
+          <MDBox display="flex" justifyContent="end" gap={6}>
+            <MDButton
+              variant="gradient"
+              color="light"
+              onClick={() => {
+                setShowConfirmModal(false);
+              }}
+            >
+              Cancelar
+            </MDButton>
+            <MDButton
+              variant="gradient"
+              color="error"
+              onClick={() => {
+                setIsDeleteLoading(true);
+                destroy(task.id);
+                closeShowModal();
+              }}
+            >
+              {isDeleteLoading ? (
+                <CircularProgress size={24} color="white" />
+              ) : (
+                "Eliminar Tarea"
+              )}
+            </MDButton>
+          </MDBox>
+        </MDBox>
+      </Modal>
       <MDBox px={5} py={2}>
         <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" display="inline">
@@ -225,6 +277,15 @@ export default function Content({ selectedFork }) {
                 Iniciar temporizador
               </MDButton>
             )}
+
+            <MDButton
+              color="error"
+              size="small"
+              sx={{ maxHeight: "50px" }}
+              onClick={handleDeleteTask}
+            >
+              Eliminar Tarea
+            </MDButton>
             <MDBox display="flex" flexDirection="row" width="60%">
               {isStoppingTimer && (
                 <>

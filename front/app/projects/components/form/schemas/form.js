@@ -50,6 +50,10 @@ const form = {
       label: "Estado",
       errorMsg: "Debe seleccionar un estado",
     },
+    courtId: {
+      name: "court_id",
+      label: "Juzgado",
+    },
     serviceType: {
       name: "project_service_type_id",
       label: "Departamento",

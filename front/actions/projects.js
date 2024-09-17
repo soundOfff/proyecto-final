@@ -95,4 +95,5 @@ export async function destroy(projectId) {
   });
 
   revalidatePath("/projects");
+  redirect("/projects");
 }

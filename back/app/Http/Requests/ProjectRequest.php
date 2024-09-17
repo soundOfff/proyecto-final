@@ -31,6 +31,7 @@ class ProjectRequest extends FormRequest
             'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
             'proposal_id' => 'nullable|numeric|exists:proposals,id',
             'process_id' => 'nullable|numeric|exists:processes,id',
+            'court_id' => 'nullable|numeric|exists:courts,id',
             'expedient' => 'nullable|string',
             'deadline' => 'nullable|date',
             'description' => 'nullable|string',

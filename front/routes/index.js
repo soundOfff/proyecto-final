@@ -59,6 +59,14 @@ const routes = [
   { type: "divider", key: "divider-0" },
   {
     type: "collapse",
+    name: "Notificaciones",
+    key: "notifications",
+    route: "/notifications",
+    icon: <Icon fontSize="medium">notifications</Icon>,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
     name: "Tablero",
     key: "dashboards",
     icon: <Icon fontSize="medium">home</Icon>,
@@ -122,14 +130,6 @@ const routes = [
     key: "tasks",
     route: "/tasks",
     icon: <Icon fontSize="medium">list</Icon>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Notificaciones",
-    key: "notifications",
-    route: "/notifications",
-    icon: <Icon fontSize="medium">notifications</Icon>,
     noCollapse: true,
   },
   {

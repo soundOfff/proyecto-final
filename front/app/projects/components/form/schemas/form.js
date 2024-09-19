@@ -18,10 +18,10 @@ const form = {
   formField: {
     cost: {
       name: "cost",
-      label: "Costo Total",
+      label: "Honorarios",
       type: "number",
       placeholder: "1000",
-      errorMsg: "El costo del caso es requerido",
+      errorMsg: "Los honorarios del caso son requeridos",
     },
     billingType: {
       name: "project_billing_type_id",

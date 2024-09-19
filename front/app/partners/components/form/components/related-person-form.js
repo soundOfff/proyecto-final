@@ -8,11 +8,11 @@ import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
 import Modal from "/components/Modal";
 import PersonForm from "/components/ModalContent/Partner/";
+import FormField from "./form-field";
 
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import moment from "moment";
-import { ErrorMessage } from "formik";
 
 const newRelatedPeopleFormField = {
   formId: "new-related-people",
@@ -41,6 +41,41 @@ const newRelatedPeopleFormField = {
       label: "Activo",
       errorMsg: "El estado de la persona relacionada es requerido",
     },
+    seat: {
+      name: "seat",
+      label: "Asiento",
+      errorMsg: "El asiento es requerido",
+    },
+    legalCircuit: {
+      name: "legal_circuit",
+      label: "Circuito Legal",
+      errorMsg: "El circuito legal es requerido",
+    },
+    checkIn: {
+      name: "check_in",
+      label: "Fecha de Entrada",
+      errorMsg: "La fecha de entrada es requerida",
+    },
+    deed: {
+      name: "deed",
+      label: "Escritura",
+      errorMsg: "La escritura es requerida",
+    },
+    deedDate: {
+      name: "deed_date",
+      label: "Fecha de Escritura",
+      errorMsg: "La fecha de la escritura es requerida",
+    },
+    notary: {
+      name: "notary",
+      label: "Notaría",
+      errorMsg: "La notaría es requerida",
+    },
+    sheet: {
+      name: "sheet",
+      label: "Ficha",
+      errorMsg: "La ficha es requerida",
+    },
   },
 };
 
@@ -52,8 +87,20 @@ export default function RelatedPersonFormComponent({
   partnerTypes,
 }) {
   const [openModal, setOpenModal] = useState(false);
-  const { relatedPartnerId, partnerTypeId, startDate, endDate, active } =
-    newRelatedPeopleFormField.formField;
+  const {
+    relatedPartnerId,
+    partnerTypeId,
+    startDate,
+    endDate,
+    active,
+    seat,
+    checkIn,
+    deed,
+    deedDate,
+    legalCircuit,
+    notary,
+    sheet,
+  } = newRelatedPeopleFormField.formField;
 
   const addRelatedPersonValidationSchema = Yup.object().shape({
     [relatedPartnerId.name]: Yup.string().required(relatedPartnerId.errorMsg),
@@ -61,6 +108,13 @@ export default function RelatedPersonFormComponent({
     [startDate.name]: Yup.string().required(startDate.errorMsg),
     [endDate.name]: Yup.string().nullable(),
     [active.name]: Yup.boolean().required(active.errorMsg),
+    [seat.name]: Yup.string(),
+    [checkIn.name]: Yup.date(),
+    [deed.name]: Yup.string(),
+    [deedDate.name]: Yup.date(),
+    [legalCircuit.name]: Yup.string(),
+    [notary.name]: Yup.string(),
+    [sheet.name]: Yup.string(),
   });
 
   const clearFields = (actions) => {
@@ -69,6 +123,13 @@ export default function RelatedPersonFormComponent({
     setFieldValue(partnerTypeId.name, "");
     setFieldValue(relatedPartnerId.name, "");
     setFieldValue(active.name, true);
+    setFieldValue(seat.name, "");
+    setFieldValue(checkIn.name, moment().format("YYYY-MM-DD"));
+    setFieldValue(deed.name, "");
+    setFieldValue(deedDate.name, moment().format("YYYY-MM-DD"));
+    setFieldValue(legalCircuit.name, "");
+    setFieldValue(notary.name, "");
+    setFieldValue(sheet.name, "");
     actions.setTouched({});
   };
 
@@ -86,9 +147,17 @@ export default function RelatedPersonFormComponent({
       [startDate.name]: moment().format("YYYY-MM-DD"),
       [endDate.name]: "",
       [active.name]: true,
+      [seat.name]: "",
+      [deed.name]: "",
+      [checkIn.name]: moment().format("YYYY-MM-DD"),
+      [deedDate.name]: moment().format("YYYY-MM-DD"),
+      [legalCircuit.name]: "",
+      [notary.name]: "",
+      [sheet.name]: "",
     },
     validationSchema: addRelatedPersonValidationSchema,
     onSubmit: (values, methods) => {
+      console.log(values);
       setFieldValueExternal("related_partners", [
         ...externalValues.related_partners,
         {
@@ -97,6 +166,13 @@ export default function RelatedPersonFormComponent({
           start_date: values[startDate.name],
           end_date: values[endDate.name],
           active: values[active.name],
+          seat: values[seat.name],
+          deed: values[deed.name],
+          check_in: values[checkIn.name],
+          deed_date: values[deedDate.name],
+          legal_circuit: values[legalCircuit.name],
+          notary: values[notary.name],
+          sheet: values[sheet.name],
         },
       ]);
       clearFields(methods);
@@ -128,6 +204,34 @@ export default function RelatedPersonFormComponent({
           }
         </MDTypography>
       ),
+    },
+    {
+      Header: "Asiento",
+      accessor: "seat",
+    },
+    {
+      Header: "Circuito Legal",
+      accessor: "legal_circuit",
+    },
+    {
+      Header: "Fecha de Entrada",
+      accessor: "check_in",
+    },
+    {
+      Header: "Escritura",
+      accessor: "deed",
+    },
+    {
+      Header: "Fecha de Escritura",
+      accessor: "deed_date",
+    },
+    {
+      Header: "Notaría",
+      accessor: "notary",
+    },
+    {
+      Header: "Ficha",
+      accessor: "sheet",
     },
     {
       Header: "Fecha inicio",
@@ -272,6 +376,109 @@ export default function RelatedPersonFormComponent({
             label={active.label}
           />
         </FormGroup>
+      </Grid>
+      <Grid item xs={12} sm={2}>
+        <FormField
+          name={seat.name}
+          label={seat.label}
+          type={seat.type}
+          setFieldValue={setFieldValue}
+          value={values[seat.name]}
+          error={errors[seat.name] && touched[seat.name]}
+          success={values[seat.name]?.length > 0 && !errors[seat.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={2}>
+        <FormField
+          name={legalCircuit.name}
+          label={legalCircuit.label}
+          setFieldValue={setFieldValue}
+          type={legalCircuit.type}
+          value={values[legalCircuit.name]}
+          error={errors[legalCircuit.name] && touched[legalCircuit.name]}
+          success={
+            values[legalCircuit.name]?.length > 0 && !errors[legalCircuit.name]
+          }
+        />
+      </Grid>
+      <Grid xs={12} sm={2} item>
+        <MDDatePicker
+          input={{
+            fullWidth: false,
+            label: "Entrada",
+          }}
+          format="DD/MM/YYYY"
+          value={values[checkIn.name]}
+          onChange={(value) =>
+            setFieldValue(checkIn.name, moment(value[0]).format("YYYY-MM-DD"))
+          }
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            {errors[checkIn.name]}
+          </MDTypography>
+        </MDBox>
+      </Grid>
+      <Grid item xs={12} sm={2}>
+        <FormField
+          name={deed.name}
+          label={deed.label}
+          setFieldValue={setFieldValue}
+          type={deed.type}
+          value={values[deed.name]}
+          error={errors[deed.name] && touched[deed.name]}
+          success={values[deed.name]?.length > 0 && !errors[deed.name]}
+        />
+      </Grid>
+      <Grid xs={12} sm={2} item>
+        <MDDatePicker
+          input={{
+            fullWidth: false,
+            label: "Fecha de escritura",
+          }}
+          format="DD/MM/YYYY"
+          value={values[deedDate.name]}
+          onChange={(value) =>
+            setFieldValue(deedDate.name, moment(value[0]).format("YYYY-MM-DD"))
+          }
+        />
+        <MDBox mt={0.75}>
+          <MDTypography
+            component="div"
+            variant="caption"
+            color="error"
+            fontWeight="regular"
+          >
+            {errors[deedDate.name]}
+          </MDTypography>
+        </MDBox>
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <FormField
+          name={notary.name}
+          label={notary.label}
+          setFieldValue={setFieldValue}
+          type={notary.type}
+          value={values[notary.name]}
+          error={errors[notary.name] && touched[notary.name]}
+          success={values[notary.name]?.length > 0 && !errors[notary.name]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <FormField
+          name={sheet.name}
+          label={sheet.label}
+          setFieldValue={setFieldValue}
+          type={sheet.type}
+          value={values[sheet.name]}
+          error={errors[sheet.name] && touched[sheet.name]}
+          success={values[sheet.name]?.length > 0 && !errors[sheet.name]}
+        />
       </Grid>
       <Grid xs={12} display="flex" gap={2} justifyContent="end" item>
         <MDButton

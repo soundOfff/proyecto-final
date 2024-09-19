@@ -63,6 +63,7 @@ class Partner extends Model
         'name',
         'number',
         'birth_date',
+        'civil_status',
         'expedition_date',
         'expiration_date',
         'is_male',
@@ -111,12 +112,22 @@ class Partner extends Model
 
     public function president(): BelongsTo
     {
-        return $this->belongsTo(self::class, 'president_id', 'id', 'president');
+        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::PRESIDENT);
     }
 
     public function secretary(): BelongsTo
     {
-        return $this->belongsTo(self::class, 'secretary_id', 'id', 'secretary');
+        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::SECRETARY);
+    }
+
+    public function director(): BelongsTo
+    {
+        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::DIRECTOR);
+    }
+
+    public function representative(): BelongsTo
+    {
+        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::OWNER);
     }
 
     public function treasurer(): BelongsTo
@@ -152,7 +163,7 @@ class Partner extends Model
     public function relatedPartners(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'related_partner', 'partner_id', 'related_partner_id')->withPivot(
-            ['start_date', 'end_date', 'partner_type_id', 'active']
+            ['start_date', 'end_date', 'partner_type_id', 'seat', 'check_in', 'deed', 'deed_date', 'legal_circuit', 'notary', 'sheet', 'active']
         );
     }
 

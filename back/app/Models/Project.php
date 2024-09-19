@@ -140,6 +140,16 @@ class Project extends Model
         });
     }
 
+    public function getDefendants()
+    {
+        return $this->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
+    }
+
+    public function getPlaintiffs()
+    {
+        return $this->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
+    }
+
     public function setName(): void
     {
         $department = $this->serviceType->label;

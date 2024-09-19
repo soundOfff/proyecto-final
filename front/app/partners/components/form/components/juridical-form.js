@@ -113,6 +113,13 @@ export default function JuridicalForm({
           start_date: relatedPartner.pivot.start_date,
           end_date: relatedPartner.pivot.end_date,
           active: relatedPartner.pivot.active,
+          seat: relatedPartner.pivot.seat,
+          legal_circuit: relatedPartner.pivot.legal_circuit,
+          check_in: relatedPartner.pivot.check_in,
+          deed: relatedPartner.pivot.deed,
+          deed_date: relatedPartner.pivot.deed_date,
+          notary: relatedPartner.pivot.notary,
+          sheet: relatedPartner.pivot.sheet,
         })) || []
       );
     }

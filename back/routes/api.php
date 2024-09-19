@@ -267,7 +267,7 @@ Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 
 
 Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 
-Route::get('/documents', [DocumentController::class, 'generate']);
+Route::post('/documents', [DocumentController::class, 'generate']);
 
 Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
 Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);

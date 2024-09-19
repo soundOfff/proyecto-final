@@ -97,6 +97,13 @@ class PartnerController extends Controller
                 'start_date' => $relatedData['start_date'],
                 'end_date' => $relatedData['end_date'],
                 'partner_type_id' => $relatedData['partner_type_id'],
+                'seat' => $relatedData['seat'],
+                'check_in' => $relatedData['check_in'],
+                'deed' => $relatedData['deed'],
+                'deed_date' => $relatedData['deed_date'],
+                'legal_circuit' => $relatedData['legal_circuit'],
+                'notary' => $relatedData['notary'],
+                'sheet' => $relatedData['sheet'],
                 'active' => $relatedData['active'],
             ]);
         }
@@ -142,6 +149,13 @@ class PartnerController extends Controller
                 'start_date' => $relatedData['start_date'],
                 'end_date' => $relatedData['end_date'],
                 'partner_type_id' => $relatedData['partner_type_id'],
+                'seat' => $relatedData['seat'],
+                'check_in' => $relatedData['check_in'],
+                'deed' => $relatedData['deed'],
+                'deed_date' => $relatedData['deed_date'],
+                'legal_circuit' => $relatedData['legal_circuit'],
+                'notary' => $relatedData['notary'],
+                'sheet' => $relatedData['sheet'],
                 'active' => $relatedData['active'],
             ];
         }

@@ -217,7 +217,7 @@ export default function Content({ selectedFork }) {
                 color="info"
                 display="inline"
               >
-                {task.taskable.name}
+                {task.taskable?.name}
               </MDTypography>
             </Link>
           ) : (

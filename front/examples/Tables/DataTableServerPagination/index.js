@@ -72,12 +72,12 @@ function DataTable({
     } else if (meta.current_page + pageSize > meta.last_page) {
       pagination = pagination.slice(
         meta.current_page - pageSize * 2,
-        meta.last_page,
+        meta.last_page
       );
     } else {
       pagination = pagination.slice(
         meta.current_page - pageSize,
-        meta.current_page + pageSize - 1,
+        meta.current_page + pageSize - 1
       );
     }
     setPages(pagination);
@@ -159,32 +159,13 @@ function DataTable({
 
   return (
     <TableContainer sx={{ boxShadow: "none" }} className={className}>
-      {entries || canSearch || actions ? (
+      {canSearch || actions ? (
         <MDBox
           display="flex"
-          justifyContent="space-between"
+          justifyContent={canSearch && actions ? "space-between" : "end"}
           alignItems="center"
           p={1}
         >
-          {entries && (
-            <MDBox display="flex" alignItems="center">
-              <Autocomplete
-                disableClearable
-                value={meta.per_page.toString()}
-                options={entries}
-                onChange={(event, newValue) => {
-                  setPerPage(parseInt(newValue, 10));
-                }}
-                size="small"
-                sx={{ width: "5rem" }}
-                renderInput={(params) => <MDInput {...params} />}
-              />
-              <MDTypography variant="caption" color="secondary" ml={2}>
-                filas por página
-              </MDTypography>
-            </MDBox>
-          )}
-
           {actions && (
             <MDBox display="flex" justifyContent="flex-end">
               {actions}
@@ -285,6 +266,24 @@ function DataTable({
           alignItems={{ xs: "flex-start", sm: "center" }}
           p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
         >
+          {entries && (
+            <MDBox display="flex" alignItems="center">
+              <Autocomplete
+                disableClearable
+                value={meta.per_page.toString()}
+                options={entries}
+                onChange={(event, newValue) => {
+                  setPerPage(parseInt(newValue, 10));
+                }}
+                size="small"
+                sx={{ width: "5rem" }}
+                renderInput={(params) => <MDInput {...params} />}
+              />
+              <MDTypography variant="caption" color="secondary" ml={2}>
+                filas por página
+              </MDTypography>
+            </MDBox>
+          )}
           <MDBox mb={{ xs: 3, sm: 0 }}>
             <MDTypography
               variant="button"

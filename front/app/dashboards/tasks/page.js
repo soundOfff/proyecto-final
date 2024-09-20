@@ -42,7 +42,7 @@ export default async function Tasks({ searchParams }) {
   const stats = await getStats({ ownerId: session.staff.id });
 
   return (
-    <MDBox py={3}>
+    <MDBox py={1}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Suspense fallback={<Loading />}>

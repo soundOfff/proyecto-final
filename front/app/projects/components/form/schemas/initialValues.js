@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import moment from "moment";
-import { NOT_STARTED } from "../../../../../utils/constants/projectStatusesIds";
+import { NOT_STARTED } from "/utils/constants/projectStatusesIds";
 import checkout from "./form";
 
 const {
@@ -30,6 +30,7 @@ const {
     billingType,
     type,
     process,
+    demandAmount,
     selectedMembers,
     startDate,
     hasDeadline,
@@ -48,6 +49,7 @@ const initialValues = {
   [process.name]: "",
   [expedient.name]: "",
   [description.name]: "",
+  [demandAmount.name]: "",
   [billablePartner.name]: "",
   [status.name]: NOT_STARTED,
   [courtId.name]: "",

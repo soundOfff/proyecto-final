@@ -33,13 +33,6 @@ const form = {
       label: "Cliente Facturable",
       errorMsg: "Debe seleccionar un cliente facturable",
     },
-    /*  estimatedHours: {
-      name: "estimated_hours",
-      label: "Horas Estimadas",
-      type: "number",
-      placeholder: "20",
-      errorMsg: "La cantidad de horas es requerida",
-    }, */
     responsiblePersonId: {
       name: "responsible_person_id",
       label: "Persona Responsable",
@@ -49,6 +42,13 @@ const form = {
       name: "project_status_id",
       label: "Estado",
       errorMsg: "Debe seleccionar un estado",
+    },
+    demandAmount: {
+      name: "demand_amount",
+      label: "Monto Demandado",
+      type: "number",
+      placeholder: "1000",
+      errorMsg: "El monto demandado es requerido",
     },
     courtId: {
       name: "court_id",

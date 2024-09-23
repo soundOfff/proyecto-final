@@ -30,6 +30,7 @@ class ProjectResource extends JsonResource
             'cost' => $this->cost,
             'ratePerHour' => $this->rate_per_hour,
             'startDate' => $this->start_date,
+            'demandAmount' => $this->demand_amount,
             'amount' => $this->amount,
             'juryNumber' => $this->jury_number,
             'onSchedule' => $this->on_schedule,

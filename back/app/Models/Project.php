@@ -18,6 +18,7 @@ class Project extends Model
         'project_status_id',
         'law_firm_id',
         'jurisdiction_id',
+        'demand_amount',
         'project_billing_type_id',
         'project_service_type_id',
         'responsible_person_id',

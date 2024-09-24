@@ -367,29 +367,12 @@ export default function Table({ rows, priorities }) {
       Header: "Prioridad",
       accessor: "priority",
       Cell: ({ row }) => (
-        <Select
-          value={row.original.priority.id}
-          onChange={(e) =>
-            handleUpdatePriority(row.original.id, e.target.value)
-          }
-          sx={{
-            minWidth: "100px",
-            padding: "0.75rem 0",
-            textAlign: "center",
-          }}
-        >
-          {priorities.map((priority) => (
-            <MenuItem key={priority.id} value={priority.id}>
-              <MDTypography
-                variant="body3"
-                verticalAlign="center"
-                color={getPriorityColor(priority.label)}
-              >
-                {priority.label}
-              </MDTypography>
-            </MenuItem>
-          ))}
-        </Select>
+        <MDBadge
+          variant="contained"
+          color={getPriorityColor(row.original.priority.label)}
+          size="md"
+          badgeContent={row.original.priority.label}
+        />
       ),
     },
     {

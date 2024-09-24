@@ -24,7 +24,18 @@ class ProposalController extends Controller
 {
     public function select()
     {
-        $proposals = Proposal::all();
+        $query = QueryBuilder::for(Proposal::class)
+            ->allowedFilters(
+                AllowedFilter::callback('customer', function ($query, $value) {
+                    $query
+                        ->where('proposable_type', Proposal::PROPOSABLE_CUSTOMER)
+                        ->where('proposable_id', $value);
+                })
+            );
+
+        $proposals = request()->has('perPage')
+        ? $query->paginate((int) request('perPage'))
+        : $query->get();
 
         return new ProposalSelectResourceCollection($proposals);
     }

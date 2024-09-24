@@ -16,13 +16,13 @@ import FormField from "/pagesComponents/pages/users/new-user/components/FormFiel
 import Partners from "./components/partners";
 import { ErrorMessage, Field } from "formik";
 import { PLAINTIFF, DEFENDANT } from "/utils/constants/PartnerProjectRoles";
+import { getSelect as getSelectProposals } from "/actions/proposals";
 import { getAll as getAllProcesses } from "/actions/processes";
 import { show as getProcess } from "/actions/processes";
 
 export default function FormComponent({
   formData,
   project,
-  proposals,
   roles,
   partnerData,
   billingTypes,
@@ -53,6 +53,7 @@ export default function FormComponent({
     startDate,
     hasDeadline,
     deadline,
+    demandAmount,
     serviceType,
     responsiblePersonId,
     selectedMembers,
@@ -64,6 +65,7 @@ export default function FormComponent({
   } = formField;
 
   const [processes, setProcesses] = useState([]);
+  const [proposals, setProposals] = useState([]);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -156,6 +158,7 @@ export default function FormComponent({
       setFieldValue(billingType.name, project.billingType?.id || "");
       setFieldValue(type.name, project.type || "");
       setFieldValue(process.name, project.processId || "");
+      setFieldValue(demandAmount.name, project.demandAmount || "");
       setFieldValue(
         responsiblePersonId.name,
         project.responsiblePerson?.id || ""
@@ -235,6 +238,14 @@ export default function FormComponent({
     }
   }, [values[process.name]]);
 
+  useEffect(() => {
+    if (values[billablePartner.name]) {
+      getSelectProposals({
+        "filter[customer]": values[billablePartner.name],
+      }).then((data) => setProposals(data));
+    }
+  }, [values[billablePartner.name]]);
+
   return (
     <MDBox p={5}>
       <Grid container spacing={5}>
@@ -248,7 +259,7 @@ export default function FormComponent({
             setFieldValue={setFieldValue}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={3}>
           <FormField
             value={values[cost.name]}
             name={cost.name}
@@ -257,6 +268,20 @@ export default function FormComponent({
             placeholder={cost.placeholder}
             error={errors[cost.name] && touched[cost.name]}
             success={values[cost.name]?.length > 0 && !errors[cost.name]}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormField
+            value={values[demandAmount.name]}
+            name={demandAmount.name}
+            label={demandAmount.label}
+            type={demandAmount.type}
+            placeholder={demandAmount.placeholder}
+            error={errors[demandAmount.name] && touched[demandAmount.name]}
+            success={
+              values[demandAmount.name]?.length > 0 &&
+              !errors[demandAmount.name]
+            }
           />
         </Grid>
         <Grid item xs={12} sm={6}>

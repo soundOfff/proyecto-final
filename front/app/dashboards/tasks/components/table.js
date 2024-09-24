@@ -91,6 +91,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Fecha",
       accessor: "start_date",
+      width: 100,
       Cell: ({ row }) => (
         <MDTypography variant="body2" fontSize="small">
           {moment(row.original.start_date).format("DD/MM/YYYY")}
@@ -100,6 +101,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Nro del caso",
       accessor: "",
+      width: 100,
       Cell: ({ row }) => (
         <MDTypography
           variant="body2"
@@ -127,7 +129,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Caso",
       accessor: "taskable",
-      width: "15%",
+      width: "20%",
       Cell: ({ row }) => (
         <Link href={`projects/${row.original?.taskable?.id}`} color="info">
           {row.original.taskable?.name}
@@ -139,7 +141,7 @@ export default function Table({ rows, meta }) {
       accessor: "name",
       Cell: ({ row }) => {
         return (
-          <MDBox display="flex" flexDirection="row" alignItems="center">
+          <MDBox display="flex" flexDirection="column" alignItems="center">
             <Link href={`/tasks?taskId=${row.original.id}`}>
               {row.original.name}
             </Link>
@@ -222,14 +224,14 @@ export default function Table({ rows, meta }) {
 
   return (
     <>
-      <MDBox py={2} px={2}>
+      <MDBox py={0.5} px={2}>
         <Tabs value={selectedTab} centered onChange={handleChange}>
           {TAB_TYPES.map((tab) => (
             <Tab key={tab.tabIndex} label={tab.label} />
           ))}
         </Tabs>
       </MDBox>
-      <MDBox py={2} px={2}>
+      <MDBox py={0.5} px={2}>
         {isLoading ? (
           <Loading count={table.rows?.length > 3 ? 5 : 3} />
         ) : (

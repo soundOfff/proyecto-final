@@ -50,7 +50,7 @@ export default function Filters({ paymentMethods, partners }) {
   }, [router, pathname, searchParams, search]);
 
   return (
-    <Grid container spacing={3} my={3} width="100%">
+    <Grid container spacing={3} width="100%">
       <Grid item xs={12} sm={6}>
         <FormControl
           sx={{

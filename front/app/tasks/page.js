@@ -49,7 +49,14 @@ export default async function Tasks({
       perPage: perPage,
       page: page,
       sort,
-      include: ["assigneds", "tags", "status", "dependencies", "author"],
+      include: [
+        "assigneds",
+        "tags",
+        "status",
+        "dependencies",
+        "author",
+        "taskable",
+      ],
     }),
     getAllTags(),
     getAllRepeats(),
@@ -66,7 +73,7 @@ export default async function Tasks({
   ]);
 
   return (
-    <MDBox mb={3}>
+    <MDBox mb={1}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>

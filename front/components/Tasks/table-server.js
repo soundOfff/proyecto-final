@@ -15,7 +15,6 @@ import Show from "./show";
 import Link from "next/link";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalContentForm from "/components/ModalContent/Task";
 import { Backdrop, CircularProgress, Grid, Tooltip } from "@mui/material";
@@ -29,16 +28,11 @@ import { useSession } from "next-auth/react";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
-import {
-  useRouter,
-  useSearchParams,
-  usePathname,
-  redirect,
-} from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { getColor, getPriorityColor } from "/utils/project-state-colors";
 
 import useTaskTable from "/hooks/useTaskTable";
-import { startTransition, useEffect, useTransition } from "react";
+import { useEffect, useTransition } from "react";
 
 export default function Table({
   rows,
@@ -95,7 +89,6 @@ export default function Table({
     setErrorSB,
     errorMsg,
     setErrorMsg,
-    handleDelete,
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
@@ -162,29 +155,38 @@ export default function Table({
     {
       Header: "#",
       accessor: "id",
+      width: 50,
     },
     {
-      Header: "Bloqueada por",
+      Header: "Nombre del caso",
       accessor: "isBlocked",
       disableSortBy: true,
-      Cell: ({ row }) => (
-        <MDBox display="flex">
-          {row.original.dependencies.map((dependency) => (
-            <Grid key={dependency.id}>
-              <MDBadge
-                variant="gradient"
-                color={
-                  dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
-                }
-                size="lg"
-                badgeContent={`#${dependency.id}`}
-                sx={{ cursor: "pointer" }}
-                onClick={() => handleOpenShowModal(dependency.id)}
-              />
-            </Grid>
-          ))}
-        </MDBox>
-      ),
+      Cell: ({ row }) => {
+        const task = row.original;
+        return (
+          <MDBox display="flex" alignItems="center">
+            {task.taskable_type === "project" ? (
+              <Link
+                href={`/projects/${task.taskable?.id}`}
+                sx={{ overflow: "wrap" }}
+              >
+                <MDTypography
+                  variant="body2"
+                  fontSize="small"
+                  color="info"
+                  display="inline"
+                >
+                  {task.taskable?.name}
+                </MDTypography>
+              </Link>
+            ) : (
+              <MDTypography variant="body2" color="textSecondary">
+                -
+              </MDTypography>
+            )}
+          </MDBox>
+        );
+      },
     },
     {
       Header: "Nombre",
@@ -231,7 +233,7 @@ export default function Table({
       Header: "Fecha de vencimiento",
       accessor: "due_date",
     },
-    {
+    /* {
       Header: "Etiquetas",
       accessor: "labels",
       disableSortBy: true,
@@ -248,7 +250,7 @@ export default function Table({
             />
           </Grid>
         )),
-    },
+    }, */
     {
       Header: "Prioridad",
       accessor: "priority",
@@ -359,17 +361,6 @@ export default function Table({
   return (
     <MDBox>
       {renderSaveSnackbar()}
-      <MDBox width="100%" display="flex" gap={5} justifyContent="flex-end">
-        <MDButton
-          variant="gradient"
-          color={darkMode ? "light" : "dark"}
-          onClick={() => {
-            setOpenEditModal(true);
-          }}
-        >
-          Crear nueva tarea
-        </MDButton>
-      </MDBox>
       {openEditModal && (
         <Modal
           open={openEditModal}
@@ -450,6 +441,17 @@ export default function Table({
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
+        actions={
+          <MDButton
+            variant="gradient"
+            color={darkMode ? "light" : "dark"}
+            onClick={() => {
+              setOpenEditModal(true);
+            }}
+          >
+            Crear nueva tarea
+          </MDButton>
+        }
         noEndBorder
       />
       <DeleteRow

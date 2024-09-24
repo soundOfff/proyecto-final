@@ -61,7 +61,6 @@ export default function Filters({ statuses }) {
           sx={{
             width: { lg: "80%", xs: "100%" },
             height: "45px",
-            mb: 2,
           }}
         >
           <InputLabel id="status">Estado</InputLabel>
@@ -95,7 +94,6 @@ export default function Filters({ statuses }) {
           sx={{
             width: { lg: "80%", xs: "100%" },
             height: "50px",
-            mb: 2,
             display: "flex",
             justifyItems: "end",
           }}
@@ -107,7 +105,7 @@ export default function Filters({ statuses }) {
         item
         xs={12}
         sm={4}
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{ display: "flex", justifyContent: "flex-end" }}
       >
         <Link
           href={{

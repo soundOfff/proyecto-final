@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 
 import FormField from "../components/form-field";
@@ -12,14 +12,39 @@ import MDButton from "/components/MDButton";
 export default function OwnerForm({
   formField,
   values,
+  owner,
   setFieldValue,
   handleCancel,
   handleSubmit,
   errors,
   touched,
 }) {
-  const { seat, checkIn, deed, deedDate, legalCircuit, notary, sheet } =
-    formField;
+  console.log(owner);
+  const {
+    seat,
+    checkIn,
+    deed,
+    deedDate,
+    legalCircuit,
+    notary,
+    sheet,
+    relatedPartnerId,
+    partnerTypeId,
+  } = formField;
+
+  useEffect(() => {
+    if (owner) {
+      setFieldValue(partnerTypeId.name, owner.partner_type_id ?? "");
+      setFieldValue(relatedPartnerId.name, owner.related_partner_id ?? "");
+      setFieldValue(seat.name, owner.seat ?? "");
+      setFieldValue(checkIn.name, owner.check_in ?? "");
+      setFieldValue(deed.name, owner.deed ?? "");
+      setFieldValue(deedDate.name, owner.deed_date ?? "");
+      setFieldValue(legalCircuit.name, owner.legal_circuit ?? "");
+      setFieldValue(notary.name, owner.notary ?? "");
+      setFieldValue(sheet.name, owner.sheet ?? "");
+    }
+  }, [owner, setFieldValue]);
 
   return (
     <MDBox
@@ -28,9 +53,19 @@ export default function OwnerForm({
       flexDirection="column"
       justifyContent="space-between"
     >
-      <MDTypography variant="h5" color="dark" mb={3} fontWeight="bold">
+      <MDBox
+        color="white"
+        bgColor="dark"
+        variant="gradient"
+        borderRadius="lg"
+        shadow="lg"
+        overflow="auto"
+        opacity={1}
+        p={2}
+        mb={2}
+      >
         Datos del propietario
-      </MDTypography>
+      </MDBox>
       <Grid xs={12} container spacing={3}>
         <Grid item xs={12} sm={12}>
           <FormField
@@ -149,15 +184,8 @@ export default function OwnerForm({
         <MDButton variant="gradient" color="light" onClick={handleCancel}>
           Cancelar
         </MDButton>
-        <MDButton
-          variant="gradient"
-          color="dark"
-          onClick={() => {
-            handleSubmit();
-            handleCancel();
-          }}
-        >
-          Agregar Persona
+        <MDButton variant="gradient" color="dark" onClick={handleSubmit}>
+          {owner ? "Editar Persona" : "Agregar Persona"}
         </MDButton>
       </MDBox>
     </MDBox>

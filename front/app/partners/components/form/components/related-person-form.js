@@ -10,7 +10,8 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
 import Modal from "/components/Modal";
-import PersonForm from "/components/ModalContent/Partner/";
+import PersonForm from "/components/ModalContent/Partner";
+import EditIcon from "@mui/icons-material/Edit";
 
 import * as Yup from "yup";
 import OwnerForm from "./owner-person-form";
@@ -88,7 +89,8 @@ export default function RelatedPersonFormComponent({
   partnerTypes,
 }) {
   const [openModal, setOpenModal] = useState(false);
-  const [ownerModalOpen, setOwnerModalOpen] = useState(true);
+  const [ownerModalOpen, setOwnerModalOpen] = useState(false);
+  const [selectedOwner, setSelectedOwner] = useState(null);
   const {
     relatedPartnerId,
     partnerTypeId,
@@ -119,7 +121,7 @@ export default function RelatedPersonFormComponent({
     [sheet.name]: Yup.string(),
   });
 
-  const clearFields = (actions) => {
+  const clearFields = (actions = { setTouched: () => {} }) => {
     setFieldValue(startDate.name, moment().format("YYYY-MM-DD"));
     setFieldValue(endDate.name, "");
     setFieldValue(partnerTypeId.name, "");
@@ -133,6 +135,7 @@ export default function RelatedPersonFormComponent({
     setFieldValue(notary.name, "");
     setFieldValue(sheet.name, "");
     actions.setTouched({});
+    setSelectedOwner(null);
   };
 
   const deleteRelatedPartner = (index) => {
@@ -159,25 +162,56 @@ export default function RelatedPersonFormComponent({
     },
     validationSchema: addRelatedPersonValidationSchema,
     onSubmit: (values, methods) => {
-      console.log(values);
-      setFieldValueExternal("related_partners", [
-        ...externalValues.related_partners,
-        {
-          related_partner_id: values[relatedPartnerId.name],
-          partner_type_id: values[partnerTypeId.name],
-          start_date: values[startDate.name],
-          end_date: values[endDate.name],
-          active: values[active.name],
-          seat: values[seat.name],
-          deed: values[deed.name],
-          check_in: values[checkIn.name],
-          deed_date: values[deedDate.name],
-          legal_circuit: values[legalCircuit.name],
-          notary: values[notary.name],
-          sheet: values[sheet.name],
-        },
-      ]);
+      if (selectedOwner) {
+        // edit mode
+        const updatedRelatedPartners = externalValues.related_partners.map(
+          (partner) => {
+            if (
+              selectedOwner.related_partner_id === partner.related_partner_id &&
+              selectedOwner.partner_type_id === partner.partner_type_id
+            ) {
+              console.log("Test 2");
+              return {
+                related_partner_id: values[relatedPartnerId.name],
+                partner_type_id: values[partnerTypeId.name],
+                start_date: values[startDate.name],
+                end_date: values[endDate.name],
+                active: values[active.name],
+                seat: values[seat.name],
+                deed: values[deed.name],
+                check_in: values[checkIn.name],
+                deed_date: values[deedDate.name],
+                legal_circuit: values[legalCircuit.name],
+                notary: values[notary.name],
+                sheet: values[sheet.name],
+              };
+            }
+            return partner;
+          }
+        );
+        setFieldValueExternal("related_partners", updatedRelatedPartners);
+      } else {
+        // create mode
+        setFieldValueExternal("related_partners", [
+          ...externalValues.related_partners,
+          {
+            related_partner_id: values[relatedPartnerId.name],
+            partner_type_id: values[partnerTypeId.name],
+            start_date: values[startDate.name],
+            end_date: values[endDate.name],
+            active: values[active.name],
+            seat: values[seat.name],
+            deed: values[deed.name],
+            check_in: values[checkIn.name],
+            deed_date: values[deedDate.name],
+            legal_circuit: values[legalCircuit.name],
+            notary: values[notary.name],
+            sheet: values[sheet.name],
+          },
+        ]);
+      }
       clearFields(methods);
+      handleCloseModal();
     },
   });
   const columns = [
@@ -264,11 +298,26 @@ export default function RelatedPersonFormComponent({
             >
               <Icon>delete</Icon>&nbsp;Borrar
             </MDButton>
+            <MDButton
+              variant="text"
+              color="info"
+              onClick={() => {
+                setOwnerModalOpen(true);
+                setSelectedOwner(row.original);
+              }}
+            >
+              <Icon>edit</Icon>&nbsp;Editar
+            </MDButton>
           </MDBox>
         );
       },
     },
   ];
+
+  const handleCloseModal = () => {
+    setOwnerModalOpen(false);
+    clearFields();
+  };
 
   const table = {
     columns,
@@ -384,10 +433,11 @@ export default function RelatedPersonFormComponent({
           variant="gradient"
           color="dark"
           size="small"
-          sx={{ width: "100%" }}
           onClick={() => setOwnerModalOpen(true)}
+          sx={{ width: "80px", p: 1 }}
         >
-          Editar <Icon sx={{ mb: 1, ml: 1 }}>edit</Icon>
+          Editar
+          <EditIcon sx={{ ml: 1 }} />
         </MDButton>
       </Grid>
       <Grid xs={12} display="flex" gap={2} justifyContent="end" item>
@@ -425,9 +475,10 @@ export default function RelatedPersonFormComponent({
       >
         <OwnerForm
           setFieldValue={setFieldValue}
+          owner={selectedOwner}
           values={values}
           errors={errors}
-          handleCancel={() => setOwnerModalOpen(false)}
+          handleCancel={handleCloseModal}
           handleSubmit={handleSubmit}
           formField={newRelatedPeopleFormField.formField}
         />

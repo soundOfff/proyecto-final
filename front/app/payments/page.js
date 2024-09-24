@@ -28,12 +28,12 @@ export default async function Payments({ searchParams }) {
   const partners = await getAllPartners();
 
   return (
-    <MDBox mb={3}>
+    <MDBox mb={1}>
       <Card>
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
             <Filters paymentMethods={paymentMethods} partners={partners} />
-            <MDBox py={1}>
+            <MDBox>
               <Table rows={payments} />
             </MDBox>
           </Grid>

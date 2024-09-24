@@ -146,13 +146,13 @@ export default function Table({ rows }) {
   const table = { columns, rows };
   return (
     <MDBox>
-      <MDBox display="flex" justifyContent="end" my={3}>
-        {isModalOpen && (
+      {isModalOpen && (
+        <MDBox display="flex" justifyContent="end" my={3}>
           <Modal open={isModalOpen} onClose={handleCloseModal}>
             <ModalContent setOpenModal={setIsModalOpen} payment={selectedRow} />
           </Modal>
-        )}
-      </MDBox>
+        </MDBox>
+      )}
       <DataTable
         table={table}
         showTotalEntries={true}

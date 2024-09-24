@@ -49,6 +49,7 @@ function DataTable({
   noEndBorder = false,
   className = "desktop",
   meta = null,
+  actions = null,
 }) {
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
@@ -158,33 +159,21 @@ function DataTable({
 
   return (
     <TableContainer sx={{ boxShadow: "none" }} className={className}>
-      {entries || canSearch ? (
+      {canSearch || actions ? (
         <MDBox
           display="flex"
-          justifyContent="space-between"
+          justifyContent={canSearch && actions ? "space-between" : "end"}
           alignItems="center"
           p={1}
         >
-          {entries && (
-            <MDBox display="flex" alignItems="center">
-              <Autocomplete
-                disableClearable
-                value={meta.per_page.toString()}
-                options={entries}
-                onChange={(event, newValue) => {
-                  setPerPage(parseInt(newValue, 10));
-                }}
-                size="small"
-                sx={{ width: "5rem" }}
-                renderInput={(params) => <MDInput {...params} />}
-              />
-              <MDTypography variant="caption" color="secondary" ml={2}>
-                filas por página
-              </MDTypography>
+          {actions && (
+            <MDBox display="flex" justifyContent="flex-end">
+              {actions}
             </MDBox>
           )}
         </MDBox>
       ) : null}
+
       <Table {...getTableProps()}>
         <MDBox
           component="thead"
@@ -277,6 +266,24 @@ function DataTable({
           alignItems={{ xs: "flex-start", sm: "center" }}
           p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
         >
+          {entries && (
+            <MDBox display="flex" alignItems="center">
+              <Autocomplete
+                disableClearable
+                value={meta.per_page.toString()}
+                options={entries}
+                onChange={(event, newValue) => {
+                  setPerPage(parseInt(newValue, 10));
+                }}
+                size="small"
+                sx={{ width: "5rem" }}
+                renderInput={(params) => <MDInput {...params} />}
+              />
+              <MDTypography variant="caption" color="secondary" ml={2}>
+                filas por página
+              </MDTypography>
+            </MDBox>
+          )}
           <MDBox mb={{ xs: 3, sm: 0 }}>
             <MDTypography
               variant="button"

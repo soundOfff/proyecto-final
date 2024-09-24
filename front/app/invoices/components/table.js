@@ -10,6 +10,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "id",
       accessor: "id",
+      width: 50,
       Cell: ({ row }) => (
         <Link
           href={`/invoices/${row.original.id}`}
@@ -45,6 +46,7 @@ export default function Table({ rows, meta }) {
     {
       id: "project",
       Header: "Caso",
+      width: 500,
       accessor: "project.name",
       Cell: ({ row }) => {
         return row.original.project ? (
@@ -68,6 +70,7 @@ export default function Table({ rows, meta }) {
     {
       Header: "Proforma",
       accessor: "estimate",
+      width: 85,
       Cell: ({ value }) =>
         value ? (
           <Link href={`/estimates/${value.id}`}>{value.number}</Link>
@@ -77,6 +80,7 @@ export default function Table({ rows, meta }) {
       id: "serviceType",
       Header: "Departamento",
       accessor: "project.serviceType.label",
+      width: 85,
     },
   ];
 

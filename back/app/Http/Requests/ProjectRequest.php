@@ -37,6 +37,7 @@ class ProjectRequest extends FormRequest
             'description' => 'nullable|string',
             'estimated_hours' => 'nullable|numeric',
             'cost' => 'nullable|numeric',
+            'demand_amount' => 'nullable|numeric',
             'type' => 'nullable|string',
             'partners' => 'nullable|array',
             'partners.*.id' => 'required|numeric|exists:partners,id',

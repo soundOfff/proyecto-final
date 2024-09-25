@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Actions\TaskActions;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Services\FcmService;
+use App\Services\NotificationService;
 
 class TaskObserver
 {
@@ -23,27 +23,34 @@ class TaskObserver
      */
     public function updated(Task $task): void
     {
-        if (!$task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) return;
+        if (! $task->wasChanged('task_status_id') || $task->task_status_id !== TaskStatus::COMPLETED) {
+            return;
+        }
         // Case 1 - Task is closed.
         $this->dispatchActions($task);
         // Case 2 - Task is closed and another task is unlocked.
         $lockedTasks = $task->dependentTasks;
         $recentlyUnlockedTasks = [];
         foreach ($lockedTasks as $lt) {
-            $isBlocked = $lt->dependencies->contains(fn(Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
-            if (!$isBlocked) {
+            $isBlocked = $lt->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
+            if (! $isBlocked) {
                 $recentlyUnlockedTasks[] = $lt;
             }
         }
 
         if (count($recentlyUnlockedTasks) > 0) {
-            $fcmService = new FcmService();
+            $notificationService = new NotificationService();
             foreach ($recentlyUnlockedTasks as $unlockedTask) {
                 $this->dispatchActions($unlockedTask);
                 // send notification to staff assigneds
                 foreach ($unlockedTask->assigneds as $assigned) {
+                    $notificationService->sendSlackNotification(
+                        staffId: $assigned->id,
+                        header: "La tarea #{$unlockedTask->id} ha sido desbloqueada",
+                        body: "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
+                    );
                     foreach ($assigned->devices as $device) {
-                        $fcmService->sendNotification(
+                        $notificationService->sendWebPushNotification(
                             $device->device_token,
                             "La tarea #{$unlockedTask->id} ha sido desbloqueada",
                             "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
@@ -83,6 +90,6 @@ class TaskObserver
 
     private function dispatchActions(Task $task)
     {
-        $task->actions->each(fn($action) => TaskActions::handleAction($task, $action));
+        $task->actions->each(fn ($action) => TaskActions::handleAction($task, $action));
     }
 }

@@ -11,6 +11,7 @@
         "kreait/laravel-firebase": "^5.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
+        "laravel/slack-notification-channel": "^3.3",
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "masbug/flysystem-google-drive-ext": "^2.3",

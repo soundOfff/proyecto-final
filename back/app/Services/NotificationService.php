@@ -4,14 +4,17 @@ namespace App\Services;
 
 use App\Models\Notification;
 use App\Models\NotificationPriority;
+use App\Models\Staff;
 use App\Models\StaffDevice;
+use App\Notifications\SlackNotification;
+use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Exception\Messaging as MessagingErrors;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as MessagingNotification;
 
-class FcmService
+class NotificationService
 {
-    public function sendNotification($deviceToken, $title, $body, $staffId, $modelName, $modelId, $createdBy = null, $priorityId = NotificationPriority::DEFAULT): void
+    public function sendWebPushNotification($deviceToken, $title, $body, $staffId, $modelName, $modelId, $createdBy = null, $priorityId = NotificationPriority::DEFAULT): void
     {
         try {
             $messaging = app('firebase.messaging');
@@ -37,7 +40,9 @@ class FcmService
                 ->whereBetween('created_at', [now()->subMinutes(1), now()->addMinutes(1)])
                 ->exists();
 
-            if ($isNotificationAlreadyCreated) return;
+            if ($isNotificationAlreadyCreated) {
+                return;
+            }
 
             $notification = Notification::create([
                 'title' => $title,
@@ -51,5 +56,11 @@ class FcmService
         } catch (MessagingErrors\NotFound $e) {
             StaffDevice::where('device_token', $deviceToken)->delete();
         }
+    }
+
+    public function sendSlackNotification(int $staffId, string $header, string $body): void
+    {
+        $staff = Staff::find($staffId);
+        $staff->notify(new SlackNotification($header, $body));
     }
 }

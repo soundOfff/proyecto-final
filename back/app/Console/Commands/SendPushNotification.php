@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Reminder;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Services\FcmService;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +16,13 @@ class SendPushNotification extends Command
 
     protected $description = 'Send push notification to all staffs with device token';
 
-    protected $fcmService;
+    protected $notificationService;
 
-    public function __construct(FcmService $fcmService)
+    public function __construct(NotificationService $notificationService)
     {
         parent::__construct();
 
-        $this->fcmService = $fcmService;
+        $this->notificationService = $notificationService;
     }
 
     public function handle()
@@ -56,10 +56,10 @@ class SendPushNotification extends Command
             ->each(function ($task) {
                 $task->assigneds->each(function ($staff) use ($task) {
                     $staff->devices->each(function ($device) use ($task) {
-                        $this->fcmService->sendNotification(
+                        $this->notificationService->sendWebPushNotification(
                             $device->device_token,
-                            "Nueva Tarea: " . $task->name,
-                            $task->author->first_name . " " . $task->author->last_name . " te ha asignado una nueva tarea " . $task->name,
+                            'Nueva Tarea: '.$task->name,
+                            $task->author->first_name.' '.$task->author->last_name.' te ha asignado una nueva tarea '.$task->name,
                             $task->owner_id,
                             strtolower(class_basename(Task::class)),
                             $task->id
@@ -72,7 +72,8 @@ class SendPushNotification extends Command
         foreach ($notifies as $notify) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id, $notify->creator, $notify->priority_id);
+                $this->notificationService->sendWebPushNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id, $notify->creator, $notify->priority_id);
+                $this->notificationService->sendSlackNotification(staffId: $notify->staff_id, header: $notify->task_name, body: $notify->description);
                 Reminder::find($notify->reminder_id)->update(['is_notified' => true]);
             }
         }

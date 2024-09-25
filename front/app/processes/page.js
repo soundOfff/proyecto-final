@@ -9,7 +9,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function Proposals({
-  searchParams: { perPage = 10, page = 1, sort = "-id" },
+  searchParams: { perPage = 50, page = 1, sort = "-id" },
 }) {
   const include = ["projectServiceType", "author"];
   const {

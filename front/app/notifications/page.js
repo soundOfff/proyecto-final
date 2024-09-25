@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Notifications({
   searchParams: {
-    perPage = 10,
+    perPage = 50,
     page = 1,
     sort = "is_seen",
     type,

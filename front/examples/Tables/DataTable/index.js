@@ -72,7 +72,7 @@ const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
 IndeterminateCheckbox.displayName = "IndeterminateCheckbox";
 
 function DataTable({
-  entriesPerPage = { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
+  entriesPerPage = { defaultValue: 50, entries: [5, 10, 15, 20, 25, 50] },
   canSearch = false,
   showTotalEntries = true,
   table = [],
@@ -91,7 +91,7 @@ function DataTable({
     : 10;
   const entries = entriesPerPage.entries
     ? entriesPerPage.entries.map((el) => el.toString())
-    : ["5", "10", "15", "20", "25"];
+    : ["5", "10", "15", "20", "25", "50"];
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
   const tableInstance = useTable(

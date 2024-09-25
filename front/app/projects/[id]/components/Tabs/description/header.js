@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Loader from "/components/Loader";
+// import Loader from "/components/Loader";
+import MDSnackbar from "/components/MDSnackbar";
 import { Grid } from "@mui/material";
 import { setColor } from "/utils/project-state-colors";
 
@@ -21,9 +22,30 @@ import { generate } from "/actions/documents";
 import DeleteRow from "/components/DeleteRow";
 import Link from "next/link";
 
+function DocumentLink({ url }) {
+  return (
+    <MDBox sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <Link
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        style={{ color: "black", textDecoration: "none" }}
+      >
+        <MDButton variant="outlined" size="small" color="dark">
+          Abrir documento
+        </MDButton>
+      </Link>
+    </MDBox>
+  );
+}
+
 export default function Header() {
   const { project } = useDataProvider();
   const [isLoading, setIsLoading] = useState(false);
+  const [generateErrorSb, setGenerateErrorSb] = useState(false);
+  const [generateSuccessSb, setGenerateSuccessSb] = useState(false);
+  const [generateInfo, setGenerateInfo] = useState(null);
+  const [generateLink, setGenerateLink] = useState("#");
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -46,18 +68,79 @@ export default function Header() {
 
   const handleGenerateDocument = () => {
     setIsLoading(true);
-    generate()
+    generate(project.id)
       .then((data) => {
-        setIsLoading(false);
-        window.open(data.url, "_blank");
+        setGenerateSuccessSb(true);
+        setGenerateInfo("Documento generado correctamente");
+        setGenerateLink(data.url);
       })
-      .catch(() => setIsLoading(false));
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        setIsLoading(false);
+        setGenerateErrorSb(true);
+        setGenerateInfo(
+          `Error al generar el documento: ${
+            error.message.split("Message: ")[1]
+          }`
+        );
+      });
   };
 
-  return isLoading ? (
-    <Loader />
-  ) : (
+  const renderSnackbar = () => {
+    if (isLoading) {
+      return (
+        <MDSnackbar
+          color="info"
+          icon="notifications"
+          title="Generando documento..."
+          content={
+            <MDTypography variant="caption" color="white">
+              Este proceso puede tardar unos minutos. Por favor, espere.
+            </MDTypography>
+          }
+          open={isLoading}
+          onClose={() => setIsLoading(false)}
+          close={() => setIsLoading(false)}
+        />
+      );
+    }
+    if (generateErrorSb) {
+      return (
+        <MDSnackbar
+          color="error"
+          icon="error"
+          title="Error al generar documento"
+          content={
+            <MDTypography variant="caption" color="dark">
+              {generateInfo}
+            </MDTypography>
+          }
+          open={generateErrorSb}
+          onClose={() => setGenerateErrorSb(false)}
+          close={() => setGenerateErrorSb(false)}
+          bgWhite
+        />
+      );
+    }
+    if (generateSuccessSb) {
+      return (
+        <MDSnackbar
+          color="success"
+          icon="check_circle"
+          title="Documento generado correctamente"
+          content={<DocumentLink url={generateLink} />}
+          open={generateSuccessSb}
+          onClose={() => setGenerateSuccessSb(false)}
+          close={() => setGenerateSuccessSb(false)}
+          bgWhite
+        />
+      );
+    }
+  };
+
+  return (
     <Grid container mt={3} mb={5} lineHeight={0}>
+      {renderSnackbar()}
       <Grid item xs={12} md={6}>
         <MDTypography
           variant="h4"

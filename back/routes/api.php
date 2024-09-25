@@ -62,7 +62,6 @@ use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
-use App\Models\NotificationPriority;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

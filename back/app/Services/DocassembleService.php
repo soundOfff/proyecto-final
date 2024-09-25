@@ -6,6 +6,7 @@ use App\Models\Partner;
 use App\Models\Project;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use NumberToWords\NumberToWords;
 
 class DocassembleService
 {
@@ -13,119 +14,10 @@ class DocassembleService
     {
     }
 
-    // private function concatenateProperties($items, array $mapping): array
-    // {
-    //     $prevData = [];
-
-    //     // Initialize prevData with empty strings on mapping
-    //     foreach ($mapping as $property => $outputKey) {
-    //         $prevData[$outputKey] = '';
-    //     }
-
-    //     foreach ($items as $item) {
-    //         foreach ($mapping as $property => $outputKey) {
-    //             // $property = 'jurisdiction->name', $outputKey = 'demandado_corregimiento'
-    //             $value = $this->getPropertyValue($item, $property);
-    //             $prevData[$outputKey] .= ($prevData[$outputKey] ? ', ' : '').$value;
-    //         }
-    //     }
-
-    //     return $prevData;
-    // }
-
-    // // Helper function
-    // private function getPropertyValue($item, $property)
-    // {
-    //     $properties = explode('->', $property);
-    //     $value = $item;
-
-    //     foreach ($properties as $prop) {
-    //         if (isset($value->{$prop})) {
-    //             $value = $value->{$prop};
-    //         } else {
-    //             return '';  // Return empty string if property not found
-    //         }
-    //     }
-
-    //     return $value;
-    // }
-
-    private function getDefendantsData($defendants): array | null
-    {
-        return null;
-        // $mapping = [
-        //     'merged_name' => 'demandado_nombre_completo',
-        //     'is_male' => 'demandado_genero',
-        //     'id_number' => 'demandado_numero_id',
-        //     'id_type' => 'demandado_tipo_id',
-        //     'jurisdiction->name' => 'demandado_corregimiento',
-        //     'jurisdiction->district->name' => 'demandado_distrito',
-        //     'jurisdiction->district->province->name' => 'demandado_provincia',
-        //     'address' => 'demandado_direccion',
-        //     'country->nationality' => 'demandado_nacionalidad',
-        // ];
-
-        // $data = $this->concatenateProperties($defendants, $mapping);
-
-        // Special handling for gender
-        // foreach ($defendants as $defendant) {
-        //     $gender = $defendant->is_male ? 'Masculino' : 'Femenino';
-        //     $data['demandado_genero'] .= ($data['demandado_genero'] ? ', ' : '').$gender;
-        // }
-
-        // return $data;
-    }
-
-    // private function getPlaintiffsData($plaintiffs): array
-    // {
-    //     $plaintiffsData = [];
-    //     foreach ($plaintiffs as $plaintiff) {
-    //         $plaintiffsData[] = [
-    //             'demandante_nombre_completo' => $plaintiff->merged_name,
-    //             'demandante_corregimiento' => $plaintiff->jurisdiction->name,
-    //             'demandante_distrito' => $plaintiff->jurisdiction->district->name,
-    //             'demandante_provincia' => $plaintiff->jurisdiction->district->province->name,
-    //             'demandante_direccion' => $plaintiff->address,
-    //             'demandante_ficha' => 'Something',
-    //             'demandante_imagen' => 'Something',
-    //             'demandante_rollo' => 'Something',
-    //             'demandante_telefono' => $plaintiff->phone_number,
-    //         ];
-    //     }
-
-    //     return $plaintiffsData;
-    // }
-
-    // private function getRepresentativeData(Partner $representative): array
-    // {
-    //     return [
-    //         'APODERADO_NOMBRE_COMPLETO' => $representative->merged_name,
-    //         'APODERADO_NUMERO_ID' => $representative->id_number,
-    //         'APODERADO_TIPO_ID' => $representative->id_type,
-    //         'apoderado_asiento' => 'Something',
-    //         'apoderado_circuito' => 'Something',
-    //         'apoderado_corregimiento' => $representative->jurisdiction->name,
-    //         'apoderado_distrito' => $representative->jurisdiction->district->name,
-    //         'apoderado_provincia' => $representative->jurisdiction->district->province->name,
-    //         'apoderado_direccion' => $representative->address,
-    //         'apoderado_entrada' => 'Something',
-    //         'apoderado_escritura' => 'Something',
-    //         'apoderado_escritura_fecha' => 'Something',
-    //         'apoderado_estado_civil' => $representative->civil_status,
-    //         'apoderado_ficha' => 'Something',
-    //         'apoderado_genero' => $representative->is_male ? 'Masculino' : 'Femenino',
-    //         'apoderado_nacionalidad' => $representative->country->nationality,
-    //         'apoderado_notaria' => 'Something',
-    //         'apoderado_numero_id' => $representative->id_number,
-    //         'apoderado_tipo_id' => $representative->id_type,
-    //         'apoderado_ocupacion' => $representative->occupation,
-    //     ];
-    // }
-
     public function createDocument(Project $project)
     {
-        $i = 'docassemble.playground3:acta_sociedad_fiadora_preguntas.yml';
-        $key = env('DOCASSEMBLE_KEY');
+        $i = 'docassemble.playground3:velo_poder_testing.yml'; // TODO: change by env()
+        $key = '7MydeUly6YuGl1Ww7YTwxik08Xp6cbuX'; // TODO: change by env()
 
         $credentials = Http::docassemble()
             ->withQueryParameters([
@@ -137,22 +29,73 @@ class DocassembleService
         $session = $credentials['session'];
         $secret = $credentials['secret'];
 
-        $defendants = $project->getDefendants();
-        $plaintiffs = $project->getPlaintiffs();
+        $defendant = $project->getDefendants()->first();
+        $plaintiff = $project->getPlaintiffs()->first();
 
-        // $representative = Partner::findOrFail($plaintiff->pivot->owner_id);
-        $defendantsData = $this->getDefendantsData($defendants);
-        $plaintiffsData = $this->getPlaintiffsData($plaintiffs);
-        dd($plaintiffsData);
+        $plaintiffRepresentativeId = $plaintiff->pivot->owner_id;
+
+        abort_if(! $plaintiffRepresentativeId, 404, 'Apoderado no encontrado');
+
+        $representative = $plaintiff->relatedPartners()->find($plaintiffRepresentativeId);
+
+        abort_if(! $representative, 404, 'Error al obtener el apoderado');
+
+        $number2Words = new NumberToWords();
+        $numberTransformer = $number2Words->getNumberTransformer('es');
 
         $variables = [
-            'NOMBRE_PROCESO' => $project->process->name,
-            'proceso_monto' => '111',
-            'proceso_monto_escrito' => 'Ciento once',
-            'CIRCUITO_MUNICIPAL' => 'Something',
-        ];
+            // Representative data
+            'apoderado_nombre_completo' => $representative->merged_name,
+            'apoderado_corregimiento' => $representative->jurisdiction->name,
+            'apoderado_distrito' => $representative->jurisdiction->district->name,
+            'apoderado_provincia' => $representative->jurisdiction->district->province->name,
+            'apoderado_direccion' => $representative->address,
+            'apoderado_estado_civil' => $representative->civil_status,
+            'apoderado_genero' => $representative->is_male ? 'Masculino' : 'Femenino',
+            'apoderado_nacionalidad' => $representative->country->nationality,
+            'apoderado_numero_id' => $representative->id_number,
+            'apoderado_tipo_id' => $representative->id_type,
+            'apoderado_ocupacion' => $representative->occupation,
 
-        dd($variables);
+            // Representative pivot data
+            'apoderado_entrada' => $representative->pivot->check_in,
+            'apoderado_escritura' => $representative->pivot->deed,
+            'apoderado_notaria' => $representative->pivot->notary,
+            'apoderado_escritura_fecha' => $representative->pivot->deed_date,
+            'apoderado_asiento' => $representative->pivot->seat,
+            'apoderado_circuito' => $representative->pivot->legal_circuit,
+            'apoderado_ficha' => $representative->pivot->sheet,
+
+            // Plaintiff data
+            'demandante' => $plaintiff->merged_name,
+            'demandante_nombre_completo' => $plaintiff->merged_name,
+            'demandante_corregimiento' => $plaintiff->jurisdiction->name,
+            'demandante_distrito' => $plaintiff->jurisdiction->district->name,
+            'demandante_provincia' => $plaintiff->jurisdiction->district->province->name,
+            'demandante_direccion' => $plaintiff->address,
+            'demandante_telefono' => $plaintiff->phone_number,
+            'demandante_ficha' => $plaintiff->file_number,
+            'demandante_imagen' => $plaintiff->image_number,
+            'demandante_rollo' => $plaintiff->roll_number,
+
+            // Defendant data
+            'demandado' => $defendant->merged_name,
+            'demandado_corregimiento' => $defendant->jurisdiction->name,
+            'demandado_distrito' => $defendant->jurisdiction->district->name,
+            'demandado_provincia' => $defendant->jurisdiction->district->province->name,
+            'demandado_direccion' => $defendant->address,
+            'demandado_genero' => $defendant->is_male ? 'Masculino' : 'Femenino',
+            'demandado_nacionalidad' => $defendant->country->nationality,
+            'demandado_nombre_completo' => $defendant->merged_name,
+            'demandado_numero_id' => $defendant->id_number,
+            'demandado_tipo_id' => $defendant->id_type,
+
+            'nombre_proceso' => $project->process->name,
+            'proceso_monto' => $project->demand_amount,
+            'proceso_monto_escrito' => $numberTransformer->toWords($project->demand_amount ?? 0),
+            'circuito_municipal' => 'Something',
+            'circuito_numero' => 'Something',
+        ];
 
         $interview = Http::docassemble()
             ->post('/session',
@@ -162,6 +105,7 @@ class DocassembleService
                     'session' => $session,
                     'secret' => $secret,
                     'variables' => $variables,
+                    'file_number' => 0,
                 ]
             )
             ->json();

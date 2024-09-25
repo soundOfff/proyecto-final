@@ -36,4 +36,10 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => 'http://example.com/callback-url',
     ],
+
+    'docassemble' => [
+        'index' => env('DOCASSEMBLE_INDEX'),
+        'key' => env('DOCASSEMBLE_KEY'),
+        'url' => env('DOCASSEMBLE_URL'),
+    ],
 ];

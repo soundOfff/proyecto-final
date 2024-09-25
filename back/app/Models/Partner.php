@@ -110,24 +110,28 @@ class Partner extends Model
         return $this->belongsTo(self::class, 'consolidator_id', 'id', 'consolidator');
     }
 
-    public function president(): BelongsTo
+    public function president(): BelongsToMany
     {
-        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::PRESIDENT);
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::PRESIDENT);
     }
 
-    public function secretary(): BelongsTo
+    public function secretary(): BelongsToMany
     {
-        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::SECRETARY);
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::SECRETARY);
     }
 
-    public function director(): BelongsTo
+    public function director(): BelongsToMany
     {
-        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::DIRECTOR);
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::DIRECTOR);
     }
 
-    public function representative(): BelongsTo
+    public function representative(): BelongsToMany
     {
-        return $this->relatedPartners->where('pivot.partner_type_id', PartnerType::OWNER);
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::OWNER);
     }
 
     public function treasurer(): BelongsTo

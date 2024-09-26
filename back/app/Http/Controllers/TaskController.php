@@ -239,7 +239,8 @@ class TaskController extends Controller
                 $this->notificationService->sendSlackNotification(
                     staffId: $staff->id,
                     header: 'Tarea Completada',
-                    body: "La tarea \"$task->name\" ha sido completada, puede elegir el siguiente proceso"
+                    body: "La tarea \"$task->name\" ha sido completada, puede elegir el siguiente proceso",
+                    url: "tasks?taskId={$task->id}"
                 );
                 foreach ($staff->devices as $device) {
                     $taskName = isset($newTask['name']) ? $newTask['name'] : $task->name;

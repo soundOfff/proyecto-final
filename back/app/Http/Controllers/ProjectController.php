@@ -140,7 +140,8 @@ class ProjectController extends Controller
                 $this->notificationService->sendSlackNotification(
                     staffId: $staff->id,
                     header: 'Nuevo caso: '.$project->name,
-                    body: 'Has sido asignado a un nuevo caso'
+                    body: 'Has sido asignado a un nuevo caso',
+                    url: "projects/{$project->id}"
                 );
                 foreach ($staff->devices as $device) {
                     $this->notificationService->sendWebPushNotification(

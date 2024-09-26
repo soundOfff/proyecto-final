@@ -27,29 +27,6 @@ class SendPushNotification extends Command
 
     public function handle()
     {
-        $notifies = DB::table('reminders')
-            ->select(
-                'reminders.id as reminder_id',
-                'reminders.creator as creator',
-                'reminders.date as reminder_date',
-                'reminders.notification_priority_id as priority_id',
-                'reminders.description as description',
-                'staff.id as staff_id',
-                'tasks.id as task_id',
-                'tasks.name as task_name',
-                'staff_devices.device_token as device_token',
-            )
-            ->join('staff', 'reminders.staff_id', '=', 'staff.id')
-            ->join('staff_devices', 'staff.id', '=', 'staff_devices.staff_id')
-            ->join('tasks', function ($join) {
-                $join
-                    ->on('reminders.reminderable_id', '=', 'tasks.id')
-                    ->on('reminders.reminderable_type', '=', DB::raw('"task"'));
-            })
-            // ->where('reminders.is_notified', false)
-            ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED)
-            ->get();
-
         Task::where('start_date', '=', Carbon::now()->format('Y-m-d'))
             ->where('is_owner_notified', false)
             ->with(['assigneds.devices'])
@@ -69,12 +46,46 @@ class SendPushNotification extends Command
                 $task->update(['is_owner_notified' => true]);
             });
 
-        foreach ($notifies as $notify) {
-            $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
+        $reminders = DB::table('reminders')
+            ->join('staff', 'reminders.staff_id', '=', 'staff.id')
+            ->join('tasks', function ($join) {
+                $join
+                    ->on('reminders.reminderable_id', '=', 'tasks.id')
+                    ->on('reminders.reminderable_type', '=', DB::raw('"task"'));
+            })
+            // ->where('reminders.is_notified', false)
+            ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED);
+
+        $staffs = $reminders->select(
+            'staff.id as staff_id',
+            'tasks.id as task_id',
+            'tasks.name as task_name',
+            'reminders.description as description',
+        )->get();
+
+        $devices = $reminders->join('staff_devices', 'staff.id', '=', 'staff_devices.staff_id')
+            ->select(
+                'reminders.id as reminder_id',
+                'reminders.creator as creator',
+                'reminders.date as reminder_date',
+                'reminders.notification_priority_id as priority_id',
+                'reminders.description as description',
+                'staff.id as staff_id',
+                'tasks.id as task_id',
+                'tasks.name as task_name',
+                'staff_devices.device_token as device_token',
+            )
+            ->get();
+
+        foreach ($staffs as $staff) {
+            $this->notificationService->sendSlackNotification(staffId: $staff->staff_id, header: $staff->task_name, body: $staff->description, url: "tasks?taskId={$staff->task_id}");
+        }
+
+        foreach ($devices as $device) {
+            $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($device->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->notificationService->sendWebPushNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id, $notify->creator, $notify->priority_id);
-                $this->notificationService->sendSlackNotification(staffId: $notify->staff_id, header: $notify->task_name, body: $notify->description);
-                Reminder::find($notify->reminder_id)->update(['is_notified' => true]);
+                $this->notificationService->sendWebPushNotification($device->device_token, $device->task_name, $device->description, $device->staff_id, strtolower(class_basename(Task::class)), $device->task_id, $device->creator, $device->priority_id);
+                Reminder::find($device->reminder_id)->update(['is_notified' => true]);
             }
         }
     }

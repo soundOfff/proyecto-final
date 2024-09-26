@@ -64,6 +64,8 @@ class LoginController extends Controller
                 'bot_token' => $accessToken,
             ]);
         }
+
+        return redirect()->to(env('FRONT_URL'));
     }
 
     public function slackLogin()
@@ -72,7 +74,7 @@ class LoginController extends Controller
 
         $staff = Staff::where('email', $slackUser->email);
 
-        if (! $staff) {
+        if (! $staff->exists()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -81,6 +83,8 @@ class LoginController extends Controller
             'slack_token' => $slackUser->token,
             'slack_workspace_id' => $slackUser->user['team']['id'],
         ]);
+
+        return redirect()->to(env('FRONT_URL'));
     }
 
     public function logout(Request $request)

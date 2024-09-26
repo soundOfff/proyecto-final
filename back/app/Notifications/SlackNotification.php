@@ -16,7 +16,7 @@ class SlackNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(protected $header, protected $body)
+    public function __construct(protected $header, protected $body, protected $url)
     {
     }
 
@@ -63,6 +63,10 @@ class SlackNotification extends Notification
                 })
                 ->sectionBlock(function (SectionBlock $block) {
                     $block->text($this->body)->markdown();
+                })
+                ->sectionBlock(function (SectionBlock $block) {
+                    $url = env('FRONT_URL').$this->url;
+                    $block->text("<$url|VER>")->markdown();
                 })
                 ->dividerBlock();
     }

@@ -7,7 +7,6 @@ use App\Models\NotificationPriority;
 use App\Models\Staff;
 use App\Models\StaffDevice;
 use App\Notifications\SlackNotification;
-use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Exception\Messaging as MessagingErrors;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as MessagingNotification;
@@ -58,9 +57,9 @@ class NotificationService
         }
     }
 
-    public function sendSlackNotification(int $staffId, string $header, string $body): void
+    public function sendSlackNotification(int $staffId, string $header, string $body, string $url): void
     {
         $staff = Staff::find($staffId);
-        $staff->notify(new SlackNotification($header, $body));
+        $staff->notify(new SlackNotification($header, $body, $url));
     }
 }

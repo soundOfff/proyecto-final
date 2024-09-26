@@ -61,6 +61,7 @@ class SendPushNotification extends Command
             'tasks.id as task_id',
             'tasks.name as task_name',
             'reminders.description as description',
+            'reminders.date as reminder_date',
         )->get();
 
         $devices = $reminders->join('staff_devices', 'staff.id', '=', 'staff_devices.staff_id')
@@ -78,7 +79,10 @@ class SendPushNotification extends Command
             ->get();
 
         foreach ($staffs as $staff) {
-            $this->notificationService->sendSlackNotification(staffId: $staff->staff_id, header: $staff->task_name, body: $staff->description, url: "tasks?taskId={$staff->task_id}");
+            $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($staff->reminder_date));
+            if ($diffInMinutes == 0) {
+                $this->notificationService->sendSlackNotification(staffId: $staff->staff_id, header: $staff->task_name, body: $staff->description, url: "tasks?taskId={$staff->task_id}");
+            }
         }
 
         foreach ($devices as $device) {

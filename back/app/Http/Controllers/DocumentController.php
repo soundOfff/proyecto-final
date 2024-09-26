@@ -20,6 +20,8 @@ class DocumentController extends Controller
 
         $url = $this->docassembleService->createDocument($project);
 
+        $project->update(['document_url' => $url]);
+
         return response()->json(['url' => $url]);
     }
 }

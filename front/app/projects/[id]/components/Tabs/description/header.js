@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // import Loader from "/components/Loader";
 import MDSnackbar from "/components/MDSnackbar";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { setColor } from "/utils/project-state-colors";
 
 import MDTypography from "/components/MDTypography";
@@ -39,6 +39,38 @@ function DocumentLink({ url }) {
   );
 }
 
+function ErrorList({ errors }) {
+  return (
+    <>
+      <MDBox mt={1} mb={1} ml={0.5}>
+        <MDTypography variant="button" fontWeight="regular" color="text">
+          Los siguientes campos contienen errores
+        </MDTypography>
+      </MDBox>
+      <MDBox component="ul" m={0} pl={4} mb={1}>
+        {errors.map((error, index) => (
+          <MDBox
+            component="li"
+            key={index}
+            color="text"
+            fontSize="1.25rem"
+            lineHeight={1}
+          >
+            <MDTypography
+              variant="caption"
+              color="text"
+              fontWeight="regular"
+              verticalAlign="middle"
+            >
+              {error}
+            </MDTypography>
+          </MDBox>
+        ))}
+      </MDBox>
+    </>
+  );
+}
+
 export default function Header() {
   const { project } = useDataProvider();
   const [isLoading, setIsLoading] = useState(false);
@@ -56,11 +88,6 @@ export default function Header() {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-  const router = useRouter();
-
-  const handleEditButton = () => {
-    router.push(`/projects/${project.id}/edit`);
-  };
 
   const handleProjectDelete = () => {
     handleDelete(project.id);
@@ -76,13 +103,9 @@ export default function Header() {
       })
       .then(() => setIsLoading(false))
       .catch((error) => {
-        setIsLoading(false);
         setGenerateErrorSb(true);
-        setGenerateInfo(
-          `Error al generar el documento: ${
-            error.message.split("Message: ")[1]
-          }`
-        );
+        setGenerateInfo(error.message);
+        setIsLoading(false);
       });
   };
 
@@ -90,16 +113,22 @@ export default function Header() {
     if (isLoading) {
       return (
         <MDSnackbar
-          color="info"
-          icon="notifications"
-          title="Generando documento..."
+          color="dark"
+          bgWhite
+          title={
+            <MDBox display="flex" justifyContent="center" gap={2}>
+              <CircularProgress size={18} color="dark" />
+              <MDTypography variant="button" color="dark">
+                Generando documento...
+              </MDTypography>
+            </MDBox>
+          }
           content={
-            <MDTypography variant="caption" color="white">
+            <MDTypography variant="caption" color="dark">
               Este proceso puede tardar unos minutos. Por favor, espere.
             </MDTypography>
           }
           open={isLoading}
-          onClose={() => setIsLoading(false)}
           close={() => setIsLoading(false)}
         />
       );
@@ -110,13 +139,8 @@ export default function Header() {
           color="error"
           icon="error"
           title="Error al generar documento"
-          content={
-            <MDTypography variant="caption" color="dark">
-              {generateInfo}
-            </MDTypography>
-          }
+          content={<ErrorList errors={generateInfo.split("\n")} />}
           open={generateErrorSb}
-          onClose={() => setGenerateErrorSb(false)}
           close={() => setGenerateErrorSb(false)}
           bgWhite
         />
@@ -202,7 +226,6 @@ export default function Header() {
               variant="gradient"
               color="dark"
               size="small"
-              onClick={handleEditButton}
               sx={{ height: "40px", width: "130px", ml: 2 }}
             >
               Editar
@@ -219,6 +242,18 @@ export default function Header() {
             Eliminar
             <DeleteIcon sx={{ ml: 1 }} />
           </MDButton>
+          {project.documentUrl && (
+            <Link href={project.documentUrl} target="blank">
+              <MDButton
+                variant="gradient"
+                color="success"
+                size="small"
+                sx={{ height: "40px", width: "130px", ml: 2 }}
+              >
+                Ver documento
+              </MDButton>
+            </Link>
+          )}
         </MDBox>
       </Grid>
       <DeleteRow

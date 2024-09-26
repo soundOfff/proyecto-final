@@ -21,9 +21,9 @@ class DocassembleService
         abort_if(! $plaintiff->pivot, 404, 'Apoderado no encontrado');
         $representative = $plaintiff->relatedPartners()->find($plaintiff->pivot->owner_id);
 
-        $defendant->validate(Partner::$defendantDocumentRules);
-        $plaintiff->validate(Partner::$plaintiffDocumentRules);
-        $representative->validate(Partner::$representativeDocumentRules);
+        $defendant->validate(Partner::$defendantDocumentRules, 'demandado');
+        $plaintiff->validate(Partner::$plaintiffDocumentRules, 'demandante');
+        $representative->validate(Partner::$representativeDocumentRules, 'apoderado');
 
         $variables = [
             // Representative data

@@ -115,8 +115,31 @@ class Partner extends Model
         'sheet' => 'required',
     ];
 
-    public function validate($rules = [])
+    public function validate($rules, $from)
     {
+        $defaultMessages = [
+            'country_id.required' => "El campo país es obligatorio para el $from.",
+            'country_id.exists' => "El país seleccionado no es válido para el $from.",
+            'jurisdiction_id.required' => "El campo jurisdicción es obligatorio para el $from.",
+            'jurisdiction_id.exists' => "La jurisdicción seleccionada no es válida para el $from.",
+            'address.required' => "El campo dirección es obligatorio para el $from.",
+            'id_type.required' => "El campo tipo de identificación es obligatorio para el $from.",
+            'id_number.required' => "El campo número de identificación es obligatorio para el $from.",
+            'phone_number.required' => "El campo número de teléfono es obligatorio para el $from.",
+            'file_number.required' => "El campo número de archivo es obligatorio para el $from.",
+            'image_number.required' => "El campo número de imagen es obligatorio para el $from.",
+            'roll_number.required' => "El campo número de rol es obligatorio para el $from.",
+            'civil_status.required' => "El campo estado civil es obligatorio para el $from.",
+            'occupation.required' => "El campo ocupación es obligatorio para el $from.",
+            'check_in.required' => "El campo fecha de ingreso es obligatorio para el $from.",
+            'deed.required' => "El campo escritura es obligatorio para el $from.",
+            'notary.required' => "El campo notario es obligatorio para el $from.",
+            'deed_date.required' => "El campo fecha de escritura es obligatorio para el $from.",
+            'seat.required' => "El campo asiento es obligatorio para el $from.",
+            'legal_circuit.required' => "El campo circuito legal es obligatorio para el $from.",
+            'sheet.required' => "El campo folio es obligatorio para el $from.",
+        ];
+
         if (empty($rules)) {
             $rules = $this->toArray();
         }
@@ -126,7 +149,7 @@ class Partner extends Model
             $attributes = array_merge($this->getAttributes(), $this->pivot->getAttributes());
         }
 
-        $validator = Validator::make($attributes, $rules);
+        $validator = Validator::make($attributes, $rules, $defaultMessages);
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }

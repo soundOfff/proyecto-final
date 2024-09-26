@@ -39,6 +39,7 @@ class Project extends Model
         'jury_number',
         'on_schedule',
         'proposal_id',
+        'document_url',
         'billable_partner_id',
         'process_id',
         'type',

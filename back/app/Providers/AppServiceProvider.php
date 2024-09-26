@@ -81,7 +81,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Http::macro('docassemble', function () {
-            return Http::baseUrl('docassemble.brandfactors.com/api'); // TODO: change by env()
+            return Http::baseUrl(config('services.docassemble.url'));
         });
     }
 }

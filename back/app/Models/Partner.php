@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class Partner extends Model
 {
@@ -74,9 +76,61 @@ class Partner extends Model
         'occupation',
     ];
 
+    protected $appends = ['merged_name'];
+
     public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'number', 'company', 'website', 'dv', 'ruc'];
 
-    protected $appends = ['merged_name'];
+    public static $defendantDocumentRules = [
+        'country_id' => 'required|exists:countries,id',
+        'jurisdiction_id' => 'required|exists:jurisdictions,id',
+        'address' => 'required',
+        'id_type' => 'required',
+        'id_number' => 'required',
+    ];
+
+    public static $plaintiffDocumentRules = [
+        'country_id' => 'required|exists:countries,id',
+        'jurisdiction_id' => 'required|exists:jurisdictions,id',
+        'address' => 'required',
+        'phone_number' => 'required',
+        'file_number' => 'required',
+        'image_number' => 'required',
+        'roll_number' => 'required',
+    ];
+
+    public static $representativeDocumentRules = [
+        'country_id' => 'required|exists:countries,id',
+        'jurisdiction_id' => 'required|exists:jurisdictions,id',
+        'address' => 'required',
+        'civil_status' => 'required',
+        'id_number' => 'required',
+        'id_type' => 'required',
+        'occupation' => 'required', // pivot append data
+        'check_in' => 'required',
+        'deed' => 'required',
+        'notary' => 'required',
+        'deed_date' => 'required',
+        'seat' => 'required',
+        'legal_circuit' => 'required',
+        'sheet' => 'required',
+    ];
+
+    public function validate($rules = [])
+    {
+        if (empty($rules)) {
+            $rules = $this->toArray();
+        }
+
+        $attributes = $this->getAttributes();
+        if (isset($this->pivot)) {
+            $attributes = array_merge($this->getAttributes(), $this->pivot->getAttributes());
+        }
+
+        $validator = Validator::make($attributes, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 
     protected function mergedName(): Attribute
     {

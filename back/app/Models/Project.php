@@ -44,6 +44,11 @@ class Project extends Model
         'type',
     ];
 
+    public static $generateRules = [
+        'process' => 'required',
+        'demand_amount' => 'required',
+    ];
+
     public function stages(): HasMany
     {
         return $this->hasMany(ProjectStage::class);

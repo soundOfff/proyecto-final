@@ -16,32 +16,14 @@ class DocassembleService
 
     public function createDocument(Project $project)
     {
-        $i = 'docassemble.playground3:velo_poder_testing.yml'; // TODO: change by env()
-        $key = '7MydeUly6YuGl1Ww7YTwxik08Xp6cbuX'; // TODO: change by env()
-
-        $credentials = Http::docassemble()
-            ->withQueryParameters([
-                'i' => $i,
-                'key' => $key,
-            ])->get('/session/new')
-            ->json();
-
-        $session = $credentials['session'];
-        $secret = $credentials['secret'];
-
         $defendant = $project->getDefendants()->first();
         $plaintiff = $project->getPlaintiffs()->first();
+        abort_if(! $plaintiff->pivot, 404, 'Apoderado no encontrado');
+        $representative = $plaintiff->relatedPartners()->find($plaintiff->pivot->owner_id);
 
-        $plaintiffRepresentativeId = $plaintiff->pivot->owner_id;
-
-        abort_if(! $plaintiffRepresentativeId, 404, 'Apoderado no encontrado');
-
-        $representative = $plaintiff->relatedPartners()->find($plaintiffRepresentativeId);
-
-        abort_if(! $representative, 404, 'Error al obtener el apoderado');
-
-        $number2Words = new NumberToWords();
-        $numberTransformer = $number2Words->getNumberTransformer('es');
+        $defendant->validate(Partner::$defendantDocumentRules);
+        $plaintiff->validate(Partner::$plaintiffDocumentRules);
+        $representative->validate(Partner::$representativeDocumentRules);
 
         $variables = [
             // Representative data
@@ -92,10 +74,23 @@ class DocassembleService
 
             'nombre_proceso' => $project->process->name,
             'proceso_monto' => $project->demand_amount,
-            'proceso_monto_escrito' => $numberTransformer->toWords($project->demand_amount ?? 0),
-            'circuito_municipal' => 'Something',
+            'proceso_monto_escrito' => (new NumberToWords())->getNumberTransformer('es')->toWords($project->demand_amount ?? 0),
+            'circuito_municipal' => 'Something', // TODO: Replace with actual data
             'circuito_numero' => 'Something',
         ];
+
+        $i = config('services.docassemble.index');
+        $key = config('services.docassemble.key');
+
+        $credentials = Http::docassemble()
+            ->withQueryParameters([
+                'i' => $i,
+                'key' => $key,
+            ])->get('/session/new')
+            ->json();
+
+        $session = $credentials['session'];
+        $secret = $credentials['secret'];
 
         $interview = Http::docassemble()
             ->post('/session',

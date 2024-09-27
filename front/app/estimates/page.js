@@ -7,7 +7,7 @@ import { getAll } from "/actions/estimates";
 export const dynamic = "force-dynamic";
 
 export default async function Estimates({
-  searchParams: { perPage = 10, page = 1, sort = "-id" },
+  searchParams: { perPage = 50, page = 1, sort = "-id" },
 }) {
   const include = [
     "project.serviceType",

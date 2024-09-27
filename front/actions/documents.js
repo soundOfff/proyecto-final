@@ -1,6 +1,9 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+
 export async function generate(projectId, params) {
+  const session = await getServerSession(authOptions);
   const url = new URL(`${process.env.API_URL}/documents`);
   url.search = new URLSearchParams(params);
 
@@ -8,6 +11,9 @@ export async function generate(projectId, params) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      ...(session && session.staff
+        ? { Authorization: `Bearer ${session.staff.token}` }
+        : {}),
     },
     method: "POST",
     body: JSON.stringify({ project_id: projectId }),

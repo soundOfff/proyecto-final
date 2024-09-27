@@ -8,7 +8,7 @@ import MDButton from "/components/MDButton";
 export const dynamic = "force-dynamic";
 
 export default async function File({
-  searchParams: { perPage = 10, page = 1, sort },
+  searchParams: { perPage = 50, page = 1, sort },
 }) {
   const {
     data: { files },

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
 use App\Models\StaffDevice;
 use App\Models\Task;
-use App\Services\FcmService;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class FcmController extends Controller
 {
-    public function __construct(protected FcmService $fcmService) {}
+    public function __construct(protected NotificationService $notificationService)
+    {
+    }
 
-    public function sendNotification(Request $request)
+    public function sendWebPushNotification(Request $request)
     {
         try {
             $request->validate([
@@ -23,7 +24,7 @@ class FcmController extends Controller
                 'task_id' => 'required|exists:tasks,id',
             ]);
 
-            $this->fcmService->sendNotification($request->device_token, $request->title, $request->body, $request->staff_id, strtolower(class_basename(Task::class)), $request->task_id);
+            $this->notificationService->sendWebPushNotification($request->device_token, $request->title, $request->body, $request->staff_id, strtolower(class_basename(Task::class)), $request->task_id);
 
             return response()->json(null, 204);
         } catch (\Exception $e) {
@@ -44,7 +45,7 @@ class FcmController extends Controller
             ->where('device_token', $newTokenDevice['device_token'])
             ->exists();
 
-        if (!$tokenExists) {
+        if (! $tokenExists) {
             StaffDevice::create($newTokenDevice);
         }
 

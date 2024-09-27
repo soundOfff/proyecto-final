@@ -21,7 +21,7 @@ import { getSelect as getSelectTasks } from "/actions/tasks";
 import { getAllPriorities as getAllNotificationPriorities } from "/actions/notifications";
 
 export default async function Tasks({
-  searchParams: { perPage = 10, page = 1, sort = "-id" },
+  searchParams: { perPage = 50, page = 1, sort = "-id" },
 }) {
   const session = await getServerSession(authOptions);
   const tableName = "projects";

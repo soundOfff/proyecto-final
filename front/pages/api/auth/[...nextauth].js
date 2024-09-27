@@ -60,11 +60,33 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt(props) {
+      const { token, account } = props;
+
       if (account) {
         token.accessToken = account.access_token;
         token.accessTokenExpires = account.expires_at;
         token.refreshToken = account.refresh_token;
+        const url = new URL(`${process.env.API_URL}/login`);
+        const res = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify({
+            email: token.email,
+            token: token.accessToken,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+        }
+
+        const { data: staff } = await res.json();
+        token.staff = staff;
         return token;
       }
 
@@ -74,28 +96,13 @@ export const authOptions = {
 
       return refreshAccessToken(token);
     },
-    async session({ session, token }) {
-      const url = new URL(`${process.env.API_URL}/login`);
+    async session(props) {
+      const { session, token } = props;
 
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          email: token.email,
-          token: token.accessToken,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(`Code: ${res.status}, Error: ${res.statusText}`);
+      if (token.staff) {
+        session.staff = token.staff;
+        return session;
       }
-
-      const { data: staff } = await res.json();
-      session.staff = staff;
 
       return session;
     },

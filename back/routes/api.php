@@ -62,8 +62,11 @@ use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
+use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,226 +79,231 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
-Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index']);
+    Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
+    Route::post('/projects', [ProjectController::class, 'store']);
+    Route::put('/projects/{project}', [ProjectController::class, 'update']);
+    Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
+    Route::get('/projects/{project}', [ProjectController::class, 'show']);
+    Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
 
-Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
+    Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
 
-Route::get('/projects', [ProjectController::class, 'index']);
-Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
-Route::post('/projects', [ProjectController::class, 'store']);
-Route::put('/projects/{project}', [ProjectController::class, 'update']);
-Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
-Route::get('/projects/{project}', [ProjectController::class, 'show']);
-Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
+    Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'index']);
 
-Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
+    Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
 
-Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
+    Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
 
-Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
-Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);
+    Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 
-Route::get('/currencies', [CurrencyController::class, 'index']);
-Route::get('/default-currency', [CurrencyController::class, 'defaultCurrency']);
+    Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
+    Route::get('/project-statuses/{projectStatus}', [ProjectStatusController::class, 'show']);
 
-Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
+    Route::get('/currencies', [CurrencyController::class, 'index']);
+    Route::get('/default-currency', [CurrencyController::class, 'defaultCurrency']);
 
-Route::get('/taxes', [TaxController::class, 'index']);
+    Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
 
-Route::get('/groups', [ItemGroupController::class, 'index']);
-Route::post('/groups', [ItemGroupController::class, 'store']);
+    Route::get('/taxes', [TaxController::class, 'index']);
 
-Route::get('/line-item-types', [LineItemTypeController::class, 'index']);
+    Route::get('/groups', [ItemGroupController::class, 'index']);
+    Route::post('/groups', [ItemGroupController::class, 'store']);
 
-Route::get('/items', [ItemController::class, 'index']);
-Route::post('/items', [ItemController::class, 'store']);
+    Route::get('/line-item-types', [LineItemTypeController::class, 'index']);
 
-Route::get('/partners', [PartnerController::class, 'index']);
-Route::post('/partners', [PartnerController::class, 'store']);
-Route::get('/partners/{partner}', [PartnerController::class, 'show']);
-Route::put('/partners/{partner}', [PartnerController::class, 'update']);
-Route::get('/partner-stats', [PartnerController::class, 'stats']);
-Route::get('/partners-select', [PartnerController::class, 'select']);
+    Route::get('/items', [ItemController::class, 'index']);
+    Route::post('/items', [ItemController::class, 'store']);
 
-Route::get('/partner-types', [PartnerTypeController::class, 'index']);
+    Route::get('/partners', [PartnerController::class, 'index']);
+    Route::post('/partners', [PartnerController::class, 'store']);
+    Route::get('/partners/{partner}', [PartnerController::class, 'show']);
+    Route::put('/partners/{partner}', [PartnerController::class, 'update']);
+    Route::get('/partner-stats', [PartnerController::class, 'stats']);
+    Route::get('/partners-select', [PartnerController::class, 'select']);
 
-Route::get('/partner-project-roles', [PartnerProjectRoleController::class, 'index']);
+    Route::get('/partner-types', [PartnerTypeController::class, 'index']);
 
-Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
+    Route::get('/partner-project-roles', [PartnerProjectRoleController::class, 'index']);
 
-Route::get('/expenses', [ExpenseController::class, 'index']);
-Route::post('/expenses', [ExpenseController::class, 'store']);
-Route::put('/expenses/{expense}', [ExpenseController::class, 'update']);
-Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
-Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
-Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);
+    Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
-Route::get('/estimate-statuses', [EstimateStatusController::class, 'index']);
+    Route::get('/expenses', [ExpenseController::class, 'index']);
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'update']);
+    Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
+    Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);
 
-Route::get('/estimates-max-id', [EstimateController::class, 'maxId']);
-Route::get('/estimates', [EstimateController::class, 'index']);
-Route::post('/estimates', [EstimateController::class, 'store']);
-Route::put('/estimates/{estimate}', [EstimateController::class, 'update']);
-Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
-Route::delete('/estimates/{estimate}', [EstimateController::class, 'destroy']);
-Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
+    Route::get('/estimate-statuses', [EstimateStatusController::class, 'index']);
 
-Route::get('/proposals-select', [ProposalController::class, 'select']);
-Route::get('/proposals', [ProposalController::class, 'index']);
-Route::post('/proposals', [ProposalController::class, 'store']);
-Route::put('/proposals/{proposal}', [ProposalController::class, 'update']);
-Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
-Route::delete('/proposals/{proposal}', [ProposalController::class, 'destroy']);
-Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
+    Route::get('/estimates-max-id', [EstimateController::class, 'maxId']);
+    Route::get('/estimates', [EstimateController::class, 'index']);
+    Route::post('/estimates', [EstimateController::class, 'store']);
+    Route::put('/estimates/{estimate}', [EstimateController::class, 'update']);
+    Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
+    Route::delete('/estimates/{estimate}', [EstimateController::class, 'destroy']);
+    Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 
-Route::get('/proposal-to-project/{proposal}', [ProposalController::class, 'toProject']);
+    Route::get('/proposals-select', [ProposalController::class, 'select']);
+    Route::get('/proposals', [ProposalController::class, 'index']);
+    Route::post('/proposals', [ProposalController::class, 'store']);
+    Route::put('/proposals/{proposal}', [ProposalController::class, 'update']);
+    Route::get('/proposals/{proposal}', [ProposalController::class, 'show']);
+    Route::delete('/proposals/{proposal}', [ProposalController::class, 'destroy']);
+    Route::get('/proposal-statuses', [ProposalStatusController::class, 'index']);
 
-Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
-Route::get('/tasks-status', [TaskStatusController::class, 'index']);
+    Route::get('/proposal-to-project/{proposal}', [ProposalController::class, 'toProject']);
 
-Route::put('/timers/{timer}', [TaskTimerController::class, 'update']);
-Route::post('/timers', [TaskTimerController::class, 'store']);
-Route::get('/current-timer/{staff}', [TaskTimerController::class, 'getCurrentTimer']);
+    Route::get('/tasks-priorities', [TaskPriorityController::class, 'select']);
+    Route::get('/tasks-status', [TaskStatusController::class, 'index']);
 
-Route::get('/tasks', [TaskController::class, 'index']);
-Route::get('/tasks-select', [TaskController::class, 'select']);
-Route::post('/tasks', [TaskController::class, 'store']);
-Route::put('/tasks/{task}', [TaskController::class, 'update']);
-Route::get('/tasks/{task}', [TaskController::class, 'show']);
-Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
-Route::post('/tasks-delete-many', [TaskController::class, 'destroyMany']);
-Route::get('/task-stats', [TaskController::class, 'stats']);
-Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
+    Route::put('/timers/{timer}', [TaskTimerController::class, 'update']);
+    Route::post('/timers', [TaskTimerController::class, 'store']);
+    Route::get('/current-timer/{staff}', [TaskTimerController::class, 'getCurrentTimer']);
 
-Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
+    Route::get('/tasks', [TaskController::class, 'index']);
+    Route::get('/tasks-select', [TaskController::class, 'select']);
+    Route::post('/tasks', [TaskController::class, 'store']);
+    Route::put('/tasks/{task}', [TaskController::class, 'update']);
+    Route::get('/tasks/{task}', [TaskController::class, 'show']);
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+    Route::post('/tasks-delete-many', [TaskController::class, 'destroyMany']);
+    Route::get('/task-stats', [TaskController::class, 'stats']);
+    Route::post('/tasks-edit-steps', [TaskController::class, 'editSteps']);
 
-Route::get('/task-repeats', [TaskRepeatController::class, 'index']);
+    Route::get('/tasks/counts/status', [TaskController::class, 'countByStatuses']);
 
-Route::get('/tags', [TagController::class, 'index']);
+    Route::get('/task-repeats', [TaskRepeatController::class, 'index']);
 
-Route::get('/countries-select', [CountryController::class, 'select']);
-Route::get('/provinces', [ProvinceController::class, 'index']);
-Route::get('/districts', [DistrictController::class, 'index']);
-Route::get('/jurisdictions', [JurisdictionController::class, 'index']);
+    Route::get('/tags', [TagController::class, 'index']);
 
-Route::get('/invoices', [InvoiceController::class, 'index']);
-Route::get('/invoices-select', [InvoiceController::class, 'select']);
-Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
+    Route::get('/countries-select', [CountryController::class, 'select']);
+    Route::get('/provinces', [ProvinceController::class, 'index']);
+    Route::get('/districts', [DistrictController::class, 'index']);
+    Route::get('/jurisdictions', [JurisdictionController::class, 'index']);
 
-Route::get('/contacts', [ContactController::class, 'index']);
-Route::get('/contacts/{contact}', [ContactController::class, 'show']);
-Route::post('/contacts', [ContactController::class, 'store']);
-Route::put('/contacts/{contact}', [ContactController::class, 'update']);
-Route::get('/contact-stats', [ContactController::class, 'stats']);
+    Route::get('/invoices', [InvoiceController::class, 'index']);
+    Route::get('/invoices-select', [InvoiceController::class, 'select']);
+    Route::get('/invoices/{invoice}', [InvoiceController::class, 'show']);
 
-Route::get('/staffs-select', [StaffController::class, 'select']);
-Route::get('/staffs', [StaffController::class, 'index']);
-Route::get('/staffs/{staff}', [StaffController::class, 'getUser']);
-Route::put('/staffs/{staff}', [StaffController::class, 'update']);
-Route::post('/staffs', [StaffController::class, 'store']);
-Route::delete('/staffs/{staff}', [StaffController::class, 'destroy']);
-Route::get('/staffs-stats/{staff}', [StaffController::class, 'stats']);
+    Route::get('/contacts', [ContactController::class, 'index']);
+    Route::get('/contacts/{contact}', [ContactController::class, 'show']);
+    Route::post('/contacts', [ContactController::class, 'store']);
+    Route::put('/contacts/{contact}', [ContactController::class, 'update']);
+    Route::get('/contact-stats', [ContactController::class, 'stats']);
 
-Route::get('/discount-types', [DiscountTypeController::class, 'index']);
+    Route::get('/staffs-select', [StaffController::class, 'select']);
+    Route::get('/staffs', [StaffController::class, 'index']);
+    Route::get('/staffs/{staff}', [StaffController::class, 'getUser']);
+    Route::put('/staffs/{staff}', [StaffController::class, 'update']);
+    Route::post('/staffs', [StaffController::class, 'store']);
+    Route::delete('/staffs/{staff}', [StaffController::class, 'destroy']);
+    Route::get('/staffs-stats/{staff}', [StaffController::class, 'stats']);
 
-Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
+    Route::get('/discount-types', [DiscountTypeController::class, 'index']);
 
-Route::get('/recurrings', [RecurringController::class, 'index']);
+    Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
 
-Route::get('/files', [FileController::class, 'index']);
-Route::get('/files/{file}', [FileController::class, 'show']);
-Route::delete('/files/{file}', [FileController::class, 'destroy']);
-Route::post('/files', [FileController::class, 'store']);
-Route::post('/files-store-many', [FileController::class, 'storeMany']);
+    Route::get('/recurrings', [RecurringController::class, 'index']);
 
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout']);
+    Route::get('/files', [FileController::class, 'index']);
+    Route::get('/files/{file}', [FileController::class, 'show']);
+    Route::delete('/files/{file}', [FileController::class, 'destroy']);
+    Route::post('/files', [FileController::class, 'store']);
+    Route::post('/files-store-many', [FileController::class, 'storeMany']);
 
-Route::get('/permissions', [PermissionController::class, 'index']);
+    Route::get('/permissions', [PermissionController::class, 'index']);
 
-Route::get('/payments', [PaymentController::class, 'index']);
-Route::post('/payments', [PaymentController::class, 'store']);
-Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
+    Route::get('/payments', [PaymentController::class, 'index']);
+    Route::post('/payments', [PaymentController::class, 'store']);
+    Route::delete('/payments/{payment}', [PaymentController::class, 'destroy']);
 
-Route::post('/partial-payments-attach', [PaymentController::class, 'attach']);
-Route::post('/partial-payments-detach', [PaymentController::class, 'detach']);
+    Route::post('/partial-payments-attach', [PaymentController::class, 'attach']);
+    Route::post('/partial-payments-detach', [PaymentController::class, 'detach']);
 
-Route::get('/credit-notes', [CreditNoteController::class, 'index']);
-Route::post('/credit-notes', [CreditNoteController::class, 'store']);
-Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
-Route::put('/credit-notes/{creditNote}', [CreditNoteController::class, 'update']);
-Route::delete('/credit-notes/{creditNote}', [CreditNoteController::class, 'destroy']);
+    Route::get('/credit-notes', [CreditNoteController::class, 'index']);
+    Route::post('/credit-notes', [CreditNoteController::class, 'store']);
+    Route::get('/credit-notes/{creditNote}', [CreditNoteController::class, 'show']);
+    Route::put('/credit-notes/{creditNote}', [CreditNoteController::class, 'update']);
+    Route::delete('/credit-notes/{creditNote}', [CreditNoteController::class, 'destroy']);
 
-Route::post('/credits', [CreditController::class, 'attach']);
+    Route::post('/credits', [CreditController::class, 'attach']);
 
-Route::get('/credits', [CreditController::class, 'index']);
-Route::post('/credits', [CreditController::class, 'attach']);
-Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
+    Route::get('/credits', [CreditController::class, 'index']);
+    Route::post('/credits', [CreditController::class, 'attach']);
+    Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
 
-Route::get('/processes', [ProcessController::class, 'index']);
-Route::post('/processes', [ProcessController::class, 'store']);
-Route::get('/processes/{process}', [ProcessController::class, 'show']);
-Route::put('/processes/{process}', [ProcessController::class, 'update']);
-Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
+    Route::get('/processes', [ProcessController::class, 'index']);
+    Route::post('/processes', [ProcessController::class, 'store']);
+    Route::get('/processes/{process}', [ProcessController::class, 'show']);
+    Route::put('/processes/{process}', [ProcessController::class, 'update']);
+    Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 
-Route::get('/procedures', [ProcedureController::class, 'index']);
-Route::get('/procedures/{procedure}', [ProcedureController::class, 'show']);
-Route::post('/procedures', [ProcedureController::class, 'store']);
-Route::put('/procedures/{procedure}', [ProcedureController::class, 'update']);
-Route::delete('/procedures/{procedure}', [ProcedureController::class, 'destroy']);
-Route::post('/procedures-edit-steps', [ProcedureController::class, 'editSteps']);
+    Route::get('/procedures', [ProcedureController::class, 'index']);
+    Route::get('/procedures/{procedure}', [ProcedureController::class, 'show']);
+    Route::post('/procedures', [ProcedureController::class, 'store']);
+    Route::put('/procedures/{procedure}', [ProcedureController::class, 'update']);
+    Route::delete('/procedures/{procedure}', [ProcedureController::class, 'destroy']);
+    Route::post('/procedures-edit-steps', [ProcedureController::class, 'editSteps']);
 
-Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
+    Route::get('/procedure-statuses', [ProcedureStatusController::class, 'index']);
 
-Route::get('/actions', [ActionController::class, 'index']);
-Route::get('/action-types', [ActionTypeController::class, 'index']);
+    Route::get('/actions', [ActionController::class, 'index']);
+    Route::get('/action-types', [ActionTypeController::class, 'index']);
 
-Route::post('/table-fields', TableFieldController::class);
+    Route::post('/table-fields', TableFieldController::class);
 
-Route::get('/activity-logs', [ActivityController::class, 'index']);
+    Route::get('/activity-logs', [ActivityController::class, 'index']);
 
-Route::post('/send-notification', [FcmController::class, 'sendNotification']);
-Route::post('/store-token', [FcmController::class, 'storeToken']);
+    Route::post('/send-web-push-notification', [FcmController::class, 'sendWebPushNotification']);
+    Route::post('/store-token', [FcmController::class, 'storeToken']);
 
-Route::get('/mail-templates', [MailTemplateController::class, 'index']);
-Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
-Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
+    Route::get('/mail-templates', [MailTemplateController::class, 'index']);
+    Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
+    Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
 
-Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
+    Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 
-Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
+    Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 
-Route::post('/documents', [DocumentController::class, 'generate']);
+    Route::post('/documents', [DocumentController::class, 'generate']);
 
-Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
-Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
+    Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
+    Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
-Route::get('/notifications', [NotificationController::class, 'index']);
-Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
-Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
-Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
-Route::put('/notifications-update-many', [NotificationController::class, 'updateMany']);
-Route::put('/notifications-archive-many', [NotificationController::class, 'archiveMany']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
+    Route::post('/notifications/is-not-seen-count', [NotificationController::class, 'isNotSeenCount']);
+    Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
+    Route::put('/notifications-update-many', [NotificationController::class, 'updateMany']);
+    Route::put('/notifications-archive-many', [NotificationController::class, 'archiveMany']);
 
-Route::get('/notification-priorities', [NotificationPriorityController::class, 'select']);
+    Route::get('/notification-priorities', [NotificationPriorityController::class, 'select']);
 
-Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
+    Route::get('/partner-industries', [PartnerIndustryController::class, 'index']);
 
-Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
+    Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
 
-Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
+    Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
-Route::get('/notes', [NoteController::class, 'index']);
-Route::post('/notes', [NoteController::class, 'store']);
-Route::delete('/notes/{note}', [NoteController::class, 'destroy']);
+    Route::get('/notes', [NoteController::class, 'index']);
+    Route::post('/notes', [NoteController::class, 'store']);
+    Route::delete('/notes/{note}', [NoteController::class, 'destroy']);
 
-Route::get('/courts', [CourtController::class, 'index']);
-Route::get('/courts/{court}', [CourtController::class, 'show']);
-Route::post('/courts', [CourtController::class, 'store']);
-Route::put('/courts/{court}', [CourtController::class, 'update']);
-Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
+    Route::get('/courts', [CourtController::class, 'index']);
+    Route::get('/courts/{court}', [CourtController::class, 'show']);
+    Route::post('/courts', [CourtController::class, 'store']);
+    Route::put('/courts/{court}', [CourtController::class, 'update']);
+    Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
-Route::middleware('auth:sanctum')->get('/staff', function (Request $request) {
-    return $request->user();
+    Route::get('/send-slack-notification/{staff}', [NotificationController::class, 'sendSlackNotification']);
+
+    Route::post('/logout', [LoginController::class, 'logout']);
 });
+
+Route::get('/auth/slack/callback', [LoginController::class, 'slackLogin']);
+Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']);
+
+Route::post('/login', [LoginController::class, 'login'])->name('login');

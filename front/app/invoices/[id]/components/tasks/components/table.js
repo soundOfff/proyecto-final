@@ -12,7 +12,7 @@ import MDBox from "/components/MDBox";
 
 export default function TableComponent() {
   const [tasks, setTasks] = useState([]);
-  const [meta, setMeta] = useState({ page: 1, per_page: 10 });
+  const [meta, setMeta] = useState({ page: 1, per_page: 50 });
   const searchParams = useSearchParams();
 
   const {
@@ -34,7 +34,7 @@ export default function TableComponent() {
     getAll({
       "filter[taskable_id]": invoice.id,
       "filter[taskable_type]": INVOICE_TYPE,
-      perPage: searchParams.get("perPage") || 10,
+      perPage: searchParams.get("perPage") || 50,
       page: searchParams.get("page") || 1,
       include: ["assigneds", "tags", "status", "dependencies", "author"],
     }).then((data) => {

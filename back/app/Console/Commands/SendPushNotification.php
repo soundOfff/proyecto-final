@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Reminder;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Services\FcmService;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -16,18 +16,55 @@ class SendPushNotification extends Command
 
     protected $description = 'Send push notification to all staffs with device token';
 
-    protected $fcmService;
+    protected $notificationService;
 
-    public function __construct(FcmService $fcmService)
+    public function __construct(NotificationService $notificationService)
     {
         parent::__construct();
 
-        $this->fcmService = $fcmService;
+        $this->notificationService = $notificationService;
     }
 
     public function handle()
     {
-        $notifies = DB::table('reminders')
+        Task::where('start_date', '=', Carbon::now()->format('Y-m-d'))
+            ->where('is_owner_notified', false)
+            ->with(['assigneds.devices'])
+            ->each(function ($task) {
+                $task->assigneds->each(function ($staff) use ($task) {
+                    $staff->devices->each(function ($device) use ($task) {
+                        $this->notificationService->sendWebPushNotification(
+                            $device->device_token,
+                            'Nueva Tarea: '.$task->name,
+                            $task->author->first_name.' '.$task->author->last_name.' te ha asignado una nueva tarea '.$task->name,
+                            $task->owner_id,
+                            strtolower(class_basename(Task::class)),
+                            $task->id
+                        );
+                    });
+                });
+                $task->update(['is_owner_notified' => true]);
+            });
+
+        $reminders = DB::table('reminders')
+            ->join('staff', 'reminders.staff_id', '=', 'staff.id')
+            ->join('tasks', function ($join) {
+                $join
+                    ->on('reminders.reminderable_id', '=', 'tasks.id')
+                    ->on('reminders.reminderable_type', '=', DB::raw('"task"'));
+            })
+            // ->where('reminders.is_notified', false)
+            ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED);
+
+        $staffs = $reminders->select(
+            'staff.id as staff_id',
+            'tasks.id as task_id',
+            'tasks.name as task_name',
+            'reminders.description as description',
+            'reminders.date as reminder_date',
+        )->get();
+
+        $devices = $reminders->join('staff_devices', 'staff.id', '=', 'staff_devices.staff_id')
             ->select(
                 'reminders.id as reminder_id',
                 'reminders.creator as creator',
@@ -39,41 +76,20 @@ class SendPushNotification extends Command
                 'tasks.name as task_name',
                 'staff_devices.device_token as device_token',
             )
-            ->join('staff', 'reminders.staff_id', '=', 'staff.id')
-            ->join('staff_devices', 'staff.id', '=', 'staff_devices.staff_id')
-            ->join('tasks', function ($join) {
-                $join
-                    ->on('reminders.reminderable_id', '=', 'tasks.id')
-                    ->on('reminders.reminderable_type', '=', DB::raw('"task"'));
-            })
-            // ->where('reminders.is_notified', false)
-            ->where('tasks.task_status_id', '!=', TaskStatus::COMPLETED)
             ->get();
 
-        Task::where('start_date', '=', Carbon::now()->format('Y-m-d'))
-            ->where('is_owner_notified', false)
-            ->with(['assigneds.devices'])
-            ->each(function ($task) {
-                $task->assigneds->each(function ($staff) use ($task) {
-                    $staff->devices->each(function ($device) use ($task) {
-                        $this->fcmService->sendNotification(
-                            $device->device_token,
-                            "Nueva Tarea: " . $task->name,
-                            $task->author->first_name . " " . $task->author->last_name . " te ha asignado una nueva tarea " . $task->name,
-                            $task->owner_id,
-                            strtolower(class_basename(Task::class)),
-                            $task->id
-                        );
-                    });
-                });
-                $task->update(['is_owner_notified' => true]);
-            });
-
-        foreach ($notifies as $notify) {
-            $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($notify->reminder_date));
+        foreach ($staffs as $staff) {
+            $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($staff->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->fcmService->sendNotification($notify->device_token, $notify->task_name, $notify->description, $notify->staff_id, strtolower(class_basename(Task::class)), $notify->task_id, $notify->creator, $notify->priority_id);
-                Reminder::find($notify->reminder_id)->update(['is_notified' => true]);
+                $this->notificationService->sendSlackNotification(staffId: $staff->staff_id, header: $staff->task_name, body: $staff->description, url: "tasks?taskId={$staff->task_id}");
+            }
+        }
+
+        foreach ($devices as $device) {
+            $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($device->reminder_date));
+            if ($diffInMinutes == 0) {
+                $this->notificationService->sendWebPushNotification($device->device_token, $device->task_name, $device->description, $device->staff_id, strtolower(class_basename(Task::class)), $device->task_id, $device->creator, $device->priority_id);
+                Reminder::find($device->reminder_id)->update(['is_notified' => true]);
             }
         }
     }

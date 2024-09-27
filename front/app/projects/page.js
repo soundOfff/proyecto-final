@@ -36,7 +36,7 @@ const include = [
 export const dynamic = "force-dynamic";
 
 export default async function Projects({ searchParams }) {
-  const { statusId, search, perPage = 10, page = 1 } = searchParams;
+  const { statusId, search, perPage = 50, page = 1 } = searchParams;
 
   const statusFilter = statusId ? { "filter[status]": statusId } : null;
   const searchFilter = search ? { "filter[search]": search } : null;

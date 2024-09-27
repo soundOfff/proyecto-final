@@ -121,7 +121,7 @@ export default function RelatedPersonFormComponent({
     [sheet.name]: Yup.string(),
   });
 
-  const clearFields = (actions = { setTouched: () => {} }) => {
+  const clearFields = (actions) => {
     setFieldValue(startDate.name, moment().format("YYYY-MM-DD"));
     setFieldValue(endDate.name, "");
     setFieldValue(partnerTypeId.name, "");
@@ -145,75 +145,77 @@ export default function RelatedPersonFormComponent({
     setFieldValueExternal("related_partners", filteredPartners);
   };
 
-  const { values, errors, handleSubmit, setFieldValue } = useFormik({
-    initialValues: {
-      [relatedPartnerId.name]: "",
-      [partnerTypeId.name]: "",
-      [startDate.name]: moment().format("YYYY-MM-DD"),
-      [endDate.name]: "",
-      [active.name]: true,
-      [seat.name]: "",
-      [deed.name]: "",
-      [checkIn.name]: moment().format("YYYY-MM-DD"),
-      [deedDate.name]: moment().format("YYYY-MM-DD"),
-      [legalCircuit.name]: "",
-      [notary.name]: "",
-      [sheet.name]: "",
-    },
-    validationSchema: addRelatedPersonValidationSchema,
-    onSubmit: (values, methods) => {
-      if (selectedOwner) {
-        // edit mode
-        const updatedRelatedPartners = externalValues.related_partners.map(
-          (partner) => {
-            if (
-              selectedOwner.related_partner_id === partner.related_partner_id &&
-              selectedOwner.partner_type_id === partner.partner_type_id
-            ) {
-              console.log("Test 2");
-              return {
-                related_partner_id: values[relatedPartnerId.name],
-                partner_type_id: values[partnerTypeId.name],
-                start_date: values[startDate.name],
-                end_date: values[endDate.name],
-                active: values[active.name],
-                seat: values[seat.name],
-                deed: values[deed.name],
-                check_in: values[checkIn.name],
-                deed_date: values[deedDate.name],
-                legal_circuit: values[legalCircuit.name],
-                notary: values[notary.name],
-                sheet: values[sheet.name],
-              };
+  const { values, errors, handleSubmit, setFieldValue, setTouched } = useFormik(
+    {
+      initialValues: {
+        [relatedPartnerId.name]: "",
+        [partnerTypeId.name]: "",
+        [startDate.name]: moment().format("YYYY-MM-DD"),
+        [endDate.name]: "",
+        [active.name]: true,
+        [seat.name]: "",
+        [deed.name]: "",
+        [checkIn.name]: moment().format("YYYY-MM-DD"),
+        [deedDate.name]: moment().format("YYYY-MM-DD"),
+        [legalCircuit.name]: "",
+        [notary.name]: "",
+        [sheet.name]: "",
+      },
+      validationSchema: addRelatedPersonValidationSchema,
+      onSubmit: (values, methods) => {
+        if (selectedOwner) {
+          // edit mode
+          const updatedRelatedPartners = externalValues.related_partners.map(
+            (partner) => {
+              if (
+                selectedOwner.related_partner_id ===
+                  partner.related_partner_id &&
+                selectedOwner.partner_type_id === partner.partner_type_id
+              ) {
+                return {
+                  related_partner_id: values[relatedPartnerId.name],
+                  partner_type_id: values[partnerTypeId.name],
+                  start_date: values[startDate.name],
+                  end_date: values[endDate.name],
+                  active: values[active.name],
+                  seat: values[seat.name],
+                  deed: values[deed.name],
+                  check_in: values[checkIn.name],
+                  deed_date: values[deedDate.name],
+                  legal_circuit: values[legalCircuit.name],
+                  notary: values[notary.name],
+                  sheet: values[sheet.name],
+                };
+              }
+              return partner;
             }
-            return partner;
-          }
-        );
-        setFieldValueExternal("related_partners", updatedRelatedPartners);
-      } else {
-        // create mode
-        setFieldValueExternal("related_partners", [
-          ...externalValues.related_partners,
-          {
-            related_partner_id: values[relatedPartnerId.name],
-            partner_type_id: values[partnerTypeId.name],
-            start_date: values[startDate.name],
-            end_date: values[endDate.name],
-            active: values[active.name],
-            seat: values[seat.name],
-            deed: values[deed.name],
-            check_in: values[checkIn.name],
-            deed_date: values[deedDate.name],
-            legal_circuit: values[legalCircuit.name],
-            notary: values[notary.name],
-            sheet: values[sheet.name],
-          },
-        ]);
-      }
-      clearFields(methods);
-      handleCloseModal();
-    },
-  });
+          );
+          setFieldValueExternal("related_partners", updatedRelatedPartners);
+        } else {
+          // create mode
+          setFieldValueExternal("related_partners", [
+            ...externalValues.related_partners,
+            {
+              related_partner_id: values[relatedPartnerId.name],
+              partner_type_id: values[partnerTypeId.name],
+              start_date: values[startDate.name],
+              end_date: values[endDate.name],
+              active: values[active.name],
+              seat: values[seat.name],
+              deed: values[deed.name],
+              check_in: values[checkIn.name],
+              deed_date: values[deedDate.name],
+              legal_circuit: values[legalCircuit.name],
+              notary: values[notary.name],
+              sheet: values[sheet.name],
+            },
+          ]);
+        }
+        clearFields(methods);
+        handleCloseModal();
+      },
+    }
+  );
   const columns = [
     {
       Header: "Nombre",
@@ -316,7 +318,7 @@ export default function RelatedPersonFormComponent({
 
   const handleCloseModal = () => {
     setOwnerModalOpen(false);
-    clearFields();
+    clearFields({ setTouched });
   };
 
   const table = {

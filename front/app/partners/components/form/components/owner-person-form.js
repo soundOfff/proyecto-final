@@ -19,7 +19,6 @@ export default function OwnerForm({
   errors,
   touched,
 }) {
-  console.log(owner);
   const {
     seat,
     checkIn,

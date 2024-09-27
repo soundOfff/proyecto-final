@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Services\DocassembleService;
+use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
@@ -11,9 +13,14 @@ class DocumentController extends Controller
     ) {
     }
 
-    public function generate()
+    public function generate(Request $request)
     {
-        $url = $this->docassembleService->createDocument();
+        $projectId = $request->get('project_id');
+        $project = Project::findOrFail($projectId);
+
+        $url = $this->docassembleService->createDocument($project);
+
+        $project->update(['document_url' => $url]);
 
         return response()->json(['url' => $url]);
     }

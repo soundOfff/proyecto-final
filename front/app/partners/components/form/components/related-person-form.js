@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
+import moment from "moment";
+
 import { Grid, Icon, Switch, FormControlLabel, FormGroup } from "@mui/material";
 import MDButton from "/components/MDButton";
 import Select from "/components/Select";
@@ -7,12 +10,11 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
 import Modal from "/components/Modal";
-import PersonForm from "/components/ModalContent/Partner/";
+import PersonForm from "/components/ModalContent/Partner";
+import EditIcon from "@mui/icons-material/Edit";
 
 import * as Yup from "yup";
-import { useFormik } from "formik";
-import moment from "moment";
-import { ErrorMessage } from "formik";
+import OwnerForm from "./owner-person-form";
 
 const newRelatedPeopleFormField = {
   formId: "new-related-people",
@@ -41,6 +43,41 @@ const newRelatedPeopleFormField = {
       label: "Activo",
       errorMsg: "El estado de la persona relacionada es requerido",
     },
+    seat: {
+      name: "seat",
+      label: "Asiento",
+      errorMsg: "El asiento es requerido",
+    },
+    legalCircuit: {
+      name: "legal_circuit",
+      label: "Circuito Legal",
+      errorMsg: "El circuito legal es requerido",
+    },
+    checkIn: {
+      name: "check_in",
+      label: "Fecha de Entrada",
+      errorMsg: "La fecha de entrada es requerida",
+    },
+    deed: {
+      name: "deed",
+      label: "Escritura",
+      errorMsg: "La escritura es requerida",
+    },
+    deedDate: {
+      name: "deed_date",
+      label: "Fecha de Escritura",
+      errorMsg: "La fecha de la escritura es requerida",
+    },
+    notary: {
+      name: "notary",
+      label: "Notaría",
+      errorMsg: "La notaría es requerida",
+    },
+    sheet: {
+      name: "sheet",
+      label: "Ficha",
+      errorMsg: "La ficha es requerida",
+    },
   },
 };
 
@@ -52,8 +89,22 @@ export default function RelatedPersonFormComponent({
   partnerTypes,
 }) {
   const [openModal, setOpenModal] = useState(false);
-  const { relatedPartnerId, partnerTypeId, startDate, endDate, active } =
-    newRelatedPeopleFormField.formField;
+  const [ownerModalOpen, setOwnerModalOpen] = useState(false);
+  const [selectedOwner, setSelectedOwner] = useState(null);
+  const {
+    relatedPartnerId,
+    partnerTypeId,
+    startDate,
+    endDate,
+    active,
+    seat,
+    checkIn,
+    deed,
+    deedDate,
+    legalCircuit,
+    notary,
+    sheet,
+  } = newRelatedPeopleFormField.formField;
 
   const addRelatedPersonValidationSchema = Yup.object().shape({
     [relatedPartnerId.name]: Yup.string().required(relatedPartnerId.errorMsg),
@@ -61,6 +112,13 @@ export default function RelatedPersonFormComponent({
     [startDate.name]: Yup.string().required(startDate.errorMsg),
     [endDate.name]: Yup.string().nullable(),
     [active.name]: Yup.boolean().required(active.errorMsg),
+    [seat.name]: Yup.string(),
+    [checkIn.name]: Yup.date(),
+    [deed.name]: Yup.string(),
+    [deedDate.name]: Yup.date(),
+    [legalCircuit.name]: Yup.string(),
+    [notary.name]: Yup.string(),
+    [sheet.name]: Yup.string(),
   });
 
   const clearFields = (actions) => {
@@ -69,7 +127,15 @@ export default function RelatedPersonFormComponent({
     setFieldValue(partnerTypeId.name, "");
     setFieldValue(relatedPartnerId.name, "");
     setFieldValue(active.name, true);
+    setFieldValue(seat.name, "");
+    setFieldValue(checkIn.name, moment().format("YYYY-MM-DD"));
+    setFieldValue(deed.name, "");
+    setFieldValue(deedDate.name, moment().format("YYYY-MM-DD"));
+    setFieldValue(legalCircuit.name, "");
+    setFieldValue(notary.name, "");
+    setFieldValue(sheet.name, "");
     actions.setTouched({});
+    setSelectedOwner(null);
   };
 
   const deleteRelatedPartner = (index) => {
@@ -79,29 +145,77 @@ export default function RelatedPersonFormComponent({
     setFieldValueExternal("related_partners", filteredPartners);
   };
 
-  const { values, errors, handleSubmit, setFieldValue } = useFormik({
-    initialValues: {
-      [relatedPartnerId.name]: "",
-      [partnerTypeId.name]: "",
-      [startDate.name]: moment().format("YYYY-MM-DD"),
-      [endDate.name]: "",
-      [active.name]: true,
-    },
-    validationSchema: addRelatedPersonValidationSchema,
-    onSubmit: (values, methods) => {
-      setFieldValueExternal("related_partners", [
-        ...externalValues.related_partners,
-        {
-          related_partner_id: values[relatedPartnerId.name],
-          partner_type_id: values[partnerTypeId.name],
-          start_date: values[startDate.name],
-          end_date: values[endDate.name],
-          active: values[active.name],
-        },
-      ]);
-      clearFields(methods);
-    },
-  });
+  const { values, errors, handleSubmit, setFieldValue, setTouched } = useFormik(
+    {
+      initialValues: {
+        [relatedPartnerId.name]: "",
+        [partnerTypeId.name]: "",
+        [startDate.name]: moment().format("YYYY-MM-DD"),
+        [endDate.name]: "",
+        [active.name]: true,
+        [seat.name]: "",
+        [deed.name]: "",
+        [checkIn.name]: moment().format("YYYY-MM-DD"),
+        [deedDate.name]: moment().format("YYYY-MM-DD"),
+        [legalCircuit.name]: "",
+        [notary.name]: "",
+        [sheet.name]: "",
+      },
+      validationSchema: addRelatedPersonValidationSchema,
+      onSubmit: (values, methods) => {
+        if (selectedOwner) {
+          // edit mode
+          const updatedRelatedPartners = externalValues.related_partners.map(
+            (partner) => {
+              if (
+                selectedOwner.related_partner_id ===
+                  partner.related_partner_id &&
+                selectedOwner.partner_type_id === partner.partner_type_id
+              ) {
+                return {
+                  related_partner_id: values[relatedPartnerId.name],
+                  partner_type_id: values[partnerTypeId.name],
+                  start_date: values[startDate.name],
+                  end_date: values[endDate.name],
+                  active: values[active.name],
+                  seat: values[seat.name],
+                  deed: values[deed.name],
+                  check_in: values[checkIn.name],
+                  deed_date: values[deedDate.name],
+                  legal_circuit: values[legalCircuit.name],
+                  notary: values[notary.name],
+                  sheet: values[sheet.name],
+                };
+              }
+              return partner;
+            }
+          );
+          setFieldValueExternal("related_partners", updatedRelatedPartners);
+        } else {
+          // create mode
+          setFieldValueExternal("related_partners", [
+            ...externalValues.related_partners,
+            {
+              related_partner_id: values[relatedPartnerId.name],
+              partner_type_id: values[partnerTypeId.name],
+              start_date: values[startDate.name],
+              end_date: values[endDate.name],
+              active: values[active.name],
+              seat: values[seat.name],
+              deed: values[deed.name],
+              check_in: values[checkIn.name],
+              deed_date: values[deedDate.name],
+              legal_circuit: values[legalCircuit.name],
+              notary: values[notary.name],
+              sheet: values[sheet.name],
+            },
+          ]);
+        }
+        clearFields(methods);
+        handleCloseModal();
+      },
+    }
+  );
   const columns = [
     {
       Header: "Nombre",
@@ -128,6 +242,34 @@ export default function RelatedPersonFormComponent({
           }
         </MDTypography>
       ),
+    },
+    {
+      Header: "Asiento",
+      accessor: "seat",
+    },
+    {
+      Header: "Circuito Legal",
+      accessor: "legal_circuit",
+    },
+    {
+      Header: "Fecha de Entrada",
+      accessor: "check_in",
+    },
+    {
+      Header: "Escritura",
+      accessor: "deed",
+    },
+    {
+      Header: "Fecha de Escritura",
+      accessor: "deed_date",
+    },
+    {
+      Header: "Notaría",
+      accessor: "notary",
+    },
+    {
+      Header: "Ficha",
+      accessor: "sheet",
     },
     {
       Header: "Fecha inicio",
@@ -158,11 +300,26 @@ export default function RelatedPersonFormComponent({
             >
               <Icon>delete</Icon>&nbsp;Borrar
             </MDButton>
+            <MDButton
+              variant="text"
+              color="info"
+              onClick={() => {
+                setOwnerModalOpen(true);
+                setSelectedOwner(row.original);
+              }}
+            >
+              <Icon>edit</Icon>&nbsp;Editar
+            </MDButton>
           </MDBox>
         );
       },
     },
   ];
+
+  const handleCloseModal = () => {
+    setOwnerModalOpen(false);
+    clearFields({ setTouched });
+  };
 
   const table = {
     columns,
@@ -194,7 +351,7 @@ export default function RelatedPersonFormComponent({
           </MDTypography>
         </MDBox>
       </Grid>
-      <Grid xs={12} sm={3} item>
+      <Grid xs={12} sm={2} item>
         <Select
           value={values[partnerTypeId.name]}
           options={partnerTypes}
@@ -261,7 +418,7 @@ export default function RelatedPersonFormComponent({
         </MDBox>
       </Grid>
       <Grid xs={12} sm={2} item>
-        <FormGroup>
+        <FormGroup mx="auto">
           <FormControlLabel
             control={
               <Switch
@@ -272,6 +429,18 @@ export default function RelatedPersonFormComponent({
             label={active.label}
           />
         </FormGroup>
+      </Grid>
+      <Grid xs={12} sm={1} item>
+        <MDButton
+          variant="gradient"
+          color="dark"
+          size="small"
+          onClick={() => setOwnerModalOpen(true)}
+          sx={{ width: "80px", p: 1 }}
+        >
+          Editar
+          <EditIcon sx={{ ml: 1 }} />
+        </MDButton>
       </Grid>
       <Grid xs={12} display="flex" gap={2} justifyContent="end" item>
         <MDButton
@@ -299,6 +468,21 @@ export default function RelatedPersonFormComponent({
           countries={countries}
           handleClose={() => setOpenModal(false)}
           setFieldValue={setFieldValue}
+        />
+      </Modal>
+      <Modal
+        open={ownerModalOpen}
+        onClose={() => setOwnerModalOpen(false)}
+        width="40%"
+      >
+        <OwnerForm
+          setFieldValue={setFieldValue}
+          owner={selectedOwner}
+          values={values}
+          errors={errors}
+          handleCancel={handleCloseModal}
+          handleSubmit={handleSubmit}
+          formField={newRelatedPeopleFormField.formField}
         />
       </Modal>
     </>

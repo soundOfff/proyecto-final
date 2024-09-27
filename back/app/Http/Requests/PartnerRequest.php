@@ -37,6 +37,7 @@ class PartnerRequest extends FormRequest
             'section_id' => 'nullable|numeric|exists:partner_sections,id',
             'related_partners' => 'nullable|array',
             'website' => 'nullable|string',
+            'civil_status' => 'nullable|string',
             'city' => 'nullable|string',
             'state' => 'nullable|string',
             'address' => 'nullable|string',

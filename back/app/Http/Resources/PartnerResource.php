@@ -57,6 +57,7 @@ class PartnerResource extends JsonResource
             'stripeId' => $this->stripe_id,
             'vat' => $this->vat,
             'website' => $this->website,
+            'civilStatus' => $this->civil_status,
             'zip' => $this->zip,
             'name' => $this->name,
             'number' => $this->number,

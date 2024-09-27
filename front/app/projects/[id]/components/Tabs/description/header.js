@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Loader from "/components/Loader";
-import { Grid } from "@mui/material";
+// import Loader from "/components/Loader";
+import MDSnackbar from "/components/MDSnackbar";
+import { CircularProgress, Grid } from "@mui/material";
 import { setColor } from "/utils/project-state-colors";
 
 import MDTypography from "/components/MDTypography";
@@ -21,9 +22,63 @@ import { generate } from "/actions/documents";
 import DeleteRow from "/components/DeleteRow";
 import Link from "next/link";
 
+function DocumentLink({ url }) {
+  return (
+    <MDBox sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <Link
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        style={{ color: "black", textDecoration: "none" }}
+      >
+        <MDButton variant="outlined" size="small" color="dark">
+          Abrir documento
+        </MDButton>
+      </Link>
+    </MDBox>
+  );
+}
+
+function ErrorList({ errors }) {
+  return (
+    <>
+      <MDBox mt={1} mb={1} ml={0.5}>
+        <MDTypography variant="button" fontWeight="regular" color="text">
+          Los siguientes campos contienen errores
+        </MDTypography>
+      </MDBox>
+      <MDBox component="ul" m={0} pl={4} mb={1}>
+        {errors.map((error, index) => (
+          <MDBox
+            component="li"
+            key={index}
+            color="text"
+            fontSize="1.25rem"
+            lineHeight={1}
+          >
+            <MDTypography
+              variant="caption"
+              color="text"
+              fontWeight="regular"
+              verticalAlign="middle"
+            >
+              {error}
+            </MDTypography>
+          </MDBox>
+        ))}
+      </MDBox>
+    </>
+  );
+}
+
 export default function Header() {
   const { project } = useDataProvider();
   const [isLoading, setIsLoading] = useState(false);
+  const [generateErrorSb, setGenerateErrorSb] = useState(false);
+  const [generateSuccessSb, setGenerateSuccessSb] = useState(false);
+  const [generateInfo, setGenerateInfo] = useState(null);
+  const [generateLink, setGenerateLink] = useState("#");
+  const [errors, setErrors] = useState([]);
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -34,30 +89,83 @@ export default function Header() {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-  const router = useRouter();
-
-  const handleEditButton = () => {
-    router.push(`/projects/${project.id}/edit`);
-  };
 
   const handleProjectDelete = () => {
     handleDelete(project.id);
   };
 
-  const handleGenerateDocument = () => {
+  const handleGenerateDocument = async () => {
     setIsLoading(true);
-    generate()
-      .then((data) => {
-        setIsLoading(false);
-        window.open(data.url, "_blank");
-      })
-      .catch(() => setIsLoading(false));
+    const { errors, data } = await generate(project.id);
+    if (errors) {
+      setIsLoading(false);
+      setGenerateErrorSb(true);
+      setGenerateInfo("Error al generar documento");
+      setErrors(errors);
+    } else {
+      setIsLoading(false);
+      setGenerateSuccessSb(true);
+      setGenerateInfo("Documento generado correctamente");
+      setGenerateLink(data);
+    }
   };
 
-  return isLoading ? (
-    <Loader />
-  ) : (
+  const renderSnackbar = () => {
+    if (isLoading) {
+      return (
+        <MDSnackbar
+          color="dark"
+          bgWhite
+          title={
+            <MDBox display="flex" justifyContent="center" gap={2}>
+              <CircularProgress size={18} color="dark" />
+              <MDTypography variant="button" color="dark">
+                Generando documento...
+              </MDTypography>
+            </MDBox>
+          }
+          content={
+            <MDTypography variant="caption" color="dark">
+              Este proceso puede tardar unos minutos. Por favor, espere.
+            </MDTypography>
+          }
+          open={isLoading}
+          close={() => setIsLoading(false)}
+        />
+      );
+    }
+    if (generateErrorSb) {
+      return (
+        <MDSnackbar
+          color="error"
+          icon="error"
+          title="Error al generar documento"
+          content={<ErrorList errors={errors} />}
+          open={generateErrorSb}
+          close={() => setGenerateErrorSb(false)}
+          bgWhite
+        />
+      );
+    }
+    if (generateSuccessSb) {
+      return (
+        <MDSnackbar
+          color="success"
+          icon="check_circle"
+          title="Documento generado correctamente"
+          content={<DocumentLink url={generateLink} />}
+          open={generateSuccessSb}
+          onClose={() => setGenerateSuccessSb(false)}
+          close={() => setGenerateSuccessSb(false)}
+          bgWhite
+        />
+      );
+    }
+  };
+
+  return (
     <Grid container mt={3} mb={5} lineHeight={0}>
+      {renderSnackbar()}
       <Grid item xs={12} md={6}>
         <MDTypography
           variant="h4"
@@ -119,7 +227,6 @@ export default function Header() {
               variant="gradient"
               color="dark"
               size="small"
-              onClick={handleEditButton}
               sx={{ height: "40px", width: "130px", ml: 2 }}
             >
               Editar
@@ -136,6 +243,18 @@ export default function Header() {
             Eliminar
             <DeleteIcon sx={{ ml: 1 }} />
           </MDButton>
+          {project.documentUrl && (
+            <Link href={project.documentUrl} target="blank">
+              <MDButton
+                variant="gradient"
+                color="success"
+                size="small"
+                sx={{ height: "40px", width: "130px", ml: 2 }}
+              >
+                Ver documento
+              </MDButton>
+            </Link>
+          )}
         </MDBox>
       </Grid>
       <DeleteRow

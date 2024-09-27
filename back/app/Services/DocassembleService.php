@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\Models\Partner;
 use App\Models\Project;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use NumberToWords\NumberToWords;
 
 class DocassembleService
@@ -14,16 +17,62 @@ class DocassembleService
     {
     }
 
+    private array $defaultMessages = [
+        'country_id.required' => 'El campo país es obligatorio',
+        'country_id.exists' => 'El país seleccionado no es válido',
+        'jurisdiction_id.required' => 'El campo jurisdicción es obligatorio',
+        'jurisdiction_id.exists' => 'La jurisdicción seleccionada no es válida',
+        'address.required' => 'El campo dirección es obligatorio',
+        'id_type.required' => 'El campo tipo de identificación es obligatorio',
+        'id_number.required' => 'El campo número de identificación es obligatorio',
+        'phone_number.required' => 'El campo número de teléfono es obligatorio',
+        'file_number.required' => 'El campo número de archivo es obligatorio',
+        'image_number.required' => 'El campo número de imagen es obligatorio',
+        'roll_number.required' => 'El campo número de rol es obligatorio',
+        'civil_status.required' => 'El campo estado civil es obligatorio',
+        'occupation.required' => 'El campo ocupación es obligatorio',
+        'check_in.required' => 'El campo fecha de ingreso es obligatorio',
+        'deed.required' => 'El campo escritura es obligatorio',
+        'notary.required' => 'El campo notario es obligatorio',
+        'deed_date.required' => 'El campo fecha de escritura es obligatorio',
+        'seat.required' => 'El campo asiento es obligatorio',
+        'legal_circuit.required' => 'El campo circuito legal es obligatorio',
+        'sheet.required' => 'El campo folio es obligatorio',
+    ];
+
+    private function generateMessages($from)
+    {
+        return array_map(function ($message) use ($from) {
+            return $message." para el $from.";
+        }, $this->defaultMessages);
+    }
+
+    private function validate(Model $model, array $rules, string $from)
+    {
+        $messages = $this->generateMessages($from);
+
+        $attributes = $model->getAttributes();
+        if (isset($model->pivot)) {
+            $attributes = array_merge($model->getAttributes(), $model->pivot->getAttributes());
+        }
+
+        $validator = Validator::make($attributes, $rules, $messages);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
+
     public function createDocument(Project $project)
     {
         $defendant = $project->getDefendants()->first();
         $plaintiff = $project->getPlaintiffs()->first();
         abort_if(! $plaintiff->pivot, 404, 'Apoderado no encontrado');
         $representative = $plaintiff->relatedPartners()->find($plaintiff->pivot->owner_id);
+        abort_if(! $representative, 404, 'Apoderado no encontrado');
 
-        $defendant->validate(Partner::$defendantDocumentRules, 'demandado');
-        $plaintiff->validate(Partner::$plaintiffDocumentRules, 'demandante');
-        $representative->validate(Partner::$representativeDocumentRules, 'apoderado');
+        $this->validate($defendant, Partner::DEFENDANT_DOCUMENT_RULES, 'demandado');
+        $this->validate($plaintiff, Partner::PLAINTIFF_DOCUMENT_RULES, 'demandante');
+        $this->validate($representative, Partner::REPRESENTATIVE_DOCUMENT_RULES, 'apoderado');
 
         $variables = [
             // Representative data

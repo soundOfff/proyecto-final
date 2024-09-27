@@ -17,13 +17,18 @@ export async function generate(projectId, params) {
     const error = await response.json();
     console.log(error);
     if (error.errors) {
-      throw new Error(Object.values(error.errors).flat().join("\n"));
+      return {
+        errors: Object.values(error.errors).flat(),
+        data: null,
+      };
     } else {
-      throw new Error(
-        `Code: ${response.status}, Error: ${response.statusText}, Message: ${error.message}`
-      );
+      return {
+        errors: [error.message.split("Message: ")[1] || error.message],
+        data: null,
+      };
     }
   }
+  const data = await response.json();
 
-  return response.json();
+  return { errors: null, data: data.url };
 }

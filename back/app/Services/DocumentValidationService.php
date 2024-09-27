@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Partner;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 // TODO: Make this reusable for other models
 class DocumentValidationService
 {
-    protected static $defaultMessages = [
+    protected array $defaultMessages = [
         'country_id.required' => 'El campo país es obligatorio.',
         'country_id.exists' => 'El país seleccionado no es válido.',
         'jurisdiction_id.required' => 'El campo jurisdicción es obligatorio.',
@@ -32,67 +32,18 @@ class DocumentValidationService
         'sheet.required' => 'El campo folio es obligatorio.',
     ];
 
-    public function validatePartner(Partner $partner, string $role, $from)
+    public function validate(Model $model, array $rules, string $from)
     {
-        $rules = $this->getValidationRules($role);
-
-        if (empty($rules)) {
-            throw new \InvalidArgumentException("Invalid role: $role");
-        }
-
         $messages = $this->generateMessages($from);
 
-        $attributes = $partner->getAttributes();
-        if (isset($partner->pivot)) {
-            $attributes = array_merge($partner->getAttributes(), $partner->pivot->getAttributes());
+        $attributes = $model->getAttributes();
+        if (isset($model->pivot)) {
+            $attributes = array_merge($model->getAttributes(), $model->pivot->getAttributes());
         }
 
         $validator = Validator::make($attributes, $rules, $messages);
         if ($validator->fails()) {
             throw new ValidationException($validator);
-        }
-    }
-
-    protected function getValidationRules(string $role)
-    {
-        switch ($role) {
-            case 'defendant':
-                return [
-                    'country_id' => 'required|exists:countries,id',
-                    'jurisdiction_id' => 'required|exists:jurisdictions,id',
-                    'address' => 'required',
-                    'id_type' => 'required',
-                    'id_number' => 'required',
-                ];
-            case 'plaintiff':
-                return [
-                    'country_id' => 'required|exists:countries,id',
-                    'jurisdiction_id' => 'required|exists:jurisdictions,id',
-                    'address' => 'required',
-                    'phone_number' => 'required',
-                    'file_number' => 'required',
-                    'image_number' => 'required',
-                    'roll_number' => 'required',
-                ];
-            case 'representative':
-                return [
-                    'country_id' => 'required|exists:countries,id',
-                    'jurisdiction_id' => 'required|exists:jurisdictions,id',
-                    'address' => 'required',
-                    'civil_status' => 'required',
-                    'id_number' => 'required',
-                    'id_type' => 'required',
-                    'occupation' => 'required',
-                    'check_in' => 'required',
-                    'deed' => 'required',
-                    'notary' => 'required',
-                    'deed_date' => 'required',
-                    'seat' => 'required',
-                    'legal_circuit' => 'required',
-                    'sheet' => 'required',
-                ];
-            default:
-                return null; // Invalid role
         }
     }
 

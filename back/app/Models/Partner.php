@@ -80,7 +80,7 @@ class Partner extends Model
 
     public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'number', 'company', 'website', 'dv', 'ruc'];
 
-    public static $defendantDocumentRules = [
+    public const DEFENDANT_DOCUMENT_RULES = [
         'country_id' => 'required|exists:countries,id',
         'jurisdiction_id' => 'required|exists:jurisdictions,id',
         'address' => 'required',
@@ -88,7 +88,7 @@ class Partner extends Model
         'id_number' => 'required',
     ];
 
-    public static $plaintiffDocumentRules = [
+    public const PLAINTIFF_DOCUMENT_RULES = [
         'country_id' => 'required|exists:countries,id',
         'jurisdiction_id' => 'required|exists:jurisdictions,id',
         'address' => 'required',
@@ -98,7 +98,7 @@ class Partner extends Model
         'roll_number' => 'required',
     ];
 
-    public static $representativeDocumentRules = [
+    public const REPRESENTATIVE_DOCUMENT_RULES = [
         'country_id' => 'required|exists:countries,id',
         'jurisdiction_id' => 'required|exists:jurisdictions,id',
         'address' => 'required',

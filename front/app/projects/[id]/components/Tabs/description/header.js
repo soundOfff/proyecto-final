@@ -78,6 +78,7 @@ export default function Header() {
   const [generateSuccessSb, setGenerateSuccessSb] = useState(false);
   const [generateInfo, setGenerateInfo] = useState(null);
   const [generateLink, setGenerateLink] = useState("#");
+  const [errors, setErrors] = useState([]);
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -93,20 +94,20 @@ export default function Header() {
     handleDelete(project.id);
   };
 
-  const handleGenerateDocument = () => {
+  const handleGenerateDocument = async () => {
     setIsLoading(true);
-    generate(project.id)
-      .then((data) => {
-        setGenerateSuccessSb(true);
-        setGenerateInfo("Documento generado correctamente");
-        setGenerateLink(data.url);
-      })
-      .then(() => setIsLoading(false))
-      .catch((error) => {
-        setGenerateErrorSb(true);
-        setGenerateInfo(error.message);
-        setIsLoading(false);
-      });
+    const { errors, data } = await generate(project.id);
+    if (errors) {
+      setIsLoading(false);
+      setGenerateErrorSb(true);
+      setGenerateInfo("Error al generar documento");
+      setErrors(errors);
+    } else {
+      setIsLoading(false);
+      setGenerateSuccessSb(true);
+      setGenerateInfo("Documento generado correctamente");
+      setGenerateLink(data);
+    }
   };
 
   const renderSnackbar = () => {
@@ -139,7 +140,7 @@ export default function Header() {
           color="error"
           icon="error"
           title="Error al generar documento"
-          content={<ErrorList errors={generateInfo.split("\n")} />}
+          content={<ErrorList errors={errors} />}
           open={generateErrorSb}
           close={() => setGenerateErrorSb(false)}
           bgWhite

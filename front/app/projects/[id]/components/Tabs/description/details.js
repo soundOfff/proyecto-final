@@ -64,7 +64,7 @@ export default function Details() {
         <Grid item xs={12} md={6} xxl={3} whiteSpace="nowrap">
           <DefaultItem
             color="dark"
-            title="Costo"
+            title="Honorarios"
             icon="monetization_on_outlined"
             description={moneyFormat(project.cost)}
           />
@@ -136,7 +136,6 @@ export default function Details() {
             description={project.billablePartner?.mergedName}
           />
         </Grid>
-
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -156,7 +155,23 @@ export default function Details() {
             description={project.estimatedHours ?? "Sin estimación"}
           />
         </Grid>
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Juzgado"
+            description={project.court?.description}
+          />
+        </Grid>
 
+        <Divider variant="left" sx={{ width: "70%" }} />
+
+        <Grid xs={12} md={6} mt={3}>
+          <DefaultItem
+            color="dark"
+            title="Horas Estimadas"
+            description={project.estimatedHours ?? "Sin estimación"}
+          />
+        </Grid>
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -174,7 +189,6 @@ export default function Details() {
             description={project.process?.name || "Sin proceso asociado"}
           />
         </Grid>
-
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -182,9 +196,7 @@ export default function Details() {
             description={project.type || "Sin tipo de caso"}
           />
         </Grid>
-
         <Divider variant="left" sx={{ width: "70%" }} />
-
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -192,7 +204,6 @@ export default function Details() {
             description={project.responsiblePerson?.name ?? "Sin responsable"}
           />
         </Grid>
-
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem
             color="dark"
@@ -200,9 +211,7 @@ export default function Details() {
             description={project.proposal?.subject || "Sin propuesta asociada"}
           />
         </Grid>
-
         <Divider variant="left" sx={{ width: "70%" }} />
-
         {parseProjectDescription(project.description) && (
           <>
             <Grid xs={12} sm={6} mt={3}>
@@ -229,8 +238,7 @@ export default function Details() {
             <Divider variant="left" sx={{ width: "70%" }} />
           </>
         )}
-
-        <Grid xs={12} sm={6} pl={2} mt={3}>
+        <Grid xs={12} pl={2} mt={3}>
           <MDBox mt={0.5} lineHeight={1.4}>
             <MDTypography
               display="block"
@@ -300,22 +308,7 @@ export default function Details() {
           })}
         </Grid>
 
-        <Grid xs={12} md={6} mt={3}>
-          <DefaultItem
-            color="dark"
-            title="Abogado Principal"
-            description={
-              project.staffs.length > 0
-                ? project.staffs.at(-1)?.firstName +
-                  " " +
-                  project.staffs.at(-1)?.lastName
-                : "Sin abogado principal"
-            }
-          />
-        </Grid>
-
         <Divider variant="left" sx={{ width: "70%" }} />
-
         {project.partners?.length > 0 && (
           <Grid xs={12} pl={2} mt={3}>
             <MDBox mt={0.5} lineHeight={1.4}>

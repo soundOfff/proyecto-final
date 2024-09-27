@@ -42,6 +42,7 @@ class Project extends Model
         'billable_partner_id',
         'process_id',
         'type',
+        'court_id',
     ];
 
     public function stages(): HasMany

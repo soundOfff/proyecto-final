@@ -15,6 +15,7 @@ export default function PartnerForm({
   values: externalValues,
   partnerData,
   roles: roleData,
+  openConfirmationModal,
 }) {
   const formField = useMemo(() => {
     return {
@@ -119,6 +120,7 @@ export default function PartnerForm({
             fieldName={formField.owner.name}
             inputLabel={formField.owner.label}
             setFieldValue={setFieldValue}
+            onInputChange={openConfirmationModal}
           />
         </Grid>
       )}

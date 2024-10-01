@@ -9,18 +9,23 @@ use App\Http\Resources\StaffSelectResourceCollection;
 use App\Models\Staff;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class StaffController extends Controller
 {
-    public function select()
+    public function select(Request $request)
     {
         $staffs = DB::table('staff')
             ->selectRaw('id, CONCAT(first_name, " ", last_name) as name')
             ->where('active', true)
+            ->when($request->has('filter.has-channels'), function ($query) {
+                $query->whereNotNull('slack_channel');
+            })
             ->orderBy('name')
             ->get();
 

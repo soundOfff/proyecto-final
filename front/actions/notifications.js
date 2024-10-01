@@ -75,3 +75,14 @@ export async function destroy(notificationId) {
 
   revalidatePath("/notifications");
 }
+
+export async function sendSlackNotification(data) {
+  const url = new URL(`${process.env.API_URL}/send-slack-notification`);
+
+  const response = await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  return response;
+}

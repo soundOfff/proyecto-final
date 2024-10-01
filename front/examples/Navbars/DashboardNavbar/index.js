@@ -379,7 +379,7 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
 
               <SlackIcon
                 handleClick={() => {
-                  router.push("send-slack-notification");
+                  router.push("/send-slack-notification");
                 }}
               />
 

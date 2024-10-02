@@ -4,7 +4,6 @@ import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 import Tabs from "./tabs";
 import MDBox from "/components/MDBox";
-import MDTypography from "/components/MDTypography";
 import { useEffect, useState } from "react";
 import PartnerForm from "./partnerForm";
 import PartnerList from "./partnerList";
@@ -13,8 +12,6 @@ import { convertToRaw } from "draft-js";
 import Description from "./description";
 import NoteForm from "./noteForm";
 import NoteList from "./noteList";
-import Modal from "/components/Modal";
-import OwnerForm from "/components/ModalContent/Owner/form";
 
 export default function Partners({
   partnerData,

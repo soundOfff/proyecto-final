@@ -11,10 +11,11 @@ import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
 import Modal from "/components/Modal";
 import PersonForm from "/components/ModalContent/Partner";
-import EditIcon from "@mui/icons-material/Edit";
+import { OWNER } from "/utils/constants/relatedPartnerTypes";
 
 import * as Yup from "yup";
 import OwnerForm from "./owner-person-form";
+import OwnerPersonInputs from "./owner-person-inputs";
 
 const newRelatedPeopleFormField = {
   formId: "new-related-people",
@@ -244,34 +245,6 @@ export default function RelatedPersonFormComponent({
       ),
     },
     {
-      Header: "Asiento",
-      accessor: "seat",
-    },
-    {
-      Header: "Circuito Legal",
-      accessor: "legal_circuit",
-    },
-    {
-      Header: "Fecha de Entrada",
-      accessor: "check_in",
-    },
-    {
-      Header: "Escritura",
-      accessor: "deed",
-    },
-    {
-      Header: "Fecha de Escritura",
-      accessor: "deed_date",
-    },
-    {
-      Header: "Notaría",
-      accessor: "notary",
-    },
-    {
-      Header: "Ficha",
-      accessor: "sheet",
-    },
-    {
       Header: "Fecha inicio",
       accessor: "start_date",
     },
@@ -331,7 +304,7 @@ export default function RelatedPersonFormComponent({
       <Grid xs={12} item>
         <MDTypography variant="h5">Personas Relacionadas</MDTypography>
       </Grid>
-      <Grid xs={12} sm={3} item>
+      <Grid xs={12} sm={4} item>
         <Select
           value={values[relatedPartnerId.name]}
           options={notJuridicalEntities}
@@ -351,7 +324,7 @@ export default function RelatedPersonFormComponent({
           </MDTypography>
         </MDBox>
       </Grid>
-      <Grid xs={12} sm={2} item>
+      <Grid xs={12} sm={4} item>
         <Select
           value={values[partnerTypeId.name]}
           options={partnerTypes}
@@ -417,7 +390,17 @@ export default function RelatedPersonFormComponent({
           </MDTypography>
         </MDBox>
       </Grid>
-      <Grid xs={12} sm={2} item>
+      {values[partnerTypeId.name] == OWNER && (
+        <OwnerPersonInputs
+          formData={{
+            formField: newRelatedPeopleFormField.formField,
+            values,
+            errors,
+            setFieldValue,
+          }}
+        />
+      )}
+      <Grid xs={12} sm={3} item>
         <FormGroup mx="auto">
           <FormControlLabel
             control={
@@ -429,18 +412,6 @@ export default function RelatedPersonFormComponent({
             label={active.label}
           />
         </FormGroup>
-      </Grid>
-      <Grid xs={12} sm={1} item>
-        <MDButton
-          variant="gradient"
-          color="dark"
-          size="small"
-          onClick={() => setOwnerModalOpen(true)}
-          sx={{ width: "80px", p: 1 }}
-        >
-          Editar
-          <EditIcon sx={{ ml: 1 }} />
-        </MDButton>
       </Grid>
       <Grid xs={12} display="flex" gap={2} justifyContent="end" item>
         <MDButton

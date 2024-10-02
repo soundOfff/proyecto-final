@@ -178,6 +178,7 @@ export default function FormComponent({
               ...partner,
               role_id: partner.role?.id,
               owner_id: partner.owner?.id,
+              relatedPartners: partner.relatedPartners,
             };
           })
         );

@@ -3,25 +3,42 @@
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import { Form, Formik } from "formik";
-import OwnerForm from "./form";
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
+import OwnerForm from "./form";
+
+import { update as updateOwner } from "/actions/partners";
 
 export default function ModalContentForm({
   owner = null,
-  handleCancel,
-  handleSubmit,
+  handleSubmit: handleExternalSubmit,
 }) {
   const { formId, formField } = form;
+
+  const handleAddOwner = async (values, { resetForm }) => {
+    await updateOwner(owner?.partner_id, {
+      related_partners: [values],
+    }); // update the owner pivot data
+    handleExternalSubmit(); // triggers the parent's handleSubmit
+    resetForm();
+  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validations}
-      onSubmit={handleSubmit}
+      onSubmit={handleAddOwner}
     >
-      {({ values, errors, touched, setFieldValue, isSubmitting }) => (
+      {({
+        values,
+        errors,
+        touched,
+        setFieldValue,
+        handleSubmit,
+        resetForm,
+        isSubmitting,
+      }) => (
         <Form
           id={formId}
           autoComplete="off"
@@ -38,22 +55,17 @@ export default function ModalContentForm({
               formField,
             }}
             owner={owner}
-            handleCancel={handleCancel}
           />
-          <MDBox p={3} mt={2}>
-            <MDBox width="100%" display="flex" justifyContent="space-between">
-              <MDButton variant="gradient" color="light" onClick={handleCancel}>
-                Cancelar
-              </MDButton>
-              <MDButton
-                disabled={isSubmitting}
-                type="submit"
-                variant="gradient"
-                color="dark"
-              >
-                Guardar
-              </MDButton>
-            </MDBox>
+          <MDBox>
+            <MDButton
+              type="submit"
+              variant="contained"
+              color="success"
+              disabled={isSubmitting}
+              onClick={handleSubmit}
+            >
+              Agregar
+            </MDButton>
           </MDBox>
         </Form>
       )}

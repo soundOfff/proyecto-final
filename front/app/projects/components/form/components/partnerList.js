@@ -1,13 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Grid, Icon, Link } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import DataTable from "/examples/Tables/DataTable";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
+import { getSelect as getOwners } from "/actions/partners";
 
 export default function PartnerList({
   rows = [],
@@ -92,7 +93,7 @@ export default function PartnerList({
   const table = { columns, rows };
 
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={5} mt={2}>
       <Grid item xs={12} mb={5}>
         <MDBox
           py={2}

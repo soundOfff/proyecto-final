@@ -8,7 +8,6 @@ import { Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
-import MDButton from "/components/MDButton";
 
 export default function OwnerForm({ formData, owner }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
@@ -29,9 +28,15 @@ export default function OwnerForm({ formData, owner }) {
       setFieldValue(partnerTypeId.name, owner.partner_type_id ?? "");
       setFieldValue(relatedPartnerId.name, owner.related_partner_id ?? "");
       setFieldValue(seat.name, owner.seat ?? "");
-      setFieldValue(checkIn.name, owner.check_in ?? "");
+      setFieldValue(
+        checkIn.name,
+        owner.check_in ?? moment().format("YYYY-MM-DD")
+      );
       setFieldValue(deed.name, owner.deed ?? "");
-      setFieldValue(deedDate.name, owner.deed_date ?? "");
+      setFieldValue(
+        deedDate.name,
+        owner.deed_date ?? moment().format("YYYY-MM-DD")
+      );
       setFieldValue(legalCircuit.name, owner.legal_circuit ?? "");
       setFieldValue(notary.name, owner.notary ?? "");
       setFieldValue(sheet.name, owner.sheet ?? "");
@@ -45,21 +50,13 @@ export default function OwnerForm({ formData, owner }) {
       flexDirection="column"
       justifyContent="space-between"
     >
-      <MDBox
-        color="white"
-        bgColor="dark"
-        variant="gradient"
-        borderRadius="lg"
-        shadow="lg"
-        overflow="auto"
-        opacity={1}
-        p={2}
-        mb={2}
-      >
-        Datos del propietario
-      </MDBox>
+      <Grid item mb={2}>
+        <MDTypography variant="h6" fontWeight="bold" color="text">
+          Datos del propietario
+        </MDTypography>
+      </Grid>
       <Grid xs={12} container spacing={3}>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={4}>
           <FormField
             name={seat.name}
             label={seat.label}
@@ -70,7 +67,7 @@ export default function OwnerForm({ formData, owner }) {
             success={values[seat.name]?.length > 0 && !errors[seat.name]}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormField
             name={legalCircuit.name}
             label={legalCircuit.label}
@@ -85,7 +82,7 @@ export default function OwnerForm({ formData, owner }) {
           />
         </Grid>
 
-        <Grid xs={12} sm={6} item>
+        <Grid xs={12} sm={4} item>
           <MDDatePicker
             input={{
               fullWidth: true,
@@ -108,7 +105,29 @@ export default function OwnerForm({ formData, owner }) {
             </MDTypography>
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={3}>
+          <FormField
+            name={notary.name}
+            label={notary.label}
+            setFieldValue={setFieldValue}
+            type={notary.type}
+            value={values[notary.name]}
+            error={errors[notary.name] && touched[notary.name]}
+            success={values[notary.name]?.length > 0 && !errors[notary.name]}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormField
+            name={sheet.name}
+            label={sheet.label}
+            setFieldValue={setFieldValue}
+            type={sheet.type}
+            value={values[sheet.name]}
+            error={errors[sheet.name] && touched[sheet.name]}
+            success={values[sheet.name]?.length > 0 && !errors[sheet.name]}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
           <FormField
             name={deed.name}
             label={deed.label}
@@ -119,7 +138,7 @@ export default function OwnerForm({ formData, owner }) {
             success={values[deed.name]?.length > 0 && !errors[deed.name]}
           />
         </Grid>
-        <Grid xs={12} sm={6} item>
+        <Grid xs={12} sm={3} item>
           <MDDatePicker
             input={{
               fullWidth: true,
@@ -145,41 +164,7 @@ export default function OwnerForm({ formData, owner }) {
             </MDTypography>
           </MDBox>
         </Grid>
-        <Grid item xs={12}>
-          <FormField
-            name={notary.name}
-            label={notary.label}
-            setFieldValue={setFieldValue}
-            type={notary.type}
-            multiline
-            rows={2}
-            value={values[notary.name]}
-            error={errors[notary.name] && touched[notary.name]}
-            success={values[notary.name]?.length > 0 && !errors[notary.name]}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormField
-            name={sheet.name}
-            label={sheet.label}
-            setFieldValue={setFieldValue}
-            multiline
-            rows={2}
-            type={sheet.type}
-            value={values[sheet.name]}
-            error={errors[sheet.name] && touched[sheet.name]}
-            success={values[sheet.name]?.length > 0 && !errors[sheet.name]}
-          />
-        </Grid>
       </Grid>
-      {/* <MDBox width="100%" mt={3} display="flex" justifyContent="space-between">
-        <MDButton variant="gradient" color="light" onClick={handleCancel}>
-          Cancelar
-        </MDButton>
-        <MDButton variant="gradient" color="dark">
-          {owner ? "Editar Persona" : "Agregar Persona"}
-        </MDButton>
-      </MDBox> */}
     </MDBox>
   );
 }

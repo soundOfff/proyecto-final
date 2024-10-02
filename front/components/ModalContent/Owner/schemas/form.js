@@ -60,6 +60,10 @@ const form = {
       name: "notary",
       label: "Notario",
     },
+    sheet: {
+      name: "sheet",
+      label: "Folio",
+    },
   },
 };
 

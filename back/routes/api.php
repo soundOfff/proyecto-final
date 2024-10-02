@@ -62,11 +62,7 @@ use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
-use App\Models\Staff;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +74,7 @@ use Laravel\Socialite\Facades\Socialite;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/partners-select', [PartnerController::class, 'select']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
@@ -121,7 +118,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/partners/{partner}', [PartnerController::class, 'show']);
     Route::put('/partners/{partner}', [PartnerController::class, 'update']);
     Route::get('/partner-stats', [PartnerController::class, 'stats']);
-    Route::get('/partners-select', [PartnerController::class, 'select']);
 
     Route::get('/partner-types', [PartnerTypeController::class, 'index']);
 

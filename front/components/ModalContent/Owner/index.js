@@ -1,65 +1,27 @@
 "use client";
 
-import initialValues from "./schemas/initialValues";
-import validations from "./schemas/validations";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import { Form, Formik } from "formik";
-import { store as storeItem, update } from "/actions/tasks";
-import TaskForm from "./form";
+import OwnerForm from "./form";
 import form from "./schemas/form";
-import { MODAL_TYPES } from "/utils/constants/modalTypes";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import initialValues from "./schemas/initialValues";
+import validations from "./schemas/validations";
 
 export default function ModalContentForm({
-  onClose,
-  priorities,
-  repeats,
-  partners,
-  dependencyTasks = [],
-  partnerId,
-  staffs,
-  actionsData = [],
-  tableFields = [],
-  task = null,
-  project = null,
-  mode = MODAL_TYPES.CREATE,
+  owner = null,
+  handleCancel,
+  handleSubmit,
 }) {
-  // TODO: change logic here
   const { formId, formField } = form;
-  const { data: session } = useSession();
-  const router = useRouter();
-  initialValues.author_id = session.staff.id;
-
-  const handleSubmit = async (values, actions) => {
-    await storeItem(values);
-    onClose();
-    actions.resetForm();
-    router.refresh();
-  };
-
-  const handleEdit = async (values, actions) => {
-    await update(task.id, values);
-    onClose();
-    actions.resetForm();
-    router.refresh();
-  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validations}
-      onSubmit={mode === MODAL_TYPES.CREATE ? handleSubmit : handleEdit}
+      onSubmit={handleSubmit}
     >
-      {({
-        values,
-        errors,
-        touched,
-        setFieldValue,
-        isSubmitting,
-        resetForm,
-      }) => (
+      {({ values, errors, touched, setFieldValue, isSubmitting }) => (
         <Form
           id={formId}
           autoComplete="off"
@@ -67,8 +29,7 @@ export default function ModalContentForm({
             height: "100%",
           }}
         >
-          <TaskForm
-            priorities={priorities}
+          <OwnerForm
             formData={{
               values,
               errors,
@@ -76,28 +37,12 @@ export default function ModalContentForm({
               setFieldValue,
               formField,
             }}
-            partners={partners}
-            repeats={repeats}
-            task={task}
-            dependencyTasks={dependencyTasks}
-            onClose={onClose}
-            mode={mode}
-            partnerId={partnerId}
-            staffs={staffs}
-            project={project}
-            actionsData={actionsData}
-            tableFields={tableFields}
+            owner={owner}
+            handleCancel={handleCancel}
           />
-          <MDBox p={3} mt={4}>
+          <MDBox p={3} mt={2}>
             <MDBox width="100%" display="flex" justifyContent="space-between">
-              <MDButton
-                variant="gradient"
-                color="light"
-                onClick={() => {
-                  onClose();
-                  resetForm();
-                }}
-              >
+              <MDButton variant="gradient" color="light" onClick={handleCancel}>
                 Cancelar
               </MDButton>
               <MDButton

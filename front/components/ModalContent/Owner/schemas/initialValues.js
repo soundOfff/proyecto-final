@@ -13,8 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { LOW_ID } from "/utils/constants/taskPriorityLabels";
-import checkout from "./form";
+import form from "./form";
 import moment from "moment";
 
 const {
@@ -32,7 +31,7 @@ const {
     notary,
     sheet,
   },
-} = checkout;
+} = form;
 
 const initialValues = {
   [relatedPartnerId.name]: "",

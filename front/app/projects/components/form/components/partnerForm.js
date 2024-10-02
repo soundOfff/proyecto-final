@@ -8,14 +8,15 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import MDTypography from "/components/MDTypography";
 import { PLAINTIFF } from "/utils/constants/PartnerProjectRoles";
-import { getSelect as getOwners } from "/actions/partners";
+import { show as getOwners } from "/actions/partners";
+import Modal from "/components/Modal";
+import OwnerForm from "/components/ModalContent/Owner/";
 
 export default function PartnerForm({
   setFieldValue: setFieldValueExternal,
   values: externalValues,
   partnerData,
   roles: roleData,
-  openConfirmationModal,
 }) {
   const formField = useMemo(() => {
     return {
@@ -35,14 +36,11 @@ export default function PartnerForm({
       },
     };
   }, []);
-
   const validations = Yup.object().shape({
     [formField.partner.name]: Yup.number().required(formField.partner.errorMsg),
     [formField.role.name]: Yup.string().required(formField.role.errorMsg),
-    [formField.owner.name]: Yup.string(),
   });
-
-  const { values, errors, touched, handleSubmit, setFieldValue } = useFormik({
+  const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       [formField.partner.name]: "",
       [formField.role.name]: "",
@@ -63,6 +61,21 @@ export default function PartnerForm({
   });
 
   const [owners, setOwners] = useState([]);
+  const [ownerConfirmationModal, setPartnerConfirmationModal] = useState(false);
+  const [owner, setOwner] = useState(null);
+
+  const handleOpenConfirmationModal = (ownerName) => {
+    // TODO: Change the input to a custom comp so I don't need to search
+    if (!ownerName) return;
+    const owner =
+      owners.find((owner) => owner.mergedName === ownerName)?.pivot ?? {};
+    setPartnerConfirmationModal(true);
+    setOwner(owner);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setPartnerConfirmationModal(false);
+  };
 
   const clearFields = (methods) => {
     setFieldValue(formField.partner.name, "");
@@ -76,16 +89,24 @@ export default function PartnerForm({
 
   useEffect(() => {
     if (isOwnerRequired) {
-      getOwners({ "filter[owners]": values[formField.partner.name] }).then(
-        (partners) => {
-          setOwners(partners);
-        }
-      );
+      getOwners(values[formField.partner.name], {
+        include: ["relatedPartners"],
+      }).then((partner) => {
+        setOwners(partner.relatedPartners);
+      });
     }
   }, [isOwnerRequired, values, formField]);
 
   return (
     <Grid container spacing={5} mb={5}>
+      <Modal
+        open={ownerConfirmationModal}
+        onClose={handleCloseConfirmationModal}
+        width="40%"
+        height="80%"
+      >
+        <OwnerForm owner={owner} handleCancel={handleCloseConfirmationModal} />
+      </Modal>
       <Grid item xs={12}>
         <MDTypography variant="h6" fontWeight="bold">
           Personas Relacionadas
@@ -120,7 +141,7 @@ export default function PartnerForm({
             fieldName={formField.owner.name}
             inputLabel={formField.owner.label}
             setFieldValue={setFieldValue}
-            onInputChange={openConfirmationModal}
+            onInputChange={handleOpenConfirmationModal}
           />
         </Grid>
       )}

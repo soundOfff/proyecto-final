@@ -14,6 +14,7 @@ import Description from "./description";
 import NoteForm from "./noteForm";
 import NoteList from "./noteList";
 import Modal from "/components/Modal";
+import OwnerForm from "/components/ModalContent/Owner/form";
 
 export default function Partners({
   partnerData,
@@ -30,17 +31,6 @@ export default function Partners({
   const [descriptionEditorState, setDescriptionEditorState] = useState(
     parseEditorState(project?.description || "")
   );
-  const [ownerConfirmationModal, setPartnerConfirmationModal] = useState(false);
-
-  const handleOpenConfirmationModal = (value) => {
-    if (!value) return;
-    console.log(value);
-    setPartnerConfirmationModal(true);
-  };
-
-  const handleCloseConfirmationModal = () => {
-    setPartnerConfirmationModal(false);
-  };
 
   useEffect(() => {
     const raw = convertToRaw(descriptionEditorState.getCurrentContent());
@@ -51,24 +41,12 @@ export default function Partners({
 
   return (
     <MDBox>
-      <Modal
-        open={ownerConfirmationModal}
-        onClose={handleCloseConfirmationModal}
-        width="40%"
-      >
-        <MDTypography variant="body2" align="center">
-          ¿Estás seguro de que deseas agregar al apoderado?
-        </MDTypography>
-      </Modal>
       <TabContext value={tab}>
         <MDBox mt={2}>
           <Tabs setTabIndex={setTab} />
         </MDBox>
         <TabPanel value="partners">
-          <PartnerForm
-            {...{ values, setFieldValue, partnerData, roles }}
-            openConfirmationModal={handleOpenConfirmationModal}
-          />
+          <PartnerForm {...{ values, setFieldValue, partnerData, roles }} />
           <PartnerList
             rows={partnerList}
             setFieldValue={setFieldValue}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Icon } from "@mui/material";
+import { Grid, Icon, Link } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import DataTable from "/examples/Tables/DataTable";
@@ -31,6 +31,15 @@ export default function PartnerList({
     {
       Header: "Nombre",
       accessor: "name",
+      Cell: ({ row }) => (
+        <Link href={`/partners/${row.original.id}/profile`}>
+          <MDBox mr={1}>
+            <MDTypography variant="caption" color="info">
+              {row.original.name}
+            </MDTypography>
+          </MDBox>
+        </Link>
+      ),
     },
     {
       Header: "Rol",
@@ -39,6 +48,15 @@ export default function PartnerList({
     {
       Header: "Apoderado",
       accessor: "owner",
+      Cell: ({ row }) => (
+        <Link href={`/partners/${row.original.related_partner_id}/profile`}>
+          <MDBox mr={1}>
+            <MDTypography variant="caption" color="info">
+              {row.original.owner}
+            </MDTypography>
+          </MDBox>
+        </Link>
+      ),
     },
     {
       Header: "",

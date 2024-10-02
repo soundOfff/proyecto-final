@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import moment from "moment";
 
-import FormField from "../components/form-field";
+import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
+
 import { Grid } from "@mui/material";
 
 import MDBox from "/components/MDBox";
@@ -9,16 +10,8 @@ import MDTypography from "/components/MDTypography";
 import MDDatePicker from "/components/MDDatePicker";
 import MDButton from "/components/MDButton";
 
-export default function OwnerForm({
-  formField,
-  values,
-  owner,
-  setFieldValue,
-  handleCancel,
-  handleSubmit,
-  errors,
-  touched,
-}) {
+export default function OwnerForm({ formData, owner }) {
+  const { values, errors, touched, setFieldValue, formField } = formData;
   const {
     seat,
     checkIn,
@@ -179,14 +172,14 @@ export default function OwnerForm({
           />
         </Grid>
       </Grid>
-      <MDBox width="100%" mt={3} display="flex" justifyContent="space-between">
+      {/* <MDBox width="100%" mt={3} display="flex" justifyContent="space-between">
         <MDButton variant="gradient" color="light" onClick={handleCancel}>
           Cancelar
         </MDButton>
-        <MDButton variant="gradient" color="dark" onClick={handleSubmit}>
+        <MDButton variant="gradient" color="dark">
           {owner ? "Editar Persona" : "Agregar Persona"}
         </MDButton>
-      </MDBox>
+      </MDBox> */}
     </MDBox>
   );
 }

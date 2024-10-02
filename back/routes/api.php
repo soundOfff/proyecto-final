@@ -74,13 +74,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('/partners-select', [PartnerController::class, 'select']);
-Route::get('/projects', [ProjectController::class, 'index']);
-Route::get('/projects/{project}', [ProjectController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
     Route::post('/projects', [ProjectController::class, 'store']);
+    Route::get('/projects/{project}', [ProjectController::class, 'show']);
     Route::put('/projects/{project}', [ProjectController::class, 'update']);
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
     Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
@@ -118,6 +117,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/partners/{partner}', [PartnerController::class, 'show']);
     Route::put('/partners/{partner}', [PartnerController::class, 'update']);
     Route::get('/partner-stats', [PartnerController::class, 'stats']);
+    Route::get('/partners-select', [PartnerController::class, 'select']);
 
     Route::get('/partner-types', [PartnerTypeController::class, 'index']);
 

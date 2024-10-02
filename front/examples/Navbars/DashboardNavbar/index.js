@@ -45,8 +45,6 @@ import {
   navbarContainer,
   navbarRow,
   navbarIconButton,
-  navbarDesktopMenu,
-  navbarMobileMenu,
 } from "/examples/Navbars/DashboardNavbar/styles";
 
 // NextJS Material Dashboard 2 PRO context
@@ -54,18 +52,18 @@ import {
   useMaterialUIController,
   setTransparentNavbar,
   setMiniSidenav,
-  setOpenConfigurator,
   setCurrentTimer,
 } from "/context";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getCurrentTimer } from "/actions/timers";
 import { useSession } from "next-auth/react";
-import moment, { utc } from "moment";
+import moment from "moment";
 import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 import translate from "/locales/es/common.json";
 import { signOut } from "next-auth/react";
+import SlackIcon from "/assets/icons/slack-icon";
 
 export default function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -74,12 +72,12 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
     miniSidenav,
     transparentNavbar,
     fixedNavbar,
-    openConfigurator,
     darkMode,
     currentTimer,
   } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const route = pathname
     .split("/")
@@ -378,6 +376,13 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
                   <Icon sx={iconsStyle}>access_time</Icon>
                 </MDBadge>
               </IconButton>
+
+              <SlackIcon
+                handleClick={() => {
+                  router.push("/send-slack-notification");
+                }}
+              />
+
               <IconButton
                 size="small"
                 disableRipple

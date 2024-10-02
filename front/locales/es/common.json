@@ -25,5 +25,6 @@
   "changes": "Historial de Cambios",
   "notification": "Notificación",
   "notifications": "Notificaciones",
-  "courts": "Juzgados"
+  "courts": "Juzgados",
+  "send-slack-notification": "Enviar notificación a Slack"
 }

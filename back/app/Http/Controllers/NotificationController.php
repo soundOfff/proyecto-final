@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\NotificationResourceCollection;
 use App\Models\Notification;
 use App\Models\Staff;
+use App\Notifications\SlackNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -141,6 +142,20 @@ class NotificationController extends Controller
     public function destroy(Notification $notification)
     {
         $notification->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function sendSlackNotification(Request $request)
+    {
+        $data = $request->validate([
+            'staff_id' => 'required|numeric|exists:staff,id',
+            'header' => 'required|string',
+            'body' => 'required|string',
+            'url' => 'nullable|string',
+        ]);
+        $staff = Staff::find($data['staff_id']);
+        $staff->notify(new SlackNotification($data['header'], $data['body'], $data['url']));
 
         return response()->json(null, 204);
     }

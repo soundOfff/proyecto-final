@@ -275,6 +275,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
     Route::put('/notifications-update-many', [NotificationController::class, 'updateMany']);
     Route::put('/notifications-archive-many', [NotificationController::class, 'archiveMany']);
+    Route::post('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
 
     Route::get('/notification-priorities', [NotificationPriorityController::class, 'select']);
 
@@ -294,7 +295,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/courts/{court}', [CourtController::class, 'update']);
     Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
-    Route::get('/send-slack-notification/{staff}', [NotificationController::class, 'sendSlackNotification']);
+    Route::get('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
 
     Route::post('/logout', [LoginController::class, 'logout']);
 });

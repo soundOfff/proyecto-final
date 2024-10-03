@@ -28,7 +28,6 @@ const include = [
   "status",
   "members",
   "responsiblePerson",
-  "partner.relatedPartners",
   "proposal",
   "notes",
   "court",

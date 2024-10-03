@@ -11,6 +11,7 @@ import moneyFormat from "/utils/moneyFormat";
 import { useDataProvider } from "/providers/DataProvider";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
 import SelectedProcesses from "/components/Tasks/selected-processes";
+import Link from "next/link";
 
 const headers = [
   {
@@ -358,13 +359,15 @@ export default function Details() {
                         pr={1}
                         sx={borderBottom}
                       >
-                        <MDTypography
-                          variant="body2"
-                          color="text"
-                          fontWeight="regular"
-                        >
-                          {partner.mergedName}
-                        </MDTypography>
+                        <Link href={`/partners/${partner.id}/profile`}>
+                          <MDTypography
+                            variant="body2"
+                            color="info"
+                            fontWeight="regular"
+                          >
+                            {partner.mergedName}
+                          </MDTypography>
+                        </Link>
                       </MDBox>
                       <MDBox
                         component="td"
@@ -390,13 +393,15 @@ export default function Details() {
                         pl={3}
                         sx={borderBottom}
                       >
-                        <MDTypography
-                          variant="body2"
-                          color="text"
-                          fontWeight="regular"
-                        >
-                          {partner.owner?.company || partner.owner?.name}
-                        </MDTypography>
+                        <Link href={`/partners/${partner.owner?.id}/profile`}>
+                          <MDTypography
+                            variant="body2"
+                            color="info"
+                            fontWeight="regular"
+                          >
+                            {partner.owner?.company || partner.owner?.name}
+                          </MDTypography>
+                        </Link>
                       </MDBox>
                     </TableRow>
                   ))}

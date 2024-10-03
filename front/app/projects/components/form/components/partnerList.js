@@ -2,13 +2,20 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Grid, Icon, Link } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  Icon,
+  InputLabel,
+  Link,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import DataTable from "/examples/Tables/DataTable";
 import MDTypography from "/components/MDTypography";
 import Modal from "/components/Modal";
-import { getSelect as getOwners } from "/actions/partners";
 
 export default function PartnerList({
   rows = [],
@@ -26,6 +33,18 @@ export default function PartnerList({
     );
 
     setFieldValue(partnerField.name, filteredPartners);
+  };
+
+  const handleOwnerChange = (event, row) => {
+    const newOwnerId = event.target.value;
+
+    const updatedPartners = values.partners.map((partner) =>
+      partner.id === row.original.id
+        ? { ...partner, owner_id: newOwnerId }
+        : partner
+    );
+
+    setFieldValue("partners", updatedPartners);
   };
 
   const columns = [
@@ -49,15 +68,37 @@ export default function PartnerList({
     {
       Header: "Apoderado",
       accessor: "owner",
-      Cell: ({ row }) => (
-        <Link href={`/partners/${row.original.related_partner_id}/profile`}>
-          <MDBox mr={1}>
-            <MDTypography variant="caption" color="info">
-              {row.original.owner}
-            </MDTypography>
+      Cell: ({ row }) =>
+        row.original.relatedPartners.length > 0 && (
+          <MDBox
+            sx={{
+              height: "80px !important",
+              pt: 3,
+            }}
+          >
+            <FormControl sx={{ minWidth: 200, minHeight: 60 }} size="medium">
+              <InputLabel id="select-small-label">Apoderado</InputLabel>
+              <Select
+                labelId="select-small-label"
+                id="select-small"
+                value={
+                  values.partners.find(
+                    (partner) => row.original.id === partner.id
+                  )?.owner_id
+                }
+                label="Apoderado"
+                onChange={(event) => handleOwnerChange(event, row)}
+                sx={{ height: "30px !important" }}
+              >
+                {row.original.relatedPartners.map((partner) => (
+                  <MenuItem p={1} value={partner.id}>
+                    {partner.mergedName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </MDBox>
-        </Link>
-      ),
+        ),
     },
     {
       Header: "",

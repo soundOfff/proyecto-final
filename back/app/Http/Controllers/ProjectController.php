@@ -175,7 +175,6 @@ class ProjectController extends Controller
                 'members',
                 'responsiblePerson',
                 'tasks',
-                'partners',
                 'proposal',
                 'partners.relatedPartners',
                 'process',

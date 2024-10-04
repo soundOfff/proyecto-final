@@ -75,6 +75,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/documents', [DocumentController::class, 'generate']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
@@ -263,8 +265,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 
     Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
-
-    Route::post('/documents', [DocumentController::class, 'generate']);
 
     Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
     Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);

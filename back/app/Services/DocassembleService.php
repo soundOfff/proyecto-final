@@ -40,26 +40,24 @@ class DocassembleService
         'sheet.required' => 'El campo folio es obligatorio',
     ];
 
-    private function generateMessages($from)
+    private function validate(Model $model, array $rules): ValidationException | null
     {
-        return array_map(function ($message) use ($from) {
-            return $message." para el $from.";
-        }, $this->defaultMessages);
-    }
-
-    private function validate(Model $model, array $rules, string $from)
-    {
-        $messages = $this->generateMessages($from);
-
         $attributes = $model->getAttributes();
         if (isset($model->pivot)) {
             $attributes = array_merge($model->getAttributes(), $model->pivot->getAttributes());
         }
 
-        $validator = Validator::make($attributes, $rules, $messages);
+        $validator = Validator::make($attributes, $rules, $this->defaultMessages);
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            return new ValidationException($validator);
         }
+
+        return null;
+    }
+
+    private function mergeErrors(?ValidationException $exception): array
+    {
+        return $exception ? array_map(fn ($errors) => implode(' ', $errors), $exception->errors()) : [];
     }
 
     public function createDocument(Project $project)
@@ -70,9 +68,19 @@ class DocassembleService
         $representative = $plaintiff->relatedPartners()->find($plaintiff->pivot->owner_id);
         abort_if(! $representative, 404, 'Apoderado no encontrado');
 
-        $this->validate($defendant, Partner::DEFENDANT_DOCUMENT_RULES, 'demandado');
-        $this->validate($plaintiff, Partner::PLAINTIFF_DOCUMENT_RULES, 'demandante');
-        $this->validate($representative, Partner::REPRESENTATIVE_DOCUMENT_RULES, 'apoderado');
+        $defendantException = $this->validate($defendant, Partner::DEFENDANT_DOCUMENT_RULES, 'demandado');
+        $plaintiffException = $this->validate($plaintiff, Partner::PLAINTIFF_DOCUMENT_RULES, 'demandante');
+        $representativeException = $this->validate($representative, Partner::REPRESENTATIVE_DOCUMENT_RULES, 'apoderado');
+
+        $errors = [
+            'demandado' => $this->mergeErrors($defendantException),
+            'demandante' => $this->mergeErrors($plaintiffException),
+            'apoderado' => $this->mergeErrors($representativeException),
+        ];
+
+        if (! empty($errors)) {
+            throw ValidationException::withMessages($errors);
+        }
 
         $variables = [
             // Representative data

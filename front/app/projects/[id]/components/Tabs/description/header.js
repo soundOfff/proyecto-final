@@ -39,35 +39,63 @@ function DocumentLink({ url }) {
   );
 }
 
-function ErrorList({ errors }) {
+function ErrorList({ errors, partners }) {
+  const getUrl = (key) => {
+    let partner;
+    if (key === "apoderado") {
+      partner = partners.find(
+        (partner) => partner.role.label.toLowerCase() === "demandante"
+      )?.owner;
+    } else {
+      partner = partners.find(
+        (partner) => partner.role.label.toLowerCase() === key
+      );
+    }
+    if (!partner) return "#";
+
+    return `/partners/${partner.id}/profile`;
+  };
+
   return (
-    <>
+    <MDBox>
       <MDBox mt={1} mb={1} ml={0.5}>
-        <MDTypography variant="button" fontWeight="regular" color="text">
+        <MDTypography variant="button" fontWeight="medium" color="text">
           Los siguientes campos contienen errores
         </MDTypography>
       </MDBox>
-      <MDBox component="ul" m={0} pl={4} mb={1}>
-        {errors.map((error, index) => (
-          <MDBox
-            component="li"
-            key={index}
-            color="text"
-            fontSize="1.25rem"
-            lineHeight={1}
-          >
-            <MDTypography
-              variant="caption"
-              color="text"
-              fontWeight="regular"
-              verticalAlign="middle"
-            >
-              {error}
-            </MDTypography>
+      {Object.keys(errors).map((key, index) => (
+        <MDBox key={index} mt={2}>
+          <MDTypography variant="caption" color="error">
+            {key}
+          </MDTypography>
+          <MDBox component="ul" m={0} pl={4} mb={1}>
+            {errors[key].map((error, i) => (
+              <MDBox
+                component="li"
+                key={i}
+                color="text"
+                fontSize="1.25rem"
+                lineHeight={1}
+              >
+                <MDTypography
+                  variant="caption"
+                  color="text"
+                  fontWeight="regular"
+                  verticalAlign="middle"
+                >
+                  {error}
+                </MDTypography>
+              </MDBox>
+            ))}
           </MDBox>
-        ))}
-      </MDBox>
-    </>
+          <Link href={getUrl(key)}>
+            <MDTypography variant="caption" color="info">
+              [Solucionar Problemas]
+            </MDTypography>
+          </Link>
+        </MDBox>
+      ))}
+    </MDBox>
   );
 }
 
@@ -76,7 +104,7 @@ export default function Header() {
   const [isLoading, setIsLoading] = useState(false);
   const [generateErrorSb, setGenerateErrorSb] = useState(false);
   const [generateSuccessSb, setGenerateSuccessSb] = useState(false);
-  const [generateInfo, setGenerateInfo] = useState(null);
+
   const [generateLink, setGenerateLink] = useState("#");
   const [errors, setErrors] = useState([]);
   const {
@@ -100,12 +128,10 @@ export default function Header() {
     if (errors) {
       setIsLoading(false);
       setGenerateErrorSb(true);
-      setGenerateInfo("Error al generar documento");
       setErrors(errors);
     } else {
       setIsLoading(false);
       setGenerateSuccessSb(true);
-      setGenerateInfo("Documento generado correctamente");
       setGenerateLink(data);
     }
   };
@@ -140,7 +166,7 @@ export default function Header() {
           color="error"
           icon="error"
           title="Error al generar documento"
-          content={<ErrorList errors={errors} />}
+          content={<ErrorList errors={errors} partners={project.partners} />}
           open={generateErrorSb}
           close={() => setGenerateErrorSb(false)}
           bgWhite

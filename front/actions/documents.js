@@ -22,10 +22,9 @@ export async function generate(projectId, params) {
 
   if (!response.ok) {
     const error = await response.json();
-    console.log(error);
     if (error.errors) {
       return {
-        errors: Object.values(error.errors).flat(),
+        errors: error.errors,
         data: null,
       };
     } else {

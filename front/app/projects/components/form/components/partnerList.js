@@ -90,8 +90,8 @@ export default function PartnerList({
                 onChange={(event) => handleOwnerChange(event, row)}
                 sx={{ height: "30px !important" }}
               >
-                {row.original.relatedPartners.map((partner) => (
-                  <MenuItem p={1} value={partner.id}>
+                {row.original.relatedPartners.map((partner, index) => (
+                  <MenuItem p={1} key={index} value={partner.id}>
                     {partner.mergedName}
                   </MenuItem>
                 ))}

@@ -57,7 +57,7 @@ export async function store(data) {
 
   revalidatePath("/partners");
   revalidatePath("/partners/create");
-
+  redirect("/partners");
   return partner;
 }
 

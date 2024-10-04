@@ -82,8 +82,10 @@ export default function PersonForm({
 
       setFieldValue(idNumber.name, partner.idNumber || "");
 
-      setFieldValue(isMale.name, partner.isMale || false);
+      setFieldValue(isMale.name, partner.isMale === 1);
+
       setFieldValue(civilStatus.name, partner.civilStatus || "");
+
       setFieldValue(phone.name, partner.phoneNumber || "");
       if (partner.phoneNumber == "Desconocido") {
         setPhoneChecked(true);
@@ -265,8 +267,6 @@ export default function PersonForm({
     } else {
       setFilteredCivilStatuses(civilStatusesFemale);
     }
-
-    setFieldValue(civilStatus.name, "");
   }, [values.is_male, setFieldValue, civilStatus]);
 
   return (

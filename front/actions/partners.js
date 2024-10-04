@@ -68,9 +68,6 @@ export async function update(id, data) {
     method: "PUT",
     body: JSON.stringify(data),
   });
-
-  revalidatePath("/partners");
-  redirect(`/partners/${id}`);
 }
 
 export async function getStats() {

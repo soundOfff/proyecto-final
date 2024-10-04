@@ -31,7 +31,7 @@ export default async function Update({ params: { id } }) {
       "status",
       "members",
       "responsiblePerson",
-      "partners",
+      "partners.relatedPartners",
       "proposal",
       "notes",
       "court",

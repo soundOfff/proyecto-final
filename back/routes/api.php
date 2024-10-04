@@ -62,11 +62,7 @@ use App\Http\Controllers\TaskRepeatController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskTimerController;
 use App\Http\Controllers\TaxController;
-use App\Models\Staff;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,9 +79,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
     Route::post('/projects', [ProjectController::class, 'store']);
+    Route::get('/projects/{project}', [ProjectController::class, 'show']);
     Route::put('/projects/{project}', [ProjectController::class, 'update']);
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
-    Route::get('/projects/{project}', [ProjectController::class, 'show']);
     Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
 
     Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);

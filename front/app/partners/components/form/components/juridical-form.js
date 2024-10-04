@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { getAll as getAllProvinces } from "/actions/provinces";
 import { getAll as getAllDistricts } from "/actions/districts";
 import { getAll as getAllJurisdictions } from "/actions/jurisdictions";
-import RelatedPersonFormComponent from "./related-person-form";
+import RelatedPersonForm from "./related-person-form";
 
 export default function JuridicalForm({
   partner,
@@ -686,7 +686,7 @@ export default function JuridicalForm({
             />
           </FormGroup>
         </Grid>
-        <RelatedPersonFormComponent
+        <RelatedPersonForm
           setFieldValue={setFieldValue}
           values={values}
           partnerTypes={partnerTypes}

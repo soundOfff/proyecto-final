@@ -22,12 +22,12 @@ class PartnerController extends Controller
                     return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? $query->whereNotNull('partners.company') : $query->whereNotNull('partners.name');
                 }),
                 AllowedFilter::callback('owners', function ($query, $value) {
-                    return $query
-                        ->select('owners.*')
-                        ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
-                        ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
-                        ->where('related_partner.partner_id', $value)
-                        ->where('related_partner.partner_type_id', PartnerType::OWNER);
+                    $query
+                    ->select('owners.*')
+                    ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
+                    ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
+                    ->where('related_partner.partner_id', $value)
+                    ->where('related_partner.partner_type_id', PartnerType::OWNER);
                 }),
             ])
             ->where(function ($query) {

@@ -45,7 +45,6 @@ export default function FormComponent({
       } else {
         await storePartner(values);
       }
-      router.push("/partners");
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);

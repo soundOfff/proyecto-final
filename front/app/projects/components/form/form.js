@@ -175,7 +175,6 @@ export default function FormComponent({
         setFieldValue(
           partners.name,
           project.partners.map((partner) => {
-            console.log(partner);
             return {
               ...partner,
               role_id: partner.role?.id,

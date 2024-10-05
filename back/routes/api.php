@@ -75,6 +75,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/tasks', [TaskController::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
@@ -159,7 +161,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/timers', [TaskTimerController::class, 'store']);
     Route::get('/current-timer/{staff}', [TaskTimerController::class, 'getCurrentTimer']);
 
-    Route::get('/tasks', [TaskController::class, 'index']);
     Route::get('/tasks-select', [TaskController::class, 'select']);
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);

@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\StaffDevice;
+use App\Models\Task;
+use App\Services\NotificationService;
+use Illuminate\Http\Request;
+
+class FcmController extends Controller
+{
+    public function __construct(protected NotificationService $notificationService)
+    {
+    }
+
+    public function sendWebPushNotification(Request $request)
+    {
+        try {
+            $request->validate([
+                'device_token' => 'required|string',
+                'title' => 'required|string',
+                'body' => 'required|string',
+                'staff_id' => 'required|exists:staff,id',
+                'task_id' => 'required|exists:tasks,id',
+            ]);
+
+            $this->notificationService->sendWebPushNotification($request->device_token, $request->title, $request->body, $request->staff_id, strtolower(class_basename(Task::class)), $request->task_id);
+
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            dd($e);
+
+            return response()->json($e->getMessage(), 500);
+        }
+    }
+
+    public function storeToken(Request $request)
+    {
+        $newTokenDevice = $request->validate([
+            'staff_id' => 'required|exists:staff,id',
+            'device_token' => 'required|string',
+        ]);
+
+        $tokenExists = StaffDevice::where('staff_id', $newTokenDevice['staff_id'])
+            ->where('device_token', $newTokenDevice['device_token'])
+            ->exists();
+
+        if (! $tokenExists) {
+            StaffDevice::create($newTokenDevice);
+        }
+
+        return response()->json(null, 201);
+    }
+}

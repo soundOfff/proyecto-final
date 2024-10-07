@@ -207,20 +207,19 @@ export default function Header() {
         onClose={() => setGenerateErrorSb(false)}
       >
         <MDBox>
-          <SlackButton
-            onClick={() => {
-              setOpenSlackShareModal(true);
+          <MDButton
+            variant="gradient"
+            color="dark"
+            size="small"
+            onClick={handleGenerateDocument}
+            sx={{
+              height: "40px",
+              width: "130px",
+              ml: 2,
             }}
-          />
-          <SlackShare
-            open={openSlackShareModal}
-            onClose={() => {
-              setOpenSlackShareModal(false);
-            }}
-            modelId={project.id}
-            modelType="Project"
-          />
-
+          >
+            Generar Poder
+          </MDButton>
           <ErrorList errors={errors} partners={project.partners} />
           <MDBox display="flex" justifyContent="space-between">
             <MDButton
@@ -289,17 +288,31 @@ export default function Header() {
           <MDBox>
             <MDButton
               variant="gradient"
-              color="dark"
+              color="light"
               size="small"
               onClick={handleGenerateDocument}
               sx={{
                 height: "40px",
                 width: "130px",
                 ml: 2,
+                mr: 2,
               }}
             >
               Generar Documento
             </MDButton>
+            <SlackButton
+              onClick={() => {
+                setOpenSlackShareModal(true);
+              }}
+            />
+            <SlackShare
+              open={openSlackShareModal}
+              onClose={() => {
+                setOpenSlackShareModal(false);
+              }}
+              modelId={project.id}
+              modelType="Project"
+            />
             <Link
               href={{
                 pathname: `/projects/${project.id}/edit`,

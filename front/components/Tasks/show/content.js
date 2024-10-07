@@ -30,6 +30,7 @@ import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
 import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
+import { ACTION_REQUEST } from "/utils/constants/actionTypes";
 
 import SlackButton from "/components/SlackButton";
 import SlackShare from "/components/ModalContent/SlackShare";
@@ -265,7 +266,6 @@ export default function Content({ selectedFork }) {
                 Tarea Completada
               </MDButton>
             )}
-
             {isTimerStarted ? (
               <MDButton
                 color="primary"
@@ -343,6 +343,24 @@ export default function Content({ selectedFork }) {
                   </Card>
                 </>
               )}
+              {task.procedure?.actions &&
+                task.procedure.actions.length > 0 &&
+                task.procedure.actions.some(
+                  (a) => a.action_type_id == ACTION_REQUEST
+                ) && (
+                  <MDButton
+                    variant="gradient"
+                    color="light"
+                    size="small"
+                    sx={{ height: "50px" }}
+                    disabled={true}
+                    onClick={() => {
+                      // TODO: Implement action request
+                    }}
+                  >
+                    Generar poder
+                  </MDButton>
+                )}
             </MDBox>
           </MDBox>
         </MDBox>

@@ -4,3 +4,5 @@ export const ACTION_TYPES = {
   3: "Correo electrónico",
   4: "Campo requerido",
 };
+
+export const ACTION_REQUEST = 2;

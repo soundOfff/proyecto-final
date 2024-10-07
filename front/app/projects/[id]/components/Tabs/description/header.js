@@ -201,7 +201,6 @@ export default function Header() {
         onClose={() => setGenerateErrorSb(false)}
       >
         <MDBox>
-<<<<<<< HEAD
           <MDButton
             variant="gradient"
             color="dark"
@@ -215,13 +214,6 @@ export default function Header() {
           >
             Generar Poder
           </MDButton>
-          <Link
-            href={{
-              pathname: `/projects/${project.id}/edit`,
-              query: { source: `/projects/${project.id}?tab=description` },
-            }}
-          >
-=======
           <ErrorList errors={errors} partners={project.partners} />
           <MDBox display="flex" justifyContent="space-between">
             <MDButton
@@ -233,7 +225,6 @@ export default function Header() {
             >
               Cancelar
             </MDButton>
->>>>>>> develop
             <MDButton
               variant="gradient"
               color="dark"

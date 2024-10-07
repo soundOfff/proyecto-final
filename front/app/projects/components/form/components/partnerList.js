@@ -69,7 +69,8 @@ export default function PartnerList({
       Header: "Apoderado",
       accessor: "owner",
       Cell: ({ row }) =>
-        row.original.relatedPartners.length > 0 && (
+        row.original.relatedPartners &&
+        row.original.relatedPartners?.length > 0 && (
           <MDBox
             sx={{
               height: "80px !important",

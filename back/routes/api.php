@@ -295,6 +295,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
 
+    Route::post('/documents', [DocumentController::class, 'generate']);
+
     Route::post('/logout', [LoginController::class, 'logout']);
 });
 

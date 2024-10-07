@@ -9,7 +9,13 @@ export default function SlackButton({
   ...rest
 }) {
   return (
-    <MDButton color="dark" variant="gradient" onClick={onClick} {...rest}>
+    <MDButton
+      color="dark"
+      variant="gradient"
+      size="small"
+      onClick={onClick}
+      {...rest}
+    >
       <SlackIcon marginRight="10px" />
       {label}
     </MDButton>

@@ -285,7 +285,7 @@ export default function Header() {
               sx={{ height: "40px", ml: 2 }}
             />
           </MDBox>
-          <MDBox>
+          <MDBox display="flex" justifyContent="center">
             <MDButton
               variant="gradient"
               color="light"
@@ -304,6 +304,7 @@ export default function Header() {
               onClick={() => {
                 setOpenSlackShareModal(true);
               }}
+              sx={{ height: "40px", width: "200px" }}
             />
             <SlackShare
               open={openSlackShareModal}

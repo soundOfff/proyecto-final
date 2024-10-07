@@ -81,7 +81,7 @@ class SendPushNotification extends Command
         foreach ($staffs as $staff) {
             $diffInMinutes = Carbon::now()->diffInMinutes(Carbon::parse($staff->reminder_date));
             if ($diffInMinutes == 0) {
-                $this->notificationService->sendSlackNotification(staffId: $staff->staff_id, header: $staff->task_name, body: $staff->description, url: "tasks?taskId={$staff->task_id}");
+                $this->notificationService->sendSlackNotification(staffId: $staff->staff_id, header: $staff->task_name, body: $staff->description, url: "/tasks?taskId={$staff->task_id}", modelId: $staff->task_id, modelType: Task::class);
             }
         }
 

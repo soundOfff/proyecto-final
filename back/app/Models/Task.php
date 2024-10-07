@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -88,9 +89,9 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn() => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
                 && $this->requiredFields->every(
-                    fn(TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
+                    fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
         );
     }
@@ -98,7 +99,7 @@ class Task extends Model
     protected function isBlocked(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->dependencies->contains(fn(self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+            get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
         );
     }
 
@@ -280,5 +281,25 @@ class Task extends Model
                 'load' => [],
             ],
         ];
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $name = $this->name;
+        $description = $this->description ?: '-';
+        $hourlyRate = $this->hourly_rate ?: '0';
+        $startDate = $this->start_date ? Carbon::parse($this->start_date)->format('Y-m-d') : '-';
+        $dueDate = $this->due_date ? Carbon::parse($this->due_date)->format('Y-m-d') : '-';
+        $priorityName = $this->priority ? $this->priority->name : '-';
+        $statusName = $this->status ? $this->status->name : '-';
+        $checklistItems = $this->checklistItems->implode('description', ' | ');
+        $comments = $this->comments->implode('content', ' | ');
+        $assigneds = $this->assigneds->implode('name', ', ');
+
+        $block->text("*Nombre:* $name\n*Descripción:* $description\n *Prioridad:* $priorityName\n *Estado:* $statusName\n *Items:* $checklistItems\n\n *Comentarios:* $comments\n\n")->markdown();
+        $block->field("*Fecha de inicio:* $startDate")->markdown();
+        $block->field("*Fecha de finalización:* $dueDate")->markdown();
+        $block->field("*Precio por hora:* $hourlyRate")->markdown();
+        $block->field("*Asignados:* $assigneds")->markdown();
     }
 }

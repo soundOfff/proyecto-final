@@ -57,9 +57,10 @@ class NotificationService
         }
     }
 
-    public function sendSlackNotification(int $staffId, string $header, string $body, string $url): void
+    public function sendSlackNotification(int $staffId, string $header, string $body, string $url, int $modelId, string $modelType): void
     {
         $staff = Staff::find($staffId);
-        $staff->notify(new SlackNotification($header, $body, $url));
+        $model = $modelType::find($modelId);
+        $staff->notify(new SlackNotification($header, $body, $url, $staff, $model));
     }
 }

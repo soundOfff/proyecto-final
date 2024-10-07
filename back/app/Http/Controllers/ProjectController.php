@@ -141,7 +141,9 @@ class ProjectController extends Controller
                     staffId: $staff->id,
                     header: 'Nuevo caso: '.$project->name,
                     body: 'Has sido asignado a un nuevo caso',
-                    url: "projects/{$project->id}"
+                    url: "/projects/{$project->id}",
+                    modelId: $project->id,
+                    modelType: Project::class
                 );
                 foreach ($staff->devices as $device) {
                     $this->notificationService->sendWebPushNotification(

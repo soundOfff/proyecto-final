@@ -150,12 +150,29 @@ class NotificationController extends Controller
     {
         $data = $request->validate([
             'staff_id' => 'required|numeric|exists:staff,id',
+            'notification_by' => 'required|numeric|exists:staff,id',
             'header' => 'required|string',
             'body' => 'required|string',
-            'url' => 'nullable|string',
+            'url' => 'required|string',
+            'model_id' => 'required|numeric',
+            'model_type' => 'required|string',
         ]);
+
+        $notificationBy = Staff::find($data['notification_by']);
         $staff = Staff::find($data['staff_id']);
-        $staff->notify(new SlackNotification($data['header'], $data['body'], $data['url']));
+
+        $modelClass = '\App\Models\\'.$data['model_type'];
+        $model = $modelClass::find($data['model_id']);
+
+        $staff->notify(
+            new SlackNotification(
+                $data['header'],
+                $data['body'],
+                $data['url'],
+                $notificationBy,
+                $model,
+            )
+        );
 
         return response()->json(null, 204);
     }

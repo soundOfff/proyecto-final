@@ -377,12 +377,6 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
                 </MDBadge>
               </IconButton>
 
-              <SlackIcon
-                handleClick={() => {
-                  router.push("/send-slack-notification");
-                }}
-              />
-
               <IconButton
                 size="small"
                 disableRipple

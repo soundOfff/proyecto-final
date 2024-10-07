@@ -78,7 +78,7 @@ class DocassembleService
             'apoderado' => $this->mergeErrors($representativeException),
         ];
 
-        if (! empty($errors)) {
+        if ((! empty($errors['demandado']) || ! empty($errors['demandante']) || ! empty($errors['apoderado']))) {
             throw ValidationException::withMessages($errors);
         }
 

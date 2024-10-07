@@ -34,6 +34,7 @@ export async function generate(projectId, params) {
       };
     }
   }
+
   const data = await response.json();
 
   return { errors: null, data: data.url };

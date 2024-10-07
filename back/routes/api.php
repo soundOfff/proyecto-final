@@ -75,8 +75,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/documents', [DocumentController::class, 'generate']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects-select/{partner}', [ProjectController::class, 'select']);
@@ -296,6 +294,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
     Route::get('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
+
+    Route::post('/documents', [DocumentController::class, 'generate']);
 
     Route::post('/logout', [LoginController::class, 'logout']);
 });

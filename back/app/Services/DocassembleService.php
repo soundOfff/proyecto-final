@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\File;
 use App\Models\Partner;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Model;
@@ -169,13 +170,22 @@ class DocassembleService
             ])
             ->get('/file/{file_number}');
 
-        $tempPath = tempnam(sys_get_temp_dir(), 'test');
+        $filename = "poder_projecto_$project->id.pdf";
+        $tempPath = tempnam(sys_get_temp_dir(), $filename);
         file_put_contents($tempPath, $file->body());
 
-        Storage::disk('google')->put('acta_sociedad_fiadora.pdf', file_get_contents($tempPath));
+        Storage::disk('google')->put($filename, file_get_contents($tempPath));
+        $ext = Storage::disk('google')->path("$filename");
 
-        $url = $this->fileService->getPublicUrl('acta_sociedad_fiadora.pdf');
+        $publicUrl = $this->fileService->getPublicUrl($ext);
 
-        return $url;
+        File::create([
+            'fileable_type' => 'project',
+            'fileable_id' => $project->id,
+            'subject' => $filename,
+            'url' => $ext,
+        ]);
+
+        return $publicUrl;
     }
 }

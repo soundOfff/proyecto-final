@@ -215,7 +215,7 @@ export default function Header() {
               ml: 2,
             }}
           >
-            Generar Documento
+            Generar Poder
           </MDButton>
           <Link
             href={{

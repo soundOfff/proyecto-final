@@ -264,8 +264,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 
-    Route::post('/documents', [DocumentController::class, 'generate']);
-
     Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
     Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
@@ -296,6 +294,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
     Route::get('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
+
+    Route::post('/documents', [DocumentController::class, 'generate']);
 
     Route::post('/logout', [LoginController::class, 'logout']);
 });

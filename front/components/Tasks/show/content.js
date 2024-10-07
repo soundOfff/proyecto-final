@@ -320,7 +320,7 @@ export default function Content({ selectedFork }) {
                   </Card>
                 </>
               )}
-              {task.procedure.actions &&
+              {task.procedure?.actions &&
                 task.procedure.actions.length > 0 &&
                 task.procedure.actions.some(
                   (a) => a.action_type_id == ACTION_REQUEST

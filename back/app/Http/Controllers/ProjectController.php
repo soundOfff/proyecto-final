@@ -16,7 +16,7 @@ use App\Models\TaskPriority;
 use App\Models\TaskRepeat;
 use App\Models\TaskStatus;
 use App\Models\TaskTimer;
-use App\Services\FcmService;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -26,7 +26,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected FcmService $fcmService) {}
+    public function __construct(protected NotificationService $notificationService)
+    {
+    }
 
     public function select(Partner $partner)
     {
@@ -53,7 +55,7 @@ class ProjectController extends Controller
                         $query
                             ->whereHas(
                                 'members',
-                                fn(Builder $query) => $query->where('staff_id', $value)
+                                fn (Builder $query) => $query->where('staff_id', $value)
                             );
                     }
                 ),
@@ -65,7 +67,7 @@ class ProjectController extends Controller
                 'jurisdiction',
                 'serviceType.processes',
                 'billablePartner',
-                "billingType",
+                'billingType',
                 'responsiblePerson',
                 'files',
                 'lawFirm',
@@ -90,7 +92,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $newProject = $request->validated();
-        $projectMemberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $projectMemberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $notes = $request['notes'] ?: [];
 
         $partnersToAttach = [];
@@ -135,11 +137,17 @@ class ProjectController extends Controller
 
         if ($project->process) {
             foreach ($project->process->toNotify as $staff) {
+                $this->notificationService->sendSlackNotification(
+                    staffId: $staff->id,
+                    header: 'Nuevo caso: '.$project->name,
+                    body: 'Has sido asignado a un nuevo caso',
+                    url: "projects/{$project->id}"
+                );
                 foreach ($staff->devices as $device) {
-                    $this->fcmService->sendNotification(
+                    $this->notificationService->sendWebPushNotification(
                         $device->device_token,
                         "Nuevo caso: $project->name",
-                        "Has sido asignado a un nuevo caso",
+                        'Has sido asignado a un nuevo caso',
                         $staff->id,
                         strtolower(class_basename(Project::class)),
                         $project->id,
@@ -167,8 +175,8 @@ class ProjectController extends Controller
                 'members',
                 'responsiblePerson',
                 'tasks',
-                'partners',
                 'proposal',
+                'partners.relatedPartners',
                 'process',
                 'notes.staff',
                 'court',
@@ -185,7 +193,7 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $memberIds = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $memberIds = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($memberIds);
 
         $notes = $request['notes'] ?: [];
@@ -271,7 +279,7 @@ class ProjectController extends Controller
     {
         $request->validated();
 
-        $ids = array_map(fn($member) => $member['id'], $request->get('project_members'));
+        $ids = array_map(fn ($member) => $member['id'], $request->get('project_members'));
         $project->members()->sync($ids);
 
         return response()->json($project, 201);

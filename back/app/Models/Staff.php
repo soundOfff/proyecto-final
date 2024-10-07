@@ -10,12 +10,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Slack\SlackRoute;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\Traits\CausesActivity;
 
 class Staff extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, CausesActivity, SoftDeletes;
+
+    /**
+     * Route notifications for the Slack channel.
+     */
+    public function routeNotificationForSlack(Notification $notification): mixed
+    {
+        return SlackRoute::make($this->slack_channel, $this->slackWorkspace->bot_token);
+    }
 
     protected $fillable = [
         'active',
@@ -47,11 +57,14 @@ class Staff extends Authenticatable
         'two_factor_auth_enabled',
         'role_id',
         'token',
+        'slack_channel',
+        'slack_token',
+        'google_token',
     ];
 
     protected $appends = ['name'];
 
-    static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['first_name', 'last_name', 'email'];
+    public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['first_name', 'last_name', 'email'];
 
     protected function name(): Attribute
     {
@@ -73,6 +86,11 @@ class Staff extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function slackWorkspace(): BelongsTo
+    {
+        return $this->belongsTo(SlackWorkspace::class, 'slack_workspace_id', 'slack_workspace_id', 'slack_workspaces');
     }
 
     public function permissions(): BelongsToMany

@@ -56,7 +56,7 @@ export default async function Tasks({ searchParams }) {
                 </MDTypography>
               </MDBox>
               <MDBox py={1}>
-                <Table rows={data} meta={{ per_page: "5" }} />
+                <Table rows={data} meta={{ per_page: "50" }} />
               </MDBox>
             </Card>
           </Suspense>

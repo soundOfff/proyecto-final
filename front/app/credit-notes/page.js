@@ -7,7 +7,7 @@ import { getAll } from "/actions/credit-notes";
 export const dynamic = "force-dynamic";
 
 export default async function CreditNotes({
-  searchParams: { perPage = 10, page = 1, sort = "-id" },
+  searchParams: { perPage = 50, page = 1, sort = "-id" },
 }) {
   const include = ["status", "partner", "project", "credits"];
   const {

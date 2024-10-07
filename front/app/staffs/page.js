@@ -5,7 +5,7 @@ import Table from "./components/table";
 import { getAll as getAllStaffs } from "/actions/staffs";
 
 export default async function Staffs({
-  searchParams: { perPage = 10, page = 1, sort = "last_login" },
+  searchParams: { perPage = 50, page = 1, sort = "last_login" },
 }) {
   const {
     data: { staffs },

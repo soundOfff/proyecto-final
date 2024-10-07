@@ -39,9 +39,16 @@ class Project extends Model
         'jury_number',
         'on_schedule',
         'proposal_id',
+        'document_url',
         'billable_partner_id',
         'process_id',
         'type',
+        'court_id',
+    ];
+
+    public static $generateRules = [
+        'process' => 'required',
+        'demand_amount' => 'required',
     ];
 
     public function stages(): HasMany
@@ -139,6 +146,16 @@ class Project extends Model
         return $query->when($search, function ($query) use ($search) {
             $query->where('name', 'like', "%$search%");
         });
+    }
+
+    public function getDefendants()
+    {
+        return $this->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
+    }
+
+    public function getPlaintiffs()
+    {
+        return $this->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
     }
 
     public function setName(): void

@@ -23,7 +23,7 @@ class PartnerRequest extends FormRequest
     {
         return [
             'company' => 'nullable|string',
-            'country_id' => 'required|numeric|exists:countries,id',
+            'country_id' => 'nullable|numeric|exists:countries,id',
             'jurisdiction_id' => 'nullable|numeric|exists:jurisdictions,id',
             'consolidator_id' => 'nullable|numeric|exists:partners,id',
             'president_id' => 'nullable|numeric|exists:partners,id',
@@ -37,6 +37,7 @@ class PartnerRequest extends FormRequest
             'section_id' => 'nullable|numeric|exists:partner_sections,id',
             'related_partners' => 'nullable|array',
             'website' => 'nullable|string',
+            'civil_status' => 'nullable|string',
             'city' => 'nullable|string',
             'state' => 'nullable|string',
             'address' => 'nullable|string',

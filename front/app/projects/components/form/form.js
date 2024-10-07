@@ -89,9 +89,11 @@ export default function FormComponent({
   const partnerList = values[partners.name].map((partner) => {
     return {
       id: partner.id,
+      owner_id: partner.owner_id,
       name: partnerData.find((p) => p.id === partner.id).name,
       role: roles.find((role) => role.id === partner.role_id)?.label,
       owner: partnerData.find((p) => p.id === partner.owner_id)?.name,
+      relatedPartners: partner.relatedPartners,
     };
   });
 
@@ -177,6 +179,7 @@ export default function FormComponent({
               ...partner,
               role_id: partner.role?.id,
               owner_id: partner.owner?.id,
+              relatedPartners: partner.relatedPartners,
             };
           })
         );

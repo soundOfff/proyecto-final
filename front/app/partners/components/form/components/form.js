@@ -45,15 +45,15 @@ export default function FormComponent({
       } else {
         await storePartner(values);
       }
-      router.push("/partners");
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
     }
   };
 
-  const handleSubmit = (values, actions) => {
-    submitForm(values, actions);
+  const handleSubmit = async (values, actions) => {
+    await submitForm(values, actions);
+    window.location.reload();
   };
 
   const getCurrentValidation = () => {

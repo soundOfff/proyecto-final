@@ -34,6 +34,7 @@ class ProjectResource extends JsonResource
             'amount' => $this->amount,
             'juryNumber' => $this->jury_number,
             'onSchedule' => $this->on_schedule,
+            'documentUrl' => $this->document_url,
             'type' => $this->type,
             'billablePartnerId' => $this->billable_partner_id,
             'proposalId' => $this->proposal_id,

@@ -22,12 +22,12 @@ class PartnerController extends Controller
                     return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? $query->whereNotNull('partners.company') : $query->whereNotNull('partners.name');
                 }),
                 AllowedFilter::callback('owners', function ($query, $value) {
-                    return $query
-                        ->select('owners.*')
-                        ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
-                        ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
-                        ->where('related_partner.partner_id', $value)
-                        ->where('related_partner.partner_type_id', PartnerType::OWNER);
+                    $query
+                    ->select('owners.*')
+                    ->join('related_partner', 'partners.id', '=', 'related_partner.partner_id')
+                    ->join('partners as owners', 'related_partner.related_partner_id', '=', 'owners.id')
+                    ->where('related_partner.partner_id', $value)
+                    ->where('related_partner.partner_type_id', PartnerType::OWNER);
                 }),
             ])
             ->where(function ($query) {
@@ -97,6 +97,13 @@ class PartnerController extends Controller
                 'start_date' => $relatedData['start_date'],
                 'end_date' => $relatedData['end_date'],
                 'partner_type_id' => $relatedData['partner_type_id'],
+                'seat' => $relatedData['seat'],
+                'check_in' => $relatedData['check_in'],
+                'deed' => $relatedData['deed'],
+                'deed_date' => $relatedData['deed_date'],
+                'legal_circuit' => $relatedData['legal_circuit'],
+                'notary' => $relatedData['notary'],
+                'sheet' => $relatedData['sheet'],
                 'active' => $relatedData['active'],
             ]);
         }
@@ -142,6 +149,13 @@ class PartnerController extends Controller
                 'start_date' => $relatedData['start_date'],
                 'end_date' => $relatedData['end_date'],
                 'partner_type_id' => $relatedData['partner_type_id'],
+                'seat' => $relatedData['seat'],
+                'check_in' => $relatedData['check_in'],
+                'deed' => $relatedData['deed'],
+                'deed_date' => $relatedData['deed_date'],
+                'legal_circuit' => $relatedData['legal_circuit'],
+                'notary' => $relatedData['notary'],
+                'sheet' => $relatedData['sheet'],
                 'active' => $relatedData['active'],
             ];
         }

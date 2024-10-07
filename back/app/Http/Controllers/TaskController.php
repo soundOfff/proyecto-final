@@ -6,14 +6,13 @@ use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskResourceCollection;
 use App\Http\Resources\TaskSelectResourceCollection;
-use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Taggable;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\TaskTimer;
 use App\Pipes\TaskPipe;
-use App\Services\FcmService;
+use App\Services\NotificationService;
 use App\Sorts\TaskAuthorSort;
 use App\Sorts\TaskPartnerSort;
 use App\Sorts\TaskPrioritySort;
@@ -29,7 +28,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
-    public function __construct(protected FcmService $fcmService)
+    public function __construct(protected NotificationService $notificationService)
     {
     }
 
@@ -237,9 +236,15 @@ class TaskController extends Controller
                 )
             )->with('devices')->get();
             foreach ($staffs as $staff) {
+                $this->notificationService->sendSlackNotification(
+                    staffId: $staff->id,
+                    header: 'Tarea Completada',
+                    body: "La tarea \"$task->name\" ha sido completada, puede elegir el siguiente proceso",
+                    url: "tasks?taskId={$task->id}"
+                );
                 foreach ($staff->devices as $device) {
                     $taskName = isset($newTask['name']) ? $newTask['name'] : $task->name;
-                    $this->fcmService->sendNotification(
+                    $this->notificationService->sendWebPushNotification(
                         $device->device_token,
                         'Tarea Completada',
                         "La tarea \"$taskName\" ha sido completada, puede elegir el siguiente proceso",
@@ -316,6 +321,7 @@ class TaskController extends Controller
         }
 
         $task->dependencies()->detach();
+        $task->dependentTasks()->detach();
         $task->delete();
 
         return response()->json(null, 204);
@@ -336,7 +342,9 @@ class TaskController extends Controller
                     ->where('milestone_order', '>', $task->milestone_order)
                     ->decrement('milestone_order');
             }
+
             $task->dependencies()->detach();
+            $task->dependentTasks()->detach();
             $task->delete();
         }
 

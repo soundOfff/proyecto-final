@@ -4,11 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Grid } from "@mui/material";
 import Select from "/components/Select";
 import MDButton from "/components/MDButton";
-import { useFormik } from "formik";
 import * as Yup from "yup";
 import MDTypography from "/components/MDTypography";
 import { PLAINTIFF } from "/utils/constants/PartnerProjectRoles";
-import { getSelect as getOwners } from "/actions/partners";
+import { show as getOwners } from "/actions/partners";
+import OwnerForm from "../../owner/";
+import { useFormik } from "formik";
+import moment from "moment";
 
 export default function PartnerForm({
   setFieldValue: setFieldValueExternal,
@@ -34,14 +36,11 @@ export default function PartnerForm({
       },
     };
   }, []);
-
   const validations = Yup.object().shape({
     [formField.partner.name]: Yup.number().required(formField.partner.errorMsg),
     [formField.role.name]: Yup.string().required(formField.role.errorMsg),
-    [formField.owner.name]: Yup.string(),
   });
-
-  const { values, errors, touched, handleSubmit, setFieldValue } = useFormik({
+  const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       [formField.partner.name]: "",
       [formField.role.name]: "",
@@ -62,12 +61,34 @@ export default function PartnerForm({
   });
 
   const [owners, setOwners] = useState([]);
+  const [owner, setOwner] = useState(null);
+
+  const handleChangeOwner = (ownerName) => {
+    const owner = owners.find((owner) => owner.mergedName === ownerName)?.pivot;
+    setOwner(owner);
+  };
+
+  const handlePartnerChange = () => {
+    setOwners([]);
+    setOwner({
+      partner_type_id: "",
+      related_partner_id: "",
+      seat: "",
+      check_in: moment().format("YYYY-MM-DD"),
+      deed: "",
+      deed_date: moment().format("YYYY-MM-DD"),
+      legal_circuit: "",
+      notary: "",
+      sheet: "",
+    });
+  };
 
   const clearFields = (methods) => {
     setFieldValue(formField.partner.name, "");
     setFieldValue(formField.role.name, "");
     setFieldValue(formField.owner.name, "");
     methods.resetForm();
+    setOwner(null);
   };
   const isOwnerRequired = Boolean(
     values[formField.partner.name] && values[formField.role.name] == PLAINTIFF
@@ -75,18 +96,18 @@ export default function PartnerForm({
 
   useEffect(() => {
     if (isOwnerRequired) {
-      getOwners({ "filter[owners]": values[formField.partner.name] }).then(
-        (partners) => {
-          setOwners(partners);
-        }
-      );
+      getOwners(values[formField.partner.name], {
+        include: ["relatedPartners"],
+      }).then((partner) => {
+        setOwners(partner.relatedPartners);
+      });
     }
   }, [isOwnerRequired, values, formField]);
 
   return (
-    <Grid container spacing={5} mb={5}>
+    <Grid container spacing={5} mb={5} mt={2}>
       <Grid item xs={12}>
-        <MDTypography variant="h6" fontWeight="bold">
+        <MDTypography variant="h5" fontWeight="bold">
           Personas Relacionadas
         </MDTypography>
       </Grid>
@@ -98,6 +119,7 @@ export default function PartnerForm({
           fieldName={formField.partner.name}
           inputLabel={formField.partner.label}
           setFieldValue={setFieldValue}
+          onInputChange={handlePartnerChange}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -111,27 +133,35 @@ export default function PartnerForm({
         />
       </Grid>
       {isOwnerRequired && (
-        <Grid item xs={12} sm={4}>
-          <Select
-            value={values[formField.owner.name]}
-            options={owners}
-            optionLabel={(option) => option.mergedName}
-            fieldName={formField.owner.name}
-            inputLabel={formField.owner.label}
-            setFieldValue={setFieldValue}
-          />
+        <>
+          <Grid item xs={12} sm={4}>
+            <Select
+              value={values[formField.owner.name]}
+              options={owners}
+              optionLabel={(option) => option.mergedName}
+              fieldName={formField.owner.name}
+              inputLabel={formField.owner.label}
+              setFieldValue={setFieldValue}
+              onInputChange={handleChangeOwner}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <OwnerForm owner={owner} handleSubmit={handleSubmit} />
+          </Grid>
+        </>
+      )}
+      {!isOwnerRequired && (
+        <Grid item>
+          <MDButton
+            type="submit"
+            variant="contained"
+            color="success"
+            onClick={handleSubmit}
+          >
+            Agregar
+          </MDButton>
         </Grid>
       )}
-      <Grid item>
-        <MDButton
-          type="submit"
-          variant="contained"
-          color="success"
-          onClick={handleSubmit}
-        >
-          Agregar
-        </MDButton>
-      </Grid>
     </Grid>
   );
 }

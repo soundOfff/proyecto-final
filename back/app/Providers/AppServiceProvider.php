@@ -29,10 +29,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('get_public_file', function (string $filename): string {
-            $path = public_path() . "/$filename";
+            $path = public_path()."/$filename";
             $type = pathinfo($path, PATHINFO_EXTENSION);
             $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $base64 = 'data:image/'.$type.';base64,'.base64_encode($data);
+
             return "<?php echo '$base64'; ?>";
         });
 
@@ -80,7 +81,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Http::macro('docassemble', function () {
-            return Http::baseUrl(env('DOCASSEMBLE_URL'));
+            return Http::baseUrl(config('services.docassemble.url'));
         });
     }
 }

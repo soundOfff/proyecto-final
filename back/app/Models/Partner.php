@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class Partner extends Model
 {
@@ -63,6 +65,7 @@ class Partner extends Model
         'name',
         'number',
         'birth_date',
+        'civil_status',
         'expedition_date',
         'expiration_date',
         'is_male',
@@ -73,9 +76,84 @@ class Partner extends Model
         'occupation',
     ];
 
+    protected $appends = ['merged_name'];
+
     public static $MAIL_TEMPLATE_ALLOWED_FIELDS = ['name', 'number', 'company', 'website', 'dv', 'ruc'];
 
-    protected $appends = ['merged_name'];
+    public const DEFENDANT_DOCUMENT_RULES = [
+        'country_id' => 'required|exists:countries,id',
+        'jurisdiction_id' => 'required|exists:jurisdictions,id',
+        'address' => 'required',
+        'id_type' => 'required',
+        'id_number' => 'required',
+    ];
+
+    public const PLAINTIFF_DOCUMENT_RULES = [
+        'country_id' => 'required|exists:countries,id',
+        'jurisdiction_id' => 'required|exists:jurisdictions,id',
+        'address' => 'required',
+        'phone_number' => 'required',
+        'file_number' => 'required',
+        'image_number' => 'required',
+        'roll_number' => 'required',
+    ];
+
+    public const REPRESENTATIVE_DOCUMENT_RULES = [
+        'country_id' => 'required|exists:countries,id',
+        'jurisdiction_id' => 'required|exists:jurisdictions,id',
+        'address' => 'required',
+        'civil_status' => 'required',
+        'id_number' => 'required',
+        'id_type' => 'required',
+        'occupation' => 'required', // pivot append data
+        'check_in' => 'required',
+        'deed' => 'required',
+        'notary' => 'required',
+        'deed_date' => 'required',
+        'seat' => 'required',
+        'legal_circuit' => 'required',
+        'sheet' => 'required',
+    ];
+
+    public function validate($rules, $from)
+    {
+        $defaultMessages = [
+            'country_id.required' => "El campo país es obligatorio para el $from.",
+            'country_id.exists' => "El país seleccionado no es válido para el $from.",
+            'jurisdiction_id.required' => "El campo jurisdicción es obligatorio para el $from.",
+            'jurisdiction_id.exists' => "La jurisdicción seleccionada no es válida para el $from.",
+            'address.required' => "El campo dirección es obligatorio para el $from.",
+            'id_type.required' => "El campo tipo de identificación es obligatorio para el $from.",
+            'id_number.required' => "El campo número de identificación es obligatorio para el $from.",
+            'phone_number.required' => "El campo número de teléfono es obligatorio para el $from.",
+            'file_number.required' => "El campo número de archivo es obligatorio para el $from.",
+            'image_number.required' => "El campo número de imagen es obligatorio para el $from.",
+            'roll_number.required' => "El campo número de rol es obligatorio para el $from.",
+            'civil_status.required' => "El campo estado civil es obligatorio para el $from.",
+            'occupation.required' => "El campo ocupación es obligatorio para el $from.",
+            'check_in.required' => "El campo fecha de ingreso es obligatorio para el $from.",
+            'deed.required' => "El campo escritura es obligatorio para el $from.",
+            'notary.required' => "El campo notario es obligatorio para el $from.",
+            'deed_date.required' => "El campo fecha de escritura es obligatorio para el $from.",
+            'seat.required' => "El campo asiento es obligatorio para el $from.",
+            'legal_circuit.required' => "El campo circuito legal es obligatorio para el $from.",
+            'sheet.required' => "El campo folio es obligatorio para el $from.",
+        ];
+
+        if (empty($rules)) {
+            $rules = $this->toArray();
+        }
+
+        $attributes = $this->getAttributes();
+        if (isset($this->pivot)) {
+            $attributes = array_merge($this->getAttributes(), $this->pivot->getAttributes());
+        }
+
+        $validator = Validator::make($attributes, $rules, $defaultMessages);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 
     protected function mergedName(): Attribute
     {
@@ -109,14 +187,28 @@ class Partner extends Model
         return $this->belongsTo(self::class, 'consolidator_id', 'id', 'consolidator');
     }
 
-    public function president(): BelongsTo
+    public function president(): BelongsToMany
     {
-        return $this->belongsTo(self::class, 'president_id', 'id', 'president');
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::PRESIDENT);
     }
 
-    public function secretary(): BelongsTo
+    public function secretary(): BelongsToMany
     {
-        return $this->belongsTo(self::class, 'secretary_id', 'id', 'secretary');
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::SECRETARY);
+    }
+
+    public function director(): BelongsToMany
+    {
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::DIRECTOR);
+    }
+
+    public function representative(): BelongsToMany
+    {
+        return $this->relatedPartners()
+            ->wherePivot('partner_type_id', PartnerType::OWNER);
     }
 
     public function treasurer(): BelongsTo
@@ -152,7 +244,7 @@ class Partner extends Model
     public function relatedPartners(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'related_partner', 'partner_id', 'related_partner_id')->withPivot(
-            ['start_date', 'end_date', 'partner_type_id', 'active']
+            ['start_date', 'end_date', 'partner_type_id', 'seat', 'check_in', 'deed', 'deed_date', 'legal_circuit', 'notary', 'sheet', 'active']
         );
     }
 

@@ -12,6 +12,7 @@ import MDSnackbar from "/components/MDSnackbar";
 import { useState } from "react";
 import { revalidateFiles } from "/actions/files";
 import { CircularProgress } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 export default function FormComponent({ apiUrl }) {
   const { formId } = form;
@@ -19,6 +20,7 @@ export default function FormComponent({ apiUrl }) {
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { data: session } = useSession();
 
   const returnToSource = () => {
     const source = searchParams.get("source");
@@ -35,13 +37,15 @@ export default function FormComponent({ apiUrl }) {
     for (const key in values) {
       formData.append(key, values[key]);
     }
-
     try {
       await fetch(`${apiUrl}/files`, {
         method: "POST",
         body: formData,
         headers: {
           Accept: "application/json",
+          ...(session && session.staff
+            ? { Authorization: `Bearer ${session.staff.token}` }
+            : {}),
         },
         next: { tags: ["create-file"] },
       });

@@ -32,6 +32,10 @@ import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
 import { ACTION_REQUEST } from "/utils/constants/actionTypes";
 
+import SlackButton from "/components/SlackButton";
+import SlackShare from "/components/ModalContent/SlackShare";
+import useSlackShare from "/hooks/useSlackShare";
+
 export default function Content({ selectedFork }) {
   const {
     task,
@@ -71,6 +75,10 @@ export default function Content({ selectedFork }) {
     removeItem,
     editItem,
   } = useTodo(task.checklistItems);
+
+  const { openSlackShareModal, setOpenSlackShareModal } = useSlackShare({
+    model: task,
+  });
 
   const { data: session } = useSession();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -286,6 +294,21 @@ export default function Content({ selectedFork }) {
             >
               Eliminar Tarea
             </MDButton>
+            <SlackButton
+              label="Compartir por Slack"
+              size="small"
+              onClick={() => {
+                setOpenSlackShareModal(true);
+              }}
+            />
+            <SlackShare
+              open={openSlackShareModal}
+              onClose={() => {
+                setOpenSlackShareModal(false);
+              }}
+              modelId={task?.id}
+              modelType="Task"
+            />
             <MDBox display="flex" flexDirection="row" width="60%">
               {isStoppingTimer && (
                 <>

@@ -44,7 +44,7 @@ class FileController extends Controller
 
         Storage::disk('google')->put($path.$name.'.'.$file->extension(), file_get_contents($file));
 
-        $data['url'] = Storage::disk('google')->path('/'.$path.$name.'.'.$file->extension());
+        $data['url'] = Storage::disk('google')->path($path.$name.'.'.$file->extension());
         $data['subject'] = $name;
 
         File::create($data);

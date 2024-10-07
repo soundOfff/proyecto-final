@@ -16,8 +16,13 @@ class SlackNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(protected $header, protected $body, protected $url)
-    {
+    public function __construct(
+        protected $header,
+        protected $body,
+        protected $url,
+        protected $notifiedBy,
+        protected $model
+        ) {
     }
 
     /**
@@ -58,15 +63,23 @@ class SlackNotification extends Notification
         return (new SlackMessage)
                 ->text($this->body)
                 ->headerBlock($this->header)
-                ->contextBlock(function (ContextBlock $block) use ($notifiable) {
-                    $block->text($notifiable->name);
+                ->contextBlock(function (ContextBlock $block) {
+                    $block->text("Notificación enviada por: {$this->notifiedBy->name}");
                 })
                 ->sectionBlock(function (SectionBlock $block) {
                     $block->text($this->body)->markdown();
                 })
                 ->sectionBlock(function (SectionBlock $block) {
                     $url = env('FRONT_URL').$this->url;
-                    $block->text("<$url|VER>")->markdown();
+                    $block->text("<$url|$url>")->markdown();
+                })
+                ->dividerBlock()
+                ->sectionBlock(function (SectionBlock $block) {
+                    if ($this->model) {
+                        $this->model->getSlackNotificationBlocks($block);
+                    } else {
+                        $block->text('No se encontraron detalles para mostrar');
+                    }
                 })
                 ->dividerBlock();
     }

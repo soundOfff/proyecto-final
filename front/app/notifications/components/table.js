@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import moment from "moment";
@@ -13,6 +14,8 @@ import MDButton from "/components/MDButton";
 import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
+
+import { useSession } from "next-auth/react";
 
 import { Tooltip, Tabs, Tab, Grid, Select } from "@mui/material";
 
@@ -41,6 +44,7 @@ import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getPriorityColor } from "/utils/project-state-colors";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import useSlackLogged from "/hooks/useSlackLogged";
 
 const TAB_TYPES = [
   {
@@ -64,6 +68,8 @@ export default function Table({ rows, priorities }) {
   const [menu, setMenu] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [search, setSearch] = useState(null);
+  const { data: session } = useSession();
+  const { isSlackLogged, setIsSlackLogged } = useSlackLogged({ session });
 
   const {
     setOpenDeleteConfirmation,
@@ -606,6 +612,16 @@ export default function Table({ rows, priorities }) {
                 openDeleteConfirmation,
                 setDeleteConfirmed,
               }}
+            />
+            <MDSnackbar
+              color="error"
+              icon="warning"
+              title="No se encuentra registrado en Slack"
+              content="Para poder recibir notificaciones en Slack, por favor regístrese en la plataforma"
+              open={!isSlackLogged}
+              onClose={() => setIsSlackLogged(true)}
+              close={() => setIsSlackLogged(true)}
+              bgWhite
             />
           </>
         )}

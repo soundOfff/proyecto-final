@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\File;
 use App\Models\Partner;
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -178,12 +179,13 @@ class DocassembleService
             ])
             ->get('/file/{file_number}');
 
-        $filename = "poder_projecto_$project->id.pdf";
+        $filename = 'poder_'.strtolower($representative->merged_name).'_'.Carbon::now()->format('Ymd').'.pdf';
+        $path = "/projects/$project->id/$filename";
         $tempPath = tempnam(sys_get_temp_dir(), $filename);
         file_put_contents($tempPath, $file->body());
 
-        Storage::disk('google')->put($filename, file_get_contents($tempPath));
-        $ext = Storage::disk('google')->path("$filename");
+        Storage::disk('google')->put($path, file_get_contents($tempPath));
+        $ext = Storage::disk('google')->path($path);
 
         $publicUrl = $this->fileService->getPublicUrl($ext);
 

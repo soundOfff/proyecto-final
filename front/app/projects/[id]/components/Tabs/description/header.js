@@ -207,19 +207,6 @@ export default function Header() {
         onClose={() => setGenerateErrorSb(false)}
       >
         <MDBox>
-          <MDButton
-            variant="gradient"
-            color="dark"
-            size="small"
-            onClick={handleGenerateDocument}
-            sx={{
-              height: "40px",
-              width: "130px",
-              ml: 2,
-            }}
-          >
-            Generar Poder
-          </MDButton>
           <ErrorList errors={errors} partners={project.partners} />
           <MDBox display="flex" justifyContent="space-between">
             <MDButton
@@ -298,7 +285,7 @@ export default function Header() {
                 mr: 2,
               }}
             >
-              Generar Documento
+              Generar Poder
             </MDButton>
             <SlackButton
               onClick={() => {

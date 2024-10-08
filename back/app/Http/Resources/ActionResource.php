@@ -18,6 +18,7 @@ class ActionResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'label' => $this->label,
             'action_type_id' => $this->action_type_id,
             'type' => ActionTypeResource::make($this->whenLoaded('type')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),

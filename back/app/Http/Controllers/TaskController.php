@@ -305,7 +305,7 @@ class TaskController extends Controller
                 'actions',
                 'requiredFields',
                 'author',
-                'procedure.actions',
+                'procedure.actions.type',
                 'partner',
             ])
             ->find($task->id);

@@ -8,7 +8,6 @@ import {
   Grid,
 } from "@mui/material";
 import MDBox from "/components/MDBox";
-import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDProgress from "/components/MDProgress";
@@ -20,7 +19,6 @@ import FormField from "/pagesComponents/ecommerce/products/new-product/component
 import Link from "next/link";
 import { useState } from "react";
 import { parseEditorState } from "/utils/parseEditorState";
-import { convertToRaw } from "draft-js";
 import { useSession } from "next-auth/react";
 import { useDataProvider } from "/providers/DataProvider";
 
@@ -35,6 +33,7 @@ import { ACTION_REQUEST } from "/utils/constants/actionTypes";
 import SlackButton from "/components/SlackButton";
 import SlackShare from "/components/ModalContent/SlackShare";
 import useSlackShare from "/hooks/useSlackShare";
+import { ACTION_TYPES } from "../../../utils/constants/actionTypes";
 
 export default function Content({ selectedFork }) {
   const {
@@ -47,25 +46,12 @@ export default function Content({ selectedFork }) {
     closeShowModal,
   } = useDataProvider();
 
-  const [description, setDescription] = useState(
-    parseEditorState(task.description)
-  );
-  const [comments, setComments] = useState(
-    task.comments.map((comment) => {
-      return {
-        task_id: comment.task_id,
-        content: comment.content,
-        staff_id: comment.staff_id,
-      };
-    }) || []
-  );
   const [note, setNote] = useState("");
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
   const [selectedProcess, setSelectedProcess] = useState(selectedFork);
   const [isAttachingTasks, setIsAttachingTasks] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [createdSB, setCreatedSB] = useState(false);
-  const [commentContent, setCommentContent] = useState("");
   const {
     items,
     progress,
@@ -105,28 +91,10 @@ export default function Content({ selectedFork }) {
     setIsAttachingTasks(false);
   };
 
-  const handleCommentUpdate = async () => {
-    setComments([
-      ...comments,
-      { task_id: task.id, content: commentContent, staff_id: session.staff.id },
-    ]);
-    setCommentContent("");
-    await update(task.id, {
-      comments: [
-        ...task.comments,
-        {
-          content: commentContent,
-          staff_id: session.staff.id,
-          task_id: task.id,
-        },
-      ],
-    });
-  };
-
   const handleSaveItems = async () => {
     await update(task.id, { checklist_items: getFilteredItems() });
   };
-
+  console.log(task.procedure.actions);
   const handleDeleteItem = async (id) => {
     const newItems = items.filter((item) => item.id !== id); // Server update
     removeItem(id); // UI update
@@ -343,24 +311,6 @@ export default function Content({ selectedFork }) {
                   </Card>
                 </>
               )}
-              {task.procedure?.actions &&
-                task.procedure.actions.length > 0 &&
-                task.procedure.actions.some(
-                  (a) => a.action_type_id == ACTION_REQUEST
-                ) && (
-                  <MDButton
-                    variant="gradient"
-                    color="light"
-                    size="small"
-                    sx={{ height: "50px" }}
-                    disabled={true}
-                    onClick={() => {
-                      // TODO: Implement action request
-                    }}
-                  >
-                    Generar poder
-                  </MDButton>
-                )}
             </MDBox>
           </MDBox>
         </MDBox>
@@ -449,31 +399,10 @@ export default function Content({ selectedFork }) {
             <Divider />
           </>
         )}
-
-        <MDBox py={2}>
-          <MDBox display="flex">
-            <MDTypography variant="body2" fontWeight="bold" mb={2}>
-              Descripción
-            </MDTypography>
-          </MDBox>
-          <MDEditor
-            editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
-            editorState={description}
-            setEditorState={setDescription}
-            onBlur={() => {
-              const raw = convertToRaw(description.getCurrentContent());
-              const strDescription = JSON.stringify(raw);
-              update(task.id, { description: strDescription });
-            }}
-          />
-        </MDBox>
-
-        <Divider />
-
         <MDBox py={2}>
           <MDBox display="flex" flexDirection="column">
             <MDTypography variant="body2" fontWeight="bold">
-              Lista de Verificación de Artículos
+              Lista de Quehaceres
             </MDTypography>
             <MDBox sx={{ width: "80%", my: 1 }}>
               {progress > 0 && (
@@ -511,33 +440,25 @@ export default function Content({ selectedFork }) {
             removeItem={handleDeleteItem}
           />
         </MDBox>
-
-        <Divider />
-
-        <MDBox py={2}>
+        <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold">
-            Comentarios
+            Lista de acciones disponibles
           </MDTypography>
-          {comments.map((comment) => (
-            <MDTypography key={comment.id} variant="body2" my={2}>
-              {comment.content}
-            </MDTypography>
-          ))}
-          <FormField
-            value={commentContent}
-            type="text"
-            placeholder="Comentario..."
-            onChange={(e) => setCommentContent(e.target.value)}
-            sx={{ mb: 2, width: "100%" }}
-          />
-          <MDBox display="flex" justifyContent="end" mt={2}>
-            <MDButton
-              variant="gradient"
-              color="dark"
-              onClick={handleCommentUpdate}
-            >
-              Agregar
-            </MDButton>
+          <MDBox display="flex" flexDirection="row" gap={2} pt={2}>
+            {task.procedure?.actions &&
+              task.procedure.actions.map((action) => (
+                <MDButton
+                  key={action.id}
+                  variant="gradient"
+                  color="dark"
+                  size="small"
+                  onClick={() => {
+                    console.log(action);
+                  }}
+                >
+                  {action.type.label}
+                </MDButton>
+              ))}
           </MDBox>
         </MDBox>
       </MDBox>

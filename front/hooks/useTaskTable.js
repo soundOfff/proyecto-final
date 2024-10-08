@@ -155,9 +155,8 @@ export default function useTaskTable({
             "followers",
             "taskable",
             "reminders",
-            "actions",
             "requiredFields",
-            "procedure.actions",
+            "procedure.actions.type",
           ],
         })
       );

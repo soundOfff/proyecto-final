@@ -17,7 +17,7 @@ import MDInput from "/components/MDInput";
 
 import { useSession } from "next-auth/react";
 
-import { Tooltip, Tabs, Tab, Grid, Select } from "@mui/material";
+import { Tooltip, Tabs, Tab, Grid } from "@mui/material";
 
 import Icon from "@mui/material/Icon";
 import Menu from "@mui/material/Menu";
@@ -33,6 +33,7 @@ import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
+import Modal from "/components/Modal";
 
 import {
   updateMany,
@@ -613,16 +614,55 @@ export default function Table({ rows, priorities }) {
                 setDeleteConfirmed,
               }}
             />
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="No se encuentra registrado en Slack"
-              content="Para poder recibir notificaciones en Slack, por favor regístrese en la plataforma"
+            <Modal
+              height="auto"
+              width="40%"
               open={!isSlackLogged}
-              onClose={() => setIsSlackLogged(true)}
-              close={() => setIsSlackLogged(true)}
-              bgWhite
-            />
+              onClose={() => {
+                setIsSlackLogged(true);
+              }}
+              px={10}
+              py={5}
+            >
+              <MDBox
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mb={5}
+              >
+                <MDTypography variant="h5" color="dark">
+                  No se encuentra registrado en Slack
+                </MDTypography>
+              </MDBox>
+              <MDBox
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                textAlign="center"
+                mb={5}
+              >
+                <MDTypography variant="body2" color="text">
+                  Para poder recibir notificaciones en Slack, por favor
+                  regístrese en la plataforma
+                </MDTypography>
+              </MDBox>
+              <MDBox display="flex" justifyContent="space-between" mt={6}>
+                <MDButton
+                  variant="gradient"
+                  color="light"
+                  onClick={() => setIsSlackLogged(true)}
+                >
+                  Cerrar
+                </MDButton>
+                <MDButton
+                  variant="gradient"
+                  color="info"
+                  onClick={() => router.push(process.env.NEXT_PUBLIC_SLACK_URL)}
+                >
+                  Activar Notificaciones de Slack
+                </MDButton>
+              </MDBox>
+            </Modal>
           </>
         )}
       </MDBox>

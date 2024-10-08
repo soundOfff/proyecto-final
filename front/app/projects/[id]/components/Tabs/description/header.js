@@ -288,6 +288,7 @@ export default function Header() {
               Generar Poder
             </MDButton>
             <SlackButton
+              label="Compartir"
               onClick={() => {
                 setOpenSlackShareModal(true);
               }}

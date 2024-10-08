@@ -8,10 +8,12 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./form-content";
 import MDSnackbar from "/components/MDSnackbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendSlackNotification } from "/actions/notifications";
+import { useSession } from "next-auth/react";
+import { select } from "/actions/staffs";
 
-export default function FormComponent({ staffs }) {
+export default function FormComponent({ handleClose, modelId, modelType }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
@@ -19,12 +21,20 @@ export default function FormComponent({ staffs }) {
     "Notificación enviada correctamente"
   );
   const [successSB, setSuccessSB] = useState(false);
+  const { data: session } = useSession();
+  const [staffs, setStaffs] = useState([]);
 
   const submitForm = async (values, actions) => {
     try {
-      await sendSlackNotification(values);
+      await sendSlackNotification({
+        ...values,
+        notification_by: session?.staff?.id,
+        model_id: modelId,
+        model_type: modelType,
+      });
       actions.resetForm();
       setSuccessSB(true);
+      handleClose();
     } catch (error) {
       setErrorMsg(error.message);
       setErrorSB(true);
@@ -34,6 +44,12 @@ export default function FormComponent({ staffs }) {
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
+
+  useEffect(() => {
+    select({ "filter[has-channels]": true }).then((staffs) => {
+      setStaffs(staffs);
+    });
+  }, []);
 
   return (
     <MDBox>

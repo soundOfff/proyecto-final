@@ -1,21 +1,17 @@
-import { redirect } from "next/navigation";
-
 export default function SlackIcon({
-  style = {
-    height: "20px",
-    width: "20px",
-    marginLeft: "6px",
-    marginRight: "6px",
-    cursor: "pointer",
-  },
-  handleClick,
+  height = "20px",
+  width = "20px",
+  marginLeft = "0px",
+  marginRight = "0px",
+  cursor = "pointer",
+  handleClick = () => {},
 }) {
   return (
     <svg
       enable-background="new 0 0 2447.6 2452.5"
       viewBox="0 0 2447.6 2452.5"
       xmlns="http://www.w3.org/2000/svg"
-      style={style}
+      style={{ height, width, marginLeft, marginRight, cursor }}
       onClick={handleClick}
     >
       <g clip-rule="evenodd" fill-rule="evenodd">

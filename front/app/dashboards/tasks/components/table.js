@@ -1,12 +1,10 @@
 "use client";
 
 import moment from "moment";
-import numberFormat from "/utils/numberFormat";
 import Link from "next/link";
 import DataTable from "/examples/Tables/DataTable";
 
 import MDBox from "/components/MDBox";
-import MDAvatar from "/components/MDAvatar";
 import MDTypography from "/components/MDTypography";
 import { Tab, Tabs } from "@mui/material";
 
@@ -16,6 +14,9 @@ import { setColor } from "/utils/project-state-colors";
 import Loading from "./skeleton";
 import useTabs from "/hooks/useTabs";
 import { getPriorityColor } from "/utils/project-state-colors";
+import MDSnackbar from "/components/MDSnackbar";
+import useSlackLogged from "/hooks/useSlackLogged";
+import { useSession } from "next-auth/react";
 
 const TAB_TYPES = [
   {
@@ -34,6 +35,9 @@ export default function Table({ rows, meta }) {
   const { isLoading, handleChange, selectedTab } = useTabs({
     TAB_TYPES,
   });
+
+  const { data: session } = useSession();
+  const { isSlackLogged, setIsSlackLogged } = useSlackLogged({ session });
 
   const projectColumns = [
     {
@@ -231,6 +235,16 @@ export default function Table({ rows, meta }) {
           ))}
         </Tabs>
       </MDBox>
+      <MDSnackbar
+        color="error"
+        icon="warning"
+        title="No se encuentra registrado en Slack"
+        content="Para poder recibir notificaciones en Slack, por favor regístrese en la plataforma"
+        open={!isSlackLogged}
+        onClose={() => setIsSlackLogged(true)}
+        close={() => setIsSlackLogged(true)}
+        bgWhite
+      />
       <MDBox py={0.5} px={2}>
         {isLoading ? (
           <Loading count={table.rows?.length > 3 ? 5 : 3} />

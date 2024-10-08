@@ -45,6 +45,7 @@ class StaffResource extends JsonResource
             'twoFactorAuthCodeRequested' => $this->two_factor_auth_code_requested,
             'twoFactorAuthEnabled' => $this->two_factor_auth_enabled,
             'token' => $this->token,
+            'slackChannel' => $this->slack_channel,
             'projects' => ProjectResource::collection($this->whenLoaded('projects')),
             'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
             'role' => RoleResource::make($this->whenLoaded('role')),

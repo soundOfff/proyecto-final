@@ -304,3 +304,4 @@ Route::get('/auth/slack/callback', [LoginController::class, 'slackLogin']);
 Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']);
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/documents', [DocumentController::class, 'generate']);

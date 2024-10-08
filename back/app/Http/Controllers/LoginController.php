@@ -55,10 +55,12 @@ class LoginController extends Controller
         $teamId = $data['team']['id'];
         $teamName = $data['team']['name'];
 
-        $workspace = SlackWorkspace::where('slack_workspace_id', $teamId)->first();
+        $workspaceExists = SlackWorkspace::where('slack_workspace_id', $teamId)
+            ->orWhere('name', $teamName)
+            ->exists();
 
-        if (! $workspace) {
-            $workspace = SlackWorkspace::create([
+        if (! $workspaceExists) {
+            SlackWorkspace::create([
                 'slack_workspace_id' => $teamId,
                 'name' => $teamName,
                 'bot_token' => $accessToken,

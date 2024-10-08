@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 
 class Project extends Model
 {
@@ -170,5 +172,33 @@ class Project extends Model
         $this->update([
             'name' => $name,
         ]);
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $startDate = $this->start_date ? Carbon::parse($this->start_date)->format('Y-m-d') : '-';
+        $deadline = $this->deadline ? Carbon::parse($this->deadline)->format('Y-m-d') : '-';
+        $createdAt = Carbon::parse($this->created_at)->format('Y-m-d H:i:s');
+        $billablePartnerName = $this->billablePartner ? $this->billablePartner->merged_name : '-';
+        $billingType = $this->billingType ? $this->billingType->label : '-';
+        $estimatedHours = $this->estimated_hours ? $this->estimated_hours : '-';
+        $courtName = $this->court ? $this->court->name : '-';
+        $department = $this->serviceType ? $this->serviceType->label : '-';
+        $process = $this->process ? $this->process->name : '-';
+        $responsiblePersonName = $this->responsiblePerson ? $this->responsiblePerson->name : '-';
+        $members = $this->members ? $this->members->implode('name', ', ') : '-';
+        $relatedPersons = $this->partners ? $this->partners->implode('mergedName', ', ') : '-';
+
+        $block->text("*Nombre:* $this->name\n*Descripción:* $this->description\n*Cliente Facturable:* $billablePartnerName\n*Miembros:* $members\n*Personas Relacionadas:* $relatedPersons\n *Persona Responsable:* $responsiblePersonName\n")->markdown();
+        $block->field("*Fecha de inicio:* $startDate")->markdown();
+        $block->field("*Fecha de finalización:* $deadline")->markdown();
+        $block->field("*Tipo de facturación:* $billingType")->markdown();
+        $block->field("*Horas Estimadas:* $estimatedHours")->markdown();
+        $block->field("*Juzgado:* $courtName")->markdown();
+        $block->field("*Departamento:* $department")->markdown();
+        $block->field("*Proceso:* $process")->markdown();
+        $block->field("*Tipo:* $this->type")->markdown();
+        $block->field("*Monto de la demanda:* $this->demand_amount")->markdown();
+        $block->field("*Creado el:* $createdAt")->markdown();
     }
 }

@@ -8,8 +8,14 @@ import Grid from "@mui/material/Grid";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDAvatar from "/components/MDAvatar";
+import SlackButton from "/components/SlackButton";
+import SlackShare from "/components/ModalContent/SlackShare";
+import useSlackShare from "/hooks/useSlackShare";
 
-function Header({ contact }) {
+function Header({ contact, partner }) {
+  const { openSlackShareModal, setOpenSlackShareModal } = useSlackShare({
+    model: partner,
+  });
   return (
     <Card id="profile" sx={{ mb: 3 }}>
       <MDBox p={2}>
@@ -32,7 +38,7 @@ function Header({ contact }) {
               </MDTypography>
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3} sx={{ ml: "auto" }}>
+          <Grid item xs={12} md={6} sx={{ ml: "auto" }}>
             <MDBox
               display="flex"
               justifyContent={{ md: "flex-end" }}
@@ -42,6 +48,21 @@ function Header({ contact }) {
               <MDTypography mr={5} variant="caption" fontWeight="regular">
                 {contact?.email}
               </MDTypography>
+
+              <SlackButton
+                label={"Compartir cliente por Slack"}
+                onClick={() => {
+                  setOpenSlackShareModal(true);
+                }}
+              />
+              <SlackShare
+                open={openSlackShareModal}
+                onClose={() => {
+                  setOpenSlackShareModal(false);
+                }}
+                modelId={partner?.id}
+                modelType="Partner"
+              />
             </MDBox>
           </Grid>
         </Grid>

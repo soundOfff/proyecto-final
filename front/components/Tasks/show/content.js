@@ -30,6 +30,11 @@ import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
 import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
+import { ACTION_REQUEST } from "/utils/constants/actionTypes";
+
+import SlackButton from "/components/SlackButton";
+import SlackShare from "/components/ModalContent/SlackShare";
+import useSlackShare from "/hooks/useSlackShare";
 
 export default function Content({ selectedFork }) {
   const {
@@ -70,6 +75,10 @@ export default function Content({ selectedFork }) {
     removeItem,
     editItem,
   } = useTodo(task.checklistItems);
+
+  const { openSlackShareModal, setOpenSlackShareModal } = useSlackShare({
+    model: task,
+  });
 
   const { data: session } = useSession();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -257,7 +266,6 @@ export default function Content({ selectedFork }) {
                 Tarea Completada
               </MDButton>
             )}
-
             {isTimerStarted ? (
               <MDButton
                 color="primary"
@@ -286,6 +294,21 @@ export default function Content({ selectedFork }) {
             >
               Eliminar Tarea
             </MDButton>
+            <SlackButton
+              label="Compartir por Slack"
+              size="small"
+              onClick={() => {
+                setOpenSlackShareModal(true);
+              }}
+            />
+            <SlackShare
+              open={openSlackShareModal}
+              onClose={() => {
+                setOpenSlackShareModal(false);
+              }}
+              modelId={task?.id}
+              modelType="Task"
+            />
             <MDBox display="flex" flexDirection="row" width="60%">
               {isStoppingTimer && (
                 <>
@@ -320,6 +343,24 @@ export default function Content({ selectedFork }) {
                   </Card>
                 </>
               )}
+              {task.procedure?.actions &&
+                task.procedure.actions.length > 0 &&
+                task.procedure.actions.some(
+                  (a) => a.action_type_id == ACTION_REQUEST
+                ) && (
+                  <MDButton
+                    variant="gradient"
+                    color="light"
+                    size="small"
+                    sx={{ height: "50px" }}
+                    disabled={true}
+                    onClick={() => {
+                      // TODO: Implement action request
+                    }}
+                  >
+                    Generar poder
+                  </MDButton>
+                )}
             </MDBox>
           </MDBox>
         </MDBox>

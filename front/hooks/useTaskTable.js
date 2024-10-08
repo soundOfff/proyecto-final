@@ -157,7 +157,7 @@ export default function useTaskTable({
             "reminders",
             "actions",
             "requiredFields",
-            "procedure",
+            "procedure.actions",
           ],
         })
       );

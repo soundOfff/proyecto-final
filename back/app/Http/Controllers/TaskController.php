@@ -240,7 +240,9 @@ class TaskController extends Controller
                     staffId: $staff->id,
                     header: 'Tarea Completada',
                     body: "La tarea \"$task->name\" ha sido completada, puede elegir el siguiente proceso",
-                    url: "tasks?taskId={$task->id}"
+                    url: "/tasks?taskId={$task->id}",
+                    modelId: $task->id,
+                    modelType: Task::class
                 );
                 foreach ($staff->devices as $device) {
                     $taskName = isset($newTask['name']) ? $newTask['name'] : $task->name;
@@ -303,7 +305,7 @@ class TaskController extends Controller
                 'actions',
                 'requiredFields',
                 'author',
-                'procedure',
+                'procedure.actions',
                 'partner',
             ])
             ->find($task->id);

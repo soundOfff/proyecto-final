@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -267,5 +270,58 @@ class Partner extends Model
                     ->orWhere('name', 'like', "%$search%");
             });
         });
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        if ($this->company) { // if is juridical
+            $industry = $this->industry ?: '-';
+            $section = $this->section ?: '-';
+            $document = $this->document ?: '-';
+            $phone = $this->phone ?: '-';
+            $country = $this->country ? $this->country->short_name : '-';
+            $district = $this->jurisdiction ? ($this->jurisdiction->district ? $this->jurisdiction->district->name : '-') : '-';
+            $jurisdiction = $this->jurisdiction ? $this->jurisdiction->name : '-';
+            $place = "$country, $district, $jurisdiction";
+            $address = $this->address ?: '-';
+            $zip = $this->zip ?: '-';
+            $rollNumber = $this->roll_number ?: '-';
+            $dv = $this->dv ?: '-';
+            $ruc = $this->ruc ?: '-';
+            $mail = $this->mail ?: '-';
+            $relatedPersons = $this->relatedPartners->implode('merged_name', ', ');
+
+            $block->text("*Empresa:* {$this->company}\n *Industria:* {$industry}\n *Sección:* {$section}\n *Folio:* {$document}\n *Teléfono:* {$phone}\n *Mail:* {$mail}\n *Dirección:* {$address}\n *Ubicación:* {$place}\n *Personas Relacionadas:* {$relatedPersons}")->markdown();
+            $block->field("*Código Postal:* {$zip}")->markdown();
+            $block->field("*Número de rol:* {$rollNumber}")->markdown();
+            $block->field("*DV:* {$dv}")->markdown();
+            $block->field("*RUC:* {$ruc}")->markdown();
+        } else {
+            $number = $this->number ?: '-';
+            $birthDate = $this->birth_date ? Carbon::parse($this->birth_date)->format('Y-m-d') : '-';
+            $birthPlace = $this->birthPlace ? $this->birthPlace->name : '-';
+            $expeditionDate = $this->expedition_date ? Carbon::parse($this->expedition_date)->format('Y-m-d') : '-';
+            $nationalityName = $this->nationality ? $this->nationality->short_name : '-';
+            $idType = $this->id_type ?: '-';
+            $idNumber = $this->id_number ?: '-';
+            $civilStatus = $this->civil_status ?: '-';
+            $occupation = $this->occupation ?: '-';
+            $address = $this->address ?: '-';
+            $phone = $this->phone ?: '-';
+            $mail = $this->mail ?: '-';
+            $country = $this->country ? $this->country->short_name : '-';
+            $district = $this->jurisdiction ? ($this->jurisdiction->district ? $this->jurisdiction->district->name : '-') : '-';
+            $jurisdiction = $this->jurisdiction ? $this->jurisdiction->name : '-';
+            $place = "$country, $district, $jurisdiction";
+            $relatedPersons = $this->relatedPartners->implode('merged_name', ', ');
+
+            $block->text("*Nombre:* {$this->name}\n *Número de identificación:* {$number}\n *Fecha De Nacimiento:* {$birthDate}\n *Fecha De Expedición:* {$expeditionDate}\n *Nacionalidad:* {$nationalityName}\n *Lugar de Nacimiento:* {$birthPlace}\n *Tipo de Identificación:* {$idType}\n *Número de Identificación: * {$idNumber}\n *Personas Relacionadas: * {$relatedPersons}")->markdown();
+            $block->field("*Estado Civil:* {$civilStatus}")->markdown();
+            $block->field("*Ocupación:* {$occupation}")->markdown();
+            $block->field("*Dirección:* {$address}")->markdown();
+            $block->field("*Teléfono:* {$phone}")->markdown();
+            $block->field("*Mail:* {$mail}")->markdown();
+            $block->field("*Ubicación:* {$place}")->markdown();
+        }
     }
 }

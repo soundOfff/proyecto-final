@@ -15,7 +15,6 @@ export async function getAll(params) {
 
 export async function revalidateFiles() {
   revalidateTag("create-file");
-  redirect("/files");
 }
 
 export async function destroy(fileId) {

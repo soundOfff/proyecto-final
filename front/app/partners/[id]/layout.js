@@ -22,7 +22,9 @@ export default async function Layout({ children, params: { id } }) {
           <MDBox mb={3}>
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                {primaryContact && <Header contact={primaryContact} />}
+                {primaryContact && (
+                  <Header contact={primaryContact} partner={partner} />
+                )}
                 {children}
               </Grid>
             </Grid>

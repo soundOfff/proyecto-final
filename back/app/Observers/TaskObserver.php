@@ -48,7 +48,9 @@ class TaskObserver
                         staffId: $assigned->id,
                         header: "La tarea #{$unlockedTask->id} ha sido desbloqueada",
                         body: "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
-                        url: "tasks?taskId={$unlockedTask->id}"
+                        url: "/tasks?taskId={$unlockedTask->id}",
+                        modelId: $unlockedTask->id,
+                        modelType: Task::class
                     );
                     foreach ($assigned->devices as $device) {
                         $notificationService->sendWebPushNotification(

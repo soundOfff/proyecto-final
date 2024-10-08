@@ -88,7 +88,7 @@ export default function JuridicalForm({
       setFieldValue(industry.name, partner.industryId || "");
       setFieldValue(section.name, partner.sectionId || "");
       setFieldValue(document.name, partner.document || "");
-      setFieldValue(phone.name, partner.phone || "");
+      setFieldValue(phone.name, partner.phoneNumber || "");
       setFieldValue(email.name, partner.email || "");
       setFieldValue(country.name, partner.countryId || "");
       setFieldValue(province.name, partner.provinceId || "");
@@ -97,7 +97,10 @@ export default function JuridicalForm({
       setFieldValue(state.name, partner.state || "");
       setFieldValue(city.name, partner.city || "");
       setFieldValue(address.name, partner.address || "");
-      setFieldValue(isResidential.name, partner.isResidential || false);
+      setFieldValue(
+        isResidential.name,
+        Boolean(partner.isResidential) || false
+      );
       setFieldValue(zip.name, partner.zip || "");
       setFieldValue(consolidator.name, partner.consolidatorId || "");
       setFieldValue(fileNumber.name, partner.fileNumber || "");

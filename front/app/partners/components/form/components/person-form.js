@@ -112,11 +112,11 @@ export default function PersonForm({
       if (partner.city == "Desconocido") {
         setCityChecked(true);
       }
-      setFieldValue(district.name, partner.district || "");
+      setFieldValue(district.name, partner.districtId || "");
       setFieldValue(jurisdiction.name, partner.jurisdictionId || "");
-      setFieldValue(province.name, partner.province || "");
+      setFieldValue(province.name, partner.provinceId || "");
       setFieldValue(address.name, partner.address || "");
-      setFieldValue(isResidential.name, partner.isResidential || true);
+      setFieldValue(isResidential.name, Boolean(partner.isResidential) || true);
     }
   }, [
     partner,

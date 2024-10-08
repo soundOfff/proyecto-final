@@ -17,10 +17,10 @@ class PartnerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'countryId' => $this->country_id,
-            'provinceId' => $this->province_id,
-            'districtId' => $this->district_id,
             'jurisdictionId' => $this->jurisdiction_id,
+            'provinceId' => isset($this->jurisdiction_id) ? $this->jurisdiction->district->province->id : null,
+            'districtId' => isset($this->jurisdiction_id) ? $this->jurisdiction->district->id : null,
+            'countryId' => $this->country_id,
             'nationalityId' => $this->nationality_id,
             'birthPlaceId' => $this->birth_place_id,
             'presidentId' => $this->president_id,

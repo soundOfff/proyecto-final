@@ -301,6 +301,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
 });
 
+Route::get('monthly-expenses/{year}', [ExpenseController::class, 'monthlyExpenses']);
 Route::get('/auth/slack/callback', [LoginController::class, 'slackLogin']);
 Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']);
 

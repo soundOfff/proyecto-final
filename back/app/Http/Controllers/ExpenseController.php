@@ -9,11 +9,11 @@ use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
 use App\Models\ExpenseRepeat;
 use App\Models\File;
-use App\Models\Project;
 use App\Sorts\ExpenseCategorySort;
 use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -57,6 +57,61 @@ class ExpenseController extends Controller
             : $query->get();
 
         return new ExpenseResourceCollection($expense);
+    }
+
+    public function monthlyExpenses(int $year)
+    {
+        $currentYear = $year ?: Carbon::now()->year;
+
+        // Obtener subtotales por categoría y por mes
+        $monthlyExpenses = Expense::selectRaw('expense_category_id, expense_categories.name as category_name, SUM(amount) as total_amount, MONTH(date) as month')
+            ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id') // Realiza el join con la tabla de categorías
+            ->whereYear('date', $currentYear)
+            ->groupBy('expense_category_id', 'month', 'expense_categories.name') // Agrupa también por el nombre de la categoría
+            ->orderBy('expense_category_id', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Obtener el total anual por categoría
+        $yearlyTotals = Expense::selectRaw('expense_category_id, expense_categories.name as category_name, SUM(amount) as yearly_total')
+            ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
+            ->whereYear('date', $currentYear)
+            ->groupBy('expense_category_id', 'expense_categories.name')
+            ->get();
+
+        // Crear una lista de meses vacía (0 para cada mes) para cada categoría
+        $months = collect(range(1, 12))->mapWithKeys(function ($month) {
+            return [$month => 0]; // Mes inicializado con total 0
+        });
+
+        // Combinar los subtotales mensuales con los totales anuales y asegurarse de que cada mes esté presente
+        $formattedExpenses = $monthlyExpenses->groupBy('expense_category_id')->map(function ($expenses, $category) use ($yearlyTotals, $months) {
+            // Obtener el nombre y total anual de la categoría actual
+            $yearlyTotalData = $yearlyTotals->firstWhere('expense_category_id', $category);
+            $yearlyTotal = $yearlyTotalData->yearly_total;
+            $categoryName = $yearlyTotalData->category_name;
+
+            // Mapear los gastos mensuales y combinar con la lista de todos los meses
+            $monthly = $months->map(function ($defaultTotal, $month) use ($expenses) {
+                // Buscar el mes correspondiente en los gastos
+                $expense = $expenses->firstWhere('month', $month);
+
+                return [
+                    'month' => Carbon::createFromDate(null, $month, 1)->format('F'),
+                    'total_amount' => $expense ? $expense->total_amount : $defaultTotal, // Total o 0 si no hay gasto
+                ];
+            });
+
+            return [
+                'category' => $categoryName, // Nombre de la categoría
+                'monthly' => $monthly->values(), // Subtotales mensuales
+                'yearly_total' => $yearlyTotal, // Total anual
+            ];
+        });
+
+        return response()->json([
+            'expenses' => $formattedExpenses,
+        ]);
     }
 
     /**

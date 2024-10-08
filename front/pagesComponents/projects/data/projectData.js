@@ -33,7 +33,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Roderick Tam Castillo</DefaultCell>,
       amount: <DefaultCell>$130.992</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>La Chorrera</DefaultCell>,
       stage: <DefaultCell>2. Admision Demanda</DefaultCell>,
       comments: <DefaultCell>Pendiente de admisión de la demanda.</DefaultCell>,
@@ -50,7 +50,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
       amount: <DefaultCell>$80.250</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>3. Notificacion de demanda</DefaultCell>,
       comments: (
@@ -72,7 +72,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Guillermo Aldana Rodriguez</DefaultCell>,
       amount: <DefaultCell>$40.600</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>La Chorrera</DefaultCell>,
       stage: <DefaultCell>2. Admision Demanda</DefaultCell>,
       comments: (
@@ -94,7 +94,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Alberto Caballero Diaz</DefaultCell>,
       amount: <DefaultCell>$91.300</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>2. Admision Demanda</DefaultCell>,
       comments: (
@@ -116,7 +116,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
       amount: <DefaultCell>$140.925</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>3. Notificacion de demanda</DefaultCell>,
       comments: (
@@ -137,7 +137,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
       amount: <DefaultCell>$140.925</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>3. Notificacion de demanda</DefaultCell>,
       comments: (
@@ -159,7 +159,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
       amount: <DefaultCell>$140.925</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>4. Solicitud de Remate</DefaultCell>,
       comments: (
@@ -181,7 +181,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
       amount: <DefaultCell>$140.925</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>2. Admision Demanda</DefaultCell>,
       comments: (
@@ -203,7 +203,7 @@ const dataTableData = {
     {
       client: <DefaultCell>Victor Antonio Sanchez Rosario</DefaultCell>,
       amount: <DefaultCell>$140.925</DefaultCell>,
-      signature: <DefaultCell>Velo legal</DefaultCell>,
+      signature: <DefaultCell>CRM APP</DefaultCell>,
       jurisdiction: <DefaultCell>Panama</DefaultCell>,
       stage: <DefaultCell>4. Solicitud de Remate</DefaultCell>,
       comments: (

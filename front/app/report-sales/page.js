@@ -4,10 +4,15 @@ import ExpensesChart from "./components/expenses-chart";
 
 import IncomesChart from "./components/incomes-chart";
 import ExpensesTable from "./components/expenses-table";
+import { monthlyExpenses } from "/actions/expenses";
 
 export const dynamic = "force-dynamic";
 
 export default async function Reports({ searchParams }) {
+  const expensesData = await monthlyExpenses(searchParams.year ?? 2019);
+  // const expenses = expensesData.expenses.map((expense) => {
+  //   console.log(expense);
+  // });
   return (
     <MDBox mb={3}>
       <Grid container spacing={5}>

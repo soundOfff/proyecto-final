@@ -53,6 +53,15 @@ export async function destroy(expenseId) {
   revalidatePath("/expenses");
 }
 
+export async function monthlyExpenses(year) {
+  const url = new URL(
+    `${process.env.API_URL}/monthly-expenses/${parseInt(year)}`
+  );
+  const data = await customFetch(url, { cache: "no-store" });
+
+  return data;
+}
+
 export async function revalidateExpenses(tag = "") {
   revalidateTag(tag);
   revalidatePath("/expenses");

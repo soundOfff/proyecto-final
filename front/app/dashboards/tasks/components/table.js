@@ -14,9 +14,10 @@ import { setColor } from "/utils/project-state-colors";
 import Loading from "./skeleton";
 import useTabs from "/hooks/useTabs";
 import { getPriorityColor } from "/utils/project-state-colors";
-import MDSnackbar from "/components/MDSnackbar";
 import useSlackLogged from "/hooks/useSlackLogged";
 import { useSession } from "next-auth/react";
+import Modal from "/components/Modal";
+import MDButton from "/components/MDButton";
 
 const TAB_TYPES = [
   {
@@ -235,16 +236,55 @@ export default function Table({ rows, meta }) {
           ))}
         </Tabs>
       </MDBox>
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="No se encuentra registrado en Slack"
-        content="Para poder recibir notificaciones en Slack, por favor regístrese en la plataforma"
+      <Modal
+        height="auto"
+        width="40%"
         open={!isSlackLogged}
-        onClose={() => setIsSlackLogged(true)}
-        close={() => setIsSlackLogged(true)}
-        bgWhite
-      />
+        onClose={() => {
+          setIsSlackLogged(true);
+        }}
+        px={10}
+        py={5}
+      >
+        <MDBox
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mb={5}
+        >
+          <MDTypography variant="h5" color="dark">
+            No se encuentra registrado en Slack
+          </MDTypography>
+        </MDBox>
+        <MDBox
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          textAlign="center"
+          mb={5}
+        >
+          <MDTypography variant="body2" color="text">
+            Para poder recibir notificaciones en Slack, por favor regístrese en
+            la plataforma
+          </MDTypography>
+        </MDBox>
+        <MDBox display="flex" justifyContent="space-between" mt={6}>
+          <MDButton
+            variant="gradient"
+            color="light"
+            onClick={() => setIsSlackLogged(true)}
+          >
+            Cerrar
+          </MDButton>
+          <MDButton
+            variant="gradient"
+            color="info"
+            onClick={() => router.push(process.env.NEXT_PUBLIC_SLACK_URL)}
+          >
+            Activar Notificaciones de Slack
+          </MDButton>
+        </MDBox>
+      </Modal>
       <MDBox py={0.5} px={2}>
         {isLoading ? (
           <Loading count={table.rows?.length > 3 ? 5 : 3} />

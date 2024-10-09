@@ -461,13 +461,13 @@ export default function Content({ selectedFork }) {
             removeItem={handleDeleteItem}
           />
         </MDBox>
-        <MDBox py={2} display="flex" flexDirection="column">
-          <MDTypography variant="body2" fontWeight="bold" mb={2}>
-            Lista de acciones disponibles
-          </MDTypography>
-          <Grid container xs={12} spacing={5}>
-            {task.procedure?.actions &&
-              task.procedure.actions.map((action, index) => (
+        {task.procedure?.actions && task.procedure.actions.length > 0 && (
+          <MDBox py={2} display="flex" flexDirection="column">
+            <MDTypography variant="body2" fontWeight="bold" mb={2}>
+              Lista de acciones disponibles
+            </MDTypography>
+            <Grid container xs={12} spacing={5}>
+              {task.procedure.actions.map((action, index) => (
                 <Grid item xs={6} sm={3} key={index}>
                   <MDButton
                     key={action.id}
@@ -495,8 +495,9 @@ export default function Content({ selectedFork }) {
                   </MDButton>
                 </Grid>
               ))}
-          </Grid>
-        </MDBox>
+            </Grid>
+          </MDBox>
+        )}
       </MDBox>
     </Grid>
   );

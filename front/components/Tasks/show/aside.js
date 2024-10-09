@@ -424,6 +424,7 @@ export default function Aside() {
                       }
                       options={{
                         minDate: moment()
+                          .add(5, "minutes")
                           .tz("America/Panama")
                           .format("YYYY-MM-DD HH:mm:ss"),
                         enableTime: true,

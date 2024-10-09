@@ -8,7 +8,6 @@ import {
   Grid,
 } from "@mui/material";
 import MDBox from "/components/MDBox";
-import MDEditor from "/components/MDEditor";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDProgress from "/components/MDProgress";
@@ -20,7 +19,6 @@ import FormField from "/pagesComponents/ecommerce/products/new-product/component
 import Link from "next/link";
 import { useState } from "react";
 import { parseEditorState } from "/utils/parseEditorState";
-import { convertToRaw } from "draft-js";
 import { useSession } from "next-auth/react";
 import { useDataProvider } from "/providers/DataProvider";
 
@@ -30,11 +28,33 @@ import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
 import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
-import { ACTION_REQUEST } from "/utils/constants/actionTypes";
 
 import SlackButton from "/components/SlackButton";
 import SlackShare from "/components/ModalContent/SlackShare";
 import useSlackShare from "/hooks/useSlackShare";
+
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import GavelIcon from "@mui/icons-material/Gavel";
+import EmailIcon from "@mui/icons-material/Email";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+
+import {
+  ACTION_EXPENSE,
+  ACTION_REQUEST,
+  ACTION_EMAIL,
+} from "/utils/constants/actionTypes";
+
+const renderIcon = (type) => {
+  if (type === ACTION_EXPENSE) {
+    return <ReceiptIcon fontSize="medium" />;
+  } else if (type === ACTION_REQUEST) {
+    return <GavelIcon fontSize="medium" />;
+  } else if (type === ACTION_EMAIL) {
+    return <EmailIcon fontSize="medium" />;
+  } else {
+    return <TextFieldsIcon fontSize="medium" />;
+  }
+};
 
 export default function Content({ selectedFork }) {
   const {
@@ -47,25 +67,12 @@ export default function Content({ selectedFork }) {
     closeShowModal,
   } = useDataProvider();
 
-  const [description, setDescription] = useState(
-    parseEditorState(task.description)
-  );
-  const [comments, setComments] = useState(
-    task.comments.map((comment) => {
-      return {
-        task_id: comment.task_id,
-        content: comment.content,
-        staff_id: comment.staff_id,
-      };
-    }) || []
-  );
   const [note, setNote] = useState("");
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
   const [selectedProcess, setSelectedProcess] = useState(selectedFork);
   const [isAttachingTasks, setIsAttachingTasks] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [createdSB, setCreatedSB] = useState(false);
-  const [commentContent, setCommentContent] = useState("");
   const {
     items,
     progress,
@@ -103,24 +110,6 @@ export default function Content({ selectedFork }) {
       setErrorSB(true);
     }
     setIsAttachingTasks(false);
-  };
-
-  const handleCommentUpdate = async () => {
-    setComments([
-      ...comments,
-      { task_id: task.id, content: commentContent, staff_id: session.staff.id },
-    ]);
-    setCommentContent("");
-    await update(task.id, {
-      comments: [
-        ...task.comments,
-        {
-          content: commentContent,
-          staff_id: session.staff.id,
-          task_id: task.id,
-        },
-      ],
-    });
   };
 
   const handleSaveItems = async () => {
@@ -343,24 +332,6 @@ export default function Content({ selectedFork }) {
                   </Card>
                 </>
               )}
-              {task.procedure?.actions &&
-                task.procedure.actions.length > 0 &&
-                task.procedure.actions.some(
-                  (a) => a.action_type_id == ACTION_REQUEST
-                ) && (
-                  <MDButton
-                    variant="gradient"
-                    color="light"
-                    size="small"
-                    sx={{ height: "50px" }}
-                    disabled={true}
-                    onClick={() => {
-                      // TODO: Implement action request
-                    }}
-                  >
-                    Generar poder
-                  </MDButton>
-                )}
             </MDBox>
           </MDBox>
         </MDBox>
@@ -449,31 +420,10 @@ export default function Content({ selectedFork }) {
             <Divider />
           </>
         )}
-
-        <MDBox py={2}>
-          <MDBox display="flex">
-            <MDTypography variant="body2" fontWeight="bold" mb={2}>
-              Descripción
-            </MDTypography>
-          </MDBox>
-          <MDEditor
-            editorStyle={{ minHeight: "10vh", padding: "10px 16px" }}
-            editorState={description}
-            setEditorState={setDescription}
-            onBlur={() => {
-              const raw = convertToRaw(description.getCurrentContent());
-              const strDescription = JSON.stringify(raw);
-              update(task.id, { description: strDescription });
-            }}
-          />
-        </MDBox>
-
-        <Divider />
-
         <MDBox py={2}>
           <MDBox display="flex" flexDirection="column">
             <MDTypography variant="body2" fontWeight="bold">
-              Lista de Verificación de Artículos
+              Lista de Quehaceres
             </MDTypography>
             <MDBox sx={{ width: "80%", my: 1 }}>
               {progress > 0 && (
@@ -511,34 +461,41 @@ export default function Content({ selectedFork }) {
             removeItem={handleDeleteItem}
           />
         </MDBox>
-
-        <Divider />
-
-        <MDBox py={2}>
-          <MDTypography variant="body2" fontWeight="bold">
-            Comentarios
+        <MDBox py={2} display="flex" flexDirection="column">
+          <MDTypography variant="body2" fontWeight="bold" mb={2}>
+            Lista de acciones disponibles
           </MDTypography>
-          {comments.map((comment) => (
-            <MDTypography key={comment.id} variant="body2" my={2}>
-              {comment.content}
-            </MDTypography>
-          ))}
-          <FormField
-            value={commentContent}
-            type="text"
-            placeholder="Comentario..."
-            onChange={(e) => setCommentContent(e.target.value)}
-            sx={{ mb: 2, width: "100%" }}
-          />
-          <MDBox display="flex" justifyContent="end" mt={2}>
-            <MDButton
-              variant="gradient"
-              color="dark"
-              onClick={handleCommentUpdate}
-            >
-              Agregar
-            </MDButton>
-          </MDBox>
+          <Grid container xs={12} spacing={5}>
+            {task.procedure?.actions &&
+              task.procedure.actions.map((action) => (
+                <Grid item xs={6} sm={3}>
+                  <MDButton
+                    key={action.id}
+                    variant="gradient"
+                    color="dark"
+                    size="small"
+                    onClick={() => {
+                      console.log(action);
+                    }}
+                    sx={{
+                      height: "40px",
+                      width: "150px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      {action.type.label}
+                      {renderIcon(action.type.id)}
+                    </span>
+                  </MDButton>
+                </Grid>
+              ))}
+          </Grid>
         </MDBox>
       </MDBox>
     </Grid>

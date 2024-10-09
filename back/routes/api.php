@@ -163,7 +163,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tasks-select', [TaskController::class, 'select']);
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
-    Route::get('/tasks/{task}', [TaskController::class, 'show']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('/tasks-delete-many', [TaskController::class, 'destroyMany']);
     Route::get('/task-stats', [TaskController::class, 'stats']);
@@ -305,3 +304,5 @@ Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
+
+Route::get('/tasks/{task}', [TaskController::class, 'show']);

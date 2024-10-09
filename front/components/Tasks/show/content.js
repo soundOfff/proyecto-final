@@ -467,8 +467,8 @@ export default function Content({ selectedFork }) {
           </MDTypography>
           <Grid container xs={12} spacing={5}>
             {task.procedure?.actions &&
-              task.procedure.actions.map((action) => (
-                <Grid item xs={6} sm={3}>
+              task.procedure.actions.map((action, index) => (
+                <Grid item xs={6} sm={3} key={index}>
                   <MDButton
                     key={action.id}
                     variant="gradient"

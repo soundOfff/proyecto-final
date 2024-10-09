@@ -20,6 +20,7 @@ import { alpha, createTheme, ThemeProvider } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { show } from "/actions/processes";
+import SlackShare from "/components/SlackShare";
 
 export default function Procedures({ procedures, actionTypes, processId }) {
   const [controller] = useMaterialUIController();
@@ -207,11 +208,17 @@ export default function Procedures({ procedures, actionTypes, processId }) {
             </MDTypography>
           )}
         </MDBox>
-        <Link href={{ pathname: "/procedures/create", query: { processId } }}>
-          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Agregar Procedimiento
-          </MDButton>
-        </Link>
+        <MDBox display="flex">
+          <SlackShare modelId={processId} modelType="Process" />
+          <Link
+            href={{ pathname: "/procedures/create", query: { processId } }}
+            style={{ marginLeft: "1rem" }}
+          >
+            <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+              Agregar Procedimiento
+            </MDButton>
+          </Link>
+        </MDBox>
       </MDBox>
       <DataTable
         table={table}

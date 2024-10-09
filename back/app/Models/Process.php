@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 
 class Process extends Model
 {
@@ -40,12 +41,12 @@ class Process extends Model
 
     public function forks(): BelongsToMany
     {
-        return $this->belongsToMany(Process::class, 'fork_process', 'process_id', 'fork_id');
+        return $this->belongsToMany(self::class, 'fork_process', 'process_id', 'fork_id');
     }
 
     public function forkedFrom(): BelongsToMany
     {
-        return $this->belongsToMany(Process::class, 'fork_process', 'fork_id', 'process_id');
+        return $this->belongsToMany(self::class, 'fork_process', 'fork_id', 'process_id');
     }
 
     public function author()
@@ -56,5 +57,23 @@ class Process extends Model
     public function toNotify()
     {
         return $this->belongsToMany(Staff::class, 'process_staff_to_notify', 'process_id', 'staff_id');
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $name = $this->name ?: '-';
+        $description = $this->description ?: '-';
+        $stepQuantity = $this->step_quantity ?: '-';
+        $authorName = $this->author ? $this->author->name : '-';
+        $departmentName = $this->projectServiceType ? $this->projectServiceType->label : '-';
+        $procedures = $this->procedures->map(function ($procedure) {
+            return "#$procedure->step_number: $procedure->name";
+        })->implode(" \n ");
+        $forks = $this->forks->implode('name', '\\n');
+
+        $block->text("*Nombre:* $name\n *Descripción:* $description\n *Procedimientos:* $procedures\n *Bifurcaciones:* $forks")->markdown();
+        $block->field("*Cantidad de Pasos:* $stepQuantity")->markdown();
+        $block->field("*Autor:* $authorName")->markdown();
+        $block->field("*Departamento:* $departmentName")->markdown();
     }
 }

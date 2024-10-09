@@ -7,6 +7,7 @@ import MDButton from "/components/MDButton";
 import numberFormat from "/utils/numberFormat";
 import { useItemTotals } from "/hooks/useItemTotals";
 import usePrint from "/hooks/usePrint";
+import SlackShare from "/components/SlackShare";
 
 export default function Footer({ invoice }) {
   const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
@@ -115,6 +116,11 @@ export default function Footer({ invoice }) {
             alignItems="flex-end"
             mt={{ xs: 2, md: 0 }}
           >
+            <SlackShare
+              modelId={invoice.id}
+              modelType="Invoice"
+              boxProps={{ displayPrint: "none", mr: 2 }}
+            />
             <MDButton
               variant="gradient"
               color="dark"

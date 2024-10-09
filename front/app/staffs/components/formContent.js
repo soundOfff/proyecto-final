@@ -1,33 +1,21 @@
-import {
-  Grid,
-  Autocomplete,
-  FormControl,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Icon,
-  Switch,
-} from "@mui/material";
+import { Grid, FormGroup, FormControlLabel, Icon, Switch } from "@mui/material";
 
-import MDInput from "/components/MDInput";
-import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDBox from "/components/MDBox";
 
 import Select from "/components/Select";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 
-import { Form, Formik, ErrorMessage } from "formik";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
+import SlackShare from "/components/SlackShare";
+
 export default function FormContent({ formData, staff = null }) {
-  const { values, errors, touched, setFieldValue, isSubmitting, formField } =
-    formData;
+  const { values, errors, touched, setFieldValue, formField } = formData;
   const {
     admin,
     defaultLanguage,
-    departments,
     email,
     emailSignature,
     facebook,
@@ -290,6 +278,9 @@ export default function FormContent({ formData, staff = null }) {
               />
             </FormGroup>
           </MDBox>
+        </Grid>
+        <Grid item xs={12}>
+          <SlackShare modelId={staff?.id} modelType="Staff" />
         </Grid>
       </Grid>
     </MDBox>

@@ -4,6 +4,7 @@ import MDTypography from "/components/MDTypography";
 import MDBox from "/components/MDBox";
 import DefaultItem from "/examples/Items/DefaultItem";
 import moneyFormat from "/utils/moneyFormat";
+import SlackShare from "/components/SlackShare";
 
 export default async function Page({ params: { id } }) {
   const expense = await showExpense(id, {
@@ -24,7 +25,7 @@ export default async function Page({ params: { id } }) {
         <Grid
           item
           xs={6}
-          md={3}
+          md={2}
           whiteSpace="nowrap"
           mt={{ xxl: 0, md: 0, xs: 3 }}
         >
@@ -39,7 +40,7 @@ export default async function Page({ params: { id } }) {
         <Grid
           item
           xs={6}
-          md={3}
+          md={2}
           mt={{ xxl: 0, md: 0, xs: 3 }}
           whiteSpace="nowrap"
         >
@@ -49,6 +50,9 @@ export default async function Page({ params: { id } }) {
             icon="date_range"
             description={expense.date}
           />
+        </Grid>
+        <Grid item xs={6} md={2}>
+          <SlackShare modelId={expense?.id} modelType="Expense" />
         </Grid>
       </Grid>
 

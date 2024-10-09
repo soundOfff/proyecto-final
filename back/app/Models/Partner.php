@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -289,9 +288,9 @@ class Partner extends Model
             $dv = $this->dv ?: '-';
             $ruc = $this->ruc ?: '-';
             $mail = $this->mail ?: '-';
-            $relatedPersons = $this->relatedPartners->implode('merged_name', ', ');
+            $relatedPersons = $this->relatedPartners->implode('merged_name', " \n ");
 
-            $block->text("*Empresa:* {$this->company}\n *Industria:* {$industry}\n *Sección:* {$section}\n *Folio:* {$document}\n *Teléfono:* {$phone}\n *Mail:* {$mail}\n *Dirección:* {$address}\n *Ubicación:* {$place}\n *Personas Relacionadas:* {$relatedPersons}")->markdown();
+            $block->text("*Empresa:* {$this->company}\n *Industria:* {$industry}\n *Sección:* {$section}\n *Folio:* {$document}\n *Teléfono:* {$phone}\n *Mail:* {$mail}\n *Dirección:* {$address}\n *Ubicación:* {$place}\n\n *Personas Relacionadas:*\n {$relatedPersons}")->markdown();
             $block->field("*Código Postal:* {$zip}")->markdown();
             $block->field("*Número de rol:* {$rollNumber}")->markdown();
             $block->field("*DV:* {$dv}")->markdown();
@@ -313,7 +312,7 @@ class Partner extends Model
             $district = $this->jurisdiction ? ($this->jurisdiction->district ? $this->jurisdiction->district->name : '-') : '-';
             $jurisdiction = $this->jurisdiction ? $this->jurisdiction->name : '-';
             $place = "$country, $district, $jurisdiction";
-            $relatedPersons = $this->relatedPartners->implode('merged_name', ', ');
+            $relatedPersons = $this->relatedPartners->implode('merged_name', '\\n');
 
             $block->text("*Nombre:* {$this->name}\n *Número de identificación:* {$number}\n *Fecha De Nacimiento:* {$birthDate}\n *Fecha De Expedición:* {$expeditionDate}\n *Nacionalidad:* {$nationalityName}\n *Lugar de Nacimiento:* {$birthPlace}\n *Tipo de Identificación:* {$idType}\n *Número de Identificación: * {$idNumber}\n *Personas Relacionadas: * {$relatedPersons}")->markdown();
             $block->field("*Estado Civil:* {$civilStatus}")->markdown();

@@ -3,19 +3,9 @@
 import MDButton from "/components/MDButton";
 import SlackIcon from "/assets/icons/slack-icon";
 
-export default function SlackButton({
-  onClick,
-  label = "Enviar Notificación",
-  ...rest
-}) {
+export default function SlackButton({ onClick, label = "Compartir", ...rest }) {
   return (
-    <MDButton
-      color="dark"
-      variant="gradient"
-      size="small"
-      onClick={onClick}
-      {...rest}
-    >
+    <MDButton color="dark" variant="gradient" onClick={onClick} {...rest}>
       <SlackIcon marginRight="10px" />
       {label}
     </MDButton>

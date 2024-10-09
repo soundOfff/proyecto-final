@@ -20,9 +20,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import { destroy } from "/actions/projects";
 import { generate } from "/actions/documents";
 import DeleteRow from "/components/DeleteRow";
-import SlackButton from "/components/SlackButton";
-import useSlackShare from "/hooks/useSlackShare";
-import SlackShare from "/components/ModalContent/SlackShare";
+import SlackShare from "/components/SlackShare";
 
 function DocumentLink({ url }) {
   return (
@@ -132,9 +130,6 @@ export default function Header() {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-  const { openSlackShareModal, setOpenSlackShareModal } = useSlackShare({
-    model: project,
-  });
 
   const handleProjectDelete = () => {
     handleDelete(project.id);
@@ -287,21 +282,7 @@ export default function Header() {
             >
               Generar Poder
             </MDButton>
-            <SlackButton
-              label="Compartir"
-              onClick={() => {
-                setOpenSlackShareModal(true);
-              }}
-              sx={{ height: "40px", width: "200px" }}
-            />
-            <SlackShare
-              open={openSlackShareModal}
-              onClose={() => {
-                setOpenSlackShareModal(false);
-              }}
-              modelId={project.id}
-              modelType="Project"
-            />
+            <SlackShare modelId={project.id} modelType="Project" />
             <Link
               href={{
                 pathname: `/projects/${project.id}/edit`,

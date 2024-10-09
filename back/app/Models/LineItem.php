@@ -38,9 +38,15 @@ class LineItem extends Model
         return $this->belongsTo(LineItemType::class, 'line_item_type_id');
     }
 
+    public function getSubtotal(): float
+    {
+        return $this->quantity * $this->rate;
+    }
+
     public function getTotalAmount(): float
     {
         $taxAmount = $this->taxes->sum('rate');
-        return $this->quantity * $this->rate * (1 + ($taxAmount / 100));
+
+        return $this->getSubtotal() * (1 + ($taxAmount / 100));
     }
 }

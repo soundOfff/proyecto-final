@@ -10,6 +10,8 @@ import { useItemTotals } from "/hooks/useItemTotals";
 import { toProject } from "/actions/proposals";
 import { ACCEPTED } from "/utils/constants/proposalStatuses";
 import usePrint from "/hooks/usePrint";
+import SlackShare from "/components/SlackShare";
+import { wrap } from "regenerator-runtime";
 
 export default function Footer({ proposal }) {
   const router = useRouter();
@@ -111,9 +113,8 @@ export default function Footer({ proposal }) {
         <Grid item xs={12} lg={5}></Grid>
         <Grid item xs={12} lg={7}>
           <MDBox
-            width="100%"
-            height={{ xs: "auto", md: "100%" }}
             display="flex"
+            height={{ xs: "auto", md: "100%" }}
             justifyContent={{ xs: "flex-start", md: "flex-end" }}
             alignItems="flex-end"
             mt={{ xs: 2, md: 0 }}
@@ -136,6 +137,11 @@ export default function Footer({ proposal }) {
                 Convertir a Caso
               </MDButton>
             )}
+            <SlackShare
+              modelId={proposal.id}
+              modelType="Proposal"
+              boxProps={{ displayPrint: "none", mr: 2 }}
+            />
             <MDButton
               variant="gradient"
               color="dark"

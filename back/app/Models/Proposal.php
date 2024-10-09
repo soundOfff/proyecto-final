@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 
 class Proposal extends Model
 {
-    static $SPANISH_CLASS_NAME = "proforma";
-    
+    public static $SPANISH_CLASS_NAME = 'proforma';
+
     protected $fillable = [
         'id',
         'estimate_id',
@@ -60,7 +62,7 @@ class Proposal extends Model
         'created_at',
     ];
 
-    public const PROPOSABLE_CUSTOMER = "customer";
+    public const PROPOSABLE_CUSTOMER = 'customer';
 
     public function proposable(): MorphTo
     {
@@ -130,5 +132,42 @@ class Proposal extends Model
     public function lineItems(): MorphMany
     {
         return $this->morphMany(LineItem::class, 'line_itemable');
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $number = $this->id ?: '-';
+        $statusName = $this->status ? $this->status->label : '-';
+        $relatedName = $this->proposable_type === 'customer' && $this->proposable_id
+            ? $this->proposable->merged_name
+            : '-';
+        $address = $this->address ?: '-';
+        $city = $this->city ?: '-';
+        $state = $this->state ?: '-';
+        $country = $this->country ? $this->country->short_name : '-';
+        $fullAddress = "$address, $city, $state, $country";
+        $phoneNumber = $this->phone ?: '-';
+        $date = $this->date ? Carbon::parse($this->date)->format('Y-m-d') : '-';
+        $openTill = $this->open_till ? Carbon::parse($this->open_till)->format('Y-m-d') : '-';
+
+        $items = $this->lineItems->map(function ($item) {
+            $amount = $item->getSubtotal();
+
+            return "$item->description: $$amount";
+        })->implode(" \n ");
+
+        $totalTax = $this->total_tax ?: '$0.00';
+        $adjustment = $this->adjustment ?: '$0.00';
+        $discount = $this->discount_total ?: '$0.00';
+        $subtotal = $this->subtotal ?: '$0.00';
+        $total = $this->total ?: '$0.00';
+
+        $block->text("*Dirección:* $fullAddress\n\n *Items*\n$items\n\n *Ajuste:* $$adjustment\n *Descuento:* $$discount\n *Impuestos*: $$totalTax\n *Subtotal:* $$subtotal \n *Total:* $$total")->markdown();
+        $block->field("*Número:* $number")->markdown();
+        $block->field("*Estado:* $statusName")->markdown();
+        $block->field("*Para:* $relatedName")->markdown();
+        $block->field("*Teléfono:* $phoneNumber")->markdown();
+        $block->field("*Fecha:* $date")->markdown();
+        $block->field("*Válido Hasta:* $openTill")->markdown();
     }
 }

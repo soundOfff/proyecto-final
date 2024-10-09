@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 
 class Estimate extends Model
 {
@@ -139,5 +141,45 @@ class Estimate extends Model
     public function lineItems(): MorphMany
     {
         return $this->morphMany(LineItem::class, 'line_itemable');
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $number = $this->number ?: '-';
+        $statusName = $this->status ? $this->status->label : '-';
+        $partnerName = $this->partner ? $this->partner->merged_name : '-';
+        $partnerBillingStreet = $this->partner ? $this->partner->billing_street ?? '-' : '-';
+        $partnerBillingCity = $this->partner ? $this->partner->billing_city ?? '-' : '-';
+        $partnerBillingState = $this->partner ? $this->partner->billing_state ?? '-' : '-';
+        $partnerBillingCountry = $this->partner ? ($this->partner->billingCountry ? $this->partner->billingCountry->name : '-') : '-';
+        $partnerPhoneNumber = $this->partner ? $this->partner->phone_number ?? '-' : '-';
+        $date = $this->date ? Carbon::parse($this->date)->format('Y-m-d') : '-';
+        $expiryDate = $this->expiry_date ? Carbon::parse($this->expiry_date)->format('Y-m-d') : '-';
+        $projectName = $this->project ? $this->project->name : '-';
+        $fullAddress = "$partnerBillingStreet, $partnerBillingCity, $partnerBillingState, $partnerBillingCountry";
+        $notes = $this->client_note ?: '-';
+        $terms = $this->terms ?: '-';
+
+        $items = $this->lineItems->map(function ($item) {
+            $amount = $item->getSubtotal();
+
+            return "$item->description: $$amount";
+        })->implode(" \n ");
+
+        $totalTax = $this->total_tax ?: '$0.00';
+        $adjustment = $this->adjustment ?: '$0.00';
+        $discount = $this->discount_total ?: '$0.00';
+        $subtotal = $this->subtotal ?: '$0.00';
+        $total = $this->total ?: '$0.00';
+
+        $block->text("*Dirección:* $fullAddress\n *Caso:* $projectName\n\n *Items*\n$items\n\n *Ajuste:* $$adjustment\n *Descuento:* $$discount\n *Impuestos*: $$totalTax\n *Subtotal:* $$subtotal \n *Total:* $$total")->markdown();
+        $block->field("*Número:* $number")->markdown();
+        $block->field("*Estado:* $statusName")->markdown();
+        $block->field("*Cliente:* $partnerName")->markdown();
+        $block->field("*Teléfono:* $partnerPhoneNumber")->markdown();
+        $block->field("*Fecha:* $date")->markdown();
+        $block->field("*Vencimiento:* $expiryDate")->markdown();
+        $block->field("*Notas:* $notes")->markdown();
+        $block->field("*Términos y Condiciones:* $terms")->markdown();
     }
 }

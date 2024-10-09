@@ -8,6 +8,7 @@ import numberFormat from "/utils/numberFormat";
 import { toInvoice } from "/actions/estimates";
 import { useItemTotals } from "/hooks/useItemTotals";
 import usePrint from "/hooks/usePrint";
+import SlackShare from "/components/SlackShare";
 
 export default function Footer({ estimate }) {
   const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
@@ -121,6 +122,11 @@ export default function Footer({ estimate }) {
                 Convertir a Factura
               </MDButton>
             )}
+            <SlackShare
+              modelId={estimate.id}
+              modelType="Estimate"
+              boxProps={{ displayPrint: "none", mr: 2 }}
+            />
             <MDButton
               variant="gradient"
               color="dark"

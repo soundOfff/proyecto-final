@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Notifications\Slack\SlackRoute;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\Traits\CausesActivity;
@@ -141,5 +142,20 @@ class Staff extends Authenticatable
     public function toNotify()
     {
         return $this->belongsToMany(Process::class, 'process_staff_to_notify', 'staff_id', 'process_id');
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $name = $this->name ?: '-';
+        $email = $this->email ?: '-';
+        $lastIp = $this->last_ip ?: '-';
+        $lastLogin = $this->last_login ?: '-';
+        $createdAt = $this->created_at ?: '-';
+
+        $block->text("*Nombre:* $name")->markdown();
+        $block->field("*Mail:* $email")->markdown();
+        $block->field("*Último IP:* $lastIp")->markdown();
+        $block->field("*Fecha Último Login:* $lastLogin")->markdown();
+        $block->field("*Fecha de Creación:* $createdAt")->markdown();
     }
 }

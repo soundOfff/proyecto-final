@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 
 class Expense extends Model
 {
@@ -101,5 +103,24 @@ class Expense extends Model
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function getSlackNotificationBlocks(SectionBlock $block): void
+    {
+        $name = $this->name ?: '-';
+        $amount = $this->amount ?: '-';
+        $date = $this->date ? Carbon::parse($this->date)->format('Y-m-d') : '-';
+        $categoryName = $this->category ? $this->category->name : '-';
+        $partnerName = $this->partner ? $this->partner->merged_name : '-';
+        $projectName = $this->project ? $this->project->name : '-';
+        $taskName = $this->task ? $this->task->name : '-';
+
+        $block->text("*Nombre:* $name")->markdown();
+        $block->field("*Costo:* $amount")->markdown();
+        $block->field("*Fecha:* $date")->markdown();
+        $block->field("*Categoría:* $categoryName")->markdown();
+        $block->field("*Cliente:* $partnerName")->markdown();
+        $block->field("*Caso:* $projectName")->markdown();
+        $block->field("*Tarea:* $taskName")->markdown();
     }
 }

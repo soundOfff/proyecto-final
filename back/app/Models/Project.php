@@ -187,9 +187,9 @@ class Project extends Model
         $process = $this->process ? $this->process->name : '-';
         $responsiblePersonName = $this->responsiblePerson ? $this->responsiblePerson->name : '-';
         $members = $this->members ? $this->members->implode('name', ', ') : '-';
-        $relatedPersons = $this->partners ? $this->partners->implode('mergedName', ', ') : '-';
+        $relatedPersons = $this->partners ? $this->partners->implode('mergedName', " \n ") : '-';
 
-        $block->text("*Nombre:* $this->name\n*Descripción:* $this->description\n*Cliente Facturable:* $billablePartnerName\n*Miembros:* $members\n*Personas Relacionadas:* $relatedPersons\n *Persona Responsable:* $responsiblePersonName\n")->markdown();
+        $block->text("*Nombre:* $this->name\n*Descripción:* $this->description\n*Cliente Facturable:* $billablePartnerName\n*Miembros:* $members\n\n*Personas Relacionadas:*\n $relatedPersons\n\n *Persona Responsable:* $responsiblePersonName\nf")->markdown();
         $block->field("*Fecha de inicio:* $startDate")->markdown();
         $block->field("*Fecha de finalización:* $deadline")->markdown();
         $block->field("*Tipo de facturación:* $billingType")->markdown();

@@ -292,11 +292,11 @@ class Task extends Model
         $dueDate = $this->due_date ? Carbon::parse($this->due_date)->format('Y-m-d') : '-';
         $priorityName = $this->priority ? $this->priority->name : '-';
         $statusName = $this->status ? $this->status->name : '-';
-        $checklistItems = $this->checklistItems->implode('description', ' | ');
-        $comments = $this->comments->implode('content', ' | ');
-        $assigneds = $this->assigneds->implode('name', ', ');
+        $checklistItems = $this->checklistItems->implode('description', " \n ");
+        $comments = $this->comments->implode('content', " \n ");
+        $assigneds = $this->assigneds->implode('name', " \n ");
 
-        $block->text("*Nombre:* $name\n*Descripción:* $description\n *Prioridad:* $priorityName\n *Estado:* $statusName\n *Items:* $checklistItems\n\n *Comentarios:* $comments\n\n")->markdown();
+        $block->text("*Nombre:* $name\n*Descripción:* $description\n *Prioridad:* $priorityName\n *Estado:* $statusName\n\n *Quehaceres:*\n $checklistItems\n\n *Comentarios:*\n $comments\n\n")->markdown();
         $block->field("*Fecha de inicio:* $startDate")->markdown();
         $block->field("*Fecha de finalización:* $dueDate")->markdown();
         $block->field("*Precio por hora:* $hourlyRate")->markdown();

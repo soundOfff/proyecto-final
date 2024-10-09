@@ -17,9 +17,9 @@ export async function show(id, params) {
   const url = new URL(`${process.env.API_URL}/expenses/${id}`);
   url.search = new URLSearchParams(params);
 
-  const { data: partner } = await customFetch(url, { cache: "no-store" });
+  const { data: expense } = await customFetch(url, { cache: "no-store" });
 
-  return partner;
+  return expense;
 }
 
 export async function update(id, data) {

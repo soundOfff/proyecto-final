@@ -9,6 +9,7 @@ import numberFormat from "/utils/numberFormat";
 import { useItemTotals } from "/hooks/useItemTotals";
 import { useState } from "react";
 import ModalContent from "./modal/content";
+import SlackShare from "/components/SlackShare";
 
 export default function Footer({ creditNote }) {
   const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
@@ -136,6 +137,11 @@ export default function Footer({ creditNote }) {
                 Aplicar a Factura
               </MDButton>
             )}
+            <SlackShare
+              modelId={creditNote?.id}
+              modelType="CreditNote"
+              boxProps={{ displayPrint: "none", mr: 2 }}
+            />
             <MDButton
               variant="gradient"
               color="dark"

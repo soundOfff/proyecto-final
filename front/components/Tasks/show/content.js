@@ -28,12 +28,33 @@ import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
 import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
-import { ACTION_REQUEST } from "/utils/constants/actionTypes";
 
 import SlackButton from "/components/SlackButton";
 import SlackShare from "/components/ModalContent/SlackShare";
 import useSlackShare from "/hooks/useSlackShare";
-import { ACTION_TYPES } from "../../../utils/constants/actionTypes";
+
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import GavelIcon from "@mui/icons-material/Gavel";
+import EmailIcon from "@mui/icons-material/Email";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+
+import {
+  ACTION_EXPENSE,
+  ACTION_REQUEST,
+  ACTION_EMAIL,
+} from "/utils/constants/actionTypes";
+
+const renderIcon = (type) => {
+  if (type === ACTION_EXPENSE) {
+    return <ReceiptIcon fontSize="medium" />;
+  } else if (type === ACTION_REQUEST) {
+    return <GavelIcon fontSize="medium" />;
+  } else if (type === ACTION_EMAIL) {
+    return <EmailIcon fontSize="medium" />;
+  } else {
+    return <TextFieldsIcon fontSize="medium" />;
+  }
+};
 
 export default function Content({ selectedFork }) {
   const {
@@ -94,7 +115,7 @@ export default function Content({ selectedFork }) {
   const handleSaveItems = async () => {
     await update(task.id, { checklist_items: getFilteredItems() });
   };
-  console.log(task.procedure.actions);
+
   const handleDeleteItem = async (id) => {
     const newItems = items.filter((item) => item.id !== id); // Server update
     removeItem(id); // UI update
@@ -441,25 +462,40 @@ export default function Content({ selectedFork }) {
           />
         </MDBox>
         <MDBox py={2} display="flex" flexDirection="column">
-          <MDTypography variant="body2" fontWeight="bold">
+          <MDTypography variant="body2" fontWeight="bold" mb={2}>
             Lista de acciones disponibles
           </MDTypography>
-          <MDBox display="flex" flexDirection="row" gap={2} pt={2}>
+          <Grid container xs={12} spacing={5}>
             {task.procedure?.actions &&
               task.procedure.actions.map((action) => (
-                <MDButton
-                  key={action.id}
-                  variant="gradient"
-                  color="dark"
-                  size="small"
-                  onClick={() => {
-                    console.log(action);
-                  }}
-                >
-                  {action.type.label}
-                </MDButton>
+                <Grid item xs={6} sm={3}>
+                  <MDButton
+                    key={action.id}
+                    variant="gradient"
+                    color="dark"
+                    size="small"
+                    onClick={() => {
+                      console.log(action);
+                    }}
+                    sx={{
+                      height: "40px",
+                      width: "150px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      {action.type.label}
+                      {renderIcon(action.type.id)}
+                    </span>
+                  </MDButton>
+                </Grid>
               ))}
-          </MDBox>
+          </Grid>
         </MDBox>
       </MDBox>
     </Grid>

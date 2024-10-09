@@ -5,4 +5,7 @@ export const ACTION_TYPES = {
   4: "Campo requerido",
 };
 
+export const ACTION_EXPENSE = 1;
 export const ACTION_REQUEST = 2;
+export const ACTION_EMAIL = 3;
+export const ACTION_REQUIRED = 4;

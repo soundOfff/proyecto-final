@@ -21,7 +21,7 @@ import { getSelect as getInvoiceSelect } from "/actions/invoices";
 import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getAll as getAllDependencies } from "/actions/tasks";
-import { show as getProject } from "../../../actions/projects";
+import { show as getProject } from "/actions/projects";
 
 export default function TaskForm({
   priorities,

@@ -18,7 +18,6 @@ import FormField from "/pagesComponents/ecommerce/products/new-product/component
 
 import Link from "next/link";
 import { useState } from "react";
-import { parseEditorState } from "/utils/parseEditorState";
 import { useSession } from "next-auth/react";
 import { useDataProvider } from "/providers/DataProvider";
 
@@ -66,6 +65,7 @@ export default function Content({ selectedFork }) {
   } = useDataProvider();
 
   const [note, setNote] = useState("");
+  const [description, setDescription] = useState(task.description);
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
   const [selectedProcess, setSelectedProcess] = useState(selectedFork);
   const [isAttachingTasks, setIsAttachingTasks] = useState(false);
@@ -402,6 +402,18 @@ export default function Content({ selectedFork }) {
             <Divider />
           </>
         )}
+        <MDBox>
+          <FormField
+            name="description"
+            label="Descripción"
+            placeholder="Ej. Se debe realizar la limpieza de la oficina"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            onBlur={() => update(task.id, { description })}
+            multiline
+            rows={4}
+          />
+        </MDBox>
         <MDBox py={2}>
           <MDBox display="flex" flexDirection="column">
             <MDTypography variant="body2" fontWeight="bold">

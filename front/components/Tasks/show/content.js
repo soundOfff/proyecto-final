@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  Autocomplete,
-  Card,
-  CircularProgress,
-  Divider,
-  Grid,
-} from "@mui/material";
+import { CircularProgress, Divider, Grid } from "@mui/material";
+
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import MDProgress from "/components/MDProgress";
-import MDInput from "/components/MDInput";
 import MDSnackbar from "/components/MDSnackbar";
-import ItemList from "./itemList";
+import ItemList from "./item-list";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 
 import Link from "next/link";
@@ -23,35 +16,14 @@ import { useDataProvider } from "/providers/DataProvider";
 
 import { DONE_STATUS_ID, DONE_STATUS } from "/utils/constants/taskStatuses";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
-import useTodo from "/hooks/useTodo";
 import { attachTasks } from "/actions/projects";
 import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
 
 import SlackShare from "/components/SlackShare";
 
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import GavelIcon from "@mui/icons-material/Gavel";
-import EmailIcon from "@mui/icons-material/Email";
-import TextFieldsIcon from "@mui/icons-material/TextFields";
-
-import {
-  ACTION_EXPENSE,
-  ACTION_REQUEST,
-  ACTION_EMAIL,
-} from "/utils/constants/actionTypes";
-
-const renderIcon = (type) => {
-  if (type === ACTION_EXPENSE) {
-    return <ReceiptIcon fontSize="medium" />;
-  } else if (type === ACTION_REQUEST) {
-    return <GavelIcon fontSize="medium" />;
-  } else if (type === ACTION_EMAIL) {
-    return <EmailIcon fontSize="medium" />;
-  } else {
-    return <TextFieldsIcon fontSize="medium" />;
-  }
-};
+import ActionList from "./action-list";
+import NextStepForm from "./next-step-form";
 
 export default function Content({ selectedFork }) {
   const {
@@ -67,19 +39,8 @@ export default function Content({ selectedFork }) {
   const [note, setNote] = useState("");
   const [description, setDescription] = useState(task.description);
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
-  const [selectedProcess, setSelectedProcess] = useState(selectedFork);
-  const [isAttachingTasks, setIsAttachingTasks] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [createdSB, setCreatedSB] = useState(false);
-  const {
-    items,
-    progress,
-    getFilteredItems,
-    createItem,
-    toggleChecked,
-    removeItem,
-    editItem,
-  } = useTodo(task.checklistItems);
 
   const { data: session } = useSession();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -91,44 +52,15 @@ export default function Content({ selectedFork }) {
     setNote("");
   };
 
-  const handleSelectNextStep = async () => {
-    setIsAttachingTasks(true);
-    try {
-      await attachTasks({
-        projectId: task.taskable.id,
-        processId: selectedProcess.id,
-        staffId: session.staff.id,
-      });
-      setCreatedSB(true);
-    } catch (error) {
-      setErrorSB(true);
-    }
-    setIsAttachingTasks(false);
-  };
-
-  const handleSaveItems = async () => {
-    await update(task.id, { checklist_items: getFilteredItems() });
-  };
-
-  const handleDeleteItem = async (id) => {
-    const newItems = items.filter((item) => item.id !== id); // Server update
-    removeItem(id); // UI update
-    await update(task.id, { checklist_items: newItems });
-  };
-
-  const showNextStepForm = () => {
-    if (!task) return false;
-
-    return (
-      task.isFinalTask &&
-      task.status.name === DONE_STATUS &&
-      task.procedure?.process?.forks?.length !== 0
-    );
-  };
-
   const handleDeleteTask = async () => {
     setShowConfirmModal(true);
   };
+
+  const shouldShowNextStepForm =
+    task &&
+    task.isFinalTask &&
+    task.status.name === DONE_STATUS &&
+    task.procedure?.process?.forks?.length !== 0;
 
   return (
     <Grid item xs={8} wrap="nowrap">
@@ -317,95 +249,17 @@ export default function Content({ selectedFork }) {
             </MDBox>
           </MDBox>
         </MDBox>
-
         <Divider />
-
-        {showNextStepForm() && (
-          <>
-            <MDTypography variant="body2" fontWeight="bold">
-              Elegir siguiente paso
-            </MDTypography>
-            <MDBox
-              py={2}
-              display="flex"
-              gap={2}
-              flexDirection="row"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Grid
-                container
-                xs={12}
-                spacing={3}
-                display="flex"
-                flexWrap="wrap"
-                width="100%"
-                gap={1}
-              >
-                <Grid item xs={12} sm={4}>
-                  <Autocomplete
-                    value={task?.procedure?.process}
-                    disabled
-                    options={[]}
-                    getOptionLabel={(option) => option.name}
-                    renderInput={(params) => (
-                      <MDInput
-                        {...params}
-                        variant="standard"
-                        label={"Paso anterior"}
-                        fullWidth
-                        InputLabelProps={{ shrink: true }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                  <Autocomplete
-                    value={selectedProcess}
-                    onChange={(e, value) => {
-                      setSelectedProcess(value);
-                    }}
-                    options={task?.procedure?.process?.forks || []}
-                    getOptionLabel={(option) => option.name}
-                    renderInput={(params) => (
-                      <MDInput
-                        {...params}
-                        variant="standard"
-                        label={"Siguiente paso"}
-                        fullWidth
-                        InputLabelProps={{ shrink: true }}
-                      />
-                    )}
-                  />
-                  {selectedProcess && selectedProcess.realStepQuantity == 0 && (
-                    <MDTypography variant="caption" color="error">
-                      Este paso no tiene procedimientos asociados
-                    </MDTypography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <MDButton
-                    variant="gradient"
-                    color="dark"
-                    disabled={
-                      !selectedProcess ||
-                      isAttachingTasks ||
-                      selectedProcess.realStepQuantity == 0
-                    }
-                    onClick={handleSelectNextStep}
-                  >
-                    Seleccionar paso
-                  </MDButton>
-                </Grid>
-              </Grid>
-            </MDBox>
-            <Divider />
-          </>
+        {shouldShowNextStepForm && (
+          <NextStepForm selectedFork={selectedFork} task={task} />
         )}
-        <MDBox>
+        <MDBox py={2} display="flex" flexDirection="column">
+          <MDTypography variant="body2" fontWeight="bold" pb={2}>
+            Descripción
+          </MDTypography>
           <FormField
             name="description"
-            label="Descripción"
+            label=""
             placeholder="Ej. Se debe realizar la limpieza de la oficina"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -414,84 +268,10 @@ export default function Content({ selectedFork }) {
             rows={4}
           />
         </MDBox>
-        <MDBox py={2}>
-          <MDBox display="flex" flexDirection="column">
-            <MDTypography variant="body2" fontWeight="bold">
-              Lista de Quehaceres
-            </MDTypography>
-            <MDBox sx={{ width: "80%", my: 1 }}>
-              {progress > 0 && (
-                <MDBox
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexGrow: "1",
-                  }}
-                >
-                  <MDBox width="100%" mt={0.25}>
-                    <MDProgress
-                      variant="gradient"
-                      color="success"
-                      value={progress}
-                    />
-                  </MDBox>
-                  <MDBox sx={{ minWidth: 40, mx: 2 }}>
-                    <MDTypography
-                      variant="body2"
-                      color="text.secondary"
-                    >{`${Math.round(progress)}%`}</MDTypography>
-                  </MDBox>
-                </MDBox>
-              )}
-            </MDBox>
-          </MDBox>
-          <ItemList
-            items={items}
-            taskId={task.id}
-            createItem={createItem}
-            editItem={editItem}
-            toggleChecked={toggleChecked}
-            saveItems={handleSaveItems}
-            removeItem={handleDeleteItem}
-          />
-        </MDBox>
-        {task.procedure?.actions && task.procedure.actions.length > 0 && (
-          <MDBox py={2} display="flex" flexDirection="column">
-            <MDTypography variant="body2" fontWeight="bold" mb={2}>
-              Lista de acciones disponibles
-            </MDTypography>
-            <Grid container xs={12} spacing={5}>
-              {task.procedure.actions.map((action, index) => (
-                <Grid item xs={6} sm={3} key={index}>
-                  <MDButton
-                    key={action.id}
-                    variant="gradient"
-                    color="dark"
-                    size="small"
-                    onClick={() => {
-                      console.log(action);
-                    }}
-                    sx={{
-                      height: "40px",
-                      width: "150px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
-                      {action.type.label}
-                      {renderIcon(action.type.id)}
-                    </span>
-                  </MDButton>
-                </Grid>
-              ))}
-            </Grid>
-          </MDBox>
-        )}
+        <Divider />
+        <ItemList taskId={task.id} checklistItems={task.checklistItems} />
+        <Divider />
+        <ActionList actions={task.procedure.actions} />
       </MDBox>
     </Grid>
   );

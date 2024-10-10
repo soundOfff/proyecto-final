@@ -6,7 +6,7 @@ import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDTypography from "/components/MDTypography";
 import MDAvatar from "/components/MDAvatar";
-import { Link, Switch, Tooltip } from "@mui/material";
+import { Link, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import DeleteRow from "/components/DeleteRow";

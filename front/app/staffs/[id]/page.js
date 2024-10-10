@@ -1,13 +1,14 @@
 import MDBox from "/components/MDBox";
-import Form from "/app/staffs/components/form";
+import Form from "/app/staffs/components/Form/form";
 import { Card, Grid } from "@mui/material";
-import Stats from "../components/stats";
+import Stats from "../components/Table/stats";
 import { show, stats as getStaffStats } from "/actions/staffs";
 import Table from "./components/table";
 
 export default async function Show({ params: { id } }) {
   const staff = await show(id, { include: "projects.status" });
   const staffStats = await getStaffStats(id);
+
   return (
     <MDBox
       mb={3}

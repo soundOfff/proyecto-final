@@ -280,8 +280,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/partner-sections', [PartnerSectionController::class, 'index']);
 
-    Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
-
     Route::get('/notes', [NoteController::class, 'index']);
     Route::post('/notes', [NoteController::class, 'store']);
     Route::delete('/notes/{note}', [NoteController::class, 'destroy']);
@@ -294,8 +292,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
 
-    Route::post('/documents', [DocumentController::class, 'generate']);
-
     Route::post('/logout', [LoginController::class, 'logout']);
 });
 
@@ -304,5 +300,6 @@ Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
+Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
 Route::get('/tasks/{task}', [TaskController::class, 'show']);

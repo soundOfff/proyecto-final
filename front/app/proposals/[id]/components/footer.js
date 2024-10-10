@@ -11,7 +11,6 @@ import { toProject } from "/actions/proposals";
 import { ACCEPTED } from "/utils/constants/proposalStatuses";
 import usePrint from "/hooks/usePrint";
 import SlackShare from "/components/SlackShare";
-import { wrap } from "regenerator-runtime";
 
 export default function Footer({ proposal }) {
   const router = useRouter();

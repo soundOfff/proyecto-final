@@ -9,7 +9,6 @@ use App\Models\Expense;
 use App\Models\Task;
 use App\Services\DocassembleService;
 use App\Services\FileService;
-use Illuminate\Support\Facades\Log;
 
 class TaskActions
 {
@@ -60,7 +59,7 @@ class TaskActions
     {
         $fileService = new FileService();
         $docassembleService = new DocassembleService($fileService);
-        $docassembleService->createDocument();
+        // $docassembleService->createDocument();
     }
 
     public static function handleMail(Task $task)

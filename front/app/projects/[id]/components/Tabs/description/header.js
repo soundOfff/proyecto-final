@@ -242,86 +242,102 @@ export default function Header() {
           </MDTypography>
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          md={6}
-          display="flex"
-          flexWrap="wrap"
-          flexDirection="row"
-          justifyContent={{ xs: "center", md: "flex-end" }}
-        >
-          <MDBox mb={2}>
-            <MDBadge
-              variant="contained"
-              color="info"
-              badgeContent={`Expediente #${project.expedient ?? ""}`}
-              container
-              sx={{ height: "40px", ml: 2 }}
-            />
-            <MDBadge
-              variant="contained"
-              badgeContent={project.status.label}
-              color={setColor(project.status.label)}
-              container
-              sx={{ height: "40px", ml: 2 }}
-            />
-          </MDBox>
-          <MDBox display="flex" justifyContent="center">
-            <MDButton
-              variant="gradient"
-              color="light"
-              size="small"
-              onClick={handleGenerateDocument}
-              sx={{
-                height: "40px",
-                width: "130px",
-                ml: 2,
-                mr: 2,
-              }}
-            >
-              Generar Poder
-            </MDButton>
-            <SlackShare modelId={project.id} modelType="Project" />
-            <Link
-              href={{
-                pathname: `/projects/${project.id}/edit`,
-                query: { source: `/projects/${project.id}?tab=description` },
-              }}
-            >
-              <MDButton
-                variant="gradient"
-                color="dark"
-                size="small"
-                sx={{ height: "40px", width: "130px", ml: 2 }}
+        <Grid item xs={12} md={6} display="flex">
+          <Grid container>
+            <Grid item xs={12}>
+              <MDBox
+                display="flex"
+                justifyContent={{ xs: "center", md: "end" }}
+                mb={{ xs: 2 }}
               >
-                Editar
-                <EditIcon sx={{ ml: 1 }} />
-              </MDButton>
-            </Link>
-            <MDButton
-              variant="gradient"
-              color="error"
-              size="small"
-              onClick={handleProjectDelete}
-              sx={{ height: "40px", width: "130px", ml: 2 }}
-            >
-              Eliminar
-              <DeleteIcon sx={{ ml: 1 }} />
-            </MDButton>
-            {project.documentUrl && (
-              <Link href={project.documentUrl} target="blank">
+                <MDBadge
+                  variant="contained"
+                  color="info"
+                  badgeContent={`Expediente #${project.expedient ?? ""}`}
+                  container
+                  sx={{ height: "40px", ml: 2 }}
+                />
+                <MDBadge
+                  variant="contained"
+                  badgeContent={project.status.label}
+                  color={setColor(project.status.label)}
+                  container
+                  sx={{ height: "40px", ml: 2 }}
+                />
+              </MDBox>
+            </Grid>
+
+            <Grid item xs={12}>
+              <MDBox
+                display="flex"
+                justifyContent={{ xs: "center", md: "end" }}
+                flexWrap="wrap"
+                gap={2}
+              >
                 <MDButton
                   variant="gradient"
-                  color="success"
+                  color="light"
                   size="small"
-                  sx={{ height: "40px", width: "130px", ml: 2 }}
+                  onClick={handleGenerateDocument}
+                  sx={{
+                    height: "40px",
+                    width: "130px",
+                  }}
                 >
-                  Ver documento
+                  Generar Poder
                 </MDButton>
-              </Link>
-            )}
-          </MDBox>
+
+                <SlackShare
+                  modelId={project.id}
+                  modelType="Project"
+                  buttonProps={{ sx: { width: "130px" } }}
+                />
+
+                <Link
+                  href={{
+                    pathname: `/projects/${project.id}/edit`,
+                    query: {
+                      source: `/projects/${project.id}?tab=description`,
+                    },
+                  }}
+                >
+                  <MDButton
+                    variant="gradient"
+                    color="dark"
+                    size="small"
+                    sx={{ height: "40px", width: "130px" }}
+                  >
+                    <EditIcon sx={{ mr: 1 }} />
+                    Editar
+                  </MDButton>
+                </Link>
+
+                <MDButton
+                  variant="gradient"
+                  color="error"
+                  size="small"
+                  onClick={handleProjectDelete}
+                  sx={{ height: "40px", width: "130px" }}
+                >
+                  <DeleteIcon sx={{ mr: 1 }} />
+                  Eliminar
+                </MDButton>
+
+                {project.documentUrl && (
+                  <Link href={project.documentUrl} target="blank">
+                    <MDButton
+                      variant="gradient"
+                      color="success"
+                      size="small"
+                      sx={{ height: "40px", width: "130px" }}
+                    >
+                      Ver documento
+                    </MDButton>
+                  </Link>
+                )}
+              </MDBox>
+            </Grid>
+          </Grid>
         </Grid>
         <DeleteRow
           {...{

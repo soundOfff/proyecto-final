@@ -1,4 +1,5 @@
 "use client";
+
 import { useMaterialUIController } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
@@ -13,6 +14,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import moment from "moment";
 
 import { destroy } from "/actions/staffs";
+import IsActiveField from "./is-active-field";
 
 export default function Table({ rows, meta }) {
   const [controller] = useMaterialUIController();
@@ -96,9 +98,8 @@ export default function Table({ rows, meta }) {
       Header: "Activo",
       accessor: "active",
       disableSortBy: true,
-      Cell: ({ value }) => {
-        const label = { inputProps: { "aria-label": "Is active switch" } };
-        return <Switch {...label} checked={Boolean(value)} />;
+      Cell: ({ row }) => {
+        return <IsActiveField staff={row.original} />;
       },
     },
     {

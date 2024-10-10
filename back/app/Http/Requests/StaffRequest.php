@@ -22,14 +22,14 @@ class StaffRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'first_name' => 'sometimes|string',
+            'last_name' => 'sometimes|string',
             'password' => 'nullable|string',
             'active' => 'nullable|boolean',
-            'admin' => 'required|boolean',
+            'admin' => 'sometimes|boolean',
             'default_language' => 'nullable|string',
             'direction' => 'nullable|string',
-            'email' => 'required|email',
+            'email' => 'sometimes|email',
             'email_signature' => 'nullable|string',
             'phone_number' => 'nullable|string',
             'hourly_rate' => 'nullable|numeric',

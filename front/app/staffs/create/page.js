@@ -1,6 +1,6 @@
 import React from "react";
 import MDBox from "/components/MDBox";
-import Form from "/app/staffs/components/form";
+import Form from "/app/staffs/components/Form/form";
 import { Card, Grid } from "@mui/material";
 
 export default async function Create() {

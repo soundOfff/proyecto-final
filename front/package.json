@@ -51,6 +51,7 @@
     "jsvectormap": "1.5.3",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.45",
+    "mui-daterange-picker": "^1.0.5",
     "next": "^14.0.1",
     "next-auth": "^4.24.3",
     "next-compose-plugins": "^2.2.1",

@@ -46,6 +46,7 @@ export default function Table({
   dependencyTasks,
   partners,
   actionsData,
+  filters,
   tableFields,
   currentTaskId,
   notificationPriorities = [],
@@ -112,6 +113,7 @@ export default function Table({
     getAll({
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
+      ...filters,
       sort: "milestone_order",
       include: ["assigneds", "tags", "status", "dependencies", "author"],
     }).then((data) => {
@@ -488,7 +490,7 @@ export default function Table({
           noEndBorder
           isTaskTable={true}
           entriesPerPage={{
-            defaultValue: 50,
+            defaultValue: 10,
             entries: [5, 10, 15, 20, 25, 50],
           }}
           canMultiSelect={true}

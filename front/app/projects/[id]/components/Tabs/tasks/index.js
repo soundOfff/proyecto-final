@@ -5,6 +5,8 @@ import { Grid } from "@mui/material";
 import Table from "/components/Tasks/table-client";
 import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
+import Filters from "./components/filters";
+import { useSearchParams } from "next/navigation";
 
 export default function Tasks() {
   const {
@@ -22,31 +24,42 @@ export default function Tasks() {
     tableFields,
   } = useDataProvider();
 
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const dateFrom = searchParams.get("dateFrom");
+  const dateTo = searchParams.get("dateTo");
+
+  const taskDateFilter =
+    dateFrom || dateTo ? { "filter[date]": `${dateFrom},${dateTo}` } : null;
+  const taskSearchFilter = search ? { "filter[search]": search } : null;
+
   return (
-    <MDBox>
-      <Stats />
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <MDBox py={1}>
-            <Table
-              {...{
-                statuses,
-                priorities,
-                staffs,
-                project,
-                repeats,
-                tagsData,
-                partners,
-                dependencyTasks,
-                taskableItems,
-                actionsData,
-                tableFields,
-                notificationPriorities,
-              }}
-            />
-          </MDBox>
-        </Grid>
+    <Grid container spacing={10}>
+      <Grid item xs={4}>
+        <Stats />
       </Grid>
-    </MDBox>
+      <Grid item xs={8}>
+        <Filters />
+      </Grid>
+      <Grid item xs={12} py={1} mt={4}>
+        <Table
+          {...{
+            statuses,
+            priorities,
+            staffs,
+            project,
+            repeats,
+            filters: { ...taskDateFilter, ...taskSearchFilter },
+            tagsData,
+            partners,
+            dependencyTasks,
+            taskableItems,
+            actionsData,
+            tableFields,
+            notificationPriorities,
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 }

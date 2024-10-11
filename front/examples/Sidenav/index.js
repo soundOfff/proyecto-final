@@ -27,7 +27,7 @@ import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
 
-import { BRANDFACTORS } from "/utils/constants/appNames";
+import { CRM_APP } from "/utils/constants/appNames";
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -331,27 +331,34 @@ function Sidenav({
           </MDBox>
           <Link href="/">
             <MDBox display="flex" alignItems="center">
-              {!miniSidenav && (
+              {!miniSidenav ? (
                 <>
-                  {brand && brand.src ? (
+                  {brand && brand.src && (
                     <Image
                       src={brand.src}
                       alt={brand.alt}
-                      width={miniSidenav ? 50 : 220}
-                      height={
-                        process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS
-                          ? 20
-                          : 30
-                      }
+                      width={300}
+                      height={120}
                     />
-                  ) : (
-                    brand
                   )}
                   <MDBox
                     width={!brandName && "100%"}
                     sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
                   ></MDBox>
                 </>
+              ) : (
+                <MDBox
+                  width="100%"
+                  sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
+                >
+                  <MDTypography
+                    variant="h6"
+                    color="text"
+                    sx={{ textTransform: "uppercase" }}
+                  >
+                    CRM APP
+                  </MDTypography>
+                </MDBox>
               )}
             </MDBox>
           </Link>

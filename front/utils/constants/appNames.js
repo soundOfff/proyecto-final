@@ -1,2 +1,1 @@
-export const BRANDFACTORS = "BrandFactors";
-export const VELO = "CRM APP";
+export const CRM_APP = "CRM-APP";

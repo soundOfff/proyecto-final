@@ -77,6 +77,10 @@ class TaskController extends Controller
                     AllowedFilter::exact('partner_id'),
                     AllowedFilter::exact('taskable_type'),
                     AllowedFilter::exact('taskable_id'),
+                    AllowedFilter::scope('search'),
+                    AllowedFilter::callback('date', function (Builder $query, $values) {
+                        $query->whereBetween('start_date', [$values[0], $values[1]]);
+                    }),
                     AllowedFilter::callback(
                         'staff_id',
                         function (Builder $query, $value) {

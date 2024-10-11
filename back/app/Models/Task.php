@@ -88,9 +88,9 @@ class Task extends Model
     protected function canChangeStatus(): Attribute
     {
         return new Attribute(
-            get: fn() => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
+            get: fn () => (($this->files->count() > 0 && $this->is_file_needed) || ! $this->is_file_needed)
                 && $this->requiredFields->every(
-                    fn(TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
+                    fn (TaskRequiredField $requiredField) => isset($this->taskable[$requiredField->field]) && $this->taskable instanceof Project
                 )
         );
     }
@@ -98,7 +98,7 @@ class Task extends Model
     protected function isBlocked(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->dependencies->contains(fn(self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+            get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
         );
     }
 
@@ -280,5 +280,15 @@ class Task extends Model
                 'load' => [],
             ],
         ];
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query
+                    ->where('name', 'like', "%$search%");
+            });
+        });
     }
 }

@@ -27,12 +27,22 @@ import MDButton from "/components/MDButton";
 import MDBadgeDot from "/components/MDBadgeDot";
 import PieChart from "/examples/Charts/PieChart";
 
-// Data
-import channelChartData from "/pagesComponents/dashboards/sales/components/ChannelsChart/data";
+let expensesData = {
+  labels: [],
+  datasets: {
+    label: "Payments",
+    backgroundColors: ["info", "primary", "dark", "secondary", "success"],
+    data: [],
+  },
+};
 
-// NextJS Material Dashboard 2 PRO contexts
+function ExpensesChart({ payments }) {
+  const labels = payments.map((pay) => pay.label);
+  const data = payments.map((pay) => pay.total);
 
-function ExpensesChart() {
+  expensesData.labels = labels;
+  expensesData.datasets.data = data;
+
   return (
     <Card sx={{ height: "100%" }}>
       <MDBox
@@ -43,7 +53,7 @@ function ExpensesChart() {
         px={2}
       >
         <MDTypography variant="h6">Formas de pago</MDTypography>
-        <Tooltip title="See traffic channels" placement="bottom" arrow>
+        <Tooltip title="Ver medios de pago" placement="bottom" arrow>
           <MDButton
             variant="outlined"
             color="secondary"
@@ -55,35 +65,32 @@ function ExpensesChart() {
           </MDButton>
         </Tooltip>
       </MDBox>
-      <MDBox mt={3}>
+      <MDBox mt={4}>
         <Grid container alignItems="center">
           <Grid item xs={7}>
-            <PieChart chart={channelChartData} height="12.5rem" />
+            <PieChart chart={expensesData} height="12.5rem" />
           </Grid>
           <Grid item xs={5}>
             <MDBox pr={1}>
-              <MDBox mb={1}>
-                <MDBadgeDot color="info" size="sm" badgeContent="Facebook" />
-              </MDBox>
-              <MDBox mb={1}>
-                <MDBadgeDot color="primary" size="sm" badgeContent="Direct" />
-              </MDBox>
-              <MDBox mb={1}>
-                <MDBadgeDot color="dark" size="sm" badgeContent="Organic" />
-              </MDBox>
-              <MDBox mb={1}>
-                <MDBadgeDot
-                  color="secondary"
-                  size="sm"
-                  badgeContent="Referral"
-                />
-              </MDBox>
+              {labels.map((label, index) => (
+                <MDBox key={index} display="flex" alignItems="center" mb={0.5}>
+                  <MDBadgeDot
+                    color={expensesData.datasets.backgroundColors[index]}
+                    size="sm"
+                  />
+                  <MDBox ml={1}>
+                    <MDTypography variant="caption" color="text">
+                      {label}
+                    </MDTypography>
+                  </MDBox>
+                </MDBox>
+              ))}
             </MDBox>
           </Grid>
         </Grid>
       </MDBox>
       <MDBox
-        pt={4}
+        pt={2}
         pb={2}
         px={2}
         display="flex"
@@ -92,8 +99,8 @@ function ExpensesChart() {
       >
         <MDBox width={{ xs: "100%", sm: "60%" }} lineHeight={1}>
           <MDTypography variant="button" color="text" fontWeight="light">
-            More than <strong>1,200,000</strong> sales are made using referral
-            marketing, and <strong>700,000</strong> are from social media.
+            Estos son los <strong>5</strong> Medios de pago más utilizados por
+            los clientes.
           </MDTypography>
         </MDBox>
         <MDBox
@@ -101,7 +108,7 @@ function ExpensesChart() {
           textAlign="right"
           mt={{ xs: 2, sm: "auto" }}
         >
-          <MDButton color="light">read more</MDButton>
+          <MDButton color="light">Ver mas</MDButton>
         </MDBox>
       </MDBox>
     </Card>

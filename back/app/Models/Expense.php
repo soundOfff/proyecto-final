@@ -102,4 +102,10 @@ class Expense extends Model
     {
         return $this->morphMany(File::class, 'fileable');
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', '%'.$search.'%')
+            ->orWhere('reference_no', 'like', '%'.$search.'%');
+    }
 }

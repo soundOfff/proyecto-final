@@ -11,7 +11,7 @@ import Link from "next/link";
 import { show, destroy } from "/actions/expenses";
 import { useEffect, useState } from "react";
 import { useMaterialUIController } from "/context";
-import { Tooltip } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
@@ -20,6 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { destroy as destroyFile } from "/actions/files";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
+import Filters from "./filters";
 
 export default function Table({ rows, project }) {
   const [controller] = useMaterialUIController();
@@ -219,22 +220,34 @@ export default function Table({ rows, project }) {
           <ModalContent expense={expense} />
         </Modal>
       )}
-      <MDBox display="flex" justifyContent="flex-end" mb={5}>
-        <Link
-          href={{
-            pathname: `/expenses/create`,
-            query: {
-              projectId: project.id,
-              partnerId: project.billablePartner.id,
-              source: `/projects/${project.id}?tab=expenses`,
-            },
-          }}
-        >
-          <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
-            Registrar Gasto
-          </MDButton>
-        </Link>
-      </MDBox>
+      <Grid container display="flex" justifyContent="center" mt={2} mb={6}>
+        <Grid item xs={12} sm={8}>
+          <Filters />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <MDBox
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            mt={2}
+          >
+            <Link
+              href={{
+                pathname: `/expenses/create`,
+                query: {
+                  projectId: project?.id,
+                  partnerId: project?.billablePartner.id,
+                  source: `/projects/${project.id}?tab=expenses`,
+                },
+              }}
+            >
+              <MDButton variant="gradient" color={darkMode ? "light" : "dark"}>
+                Registrar Gasto
+              </MDButton>
+            </Link>
+          </MDBox>
+        </Grid>
+      </Grid>
       <DataTable
         table={table}
         showTotalEntries={true}

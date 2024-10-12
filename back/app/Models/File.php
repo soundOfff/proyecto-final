@@ -20,4 +20,14 @@ class File extends Model
     {
         return $this->morphTo();
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query
+                    ->where('subject', 'like', "%$search%");
+            });
+        });
+    }
 }

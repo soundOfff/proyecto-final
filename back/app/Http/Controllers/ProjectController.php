@@ -7,6 +7,8 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
+use App\Models\Expense;
+use App\Models\Invoice;
 use App\Models\Partner;
 use App\Models\Process;
 use App\Models\Project;
@@ -35,6 +37,13 @@ class ProjectController extends Controller
         $projects = Project::where('billable_partner_id', $partner->id)
             ->select('id', 'name')
             ->get();
+
+        return new ProjectSelectResourceCollection($projects);
+    }
+
+    public function selectAll()
+    {
+        $projects = Project::select('id', 'name')->limit(50)->get();
 
         return new ProjectSelectResourceCollection($projects);
     }
@@ -283,5 +292,91 @@ class ProjectController extends Controller
         $project->members()->sync($ids);
 
         return response()->json($project, 201);
+    }
+
+    public function lastYearIncomesOutcomes(Project $project)
+    {
+        $now = Carbon::now();
+
+        // Query to get total expenses for the last 12 months
+        $monthlyExpenses = Expense::selectRaw('SUM(amount) as total_amount, MONTH(date) as month, YEAR(date) as year')
+            ->where('expenses.project_id', $project->id)
+            ->whereBetween('date', [Carbon::now()->subMonths(12), Carbon::now()])
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        $lastTwelveMonths = collect(range(0, 11))->map(function ($i) use ($now) {
+            $date = $now->copy()->subMonths(11 - $i);
+
+            return [
+                'label' => $date->format('M y'),
+                'month' => $date->month,
+                'year' => $date->year,
+                'total_amount' => 0,
+            ];
+        });
+
+        $formattedExpenses = $lastTwelveMonths->map(function ($monthData) use ($monthlyExpenses) {
+            $expense = $monthlyExpenses->first(function ($e) use ($monthData) {
+                return $e->month == $monthData['month'] && $e->year == $monthData['year'];
+            });
+
+            // If the expense is found, use its total_amount if not keep the default 0
+            return $expense ? $expense->total_amount : 0;
+        });
+
+        // TODO:
+        // Need to check the logic here because the partial payments needs to be considered in his created_at date
+        // Payment (many) -> Invoice (many)
+        // Filter for every Invoice on the specific month and year gives the possibility of existence a partial payment on this month
+        // But the payment could be created in another month after the invoice and
+
+        $monthlyInvoices = Invoice::where('project_id', $project->id)
+        ->whereBetween('date', [$now->copy()->subMonths(12), $now])
+        ->orderBy('date', 'asc')
+        ->get();
+
+        // Calculate total incomes for each month based on partial payments
+        $formattedInvoices = $lastTwelveMonths->map(function ($monthData) use ($monthlyInvoices) {
+            $invoicesForMonth = $monthlyInvoices->filter(function ($invoice) use ($monthData) {
+                $invoiceMonth = Carbon::parse($invoice->date)->month();
+                $invoiceYear = Carbon::parse($invoice->date)->year();
+
+                return $invoiceMonth == Carbon::parse($monthData['month'])->month() && $invoiceYear == Carbon::parse($monthData['year'])->year();
+            });
+
+            // Sum the total paid for all invoices in this month
+            $totalPaid = $invoicesForMonth->sum(function ($invoice) use ($monthData) {
+                // Filter payments for the specific month and year
+                $filteredPayments = $invoice->payments->filter(function ($payment) use ($monthData) {
+                    // Ensure created_at exists and parse it
+                    if (isset($payment->pivot->created_at)) {
+                        $createdAt = Carbon::parse($payment->pivot->created_at);
+
+                        return $createdAt->month == $monthData['month'] &&
+                               $createdAt->year == $monthData['year'];
+                    }
+
+                    return false; // Skip if created_at is not set
+                });
+
+                // Return the sum of the amounts from the filtered payments
+                return $filteredPayments->sum(function ($payment) {
+                    return $payment->pivot->amount ?? 0; // Handle cases where pivot.amount might not be set
+                });
+            });
+
+            // Update the total amount for this month
+            $monthData['total_amount'] = $totalPaid;
+
+            return $monthData;
+        });
+
+        return response()->json([
+            'outcomes' => $formattedExpenses->values(),
+            'incomes' => $formattedInvoices->pluck('total_amount'),
+        ]);
     }
 }

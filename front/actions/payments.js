@@ -51,3 +51,11 @@ export async function detach(data) {
 
   revalidatePath("/invoices");
 }
+
+export default async function paymentsInfo() {
+  const url = new URL(`${process.env.API_URL}/payments-info`);
+
+  const data = await customFetch(url);
+
+  return data;
+}

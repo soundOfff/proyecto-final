@@ -36,8 +36,14 @@ export default function TabsComponent({ setTabIndex }) {
   const handleSetTabValue = (event, newValue) => {
     setTabIndex(newValue);
 
-    // update the url with the new tab value
     const params = new URLSearchParams(searchParams);
+
+    // remove filters when changing tabs
+    params.delete("search");
+    params.delete("dateFrom");
+    params.delete("dateTo");
+
+    // update the url with the new tab value
     params.delete("tab");
     params.set("tab", newValue);
 

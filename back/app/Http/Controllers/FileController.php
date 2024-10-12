@@ -6,8 +6,10 @@ use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Http\Resources\FileResourceCollection;
 use App\Models\File;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class FileController extends Controller
@@ -16,7 +18,14 @@ class FileController extends Controller
     {
         $query = QueryBuilder::for(File::class)
             ->allowedIncludes(['invoice', 'contact', 'staff', 'fileable'])
-            ->allowedFilters(['fileable_id', 'fileable_type'])
+            ->allowedFilters([
+                AllowedFilter::exact('fileable_type'),
+                AllowedFilter::exact('fileable_id'),
+                AllowedFilter::scope('search'),
+                AllowedFilter::callback('date', function (Builder $query, $values) {
+                    $query->whereBetween('created_at', [$values[0], $values[1]]);
+                }),
+            ])
             ->allowedSorts(['fileable_type', 'fileable_id', 'created_at', 'subject']);
 
         $files = request()->has('perPage')

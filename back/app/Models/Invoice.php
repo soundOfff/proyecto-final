@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Invoice extends Model
 {
-    static $SPANISH_CLASS_NAME = "factura";
+    public static $SPANISH_CLASS_NAME = 'factura';
+
     protected $fillable = [
         'added_from',
         'adjustment',
@@ -74,7 +75,7 @@ class Invoice extends Model
     protected function pendingToPay(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->total - $this->credits->sum('amount') - $this->payments->sum('pivot.amount')
+            get: fn () => $this->total - $this->credits->sum('amount') - $this->payments->sum('pivot.amount')
         );
     }
 
@@ -115,7 +116,7 @@ class Invoice extends Model
 
     public function payments(): BelongsToMany
     {
-        return $this->belongsToMany(Payment::class, 'payment_invoice', 'invoice_id', 'payment_id')->withPivot('amount');
+        return $this->belongsToMany(Payment::class, 'payment_invoice', 'invoice_id', 'payment_id')->withPivot('amount', 'created_at');
     }
 
     public function credits(): HasMany
@@ -147,5 +148,20 @@ class Invoice extends Model
         $lastInvoiceNumber = str_pad($lastInvoiceNumber, 6, '0', STR_PAD_LEFT);
 
         return $lastInvoiceNumber;
+    }
+
+    public function getTotalPayed()
+    {
+        return $this->payments->sum('pivot.amount');
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query
+                    ->where('number', 'like', "%$search%");
+            });
+        });
     }
 }

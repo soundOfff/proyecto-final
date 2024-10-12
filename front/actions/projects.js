@@ -13,6 +13,15 @@ export async function getSelect(partnerId, params) {
   return data.projects;
 }
 
+export async function getSelectAll(params) {
+  const url = new URL(`${process.env.API_URL}/projects-select`);
+  url.search = new URLSearchParams(params);
+
+  const { data } = await customFetch(url, { cache: "no-store" });
+
+  return data.projects;
+}
+
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/projects`);
   url.search = new URLSearchParams(params);

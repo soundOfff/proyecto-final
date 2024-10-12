@@ -11,6 +11,7 @@ use App\Sorts\InvoiceEstimateSort;
 use App\Sorts\InvoicePartnerSort;
 use App\Sorts\InvoiceProjectServiceTypeSort;
 use App\Sorts\InvoiceProjectSort;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -52,6 +53,10 @@ class InvoiceController extends Controller
                 'partner_id',
                 'project_id',
                 AllowedFilter::custom('to_pay', new InvoiceToPayFilter),
+                AllowedFilter::scope('search'),
+                AllowedFilter::callback('date', function (Builder $query, $values) {
+                    $query->whereBetween('date', [$values[0], $values[1]]);
+                }),
                 AllowedFilter::callback('payments', function ($query, $value) {
                     if (! is_array($value)) {
                         $value = [$value];

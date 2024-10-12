@@ -87,7 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update']);
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
     Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
-    
+
     Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
 
     Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
@@ -304,6 +304,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [LoginController::class, 'logout']);
 });
+
+Route::get('monthly-expenses/{year}', [ExpenseController::class, 'monthlyExpenses']);
+Route::get('payments-info', [PaymentController::class, 'paymentsInfo']);
+Route::get('projects-select', [ProjectController::class, 'selectAll']);
+Route::get('projects-info/{project}', [ProjectController::class, 'lastYearIncomesOutcomes']);
 
 Route::get('/auth/slack/callback', [LoginController::class, 'slackLogin']);
 Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']);

@@ -118,7 +118,7 @@ class Invoice extends Model
 
     public function payments(): BelongsToMany
     {
-        return $this->belongsToMany(Payment::class, 'payment_invoice', 'invoice_id', 'payment_id')->withPivot('amount');
+        return $this->belongsToMany(Payment::class, 'payment_invoice', 'invoice_id', 'payment_id')->withPivot('amount', 'created_at');
     }
 
     public function credits(): HasMany

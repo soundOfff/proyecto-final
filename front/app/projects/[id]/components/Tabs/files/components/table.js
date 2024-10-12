@@ -20,10 +20,21 @@ import { useEffect, useState } from "react";
 import { destroy, getAll } from "/actions/files";
 import CopyButton from "/components/CopyButton";
 import { Box } from "@mui/material";
+import { useSearchParams } from "next/navigation";
 
 export default function Table({ project }) {
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("search");
+  const dateFrom = searchParams.get("dateFrom");
+  const dateTo = searchParams.get("dateTo");
+
+  const filesDateFilter =
+    dateFrom || dateTo ? { "filter[date]": `${dateFrom},${dateTo}` } : null;
+  const filesSearchFilter = search ? { "filter[search]": search } : null;
 
   const {
     setOpenDeleteConfirmation,
@@ -40,6 +51,8 @@ export default function Table({ project }) {
     getAll({
       "filter[fileable_id]": project.id,
       "filter[fileable_type]": "project",
+      ...filesDateFilter,
+      ...filesSearchFilter,
     }).then((data) => {
       setRows(data.data.files);
       setIsLoading(false);

@@ -10,7 +10,6 @@ use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Invoice;
 use App\Models\Partner;
 use App\Models\Procedure;
-use App\Models\Process;
 use App\Models\Project;
 use App\Models\Staff;
 use App\Models\Task;
@@ -380,12 +379,14 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function getProjectFinancialData(Project $project, Request $request){
+    public function getProjectFinancialData(Project $project, Request $request)
+    {
         $from = $request->input('from');
         $until = $request->input('until');
         $billed = $project->totalBilledCostPerMonth($from, $until);
         $paid = $project->totalPaidCostPerMonth($from, $until);
-        $data = ["paid"=> $paid, "billed"=>$billed];
+        $data = ['paid'=> $paid, 'billed'=>$billed];
+
         return response()->json($data = $data, 201);
     }
 }

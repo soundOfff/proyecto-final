@@ -1,6 +1,6 @@
 "use client";
 
-import { CircularProgress, Divider, Grid } from "@mui/material";
+import { Card, CircularProgress, Divider, Grid } from "@mui/material";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";

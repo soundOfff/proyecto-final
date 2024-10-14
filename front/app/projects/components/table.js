@@ -21,7 +21,7 @@ import { setColor } from "/utils/project-state-colors";
 
 import Detail from "./detail";
 
-export default function Table({ rows, meta, formData }) {
+export default function Table({ rows, meta }) {
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [project, setProject] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -164,7 +164,6 @@ export default function Table({ rows, meta, formData }) {
       {openCopyModal && selectedProject && (
         <Modal open={openCopyModal} onClose={handleCloseCopyModal}>
           <ProjectCopyForm
-            {...formData}
             project={selectedProject}
             closeModal={handleCloseCopyModal}
           />

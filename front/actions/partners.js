@@ -33,9 +33,9 @@ export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/partners`);
   url.search = new URLSearchParams(params);
 
-  const { data } = await customFetch(url);
+  const data = await customFetch(url);
 
-  return data.partners;
+  return data;
 }
 
 export async function show(id, params) {

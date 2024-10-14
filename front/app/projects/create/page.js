@@ -15,7 +15,9 @@ export default async function NewProject() {
   const billingTypes = await getAllBillingTypes();
   const members = await selectMembers();
   const roles = await getRoles();
-  const courts = await getAllCourts();
+  const {
+    data: { courts },
+  } = await getAllCourts();
 
   return (
     <Index

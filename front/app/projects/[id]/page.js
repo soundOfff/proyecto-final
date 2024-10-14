@@ -44,7 +44,9 @@ export default async function Show({ params }) {
       data: { projects: taskableItems },
     },
     statuses,
-    partners,
+    {
+      data: { partners },
+    },
     actionsData,
     tableFields,
     dependencyTasks,

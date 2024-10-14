@@ -25,7 +25,7 @@ export default async function Reports({ searchParams }) {
     partnerId,
     myTasks,
     staffId,
-    perPage = 10,
+    perPage = 50,
     page = 1,
     sort = "-id",
   } = searchParams;
@@ -60,7 +60,9 @@ export default async function Reports({ searchParams }) {
     data: { tasks },
     meta,
   } = await getAllTasks(params);
-  const partners = await getAllPartners();
+  const {
+    data: { partners },
+  } = await getAllPartners();
   const {
     data: { projects },
   } = await getAllProjects();

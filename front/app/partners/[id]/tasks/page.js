@@ -39,7 +39,9 @@ export default async function PartnerTasks({
     data: { projects: taskableItems },
   } = await getAllTaskableTypes();
   const statuses = await getTaskStatus();
-  const partners = await getAllPartners();
+  const {
+    data: { partners },
+  } = await getAllPartners();
   const currentTimer = await getCurrentTimer(session.staff.id);
   const notificationPriorities = await getAllNotificationPriorities();
 

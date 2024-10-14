@@ -31,9 +31,9 @@ export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/courts`);
   url.search = new URLSearchParams(params);
 
-  const { data } = await customFetch(url, { cache: "no-store" });
+  const data = await customFetch(url, { cache: "no-store" });
 
-  return data.courts;
+  return data;
 }
 
 export async function show(id, params) {

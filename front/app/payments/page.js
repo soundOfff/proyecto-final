@@ -14,18 +14,26 @@ const include = ["partner", "paymentMethod", "invoices"];
 export const dynamic = "force-dynamic";
 
 export default async function Payments({ searchParams }) {
-  const { search } = searchParams;
+  const { search, perPage = 50, page = 1, sort = "-id" } = searchParams;
 
   const searchFilter = search ? { "filter[search]": search } : null;
 
   const params = {
     include,
     ...searchFilter,
+    perPage,
+    page,
+    sort,
   };
 
-  const payments = await getAllPayments(params);
+  const {
+    data: { payments },
+    meta,
+  } = await getAllPayments(params);
   const paymentMethods = await getAllPaymentMethods();
-  const partners = await getAllPartners();
+  const {
+    data: { partners },
+  } = await getAllPartners();
 
   return (
     <MDBox mb={1}>
@@ -34,7 +42,7 @@ export default async function Payments({ searchParams }) {
           <Grid item xs={12}>
             <Filters paymentMethods={paymentMethods} partners={partners} />
             <MDBox>
-              <Table rows={payments} />
+              <Table rows={payments} meta={meta} />
             </MDBox>
           </Grid>
         </Grid>

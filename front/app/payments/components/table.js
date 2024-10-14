@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import DataTable from "/examples/Tables/DataTable";
+import DataTable from "/examples/Tables/DataTableServerPagination";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -16,7 +16,7 @@ import useDeleteRow from "/hooks/useDeleteRow";
 import { destroy } from "/actions/payments";
 import { useState } from "react";
 
-export default function Table({ rows }) {
+export default function Table({ rows, meta }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const {
@@ -144,6 +144,7 @@ export default function Table({ rows }) {
   };
 
   const table = { columns, rows };
+
   return (
     <MDBox>
       {isModalOpen && (
@@ -155,6 +156,7 @@ export default function Table({ rows }) {
       )}
       <DataTable
         table={table}
+        meta={meta}
         showTotalEntries={true}
         isSorted={true}
         entriesPerPage={false}

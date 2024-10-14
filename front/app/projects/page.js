@@ -7,13 +7,6 @@ import {
   getCountByStatuses,
 } from "/actions/projects";
 import { getAll as getAllStatuses } from "/actions/project-statuses";
-import { getSelect as getPartnerSelect } from "/actions/partners";
-import { getAll as getAllServiceTypes } from "/actions/project-service-types";
-import { getAll as getAllBillingTypes } from "/actions/project-billing-types";
-import { select as selectMembers } from "/actions/staffs";
-import { getSelect as getSelectProposals } from "/actions/proposals";
-import { getAll as getRoles } from "/actions/partner-project-roles";
-import { getAll as getAllCourts } from "/actions/courts";
 
 import Table from "./components/table";
 import Filters from "./components/filters";
@@ -49,20 +42,18 @@ export default async function Projects({ searchParams }) {
     page,
   };
 
-  const {
-    meta,
-    data: { projects },
-  } = await getAllProjects(params);
-  const statuses = await getAllStatuses();
-
-  const countByStatuses = await getCountByStatuses();
-  const partners = await getPartnerSelect();
-  const serviceTypes = await getAllServiceTypes();
-  const billingTypes = await getAllBillingTypes();
-  const members = await selectMembers();
-  const proposals = await getSelectProposals();
-  const roles = await getRoles();
-  const courts = await getAllCourts();
+  const [
+    {
+      data: { projects },
+      meta,
+    },
+    statuses,
+    countByStatuses,
+  ] = await Promise.all([
+    getAllProjects(params),
+    getAllStatuses(),
+    getCountByStatuses(),
+  ]);
 
   return (
     <MDBox mb={3}>
@@ -72,20 +63,7 @@ export default async function Projects({ searchParams }) {
             <Stats countByStatuses={countByStatuses} />
             <Filters statuses={statuses} />
             <MDBox py={1}>
-              <Table
-                rows={projects}
-                meta={meta}
-                formData={{
-                  partners,
-                  statuses,
-                  serviceTypes,
-                  members,
-                  billingTypes,
-                  proposals,
-                  roles,
-                  courts,
-                }}
-              />
+              <Table rows={projects} meta={meta} />
             </MDBox>
           </Grid>
         </Grid>

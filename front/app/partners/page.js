@@ -18,15 +18,21 @@ const include = ["contacts", "files"];
 export const dynamic = "force-dynamic";
 
 export default async function Partners({ searchParams }) {
-  const { search } = searchParams;
+  const { search, perPage = 50, page = 1, sort = "-id" } = searchParams;
   const searchFilter = search ? { "filter[search]": search } : null;
 
   const params = {
     include,
     ...searchFilter,
+    perPage,
+    page,
+    sort,
   };
 
-  const partners = await getAllPartners(params);
+  const {
+    data: { partners },
+    meta,
+  } = await getAllPartners(params);
   const contactStats = await getContactStats();
   const partnerStats = await getPartnerStats();
   const stats = { contact: contactStats, partner: partnerStats };
@@ -39,7 +45,7 @@ export default async function Partners({ searchParams }) {
             <Stats stats={stats} />
             <Search />
             <MDBox py={1}>
-              <Table rows={partners} />
+              <Table rows={partners} meta={meta} />
             </MDBox>
           </Grid>
         </Grid>

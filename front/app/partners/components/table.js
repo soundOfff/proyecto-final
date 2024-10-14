@@ -1,6 +1,6 @@
 "use client";
 
-import DataTable from "/examples/Tables/DataTable";
+import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
@@ -9,7 +9,7 @@ import { DescriptionOutlined } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { destroy } from "/actions/files";
 
-export default function Table({ rows }) {
+export default function Table({ rows, meta }) {
   const handleDeleteFile = async (fileId) => {
     await destroy(fileId);
   };
@@ -125,7 +125,8 @@ export default function Table({ rows }) {
     <MDBox>
       <DataTable
         table={table}
-        entriesPerPage={false}
+        meta={meta}
+        entriesPerPage={true}
         showTotalEntries={true}
         isSorted={true}
         noEndBorder

@@ -19,7 +19,9 @@ export default async function Update({ params: { id } }) {
   const members = await selectMembers();
   const proposals = await getSelectProposals();
   const roles = await getRoles();
-  const courts = await getAllCourts();
+  const {
+    data: { courts },
+  } = await getAllCourts();
 
   const project = await showProject(id, {
     include: [

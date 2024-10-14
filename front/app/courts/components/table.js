@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import DataTable from "/examples/Tables/DataTable";
+import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";

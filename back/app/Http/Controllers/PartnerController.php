@@ -68,11 +68,11 @@ class PartnerController extends Controller
                 AllowedFilter::scope('search'),
             ])
             ->allowedSorts([
+                'id',
                 'name',
                 'company',
                 'created_at',
-            ])
-            ->orderBy('id', 'desc');
+            ]);
 
         $partners = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))

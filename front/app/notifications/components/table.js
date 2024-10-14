@@ -60,7 +60,7 @@ const TAB_TYPES = [
   },
 ];
 
-export default function Table({ rows, priorities }) {
+export default function Table({ rows }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
   const [successSB, setSuccessSB] = useState(false);

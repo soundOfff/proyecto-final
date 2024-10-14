@@ -37,7 +37,9 @@ export default async function Tasks({
       data: { projects: taskableItems },
     },
     statuses,
-    partners,
+    {
+      data: { partners },
+    },
     currentTimer,
     actionsData,
     tableFields,

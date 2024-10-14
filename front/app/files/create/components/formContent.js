@@ -49,7 +49,7 @@ export default function FormContent({ values, setFieldValue, errors }) {
       getAllProjects().then((data) => setRelationOptions(data.data.projects));
     }
     if (fileableType === PARTNER_FILEABLE_TYPE) {
-      getAllPartners().then((data) => setRelationOptions(data));
+      getAllPartners().then((data) => setRelationOptions(data.data.partners));
     }
     if (fileableType === EXPENSE_FILEABLE_TYPE) {
       getAllExpenses().then((data) => setRelationOptions(data.data.expenses));

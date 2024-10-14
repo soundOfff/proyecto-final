@@ -60,10 +60,6 @@ export default function ActionList({ actions = [] }) {
                     <MDBox mb={2}>
                       <MDTypography variant="button" fontWeight="medium">
                         Tipo de accion:{" "}
-                        {/* {
-                              options.find((o) => o.id === el.action_type_id)
-                                ?.label
-                            } */}
                       </MDTypography>
                     </MDBox>
                     <MDBox mb={1} lineHeight={0}>

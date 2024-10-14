@@ -7,6 +7,7 @@ import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDInput from "/components/MDInput";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 import { attachTasks } from "/actions/projects";
 
@@ -16,6 +17,8 @@ export default function NextStepForm({
   setErrorSB,
   setCreatedSB,
 }) {
+  const { data: session } = useSession();
+
   const [selectedProcess, setSelectedProcess] = useState(selectedFork);
   const [isAttachingTasks, setIsAttachingTasks] = useState(false);
 
@@ -27,7 +30,6 @@ export default function NextStepForm({
         processId: selectedProcess.id,
         staffId: session.staff.id,
       });
-      console.log("test");
       setCreatedSB(true);
     } catch (error) {
       setErrorSB(true);

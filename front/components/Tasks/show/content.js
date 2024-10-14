@@ -16,7 +16,6 @@ import { useDataProvider } from "/providers/DataProvider";
 
 import { DONE_STATUS_ID, DONE_STATUS } from "/utils/constants/taskStatuses";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
-import { attachTasks } from "/actions/projects";
 import { update, destroy } from "/actions/tasks";
 import Modal from "/components/Modal";
 
@@ -56,6 +55,37 @@ export default function Content({ selectedFork }) {
     setShowConfirmModal(true);
   };
 
+  const renderSnackbar = () => {
+    if (errorSB) {
+      return (
+        <MDSnackbar
+          color="error"
+          icon="warning"
+          title="Error al seleccionar paso"
+          content="Ocurrió un error al seleccionar el paso, intente de nuevo"
+          open={errorSB || createdSB}
+          onClose={() => setErrorSB(false)}
+          close={() => setErrorSB(false)}
+          bgWhite
+        />
+      );
+    }
+    if (createdSB) {
+      return (
+        <MDSnackbar
+          color="success"
+          icon="check"
+          title="Paso seleccionado"
+          content="El paso fue seleccionado correctamente"
+          open={createdSB}
+          onClose={() => setCreatedSB(false)}
+          close={() => setCreatedSB(false)}
+          bgWhite
+        />
+      );
+    }
+  };
+
   const shouldShowNextStepForm =
     task &&
     task.isFinalTask &&
@@ -64,30 +94,7 @@ export default function Content({ selectedFork }) {
 
   return (
     <Grid item xs={8} wrap="nowrap">
-      <MDSnackbar
-        color={errorSB ? "error" : "success"}
-        icon={errorSB ? "warning" : "check_circle"}
-        title={
-          errorSB
-            ? "Error al seleccionar paso"
-            : "Paso seleccionado correctamente"
-        }
-        content={
-          errorSB
-            ? "Ocurrió un error al seleccionar el paso, intente de nuevo"
-            : "El paso se seleccionó correctamente"
-        }
-        open={errorSB || createdSB}
-        onClose={() => {
-          setErrorSB(false);
-          setCreatedSB(false);
-        }}
-        close={() => {
-          setErrorSB(false);
-          setCreatedSB(false);
-        }}
-        bgWhite
-      />
+      {renderSnackbar()}
       <Modal
         open={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
@@ -251,7 +258,12 @@ export default function Content({ selectedFork }) {
         </MDBox>
         <Divider />
         {shouldShowNextStepForm && (
-          <NextStepForm selectedFork={selectedFork} task={task} />
+          <NextStepForm
+            selectedFork={selectedFork}
+            task={task}
+            setCreatedSB={setCreatedSB}
+            setErrorSB={setErrorSB}
+          />
         )}
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" pb={2}>

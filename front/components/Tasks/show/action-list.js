@@ -32,7 +32,7 @@ const renderIcon = (type) => {
 export default function ActionList({ actions = [] }) {
   return (
     <>
-      {actions.length && (
+      {actions.length > 0 && (
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" mb={2}>
             Lista de acciones disponibles

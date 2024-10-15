@@ -23,6 +23,7 @@ export default function FormContent({
   procedures,
   procedure,
   actionTypes: actionsOptions,
+  mailTemplates,
 }) {
   const { formField } = form;
   const { name, description, stepNumber, dependencies, actions, responsible } =
@@ -218,6 +219,7 @@ export default function FormContent({
         values={values}
         formData={form}
         setFieldValue={setFieldValue}
+        mailTemplates={mailTemplates}
       />
       <ActionList
         actions={values[actions.name]}

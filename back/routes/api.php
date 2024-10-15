@@ -303,3 +303,6 @@ Route::post('/documents', [DocumentController::class, 'generate']);
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
 Route::get('/tasks/{task}', [TaskController::class, 'show']);
+Route::get('/mail-templates', [MailTemplateController::class, 'index']);
+
+Route::post('/dispatch-action', [ActionController::class, 'dispatch']);

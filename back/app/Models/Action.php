@@ -11,6 +11,8 @@ class Action extends Model
         'name',
         'description',
         'action_type_id',
+        'mail_template_id',
+        'mail_to',
     ];
 
     public function task()
@@ -26,5 +28,10 @@ class Action extends Model
     public function type()
     {
         return $this->belongsTo(ActionType::class, 'action_type_id');
+    }
+
+    public function mailTemplate()
+    {
+        return $this->belongsTo(MailTemplate::class);
     }
 }

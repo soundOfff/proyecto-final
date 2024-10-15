@@ -89,7 +89,7 @@ export default function Content({ selectedFork }) {
   const shouldShowNextStepForm =
     task &&
     task.isFinalTask &&
-    task.status.name === DONE_STATUS &&
+    task.status?.name === DONE_STATUS &&
     task.procedure?.process?.forks?.length !== 0;
 
   return (
@@ -153,7 +153,7 @@ export default function Content({ selectedFork }) {
             </Link>
           ) : (
             <Link
-              href={`/invoices/${task.taskable.id}`}
+              href={`/invoices/${task?.taskable?.id}`}
               sx={{ overflow: "wrap" }}
             >
               <MDTypography
@@ -162,7 +162,7 @@ export default function Content({ selectedFork }) {
                 color="info"
                 display="inline"
               >
-                Factura # {task.taskable.id}
+                Factura # {task?.taskable?.id}
               </MDTypography>
             </Link>
           )}
@@ -281,9 +281,9 @@ export default function Content({ selectedFork }) {
           />
         </MDBox>
         <Divider />
-        <ItemList taskId={task.id} checklistItems={task.checklistItems} />
+        <ItemList taskId={task?.id} checklistItems={task?.checklistItems} />
         <Divider />
-        <ActionList actions={task.procedure.actions} />
+        <ActionList actions={task?.procedure?.actions} />
       </MDBox>
     </Grid>
   );

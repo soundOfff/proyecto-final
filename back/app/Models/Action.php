@@ -13,6 +13,7 @@ class Action extends Model
         'action_type_id',
         'mail_template_id',
         'mail_to',
+        'is_dispatched',
     ];
 
     public function task()

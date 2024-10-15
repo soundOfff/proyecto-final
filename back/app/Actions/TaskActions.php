@@ -68,6 +68,9 @@ class TaskActions
         try {
             $mailTemplateService = new MailTemplateService();
             $mailTemplateService->sendTemplate($action->mail_to, $task, $action->mailTemplate);
+            $action->update([
+                'is_dispatched' => true,
+            ]);
         } catch (\Throwable $th) {
             throw new \Exception("Error sending mail: {$th->getMessage()}");
         }

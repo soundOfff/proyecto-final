@@ -99,7 +99,7 @@ export default function Aside() {
           </>
         )}
 
-        <Grid container spacing={3}>
+        <Grid container spacing={3} height="100%">
           <Grid item lg={6} md={12} my="auto">
             <MDBox display="flex" alignContent="center">
               <StarHalf />

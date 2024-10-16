@@ -4,6 +4,7 @@ import { Grid, Tooltip } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import MDSnackbar from "/components/MDSnackbar";
 
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import GavelIcon from "@mui/icons-material/Gavel";
@@ -19,6 +20,8 @@ import {
 import { dispatchAction } from "/actions/action-types";
 
 import { useDataProvider } from "/providers/DataProvider";
+import { useState } from "react";
+import Link from "next/link";
 
 const renderIcon = (type) => {
   if (type === ACTION_EXPENSE) {
@@ -34,13 +37,101 @@ const renderIcon = (type) => {
 
 export default function ActionList() {
   const { task } = useDataProvider();
+  const [actionDispatchedSuccess, setActionDispatchedSuccess] = useState(false);
+  const [actionDispatchedError, setActionDispatchedError] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [actionDispatched, setActionDispatched] = useState({});
 
   const handleDispatchAction = async (actionId) => {
-    await dispatchAction(task.id, actionId);
+    setActionLoading(true);
+    try {
+      const data = await dispatchAction(task.id, actionId);
+      setActionDispatchedSuccess(true);
+      setActionDispatched({ ...actionDispatched, [actionId]: data.success });
+    } catch (error) {
+      setActionDispatchedError(true);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const renderSnackbar = () => {
+    if (actionDispatchedError) {
+      return (
+        <MDSnackbar
+          color="error"
+          icon="warning"
+          title="Error"
+          content="Hubo un error al seleccionar el paso"
+          open={actionDispatchedError}
+          onClose={() => setActionDispatchedError(false)}
+          close={() => setActionDispatchedError(false)}
+          bgWhite
+        />
+      );
+    }
+
+    if (actionDispatchedSuccess) {
+      return (
+        <MDSnackbar
+          color="success"
+          icon="check_circle"
+          title="Exito"
+          content="La acción fue disparada con éxito"
+          open={actionDispatchedSuccess}
+          onClose={() => setActionDispatchedSuccess(false)}
+          close={() => setActionDispatchedSuccess(false)}
+          bgWhite
+        />
+      );
+    }
+  };
+
+  const renderRow = (type, row) => {
+    if (type === ACTION_EXPENSE) {
+      return (
+        <MDTypography variant="caption" fontWeight="medium" color="text">
+          Gasto
+        </MDTypography>
+      );
+    } else if (type === ACTION_REQUEST) {
+      return (
+        <MDTypography variant="caption" fontWeight="medium" color="text">
+          Solicitud
+        </MDTypography>
+      );
+    } else if (type === ACTION_EMAIL) {
+      return (
+        <>
+          <MDBox mb={1} lineHeight={0}>
+            <MDTypography variant="caption" fontWeight="regular" color="text">
+              {ACTION_TYPES[type]}: <b>{row.mail_to}</b>
+            </MDTypography>
+          </MDBox>
+          <MDBox mb={1} lineHeight={0}>
+            <Link
+              href={`/mail-templates/${row.mail_template_id}`}
+              target="_blank"
+            >
+              <MDTypography variant="caption" fontWeight="regular" color="info">
+                Ver el template usado
+              </MDTypography>
+            </Link>
+          </MDBox>
+        </>
+      );
+    } else {
+      return (
+        <MDTypography variant="caption" fontWeight="medium" color="text">
+          Otro
+        </MDTypography>
+      );
+    }
   };
 
   return (
     <>
+      {renderSnackbar()}
       {task?.procedure?.actions.length > 0 && (
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" mb={2}>
@@ -48,7 +139,17 @@ export default function ActionList() {
           </MDTypography>
           <Grid container xs={12} spacing={2}>
             {task?.procedure?.actions.map(
-              ({ id, action_type_id, description }, index) => (
+              (
+                {
+                  id,
+                  action_type_id,
+                  description,
+                  is_dispatched,
+                  mail_to,
+                  mail_template_id,
+                },
+                index
+              ) => (
                 <Grid item xs={12} key={index}>
                   <MDBox
                     key={index}
@@ -78,15 +179,6 @@ export default function ActionList() {
                           fontWeight="regular"
                           color="text"
                         >
-                          {ACTION_TYPES[action_type_id]}
-                        </MDTypography>
-                      </MDBox>
-                      <MDBox mb={1} lineHeight={0}>
-                        <MDTypography
-                          variant="caption"
-                          fontWeight="regular"
-                          color="text"
-                        >
                           Descripción:&nbsp;&nbsp;&nbsp;
                           <MDTypography
                             variant="caption"
@@ -97,26 +189,40 @@ export default function ActionList() {
                           </MDTypography>
                         </MDTypography>
                       </MDBox>
+                      {/* TODO: Send more data of types */}
+                      {renderRow(action_type_id, { mail_to, mail_template_id })}
                     </MDBox>
                     <MDBox mr={1}>
                       <Tooltip
-                        title="La accion ya fue previamente disparada"
+                        title={
+                          Boolean(is_dispatched) ||
+                          actionDispatched[id] ||
+                          actionLoading
+                            ? "La accion ya fue previamente disparada"
+                            : ""
+                        }
                         arrow
                       >
-                        <MDButton
-                          variant="gradient"
-                          color="info"
-                          size="small"
-                          disabled={false}
-                          sx={{
-                            height: "40px",
-                            width: "120px",
-                            p: 1,
-                          }}
-                          onClick={() => handleDispatchAction(id)}
-                        >
-                          Disparar accion &nbsp;{renderIcon(action_type_id)}
-                        </MDButton>
+                        <span>
+                          <MDButton
+                            variant="gradient"
+                            color="dark"
+                            size="small"
+                            disabled={
+                              Boolean(is_dispatched) ||
+                              actionDispatched[id] ||
+                              actionLoading
+                            }
+                            sx={{
+                              height: "40px",
+                              width: "120px",
+                              p: 1,
+                            }}
+                            onClick={() => handleDispatchAction(id)}
+                          >
+                            Disparar accion &nbsp;{renderIcon(action_type_id)}
+                          </MDButton>
+                        </span>
                       </Tooltip>
                     </MDBox>
                   </MDBox>

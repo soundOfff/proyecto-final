@@ -25,13 +25,7 @@ class MailTemplateController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(MailTemplate::class)
-            ->allowedIncludes(['group', 'lang'])
-            ->allowedFilters([
-                AllowedFilter::exact('group_id'),
-                AllowedFilter::exact('lang_id'),
-                AllowedFilter::exact('id'),
-                AllowedFilter::exact('event')
-            ]);
+            ->allowedIncludes(['group', 'lang']);
 
         $templates = request()->has('perPage')
             ? $query->paginate((int) request('perPage'))
@@ -82,8 +76,8 @@ class MailTemplateController extends Controller
 
         $data = $this->mailService->generateFields($request->model);
 
-        if (!$data) {
-            return response()->json(["error" => "Model $request->model is not possible make fields"], 404);
+        if (! $data) {
+            return response()->json(['error' => "Model $request->model is not possible make fields"], 404);
         }
 
         return response()->json($data);

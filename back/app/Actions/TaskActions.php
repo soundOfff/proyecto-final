@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\Task;
 use App\Services\DocassembleService;
 use App\Services\FileService;
+use App\Services\MailTemplateService;
 
 class TaskActions
 {
@@ -62,9 +63,16 @@ class TaskActions
         // $docassembleService->createDocument();
     }
 
-    public static function handleMail(Task $task)
+    public static function handleMail(Task $task, Action $action)
     {
-        // Logic for sending mail
-        // dd("test - mail from task: {$task->id}");
+        try {
+            $mailTemplateService = new MailTemplateService();
+            $mailTemplateService->sendTemplate($action->mail_to, $task, $action->mailTemplate);
+            $action->update([
+                'is_dispatched' => true,
+            ]);
+        } catch (\Throwable $th) {
+            throw new \Exception("Error sending mail: {$th->getMessage()}");
+        }
     }
 }

@@ -1,7 +1,7 @@
 export const ACTION_TYPES = {
   1: "Nombre del gasto",
   2: "URL de la solicitud",
-  3: "Correo electrónico",
+  3: "Enviar correo a",
   4: "Campo requerido",
 };
 

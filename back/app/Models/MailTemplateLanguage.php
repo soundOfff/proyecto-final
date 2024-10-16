@@ -9,10 +9,13 @@ class MailTemplateLanguage extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'id',
+        'name',
+    ];
 
     public function mailTemplate()
     {
-        return $this->hasMany(MailTemplate::class);
+        return $this->belongsTo(MailTemplate::class, 'mail_template_id');
     }
 }

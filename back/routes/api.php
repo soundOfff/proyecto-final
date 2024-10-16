@@ -162,6 +162,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::get('/tasks-select', [TaskController::class, 'select']);
     Route::post('/tasks', [TaskController::class, 'store']);
+    Route::get('/tasks/{task}', [TaskController::class, 'show']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('/tasks-delete-many', [TaskController::class, 'destroyMany']);
@@ -247,6 +248,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/actions', [ActionController::class, 'index']);
     Route::get('/action-types', [ActionTypeController::class, 'index']);
+    Route::post('/dispatch-action', [ActionController::class, 'dispatch']);
 
     Route::post('/table-fields', TableFieldController::class);
 
@@ -301,5 +303,3 @@ Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
-
-Route::get('/tasks/{task}', [TaskController::class, 'show']);

@@ -4,8 +4,9 @@ import FormField from "/components/ItemForm/FormField";
 import MDButton from "/components/MDButton";
 import * as Yup from "yup";
 import Select from "/components/Select";
-import { ACTION_TYPES } from "/utils/constants/actionTypes";
+import { EMAIL_ACTION } from "/utils/constants/actionTypes";
 
+const ENGLISH_CODE = "en"; // TODO: move to constants
 const newActionFormField = {
   formId: "new-action",
   formField: {
@@ -27,35 +28,58 @@ const newActionFormField = {
       label: "Tipo de acción",
       errorMsg: "El tipo de acción es requerido",
     },
+    mailTo: {
+      name: "mail_to",
+      label: "Enviar correo a",
+      placeholder: "Correo electrónico",
+      errorMsg: "El correo es requerido",
+    },
+    mailTemplateId: {
+      name: "mail_template_id",
+      label: "Plantilla de correo",
+      errorMsg: "La plantilla de correo es requerida",
+    },
   },
 };
 
 export default function ActionForm({
   actions,
-  options,
+  options: actionsOptions,
   setFieldValue: setFieldValueExternal,
   values: externalValues,
+  mailTemplates,
 }) {
-  const { description, name, action } = newActionFormField.formField;
+  const { description, action, mailTo, mailTemplateId } =
+    newActionFormField.formField;
 
   const clearFields = (actions) => {
     setFieldValue(description.name, "");
-    setFieldValue(name.name, "");
     setFieldValue(action.name, "");
+    setFieldValue(mailTo.name, "");
+    setFieldValue(mailTemplateId.name, "");
     actions.setTouched({});
   };
 
   const addItemValidationSchema = Yup.object().shape({
     [description.name]: Yup.string().required(description.errorMsg),
     [action.name]: Yup.string().required(action.errorMsg),
-    [name.name]: Yup.string().required(name.errorMsg),
+    [mailTo.name]: Yup.string()
+      .email("Correo inválido")
+      .required("Correo requerido"),
+    [mailTemplateId.name]: Yup.string().required(
+      "Plantilla de correo requerida"
+    ),
   });
+  const filteredMailTemplates = mailTemplates.filter(
+    ({ lang }) => lang.code === ENGLISH_CODE
+  );
 
   const { values, errors, touched, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       [description.name]: "",
-      [name.name]: "",
       [action.name]: "",
+      [mailTo.name]: "",
+      [mailTemplateId.name]: "",
     },
     validationSchema: addItemValidationSchema,
     onSubmit: (values, methods) => {
@@ -65,6 +89,8 @@ export default function ActionForm({
           description: values[description.name],
           name: values[name.name],
           action_type_id: values[action.name],
+          mail_to: values[mailTo.name],
+          mail_template_id: values[mailTemplateId.name],
         },
       ]);
       clearFields(methods);
@@ -73,10 +99,10 @@ export default function ActionForm({
 
   return (
     <>
-      <Grid item xs={12} sm={3}>
+      <Grid item xs={12} sm={2}>
         <Select
           value={values[action.name]}
-          options={options}
+          options={actionsOptions}
           optionLabel={(option) => option.label}
           fieldName={action.name}
           inputLabel={action.label}
@@ -84,18 +110,6 @@ export default function ActionForm({
         />
       </Grid>
       <Grid item xs={3}>
-        <FormField
-          value={values[name.name]}
-          onChange={(e) => setFieldValue(name.name, e.target.value)}
-          name={name.name}
-          label={ACTION_TYPES[values[action.name]] ?? name.label}
-          type={name.type}
-          errors={errors}
-          touched={touched}
-          success={values[name.name]?.length > 0 && !errors[name.name]}
-        />
-      </Grid>
-      <Grid item xs={4}>
         <FormField
           value={values[description.name]}
           onChange={(e) => setFieldValue(description.name, e.target.value)}
@@ -109,6 +123,32 @@ export default function ActionForm({
           }
         />
       </Grid>
+      {values[action.name] === EMAIL_ACTION && (
+        <>
+          <Grid item xs={2}>
+            <Select
+              value={values[mailTemplateId.name]}
+              options={filteredMailTemplates}
+              optionLabel={(option) => option.name}
+              fieldName={mailTemplateId.name}
+              inputLabel={mailTemplateId.label}
+              setFieldValue={setFieldValue}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <FormField
+              value={values[mailTo.name]}
+              onChange={(e) => setFieldValue(mailTo.name, e.target.value)}
+              name={mailTo.name}
+              label={mailTo.label}
+              type="email"
+              errors={errors}
+              touched={touched}
+              success={values[mailTo.name]?.length > 0 && !errors[mailTo.name]}
+            />
+          </Grid>
+        </>
+      )}
       <Grid item xs={2}>
         <MDButton
           type="submit"

@@ -20,6 +20,7 @@ export default function FormComponent({
   procedures,
   staffs,
   actionTypes,
+  mailTemplates = [],
 }) {
   const { formId } = form;
   const [errorSB, setErrorSB] = useState(false);
@@ -100,6 +101,7 @@ export default function FormComponent({
                 procedure,
                 staffs,
                 actionTypes,
+                mailTemplates,
               }}
             />
             <MDBox

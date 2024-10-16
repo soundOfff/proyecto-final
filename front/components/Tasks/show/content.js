@@ -283,7 +283,7 @@ export default function Content({ selectedFork }) {
         <Divider />
         <ItemList taskId={task?.id} checklistItems={task?.checklistItems} />
         <Divider />
-        <ActionList actions={task?.procedure?.actions} />
+        <ActionList />
       </MDBox>
     </Grid>
   );

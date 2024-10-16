@@ -10,7 +10,6 @@ export default function MailActionForm({
   errors,
 }) {
   const { mailTo, mailTemplateId } = formField;
-  console.log(mailTo.name);
   return (
     <>
       <Grid item xs={4}>

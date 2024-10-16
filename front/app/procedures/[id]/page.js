@@ -28,7 +28,7 @@ export default async function EditProcedure({ params: { id } }) {
     <Card sx={{ overflow: "visible", my: 3 }}>
       <MDBox p={3}>
         <Form
-          processId={processId}
+          processId={id}
           procedure={procedure}
           procedures={procedures}
           actionTypes={actionTypes}

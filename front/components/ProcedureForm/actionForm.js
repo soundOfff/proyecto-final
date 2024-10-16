@@ -4,7 +4,7 @@ import FormField from "/components/ItemForm/FormField";
 import MDButton from "/components/MDButton";
 import * as Yup from "yup";
 import Select from "/components/Select";
-import { EMAIL_ACTION } from "/utils/constants/actionTypes";
+import { ACTION_EMAIL } from "/utils/constants/actionTypes";
 
 const ENGLISH_CODE = "en"; // TODO: move to constants
 const newActionFormField = {
@@ -123,7 +123,7 @@ export default function ActionForm({
           }
         />
       </Grid>
-      {values[action.name] === EMAIL_ACTION && (
+      {values[action.name] === ACTION_EMAIL && (
         <>
           <Grid item xs={2}>
             <Select

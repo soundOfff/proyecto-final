@@ -11,8 +11,6 @@ import { ErrorMessage } from "formik";
 
 import ActionForm from "./actionForm";
 import ActionList from "./actionList";
-import ReminderForm from "./reminderForm";
-import ReminderList from "./reminderList";
 
 export default function FormContent({
   values,

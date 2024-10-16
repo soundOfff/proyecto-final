@@ -5,7 +5,7 @@ const {
   formField: {
     name,
     description,
-    // responsible,
+    responsible,
     dependencies,
     status,
     stepNumber,

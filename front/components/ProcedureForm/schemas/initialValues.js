@@ -4,7 +4,7 @@ const {
   formField: {
     name,
     description,
-    // responsible,
+    responsible,
     status,
     stepNumber,
     dependencies,
@@ -15,7 +15,7 @@ const {
 const initialValues = {
   [name.name]: "",
   [description.name]: "",
-  // [responsible.name]: "",
+  [responsible.name]: "",
   [status.name]: "",
   [stepNumber.name]: "",
   [dependencies.name]: [],

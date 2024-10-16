@@ -3,8 +3,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import Icon from "@mui/material/Icon";
-import { ACTION_TYPES } from "/utils/constants/actionTypes";
-import { EMAIL_ACTION } from "../../utils/constants/actionTypes";
+import { ACTION_TYPES, ACTION_EMAIL } from "/utils/constants/actionTypes";
 import Link from "next/link";
 
 const renderMailItem = (actionTypeId, mailTo, mailTemplate) => (
@@ -77,7 +76,7 @@ export default function ActionList({ actions = [], options, deleteAction }) {
                       </MDTypography>
                     </MDTypography>
                   </MDBox>
-                  {action_type_id === EMAIL_ACTION &&
+                  {action_type_id === ACTION_EMAIL &&
                     renderMailItem(action_type_id, mail_to, mail_template_id)}
                 </MDBox>
                 <MDBox mr={1}>

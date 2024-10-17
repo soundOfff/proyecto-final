@@ -19,7 +19,7 @@ export async function getAllPriorities() {
 
   const { data } = await customFetch(url);
 
-  return data?.priorities;
+  return data.priorities;
 }
 
 export async function update(id, body) {

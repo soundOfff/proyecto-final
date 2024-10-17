@@ -10,14 +10,13 @@ import MDTypography from "/components/MDTypography";
 import MDSnackbar from "/components/MDSnackbar";
 
 import Modal from "/components/Modal";
-import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
 import Link from "next/link";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalContentForm from "/components/ModalContent/Task";
-import { Backdrop, CircularProgress, Grid, Tooltip } from "@mui/material";
+import { Backdrop, CircularProgress, Tooltip } from "@mui/material";
 
 import { destroy } from "/actions/tasks";
 
@@ -27,61 +26,46 @@ import { AccessAlarm, LockClockOutlined, NoteAdd } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
-import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { getColor, getPriorityColor } from "/utils/project-state-colors";
-
-import useTaskTable from "/hooks/useTaskTable";
-import { useEffect, useTransition } from "react";
+import useTaskShow from "/hooks/useTaskShow";
+import useTaskForm from "/hooks/useTaskForm";
 
 export default function Table({
-  rows,
+  tasks,
   meta,
-  priorities,
-  repeats,
-  taskableItems,
-  tagsData,
-  statuses,
-  staffs,
-  dependencyTasks,
-  partners,
   currentTimer,
-  currentTaskId,
-  actionsData,
-  tableFields,
   partnerId,
   invoice,
-  notificationPriorities = [],
 }) {
   const [controller, dispatch] = useMaterialUIController();
+
   const {
-    optimisticRows,
-    task,
-    openEditModal,
-    openShowModal,
-    handleCloseEditModal,
-    handleCloseShowModal,
-    stopTimer,
-    startTimer,
-    getSelectedFork,
-    handleCompleteTask,
-    setOpenShowModal,
-    setOpenEditModal,
-    setTaskId,
-    isLoadingShow,
+    task: taskShow,
+    isLoading: isLoadingShow,
+    isModalOpen: isShowModalOpen,
+    handleOpenModal: handleOpenShowModal,
+    handleCloseModal: handleCloseShowModal,
     isSaving,
     successOnSaveSB,
-    setSuccessOnSaveSB,
-    saveTask,
     errorOnSaveSB,
+    handleCompleteTask,
+    getSelectedFork,
+    stopTimer,
+    startTimer,
+    handleSaveTask,
+    setSuccessOnSaveSB,
     setErrorOnSaveSB,
-  } = useTaskTable({ rows, dispatch, currentTaskId, statuses });
+  } = useTaskShow({ tasks, dispatch });
+
+  const {
+    task: taskForm,
+    isModalOpen: isEditModalOpen,
+    handleOpenModal: handleOpenEditModal,
+    handleCloseModal: handleCloseEditModal,
+  } = useTaskForm();
+
   const { darkMode } = controller;
   const { data: session } = useSession();
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [isCancelling, startTransition] = useTransition();
 
   const {
     setOpenDeleteConfirmation,
@@ -92,38 +76,6 @@ export default function Table({
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-
-  const handleOpenShowModal = (id) => {
-    setTaskId(id);
-    setOpenShowModal(true);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("taskId", id);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const closeShowModal = async () => {
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete("taskId");
-      router.replace(`${pathname}?${params.toString()}`);
-      handleCloseShowModal();
-    });
-  };
-
-  const handleSaveTask = async (taskId, data) => {
-    await saveTask(taskId, data);
-    closeShowModal();
-  };
-
-  useEffect(() => {
-    const taskId = parseInt(searchParams.get("taskId"));
-
-    if (Number.isNaN(taskId)) return;
-
-    if (taskId !== currentTaskId && taskId !== task?.id && !isCancelling) {
-      handleOpenShowModal(taskId);
-    }
-  }, [searchParams, setTaskId, setOpenShowModal, currentTaskId, task]);
 
   const renderSaveSnackbar = () => {
     return successOnSaveSB ? (
@@ -233,24 +185,6 @@ export default function Table({
       Header: "Fecha de vencimiento",
       accessor: "due_date",
     },
-    /* {
-      Header: "Etiquetas",
-      accessor: "labels",
-      disableSortBy: true,
-      Cell: ({ row }) =>
-        row.original.tags &&
-        row.original.tags.map((tag) => (
-          <Grid key={tag.id}>
-            <MDBadge
-              variant="gradient"
-              color="dark"
-              size="md"
-              badgeContent={tag.name}
-              sx={{ my: 0.25 }}
-            />
-          </Grid>
-        )),
-    }, */
     {
       Header: "Prioridad",
       accessor: "priority",
@@ -294,27 +228,10 @@ export default function Table({
             <EditNoteIcon
               color="info"
               fontSize="medium"
-              onClick={() => {
-                setTaskId(row.original.id);
-                setOpenEditModal(true);
-              }}
+              onClick={() => handleOpenEditModal(row.original.id)}
               sx={{ mr: 1, cursor: "pointer" }}
             />
           </Tooltip>
-          {/* <Tooltip title="Eliminar tarea">
-            <DeleteIcon
-              color="error"
-              fontSize="medium"
-              onClick={() => {
-                handleDelete(row.original.id);
-              }}
-              sx={{
-                mx: 1,
-                cursor: "pointer",
-                display: row.original.isBlocked ? "none" : "block",
-              }}
-            />
-          </Tooltip> */}
           <Tooltip title="Ver Cambios">
             <Link href={`/tasks/${row.original.id}/changes`}>
               <VisibilityIcon
@@ -356,83 +273,62 @@ export default function Table({
     },
   ];
 
-  const table = { columns, rows: optimisticRows };
+  const table = { columns, rows: tasks };
 
   return (
     <MDBox>
       {renderSaveSnackbar()}
-      {openEditModal && (
+      {isEditModalOpen && (
         <Modal
-          open={openEditModal}
-          onClose={() => {
-            handleCloseEditModal();
-          }}
+          open={isEditModalOpen}
+          onClose={handleCloseEditModal}
           width="40%"
           height="85%"
         >
           <ModalContentForm
-            priorities={priorities}
-            repeats={repeats}
-            taskableItems={taskableItems}
-            dependencyTasks={dependencyTasks}
-            tagsData={tagsData}
-            staffs={staffs}
-            partners={partners}
             task={
-              invoice && !task
-                ? {
+              taskForm
+                ? taskForm
+                : {
                     taskable_id: invoice.id,
                     taskable_type: INVOICE_TYPE,
                     partner_id:
                       invoice.project?.billablePartnerId ?? invoice.partner.id,
                   }
-                : task
             }
-            actionsData={actionsData}
-            tableFields={tableFields}
-            partnerId={partnerId}
-            mode={invoice || !task ? MODAL_TYPES.CREATE : MODAL_TYPES.EDIT}
+            partnerId={partnerId ?? null}
+            mode={!taskForm ? MODAL_TYPES.CREATE : MODAL_TYPES.EDIT}
           />
         </Modal>
       )}
-      {openShowModal && (
+      {isShowModalOpen && (
         <Modal
-          open={openShowModal}
-          onClose={() => {
-            closeShowModal();
-          }}
+          open={isShowModalOpen}
+          onClose={handleCloseShowModal}
           px={0}
           py={0}
           width="70%"
           sx={{ overflow: "scroll" }}
         >
-          {isLoadingShow || !task ? (
+          {isLoadingShow || !taskShow ? (
             <Backdrop open={true} sx={{ background: "white" }}>
               <CircularProgress size={80} color="black" />
             </Backdrop>
           ) : (
-            <DataProvider
-              value={{
-                task,
+            <Show
+              {...{
+                task: taskShow,
+                isSaving,
                 currentTimerId: currentTimer?.id,
-                isTimerStarted: currentTimer?.task_id === task.id,
-                statuses,
-                priorities,
-                tagsData,
-                staffs,
+                isTimerStarted: currentTimer?.task_id === taskShow.id,
                 markAsCompleted: handleCompleteTask,
                 stopTimer,
                 startTimer,
                 getSelectedFork,
-                notificationPriorities,
-                closeShowModal,
                 handleSaveTask,
-                isSaving,
-                isCancelling,
+                closeShowModal: handleCloseShowModal,
               }}
-            >
-              <Show />
-            </DataProvider>
+            />
           )}
         </Modal>
       )}
@@ -445,9 +341,7 @@ export default function Table({
           <MDButton
             variant="gradient"
             color={darkMode ? "light" : "dark"}
-            onClick={() => {
-              setOpenEditModal(true);
-            }}
+            onClick={() => handleOpenEditModal()}
           >
             Crear nueva tarea
           </MDButton>

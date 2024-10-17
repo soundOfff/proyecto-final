@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use App\Models\Task;
-use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 class TaskResource extends JsonResource
 {
@@ -56,12 +56,13 @@ class TaskResource extends JsonResource
             'procedure' => $this->procedure ? ProcedureResource::make($this->whenLoaded('procedure')->load('process.forks')) : null,
             'isFinalTask' => $this->isFinalTask(),
             'isBlocked' => $this->is_blocked,
+            'filesCount' => $this->files_count,
             'taskable' => $this->whenLoaded('taskable', function () {
                 $taskableTypes = Task::getTaskableTypes();
                 $taskableType = $taskableTypes[$this->taskable_type] ?? null;
 
                 return $taskableType
-                    ? $taskableType['resource']::make($this->whenLoaded('taskable'))->load($taskableType['load'])
+                    ? $taskableType['resource']::make($this->whenLoaded('taskable')->load($taskableType['load']))
                     : null;
             }),
             'actions' => ActionResource::collection($this->whenLoaded('actions')),

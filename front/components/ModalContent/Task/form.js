@@ -22,17 +22,25 @@ import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getAll as getAllDependencies } from "/actions/tasks";
 import { show as getProject } from "/actions/projects";
+import { select as selectStaff } from "/actions/staffs";
+import { getSelect as selectPartners } from "/actions/partners";
+import { getAll as getAllPriorities } from "/actions/task-priorities";
+import { getAll as getAllTaskableTypes } from "/actions/projects";
+import { MODAL_TYPES } from "/utils/constants/modalTypes";
 
 export default function TaskForm({
-  priorities,
   formData,
-  partners,
-  task = null,
-  project = null,
-  mode,
-  staffs,
   partnerId,
+  mode,
+  project = null,
+  task = null,
 }) {
+  const [staffs, setStaffs] = useState([]);
+  const [partners, setPartners] = useState([]);
+  const [priorities, setPriorities] = useState([]);
+  const [taskableItems, setTaskableItems] = useState([]);
+  const [dependencyTasks, setDependencyTasks] = useState([]);
+
   const { values, errors, touched, setFieldValue, formField } = formData;
   const {
     isPublic,
@@ -58,8 +66,13 @@ export default function TaskForm({
     requiredFields,
     isFileNeeded,
   } = formField;
-  const [taskableItems, setTaskableItems] = useState([]);
-  const [dependencyTasks, setDependencyTasks] = useState([]);
+
+  useEffect(() => {
+    selectStaff().then((staffs) => setStaffs(staffs));
+    selectPartners().then((partners) => setPartners(partners));
+    getAllPriorities().then((priorities) => setPriorities(priorities));
+    getAllTaskableTypes().then((res) => setTaskableItems(res.data.projects));
+  }, []);
 
   useEffect(() => {
     if (task) {
@@ -68,7 +81,6 @@ export default function TaskForm({
       setFieldValue(startDate.name, task.start_date ?? "");
       setFieldValue(dueDate.name, task.due_date ?? "");
       setFieldValue(task_priority_id.name, task.priority?.id ?? "");
-      setFieldValue(repeat.name, task.repeat_id ?? "");
       setFieldValue(recurring.name, task.recurring || "");
       setFieldValue(recurringType.name, task.recurring_type || "");
       setFieldValue(assigneds.name, task.assigneds || []);
@@ -89,7 +101,9 @@ export default function TaskForm({
       setFieldValue(requiredFields.name, task.requiredFields || []);
       setFieldValue(isFileNeeded.name, Boolean(task.is_file_needed));
     }
-    if (partnerId) setFieldValue(partner_id.name, partnerId || "");
+    if (partnerId) {
+      setFieldValue(partner_id.name, partnerId || "");
+    }
     if (project) {
       setFieldValue(taskableId.name, project.id);
       setFieldValue(partner_id.name, project.billablePartnerId);
@@ -121,6 +135,7 @@ export default function TaskForm({
     dependencies.name,
     requiredFields.name,
     isFileNeeded.name,
+    assigneds.name,
   ]);
 
   useEffect(() => {
@@ -154,7 +169,7 @@ export default function TaskForm({
         }
       );
     }
-  }, [values[taskableType.name], values[taskableId.name]]);
+  }, [values, assigneds, setFieldValue, taskableId, taskableType]);
 
   return (
     <>
@@ -168,7 +183,7 @@ export default function TaskForm({
         opacity={1}
         p={2}
       >
-        Nueva tarea
+        {mode === MODAL_TYPES.CREATE ? "Nueva tarea" : "Editar tarea"}
       </MDBox>
       <MDBox sx={{ px: 2, pt: 3 }}>
         <Grid container lineHeight={0} spacing={2}>

@@ -84,7 +84,7 @@ class Task extends Model
 
     public const TASKABLE_INVOICE = 'invoice';
 
-    protected $appends = ['can_change_status', 'is_blocked'];
+    protected $appends = ['can_change_status', 'is_blocked', 'files_count'];
 
     protected function canChangeStatus(): Attribute
     {
@@ -100,6 +100,13 @@ class Task extends Model
     {
         return new Attribute(
             get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+        );
+    }
+
+    public function filesCount(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->files->count()
         );
     }
 

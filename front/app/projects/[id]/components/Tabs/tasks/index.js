@@ -7,20 +7,7 @@ import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
 
 export default function Tasks() {
-  const {
-    statuses,
-    priorities,
-    staffs,
-    project,
-    repeats,
-    tagsData,
-    partners,
-    dependencyTasks,
-    notificationPriorities,
-    taskableItems,
-    actionsData,
-    tableFields,
-  } = useDataProvider();
+  const { project } = useDataProvider();
 
   return (
     <MDBox>
@@ -28,22 +15,7 @@ export default function Tasks() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MDBox py={1}>
-            <Table
-              {...{
-                statuses,
-                priorities,
-                staffs,
-                project,
-                repeats,
-                tagsData,
-                partners,
-                dependencyTasks,
-                taskableItems,
-                actionsData,
-                tableFields,
-                notificationPriorities,
-              }}
-            />
+            <Table project={project} />
           </MDBox>
         </Grid>
       </Grid>

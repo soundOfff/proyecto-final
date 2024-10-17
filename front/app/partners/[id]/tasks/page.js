@@ -2,17 +2,9 @@ import { Card, Grid } from "@mui/material";
 import { getAll } from "/actions/tasks";
 import MDBox from "/components/MDBox";
 import Table from "/components/Tasks/table-server";
-import { getAll as getAllTags } from "/actions/tags";
-import { getAll as getAllRepeats } from "/actions/expense-repeats";
-import { getTaskPriorities } from "/actions/tasks";
-import { getTaskStatus } from "/actions/tasks";
-import { getAll as getAllTaskableTypes } from "/actions/projects";
-import { getAll as getAllPartners } from "/actions/partners";
-import { getAll as getAllStaffs } from "/actions/staffs";
 import { getCurrentTimer } from "/actions/timers";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "/pages/api/auth/[...nextauth]";
-import { getAllPriorities as getAllNotificationPriorities } from "/actions/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -31,19 +23,7 @@ export default async function PartnerTasks({
   });
 
   const session = await getServerSession(authOptions);
-  const tagsData = await getAllTags();
-  const repeats = await getAllRepeats();
-  const staffs = await getAllStaffs();
-  const priorities = await getTaskPriorities();
-  const {
-    data: { projects: taskableItems },
-  } = await getAllTaskableTypes();
-  const statuses = await getTaskStatus();
-  const {
-    data: { partners },
-  } = await getAllPartners();
   const currentTimer = await getCurrentTimer(session.staff.id);
-  const notificationPriorities = await getAllNotificationPriorities();
 
   return (
     <MDBox my={3}>
@@ -51,18 +31,10 @@ export default async function PartnerTasks({
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
             <Table
-              rows={tasks}
+              tasks={tasks}
               meta={meta}
-              priorities={priorities}
-              repeats={repeats}
-              taskableItems={taskableItems}
-              tagsData={tagsData}
-              partners={partners}
-              statuses={statuses}
-              staffs={staffs}
               currentTimer={currentTimer}
               partnerId={Number(id)}
-              notificationPriorities={notificationPriorities}
             />
           </Grid>
         </Grid>

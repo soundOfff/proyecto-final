@@ -53,7 +53,6 @@ const validations = Yup.object().shape({
   [partner_id.name]: Yup.string().required(partner_id.errorMsg),
   [taskableId.name]: Yup.string().required(taskableId.errorMsg),
   [task_priority_id.name]: Yup.string().required(task_priority_id.errorMsg),
-  [repeat.name]: Yup.string().required(repeat.errorMsg),
   [dependencies.name]: Yup.array(),
   [assigneds.name]: Yup.array(),
   [description.name]: Yup.string(),

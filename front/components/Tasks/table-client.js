@@ -22,77 +22,60 @@ import { useMaterialUIController } from "/context";
 
 import Modal from "/components/Modal";
 import ModalContentForm from "/components/ModalContent/Task";
-import { DataProvider } from "/providers/DataProvider";
 import Show from "./show";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 import { editSteps } from "/actions/tasks";
 import update from "immutability-helper";
-import useTaskTable from "/hooks/useTaskTable";
 import { MODAL_TYPES } from "/utils/constants/modalTypes";
 import { getPriorityColor, getStatusColor } from "/utils/project-state-colors";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Backdrop, CircularProgress } from "@mui/material";
 
-export default function Table({
-  statuses,
-  priorities,
-  project,
-  repeats,
-  staffs,
-  taskableItems,
-  tagsData,
-  dependencyTasks,
-  partners,
-  actionsData,
-  tableFields,
-  currentTaskId,
-  notificationPriorities = [],
-}) {
+import useTaskShow from "/hooks/useTaskShow";
+import useTaskForm from "/hooks/useTaskForm";
+import useTaskAttach from "/hooks/useTaskAttach";
+
+export default function Table({ project }) {
   const [controller, dispatch] = useMaterialUIController();
   const { currentTimer, darkMode } = controller;
+  const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [rows, setRows] = useState([]);
   const { data: session } = useSession();
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [isCancelling, startTransition] = useTransition();
+  const [statuses, setStatuses] = useState([]);
 
   const {
-    optimisticRows,
-    task,
-    openShowModal,
-    openEditModal,
+    task: taskShow,
+    isLoading: isLoadingShow,
+    isModalOpen: isShowModalOpen,
+    handleOpenModal: handleOpenShowModal,
+    handleCloseModal: handleCloseShowModal,
+    isSaving,
+    successOnSaveSB,
+    errorOnSaveSB,
+    handleCompleteTask,
+    getSelectedFork,
     stopTimer,
     startTimer,
+    handleSaveTask,
+    setSuccessOnSaveSB,
+    setErrorOnSaveSB,
+  } = useTaskShow({ tasks, dispatch, statuses });
+
+  const {
+    task: taskForm,
+    isModalOpen: isEditModalOpen,
+    handleOpenModal: handleOpenEditModal,
+    handleCloseModal: handleCloseEditModal,
+  } = useTaskForm();
+
+  const {
     isToastOpen,
     areTasksAttached,
     isFetching,
-    setOpenEditModal,
-    handleCloseEditModal,
-    handleCloseShowModal,
-    getSelectedFork,
-    handleCompleteTask,
     setIsToastOpen,
-    setTaskId,
     handleCreateTasks,
-    setOpenShowModal,
-    isLoadingShow,
-    saveTask,
-    isSaving,
-    successOnSaveSB,
-    setSuccessOnSaveSB,
-    errorOnSaveSB,
-    setErrorOnSaveSB,
-  } = useTaskTable({
-    rows,
-    dispatch,
-    project,
-    statuses,
-    staffId: session?.staff?.id,
-  });
+  } = useTaskAttach({ project, staffId: session.staff.id });
 
   const {
     setOpenDeleteConfirmation,
@@ -115,61 +98,28 @@ export default function Table({
       sort: "milestone_order",
       include: ["assigneds", "tags", "status", "dependencies", "author"],
     }).then((data) => {
-      setRows(data.data.tasks);
+      setTasks(data.data.tasks);
       setIsLoading(false);
     });
-  }, [project, setIsLoading]);
+  }, [project]);
 
   const moveRow = (dragIndex, hoverIndex) => {
-    const dragRow = rows[dragIndex];
-    const updatedRows = update(rows, {
+    const dragRow = tasks[dragIndex];
+    const updatedRows = update(tasks, {
       $splice: [
         [dragIndex, 1],
         [hoverIndex, 0, dragRow],
       ],
     });
+    const mappedRows = updatedRows.map((row, index) => ({
+      ...row,
+      milestone_order: index + 1,
+    }));
 
-    setRows(
-      updatedRows.map((row, index) => ({
-        ...row,
-        milestone_order: index + 1,
-      }))
-    );
+    setTasks(mappedRows);
 
-    editSteps({ tasks: rows });
+    editSteps({ tasks: mappedRows });
   };
-
-  const handleOpenShowModal = (id) => {
-    setTaskId(id);
-    setOpenShowModal(true);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("taskId", id);
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  const closeShowModal = () => {
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete("taskId");
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-      handleCloseShowModal();
-    });
-  };
-
-  const handleSaveTask = async (taskId, data) => {
-    await saveTask(taskId, data);
-    closeShowModal();
-  };
-
-  useEffect(() => {
-    const taskId = parseInt(searchParams.get("taskId"));
-
-    if (Number.isNaN(taskId)) return;
-
-    if (taskId !== task?.id && !isCancelling) {
-      handleOpenShowModal(taskId);
-    }
-  }, [searchParams, setTaskId, setOpenShowModal, currentTaskId, task]);
 
   const renderSaveSnackbar = () => {
     return successOnSaveSB ? (
@@ -196,6 +146,27 @@ export default function Table({
       />
     ) : null;
   };
+
+  const renderAttachSnackbar = () => (
+    <MDSnackbar
+      color={areTasksAttached ? "success" : "warning"}
+      icon="info"
+      title={
+        areTasksAttached
+          ? "Tareas creadas correctamente"
+          : "Las tareas ya han sido creadas"
+      }
+      content={
+        areTasksAttached
+          ? "Se han creado todas las tareas del proceso correctamente"
+          : "No se han creado tareas, ya han sido creadas en su totalidad"
+      }
+      open={isToastOpen}
+      onClose={() => setIsToastOpen(false)}
+      close={() => setIsToastOpen(false)}
+      bgWhite
+    />
+  );
 
   const columns = [
     {
@@ -279,7 +250,7 @@ export default function Table({
                     dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
                   }
                   size="sm"
-                  badgeContent={`#${dependency.id}`}
+                  badgeContent={`#${dependency.milestone_order}`}
                   container={true}
                   sx={{ mr: 1, my: 1, cursor: "pointer" }}
                   onClick={() => handleOpenShowModal(dependency.id)}
@@ -350,30 +321,13 @@ export default function Table({
     },
   ];
 
-  const table = { columns, rows: optimisticRows };
+  const table = { columns, rows: tasks };
 
   return isLoading ? (
     <Loader />
   ) : (
     <MDBox width="100%">
-      <MDSnackbar
-        color={areTasksAttached ? "success" : "warning"}
-        icon="info"
-        title={
-          areTasksAttached
-            ? "Tareas creadas correctamente"
-            : "Las tareas ya han sido creadas"
-        }
-        content={
-          areTasksAttached
-            ? "Se han creado todas las tareas del proceso correctamente"
-            : "No se han creado tareas, ya han sido creadas en su totalidad"
-        }
-        open={isToastOpen}
-        onClose={() => setIsToastOpen(false)}
-        close={() => setIsToastOpen(false)}
-        bgWhite
-      />
+      {renderAttachSnackbar()}
       {renderSaveSnackbar()}
       <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-9}>
         <MDBox width="50%" display="flex" gap={5} justifyContent="flex-end">
@@ -398,9 +352,7 @@ export default function Table({
           <MDButton
             variant="gradient"
             color={darkMode ? "light" : "dark"}
-            onClick={() => {
-              setOpenEditModal(true);
-            }}
+            onClick={() => handleOpenEditModal()}
           >
             Crear nueva tarea
           </MDButton>
@@ -408,73 +360,53 @@ export default function Table({
             variant="gradient"
             color="error"
             disabled={deleteIds.length === 0}
-            onClick={() => {
-              handleDeleteMultiple();
-            }}
+            onClick={handleDeleteMultiple}
           >
             Eliminar Múltiples
           </MDButton>
         </MDBox>
-        {openEditModal && (
+        {isEditModalOpen && (
           <Modal
-            open={openEditModal}
+            open={isEditModalOpen}
             onClose={handleCloseEditModal}
             width="40%"
             height="85%"
           >
             <ModalContentForm
-              priorities={priorities}
-              repeats={repeats}
-              taskableItems={taskableItems}
-              dependencyTasks={dependencyTasks}
-              tagsData={tagsData}
-              partners={partners}
-              task={task}
-              staffs={staffs}
-              actionsData={actionsData}
-              tableFields={tableFields}
               project={project}
-              mode={task ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
+              mode={taskForm ? MODAL_TYPES.EDIT : MODAL_TYPES.CREATE}
             />
           </Modal>
         )}
-        {openShowModal && (
+        {isShowModalOpen && (
           <Modal
-            open={openShowModal}
-            onClose={closeShowModal}
+            open={isShowModalOpen}
+            onClose={handleCloseShowModal}
             px={0}
             py={0}
             width="70%"
             sx={{ overflow: "scroll" }}
           >
-            {isLoadingShow || !task ? (
+            {isLoadingShow || !taskShow ? (
               <Backdrop open={true} sx={{ background: "white" }}>
                 <CircularProgress size={80} color="black" />
               </Backdrop>
             ) : (
-              <DataProvider
-                value={{
-                  task,
+              <Show
+                {...{
+                  task: taskShow,
                   project,
+                  isSaving,
                   currentTimerId: currentTimer?.id,
-                  isTimerStarted: currentTimer?.task_id === task.id,
-                  statuses,
-                  priorities,
-                  tagsData,
-                  staffs,
+                  isTimerStarted: currentTimer?.task_id === taskShow.id,
                   markAsCompleted: handleCompleteTask,
                   stopTimer,
                   startTimer,
                   getSelectedFork,
-                  notificationPriorities,
-                  closeShowModal,
                   handleSaveTask,
-                  isSaving,
-                  isCancelling,
+                  closeShowModal: handleCloseShowModal,
                 }}
-              >
-                <Show />
-              </DataProvider>
+              />
             )}
           </Modal>
         )}

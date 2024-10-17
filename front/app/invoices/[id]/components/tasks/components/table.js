@@ -15,20 +15,7 @@ export default function TableComponent() {
   const [meta, setMeta] = useState({ page: 1, per_page: 50 });
   const searchParams = useSearchParams();
 
-  const {
-    statuses,
-    priorities,
-    invoice,
-    repeats,
-    tagsData,
-    partners,
-    taskableItems,
-    staffs,
-    currentTimer,
-    actionsData,
-    tableFields,
-    notificationPriorities,
-  } = useDataProvider();
+  const { invoice, currentTimer } = useDataProvider();
 
   useEffect(() => {
     getAll({
@@ -49,21 +36,10 @@ export default function TableComponent() {
         <Grid container spacing={3} p={5}>
           <Grid item xs={12}>
             <Table
-              rows={tasks}
+              tasks={tasks}
               meta={meta}
-              priorities={priorities}
-              repeats={repeats}
-              taskableItems={taskableItems}
-              tagsData={tagsData}
-              dependencyTasks={tasks}
-              partners={partners}
-              staffs={staffs}
-              statuses={statuses}
               currentTimer={currentTimer}
-              actionsData={actionsData}
-              tableFields={tableFields}
               invoice={invoice}
-              notificationPriorities={notificationPriorities}
             />
           </Grid>
         </Grid>

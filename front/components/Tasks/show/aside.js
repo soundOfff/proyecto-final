@@ -16,15 +16,11 @@ import {
 
 import {
   AccessTime,
-  Add,
   CalendarToday,
-  Clear,
   CreditCard,
   Event,
   FlashOn,
   Lock,
-  Notifications,
-  Remove,
   StarHalf,
 } from "@mui/icons-material";
 
@@ -53,7 +49,6 @@ export default function Aside() {
     closeShowModal,
     handleSaveTask,
     isSaving,
-    isCancelling,
   } = useDataProvider();
 
   const [statusId, setStatusId] = useState(task.status.id);
@@ -372,9 +367,8 @@ export default function Aside() {
                 type="button"
                 sx={{ maxHeight: "50px" }}
                 onClick={closeShowModal}
-                disabled={isCancelling}
               >
-                {isCancelling ? "Cancelando..." : "Cancelar"}
+                Cancelar
               </MDButton>
               <MDButton
                 variant="gradient"

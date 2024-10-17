@@ -9,8 +9,6 @@ use App\Models\MailTemplate;
 use App\Models\Task;
 use App\Services\MailTemplateService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class MailTemplateController extends Controller
@@ -41,6 +39,13 @@ class MailTemplateController extends Controller
             ->find($mailTemplate->id);
 
         return new MailTemplateResource($template);
+    }
+
+    public function store(MailTemplateRequest $request)
+    {
+        $mailTemplate = MailTemplate::create($request->validated());
+
+        return response()->json($mailTemplate, 201);
     }
 
     public function send(Request $request)

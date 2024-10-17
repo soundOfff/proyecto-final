@@ -260,6 +260,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mail-templates', [MailTemplateController::class, 'index']);
     Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
     Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
+    Route::post('mail-templates', [MailTemplateController::class, 'store']);
 
     Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 

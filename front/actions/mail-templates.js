@@ -29,6 +29,14 @@ export async function getAllLangs() {
   return data.languages;
 }
 
+export async function getAllGroups() {
+  const url = new URL(`${process.env.API_URL}/mail-template-groups`);
+
+  const { data } = await customFetch(url);
+
+  return data.groups;
+}
+
 export async function update(id, data) {
   const url = new URL(`${process.env.API_URL}/mail-templates/${id}`);
 

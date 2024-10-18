@@ -258,16 +258,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store-token', [FcmController::class, 'storeToken']);
 
     Route::get('/mail-templates', [MailTemplateController::class, 'index']);
+    Route::post('/mail-templates', [MailTemplateController::class, 'store']);
     Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
     Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
-    Route::post('mail-templates', [MailTemplateController::class, 'store']);
 
     Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 
     Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
 
     Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
-    Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
 
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
@@ -304,3 +303,5 @@ Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
+
+Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);

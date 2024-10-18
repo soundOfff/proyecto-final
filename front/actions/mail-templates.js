@@ -1,7 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { customFetch } from "./custom-fetch";
-import { redirect } from "next/navigation";
 
 export async function getAll(params) {
   const url = new URL(`${process.env.API_URL}/mail-templates`);
@@ -19,6 +18,17 @@ export async function show(id, params) {
   const { data } = await customFetch(url, { cache: "no-cache" });
 
   return data;
+}
+
+export async function store(data) {
+  const url = new URL(`${process.env.API_URL}/mail-templates`);
+
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  revalidatePath("/mail-templates");
 }
 
 export async function getAllLangs() {

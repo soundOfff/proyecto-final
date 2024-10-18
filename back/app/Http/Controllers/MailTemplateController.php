@@ -79,11 +79,7 @@ class MailTemplateController extends Controller
             'model' => 'required|string',
         ]);
 
-        $data = $this->mailService->generateFields($request->model);
-
-        if (! $data) {
-            return response()->json(['error' => "Model $request->model is not possible make fields"], 404);
-        }
+        $data = $this->mailService->generateFields($request->model) ?? [];
 
         return response()->json($data);
     }

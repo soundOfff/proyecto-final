@@ -14,6 +14,7 @@ import {
 
 import { htmlToEditorState } from "/utils/parseEditorState";
 import { editorStateToHtml } from "/utils/parseEditorState";
+import { MAIL_TEMPLATE_GROUP } from "/utils/constants/mailTemplates";
 
 export default function MailTemplateForm({
   langs,
@@ -41,8 +42,7 @@ export default function MailTemplateForm({
 
   useEffect(() => {
     if (values[groupId.name]) {
-      console.log(String(values[groupId.name]));
-      allowedFields({ model: String(values[groupId.name]) })
+      allowedFields({ model: MAIL_TEMPLATE_GROUP[values[groupId.name]] })
         .then((fields) => {
           setFields(fields);
         })
@@ -52,47 +52,10 @@ export default function MailTemplateForm({
     }
   }, [values[groupId.name]]);
 
-  // useEffect(() => {
-  //   if (values[event.name]) {
-  //     getAllMailTemplates({
-  //       "filter[event]": values[event.name],
-  //       include: ["group", "lang"],
-  //     }).then((mailTemplates) => {
-  //       setMailTemplates(mailTemplates);
-  //     });
-  //   }
-  // }, values[event.name]);
-
-  useEffect(() => {
-    if (values[body.name] != "") {
-      const editorState = htmlToEditorState(values[body.name]);
-      setEditorState(editorState);
-    }
-  }, [values[body.name], setEditorState]);
-
   useEffect(() => {
     const content = editorStateToHtml(editorState);
     setFieldValue(body.name, content);
   }, [editorState, values[body.name], setFieldValue]);
-
-  const handleInputChange = (lang) => {
-    const selectedMailTemplate = mailTemplates.find(
-      (template) => template.lang.name === lang
-    );
-
-    if (!selectedMailTemplate) return;
-
-    const editorSTate = htmlToEditorState(selectedMailTemplate.body);
-    // Update UI
-    setEditorState(editorSTate);
-    // Update payload
-    setFieldValue(body.name, selectedMailTemplate.body);
-    setFieldValue(subject.name, selectedMailTemplate.subject);
-    setFieldValue(lang.name, selectedMailTemplate.lang.id);
-    setFieldValue(disabled.name, selectedMailTemplate.disabled);
-    setFieldValue(formatted.name, selectedMailTemplate.formatted);
-    setFieldValue(sendFrom.name, selectedMailTemplate.send_from);
-  };
 
   return (
     <MDBox p={4}>
@@ -126,7 +89,6 @@ export default function MailTemplateForm({
             optionLabel={(option) => option.name}
             fieldName={lang.name}
             inputLabel={lang.label}
-            onInputChange={(val) => handleInputChange(val)}
             setFieldValue={setFieldValue}
           />
         </Grid>
@@ -149,6 +111,17 @@ export default function MailTemplateForm({
             value={values[subject.name]}
             error={errors.subject && touched.subject}
             success={subject.length > 0 && !errors.subject}
+          />
+        </Grid>
+        <Grid item sm={12}>
+          <FormField
+            name={event.name}
+            label={event.label}
+            type={event.type}
+            placeholder={event.placeholder}
+            value={values[event.name]}
+            error={errors.event && touched.event}
+            success={event.length > 0 && !errors.event}
           />
         </Grid>
         <Grid item sm={12}>

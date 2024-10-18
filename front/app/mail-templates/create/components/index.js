@@ -12,42 +12,21 @@ import validations from "./schemas/validations";
 
 import FieldList from "./field-list";
 import { EditorState } from "draft-js";
-import { useEffect, useState } from "react";
-
-import {
-  allowedFields,
-  getAll as getAllMailTemplates,
-} from "/actions/mail-templates";
+import { useState } from "react";
+import { store as storeMailTemplate } from "/actions/mail-templates";
+import { useRouter } from "next/navigation";
 
 export default function MailTemplateIndex({ langs, groups }) {
   const { formField, formId } = form;
+  const router = useRouter();
 
   const [fields, setFields] = useState([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  console.log(fields);
-
-  // const [mailTemplates, setMailTemplates] = useState([]);
-  // const [mailSended, setMailSended] = useState(false);
-
-  // const router = useRouter();
-
   const handleSubmit = async (values) => {
-    // await update(mailTemplate.id, values);
-    // router.push("/mail-templates");
-  };
-
-  const handleSendEmail = async () => {
-    // try {
-    //   await sendTestEmail({
-    //     template_id: mailTemplate.id,
-    //     to: "testing@gmail.com", // TODO: Remove this, only hardcoded for testing
-    //   });
-    //   setMailSended(true);
-    // } catch (error) {
-    //   console.error(error);
-    //   setMailSended(false);
-    // }
+    console.log(values);
+    await storeMailTemplate(values);
+    router.push("/mail-templates");
   };
 
   return (
@@ -101,7 +80,8 @@ export default function MailTemplateIndex({ langs, groups }) {
                         Volver
                       </MDButton>
                       <MDButton
-                        type="submit"
+                        type="button"
+                        onClick={() => handleSubmit(values)}
                         disabled={isSubmitting}
                         variant="gradient"
                         color="dark"

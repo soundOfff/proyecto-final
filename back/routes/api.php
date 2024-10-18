@@ -262,6 +262,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'show']);
     Route::put('/mail-templates/{mailTemplate}', [MailTemplateController::class, 'update']);
 
+    Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);
+
     Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 
     Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
@@ -303,5 +305,3 @@ Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
-
-Route::post('/mail-templates-allowed-fields', [MailTemplateController::class, 'allowedFields']);

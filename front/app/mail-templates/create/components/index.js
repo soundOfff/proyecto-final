@@ -10,7 +10,7 @@ import form from "./schemas/form";
 import initialValues from "./schemas/initial-values";
 import validations from "./schemas/validations";
 
-import FieldList from "./field-list";
+import FieldList from "../../[id]/components/field-list";
 import { EditorState } from "draft-js";
 import { useState } from "react";
 import { store as storeMailTemplate } from "/actions/mail-templates";

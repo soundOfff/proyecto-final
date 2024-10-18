@@ -7,12 +7,8 @@ import MDTypography from "/components/MDTypography";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import Select from "/components/Select";
 
-import {
-  allowedFields,
-  getAll as getAllMailTemplates,
-} from "/actions/mail-templates";
+import { allowedFields } from "/actions/mail-templates";
 
-import { htmlToEditorState } from "/utils/parseEditorState";
 import { editorStateToHtml } from "/utils/parseEditorState";
 import { MAIL_TEMPLATE_GROUP } from "/utils/constants/mailTemplates";
 

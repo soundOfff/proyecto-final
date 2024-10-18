@@ -24,7 +24,6 @@ export default function MailTemplateIndex({ langs, groups }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const handleSubmit = async (values) => {
-    console.log(values);
     await storeMailTemplate(values);
     router.push("/mail-templates");
   };

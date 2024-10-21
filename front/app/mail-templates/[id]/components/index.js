@@ -35,7 +35,7 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
 
   const handleSubmit = async (values) => {
     await update(mailTemplate.id, values);
-    router.push("/mail-templates");
+    router.refresh();
   };
 
   const handleSendEmail = async () => {

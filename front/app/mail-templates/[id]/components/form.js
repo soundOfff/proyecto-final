@@ -22,8 +22,17 @@ export default function MailTemplateForm({
 }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
 
-  const { subject, name, sendFrom, disabled, formatted, event, body, lang } =
-    formField;
+  const {
+    subject,
+    name,
+    sendFrom,
+    disabled,
+    formatted,
+    groupId,
+    event,
+    body,
+    lang,
+  } = formField;
 
   useEffect(() => {
     setFieldValue(name.name, mailTemplate.name);
@@ -32,6 +41,7 @@ export default function MailTemplateForm({
     setFieldValue(body.name, mailTemplate.body);
     setFieldValue(disabled.name, mailTemplate.disabled);
     setFieldValue(formatted.name, mailTemplate.formatted);
+    setFieldValue(groupId.name, mailTemplate.groupId);
     setFieldValue(event.name, mailTemplate.event);
     setFieldValue(body.name, mailTemplate.body);
     setFieldValue(lang.name, mailTemplate.lang.id);

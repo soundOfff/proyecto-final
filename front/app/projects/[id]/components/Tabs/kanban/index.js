@@ -1,20 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAll } from "/actions/tasks";
 import { useDataProvider } from "/providers/DataProvider";
-import Loader from "../components/loader";
 import Kanban from "/components/Kanban";
 import MDBox from "/components/MDBox";
 
-const include = ["status", "assigneds", "partner", "checklistItems"];
+const include = [
+  "status",
+  "assigneds",
+  "partner",
+  "checklistItems",
+  "dependencies",
+];
 
 export default function ProjectTasksKanban() {
   const [tasks, setTasks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { project } = useDataProvider();
 
-  useEffect(() => {
+  const fetchTasks = useCallback(() => {
     const params = {
       include,
       sort: "-start_date",
@@ -23,15 +27,16 @@ export default function ProjectTasksKanban() {
     };
     getAll(params).then((data) => {
       setTasks(data.data.tasks);
-      setIsLoading(false);
     });
-  }, [project]);
+  }, [project.id]);
 
-  return isLoading ? (
-    <Loader />
-  ) : (
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  return (
     <MDBox>
-      <Kanban tasks={tasks} />
+      <Kanban tasks={tasks} refetch={fetchTasks} />
     </MDBox>
   );
 }

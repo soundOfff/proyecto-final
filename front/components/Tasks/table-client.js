@@ -4,10 +4,10 @@ import DataTable from "/examples/Tables/DataTable";
 import MDBox from "/components/MDBox";
 import Link from "next/link";
 import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 
+import DeleteIcon from "@mui/icons-material/Delete";
 import AccessAlarm from "@mui/icons-material/AccessAlarm";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 
@@ -42,7 +42,6 @@ export default function Table({ project }) {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
-  const [statuses, setStatuses] = useState([]);
 
   const {
     task: taskShow,
@@ -60,7 +59,7 @@ export default function Table({ project }) {
     handleSaveTask,
     setSuccessOnSaveSB,
     setErrorOnSaveSB,
-  } = useTaskShow({ tasks, dispatch, statuses });
+  } = useTaskShow({ tasks, dispatch });
 
   const {
     task: taskForm,

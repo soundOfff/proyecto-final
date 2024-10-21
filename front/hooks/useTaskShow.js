@@ -10,7 +10,7 @@ import {
   getTaskStatus as getAllStatuses,
 } from "/actions/tasks";
 
-export default function useTaskShow({ tasks, dispatch }) {
+export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [task, setTask] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,6 +108,7 @@ export default function useTaskShow({ tasks, dispatch }) {
   const handleSaveTask = async (taskId, data) => {
     await saveTask(taskId, data);
     handleCloseModal();
+    refetch();
   };
 
   useEffect(() => {

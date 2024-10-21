@@ -27,12 +27,45 @@ import MDProgress from "/components/MDProgress";
 import useTodo from "/hooks/useTodo";
 
 import { getPriorityColor } from "/utils/project-state-colors";
-import { Tooltip } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 
-export default function Card({ task }) {
-  const { image, priority, name, filesCount, assigneds } = task;
+import DeleteIcon from "@mui/icons-material/Delete";
+import AccessAlarm from "@mui/icons-material/AccessAlarm";
+import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
+import { useSession } from "next-auth/react";
+
+import { destroy } from "/actions/tasks";
+
+import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
+
+export default function Card({
+  task,
+  currentTimer,
+  refetch,
+  startTimer,
+  stopTimer,
+  ...rest
+}) {
+  const { data: session } = useSession();
+  const {
+    id,
+    image,
+    priority,
+    name,
+    assigneds,
+    isBlocked,
+    start_date,
+    due_date,
+    filesCount,
+    dependencies,
+  } = task;
 
   const { progress } = useTodo(task.checklistItems);
+
+  const handleDelete = (id) => {
+    destroy(id);
+    refetch();
+  };
 
   const renderMembers = assigneds.map((member, key) => {
     const imageAlt = `image-${key}`;
@@ -52,7 +85,7 @@ export default function Card({ task }) {
               : undefined
           }
           alt={imageAlt}
-          size="md"
+          size="sm"
           shadow="sm"
           sx={{
             display: "flex",
@@ -63,7 +96,6 @@ export default function Card({ task }) {
             color: !member.profileImage && !isExternalUrl ? "white" : undefined,
             textAlign: "center",
             lineHeight: "initial",
-            fontSize: "20px",
           }}
         >
           {!isExternalUrl && !member.profileImage && getInitials(member.name)}
@@ -73,7 +105,7 @@ export default function Card({ task }) {
   });
 
   return (
-    <>
+    <MDBox {...rest}>
       {image && (
         <MDBox width="100%" borderRadius="lg" mb={1} overflow="hidden">
           <Image
@@ -85,33 +117,130 @@ export default function Card({ task }) {
           />
         </MDBox>
       )}
-      <MDBadge
-        size="xs"
-        color={getPriorityColor(priority.name)}
-        badgeContent={priority.name}
-        container
-      />
-      <MDBox mt={1} mb={2}>
-        <MDTypography variant="body2" color="text">
+      <MDBox display="flex" justifyContent="space-between" alignItems="center">
+        <MDBox display="flex">
+          <MDBadge
+            size="xs"
+            color={getPriorityColor(priority.name)}
+            badgeContent={priority.name}
+            container
+          />
+        </MDBox>
+        <MDBox display="flex">
+          {dependencies?.length > 0 && (
+            <MDBox display="flex">
+              {dependencies.map((dependency) => (
+                <MDBadge
+                  key={dependency.id}
+                  variant="gradient"
+                  color={
+                    dependency.status_id === DONE_STATUS_ID ? "success" : "dark"
+                  }
+                  size="sm"
+                  badgeContent={`#${dependency.milestone_order}`}
+                  container={true}
+                  sx={{ mr: 1, cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenShowModal(dependency.id);
+                  }}
+                />
+              ))}
+            </MDBox>
+          )}
+          <Tooltip title="Eliminar tarea">
+            <DeleteIcon
+              color="error"
+              fontSize="medium"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(id);
+              }}
+              sx={{
+                mx: 1,
+                cursor: "pointer",
+                display: isBlocked ? "none" : "block",
+              }}
+            />
+          </Tooltip>
+          {currentTimer?.task_id === id ? (
+            <Tooltip title="Detener temporizador">
+              <LockClockOutlined
+                color="error"
+                fontSize="medium"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  stopTimer(currentTimer.id);
+                }}
+                sx={{
+                  ml: 1,
+                  cursor: "pointer",
+                  display: isBlocked ? "none" : "block",
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Iniciar temporizador">
+              <AccessAlarm
+                color="success"
+                fontSize="medium"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startTimer(id, session.staff.id);
+                }}
+                sx={{
+                  ml: 1,
+                  cursor: "pointer",
+                  display: isBlocked ? "none" : "block",
+                }}
+              />
+            </Tooltip>
+          )}
+        </MDBox>
+      </MDBox>
+      <MDBox my={1}>
+        <MDTypography variant="body2" color="text" mb={1}>
           {name}
         </MDTypography>
         {progress > 0 && (
-          <MDBox mt={0.25}>
+          <MDBox my={2}>
             <MDProgress variant="gradient" value={progress} color="success" />
           </MDBox>
         )}
-      </MDBox>
-      <MDBox display="flex" justifyContent="space-between" alignItems="center">
-        <MDBox display="flex" alignItems="center" color="text">
+        <MDBox display="flex" mt={1}>
           <MDTypography variant="body2" color="text" sx={{ lineHeight: 0 }}>
-            <Icon sx={{ fontWeight: "bold" }}>attach_file</Icon>
+            <Icon sx={{ fontWeight: "bold" }}>event</Icon>
           </MDTypography>
           <MDTypography variant="button" fontWeight="regular" color="text">
-            &nbsp;{filesCount}
+            &nbsp;{start_date} / {due_date ?? "----"}
           </MDTypography>
         </MDBox>
-        <MDBox display="flex">{renderMembers}</MDBox>
       </MDBox>
-    </>
+      <Grid container>
+        <Grid item xs={6}>
+          <MDBox display="flex" gap={2}>
+            <Tooltip title="Archivos Adjuntos">
+              <MDBox display="flex">
+                <MDTypography variant="body2" color="text">
+                  <Icon sx={{ fontWeight: "bold" }}>attach_file</Icon>
+                </MDTypography>
+                <MDTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                >
+                  &nbsp;{filesCount}
+                </MDTypography>
+              </MDBox>
+            </Tooltip>
+          </MDBox>
+        </Grid>
+        <Grid item xs={6}>
+          <MDBox display="flex" justifyContent="end">
+            {renderMembers}
+          </MDBox>
+        </Grid>
+      </Grid>
+    </MDBox>
   );
 }

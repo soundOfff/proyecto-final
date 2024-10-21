@@ -5,50 +5,76 @@ import dynamic from "next/dynamic";
 // @asseinfo/react-kanban components
 const Board = dynamic(() => import("@asseinfo/react-kanban"), { ssr: false });
 
-// react-html-parser components
-import parse from "html-react-parser";
-
 // NextJS Material Dashboard 2 PRO components
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
 // NextJS Material Dashboard 2 PRO context
 import { useMaterialUIController } from "/context";
-import Card from "./components/Card";
+import useKanban from "/hooks/useKanban";
+import useTaskShow from "/hooks/useTaskShow";
+import Show from "/components/Tasks/show";
+import { useDataProvider } from "/providers/DataProvider";
+import Modal from "/components/Modal";
+import { Backdrop, CircularProgress } from "@mui/material";
+import MDSnackbar from "/components/MDSnackbar";
 
-import {
-  DONE_STATUS_ID,
-  IN_PROGRESS_ID,
-  PENDING_ID,
-  DONE_STATUS,
-  IN_PROGRESS,
-  PENDING,
-} from "/utils/constants/taskStatuses";
+export default function Kanban({ tasks, refetch }) {
+  const { project } = useDataProvider();
+  const [controller, dispatch] = useMaterialUIController();
+  const { darkMode, currentTimer } = controller;
+  const {
+    task: taskShow,
+    isLoading: isLoadingShow,
+    isModalOpen: isShowModalOpen,
+    handleOpenModal: handleOpenShowModal,
+    handleCloseModal: handleCloseShowModal,
+    isSaving,
+    successOnSaveSB,
+    errorOnSaveSB,
+    handleCompleteTask,
+    getSelectedFork,
+    stopTimer,
+    startTimer,
+    handleSaveTask,
+    setSuccessOnSaveSB,
+    setErrorOnSaveSB,
+  } = useTaskShow({ tasks, dispatch, refetch });
 
-export default function Kanban({ tasks }) {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
+  const { board, handleCardMove } = useKanban({
+    tasks,
+    handleOpenShowModal,
+    currentTimer,
+    refetch,
+    startTimer,
+    stopTimer,
+  });
 
-  const initialValue = {
-    [PENDING_ID]: { id: PENDING_ID, title: PENDING, cards: [] },
-    [IN_PROGRESS_ID]: { id: IN_PROGRESS_ID, title: IN_PROGRESS, cards: [] },
-    [DONE_STATUS_ID]: { id: DONE_STATUS_ID, title: DONE_STATUS, cards: [] },
+  const renderSaveSnackbar = () => {
+    return successOnSaveSB ? (
+      <MDSnackbar
+        color="success"
+        icon="info"
+        title="La tarea fue actualizada correctamente"
+        content="Se ha actualizado la tarea correctamente"
+        open={successOnSaveSB || errorOnSaveSB}
+        onClose={() => setSuccessOnSaveSB(false)}
+        close={() => setSuccessOnSaveSB(false)}
+        bgWhite
+      />
+    ) : errorOnSaveSB ? (
+      <MDSnackbar
+        color="error"
+        icon="info"
+        title="La tarea no fue actualizada correctamente"
+        content="No se ha podido actualizar la tarea, por favor intente nuevamente"
+        open={errorOnSaveSB}
+        onClose={() => setErrorOnSaveSB(false)}
+        close={() => setErrorOnSaveSB(false)}
+        bgWhite
+      />
+    ) : null;
   };
-
-  const boardData = Object.values(
-    tasks.reduce((acc, task) => {
-      acc[task.status_id].id = task.status.id;
-      acc[task.status_id].title = task.status.name;
-      acc[task.status_id].cards.push({
-        id: task.id,
-        template: <Card task={task} />,
-      });
-
-      return acc;
-    }, initialValue)
-  );
-
-  const boards = { columns: boardData };
 
   return (
     <MDBox>
@@ -69,20 +95,16 @@ export default function Kanban({ tasks }) {
         })}
       >
         <Board
-          initialBoard={boards}
-          allowAddCard
-          allowAddColumn
-          renderColumnHeader={({ id, title }, {}) => (
-            <>
-              <MDBox
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={3}
-              >
-                <MDTypography variant="h6">{title}</MDTypography>
-              </MDBox>
-            </>
+          disableColumnDrag
+          renderColumnHeader={({ id, title }) => (
+            <MDBox
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={3}
+            >
+              <MDTypography variant="h6">{title}</MDTypography>
+            </MDBox>
           )}
           renderCard={({ id, template }, { dragging }) => (
             <MDBox
@@ -103,12 +125,47 @@ export default function Kanban({ tasks }) {
                 fontSize: ({ typography: { size } }) => size.md,
               }}
             >
-              {typeof template === "string" ? parse(template) : template}
+              {template}
             </MDBox>
           )}
-          onCardNew={() => null}
-        />
+          onCardDragEnd={handleCardMove}
+        >
+          {board}
+        </Board>
       </MDBox>
+      {isShowModalOpen && (
+        <Modal
+          open={isShowModalOpen}
+          onClose={handleCloseShowModal}
+          px={0}
+          py={0}
+          width="70%"
+          sx={{ overflow: "scroll" }}
+        >
+          {isLoadingShow || !taskShow ? (
+            <Backdrop open={true} sx={{ background: "white" }}>
+              <CircularProgress size={80} color="black" />
+            </Backdrop>
+          ) : (
+            <Show
+              {...{
+                task: taskShow,
+                project,
+                isSaving,
+                currentTimerId: currentTimer?.id,
+                isTimerStarted: currentTimer?.task_id === taskShow.id,
+                markAsCompleted: handleCompleteTask,
+                stopTimer,
+                startTimer,
+                getSelectedFork,
+                handleSaveTask,
+                closeShowModal: handleCloseShowModal,
+              }}
+            />
+          )}
+        </Modal>
+      )}
+      {renderSaveSnackbar()}
     </MDBox>
   );
 }

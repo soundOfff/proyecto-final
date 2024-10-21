@@ -69,6 +69,19 @@ export async function allowedFields(body) {
   return data;
 }
 
+export async function disableGroup(groupId, body) {
+  const url = new URL(
+    `${process.env.API_URL}/mail-template-groups/${groupId}/update-many`
+  );
+
+  await customFetch(url, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+
+  revalidatePath("/mail-templates");
+}
+
 export async function sendTestEmail(payload = {}) {
   const url = new URL(`${process.env.API_URL}/mail-templates-send`);
 

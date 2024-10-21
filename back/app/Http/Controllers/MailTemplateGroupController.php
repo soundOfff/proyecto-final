@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MailTemplateGroupResourceCollection;
 use App\Models\MailTemplateGroup;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class MailTemplateGroupController extends Controller
@@ -19,5 +18,16 @@ class MailTemplateGroupController extends Controller
             : $query->get();
 
         return new MailTemplateGroupResourceCollection($groups);
+    }
+
+    public function updateManyMailTemplates(MailTemplateGroup $group)
+    {
+        $data = request()->validate([
+            'disabled' => 'required|boolean',
+        ]);
+
+        $group->mailTemplates()->update($data);
+
+        return response()->json(null, 204);
     }
 }

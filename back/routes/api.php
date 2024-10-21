@@ -267,6 +267,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mail-templates-languages', [MailTemplateLanguageController::class, 'index']);
 
     Route::get('/mail-template-groups', [MailTemplateGroupController::class, 'index']);
+    Route::put('/mail-template-groups/{group}/update-many', [MailTemplateGroupController::class, 'updateManyMailTemplates']);
 
     Route::post('/mail-templates-send', [MailTemplateController::class, 'send']);
 

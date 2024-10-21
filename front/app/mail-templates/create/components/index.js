@@ -22,6 +22,7 @@ export default function MailTemplateIndex({ langs, groups }) {
 
   const [fields, setFields] = useState([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [isAllowedLoading, setIsAllowedLoading] = useState(false);
 
   const handleSubmit = async (values) => {
     await storeMailTemplate(values);
@@ -58,6 +59,7 @@ export default function MailTemplateIndex({ langs, groups }) {
                     editorState={editorState}
                     setEditorState={setEditorState}
                     setFields={setFields}
+                    setIsAllowedLoading={setIsAllowedLoading}
                     langs={langs}
                     groups={groups}
                     formData={{
@@ -97,6 +99,7 @@ export default function MailTemplateIndex({ langs, groups }) {
                 allowedFields={fields}
                 editorState={editorState}
                 setEditorState={setEditorState}
+                isAllowedLoading={isAllowedLoading}
               />
             </Grid>
           </Grid>

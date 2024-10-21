@@ -6,10 +6,25 @@ import Row from "./row";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDTypography from "/components/MDTypography";
-import { Link } from "@mui/material";
 import { disableGroup } from "/actions/mail-templates";
+import { useState } from "react";
 
-const renderGroup = ({ name, mailTemplates, id, index }) => {
+import Link from "next/link";
+import {
+  Autocomplete,
+  Box,
+  Divider,
+  FormControl,
+  Icon,
+  InputLabel,
+  Menu,
+  MenuItem,
+  NativeSelect,
+  Select,
+} from "@mui/material";
+import MDInput from "/components/MDInput";
+
+const renderGroup = ({ name, mailTemplates, selectedLang, id, index }) => {
   const handleUpdateState = (id, disabled) => {
     disableGroup(id, {
       disabled,
@@ -45,7 +60,7 @@ const renderGroup = ({ name, mailTemplates, id, index }) => {
             variant="text"
             onClick={() => handleUpdateState(id, 1)}
           >
-            Desabilitar todos
+            Deshabilitar todos
           </MDButton>
         </MDBox>
       </MDBox>
@@ -64,7 +79,7 @@ const renderGroup = ({ name, mailTemplates, id, index }) => {
           </MDTypography>
         ) : (
           mailTemplates
-            .filter((template) => template.lang.code == "en")
+            .filter((template) => template.lang.code === selectedLang)
             .map((template) => {
               return (
                 <Row
@@ -82,8 +97,36 @@ const renderGroup = ({ name, mailTemplates, id, index }) => {
   );
 };
 
-export default function Table({ groups }) {
-  const router = useRouter();
+export default function Table({ groups, langs }) {
+  const [selectedLang, setSelectedLang] = useState("en");
+  const [menu, setMenu] = useState(null);
+
+  const closeMenu = () => setMenu(null);
+
+  const openMenu = (event) => setMenu(event.currentTarget);
+
+  const renderMenu = () => (
+    <Menu
+      anchorEl={menu}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "left" }}
+      open={Boolean(menu)}
+      onClose={closeMenu}
+      keepMounted
+    >
+      {langs.map((lang) => (
+        <MenuItem
+          key={lang.code}
+          onClick={() => {
+            setSelectedLang(lang.code);
+            closeMenu();
+          }}
+        >
+          {lang.name}
+        </MenuItem>
+      ))}
+    </Menu>
+  );
 
   return (
     <>
@@ -97,17 +140,28 @@ export default function Table({ groups }) {
         <MDTypography variant="h4" fontWeight="medium">
           Plantillas de email
         </MDTypography>
-        <MDButton
-          type="button"
-          variant="gradient"
-          color="dark"
-          onClick={() => router.push("/mail-templates/create")}
-        >
-          Crear plantillas de mails
-        </MDButton>
+        <MDBox display="flex" justifyContent="center" gap={4}>
+          <MDButton
+            variant="contained"
+            color="dark"
+            size="small"
+            onClick={openMenu}
+          >
+            {langs.find((lang) => lang.code === selectedLang).name}
+            <Icon>keyboard_arrow_down</Icon>
+          </MDButton>
+          {renderMenu()}
+          <Link href="/mail-templates/create">
+            <MDButton type="button" variant="gradient" color="dark">
+              Crear plantillas
+            </MDButton>
+          </Link>
+        </MDBox>
       </MDBox>
       <MDBox pt={3} pb={2}>
-        {groups.map(renderGroup)}
+        {groups.map((group, index) =>
+          renderGroup({ ...group, selectedLang, index })
+        )}
       </MDBox>
     </>
   );

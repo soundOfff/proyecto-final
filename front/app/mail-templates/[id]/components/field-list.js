@@ -6,11 +6,13 @@ import MDTypography from "/components/MDTypography";
 import { EditorState, SelectionState } from "draft-js";
 import { htmlToEditorState } from "/utils/parseEditorState";
 import FieldListItem from "./field-list-item";
+import Loading from "./loading";
 
 export default function FieldList({
   editorState,
   setEditorState,
   allowedFields,
+  isAllowedLoading,
 }) {
   const handleSlugClick = (e) => {
     e.preventDefault();
@@ -51,33 +53,44 @@ export default function FieldList({
       <MDBox pl={4} pr={2} py={4}>
         <MDTypography variant="h5">Campos combinados disponibles</MDTypography>
         <Divider />
-        <Grid container spacing={2}>
-          {allowedFields.length > 0 ? (
-            <>
-              {allowedFields.map((field, index) => {
-                return (
+        {isAllowedLoading ? (
+          <MDBox p={2}>
+            <MDTypography
+              variant="body2"
+              color="text"
+              fontWeight="regular"
+              mx="auto"
+            >
+              <Loading />
+            </MDTypography>
+          </MDBox>
+        ) : (
+          <Grid container spacing={2}>
+            {allowedFields.length > 0 ? (
+              <>
+                {allowedFields.map((field, index) => (
                   <FieldListItem
                     key={index}
                     name={Object.keys(field)[0]}
                     fields={Object.values(field)[0]}
                     handleSlugClick={handleSlugClick}
                   />
-                );
-              })}
-            </>
-          ) : (
-            <MDBox p={2}>
-              <MDTypography
-                variant="body2"
-                color="text"
-                fontWeight="regular"
-                mx="auto"
-              >
-                No hay campos disponibles
-              </MDTypography>
-            </MDBox>
-          )}
-        </Grid>
+                ))}
+              </>
+            ) : (
+              <MDBox p={2}>
+                <MDTypography
+                  variant="body2"
+                  color="text"
+                  fontWeight="regular"
+                  mx="auto"
+                >
+                  No hay campos disponibles
+                </MDTypography>
+              </MDBox>
+            )}
+          </Grid>
+        )}
       </MDBox>
     </Card>
   );

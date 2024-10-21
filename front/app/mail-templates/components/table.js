@@ -1,13 +1,23 @@
 "use client";
 
-import MDBox from "/components/MDBox";
+import { useRouter } from "next/navigation";
 import Row from "./row";
+
+import MDBox from "/components/MDBox";
+import MDButton from "/components/MDButton";
 import MDTypography from "/components/MDTypography";
 import { Link } from "@mui/material";
+import { disableGroup } from "/actions/mail-templates";
 
-const renderGroup = ({ name, mailTemplates }) => {
+const renderGroup = ({ name, mailTemplates, id, index }) => {
+  const handleUpdateState = (id, disabled) => {
+    disableGroup(id, {
+      disabled,
+    });
+  };
+
   return (
-    <MDBox>
+    <MDBox key={index}>
       <MDBox
         mb={2}
         display="flex"
@@ -23,16 +33,20 @@ const renderGroup = ({ name, mailTemplates }) => {
           </MDTypography>
         </MDBox>
         <MDBox display="flex" gap={2} pr={8}>
-          <Link href="#" underline="none">
-            <MDTypography color="dark" variant="button">
-              Habilitar todos
-            </MDTypography>
-          </Link>
-          <Link href="#" underline="none">
-            <MDTypography color="primary" variant="button">
-              Desabilitar todos
-            </MDTypography>
-          </Link>
+          <MDButton
+            color="dark"
+            variant="text"
+            onClick={() => handleUpdateState(id, 0)}
+          >
+            Habilitar todos
+          </MDButton>
+          <MDButton
+            color="primary"
+            variant="text"
+            onClick={() => handleUpdateState(id, 1)}
+          >
+            Desabilitar todos
+          </MDButton>
         </MDBox>
       </MDBox>
       <MDBox
@@ -69,12 +83,28 @@ const renderGroup = ({ name, mailTemplates }) => {
 };
 
 export default function Table({ groups }) {
+  const router = useRouter();
+
   return (
     <>
-      <MDBox pt={3} px={6}>
+      <MDBox
+        pt={3}
+        px={6}
+        display="flex"
+        justifyContent="space-between"
+        alignContent="center"
+      >
         <MDTypography variant="h4" fontWeight="medium">
           Plantillas de email
         </MDTypography>
+        <MDButton
+          type="button"
+          variant="gradient"
+          color="dark"
+          onClick={() => router.push("/mail-templates/create")}
+        >
+          Crear plantillas de mails
+        </MDButton>
       </MDBox>
       <MDBox pt={3} pb={2}>
         {groups.map(renderGroup)}

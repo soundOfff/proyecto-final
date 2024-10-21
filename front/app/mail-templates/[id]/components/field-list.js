@@ -52,17 +52,31 @@ export default function FieldList({
         <MDTypography variant="h5">Campos combinados disponibles</MDTypography>
         <Divider />
         <Grid container spacing={2}>
-          {allowedFields.length &&
-            allowedFields.map((field, index) => {
-              return (
-                <FieldListItem
-                  key={index}
-                  name={Object.keys(field)[0]}
-                  fields={Object.values(field)[0]}
-                  handleSlugClick={handleSlugClick}
-                />
-              );
-            })}
+          {allowedFields.length > 0 ? (
+            <>
+              {allowedFields.map((field, index) => {
+                return (
+                  <FieldListItem
+                    key={index}
+                    name={Object.keys(field)[0]}
+                    fields={Object.values(field)[0]}
+                    handleSlugClick={handleSlugClick}
+                  />
+                );
+              })}
+            </>
+          ) : (
+            <MDBox p={2}>
+              <MDTypography
+                variant="body2"
+                color="text"
+                fontWeight="regular"
+                mx="auto"
+              >
+                No hay campos disponibles
+              </MDTypography>
+            </MDBox>
+          )}
         </Grid>
       </MDBox>
     </Card>

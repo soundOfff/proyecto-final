@@ -19,6 +19,7 @@ export default function MailTemplateForm({
   editorState,
   setEditorState,
   setFields,
+  setIsAllowedLoading,
 }) {
   const { values, errors, touched, setFieldValue, formField } = formData;
 
@@ -34,16 +35,18 @@ export default function MailTemplateForm({
     lang,
   } = formField;
 
-  const [mailTemplates, setMailTemplates] = useState([]);
-
   useEffect(() => {
     if (values[groupId.name]) {
+      setIsAllowedLoading(true);
       allowedFields({ model: MAIL_TEMPLATE_GROUP[values[groupId.name]] })
         .then((fields) => {
           setFields(fields);
         })
         .catch((error) => {
           console.log(error);
+        })
+        .finally(() => {
+          setIsAllowedLoading(false);
         });
     }
   }, [values[groupId.name]]);

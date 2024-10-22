@@ -14,14 +14,14 @@ const include = [
   "dependencies",
 ];
 
-export default function ProjectTasksKanban() {
+export default function KanbanIndex() {
   const [tasks, setTasks] = useState([]);
   const { project } = useDataProvider();
 
   const fetchTasks = useCallback(() => {
     const params = {
       include,
-      sort: "-start_date",
+      sort: "milestone_order",
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
     };
@@ -34,9 +34,5 @@ export default function ProjectTasksKanban() {
     fetchTasks();
   }, [fetchTasks]);
 
-  return (
-    <MDBox>
-      <Kanban tasks={tasks} refetch={fetchTasks} />
-    </MDBox>
-  );
+  return <Kanban tasks={tasks} refetch={fetchTasks} />;
 }

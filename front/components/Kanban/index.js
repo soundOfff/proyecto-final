@@ -48,6 +48,7 @@ export default function Kanban({ tasks, refetch }) {
     refetch,
     startTimer,
     stopTimer,
+    dispatch,
   });
 
   const renderSaveSnackbar = () => {
@@ -79,6 +80,7 @@ export default function Kanban({ tasks, refetch }) {
   return (
     <MDBox>
       <MDBox
+        mt={2}
         position="relative"
         sx={({
           palette: { light, background },

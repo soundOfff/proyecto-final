@@ -66,6 +66,9 @@ function reducer(state, action) {
     case "SET_CURRENT_TIMER": {
       return { ...state, currentTimer: action.value };
     }
+    case "SET_SNACKBAR": {
+      return { ...state, snackbar: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -89,6 +92,7 @@ function MaterialUIControllerProvider({ children }) {
         ? JSON.parse(window.localStorage.getItem("darkMode"))
         : false,
     currentTimer: null,
+    snackbar: null,
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -137,6 +141,8 @@ const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 const setCurrentTimer = (dispatch, value) =>
   dispatch({ type: "SET_CURRENT_TIMER", value });
+const setSnackbar = (dispatch, value) =>
+  dispatch({ type: "SET_SNACKBAR", value });
 
 export {
   MaterialUIControllerProvider,
@@ -152,4 +158,5 @@ export {
   setLayout,
   setDarkMode,
   setCurrentTimer,
+  setSnackbar,
 };

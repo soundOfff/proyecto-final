@@ -44,6 +44,7 @@ export default function Card({
   refetch,
   startTimer,
   stopTimer,
+  handleOpenShowModal,
   ...rest
 }) {
   const { data: session } = useSession();

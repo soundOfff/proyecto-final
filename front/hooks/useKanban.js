@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Card from "/components/Kanban/components/Card";
 import _, { moveCard } from "@asseinfo/react-kanban";
 import { update } from "/actions/tasks";
+import { setSnackbar } from "/context";
+import { editSteps } from "/actions/tasks";
 
 import {
   DONE_STATUS_ID,
@@ -19,18 +21,73 @@ export default function useKanban({
   refetch,
   startTimer,
   stopTimer,
+  dispatch,
 }) {
   const [board, setBoard] = useState({ columns: [] });
 
+  const updateMilestoneOrder = async (board) => {
+    const tasksUpdated = [];
+    let doneCount = 0;
+    let inProgressCount = 0;
+
+    board.columns.forEach((column) => {
+      if (column.id === DONE_STATUS_ID) {
+        doneCount = Number(column.cards.length);
+      }
+      if (column.id === IN_PROGRESS_ID) {
+        inProgressCount = Number(column.cards.length);
+      }
+    });
+
+    board.columns.forEach((column) => {
+      column.cards.forEach((card, index) => {
+        if (column.id === DONE_STATUS_ID) {
+          tasksUpdated.push({
+            id: card.id,
+            milestone_order: index + 1,
+          });
+        } else if (column.id === IN_PROGRESS_ID) {
+          tasksUpdated.push({
+            id: card.id,
+            milestone_order: doneCount + index + 1,
+          });
+        } else if (column.id === PENDING_ID) {
+          tasksUpdated.push({
+            id: card.id,
+            milestone_order: doneCount + inProgressCount + index + 1,
+          });
+        }
+      });
+    });
+
+    await editSteps({ tasks: tasksUpdated });
+  };
+
   const handleCardMove = async (draggingCard, source, destination) => {
-    const updatedBoard = moveCard(board, source, destination);
-    setBoard(updatedBoard);
-    await update(draggingCard.id, { task_status_id: destination.toColumnId });
     if (
-      destination.toColumnId === DONE_STATUS_ID ||
-      source.fromColumnId === DONE_STATUS_ID
+      source.fromColumnId === DONE_STATUS_ID &&
+      destination.toColumnId !== DONE_STATUS_ID
     ) {
-      refetch();
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Acción no disponible",
+        content: "No se puede mover una tarea completada",
+        bgWhite: true,
+      });
+      const updatedBoard = moveCard(board, source, {
+        toPosition: source.fromPosition,
+        toColumnId: source.fromColumnId,
+      });
+      setBoard(updatedBoard);
+    } else {
+      const updatedBoard = moveCard(board, source, destination);
+      setBoard(updatedBoard);
+      update(draggingCard.id, { task_status_id: destination.toColumnId });
+      updateMilestoneOrder(updatedBoard);
+      if (destination.toColumnId === DONE_STATUS_ID) {
+        refetch();
+      }
     }
   };
 
@@ -55,6 +112,7 @@ export default function useKanban({
                 refetch={refetch}
                 startTimer={startTimer}
                 stopTimer={stopTimer}
+                handleOpenShowModal={handleOpenShowModal}
                 onClick={() => {
                   if (!task.isBlocked) {
                     handleOpenShowModal(task.id);

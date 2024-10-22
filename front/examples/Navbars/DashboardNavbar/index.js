@@ -34,6 +34,7 @@ import MDBadge from "/components/MDBadge";
 import MDButton from "/components/MDButton";
 import MDTypography from "/components/MDTypography";
 import MDInput from "/components/MDInput";
+import MDSnackbar from "/components/MDSnackbar";
 
 // NextJS Material Dashboard 2 PRO examples
 import Breadcrumbs from "/examples/Breadcrumbs";
@@ -53,9 +54,10 @@ import {
   setTransparentNavbar,
   setMiniSidenav,
   setCurrentTimer,
+  setSnackbar,
 } from "/context";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { getCurrentTimer } from "/actions/timers";
 import { useSession } from "next-auth/react";
 import moment from "moment";
@@ -63,7 +65,6 @@ import numberFormat from "/utils/numberFormat";
 import { update as updateTimer } from "/actions/timers";
 import translate from "/locales/es/common.json";
 import { signOut } from "next-auth/react";
-import SlackIcon from "/assets/icons/slack-icon";
 
 export default function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -74,10 +75,10 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
     fixedNavbar,
     darkMode,
     currentTimer,
+    snackbar,
   } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   const route = pathname
     .split("/")
@@ -392,6 +393,12 @@ export default function DashboardNavbar({ absolute, light, isMini }) {
           </MDBox>
         )}
       </Toolbar>
+      <MDSnackbar
+        {...snackbar}
+        open={Boolean(snackbar)}
+        onClose={() => setSnackbar(dispatch, null)}
+        close={() => setSnackbar(dispatch, null)}
+      />
     </AppBar>
   );
 }

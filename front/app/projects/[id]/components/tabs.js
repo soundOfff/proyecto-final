@@ -49,7 +49,6 @@ export default function TabsComponent({ setTabIndex }) {
       <TabList orientation={tabsOrientation} onChange={handleSetTabValue}>
         <Tab label="Descripción" value="description" />
         <Tab label="Tareas" value="tasks" />
-        <Tab label="Tablero" value="kanban" />
         <Tab label="Tiempos" value="timers" />
         <Tab label="Archivos" value="files" />
         <Tab label="Proformas" value="estimates" />

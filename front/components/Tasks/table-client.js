@@ -74,7 +74,7 @@ export default function Table({ project }) {
     isFetching,
     setIsToastOpen,
     handleCreateTasks,
-  } = useTaskAttach({ project, staffId: session.staff.id });
+  } = useTaskAttach({ project, staffId: session?.staff?.id });
 
   const {
     setOpenDeleteConfirmation,
@@ -328,8 +328,8 @@ export default function Table({ project }) {
     <MDBox width="100%">
       {renderAttachSnackbar()}
       {renderSaveSnackbar()}
-      <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-9}>
-        <MDBox width="50%" display="flex" gap={5} justifyContent="flex-end">
+      <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-6}>
+        <MDBox display="flex" gap={5} justifyContent="flex-end">
           {project && (
             <Tooltip title="Solamente se puede crear desde el proceso si el caso tiene un departamento y un proceso">
               <MDBox>

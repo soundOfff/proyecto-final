@@ -17,7 +17,6 @@ import Invoices from "./Tabs/invoices";
 import Expenses from "./Tabs/expenses";
 import { DataProvider } from "/providers/DataProvider";
 import { useSearchParams } from "next/navigation";
-import ProjectTasksKanban from "./Tabs/kanban";
 
 export default function IndexComponent(props) {
   const searchParams = useSearchParams();
@@ -56,9 +55,6 @@ export default function IndexComponent(props) {
             </TabPanel>
             <TabPanel value="notes">
               <Notes />
-            </TabPanel>
-            <TabPanel value="kanban">
-              <ProjectTasksKanban />
             </TabPanel>
           </Card>
         </TabContext>

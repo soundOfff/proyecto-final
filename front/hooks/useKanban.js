@@ -83,11 +83,9 @@ export default function useKanban({
     } else {
       const updatedBoard = moveCard(board, source, destination);
       setBoard(updatedBoard);
-      update(draggingCard.id, { task_status_id: destination.toColumnId });
-      updateMilestoneOrder(updatedBoard);
-      if (destination.toColumnId === DONE_STATUS_ID) {
-        refetch();
-      }
+      await update(draggingCard.id, { task_status_id: destination.toColumnId });
+      await updateMilestoneOrder(updatedBoard);
+      await refetch();
     }
   };
 

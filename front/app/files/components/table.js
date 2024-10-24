@@ -34,13 +34,13 @@ export default function Table({ rows, meta }) {
       <Link href={{ pathname: "tasks", query: { taskId: row.fileableId } }}>
         <MDTypography variant="button" color="link" fontSize="small">
           {row.fileable
-            ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType].key]
+            ? row.fileable[MAPPED_FILEABLE_TYPES[row.fileableType]?.key]
             : "Sin nombre"}
         </MDTypography>
       </Link>
     ) : (
       <Link
-        href={`${MAPPED_FILEABLE_TYPES[row.fileableType].url}/${
+        href={`${MAPPED_FILEABLE_TYPES[row.fileableType]?.url}/${
           row.fileableId
         }`}
         sx={{ cursor: "pointer", color: "link" }}

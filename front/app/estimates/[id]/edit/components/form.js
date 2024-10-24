@@ -20,6 +20,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { update as updateEstimate } from "/actions/estimates";
 
+import { useMaterialUIController, setSnackbar } from "/context";
+
 import { useState } from "react";
 
 const steps = [
@@ -44,6 +46,7 @@ export default function FormComponent({
   discountTypes,
   subServiceTypes,
 }) {
+  const [controller, dispatch] = useMaterialUIController();
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
@@ -112,13 +115,18 @@ export default function FormComponent({
 
   const handleBack = () => setActiveStep(activeStep - 1);
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       await updateEstimate(estimate.id, values);
       returnToSource();
     } catch (error) {
-      setErrorSB(true);
-      setErrorMsg(error.message);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al guardar la proforma",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 

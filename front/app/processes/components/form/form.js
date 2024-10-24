@@ -19,19 +19,20 @@ import { useRouter } from "next/navigation";
 import { update } from "/actions/processes";
 import { useSession } from "next-auth/react";
 
+import { useMaterialUIController, setSnackbar } from "/context";
+
 export default function FormComponent({
   projectServiceTypes,
   process,
   processes,
   staffData,
 }) {
+  const [controller, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
   const { data: session } = useSession();
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       if (process) {
         await update(process.id, { ...values, author_id: session.staff.id });
@@ -40,8 +41,13 @@ export default function FormComponent({
       }
       router.push("/processes");
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "No se pudo guardar el proceso",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -70,16 +76,6 @@ export default function FormComponent({
               <Form id={formId} autoComplete="off">
                 <Card sx={{ height: "100%" }}>
                   <MDBox py={5} px={1}>
-                    <MDSnackbar
-                      color="error"
-                      icon="warning"
-                      title="Error"
-                      content={errorMsg}
-                      open={errorSB}
-                      onClose={() => setErrorSB(false)}
-                      close={() => setErrorSB(false)}
-                      bgWhite
-                    />
                     <MDBox pb={3} px={3}>
                       <FormContent
                         {...{

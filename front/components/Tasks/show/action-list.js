@@ -4,7 +4,6 @@ import { Grid, Tooltip } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import GavelIcon from "@mui/icons-material/Gavel";
@@ -22,6 +21,7 @@ import { dispatchAction } from "/actions/action-types";
 import { useDataProvider } from "/providers/DataProvider";
 import { useState } from "react";
 import Link from "next/link";
+import { useMaterialUIController, setSnackbar } from "/context";
 
 const renderIcon = (type) => {
   if (type === ACTION_EXPENSE) {
@@ -36,9 +36,9 @@ const renderIcon = (type) => {
 };
 
 export default function ActionList() {
+  const [controller, dispatch] = useMaterialUIController();
+
   const { task } = useDataProvider();
-  const [actionDispatchedSuccess, setActionDispatchedSuccess] = useState(false);
-  const [actionDispatchedError, setActionDispatchedError] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [actionDispatched, setActionDispatched] = useState({});
 
@@ -46,44 +46,24 @@ export default function ActionList() {
     setActionLoading(true);
     try {
       const data = await dispatchAction(task.id, actionId);
-      setActionDispatchedSuccess(true);
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "check_circle",
+        title: "Exito al disparar la acción",
+        content: "La acción fue disparada con éxito",
+        bgWhite: true,
+      });
       setActionDispatched({ ...actionDispatched, [actionId]: data.success });
     } catch (error) {
-      setActionDispatchedError(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al disparar la acción",
+        content: error?.message,
+        bgWhite: true,
+      });
     } finally {
       setActionLoading(false);
-    }
-  };
-
-  const renderSnackbar = () => {
-    if (actionDispatchedError) {
-      return (
-        <MDSnackbar
-          color="error"
-          icon="warning"
-          title="Error"
-          content="Hubo un error al seleccionar el paso"
-          open={actionDispatchedError}
-          onClose={() => setActionDispatchedError(false)}
-          close={() => setActionDispatchedError(false)}
-          bgWhite
-        />
-      );
-    }
-
-    if (actionDispatchedSuccess) {
-      return (
-        <MDSnackbar
-          color="success"
-          icon="check_circle"
-          title="Exito"
-          content="La acción fue disparada con éxito"
-          open={actionDispatchedSuccess}
-          onClose={() => setActionDispatchedSuccess(false)}
-          close={() => setActionDispatchedSuccess(false)}
-          bgWhite
-        />
-      );
     }
   };
 
@@ -131,7 +111,6 @@ export default function ActionList() {
 
   return (
     <>
-      {renderSnackbar()}
       {task?.procedure?.actions.length > 0 && (
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" mb={2}>
@@ -195,9 +174,7 @@ export default function ActionList() {
                     <MDBox mr={1}>
                       <Tooltip
                         title={
-                          Boolean(is_dispatched) ||
-                          actionDispatched[id] ||
-                          actionLoading
+                          Boolean(is_dispatched) || actionDispatched[id]
                             ? "La accion ya fue previamente disparada"
                             : ""
                         }

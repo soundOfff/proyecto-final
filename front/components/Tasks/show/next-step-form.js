@@ -11,12 +11,10 @@ import { useSession } from "next-auth/react";
 
 import { attachTasks } from "/actions/projects";
 
-export default function NextStepForm({
-  task,
-  selectedFork,
-  setErrorSB,
-  setCreatedSB,
-}) {
+import { useMaterialUIController, setSnackbar } from "/context";
+
+export default function NextStepForm({ task, selectedFork }) {
+  const [controller, dispatch] = useMaterialUIController();
   const { data: session } = useSession();
 
   const [selectedProcess, setSelectedProcess] = useState(selectedFork);
@@ -30,9 +28,21 @@ export default function NextStepForm({
         processId: selectedProcess.id,
         staffId: session.staff.id,
       });
-      setCreatedSB(true);
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "check_circle",
+        title: "El paso se ha seleccionado correctamente",
+        content: "Se han creado las tareas correspondientes",
+        bgWhite: true,
+      });
     } catch (error) {
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al seleccionar paso",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
     setIsAttachingTasks(false);
   };

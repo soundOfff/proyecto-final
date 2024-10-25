@@ -2,7 +2,6 @@
 
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { Grid, Card } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -27,7 +26,7 @@ export default function FormComponent({
   processes,
   staffData,
 }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
   const router = useRouter();
   const { data: session } = useSession();

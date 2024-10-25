@@ -11,7 +11,6 @@ import Loading from "./skeleton";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 import MDInput from "/components/MDInput";
 
@@ -31,16 +30,13 @@ import UnarchiveIcon from "@mui/icons-material/Unarchive";
 
 import { MAPPED_NOTIFIABLE_TYPES } from "/utils/constants/notifiableTypes";
 
+import { useMaterialUIController, setSnackbar } from "/context";
+
 import useDeleteRow from "/hooks/useDeleteRow";
 import DeleteRow from "/components/DeleteRow";
 import Modal from "/components/Modal";
 
-import {
-  updateMany,
-  archiveMany,
-  destroy,
-  update,
-} from "/actions/notifications";
+import { updateMany, archiveMany, destroy } from "/actions/notifications";
 import useTabs from "/hooks/useTabs";
 import { INVOICE_TYPE, PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getPriorityColor } from "/utils/project-state-colors";
@@ -61,10 +57,8 @@ const TAB_TYPES = [
 ];
 
 export default function Table({ rows }) {
+  const [_, dispatch] = useMaterialUIController();
   const [isUpdating, setIsUpdating] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
-  const [successSB, setSuccessSB] = useState(false);
-  const [infoSB, setInfoSB] = useState("");
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
   const [menu, setMenu] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
@@ -170,12 +164,22 @@ export default function Table({ rows }) {
   const handleUpdateSeen = async (id, isSeen) => {
     try {
       await updateMany({ notification_ids: [id], is_seen: Number(isSeen) });
-      setSuccessSB(true);
-      setInfoSB("Notificacion marcada como vista");
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "Notificacion marcada como vista",
+        content: "La notificacion ha sido marcada como vista",
+        bgWhite: true,
+      });
     } catch (error) {
       console.error(error);
-      setErrorSB(true);
-      setInfoSB("Error al marcar la notificacion como vista");
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al marcar notificacion como vista",
+        content: "Por favor, intente de nuevo",
+        bgWhite: true,
+      });
     }
   };
 
@@ -186,12 +190,22 @@ export default function Table({ rows }) {
         notification_ids: selectedNotificationIds,
         is_seen: Number(isSeen),
       });
-      setSuccessSB(true);
-      setInfoSB("Notificaciones marcadas como vistas");
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "Notificaciones marcadas como vistas",
+        content: "Las notificaciones han sido marcadas como vistas",
+        bgWhite: true,
+      });
     } catch (error) {
       console.error(error);
-      setErrorSB(true);
-      setInfoSB("Error al marcar las notificaciones como vistas");
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al marcar notificaciones como vistas",
+        content: "Por favor, intente de nuevo",
+        bgWhite: true,
+      });
     } finally {
       setSelectedNotificationIds([]);
     }
@@ -204,12 +218,22 @@ export default function Table({ rows }) {
         notification_ids: [id],
         is_archived: Number(isArchived),
       });
-      setSuccessSB(true);
-      setInfoSB("Notificacion archivada correctamente");
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "Notificaciones archivadas correctamente",
+        content: "La notificacion ha sido archivada",
+        bgWhite: true,
+      });
     } catch (error) {
       console.error(error);
-      setErrorSB(true);
-      setInfoSB("Error al marcar la notificacion como archivada");
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "Error al archivar notificaciones",
+        content: "Error al marcar la notificacion como archivada",
+        bgWhite: true,
+      });
     }
   };
 
@@ -220,63 +244,26 @@ export default function Table({ rows }) {
         notification_ids: selectedNotificationIds,
         is_archived: Number(isArchived),
       });
-      setSuccessSB(true);
-      setInfoSB("Notificaciones archivadas correctamente");
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "Notificaciones archivadas",
+        content: "Las notificaciones han sido archivadas",
+        bgWhite: true,
+      });
     } catch (error) {
       console.error(error);
-      setErrorSB(true);
-      setInfoSB("Error al archivar las notificaciones");
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al archivar notificaciones",
+        content: "Por favor, intente de nuevo",
+        bgWhite: true,
+      });
     } finally {
       setSelectedNotificationIds([]);
     }
     setIsUpdating(false);
-  };
-
-  const handleUpdatePriority = async (id, value) => {
-    try {
-      await update(id, {
-        notification_priority_id: value,
-      });
-      setSuccessSB(true);
-      setInfoSB("Prioridad actualizada correctamente");
-    } catch (error) {
-      console.error(error);
-      setErrorSB(true);
-      setInfoSB("Error al actualizar la prioridad");
-    }
-  };
-
-  const renderSnackbar = () => {
-    if (isUpdating) return;
-    if (errorSB) {
-      return (
-        <MDSnackbar
-          color="error"
-          icon="warning"
-          title="Error al actualizar notificaciones"
-          content={infoSB}
-          open={errorSB}
-          onClose={() => setErrorSB(false)}
-          close={() => setErrorSB(false)}
-          bgWhite
-        />
-      );
-    }
-
-    if (successSB) {
-      return (
-        <MDSnackbar
-          color="success"
-          icon="check"
-          title="Notificaciones actualizadas"
-          content={infoSB}
-          open={successSB}
-          onClose={() => setSuccessSB(false)}
-          close={() => setSuccessSB(false)}
-          bgWhite
-        />
-      );
-    }
   };
 
   const renderMenu = (
@@ -585,7 +572,6 @@ export default function Table({ rows }) {
         </Tabs>
       </MDBox>
       <MDBox>
-        {renderSnackbar()}
         {isLoading ? (
           <Loading count={table.rows?.length} />
         ) : (

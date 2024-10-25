@@ -1,7 +1,6 @@
 "use client";
 
 import MDBox from "/components/MDBox";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { Card, Grid } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -10,7 +9,8 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import form from "./schemas/form";
 
-import { useState } from "react";
+import { useMaterialUIController, setSnackbar } from "/context";
+
 import {
   store as storeProject,
   update as updateProject,
@@ -30,9 +30,8 @@ export default function Index({
   roles,
   courts,
 }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
 
   const submitForm = async (values) => {
@@ -45,8 +44,13 @@ export default function Index({
         router.push(`/projects/${newProject.id}?tab=description`);
       }
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al guardar project",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -56,16 +60,6 @@ export default function Index({
 
   return (
     <MDBox mb={10}>
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Error"
-        content={errorMsg}
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <Grid
         container
         justifyContent="center"

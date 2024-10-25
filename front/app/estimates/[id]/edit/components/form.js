@@ -2,7 +2,6 @@
 
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { Grid, Card, Step, StepLabel, Stepper } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -48,12 +47,11 @@ export default function FormComponent({
 }) {
   const [controller, dispatch] = useMaterialUIController();
   const [activeStep, setActiveStep] = useState(0);
+  const [cancelSB, setCancelSB] = useState(false);
+
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [cancelSB, setCancelSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -162,16 +160,6 @@ export default function FormComponent({
               <Form id={formId} autoComplete="off">
                 <Card sx={{ height: "100%" }}>
                   <MDBox mx={2} mt={-3}>
-                    <MDSnackbar
-                      color="error"
-                      icon="warning"
-                      title="Error"
-                      content={errorMsg}
-                      open={errorSB}
-                      onClose={() => setErrorSB(false)}
-                      close={() => setErrorSB(false)}
-                      bgWhite
-                    />
                     <CancelModal
                       setOpenConfirmation={setCancelSB}
                       openConfirmation={cancelSB}

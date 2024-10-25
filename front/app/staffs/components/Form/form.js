@@ -1,60 +1,48 @@
 "use client";
 
-import MDBox from "/components/MDBox";
-import MDButton from "/components/MDButton";
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
+
 import { Form, Formik } from "formik";
 import FormContent from "./formContent";
-import { store, update } from "/actions/staffs";
-import MDSnackbar from "/components/MDSnackbar";
-import { useState } from "react";
+
+import MDBox from "/components/MDBox";
+import MDButton from "/components/MDButton";
+
 import Link from "next/link";
 
+import { store, update } from "/actions/staffs";
+
+import { useMaterialUIController, setSnackbar } from "/context";
+
 export default function StaffForm({ staff = null }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formField, formId } = form;
-  const [isUpdated, setIsUpdated] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   const handleSubmit = async (values) => {
     if (staff) {
       try {
         await update(staff.id, values);
-        setIsUpdated(true);
+        setSnackbar(dispatch, {
+          color: "success",
+          icon: "done",
+          title: "Staff actualizado",
+          content: "Staff actualizado con éxito",
+          bgWhite: true,
+        });
       } catch (error) {
-        setIsError(true);
-        console.error(error);
+        setSnackbar(dispatch, {
+          color: "error",
+          icon: "warning",
+          title: "Error al actualizar staff",
+          content: error?.message,
+          bgWhite: true,
+        });
       }
-      return;
+    } else {
+      await store(values);
     }
-    await store(values);
-  };
-
-  const renderSnackbar = () => {
-    return isUpdated ? (
-      <MDSnackbar
-        color="success"
-        icon="done"
-        title="Staff actualizado"
-        content={"Staff actualizado con éxito"}
-        open={isUpdated}
-        onClose={() => setIsUpdated(false)}
-        close={() => setIsUpdated(false)}
-        bgWhite
-      />
-    ) : isError ? (
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Error al actualizar staff"
-        content={"Ocurrió un error al actualizar el staff, intente de nuevo"}
-        open={isError}
-        onClose={() => setIsError(false)}
-        close={() => setIsError(false)}
-        bgWhite
-      />
-    ) : null;
   };
 
   return (
@@ -65,7 +53,6 @@ export default function StaffForm({ staff = null }) {
     >
       {({ values, errors, touched, isSubmitting, setFieldValue }) => (
         <Form id={formId} autoComplete="off">
-          {renderSnackbar()}
           <MDBox
             color="white"
             bgColor="dark"

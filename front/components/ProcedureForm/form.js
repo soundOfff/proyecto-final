@@ -1,18 +1,21 @@
 "use client";
 
 import { Formik, Form } from "formik";
+
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import Link from "next/link";
+
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
-import MDSnackbar from "/components/MDSnackbar";
+
 import { store, update } from "/actions/procedures";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+
+import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({
   processId,
@@ -22,13 +25,12 @@ export default function FormComponent({
   actionTypes,
   mailTemplates = [],
 }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
   const { data: session } = useSession();
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       if (procedure) {
         await update(procedure.id, {
@@ -52,8 +54,13 @@ export default function FormComponent({
         router.push(`/processes/${processId}`);
       }
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al guardar el procedimiento",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -78,16 +85,6 @@ export default function FormComponent({
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="Error"
-              content={errorMsg}
-              open={errorSB}
-              onClose={() => setErrorSB(false)}
-              close={() => setErrorSB(false)}
-              bgWhite
-            />
             <FormContent
               {...{
                 values,

@@ -5,26 +5,30 @@ import { Form, Formik } from "formik";
 import { FormControlLabel, FormGroup, Grid, Switch } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 import MDTypography from "/components/MDTypography";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import notRequiredValidations from "./schemas/notRequiredValidations";
 import PersonForm from "./form";
 import { store as storePartner } from "/actions/partners";
+import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function Index({ countries, handleClose, setFieldValue }) {
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
+  const [_, dispatch] = useMaterialUIController();
   const [isRequired, setIsRequired] = useState(true);
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       const partner = await storePartner(values);
       setFieldValue("related_partner_id", partner.id);
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al crear la persona relacionada",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -68,16 +72,6 @@ export default function Index({ countries, handleClose, setFieldValue }) {
       >
         {({ errors, values, touched, setFieldValue }) => (
           <Form autoComplete="off">
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="Error"
-              content={errorMsg}
-              open={errorSB}
-              onClose={() => setErrorSB(false)}
-              close={() => setErrorSB(false)}
-              bgWhite
-            />
             <PersonForm
               errors={errors}
               values={values}

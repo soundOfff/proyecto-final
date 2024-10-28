@@ -13,7 +13,7 @@ import { store, update } from "/actions/courts";
 import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({ court }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
   const searchParams = useSearchParams();
   const router = useRouter();

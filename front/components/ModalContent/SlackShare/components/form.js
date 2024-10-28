@@ -1,26 +1,24 @@
 "use client";
 
 import { Formik, Form } from "formik";
+
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+
 import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./form-content";
-import MDSnackbar from "/components/MDSnackbar";
+
 import { useEffect, useState } from "react";
 import { sendSlackNotification } from "/actions/notifications";
 import { useSession } from "next-auth/react";
 import { select } from "/actions/staffs";
+import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({ handleClose, modelId, modelType }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
-  const [successMessage, setSuccessMessage] = useState(
-    "Notificación enviada correctamente"
-  );
-  const [successSB, setSuccessSB] = useState(false);
   const { data: session } = useSession();
   const [staffs, setStaffs] = useState([]);
 
@@ -33,11 +31,22 @@ export default function FormComponent({ handleClose, modelId, modelType }) {
         model_type: modelType,
       });
       actions.resetForm();
-      setSuccessSB(true);
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "success",
+        title: "Enviado",
+        content: "La notificación ha sido enviada correctamente",
+        bgWhite: true,
+      });
       handleClose();
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al enviar la notificación",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -68,26 +77,6 @@ export default function FormComponent({ handleClose, modelId, modelType }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
-            <MDSnackbar
-              color="success"
-              icon="success"
-              title="Enviado"
-              content={successMessage}
-              open={successSB}
-              onClose={() => setSuccessSB(false)}
-              close={() => setSuccessSB(false)}
-              bgWhite
-            />
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="Error"
-              content={errorMsg}
-              open={errorSB}
-              onClose={() => setErrorSB(false)}
-              close={() => setErrorSB(false)}
-              bgWhite
-            />
             <FormContent
               {...{
                 values,

@@ -17,7 +17,6 @@ import Show from "/components/Tasks/show";
 import { useDataProvider } from "/providers/DataProvider";
 import Modal from "/components/Modal";
 import { Backdrop, CircularProgress } from "@mui/material";
-import MDSnackbar from "/components/MDSnackbar";
 
 export default function Kanban({ tasks, refetch }) {
   const { project } = useDataProvider();
@@ -30,8 +29,6 @@ export default function Kanban({ tasks, refetch }) {
     handleOpenModal: handleOpenShowModal,
     handleCloseModal: handleCloseShowModal,
     isSaving,
-    successOnSaveSB,
-    errorOnSaveSB,
     handleCompleteTask,
     getSelectedFork,
     stopTimer,

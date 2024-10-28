@@ -57,7 +57,7 @@ import Image from "next/image";
 
 function Sidenav({
   color = "dark",
-  brand = "Velo Legal",
+  brand = "Brandfactors",
   brandName,
   routes,
   ...rest

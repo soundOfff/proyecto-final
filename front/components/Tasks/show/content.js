@@ -131,60 +131,50 @@ export default function Content({ selectedFork }) {
               </MDTypography>
             </Link>
           )}
-          <MDBox
-            sx={{
-              gap: "10px",
-              display: "flex",
-              paddingTop: "10px",
-              alignItems: "start",
-            }}
-          >
-            {task.status_id !== DONE_STATUS_ID ? (
-              <MDButton
-                color="info"
-                size="small"
-                sx={{ maxHeight: "50px" }}
-                onClick={() => markAsCompleted(task.id)}
-              >
-                Completar tarea
+          <Grid container spacing={2} mt={2}>
+            <Grid item xs={12} lg={3} mx="auto">
+              {task.status_id !== DONE_STATUS_ID ? (
+                <MDButton
+                  color="info"
+                  size="small"
+                  onClick={() => markAsCompleted(task.id)}
+                >
+                  Completar tarea
+                </MDButton>
+              ) : (
+                <MDButton color="dark" size="small">
+                  Tarea Completada
+                </MDButton>
+              )}
+            </Grid>
+            <Grid item xs={12} lg={3}>
+              {isTimerStarted ? (
+                <MDButton
+                  color="primary"
+                  size="small"
+                  onClick={() => setIsStoppingTimer(true)}
+                >
+                  Detener temporizador
+                </MDButton>
+              ) : (
+                <MDButton
+                  color="success"
+                  size="small"
+                  onClick={() => startTimer(task.id, session.staff.id)}
+                >
+                  Iniciar temporizador
+                </MDButton>
+              )}
+            </Grid>
+            <Grid item xs={12} lg={3}>
+              <MDButton color="error" onClick={handleDeleteTask}>
+                Eliminar Tarea
               </MDButton>
-            ) : (
-              <MDButton color="dark" size="small" sx={{ maxHeight: "50px" }}>
-                Tarea Completada
-              </MDButton>
-            )}
-            {isTimerStarted ? (
-              <MDButton
-                color="primary"
-                size="small"
-                sx={{ maxHeight: "50px" }}
-                onClick={() => setIsStoppingTimer(true)}
-              >
-                Detener temporizador
-              </MDButton>
-            ) : (
-              <MDButton
-                color="success"
-                sx={{ maxHeight: "50px" }}
-                size="small"
-                onClick={() => startTimer(task.id, session.staff.id)}
-              >
-                Iniciar temporizador
-              </MDButton>
-            )}
-
-            <MDButton
-              color="error"
-              size="small"
-              sx={{ maxHeight: "50px" }}
-              onClick={handleDeleteTask}
-            >
-              Eliminar Tarea
-            </MDButton>
-
-            <SlackShare modelId={task.id} modelType="Task" />
-
-            <MDBox display="flex" flexDirection="row" width="60%">
+            </Grid>
+            <Grid item xs={12} lg={3}>
+              <SlackShare modelId={task.id} modelType="Task" />
+            </Grid>
+            <Grid item display="flex" flexDirection="row" width="100%">
               {isStoppingTimer && (
                 <>
                   <Card
@@ -218,8 +208,8 @@ export default function Content({ selectedFork }) {
                   </Card>
                 </>
               )}
-            </MDBox>
-          </MDBox>
+            </Grid>
+          </Grid>
         </MDBox>
         <Divider />
         {shouldShowNextStepForm && (

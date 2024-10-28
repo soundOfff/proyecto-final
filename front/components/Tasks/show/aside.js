@@ -360,12 +360,11 @@ export default function Aside() {
               )}
             />
             <Divider sx={{ width: "100%" }} />
-            <MDBox display="flex" justifyContent="space-between" mt={2}>
+            <MDBox display="flex" justifyContent="space-between" gap={2}>
               <MDButton
                 variant="gradient"
                 color="light"
                 type="button"
-                sx={{ maxHeight: "50px" }}
                 onClick={closeShowModal}
               >
                 Cancelar
@@ -374,7 +373,6 @@ export default function Aside() {
                 variant="gradient"
                 color="info"
                 type="button"
-                sx={{ maxHeight: "50px" }}
                 disabled={isSaving}
                 onClick={saveTask}
               >

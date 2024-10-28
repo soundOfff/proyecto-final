@@ -34,7 +34,7 @@ function Breadcrumbs({ icon, title, route, light = false }) {
   const { caseName, loading } = useCaseName(caseId);
 
   const getPageTitle = () =>
-    "Velo CRM - " +
+    "CRM Brandfactors - " +
     pathRoutes
       .filter((el) => !el.match(/\d+/))
       .map((el) => translate[el] ?? el)

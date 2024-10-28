@@ -45,7 +45,7 @@ export default function FormComponent({
   discountTypes,
   subServiceTypes,
 }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const [activeStep, setActiveStep] = useState(0);
   const [cancelSB, setCancelSB] = useState(false);
 

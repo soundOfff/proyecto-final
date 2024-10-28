@@ -14,7 +14,7 @@ import { useSession } from "next-auth/react";
 import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({ apiUrl }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
   const searchParams = useSearchParams();
   const router = useRouter();

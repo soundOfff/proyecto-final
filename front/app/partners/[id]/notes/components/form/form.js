@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({ partnerId }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
   const router = useRouter();
 

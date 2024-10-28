@@ -36,7 +36,7 @@ const renderIcon = (type) => {
 };
 
 export default function ActionList() {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
 
   const { task } = useDataProvider();
   const [actionLoading, setActionLoading] = useState(false);

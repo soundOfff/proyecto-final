@@ -29,7 +29,7 @@ export default function FormComponent({
   apiUrl,
   repeats,
 }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const { formId, formField } = form;
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();

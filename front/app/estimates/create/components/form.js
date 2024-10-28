@@ -46,7 +46,7 @@ export default function FormComponent({
   defaultCurrency,
 }) {
   const router = useRouter();
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const searchParams = useSearchParams();
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];

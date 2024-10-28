@@ -29,7 +29,7 @@ export default function FormComponent({
   countries,
   partnerTypes,
 }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(Boolean(partner?.company));
   const [isRequired, setIsRequired] = useState(true);

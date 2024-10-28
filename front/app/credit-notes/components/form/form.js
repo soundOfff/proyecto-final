@@ -38,7 +38,7 @@ export default function FormComponent({
   countries,
   creditNote,
 }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;

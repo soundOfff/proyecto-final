@@ -25,7 +25,7 @@ import {
 import { sendTestEmail } from "/actions/mail-templates";
 
 export default function MailTemplateIndex({ mailTemplate, langs }) {
-  const [controller, dispatch] = useMaterialUIController();
+  const [_, dispatch] = useMaterialUIController();
   const { formField, formId } = form;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());

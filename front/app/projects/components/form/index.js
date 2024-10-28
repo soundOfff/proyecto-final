@@ -47,7 +47,7 @@ export default function Index({
       setSnackbar(dispatch, {
         color: "error",
         icon: "warning",
-        title: "Error al guardar project",
+        title: "Error al guardar caso",
         content: error?.message,
         bgWhite: true,
       });

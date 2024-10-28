@@ -47,7 +47,7 @@ export default function ProjectCopyForm({ closeModal, project }) {
       setSnackbar(dispatch, {
         color: "error",
         icon: "warning",
-        title: "Error al copiar el proyecto",
+        title: "Error al copiar el caso",
         content: error?.message,
         bgWhite: true,
       });

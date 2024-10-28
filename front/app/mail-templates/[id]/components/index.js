@@ -9,13 +9,14 @@ import FormContent from "./form";
 import form from "./schemas/form";
 import initialValues from "./schemas/initial-values";
 import validations from "./schemas/validations";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { update } from "/actions/mail-templates";
 import FieldList from "./field-list";
 import { EditorState } from "draft-js";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { useMaterialUIController, setSnackbar } from "/context";
 
 import {
   allowedFields,
@@ -24,6 +25,7 @@ import {
 import { sendTestEmail } from "/actions/mail-templates";
 
 export default function MailTemplateIndex({ mailTemplate, langs }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formField, formId } = form;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -44,10 +46,22 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
         template_id: mailTemplate.id,
         to: "testing@gmail.com", // TODO: Remove this, only hardcoded for testing
       });
-      setMailSended(true);
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "Mail creado correctamente",
+        content: `Mail sended to the test env using the template: ${mailTemplate.event} and on ${mailTemplate.lang.name} language`,
+        bgWhite: true,
+      });
     } catch (error) {
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al guardar la nota de crédito",
+        content: error?.message,
+        bgWhite: true,
+      });
       console.error(error);
-      setMailSended(false);
     }
   };
 
@@ -71,16 +85,6 @@ export default function MailTemplateIndex({ mailTemplate, langs }) {
     >
       {({ values, errors, touched, isSubmitting, setFieldValue }) => (
         <MDBox mb={3} width="100%">
-          <MDSnackbar
-            color="success"
-            icon="check"
-            title="Mail sended successfully"
-            content={`Mail sended to the test env using the template: ${mailTemplate.event} and on ${mailTemplate.lang.name} language`}
-            open={mailSended}
-            onClose={() => setMailSended(false)}
-            close={() => setMailSended(false)}
-            bgWhite
-          />
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>
               <Form id={formId} autoComplete="off">

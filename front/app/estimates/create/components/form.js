@@ -2,7 +2,6 @@
 
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { Grid, Card, Step, StepLabel, Stepper } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -16,6 +15,8 @@ import validations from "./schemas/validations";
 import form from "./schemas/form";
 
 import { store as storeEstimate } from "/actions/estimates";
+
+import { useMaterialUIController, setSnackbar } from "/context";
 
 import { useState } from "react";
 import CancelModal from "/components/CancelModal";
@@ -45,15 +46,14 @@ export default function FormComponent({
   defaultCurrency,
 }) {
   const router = useRouter();
+  const [_, dispatch] = useMaterialUIController();
   const searchParams = useSearchParams();
   const [activeStep, setActiveStep] = useState(0);
   const currentValidation = validations[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const { formId, formField } = form;
   const { number, currency } = formField;
-  const [errorSB, setErrorSB] = useState(false);
   const [cancelSB, setCancelSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   initialValues[number.name] = `00${Number(maxEstimateId) + 1}`;
   initialValues[currency.name] = defaultCurrency.id;
 
@@ -117,8 +117,13 @@ export default function FormComponent({
       await storeEstimate(values);
       returnToSource();
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al crear la proforma",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -152,16 +157,6 @@ export default function FormComponent({
             }) => (
               <Form id={formId} autoComplete="off">
                 <Card sx={{ height: "100%" }}>
-                  <MDSnackbar
-                    color="error"
-                    icon="warning"
-                    title="Error"
-                    content={errorMsg}
-                    open={errorSB}
-                    onClose={() => setErrorSB(false)}
-                    close={() => setErrorSB(false)}
-                    bgWhite
-                  />
                   <CancelModal
                     setOpenConfirmation={setCancelSB}
                     openConfirmation={cancelSB}

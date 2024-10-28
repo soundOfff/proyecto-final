@@ -17,7 +17,6 @@ import Show from "/components/Tasks/show";
 import { useDataProvider } from "/providers/DataProvider";
 import Modal from "/components/Modal";
 import { Backdrop, CircularProgress } from "@mui/material";
-import MDSnackbar from "/components/MDSnackbar";
 
 export default function Kanban({ tasks, refetch }) {
   const { project } = useDataProvider();
@@ -30,15 +29,11 @@ export default function Kanban({ tasks, refetch }) {
     handleOpenModal: handleOpenShowModal,
     handleCloseModal: handleCloseShowModal,
     isSaving,
-    successOnSaveSB,
-    errorOnSaveSB,
     handleCompleteTask,
     getSelectedFork,
     stopTimer,
     startTimer,
     handleSaveTask,
-    setSuccessOnSaveSB,
-    setErrorOnSaveSB,
   } = useTaskShow({ tasks, dispatch, refetch });
 
   const { board, handleCardMove } = useKanban({
@@ -50,32 +45,6 @@ export default function Kanban({ tasks, refetch }) {
     stopTimer,
     dispatch,
   });
-
-  const renderSaveSnackbar = () => {
-    return successOnSaveSB ? (
-      <MDSnackbar
-        color="success"
-        icon="info"
-        title="La tarea fue actualizada correctamente"
-        content="Se ha actualizado la tarea correctamente"
-        open={successOnSaveSB || errorOnSaveSB}
-        onClose={() => setSuccessOnSaveSB(false)}
-        close={() => setSuccessOnSaveSB(false)}
-        bgWhite
-      />
-    ) : errorOnSaveSB ? (
-      <MDSnackbar
-        color="error"
-        icon="info"
-        title="La tarea no fue actualizada correctamente"
-        content="No se ha podido actualizar la tarea, por favor intente nuevamente"
-        open={errorOnSaveSB}
-        onClose={() => setErrorOnSaveSB(false)}
-        close={() => setErrorOnSaveSB(false)}
-        bgWhite
-      />
-    ) : null;
-  };
 
   return (
     <MDBox>
@@ -98,7 +67,7 @@ export default function Kanban({ tasks, refetch }) {
       >
         <Board
           disableColumnDrag
-          renderColumnHeader={({ id, title }) => (
+          renderColumnHeader={({ title }) => (
             <MDBox
               display="flex"
               justifyContent="space-between"
@@ -167,7 +136,6 @@ export default function Kanban({ tasks, refetch }) {
           )}
         </Modal>
       )}
-      {renderSaveSnackbar()}
     </MDBox>
   );
 }

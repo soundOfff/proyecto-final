@@ -17,8 +17,8 @@ import Tabs from "./tabs";
 import form from "../schemas/form";
 import initialValues from "../schemas/initial-values";
 import validations from "../schemas/validations";
-import MDSnackbar from "/components/MDSnackbar";
-import { useRouter } from "next/navigation";
+
+import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({
   partner,
@@ -29,16 +29,14 @@ export default function FormComponent({
   countries,
   partnerTypes,
 }) {
+  const [_, dispatch] = useMaterialUIController();
   const [tabIndex, setTabIndex] = useState(0);
   const [isJuridic, setIsJuridic] = useState(Boolean(partner?.company));
   const [isRequired, setIsRequired] = useState(true);
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
-  const router = useRouter();
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       if (partner) {
         await updatePartner(partner.id, values);
@@ -46,8 +44,13 @@ export default function FormComponent({
         await storePartner(values);
       }
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "No se pudo guardar el cliente",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -74,16 +77,6 @@ export default function FormComponent({
       >
         {({ errors, values, touched, isSubmitting, setFieldValue }) => (
           <Form id={formId} autoComplete="off">
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="Error"
-              content={errorMsg}
-              open={errorSB}
-              onClose={() => setErrorSB(false)}
-              close={() => setErrorSB(false)}
-              bgWhite
-            />
             {tabIndex === 0 ? (
               <DetailForm
                 {...{

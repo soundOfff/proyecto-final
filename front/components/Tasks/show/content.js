@@ -5,7 +5,6 @@ import { Card, CircularProgress, Divider, Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 import ItemList from "./item-list";
 import FormField from "/pagesComponents/ecommerce/products/new-product/components/FormField";
 
@@ -38,8 +37,6 @@ export default function Content({ selectedFork }) {
   const [note, setNote] = useState("");
   const [description, setDescription] = useState(task.description);
   const [isStoppingTimer, setIsStoppingTimer] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
-  const [createdSB, setCreatedSB] = useState(false);
 
   const { data: session } = useSession();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -55,37 +52,6 @@ export default function Content({ selectedFork }) {
     setShowConfirmModal(true);
   };
 
-  const renderSnackbar = () => {
-    if (errorSB) {
-      return (
-        <MDSnackbar
-          color="error"
-          icon="warning"
-          title="Error al seleccionar paso"
-          content="Ocurrió un error al seleccionar el paso, intente de nuevo"
-          open={errorSB || createdSB}
-          onClose={() => setErrorSB(false)}
-          close={() => setErrorSB(false)}
-          bgWhite
-        />
-      );
-    }
-    if (createdSB) {
-      return (
-        <MDSnackbar
-          color="success"
-          icon="check"
-          title="Paso seleccionado"
-          content="El paso fue seleccionado correctamente"
-          open={createdSB}
-          onClose={() => setCreatedSB(false)}
-          close={() => setCreatedSB(false)}
-          bgWhite
-        />
-      );
-    }
-  };
-
   const shouldShowNextStepForm =
     task &&
     task.isFinalTask &&
@@ -94,7 +60,6 @@ export default function Content({ selectedFork }) {
 
   return (
     <Grid item xs={8} wrap="nowrap">
-      {renderSnackbar()}
       <Modal
         open={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
@@ -258,12 +223,7 @@ export default function Content({ selectedFork }) {
         </MDBox>
         <Divider />
         {shouldShowNextStepForm && (
-          <NextStepForm
-            selectedFork={selectedFork}
-            task={task}
-            setCreatedSB={setCreatedSB}
-            setErrorSB={setErrorSB}
-          />
+          <NextStepForm selectedFork={selectedFork} task={task} />
         )}
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" pb={2}>

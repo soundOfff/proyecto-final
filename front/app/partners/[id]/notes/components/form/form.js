@@ -7,16 +7,15 @@ import form from "./schemas/form";
 import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
-import MDSnackbar from "/components/MDSnackbar";
-import { useState } from "react";
 import { Card, CircularProgress } from "@mui/material";
 import { store } from "/actions/notes";
 import { useRouter } from "next/navigation";
 
+import { useMaterialUIController, setSnackbar } from "/context";
+
 export default function FormComponent({ partnerId }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
 
   const submitForm = async (values, actions) => {
@@ -28,8 +27,13 @@ export default function FormComponent({ partnerId }) {
       });
       router.push(`/partners/${partnerId}/notes`);
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al crear la nota",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -55,16 +59,6 @@ export default function FormComponent({ partnerId }) {
             setFieldError,
           }) => (
             <Form id={formId} autoComplete="off">
-              <MDSnackbar
-                color="error"
-                icon="warning"
-                title="Error"
-                content={errorMsg}
-                open={errorSB}
-                onClose={() => setErrorSB(false)}
-                close={() => setErrorSB(false)}
-                bgWhite
-              />
               <FormContent
                 {...{
                   values,

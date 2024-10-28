@@ -8,16 +8,14 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
 import { useSearchParams, useRouter } from "next/navigation";
-import MDSnackbar from "/components/MDSnackbar";
-import { useState } from "react";
 import { revalidateFiles } from "/actions/files";
 import { CircularProgress } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({ apiUrl }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const searchParams = useSearchParams();
   const router = useRouter();
   const { data: session } = useSession();
@@ -31,7 +29,7 @@ export default function FormComponent({ apiUrl }) {
     router.push(source);
   };
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     const formData = new FormData();
 
     for (const key in values) {
@@ -53,8 +51,13 @@ export default function FormComponent({ apiUrl }) {
       revalidateFiles();
       returnToSource();
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al crear el gasto",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -79,16 +82,6 @@ export default function FormComponent({ apiUrl }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="Error"
-              content={errorMsg}
-              open={errorSB}
-              onClose={() => setErrorSB(false)}
-              close={() => setErrorSB(false)}
-              bgWhite
-            />
             <FormContent
               {...{
                 values,

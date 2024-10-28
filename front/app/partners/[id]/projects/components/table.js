@@ -6,7 +6,6 @@ import DataTable from "/examples/Tables/DataTable";
 import ModalContent from "./modal-content";
 import Modal from "/components/Modal";
 import MDBox from "/components/MDBox";
-import MDSnackbar from "/components/MDSnackbar";
 import MDBadge from "/components/MDBadge";
 
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -20,12 +19,14 @@ import { show, destroy } from "/actions/projects";
 import { setColor } from "/utils/project-state-colors";
 import { DescriptionOutlined } from "@mui/icons-material";
 
+import { useMaterialUIController, setSnackbar } from "/context";
+
 export default function Table({ rows }) {
+  const [_, dispatch] = useMaterialUIController();
   const [projectIdShow, setProjectIdShow] = useState(0);
   const [projectIdDelete, setProjectIdDelete] = useState(0);
   const [project, setProject] = useState(null);
   const [open, setOpen] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -41,7 +42,13 @@ export default function Table({ rows }) {
   useEffect(() => {
     const deleteProject = async () => {
       await destroy(projectIdDelete);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Caso Eliminado",
+        content: "Se ha eliminado el caso correctamente",
+        bgWhite: true,
+      });
     };
     if (projectIdDelete) {
       deleteProject();
@@ -148,16 +155,6 @@ export default function Table({ rows }) {
           <ModalContent project={project} />
         </Modal>
       )}
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Caso Eliminado"
-        content="Se ha eliminado el caso correctamente"
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <DataTable
         table={table}
         entriesPerPage={false}

@@ -9,14 +9,13 @@ import {
   update as updateTask,
   getTaskStatus as getAllStatuses,
 } from "/actions/tasks";
+import { setSnackbar } from "/context";
 
 export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [task, setTask] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [successOnSaveSB, setSuccessOnSaveSB] = useState(false);
-  const [errorOnSaveSB, setErrorOnSaveSB] = useState(false);
   const [statuses, setStatuses] = useState([]);
 
   const handleOpenModal = async (id) => {
@@ -96,9 +95,22 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
     setIsSaving(true);
     try {
       await updateTask(taskId, data);
-      setSuccessOnSaveSB(true);
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "info",
+        title: "La tarea fue actualizada correctamente",
+        content: "Se ha actualizado la tarea correctamente",
+        bgWhite: true,
+      });
     } catch (error) {
-      setErrorOnSaveSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "info",
+        title: "La tarea no fue actualizada correctamente",
+        content:
+          "No se ha podido actualizar la tarea, por favor intente nuevamente",
+        bgWhite: true,
+      });
       console.log(error);
     }
     setIsSaving(false);
@@ -120,8 +132,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
     isLoading,
     isModalOpen,
     isSaving,
-    successOnSaveSB,
-    errorOnSaveSB,
     handleOpenModal,
     handleCloseModal,
     setTask,
@@ -130,7 +140,5 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
     stopTimer,
     startTimer,
     handleSaveTask,
-    setSuccessOnSaveSB,
-    setErrorOnSaveSB,
   };
 }

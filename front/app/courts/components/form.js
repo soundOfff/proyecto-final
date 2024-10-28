@@ -8,15 +8,13 @@ import initialValues from "./schemas/initialValues";
 import validations from "./schemas/validations";
 import FormContent from "./formContent";
 import { useSearchParams, useRouter } from "next/navigation";
-import MDSnackbar from "/components/MDSnackbar";
-import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { store, update } from "/actions/courts";
+import { useMaterialUIController, setSnackbar } from "/context";
 
 export default function FormComponent({ court }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -29,7 +27,7 @@ export default function FormComponent({ court }) {
     router.push(source);
   };
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       if (court) {
         await update(court.id, values);
@@ -37,8 +35,13 @@ export default function FormComponent({ court }) {
         await store(values);
       }
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al crear el juzgado",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
@@ -63,16 +66,6 @@ export default function FormComponent({ court }) {
           setFieldError,
         }) => (
           <Form id={formId} autoComplete="off">
-            <MDSnackbar
-              color="error"
-              icon="warning"
-              title="Error"
-              content={errorMsg}
-              open={errorSB}
-              onClose={() => setErrorSB(false)}
-              close={() => setErrorSB(false)}
-              bgWhite
-            />
             <FormContent
               {...{
                 values,

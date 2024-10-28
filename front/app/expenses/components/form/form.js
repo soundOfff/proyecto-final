@@ -2,7 +2,6 @@
 
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { Grid, Card, CircularProgress } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -17,6 +16,8 @@ import { revalidateExpenses } from "/actions/expenses";
 import { update as updateExpense } from "/actions/expenses";
 import FormContent from "./form-content";
 
+import { useMaterialUIController, setSnackbar } from "/context";
+
 export default function FormComponent({
   expense,
   partners,
@@ -28,9 +29,8 @@ export default function FormComponent({
   apiUrl,
   repeats,
 }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId, formField } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -94,12 +94,17 @@ export default function FormComponent({
         });
       }
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al crear el gasto",
+        content: error?.message,
+        bgWhite: true,
+      });
     }
   };
 
-  const handleSubmit = async (values, actions) => {
+  const handleSubmit = async (values) => {
     setIsLoading(true);
     await submitForm(values);
     await revalidateExpenses("create-files");
@@ -108,16 +113,6 @@ export default function FormComponent({
 
   return (
     <MDBox py={3} mb={5} height="100%">
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Error"
-        content={errorMsg}
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <Grid
         container
         justifyContent="center"

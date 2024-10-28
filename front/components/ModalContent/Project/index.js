@@ -1,7 +1,6 @@
 "use client";
 
 import MDBox from "/components/MDBox";
-import MDSnackbar from "/components/MDSnackbar";
 
 import { Grid } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -15,6 +14,7 @@ import { store as storeProject } from "/actions/projects";
 import FormComponent from "/app/projects/components/form/form";
 
 import { useRouter } from "next/navigation";
+import { useMaterialUIController, setSnackbar } from "/context";
 
 import { getSelect as getPartnerSelect } from "/actions/partners";
 import { getAll as getAllServiceTypes } from "/actions/project-service-types";
@@ -26,9 +26,8 @@ import { getAll as getAllCourts } from "/actions/courts";
 import { getAll as getAllStatuses } from "/actions/project-statuses";
 
 export default function ProjectCopyForm({ closeModal, project }) {
+  const [_, dispatch] = useMaterialUIController();
   const { formId } = form;
-  const [errorSB, setErrorSB] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Ha ocurrido un error");
   const router = useRouter();
 
   const [partnerData, setPartnerData] = useState([]);
@@ -45,8 +44,13 @@ export default function ProjectCopyForm({ closeModal, project }) {
       const newProject = await storeProject(values);
       router.push(`/projects/${newProject.id}?tab=description`);
     } catch (error) {
-      setErrorMsg(error.message);
-      setErrorSB(true);
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al copiar el caso",
+        content: error?.message,
+        bgWhite: true,
+      });
     } finally {
       closeModal();
     }
@@ -81,16 +85,6 @@ export default function ProjectCopyForm({ closeModal, project }) {
       >
         Crear nuevo proyecto desde: {project.name}
       </MDBox>
-      <MDSnackbar
-        color="error"
-        icon="warning"
-        title="Error"
-        content={errorMsg}
-        open={errorSB}
-        onClose={() => setErrorSB(false)}
-        close={() => setErrorSB(false)}
-        bgWhite
-      />
       <Grid
         container
         justifyContent="center"

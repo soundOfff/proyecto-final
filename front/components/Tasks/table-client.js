@@ -14,7 +14,6 @@ import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
-import MDSnackbar from "/components/MDSnackbar";
 import Loader from "./loader";
 
 import { destroy, getAll, destroyMany } from "/actions/tasks";
@@ -50,15 +49,11 @@ export default function Table({ project }) {
     handleOpenModal: handleOpenShowModal,
     handleCloseModal: handleCloseShowModal,
     isSaving,
-    successOnSaveSB,
-    errorOnSaveSB,
     handleCompleteTask,
     getSelectedFork,
     stopTimer,
     startTimer,
     handleSaveTask,
-    setSuccessOnSaveSB,
-    setErrorOnSaveSB,
   } = useTaskShow({ tasks, dispatch });
 
   const {
@@ -68,13 +63,11 @@ export default function Table({ project }) {
     handleCloseModal: handleCloseEditModal,
   } = useTaskForm();
 
-  const {
-    isToastOpen,
-    areTasksAttached,
-    isFetching,
-    setIsToastOpen,
-    handleCreateTasks,
-  } = useTaskAttach({ project, staffId: session?.staff?.id });
+  const { isFetching, handleCreateTasks } = useTaskAttach({
+    project,
+    staffId: session?.staff?.id,
+    dispatch,
+  });
 
   const {
     setOpenDeleteConfirmation,
@@ -119,53 +112,6 @@ export default function Table({ project }) {
 
     editSteps({ tasks: mappedRows });
   };
-
-  const renderSaveSnackbar = () => {
-    return successOnSaveSB ? (
-      <MDSnackbar
-        color="success"
-        icon="info"
-        title="La tarea fue actualizada correctamente"
-        content="Se ha actualizado la tarea correctamente"
-        open={successOnSaveSB || errorOnSaveSB}
-        onClose={() => setSuccessOnSaveSB(false)}
-        close={() => setSuccessOnSaveSB(false)}
-        bgWhite
-      />
-    ) : errorOnSaveSB ? (
-      <MDSnackbar
-        color="error"
-        icon="info"
-        title="La tarea no fue actualizada correctamente"
-        content="No se ha podido actualizar la tarea, por favor intente nuevamente"
-        open={errorOnSaveSB}
-        onClose={() => setErrorOnSaveSB(false)}
-        close={() => setErrorOnSaveSB(false)}
-        bgWhite
-      />
-    ) : null;
-  };
-
-  const renderAttachSnackbar = () => (
-    <MDSnackbar
-      color={areTasksAttached ? "success" : "warning"}
-      icon="info"
-      title={
-        areTasksAttached
-          ? "Tareas creadas correctamente"
-          : "Las tareas ya han sido creadas"
-      }
-      content={
-        areTasksAttached
-          ? "Se han creado todas las tareas del proceso correctamente"
-          : "No se han creado tareas, ya han sido creadas en su totalidad"
-      }
-      open={isToastOpen}
-      onClose={() => setIsToastOpen(false)}
-      close={() => setIsToastOpen(false)}
-      bgWhite
-    />
-  );
 
   const columns = [
     {
@@ -326,8 +272,6 @@ export default function Table({ project }) {
     <Loader />
   ) : (
     <MDBox width="100%">
-      {renderAttachSnackbar()}
-      {renderSaveSnackbar()}
       <MDBox display="flex" justifyContent="flex-end" mr={2} mt={-6}>
         <MDBox display="flex" gap={5} justifyContent="flex-end">
           {project && (

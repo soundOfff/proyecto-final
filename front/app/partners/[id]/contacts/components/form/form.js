@@ -22,7 +22,6 @@ export default function TaskForm({ contact }) {
     } else {
       await store(values);
     }
-
     router.push(`/partners/${id}/contacts`);
   };
 

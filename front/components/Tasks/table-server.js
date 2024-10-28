@@ -7,7 +7,6 @@ import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";
 import MDTypography from "/components/MDTypography";
-import MDSnackbar from "/components/MDSnackbar";
 
 import Modal from "/components/Modal";
 import Show from "./show";
@@ -46,15 +45,11 @@ export default function Table({
     handleOpenModal: handleOpenShowModal,
     handleCloseModal: handleCloseShowModal,
     isSaving,
-    successOnSaveSB,
-    errorOnSaveSB,
     handleCompleteTask,
     getSelectedFork,
     stopTimer,
     startTimer,
     handleSaveTask,
-    setSuccessOnSaveSB,
-    setErrorOnSaveSB,
   } = useTaskShow({ tasks, dispatch });
 
   const {
@@ -76,32 +71,6 @@ export default function Table({
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-
-  const renderSaveSnackbar = () => {
-    return successOnSaveSB ? (
-      <MDSnackbar
-        color="success"
-        icon="info"
-        title="La tarea fue actualizada correctamente"
-        content="Se ha actualizado la tarea correctamente"
-        open={successOnSaveSB || errorOnSaveSB}
-        onClose={() => setSuccessOnSaveSB(false)}
-        close={() => setSuccessOnSaveSB(false)}
-        bgWhite
-      />
-    ) : errorOnSaveSB ? (
-      <MDSnackbar
-        color="error"
-        icon="info"
-        title="La tarea no fue actualizada correctamente"
-        content="No se ha podido actualizar la tarea, por favor intente nuevamente"
-        open={errorOnSaveSB}
-        onClose={() => setErrorOnSaveSB(false)}
-        close={() => setErrorOnSaveSB(false)}
-        bgWhite
-      />
-    ) : null;
-  };
 
   const columns = [
     {
@@ -277,7 +246,6 @@ export default function Table({
 
   return (
     <MDBox>
-      {renderSaveSnackbar()}
       {isEditModalOpen && (
         <Modal
           open={isEditModalOpen}

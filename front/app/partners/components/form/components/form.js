@@ -40,8 +40,10 @@ export default function FormComponent({
     try {
       if (partner) {
         await updatePartner(partner.id, values);
+        window.location.reload();
       } else {
         await storePartner(values);
+        router.push("/partners");
       }
     } catch (error) {
       setSnackbar(dispatch, {
@@ -56,7 +58,6 @@ export default function FormComponent({
 
   const handleSubmit = async (values, actions) => {
     await submitForm(values, actions);
-    window.location.reload();
   };
 
   const getCurrentValidation = () => {

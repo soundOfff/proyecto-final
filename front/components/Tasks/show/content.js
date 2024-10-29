@@ -23,7 +23,7 @@ import SlackShare from "/components/SlackShare";
 import ActionList from "./action-list";
 import NextStepForm from "./next-step-form";
 
-export default function Content({ selectedFork }) {
+export default function Content({ selectedFork, refetch }) {
   const {
     task,
     isTimerStarted,
@@ -241,7 +241,11 @@ export default function Content({ selectedFork }) {
           />
         </MDBox>
         <Divider />
-        <ItemList taskId={task?.id} checklistItems={task?.checklistItems} />
+        <ItemList
+          taskId={task?.id}
+          checklistItems={task?.checklistItems}
+          refetch={refetch}
+        />
         <Divider />
         <ActionList />
       </MDBox>

@@ -5,6 +5,7 @@ import { getAll } from "/actions/tasks";
 import { useDataProvider } from "/providers/DataProvider";
 import Kanban from "/components/Kanban";
 import MDBox from "/components/MDBox";
+import Filters from "./filters";
 
 const include = [
   "status",
@@ -17,22 +18,27 @@ const include = [
 export default function KanbanIndex() {
   const [tasks, setTasks] = useState([]);
   const { project } = useDataProvider();
+  const [params, setParams] = useState({
+    include,
+    sort: "milestone_order",
+    "filter[taskable_id]": project.id,
+    "filter[taskable_type]": "project",
+  });
 
   const fetchTasks = useCallback(() => {
-    const params = {
-      include,
-      sort: "milestone_order",
-      "filter[taskable_id]": project.id,
-      "filter[taskable_type]": "project",
-    };
     getAll(params).then((data) => {
       setTasks(data.data.tasks);
     });
-  }, [project.id]);
+  }, [params]);
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
 
-  return <Kanban tasks={tasks} refetch={fetchTasks} />;
+  return (
+    <MDBox>
+      <Filters params={params} setParams={setParams} refetch={fetchTasks} />
+      <Kanban tasks={tasks} refetch={fetchTasks} />
+    </MDBox>
+  );
 }

@@ -36,7 +36,11 @@ const addTaskButton = (createItem) => (
   </ListItem>
 );
 
-export default function ItemList({ checklistItems, taskId }) {
+export default function ItemList({
+  checklistItems,
+  taskId,
+  refetch = () => {},
+}) {
   const {
     items,
     progress,
@@ -49,12 +53,14 @@ export default function ItemList({ checklistItems, taskId }) {
 
   const handleSaveItems = async () => {
     await update(taskId, { checklist_items: getFilteredItems() });
+    refetch();
   };
 
   const handleDeleteItem = async (id) => {
     const newItems = items.filter((item) => item.id !== id); // Server update
     removeItem(id); // UI update
     await update(taskId, { checklist_items: newItems });
+    refetch();
   };
 
   return (

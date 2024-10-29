@@ -39,10 +39,7 @@ export default function Kanban({ tasks, refetch }) {
   const { board, handleCardMove } = useKanban({
     tasks,
     handleOpenShowModal,
-    currentTimer,
     refetch,
-    startTimer,
-    stopTimer,
     dispatch,
   });
 
@@ -56,10 +53,15 @@ export default function Kanban({ tasks, refetch }) {
           functions: { pxToRem },
           borders: { borderRadius },
         }) => ({
+          "& .react-kanban-board": {
+            display: "flex",
+            width: "100%",
+            alignItems: "inherit !important",
+          },
           "& .react-kanban-column": {
             backgroundColor: darkMode ? background.card : light.main,
             width: pxToRem(450),
-            margin: `0 ${pxToRem(10)}`,
+            margin: `0 ${pxToRem(20)}`,
             padding: pxToRem(20),
             borderRadius: borderRadius.lg,
           },
@@ -131,6 +133,7 @@ export default function Kanban({ tasks, refetch }) {
                 getSelectedFork,
                 handleSaveTask,
                 closeShowModal: handleCloseShowModal,
+                refetch,
               }}
             />
           )}

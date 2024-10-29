@@ -32,36 +32,33 @@ class TaskObserver
         $lockedTasks = $task->dependentTasks;
         $recentlyUnlockedTasks = [];
         foreach ($lockedTasks as $lt) {
-            $isBlocked = $lt->dependencies->contains(fn (Task $task) => $task->task_status_id !== TaskStatus::COMPLETED);
-            if (! $isBlocked) {
+            if (! $lt->isBlocked) {
                 $recentlyUnlockedTasks[] = $lt;
             }
         }
 
-        if (count($recentlyUnlockedTasks) > 0) {
-            $notificationService = new NotificationService();
-            foreach ($recentlyUnlockedTasks as $unlockedTask) {
-                $this->dispatchActions($unlockedTask);
-                // send notification to staff assigneds
-                foreach ($unlockedTask->assigneds as $assigned) {
-                    $notificationService->sendSlackNotification(
-                        staffId: $assigned->id,
-                        header: "La tarea #{$unlockedTask->id} ha sido desbloqueada",
-                        body: "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
-                        url: "/tasks?taskId={$unlockedTask->id}",
-                        modelId: $unlockedTask->id,
-                        modelType: Task::class
+        // send notification to staff assigneds
+        $notificationService = new NotificationService();
+        foreach ($recentlyUnlockedTasks as $unlockedTask) {
+            $this->dispatchActions($unlockedTask);
+            foreach ($unlockedTask->assigneds as $assigned) {
+                $notificationService->sendSlackNotification(
+                    staffId: $assigned->id,
+                    header: "La tarea #{$unlockedTask->id} ha sido desbloqueada",
+                    body: "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
+                    url: "/tasks?taskId={$unlockedTask->id}",
+                    modelId: $unlockedTask->id,
+                    modelType: Task::class
+                );
+                foreach ($assigned->devices as $device) {
+                    $notificationService->sendWebPushNotification(
+                        $device->device_token,
+                        "La tarea #{$unlockedTask->id} ha sido desbloqueada",
+                        "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
+                        $assigned->id,
+                        strtolower(class_basename(Task::class)),
+                        $unlockedTask->id
                     );
-                    foreach ($assigned->devices as $device) {
-                        $notificationService->sendWebPushNotification(
-                            $device->device_token,
-                            "La tarea #{$unlockedTask->id} ha sido desbloqueada",
-                            "Se completo la tarea #{$task->id}. La tarea: \"{$unlockedTask->name}\" ha sido desbloqueada y ahora puede ser completada.",
-                            $assigned->id,
-                            strtolower(class_basename(Task::class)),
-                            $unlockedTask->id
-                        );
-                    }
                 }
             }
         }

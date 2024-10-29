@@ -97,7 +97,7 @@ export default function Content({ selectedFork }) {
           </MDBox>
         </MDBox>
       </Modal>
-      <MDBox px={5} py={2}>
+      <MDBox px={{ xs: 1, sm: 4 }} py={2}>
         <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" display="inline">
             Relacionado:

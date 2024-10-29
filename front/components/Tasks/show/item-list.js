@@ -11,28 +11,31 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import { Add, Clear } from "@mui/icons-material";
-import { TextField, useMediaQuery } from "@mui/material";
+import { TextField } from "@mui/material";
 
 import { update } from "/actions/tasks";
 import useTodo from "/hooks/useTodo";
 
-const addTaskButton = (createItem, isSmallScreen) => (
+const addTaskButton = (createItem) => (
   <ListItem
     key="add-item"
     secondaryAction={
-      <Add edge="end" aria-label="add" sx={{ cursor: "pointer", mx: 2 }} />
+      <Add edge="end" aria-label="add" sx={{ cursor: "pointer", mx: 0.5 }} />
     }
     sx={{
-      height: "40px",
-      px: isSmallScreen ? 1 : 2,
-      justifyContent: isSmallScreen ? "center" : "flex-start",
+      width: "100%",
+      px: 0,
+      justifyContent: "start",
     }}
     disablePadding
     onClick={() => createItem()}
   >
-    <ListItemButton dense>
+    <ListItemButton dense disablePadding>
       <ListItemText
-        sx={{ fontSize: isSmallScreen ? "0.2rem" : "1rem" }}
+        sx={{
+          textAlign: "left",
+          fontSize: "small",
+        }}
         id="add-item"
         primary="Crear una nueva tarea"
         color="info"
@@ -62,15 +65,13 @@ export default function ItemList({ checklistItems, taskId }) {
     await update(taskId, { checklist_items: newItems });
   };
 
-  const isSmallScreen = useMediaQuery("(max-width: 600px)");
-
   return (
-    <MDBox py={2} px={isSmallScreen ? 1 : 3}>
+    <MDBox py={2} px={1}>
       <MDBox display="flex" flexDirection="column">
         <MDTypography variant="body2" fontWeight="bold" mb={2}>
           Lista de Quehaceres
         </MDTypography>
-        <MDBox sx={{ width: isSmallScreen ? "100%" : "80%", my: 1 }}>
+        <MDBox sx={{ width: "100%", my: 1 }}>
           {progress > 0 && (
             <MDBox
               sx={{
@@ -111,7 +112,13 @@ export default function ItemList({ checklistItems, taskId }) {
             <ListItem
               key={value.id}
               onBlur={() => handleSaveItems()}
-              sx={{ p: 1, px: isSmallScreen ? 1 : 2 }}
+              sx={{
+                p: 1,
+                px: 1,
+                display: "flex",
+                flexDirection: { sm: "column", md: "row" }, // Cambia a columna en pantallas pequeñas
+                alignItems: { sm: "flex-start", md: "center" }, // Alinea según el modo
+              }}
               secondaryAction={
                 <Clear
                   edge="end"
@@ -123,8 +130,18 @@ export default function ItemList({ checklistItems, taskId }) {
               }
               disablePadding
             >
-              <ListItemButton dense>
-                <ListItemIcon>
+              <ListItemButton
+                dense
+                sx={{
+                  display: "flex",
+                  flexDirection: { sm: "column", md: "row" },
+                  alignItems: { sm: "flex-start", md: "center" },
+                  width: "100%",
+                }}
+              >
+                <ListItemIcon
+                  sx={{ alignSelf: { sm: "flex-start", md: "center" } }}
+                >
                   <Checkbox
                     edge="start"
                     checked={value.finished}
@@ -145,7 +162,7 @@ export default function ItemList({ checklistItems, taskId }) {
             </ListItem>
           );
         })}
-        {addTaskButton(createItem, isSmallScreen)}
+        {addTaskButton(createItem)}
       </List>
     </MDBox>
   );

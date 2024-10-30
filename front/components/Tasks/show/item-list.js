@@ -122,8 +122,8 @@ export default function ItemList({
                 p: 1,
                 px: 1,
                 display: "flex",
-                flexDirection: { sm: "column", md: "row" }, // Cambia a columna en pantallas pequeñas
-                alignItems: { sm: "flex-start", md: "center" }, // Alinea según el modo
+                flexDirection: { sm: "column", md: "row" },
+                alignItems: { sm: "flex-start", md: "center" },
               }}
               secondaryAction={
                 <Clear

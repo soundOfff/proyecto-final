@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Tooltip } from "@mui/material";
+import { Grid, Tooltip, useMediaQuery } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
@@ -25,13 +25,13 @@ import { useMaterialUIController, setSnackbar } from "/context";
 
 const renderIcon = (type) => {
   if (type === ACTION_EXPENSE) {
-    return <ReceiptIcon fontSize="medium" />;
+    return <ReceiptIcon fontSize="small" />;
   } else if (type === ACTION_REQUEST) {
-    return <GavelIcon fontSize="medium" />;
+    return <GavelIcon fontSize="small" />;
   } else if (type === ACTION_EMAIL) {
-    return <EmailIcon fontSize="medium" />;
+    return <EmailIcon fontSize="small" />;
   } else {
-    return <TextFieldsIcon fontSize="medium" />;
+    return <TextFieldsIcon fontSize="small" />;
   }
 };
 
@@ -42,6 +42,8 @@ export default function ActionList() {
   const [actionLoading, setActionLoading] = useState(false);
   const [actionDispatched, setActionDispatched] = useState({});
 
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   const handleDispatchAction = async (actionId) => {
     setActionLoading(true);
     try {
@@ -49,7 +51,7 @@ export default function ActionList() {
       setSnackbar(dispatch, {
         color: "success",
         icon: "check_circle",
-        title: "Exito al disparar la acción",
+        title: "Éxito al disparar la acción",
         content: "La acción fue disparada con éxito",
         bgWhite: true,
       });
@@ -70,13 +72,23 @@ export default function ActionList() {
   const renderRow = (type, row) => {
     if (type === ACTION_EXPENSE) {
       return (
-        <MDTypography variant="caption" fontWeight="medium" color="text">
+        <MDTypography
+          variant="caption"
+          fontWeight="medium"
+          color="text"
+          fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
+        >
           Gasto
         </MDTypography>
       );
     } else if (type === ACTION_REQUEST) {
       return (
-        <MDTypography variant="caption" fontWeight="medium" color="text">
+        <MDTypography
+          variant="caption"
+          fontWeight="medium"
+          color="text"
+          fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
+        >
           Solicitud
         </MDTypography>
       );
@@ -84,7 +96,12 @@ export default function ActionList() {
       return (
         <>
           <MDBox mb={1} lineHeight={0}>
-            <MDTypography variant="caption" fontWeight="regular" color="text">
+            <MDTypography
+              variant="caption"
+              fontWeight="regular"
+              color="text"
+              fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
+            >
               {ACTION_TYPES[type]}: <b>{row.mail_to}</b>
             </MDTypography>
           </MDBox>
@@ -93,7 +110,12 @@ export default function ActionList() {
               href={`/mail-templates/${row.mail_template_id}`}
               target="_blank"
             >
-              <MDTypography variant="caption" fontWeight="regular" color="info">
+              <MDTypography
+                variant="caption"
+                fontWeight="regular"
+                color="info"
+                fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
+              >
                 Ver el template usado
               </MDTypography>
             </Link>
@@ -102,7 +124,12 @@ export default function ActionList() {
       );
     } else {
       return (
-        <MDTypography variant="caption" fontWeight="medium" color="text">
+        <MDTypography
+          variant="caption"
+          fontWeight="medium"
+          color="text"
+          fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
+        >
           Otro
         </MDTypography>
       );
@@ -113,10 +140,15 @@ export default function ActionList() {
     <>
       {task?.procedure?.actions.length > 0 && (
         <MDBox py={2} display="flex" flexDirection="column">
-          <MDTypography variant="body2" fontWeight="bold" mb={2}>
+          <MDTypography
+            variant="body2"
+            fontWeight="bold"
+            mb={2}
+            fontSize={{ xs: "small", sm: "18px", md: "20px" }}
+          >
             Lista de acciones disponibles
           </MDTypography>
-          <Grid container xs={12} spacing={2}>
+          <Grid container spacing={2}>
             {task?.procedure?.actions.map(
               (
                 {
@@ -131,15 +163,14 @@ export default function ActionList() {
               ) => (
                 <Grid item xs={12} key={index}>
                   <MDBox
-                    key={index}
                     component="li"
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
                     bgColor="grey-200"
                     borderRadius="lg"
-                    px={4}
-                    py={1}
+                    px={{ xs: 2, sm: 3, md: 4 }}
+                    py={{ xs: 1, sm: 1.5, md: 2 }}
                   >
                     <MDBox
                       width="100%"
@@ -148,8 +179,12 @@ export default function ActionList() {
                       lineHeight={1}
                     >
                       <MDBox mb={2}>
-                        <MDTypography variant="button" fontWeight="medium">
-                          Tipo de accion:
+                        <MDTypography
+                          variant="button"
+                          fontWeight="medium"
+                          fontSize={{ xs: "14px", sm: "16px", md: "18px" }}
+                        >
+                          Tipo de acción:
                         </MDTypography>
                       </MDBox>
                       <MDBox mb={1} lineHeight={0}>
@@ -157,25 +192,26 @@ export default function ActionList() {
                           variant="caption"
                           fontWeight="regular"
                           color="text"
+                          fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
                         >
                           Descripción:&nbsp;&nbsp;&nbsp;
                           <MDTypography
                             variant="caption"
                             fontWeight="medium"
                             textTransform="normal"
+                            fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
                           >
                             {description}
                           </MDTypography>
                         </MDTypography>
                       </MDBox>
-                      {/* TODO: Send more data of types */}
                       {renderRow(action_type_id, { mail_to, mail_template_id })}
                     </MDBox>
                     <MDBox mr={1}>
                       <Tooltip
                         title={
                           Boolean(is_dispatched) || actionDispatched[id]
-                            ? "La accion ya fue previamente disparada"
+                            ? "La acción ya fue previamente disparada"
                             : ""
                         }
                         arrow
@@ -191,13 +227,17 @@ export default function ActionList() {
                               actionLoading
                             }
                             sx={{
-                              height: "40px",
-                              width: "120px",
-                              p: 1,
+                              p: { xs: 1, sm: 1.5 },
+                              ml: 2,
+                              fontSize: "xs !important",
                             }}
                             onClick={() => handleDispatchAction(id)}
                           >
-                            Disparar accion &nbsp;{renderIcon(action_type_id)}
+                            {isSmallScreen ? (
+                              <>Disparar acción &nbsp;</>
+                            ) : (
+                              renderIcon(action_type_id)
+                            )}
                           </MDButton>
                         </span>
                       </Tooltip>

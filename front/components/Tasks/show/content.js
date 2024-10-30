@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CircularProgress, Divider, Grid } from "@mui/material";
+import { Card, CircularProgress, Divider, Grid, Icon } from "@mui/material";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -97,7 +97,7 @@ export default function Content({ selectedFork, refetch }) {
           </MDBox>
         </MDBox>
       </Modal>
-      <MDBox px={5} py={2}>
+      <MDBox px={{ xs: 1, sm: 4 }} py={2}>
         <MDBox py={2} container display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" display="inline">
             Relacionado:
@@ -131,95 +131,106 @@ export default function Content({ selectedFork, refetch }) {
               </MDTypography>
             </Link>
           )}
-          <MDBox
-            sx={{
-              gap: "10px",
-              display: "flex",
-              paddingTop: "10px",
-              alignItems: "start",
-            }}
-          >
-            {task.status_id !== DONE_STATUS_ID ? (
-              <MDButton
-                color="info"
-                size="small"
-                sx={{ maxHeight: "50px" }}
-                onClick={() => markAsCompleted(task.id)}
-              >
-                Completar tarea
-              </MDButton>
-            ) : (
-              <MDButton color="dark" size="small" sx={{ maxHeight: "50px" }}>
-                Tarea Completada
-              </MDButton>
-            )}
-            {isTimerStarted ? (
-              <MDButton
-                color="primary"
-                size="small"
-                sx={{ maxHeight: "50px" }}
-                onClick={() => setIsStoppingTimer(true)}
-              >
-                Detener temporizador
-              </MDButton>
-            ) : (
-              <MDButton
-                color="success"
-                sx={{ maxHeight: "50px" }}
-                size="small"
-                onClick={() => startTimer(task.id, session.staff.id)}
-              >
-                Iniciar temporizador
-              </MDButton>
-            )}
-
-            <MDButton
-              color="error"
-              size="small"
-              sx={{ maxHeight: "50px" }}
-              onClick={handleDeleteTask}
-            >
-              Eliminar Tarea
-            </MDButton>
-
-            <SlackShare modelId={task.id} modelType="Task" />
-
-            <MDBox display="flex" flexDirection="row" width="60%">
-              {isStoppingTimer && (
-                <>
-                  <Card
-                    variant="outlined"
-                    sx={{
-                      width: "100%",
-                      padding: "20px",
-                      margin: "0",
-                      backgroundColor: "#f5f5f5",
-                    }}
-                  >
-                    <MDTypography variant="body2" fontWeight="bold">
-                      Nota de la tarea
-                    </MDTypography>
-                    <FormField
-                      value={note}
-                      type="text"
-                      placeholder="Nota..."
-                      onChange={(e) => setNote(e.target.value)}
-                      sx={{ mb: 2, width: "100%" }}
-                    />
-                    <MDBox display="flex" justifyContent="end">
-                      <MDButton
-                        variant="gradient"
-                        color="dark"
-                        onClick={handleStopTimer}
-                      >
-                        Guardar
-                      </MDButton>
-                    </MDBox>
-                  </Card>
-                </>
+          <Grid container spacing={2} mt={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              {task.status_id !== DONE_STATUS_ID ? (
+                <MDButton
+                  sx={{
+                    maxWidth: "100%",
+                  }}
+                  color="info"
+                  onClick={() => markAsCompleted(task.id)}
+                >
+                  <Icon sx={{ fontWeight: "bold", mr: 1 }}>done</Icon>
+                  Completar
+                </MDButton>
+              ) : (
+                <MDButton color="dark" sx={{ maxWidth: "100%" }}>
+                  Tarea Completada
+                </MDButton>
               )}
-            </MDBox>
-          </MDBox>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              {isTimerStarted ? (
+                <MDButton
+                  color="primary"
+                  sx={{
+                    maxWidth: "100%",
+                  }}
+                  onClick={() => setIsStoppingTimer(true)}
+                >
+                  <Icon sx={{ fontWeight: "bold", mr: 1 }}>alarm</Icon>
+                  Detener
+                </MDButton>
+              ) : (
+                <MDButton
+                  color="success"
+                  sx={{
+                    maxWidth: "100%",
+                  }}
+                  onClick={() => startTimer(task.id, session.staff.id)}
+                >
+                  <Icon sx={{ fontWeight: "bold", mr: 1 }}>alarm</Icon>
+                  Iniciar
+                </MDButton>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <MDButton
+                color="error"
+                variant="gradient"
+                sx={{
+                  maxWidth: "100%",
+                }}
+                onClick={handleDeleteTask}
+              >
+                <Icon sx={{ fontWeight: "bold", mr: 1 }}>delete</Icon> Eliminar
+              </MDButton>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <SlackShare modelId={task.id} modelType="Task" />
+            </Grid>
+            {isStoppingTimer && (
+              <Grid item xs={12}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    width: "100%",
+                    padding: { xs: "10px", sm: "15px", md: "20px" },
+                    backgroundColor: "#f5f5f5",
+                  }}
+                >
+                  <MDTypography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "14px", sm: "16px", md: "18px" } }}
+                  >
+                    Nota de la tarea
+                  </MDTypography>
+                  <FormField
+                    value={note}
+                    type="text"
+                    placeholder="Nota..."
+                    onChange={(e) => setNote(e.target.value)}
+                    sx={{ mb: 2, width: "100%" }}
+                  />
+                  <MDBox display="flex" justifyContent="end">
+                    <MDButton
+                      variant="gradient"
+                      color="dark"
+                      onClick={handleStopTimer}
+                      sx={{
+                        fontSize: "small !important",
+                        padding: { xs: "6px 12px", sm: "8px 16px" },
+                      }}
+                    >
+                      Guardar
+                    </MDButton>
+                  </MDBox>
+                </Card>
+              </Grid>
+            )}
+          </Grid>
         </MDBox>
         <Divider />
         {shouldShowNextStepForm && (
@@ -227,7 +238,7 @@ export default function Content({ selectedFork, refetch }) {
         )}
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" pb={2}>
-            Descripción
+            Descripbión
           </MDTypography>
           <FormField
             name="description"

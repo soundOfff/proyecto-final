@@ -20,16 +20,24 @@ const addTaskButton = (createItem) => (
   <ListItem
     key="add-item"
     secondaryAction={
-      <Add edge="end" aria-label="comments" sx={{ cursor: "pointer", mx: 2 }} />
+      <Add edge="end" aria-label="add" sx={{ cursor: "pointer", mx: 0.5 }} />
     }
-    sx={{ height: "40px" }}
+    sx={{
+      width: "100%",
+      px: 0,
+      justifyContent: "start",
+    }}
     disablePadding
     onClick={() => createItem()}
   >
-    <ListItemButton dense>
+    <ListItemButton dense disablePadding>
       <ListItemText
+        sx={{
+          textAlign: "left",
+          fontSize: "small",
+        }}
         id="add-item"
-        primary={`Crear una nueva tarea`}
+        primary="Crear una nueva tarea"
         color="info"
       />
     </ListItemButton>
@@ -64,18 +72,18 @@ export default function ItemList({
   };
 
   return (
-    <MDBox py={2}>
+    <MDBox py={2} px={1}>
       <MDBox display="flex" flexDirection="column">
-        <MDTypography variant="body2" fontWeight="bold">
+        <MDTypography variant="body2" fontWeight="bold" mb={2}>
           Lista de Quehaceres
         </MDTypography>
-        <MDBox sx={{ width: "80%", my: 1 }}>
+        <MDBox sx={{ width: "100%", my: 1 }}>
           {progress > 0 && (
             <MDBox
               sx={{
                 display: "flex",
                 alignItems: "center",
-                flexGrow: "1",
+                flexGrow: 1,
               }}
             >
               <MDBox width="100%" mt={0.25}>
@@ -97,7 +105,7 @@ export default function ItemList({
       </MDBox>
       <List
         sx={{
-          width: "80%",
+          width: "100%",
           maxWidth: "100%",
           display: "flex",
           flexDirection: "column",
@@ -106,25 +114,40 @@ export default function ItemList({
       >
         {items.map((value) => {
           const labelId = `checkbox-list-label-${value.id}`;
-
           return (
             <ListItem
               key={value.id}
               onBlur={() => handleSaveItems()}
-              sx={{ p: 1 }}
+              sx={{
+                p: 1,
+                px: 1,
+                display: "flex",
+                flexDirection: { sm: "column", md: "row" },
+                alignItems: { sm: "flex-start", md: "center" },
+              }}
               secondaryAction={
                 <Clear
                   edge="end"
                   color="error"
-                  aria-label="comments"
-                  sx={{ cursor: "pointer", mx: 2 }}
+                  aria-label="delete"
+                  sx={{ cursor: "pointer", mx: 1 }}
                   onClick={() => handleDeleteItem(value.id)}
                 />
               }
               disablePadding
             >
-              <ListItemButton dense>
-                <ListItemIcon>
+              <ListItemButton
+                dense
+                sx={{
+                  display: "flex",
+                  flexDirection: { sm: "column", md: "row" },
+                  alignItems: { sm: "flex-start", md: "center" },
+                  width: "100%",
+                }}
+              >
+                <ListItemIcon
+                  sx={{ alignSelf: { sm: "flex-start", md: "center" } }}
+                >
                   <Checkbox
                     edge="start"
                     checked={value.finished}

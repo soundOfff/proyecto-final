@@ -19,6 +19,7 @@ import initialValues from "../schemas/initial-values";
 import validations from "../schemas/validations";
 
 import { useMaterialUIController, setSnackbar } from "/context";
+import { useRouter } from "next/navigation";
 
 export default function FormComponent({
   partner,
@@ -35,6 +36,7 @@ export default function FormComponent({
   const [isRequired, setIsRequired] = useState(true);
   const { formId } = form;
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const router = useRouter();
 
   const submitForm = async (values) => {
     try {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CircularProgress, Divider, Grid } from "@mui/material";
+import { Card, CircularProgress, Divider, Grid, Icon } from "@mui/material";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
@@ -132,83 +132,104 @@ export default function Content({ selectedFork }) {
             </Link>
           )}
           <Grid container spacing={2} mt={2}>
-            <Grid item xs={12} lg={3} mx="auto">
+            <Grid item xs={12} sm={6} md={3}>
               {task.status_id !== DONE_STATUS_ID ? (
                 <MDButton
+                  sx={{
+                    maxWidth: "100%",
+                  }}
                   color="info"
-                  size="small"
                   onClick={() => markAsCompleted(task.id)}
                 >
-                  Completar tarea
+                  <Icon sx={{ fontWeight: "bold", mr: 1 }}>done</Icon>
+                  Completar
                 </MDButton>
               ) : (
-                <MDButton color="dark" size="small">
+                <MDButton color="dark" sx={{ maxWidth: "100%" }}>
                   Tarea Completada
                 </MDButton>
               )}
             </Grid>
-            <Grid item xs={12} lg={3}>
+            <Grid item xs={12} sm={6} md={3}>
               {isTimerStarted ? (
                 <MDButton
                   color="primary"
-                  size="small"
+                  sx={{
+                    maxWidth: "100%",
+                  }}
                   onClick={() => setIsStoppingTimer(true)}
                 >
-                  Detener temporizador
+                  <Icon sx={{ fontWeight: "bold", mr: 1 }}>alarm</Icon>
+                  Detener
                 </MDButton>
               ) : (
                 <MDButton
                   color="success"
-                  size="small"
+                  sx={{
+                    maxWidth: "100%",
+                  }}
                   onClick={() => startTimer(task.id, session.staff.id)}
                 >
-                  Iniciar temporizador
+                  <Icon sx={{ fontWeight: "bold", mr: 1 }}>alarm</Icon>
+                  Iniciar
                 </MDButton>
               )}
             </Grid>
-            <Grid item xs={12} lg={3}>
-              <MDButton color="error" onClick={handleDeleteTask}>
-                Eliminar Tarea
+            <Grid item xs={12} sm={6} md={3}>
+              <MDButton
+                color="error"
+                variant="gradient"
+                sx={{
+                  maxWidth: "100%",
+                }}
+                onClick={handleDeleteTask}
+              >
+                <Icon sx={{ fontWeight: "bold", mr: 1 }}>delete</Icon> Eliminar
               </MDButton>
             </Grid>
-            <Grid item xs={12} lg={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <SlackShare modelId={task.id} modelType="Task" />
             </Grid>
-            <Grid item display="flex" flexDirection="row" width="100%">
-              {isStoppingTimer && (
-                <>
-                  <Card
-                    variant="outlined"
-                    sx={{
-                      width: "100%",
-                      padding: "20px",
-                      margin: "0",
-                      backgroundColor: "#f5f5f5",
-                    }}
+            {isStoppingTimer && (
+              <Grid item xs={12}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    width: "100%",
+                    padding: { xs: "10px", sm: "15px", md: "20px" },
+                    backgroundColor: "#f5f5f5",
+                  }}
+                >
+                  <MDTypography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "14px", sm: "16px", md: "18px" } }}
                   >
-                    <MDTypography variant="body2" fontWeight="bold">
-                      Nota de la tarea
-                    </MDTypography>
-                    <FormField
-                      value={note}
-                      type="text"
-                      placeholder="Nota..."
-                      onChange={(e) => setNote(e.target.value)}
-                      sx={{ mb: 2, width: "100%" }}
-                    />
-                    <MDBox display="flex" justifyContent="end">
-                      <MDButton
-                        variant="gradient"
-                        color="dark"
-                        onClick={handleStopTimer}
-                      >
-                        Guardar
-                      </MDButton>
-                    </MDBox>
-                  </Card>
-                </>
-              )}
-            </Grid>
+                    Nota de la tarea
+                  </MDTypography>
+                  <FormField
+                    value={note}
+                    type="text"
+                    placeholder="Nota..."
+                    onChange={(e) => setNote(e.target.value)}
+                    sx={{ mb: 2, width: "100%" }}
+                  />
+                  <MDBox display="flex" justifyContent="end">
+                    <MDButton
+                      variant="gradient"
+                      color="dark"
+                      onClick={handleStopTimer}
+                      sx={{
+                        fontSize: "small !important",
+                        padding: { xs: "6px 12px", sm: "8px 16px" },
+                      }}
+                    >
+                      Guardar
+                    </MDButton>
+                  </MDBox>
+                </Card>
+              </Grid>
+            )}
           </Grid>
         </MDBox>
         <Divider />
@@ -217,7 +238,7 @@ export default function Content({ selectedFork }) {
         )}
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" pb={2}>
-            Descripción
+            Descripbión
           </MDTypography>
           <FormField
             name="description"

@@ -22,7 +22,6 @@ import { INVOICE_TYPE } from "/utils/constants/taskableTypes";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { getAll as getAllDependencies } from "/actions/tasks";
 import { show as getProject } from "/actions/projects";
-import { select as selectStaff } from "/actions/staffs";
 import { getSelect as selectPartners } from "/actions/partners";
 import { getAll as getAllPriorities } from "/actions/task-priorities";
 import { getAll as getAllTaskableTypes } from "/actions/projects";
@@ -68,7 +67,6 @@ export default function TaskForm({
   } = formField;
 
   useEffect(() => {
-    selectStaff().then((staffs) => setStaffs(staffs));
     selectPartners().then((partners) => setPartners(partners));
     getAllPriorities().then((priorities) => setPriorities(priorities));
     getAllTaskableTypes().then((res) => setTaskableItems(res.data.projects));
@@ -152,24 +150,25 @@ export default function TaskForm({
   }, [partner_id, taskableType, values]);
 
   useEffect(() => {
-    if (values[taskableType.name] === PROJECT_TYPE && values[taskableId.name]) {
+    if (values.taskable_type === PROJECT_TYPE && values.taskable_id) {
       getAllDependencies({
-        "filter[taskable_id]": values[taskableId.name],
-        "filter[taskable_type]": values[taskableType.name],
+        "filter[taskable_id]": values.taskable_id,
+        "filter[taskable_type]": values.taskable_type,
       }).then(({ data }) => {
         setDependencyTasks(data.tasks);
       });
-      getProject(values[taskableId.name], { include: "members" }).then(
-        (data) => {
-          const prevValues = values[assigneds.name].filter(
-            (assigned) =>
-              data.members.find((a) => a.id == assigned.id) === undefined
-          );
-          setFieldValue(assigneds.name, [...prevValues, ...data.members]);
-        }
-      );
+      getProject(values.taskable_id, { include: "members" }).then((project) => {
+        setStaffs(project.members);
+      });
     }
-  }, [values, assigneds, setFieldValue, taskableId, taskableType]);
+  }, [
+    values.taskable_id,
+    values.taskable_type,
+    assigneds,
+    setFieldValue,
+    taskableId,
+    taskableType,
+  ]);
 
   return (
     <>

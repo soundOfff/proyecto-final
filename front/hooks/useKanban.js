@@ -16,11 +16,9 @@ import {
 
 export default function useKanban({
   tasks,
-  currentTimer,
   handleOpenShowModal,
+  handleOpenEditModal,
   refetch,
-  startTimer,
-  stopTimer,
   dispatch,
 }) {
   const [board, setBoard] = useState({ columns: [] });
@@ -64,15 +62,12 @@ export default function useKanban({
   };
 
   const handleCardMove = async (draggingCard, source, destination) => {
-    if (
-      source.fromColumnId === DONE_STATUS_ID &&
-      destination.toColumnId !== DONE_STATUS_ID
-    ) {
+    if (draggingCard.template.props.task.isBlocked) {
       setSnackbar(dispatch, {
         color: "error",
         icon: "warning",
         title: "Acción no disponible",
-        content: "No se puede mover una tarea completada",
+        content: "No se puede mover una tarea bloqueada",
         bgWhite: true,
       });
       const updatedBoard = moveCard(board, source, {
@@ -106,16 +101,9 @@ export default function useKanban({
             template: (
               <Card
                 task={task}
-                currentTimer={currentTimer}
                 refetch={refetch}
-                startTimer={startTimer}
-                stopTimer={stopTimer}
                 handleOpenShowModal={handleOpenShowModal}
-                onClick={() => {
-                  if (!task.isBlocked) {
-                    handleOpenShowModal(task.id);
-                  }
-                }}
+                handleOpenEditModal={handleOpenEditModal}
               />
             ),
           });
@@ -126,7 +114,7 @@ export default function useKanban({
     };
 
     setBoard(board);
-  }, [tasks, currentTimer, refetch]);
+  }, [tasks, refetch]);
 
   return { board, setBoard, handleCardMove };
 }

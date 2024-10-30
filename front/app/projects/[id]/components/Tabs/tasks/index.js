@@ -1,25 +1,13 @@
 "use client";
 
 import { useDataProvider } from "/providers/DataProvider";
-import {
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Switch,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Table from "/components/Tasks/table-client";
 import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
-import KanbanIndex from "./components/kanban";
+import Kanban from "./components/Kanban/kanban";
 import { useState } from "react";
-import {
-  TableRows,
-  ViewKanban,
-  ViewList as ViewListIcon,
-  ViewModule,
-} from "@mui/icons-material";
+import { TableRows, ViewModule } from "@mui/icons-material";
 
 export default function Tasks() {
   const { project } = useDataProvider();
@@ -47,7 +35,7 @@ export default function Tasks() {
       <Grid container>
         <Grid item xs={12}>
           <MDBox py={1}>
-            {isTableView ? <Table project={project} /> : <KanbanIndex />}
+            {isTableView ? <Table project={project} /> : <Kanban />}
           </MDBox>
         </Grid>
       </Grid>

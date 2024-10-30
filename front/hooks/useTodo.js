@@ -54,6 +54,10 @@ export default function useTodo(checklistItems) {
   };
 
   useEffect(() => {
+    setItems(checklistItems);
+  }, [checklistItems]);
+
+  useEffect(() => {
     const finished = items.filter((item) => item.finished).length;
     setProgress((finished / items.length) * 100);
   }, [items]);

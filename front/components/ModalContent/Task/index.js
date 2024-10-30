@@ -25,6 +25,7 @@ export default function ModalContentForm({
   task = null,
   project = null,
   mode = MODAL_TYPES.CREATE,
+  refetch = () => {},
 }) {
   const { formId, formField } = form;
   const { data: session } = useSession();
@@ -40,6 +41,7 @@ export default function ModalContentForm({
 
   const handleEdit = async (values, actions) => {
     await update(task.id, values);
+    refetch();
     onClose();
     actions.resetForm();
     router.refresh();

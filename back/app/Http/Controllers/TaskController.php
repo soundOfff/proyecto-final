@@ -77,6 +77,16 @@ class TaskController extends Controller
                     AllowedFilter::exact('partner_id'),
                     AllowedFilter::exact('taskable_type'),
                     AllowedFilter::exact('taskable_id'),
+                    AllowedFilter::exact('task_priority_id'),
+                    AllowedFilter::exact('start_date'),
+                    AllowedFilter::callback('range_start_date',
+                        fn (Builder $query, $value) => $query->whereBetween('start_date', $value)
+
+                    ),
+                    AllowedFilter::callback('range_due_date',
+                        fn (Builder $query, $value) => $query->whereBetween('due_date', $value)
+
+                    ),
                     AllowedFilter::callback(
                         'staff_id',
                         function (Builder $query, $value) {
@@ -217,8 +227,10 @@ class TaskController extends Controller
             }
         }
 
-        $dependencyIds = array_column($dependencies, 'id');
-        $task->dependencies()->sync($dependencyIds);
+        if (! is_array($dependencies)) {
+            $dependencyIds = array_column($dependencies, 'id');
+            $task->dependencies()->sync($dependencyIds);
+        }
 
         $assignedIds = array_column($assigneds, 'id');
         $task->assigneds()->sync($assignedIds);

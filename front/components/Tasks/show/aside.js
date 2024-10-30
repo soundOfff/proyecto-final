@@ -30,7 +30,6 @@ import MDBadge from "/components/MDBadge";
 import MDAvatar from "/components/MDAvatar";
 import MDDatePicker from "/components/MDDatePicker";
 import MDInput from "/components/MDInput";
-import MDButton from "/components/MDButton";
 import { useState } from "react";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 import { useDataProvider } from "/providers/DataProvider";
@@ -40,45 +39,30 @@ import { DONE_STATUS_ID } from "/utils/constants/taskStatuses";
 
 import Reminders from "./reminders";
 
-export default function Aside() {
-  const {
-    statuses,
-    priorities,
-    staffs,
-    task,
-    closeShowModal,
-    handleSaveTask,
-    isSaving,
-  } = useDataProvider();
-
-  const [statusId, setStatusId] = useState(task.status.id);
-  const [startDate, setStartDate] = useState(task.start_date);
-  const [dueDate, setDueDate] = useState(task.due_date);
-  const [priorityId, setPriorityId] = useState(task.priority.id);
-  const [hourlyRate, setHourlyRate] = useState(task.hourly_rate);
-  const [billable, setBillable] = useState(task.billable);
-  const [tags, setTags] = useState(task.tags);
-  const [assigneds, setAssigneds] = useState(task.assigneds);
-  const [followers, setFollowers] = useState(task.followers);
-  const [reminders, setReminders] = useState(task.reminders || []);
-
-  const saveTask = async () => {
-    await handleSaveTask(task.id, {
-      task_status_id: statusId,
-      start_date: startDate,
-      due_date: dueDate,
-      task_priority_id: priorityId,
-      hourly_rate: hourlyRate,
-      billable,
-      tags,
-      reminders,
-      assigneds,
-      followers,
-    });
-  };
+export default function Aside({
+  statusId,
+  setStatusId,
+  startDate,
+  setStartDate,
+  dueDate,
+  setDueDate,
+  priorityId,
+  setPriorityId,
+  hourlyRate,
+  setHourlyRate,
+  billable,
+  setBillable,
+  assigneds,
+  setAssigneds,
+  followers,
+  setFollowers,
+  reminders,
+  setReminders,
+}) {
+  const { statuses, priorities, staffs, task } = useDataProvider();
 
   return (
-    <Grid item xs={7} lg={5}>
+    <Grid item xs={4}>
       <MDBox bgColor="light" pr={2} pl={4} py={2} height="100%">
         {task.recurring && (
           <>
@@ -359,26 +343,6 @@ export default function Aside() {
                 </li>
               )}
             />
-            <Divider sx={{ width: "100%" }} />
-            <MDBox display="flex" justifyContent="space-between" gap={2}>
-              <MDButton
-                variant="gradient"
-                color="light"
-                type="button"
-                onClick={closeShowModal}
-              >
-                Cancelar
-              </MDButton>
-              <MDButton
-                variant="gradient"
-                color="info"
-                type="button"
-                disabled={isSaving}
-                onClick={saveTask}
-              >
-                {isSaving ? "Guardando..." : "Guardar"}
-              </MDButton>
-            </MDBox>
           </Grid>
         </Grid>
       </MDBox>

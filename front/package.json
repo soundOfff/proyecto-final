@@ -36,6 +36,7 @@
     "@mui/icons-material": "5.14.12",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "5.14.12",
+    "@xyflow/react": "^12.3.3",
     "chart.js": "4.4.0",
     "chroma-js": "2.4.2",
     "draft-convert": "^2.1.13",

@@ -81,7 +81,7 @@ class Task extends Model
 
     public const TASKABLE_INVOICE = 'invoice';
 
-    protected $appends = ['can_change_status', 'is_blocked', 'files_count'];
+    protected $appends = ['can_change_status', 'is_blocked', 'files_count', 'tree_vertical_level', 'tree_horizontal_level'];
 
     protected function canChangeStatus(): Attribute
     {
@@ -97,6 +97,22 @@ class Task extends Model
     {
         return new Attribute(
             get: fn () => $this->dependencies->contains(fn (self $task) => $task->task_status_id !== TaskStatus::COMPLETED)
+        );
+    }
+
+    protected function treeVerticalLevel(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                $level = 0;
+                $task = $this;
+                while ($task->dependencies->isNotEmpty()) {
+                    $level++;
+                    $task = $task->dependencies->first();
+                }
+
+                return $level;
+            }
         );
     }
 

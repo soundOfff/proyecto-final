@@ -57,6 +57,7 @@ class TaskResource extends JsonResource
             'isFinalTask' => $this->isFinalTask(),
             'isBlocked' => $this->is_blocked,
             'filesCount' => $this->files_count,
+            'treeVerticalLevel' => $this->tree_vertical_level,
             'taskable' => $this->whenLoaded('taskable', function () {
                 $taskableTypes = Task::getTaskableTypes();
                 $taskableType = $taskableTypes[$this->taskable_type] ?? null;

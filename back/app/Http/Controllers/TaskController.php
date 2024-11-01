@@ -153,7 +153,6 @@ class TaskController extends Controller
     {
         $newTask = $request->validated();
         $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
-        $dependencies = isset($newTask['dependencies']) ? $newTask['dependencies'] : [];
         $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
         $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
@@ -176,7 +175,7 @@ class TaskController extends Controller
         ];
         $newRelations = [
             'tags' => $tags,
-            'dependencies' => $dependencies,
+            'dependencies' => isset($newTask['dependencies']) ? $newTask['dependencies'] : [],
             'comments' => $comments,
             'checklistItems' => $checklistItems,
             'assigneds' => $assigneds,
@@ -227,7 +226,8 @@ class TaskController extends Controller
             }
         }
 
-        if (! is_array($dependencies)) {
+        if (isset($newTask['dependencies']) && is_array($newTask['dependencies'])) {
+            $dependencies = $newTask['dependencies'];
             $dependencyIds = array_column($dependencies, 'id');
             $task->dependencies()->sync($dependencyIds);
         }

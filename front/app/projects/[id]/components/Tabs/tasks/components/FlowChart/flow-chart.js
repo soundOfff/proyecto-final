@@ -15,8 +15,9 @@ import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useState } from "react";
 import Loader from "/components/Loader";
 import { getAll } from "/actions/tasks";
+import CustomNode from "./custom-node";
 
-const BLOCK = 100;
+const BLOCK = 150;
 
 export default function FlowChart() {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +33,7 @@ export default function FlowChart() {
   useEffect(() => {
     setIsLoading(true);
     const params = {
-      include: ["dependencies"],
+      include: ["dependencies", "priority", "status"],
       sort: "milestone_order",
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
@@ -64,7 +65,8 @@ export default function FlowChart() {
             x: BLOCK * (taskIndex + 1) * (gap - levelIndex),
             y: BLOCK * task.treeVerticalLevel,
           },
-          data: { label: `#${task.milestone_order} - ${task.name}` },
+          data: task,
+          type: "custom",
         });
       });
     });
@@ -92,6 +94,7 @@ export default function FlowChart() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={{ custom: CustomNode }}
         fitView
       >
         <Controls />

@@ -54,8 +54,6 @@ const MDTypography = forwardRef(
           opacity,
           textGradient,
           darkMode,
-        }}
-        sx={{
           textTransform: "uppercase",
         }}
       >

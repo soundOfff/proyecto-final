@@ -29,8 +29,17 @@ function CustomNode({ data: task }) {
         badgeContent={task.priority.name}
         container
       />
-      <MDBox display="flex">
-        <MDTypography variant="body2" color="textSecondary">
+      <MDBox display="block">
+        <MDTypography
+          variant="body2"
+          color="textSecondary"
+          sx={{
+            maxWidth: "250px",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            textWrap: "nowrap",
+          }}
+        >
           #{task.milestone_order} - {task.name}
         </MDTypography>
       </MDBox>

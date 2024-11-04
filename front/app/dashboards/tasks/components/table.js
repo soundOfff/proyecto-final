@@ -18,6 +18,7 @@ import useSlackLogged from "/hooks/useSlackLogged";
 import { useSession } from "next-auth/react";
 import Modal from "/components/Modal";
 import MDButton from "/components/MDButton";
+import { useRouter } from "next/navigation";
 
 const TAB_TYPES = [
   {
@@ -39,6 +40,7 @@ export default function Table({ rows, meta }) {
 
   const { data: session } = useSession();
   const { isSlackLogged, setIsSlackLogged } = useSlackLogged({ session });
+  const router = useRouter();
 
   const projectColumns = [
     {

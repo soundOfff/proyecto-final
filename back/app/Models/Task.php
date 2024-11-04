@@ -81,7 +81,7 @@ class Task extends Model
 
     public const TASKABLE_INVOICE = 'invoice';
 
-    protected $appends = ['can_change_status', 'is_blocked', 'files_count', 'tree_vertical_level', 'tree_horizontal_level'];
+    protected $appends = ['can_change_status', 'is_blocked', 'files_count', 'tree_vertical_level'];
 
     protected function canChangeStatus(): Attribute
     {

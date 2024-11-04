@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState } from "react";
 import Loader from "/components/Loader";
 import { getAll } from "/actions/tasks";
 import CustomNode from "./custom-node";
+import { update } from "/actions/tasks";
 
 const BLOCK = 150;
 
@@ -24,11 +25,24 @@ export default function FlowChart() {
   const [tasks, setTasks] = useState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
   const { project } = useDataProvider();
+
+  const onConnect = useCallback(
+    (params) => {
+      setEdges((eds) => addEdge(params, eds));
+      const task = nodes.find((node) => node.id === params.target);
+      const dependencyIds = task.data.dependencies.map((dep) => dep.id);
+      const newDependencies = [...dependencyIds, parseInt(params.source)].map(
+        (id) => ({ id })
+      );
+      if (task) {
+        update(task.data.id, {
+          dependencies: newDependencies,
+        });
+      }
+    },
+    [setEdges, nodes]
+  );
 
   useEffect(() => {
     setIsLoading(true);

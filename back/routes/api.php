@@ -52,8 +52,10 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ProposalStatusController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RecurringController;
+use App\Http\Controllers\RequestTemplateController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SubServiceTypeController;
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableFieldController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
@@ -250,6 +252,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/action-types', [ActionTypeController::class, 'index']);
     Route::post('/dispatch-action', [ActionController::class, 'dispatch']);
 
+    Route::get('/tables', TableController::class);
     Route::post('/table-fields', TableFieldController::class);
 
     Route::get('/activity-logs', [ActivityController::class, 'index']);
@@ -296,6 +299,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/courts/{court}', [CourtController::class, 'destroy']);
 
     Route::get('/send-slack-notification', [NotificationController::class, 'sendSlackNotification']);
+
+    Route::get('/request-templates', [RequestTemplateController::class, 'index']);
+    Route::get('/request-templates/{requestTemplate}', [RequestTemplateController::class, 'show']);
+    Route::post('/request-templates', [RequestTemplateController::class, 'store']);
+    Route::put('/request-templates/{requestTemplate}', [RequestTemplateController::class, 'update']);
+    Route::delete('/request-templates/{requestTemplate}', [RequestTemplateController::class, 'destroy']);
 
     Route::post('/logout', [LoginController::class, 'logout']);
 });

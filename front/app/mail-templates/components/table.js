@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Row from "./row";
 
 import MDBox from "/components/MDBox";
@@ -10,19 +9,7 @@ import { disableGroup } from "/actions/mail-templates";
 import { useState } from "react";
 
 import Link from "next/link";
-import {
-  Autocomplete,
-  Box,
-  Divider,
-  FormControl,
-  Icon,
-  InputLabel,
-  Menu,
-  MenuItem,
-  NativeSelect,
-  Select,
-} from "@mui/material";
-import MDInput from "/components/MDInput";
+import { Icon, Menu, MenuItem } from "@mui/material";
 
 const renderGroup = ({ name, mailTemplates, selectedLang, id, index }) => {
   const handleUpdateState = (id, disabled) => {

@@ -187,6 +187,13 @@ const routes = [
         route: "/mail-templates",
         noCollapse: true,
       },
+      {
+        type: "collapse",
+        name: "Plantilla de Requests",
+        key: "request-templates",
+        route: "/request-templates",
+        noCollapse: true,
+      },
     ],
   },
 ];

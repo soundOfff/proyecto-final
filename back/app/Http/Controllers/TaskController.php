@@ -54,6 +54,7 @@ class TaskController extends Controller
                 'partner',
                 'followers',
                 'taskable',
+                'procedure',
                 'reminders',
                 'actions',
                 'author',

@@ -7,6 +7,7 @@ import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
 import Kanban from "./components/Kanban/kanban";
 import FlowChart from "./components/FlowChart/flow-chart";
+import ConditionalChart from "./components/FlowChart/conditional-chart";
 import { useState } from "react";
 import { AccountTree, TableRows, ViewModule } from "@mui/icons-material";
 
@@ -47,7 +48,7 @@ export default function Tasks() {
           <MDBox py={1}>
             {mode === MODES.TABLE && <Table project={project} />}
             {mode === MODES.KANBAN && <Kanban />}
-            {mode === MODES.FLOW_CHART && <FlowChart />}
+            {mode === MODES.FLOW_CHART && <ConditionalChart />}
           </MDBox>
         </Grid>
       </Grid>

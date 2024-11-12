@@ -20,7 +20,7 @@ import { update } from "/actions/tasks";
 
 const BLOCK = 150;
 
-export default function ConditionalChart() {
+export default function FlowChart() {
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -47,7 +47,7 @@ export default function ConditionalChart() {
   useEffect(() => {
     setIsLoading(true);
     const params = {
-      include: ["procedure", "dependencies", "priority", "status"],
+      include: ["dependencies", "priority", "status"],
       sort: "milestone_order",
       "filter[taskable_id]": project.id,
       "filter[taskable_type]": "project",
@@ -59,11 +59,11 @@ export default function ConditionalChart() {
   }, [project.id]);
 
   useEffect(() => {
-    // Group tasks by levels for node positioning
     const tasksByLevel = Object.values(
       tasks.reduce((acc, task) => {
         acc[task.treeVerticalLevel] = acc[task.treeVerticalLevel] || [];
         acc[task.treeVerticalLevel].push(task);
+
         return acc;
       }, {})
     );
@@ -71,7 +71,6 @@ export default function ConditionalChart() {
     const nodes = [];
     const gap = tasksByLevel.length;
 
-    // Create nodes based on levels
     tasksByLevel.forEach((level, levelIndex) => {
       level.forEach((task, taskIndex) => {
         nodes.push({
@@ -86,53 +85,16 @@ export default function ConditionalChart() {
       });
     });
 
-    // Group tasks by processId
-    const processGroups = tasks.reduce((acc, task) => {
-      const processId = task?.procedure?.processId;
-      if (processId) {
-        acc[processId] = acc[processId] || [];
-        acc[processId].push(task);
-      }
-      return acc;
-    }, {});
-
-    // creo que process groups esta entrando al grupo de un proceso siguiente al que deberia
-
-    const edges = Object.values(processGroups).flatMap(
-      (group, index, allGroups) => {
-        const groupEdges = [];
-
-        // Create edges within the same group
-        for (let i = 0; i < group.length - 1; i++) {
-          groupEdges.push({
-            id: `e${group[i].id}-${group[i + 1].id}`,
-            source: group[i].id.toString(),
-            target: group[i + 1].id.toString(),
-          });
-        }
-
-        // Connect the final task in the current group to the first task of the next group
-        const lastTask = group[group.length - 1];
-        console.log(lastTask.isFinalTask);
-        console.log(index);
-        console.log(allGroups.length);
-
-        if (lastTask.isFinalTask && index < allGroups.length - 1) {
-          const nextGroupFirstTask = allGroups[index + 1][0];
-          console.log(nextGroupFirstTask);
-          groupEdges.push({
-            id: `e${lastTask.id}-${nextGroupFirstTask.id}`,
-            source: lastTask.id.toString(),
-            target: nextGroupFirstTask.id.toString(),
-          });
-        }
-
-        return groupEdges;
-      }
-    );
-
-    console.log(edges);
-
+    const edges = tasks
+      .filter((task) => task.dependencies.length)
+      .map((task) =>
+        task.dependencies.map((dependency) => ({
+          id: `e${task.id}-${dependency.id}`,
+          source: dependency.id.toString(),
+          target: task.id.toString(),
+        }))
+      )
+      .flat();
     setNodes(nodes);
     setEdges(edges);
   }, [tasks, setEdges, setNodes]);

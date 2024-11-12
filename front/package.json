@@ -23,6 +23,7 @@
   "dependencies": {
     "@asseinfo/react-kanban": "2.2.0",
     "@babel/preset-react": "7.22.15",
+    "@dagrejs/dagre": "github:dagrejs/dagre",
     "@emotion/cache": "11.11.0",
     "@emotion/react": "11.11.1",
     "@emotion/server": "11.11.0",

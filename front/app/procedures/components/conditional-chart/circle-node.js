@@ -5,39 +5,29 @@ import { Handle, Position } from "@xyflow/react";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
-import { Icon } from "@mui/material";
-
 export default function CircleNode({ data }) {
   return (
     <MDBox
-      sx={(theme) => ({
+      sx={{
         py: 0,
-        background: theme.palette.background.paper,
         border: "3px solid",
-        borderColor: "green",
         borderRadius: "50%",
-        width: "120px",
-        height: "120px",
+        width: "73px",
+        height: "73px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         boxSizing: "border-box",
         overflow: "hidden",
-      })}
+      }}
+      bgColor="success"
     >
-      <Handle
-        type="target"
-        position={Position.Top}
-        style={{
-          top: -10,
-        }}
-      />
-
+      <Handle type="target" position={Position.Left} style={{}} />
       <MDBox display="block" sx={{ textAlign: "center" }}>
         <MDTypography
           variant="body2"
-          color="textSecondary"
+          color="light"
           sx={{
             maxWidth: "120px",
             textOverflow: "ellipsis",
@@ -45,22 +35,12 @@ export default function CircleNode({ data }) {
             whiteSpace: "nowrap",
           }}
         >
-          #{data.name}
+          END
         </MDTypography>
       </MDBox>
-
-      <MDBox display="flex" mt={1}>
-        <MDTypography variant="body2" color="text" sx={{ lineHeight: 0 }}>
-          <Icon sx={{ fontWeight: "bold" }}>event</Icon>
-        </MDTypography>
-        <MDTypography variant="button" fontWeight="regular" color="text">
-          {/* &nbsp;{data.start_date} / {data.due_date ?? "----"} */}
-        </MDTypography>
-      </MDBox>
-
       <Handle
         type="source"
-        position={Position.Bottom}
+        position={Position.Right}
         style={{
           bottom: -10,
         }}

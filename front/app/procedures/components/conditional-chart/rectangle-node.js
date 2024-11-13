@@ -15,38 +15,25 @@ export default function RectangleNode({ data }) {
       sx={(theme) => ({
         px: 4,
         py: 1,
-        background: theme.palette.background.paper,
         border: "3px solid",
         borderColor: "black",
         borderRadius: "10px",
       })}
     >
-      <Handle type="target" position={Position.Top} />
-      {/* <MDBadge size="xs" badgeContent={data.name} container /> */}
+      <Handle type="target" position={Position.Left} />
       <MDBox display="block">
         <MDTypography
           variant="body2"
           color="textSecondary"
           sx={{
-            maxWidth: "250px",
-            textOverflow: "ellipsis",
-            overflow: "hidden",
-            textWrap: "nowrap",
+            width: "200px",
+            maxHeight: "80px",
           }}
         >
-          #{data.name}
+          {data.name}
         </MDTypography>
       </MDBox>
-      <MDBox display="flex" mt={1}>
-        <MDTypography variant="body2" color="text" sx={{ lineHeight: 0 }}>
-          <Icon sx={{ fontWeight: "bold" }}>event</Icon>
-        </MDTypography>
-        <MDTypography variant="button" fontWeight="regular" color="text">
-          {/* &nbsp;{task.start_date} / {task.due_date ?? "----"} */}
-          test
-        </MDTypography>
-      </MDBox>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Right} />
     </MDBox>
   );
 }

@@ -14,41 +14,33 @@ export default function RhombusNode({ data }) {
     <MDBox
       sx={(theme) => ({
         py: 0,
-        background: theme.palette.background.paper,
         border: "3px solid",
-        borderColor: "green",
         borderRadius: "0%",
         transform: "rotate(45deg)",
-        width: "120px",
-        height: "120px",
+        width: "80px",
+        height: "80px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         boxSizing: "border-box",
       })}
+      bgColor="info"
     >
       <Handle
         type="target"
-        position={null}
+        position={Position.Left}
         style={{
-          marginRight: "118px",
-          marginBottom: "118px",
+          margin: "38px -2px",
         }}
       />
-      {/* <MDBadge
-        size="xs"
-        color={getPriorityColor(task.priority.name)}
-        badgeContent={task.priority.name}
-        container
-      /> */}
       <MDBox
         display="block"
         sx={{ transform: "rotate(-45deg)", textAlign: "center" }}
       >
         <MDTypography
           variant="body2"
-          color="textSecondary"
+          color="light"
           sx={{
             maxWidth: "150px",
             textOverflow: "ellipsis",
@@ -56,23 +48,26 @@ export default function RhombusNode({ data }) {
             textWrap: "nowrap",
           }}
         >
-          #{data.name}
-        </MDTypography>
-      </MDBox>
-      <MDBox display="flex" mt={1} sx={{ transform: "rotate(-45deg)" }}>
-        <MDTypography variant="body2" color="text" sx={{ lineHeight: 0 }}>
-          <Icon sx={{ fontWeight: "bold" }}>event</Icon>
-        </MDTypography>
-        <MDTypography variant="button" fontWeight="regular" color="text">
-          {/* &nbsp;{task.start_date} / {task.due_date ?? "----"} */}
+          {data.name}
         </MDTypography>
       </MDBox>
       <Handle
         type="source"
+        id="right"
+        key="right"
         position={null}
         style={{
-          marginLeft: "118px",
-          marginBottom: "-118px",
+          marginLeft: "78px",
+          marginBottom: "-78px",
+        }}
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="bellow"
+        key="bellow"
+        style={{
+          margin: "-38px -2px",
         }}
       />
     </MDBox>

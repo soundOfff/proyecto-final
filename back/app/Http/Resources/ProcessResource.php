@@ -27,8 +27,9 @@ class ProcessResource extends JsonResource
             'projectServiceType' => ProjectServiceTypeResource::make($this->whenLoaded('projectServiceType')),
             'procedures' => ProcedureResource::collection($this->whenLoaded('procedures')),
             'author' => StaffResource::make($this->whenLoaded('author')),
-            'forks' => ProcessResource::collection($this->whenLoaded('forks')),
-            'forkedFrom' => ProcessResource::make($this->whenLoaded('forkedFrom')),
+            'forks' => self::collection($this->whenLoaded('forks')),
+            'allForks' => self::collection($this->whenLoaded('allForks')),
+            'forkedFrom' => self::make($this->whenLoaded('forkedFrom')),
             'toNotify' => StaffResource::collection($this->whenLoaded('toNotify')),
         ];
     }

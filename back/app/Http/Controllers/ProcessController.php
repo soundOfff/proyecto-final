@@ -22,6 +22,7 @@ class ProcessController extends Controller
             'procedures.status',
             'procedures.responsible',
             'forks',
+            'allForks',
             'author',
             'toNotify',
         ])
@@ -54,6 +55,7 @@ class ProcessController extends Controller
             'procedures.status',
             'procedures.responsible',
             'forks',
+            'allForks',
             'author',
             'toNotify',
         ])

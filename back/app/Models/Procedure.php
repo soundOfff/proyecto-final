@@ -60,6 +60,12 @@ class Procedure extends Model
         return $this->morphMany(Reminder::class, 'reminderable');
     }
 
+    public function isConditional(): bool
+    {
+        // a procedure is conditional if is the last of the process and the process who is belong has forks
+        return $this->process->forks->isNotEmpty() && $this->step_number == $this->process->procedures->count();
+    }
+
     public function convertToTask(Project $project, int $staff_id): Task | null
     {
         $isAlreadyCreated = Task::where('procedure_id', $this->id)

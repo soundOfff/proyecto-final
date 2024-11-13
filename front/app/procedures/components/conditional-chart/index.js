@@ -7,91 +7,73 @@ import {
   MiniMap,
   ReactFlow,
   useNodesState,
-  addEdge,
   useEdgesState,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CustomNode from "./custom-node";
-import dagre from "@dagrejs/dagre";
+import MDButton from "/components/MDButton";
 
-const BLOCK = 150;
+const BLOCK = 350;
+const OFFSET_X = 80;
+const OFFSET_Y = 12.5; // Fixed circle node offset
+
+const getPos = ({ xPos, yPos, index, isFinal, isConditional }) => {
+  let pos = { x: xPos + BLOCK * index, y: yPos };
+
+  if (isConditional) {
+    pos.x = xPos + BLOCK * index + OFFSET_X / 2;
+    pos.y = yPos / 2 - 1;
+  } else if (isFinal) {
+    pos.x = xPos + BLOCK * index - OFFSET_X / 2;
+    pos.y = yPos - OFFSET_Y;
+  }
+
+  return pos;
+};
 
 export default function ConditionalChart({ process }) {
+  const [refresher, setRefresher] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [layoutedEdges, setLayoutedEdges] = useState([]);
-  const [layoutedNodes, setLayoutedNodes] = useState([]);
-
-  const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
-  const getLayoutedElements = (nodes, edges, isHorizontal = true) => {
-    dagreGraph.setGraph({ rankdir: direction });
-
-    nodes.forEach((node) => {
-      dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
-    });
-
-    edges.forEach((edge) => {
-      dagreGraph.setEdge(edge.source, edge.target);
-    });
-
-    dagre.layout(dagreGraph);
-
-    const newNodes = nodes.map((node) => {
-      const nodeWithPosition = dagreGraph.node(node.id);
-      const newNode = {
-        ...node,
-        targetPosition: isHorizontal ? "left" : "top",
-        sourcePosition: isHorizontal ? "right" : "bottom",
-        // We are shifting the dagre node position (anchor=center center) to the top left
-        // so it matches the React Flow node anchor point (top left).
-        position: {
-          x: nodeWithPosition.x - nodeWidth / 2,
-          y: nodeWithPosition.y - nodeHeight / 2,
-        },
-      };
-
-      return newNode;
-    });
-
-    return { nodes: newNodes, edges };
-  };
 
   const createNodesAndEdges = (process) => {
     const nodes = [];
     const edges = [];
 
-    let yPos = 0;
-    const addProceduresAsNodes = (
-      procedures,
-      processId,
-      offsetX,
-      forks = 0
-    ) => {
+    let xPos = 0; // Start horizontal positioning from x = 0
+
+    const addProceduresAsNodes = (procedures, processId, offsetY) => {
       const processNodes = procedures.map((procedure, index) => {
+        const isFinal = index === procedures.length - 1;
         const node = {
           id: procedure.id.toString(),
           data: {
             ...procedure,
             processId,
-            isFinal: index === procedures.length - 1,
-            isConditional: index == procedures.length - 1 && forks > 0,
+            isFinal,
           },
-          position: { x: offsetX, y: yPos + BLOCK * index },
+          position: getPos({
+            xPos,
+            yPos: offsetY,
+            index,
+            isFinal,
+            isConditional: procedure.isConditional,
+          }),
           type: "custom",
         };
         return node;
       });
       nodes.push(...processNodes);
 
-      // Create sequential edges within the same process group
+      // Create edges between sequential nodes in the process
       processNodes.forEach((node, index) => {
         if (index < processNodes.length - 1) {
           edges.push({
             id: `e${node.id}-${processNodes[index + 1].id}`,
             source: node.id,
             target: processNodes[index + 1].id,
+            type: "smoothstep",
           });
         }
       });
@@ -99,47 +81,44 @@ export default function ConditionalChart({ process }) {
       return processNodes;
     };
 
+    // Recursive function to add nodes and edges for all nested forks
+    const processForks = (parentProcess, parentNodes, offsetY = 0) => {
+      parentProcess.allForks.forEach((fork, forkIndex) => {
+        xPos = parentNodes[parentNodes.length - 1].position.x + BLOCK / 2;
+        const forkOffsetY = offsetY + (BLOCK / 1.5) * forkIndex;
+
+        const forkNodes = addProceduresAsNodes(
+          fork.procedures,
+          fork.id,
+          forkOffsetY
+        );
+
+        // Connect last node of the parent process to the first node of the fork
+        if (parentNodes.length && forkNodes.length) {
+          edges.push({
+            id: `e${parentNodes[parentNodes.length - 1].id}-${forkNodes[0].id}`,
+            source: parentNodes[parentNodes.length - 1].id,
+            target: forkNodes[0].id,
+            type: "smoothstep",
+            sourceHandle: forkIndex === 0 ? "bellow" : "right",
+          });
+        }
+
+        // Recursive call for forks of this fork
+        if (fork.allForks && fork.allForks.length > 0) {
+          processForks(fork, forkNodes, forkOffsetY); // Adjust Y position for each level
+        }
+      });
+    };
+
     // Main process nodes and edges
     const mainProcessNodes = addProceduresAsNodes(
       process.procedures,
       process.id,
-      0,
-      process.forks.length
+      0
     );
+    processForks(process, mainProcessNodes);
 
-    process.forks.forEach((fork, forkIndex) => {
-      const offsetX = BLOCK * (forkIndex + 1);
-      console.log(offsetX);
-      const forkNodes = addProceduresAsNodes(fork.procedures, fork.id, offsetX);
-
-      if (mainProcessNodes.length && forkNodes.length) {
-        edges.push({
-          id: `e${mainProcessNodes[mainProcessNodes.length - 1].id}-${
-            forkNodes[0].id
-          }`,
-          source: mainProcessNodes[mainProcessNodes.length - 1].id,
-          target: forkNodes[0].id,
-        });
-      }
-    });
-
-    const allGroups = [
-      mainProcessNodes,
-      ...process.forks.map((fork) =>
-        addProceduresAsNodes(fork.procedures, fork.id, BLOCK * 3)
-      ),
-    ];
-    for (let i = 0; i < allGroups.length - 1; i++) {
-      const currentGroup = allGroups[i];
-      const nextGroup = allGroups[i + 1];
-      if (currentGroup.length && nextGroup.length) {
-        edges.push({
-          id: `e${currentGroup[currentGroup.length - 1].id}-${nextGroup[0].id}`,
-          source: currentGroup[currentGroup.length - 1].id,
-          target: nextGroup[0].id,
-        });
-      }
-    }
     setNodes(nodes);
     setEdges(edges);
   };
@@ -147,18 +126,15 @@ export default function ConditionalChart({ process }) {
   useEffect(() => {
     if (process) {
       createNodesAndEdges(process);
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges);
-      setLayoutedNodes(layoutedNodes);
-      setLayoutedEdges(layoutedEdges);
     }
-  }, []);
+  }, [refresher]);
 
   return (
     <MDBox display="flex" sx={{ height: "60vh" }}>
+      <MDButton onClick={() => setRefresher(!refresher)}>Refresh</MDButton>
       <ReactFlow
-        nodes={layoutedNodes}
-        edges={layoutedEdges}
+        nodes={nodes}
+        edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={{ custom: CustomNode }}

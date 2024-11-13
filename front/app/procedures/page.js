@@ -16,7 +16,7 @@ export default async function Procedures({ searchParams: { processId } }) {
     include: ["status", "dependencies", "actions.type", "author"],
   });
   const process = await show(processId, {
-    include: ["forks"],
+    include: ["allForks"],
   });
   const actionTypes = await getAllActionTypes();
 

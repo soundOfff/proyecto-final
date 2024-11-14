@@ -22,11 +22,11 @@ const getPos = ({ xPos, yPos, index, isFinal, isConditional }) => {
   let pos = { x: xPos + BLOCK * index, y: yPos };
 
   if (isConditional) {
-    pos.x = xPos + BLOCK * index + OFFSET_X / 2;
-    pos.y = yPos / 2 - 1;
+    pos.x = xPos + BLOCK * index + OFFSET_X / 2; // f(x) = x + 350 * index + 80 / 2
+    pos.y = yPos / 2 - 1; // f(y) = y / 2 - 1
   } else if (isFinal) {
-    pos.x = xPos + BLOCK * index - OFFSET_X / 2;
-    pos.y = yPos - OFFSET_Y;
+    pos.x = xPos + BLOCK * index - OFFSET_X / 2; // f(x) = x + 350 * index - 80 / 2
+    pos.y = yPos - OFFSET_Y; // f(y) = y - 12.5
   }
 
   return pos;

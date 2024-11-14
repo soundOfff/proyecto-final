@@ -21,7 +21,7 @@ export default function CircleNode({ data }) {
         boxSizing: "border-box",
         overflow: "hidden",
       }}
-      bgColor="success"
+      bgColor="error"
     >
       <Handle type="target" position={Position.Left} style={{}} />
       <MDBox display="block" sx={{ textAlign: "center" }}>

@@ -14,6 +14,7 @@ class Procedure extends Model
         'process_id',
         'procedure_status_id',
         'author_id',
+        'is_conditional',
         'step_number',
         'name',
         'description',
@@ -115,5 +116,15 @@ class Procedure extends Model
         }
 
         return $task;
+    }
+
+    public function outgoingPaths()
+    {
+        return $this->hasMany(ProcedurePath::class, 'from_procedure_id');
+    }
+
+    public function incomingPaths()
+    {
+        return $this->hasMany(ProcedurePath::class, 'to_procedure_id');
     }
 }

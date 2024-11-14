@@ -8,7 +8,8 @@ function CustomNode({ data }) {
   return data.isConditional ? (
     <RhombusNode data={data} />
   ) : data.isFinal ? (
-    <CircleNode data={data} />
+    // <CircleNode data={data} />
+    <RectangleNode data={data} />
   ) : (
     <RectangleNode data={data} />
   );

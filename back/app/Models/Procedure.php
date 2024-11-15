@@ -67,6 +67,30 @@ class Procedure extends Model
         return $this->process->forks->isNotEmpty() && $this->step_number == $this->process->procedures->count();
     }
 
+    /**
+     * Convert a procedure to a task and traverse the path until reach a conditional procedure
+     *
+     * @param Project $project
+     * @param int $staff_id
+     * @param array $createdTasks
+     */
+    public function traversePath(Project $project, int $staff_id, array &$createdTasks): void
+    {
+        $task = $this->convertToTask($project, $staff_id);
+        if ($task) {
+            $createdTasks[] = $task;
+        }
+
+        $this->load('outgoingPaths');
+
+        foreach ($this->outgoingPaths as $path) {
+            if ($path->toProcedure->is_conditional) {
+                break;
+            }
+            $path->toProcedure->convertToTaskTraverse($project, $staff_id, $createdTasks);
+        }
+    }
+
     public function convertToTask(Project $project, int $staff_id): Task | null
     {
         $isAlreadyCreated = Task::where('procedure_id', $this->id)

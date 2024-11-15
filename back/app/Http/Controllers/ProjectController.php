@@ -261,17 +261,11 @@ class ProjectController extends Controller
             $process = $project->load('process')->process;
         }
 
-        $procedures = $process->load('procedures')->procedures->sortBy('step_number');
-        $createdTasks = false;
+        $root = $process->load('procedures')->procedures->sortBy('step_number')->first();
 
-        foreach ($procedures as $procedure) {
-            $task = $procedure->convertToTask($project, $staff->id);
-            if ($task) {
-                $createdTasks = true;
-            }
-        }
+        $root->traversePath($project, $staff->id, []);
 
-        return response()->json(['createdTasks' => $createdTasks], 201);
+        return response()->json(['createdTasks' => true], 201); // TODO: modify logic
     }
 
     /**

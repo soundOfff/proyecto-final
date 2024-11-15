@@ -99,6 +99,9 @@ export default function CreateChart({ processId }) {
             type: "smoothstep",
           });
         }
+        if (path.fromProcedureId > path.toProcedureId) {
+          return;
+        }
         const currNode = nodes.find(
           (curr) => curr.id === path.fromProcedureId.toString()
         );

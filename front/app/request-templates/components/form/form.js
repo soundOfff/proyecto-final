@@ -1,31 +1,33 @@
 "use client";
 
-import { Grid, Icon } from "@mui/material";
+import { Autocomplete, Grid, Icon } from "@mui/material";
 import FormField from "/pagesComponents/pages/users/new-user/components/FormField";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDTypography from "/components/MDTypography";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
-import { getTableFields } from "/actions/table-field";
+import MDInput from "/components/MDInput";
+
+const MODELS = [
+  { value: "Project", label: "Caso" },
+  { value: "Task", label: "Tarea" },
+  { value: "Partner", label: "Cliente" },
+  { value: "Staff", label: "Abogado" },
+];
 
 export default function FormContent({ formData, formField, requestTemplate }) {
   const { values, errors, touched, setFieldValue } = formData;
-  const { name, description, fields, json, rows: rowsField } = formField;
+  const { name, description, fields, json, model, rows: rowsField } = formField;
 
   const handleGenerate = () => {
-    const mappedJson = values[rowsField.name].map((row) =>
-      row.tableSelected === ""
-        ? null
-        : {
-            [row.name]:
-              row.tableSelected && row.fieldSelected
-                ? `${row.tableSelected}.${row.fieldSelected}`
-                : "",
-          }
-    );
+    const mappedJson = values[rowsField.name].map((row) => ({
+      [row.name]: row.relationsSelected ?? "",
+    }));
     const stringifiedJson = JSON.stringify(
-      mappedJson.reduce((a, b) => ({ ...a, ...b }), {})
+      mappedJson.reduce((a, b) => ({ ...a, ...b }), {}),
+      null,
+      "\t"
     );
     setFieldValue(json.name, stringifiedJson);
   };
@@ -35,7 +37,7 @@ export default function FormContent({ formData, formField, requestTemplate }) {
     const rows = Object.entries(parsedFields).map(([key, value]) => ({
       id: uuidv4(),
       name: key,
-      table: value,
+      selectedField: value,
     }));
     setFieldValue(rowsField.name, rows);
   };
@@ -47,21 +49,17 @@ export default function FormContent({ formData, formField, requestTemplate }) {
         setFieldValue(description.name, requestTemplate.description);
         setFieldValue(fields.name, requestTemplate.fields);
         setFieldValue(json.name, requestTemplate.json);
+        setFieldValue(model.name, requestTemplate.model);
 
         const parsedJson = JSON.parse(requestTemplate.json);
         const rows = await Promise.all(
           Object.entries(parsedJson).map(async ([key, value]) => {
-            const [tableSelected, fieldSelected] = value.split(".");
-
-            const data = await getTableFields({ table: tableSelected });
-            const fields = data.map((field) => field.field);
+            const relations = value;
 
             return {
               id: uuidv4(),
               name: key,
-              tableSelected,
-              fieldSelected,
-              fields,
+              relationsSelected: relations,
             };
           })
         );
@@ -76,6 +74,7 @@ export default function FormContent({ formData, formField, requestTemplate }) {
     description,
     fields,
     json,
+    model,
     rowsField,
   ]);
 
@@ -114,7 +113,7 @@ export default function FormContent({ formData, formField, requestTemplate }) {
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs={4}>
-          <MDBox display="flex" flexDirection="column" gap={4}>
+          <MDBox display="flex" flexDirection="column" gap={2}>
             <FormField
               name={name.name}
               label={name.label}
@@ -136,7 +135,27 @@ export default function FormContent({ formData, formField, requestTemplate }) {
                 !errors[description.name]
               }
               multiline
-              rows={4}
+              rows={2}
+            />
+            <Autocomplete
+              value={
+                MODELS.find((option) => option.value === values[model.name]) ||
+                ""
+              }
+              onChange={(e, fieldSelected) => {
+                setFieldValue(model.name, fieldSelected?.value ?? "");
+              }}
+              options={MODELS}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <MDInput
+                  {...params}
+                  label={model.label}
+                  variant="standard"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
             />
           </MDBox>
         </Grid>
@@ -151,7 +170,8 @@ export default function FormContent({ formData, formField, requestTemplate }) {
               error={errors[fields.name] && touched[fields.name]}
               success={values[fields.name]?.length > 0 && !errors[fields.name]}
               multiline
-              rows={8}
+              rows={9}
+              noUppercase
             />
           </MDBox>
         </Grid>
@@ -166,7 +186,8 @@ export default function FormContent({ formData, formField, requestTemplate }) {
               error={errors[json.name] && touched[json.name]}
               success={values[json.name]?.length > 0 && !errors[json.name]}
               multiline
-              rows={8}
+              rows={9}
+              noUppercase
             />
           </MDBox>
         </Grid>

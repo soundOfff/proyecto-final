@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -128,9 +129,14 @@ class Task extends Model
         return $this->belongsTo(Procedure::class);
     }
 
-    public function taskable()
+    public function taskable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function project(): MorphTo
+    {
+        return $this->morphTo(Project::class, 'taskable_type', 'taskable_id');
     }
 
     public function tags()

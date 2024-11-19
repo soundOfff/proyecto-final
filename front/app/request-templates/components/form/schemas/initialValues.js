@@ -15,12 +15,13 @@ Coded by www.creative-tim.com
 
 import checkout from "./form";
 const {
-  formField: { name, description, fields, json, rows },
+  formField: { name, description, fields, json, model, rows },
 } = checkout;
 
 const initialValues = {
   [name.name]: "",
   [description.name]: "",
+  [model.name]: "",
   [fields.name]: "",
   [json.name]: "",
   [rows.name]: [],

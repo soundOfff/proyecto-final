@@ -24,7 +24,6 @@ class ProjectRequest extends FormRequest
         return [
             'start_date' => 'required|date',
             'project_status_id' => 'required|numeric|exists:project_statuses,id',
-            'responsible_person_id' => 'required|numeric|exists:staff,id',
             'billable_partner_id' => 'required|numeric|exists:partners,id',
             'project_members' => 'required|array',
             'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',

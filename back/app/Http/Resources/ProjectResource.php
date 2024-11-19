@@ -56,7 +56,6 @@ class ProjectResource extends JsonResource
                 })->filter()->unique('id')->values());
             }),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
-            'responsiblePerson' => PartnerResource::make($this->whenLoaded('responsiblePerson')),
             'lawFirm' => LawFirmResource::make($this->whenLoaded('lawFirm')),
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),
             'partners' => PartnerResource::collection($this->whenLoaded('partners')),

@@ -21,19 +21,21 @@ import PropTypes from "prop-types";
 // Custom styles for MDInput
 import MDInputRoot from "/components/MDInput/MDInputRoot";
 
-const MDInput = forwardRef(({ error, success, disabled, ...rest }, ref) => {
-  return (
-    <MDInputRoot
-      {...rest}
-      ref={ref}
-      ownerState={{ error, success, disabled }}
-      sx={{
-        "& input": { textTransform: "uppercase" },
-        "& textarea": { textTransform: "uppercase" },
-      }}
-    />
-  );
-});
+const MDInput = forwardRef(
+  ({ error, success, disabled, noUppercase, ...rest }, ref) => {
+    return (
+      <MDInputRoot
+        {...rest}
+        ref={ref}
+        ownerState={{ error, success, disabled }}
+        sx={{
+          "& input": { textTransform: noUppercase ? "none" : "uppercase" },
+          "& textarea": { textTransform: noUppercase ? "none" : "uppercase" },
+        }}
+      />
+    );
+  }
+);
 
 // Setting default values for the props of MDInput
 MDInput.defaultProps = {

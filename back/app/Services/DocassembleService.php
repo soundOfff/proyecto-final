@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\ActionType;
 use App\Models\File;
 use App\Models\Partner;
 use App\Models\Project;
+use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
@@ -62,10 +64,76 @@ class DocassembleService
         return $exception ? array_map(fn ($errors) => implode(' ', $errors), $exception->errors()) : [];
     }
 
+    private function sendRequest($variables, $i = null)
+    {
+        $i = $i ? $i : config('services.docassemble.index');
+        $key = config('services.docassemble.key');
+
+        $credentials = Http::docassemble()
+            ->withQueryParameters([
+                'i' => $i,
+                'key' => $key,
+            ])->get('/session/new')
+            ->json();
+
+        $session = $credentials['session'];
+        $secret = $credentials['secret'];
+
+        $interview = Http::docassemble()
+            ->post('/session',
+                [
+                    'i' => $i,
+                    'key' => $key,
+                    'session' => $session,
+                    'secret' => $secret,
+                    'variables' => $variables,
+                    'file_number' => 0,
+                ]
+            )
+            ->json();
+
+        $fileNumber = $interview['attachments'][0]['number']['docx'];
+
+        $file = Http::docassemble()
+            ->withQueryParameters([
+                'i' => $i,
+                'key' => $key,
+                'session' => $session,
+                'secret' => $secret,
+                'extension' => 'docx',
+            ])
+            ->withUrlParameters([
+                'file_number' => $fileNumber,
+            ])
+            ->get('/file/{file_number}');
+
+        return $file;
+    }
+
+    private function saveFile($file, $path, $model)
+    {
+        $tempPath = tempnam(sys_get_temp_dir(), $path);
+        file_put_contents($tempPath, $file->body());
+
+        Storage::disk('google')->put($path, file_get_contents($tempPath));
+        $ext = Storage::disk('google')->path($path);
+
+        $publicUrl = $this->fileService->getPublicUrl($ext);
+
+        File::create([
+            'fileable_type' => get_class($model),
+            'fileable_id' => $model->id,
+            'subject' => $path,
+            'url' => $ext,
+        ]);
+
+        return $publicUrl;
+    }
+
     public function createDocument(Project $project)
     {
-        $defendant = $project->getDefendants()->first();
-        $plaintiff = $project->getPlaintiffs()->first();
+        $defendant = $project->defendants()->first();
+        $plaintiff = $project->plaintiffs()->first();
         abort_if(! $plaintiff->pivot, 404, 'Apoderado no encontrado');
         $representative = $plaintiff->relatedPartners()->find($plaintiff->pivot->owner_id);
         abort_if(! $representative, 404, 'Apoderado no encontrado');
@@ -138,63 +206,72 @@ class DocassembleService
             'circuito_numero' => 'Something',
         ];
 
-        $i = config('services.docassemble.index');
-        $key = config('services.docassemble.key');
+        $file = $this->sendRequest($variables);
 
-        $credentials = Http::docassemble()
-            ->withQueryParameters([
-                'i' => $i,
-                'key' => $key,
-            ])->get('/session/new')
-            ->json();
+        $path = "/projects/$project->id/poder_".Carbon::now()->format('Ymd').'.docx';
 
-        $session = $credentials['session'];
-        $secret = $credentials['secret'];
+        $publicUrl = $this->saveFile($file, $path, $project);
 
-        $interview = Http::docassemble()
-            ->post('/session',
-                [
-                    'i' => $i,
-                    'key' => $key,
-                    'session' => $session,
-                    'secret' => $secret,
-                    'variables' => $variables,
-                    'file_number' => 0,
-                ]
-            )
-            ->json();
+        return $publicUrl;
+    }
 
-        $fileNumber = $interview['attachments'][0]['number']['pdf'];
+    private function replaceJsonData($value, Model $model)
+    {
+        $toReplace = explode('.', $value);
 
-        $file = Http::docassemble()
-            ->withQueryParameters([
-                'i' => $i,
-                'key' => $key,
-                'session' => $session,
-                'secret' => $secret,
-                'extension' => 'pdf',
-            ])
-            ->withUrlParameters([
-                'file_number' => $fileNumber,
-            ])
-            ->get('/file/{file_number}');
+        $relationValues = $this->getNestedRelationValue($model, $toReplace);
 
-        $filename = 'poder_'.strtolower($representative->merged_name).'_'.Carbon::now()->format('Ymd').'.pdf';
-        $path = "/projects/$project->id/$filename";
-        $tempPath = tempnam(sys_get_temp_dir(), $filename);
-        file_put_contents($tempPath, $file->body());
+        if ($relationValues instanceof \Illuminate\Support\Collection) {
+            $relationValues = $relationValues->flatten(INF);
 
-        Storage::disk('google')->put($path, file_get_contents($tempPath));
-        $ext = Storage::disk('google')->path($path);
+            if ($relationValues->count() == 1) {
+                $relationValues = $relationValues->first();
+            }
 
-        $publicUrl = $this->fileService->getPublicUrl($ext);
+            if ($relationValues instanceof \Illuminate\Support\Collection) {
+                $relationValues = $relationValues->map(fn ($item) => $item)->implode(" \n ");
+            }
+        }
 
-        File::create([
-            'fileable_type' => 'project',
-            'fileable_id' => $project->id,
-            'subject' => $filename,
-            'url' => $ext,
-        ]);
+        return $relationValues;
+    }
+
+    private function getNestedRelationValue($model, $relations)
+    {
+        if (empty($relations)) {
+            return '';
+        }
+
+        $relation = array_shift($relations);
+
+        if ($model->$relation instanceof \Illuminate\Database\Eloquent\Collection) {
+            return $model->$relation->map(fn ($item) => $this->getNestedRelationValue($item, $relations));
+        } elseif ($model->$relation instanceof Model) {
+            return $this->getNestedRelationValue($model->$relation, $relations);
+        } else {
+            return $model->$relation ?? '';
+        }
+    }
+
+    public function createDocumentFromAction(Task $task)
+    {
+        $actions = $task->actions->where('action_type_id', ActionType::ACTION_API_ID);
+
+        foreach ($actions as $action) {
+            $template = $action->requestTemplate;
+
+            $variables = json_decode($template->json);
+
+            foreach ($variables as $key => $value) {
+                $variables->$key = $this->replaceJsonData($value, $task);
+            }
+        }
+
+        $file = $this->sendRequest((array) $variables, 'docassemble.playground3:fianza_persona_natural.yml');
+
+        $path = "/tasks/$task->id/document_".Carbon::now()->format('Ymd').'.docx';
+
+        $publicUrl = $this->saveFile($file, $path, $task->taskable);
 
         return $publicUrl;
     }

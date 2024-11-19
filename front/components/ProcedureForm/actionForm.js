@@ -4,7 +4,9 @@ import FormField from "/components/ItemForm/FormField";
 import MDButton from "/components/MDButton";
 import * as Yup from "yup";
 import Select from "/components/Select";
-import { ACTION_EMAIL } from "/utils/constants/actionTypes";
+import { ACTION_EMAIL, ACTION_REQUEST } from "/utils/constants/actionTypes";
+import { useEffect, useState } from "react";
+import { getAll as getAllRequestTemplates } from "/actions/request-templates";
 
 const ENGLISH_CODE = "en"; // TODO: move to constants
 const newActionFormField = {
@@ -39,6 +41,11 @@ const newActionFormField = {
       label: "Plantilla de correo",
       errorMsg: "La plantilla de correo es requerida",
     },
+    requestTemplate: {
+      name: "request_template_id",
+      label: "Plantilla de Request",
+      errorMsg: "La plantilla de request es requerida",
+    },
   },
 };
 
@@ -49,7 +56,8 @@ export default function ActionForm({
   values: externalValues,
   mailTemplates,
 }) {
-  const { description, action, mailTo, mailTemplateId } =
+  const [requestTemplates, setRequestTemplates] = useState([]);
+  const { name, description, action, mailTo, mailTemplateId, requestTemplate } =
     newActionFormField.formField;
 
   const clearFields = (actions) => {
@@ -57,18 +65,16 @@ export default function ActionForm({
     setFieldValue(action.name, "");
     setFieldValue(mailTo.name, "");
     setFieldValue(mailTemplateId.name, "");
+    setFieldValue(requestTemplate.name, "");
     actions.setTouched({});
   };
 
   const addItemValidationSchema = Yup.object().shape({
     [description.name]: Yup.string().required(description.errorMsg),
     [action.name]: Yup.string().required(action.errorMsg),
-    [mailTo.name]: Yup.string()
-      .email("Correo inválido")
-      .required("Correo requerido"),
-    [mailTemplateId.name]: Yup.string().required(
-      "Plantilla de correo requerida"
-    ),
+    [mailTo.name]: Yup.string().email("Correo inválido"),
+    [mailTemplateId.name]: Yup.string(),
+    [requestTemplate.name]: Yup.string(),
   });
   const filteredMailTemplates = mailTemplates.filter(
     ({ lang }) => lang.code === ENGLISH_CODE
@@ -80,6 +86,7 @@ export default function ActionForm({
       [action.name]: "",
       [mailTo.name]: "",
       [mailTemplateId.name]: "",
+      [requestTemplate.name]: "",
     },
     validationSchema: addItemValidationSchema,
     onSubmit: (values, methods) => {
@@ -91,11 +98,28 @@ export default function ActionForm({
           action_type_id: values[action.name],
           mail_to: values[mailTo.name],
           mail_template_id: values[mailTemplateId.name],
+          request_template_id: values[requestTemplate.name],
         },
       ]);
       clearFields(methods);
     },
   });
+
+  useEffect(() => {
+    if (values.actions !== ACTION_EMAIL) {
+      setFieldValue(mailTo.name, "");
+      setFieldValue(mailTemplateId.name, "");
+    }
+    if (values.actions !== ACTION_REQUEST) {
+      setFieldValue(requestTemplate.name, "");
+    }
+  }, [values.actions, setFieldValue, mailTo, mailTemplateId, requestTemplate]);
+
+  useEffect(() => {
+    getAllRequestTemplates().then((response) =>
+      setRequestTemplates(response.data.requestTemplates)
+    );
+  }, []);
 
   return (
     <>
@@ -148,6 +172,18 @@ export default function ActionForm({
             />
           </Grid>
         </>
+      )}
+      {values[action.name] === ACTION_REQUEST && (
+        <Grid item xs={6}>
+          <Select
+            value={values[requestTemplate.name]}
+            options={requestTemplates}
+            optionLabel={(option) => option.name}
+            fieldName={requestTemplate.name}
+            inputLabel={requestTemplate.label}
+            setFieldValue={setFieldValue}
+          />
+        </Grid>
       )}
       <Grid item xs={2}>
         <MDButton

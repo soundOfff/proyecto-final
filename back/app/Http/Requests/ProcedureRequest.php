@@ -37,6 +37,7 @@ class ProcedureRequest extends FormRequest
             'actions.*.action_type_id' => 'nullable|numeric|exists:action_types,id',
             'actions.*.mail_template_id' => 'nullable|numeric|exists:mail_templates,id',
             'actions.*.mail_to' => 'nullable|string',
+            'actions.*.request_template_id' => 'nullable|numeric|exists:request_templates,id',
             'reminders' => 'nullable|array',
             'reminders.*.staff_id' => 'required|numeric|exists:staff,id',
             'reminders.*.date' => 'required|date',

@@ -9,6 +9,7 @@ class RequestTemplate extends Model
     protected $fillable = [
         'name',
         'description',
+        'model',
         'fields',
         'json',
     ];

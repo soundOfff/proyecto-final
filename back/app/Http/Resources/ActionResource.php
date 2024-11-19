@@ -23,9 +23,11 @@ class ActionResource extends JsonResource
             'is_dispatched' => $this->is_dispatched,
             'mail_to' => $this->mail_to,
             'mail_template_id' => $this->mail_template_id,
+            'request_template_id' => $this->request_template_id,
             'type' => ActionTypeResource::make($this->whenLoaded('type')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'procedures' => ProcedureResource::collection($this->whenLoaded('procedures')),
+            'requestTemplate' => RequestTemplateResource::make($this->whenLoaded('requestTemplate')),
         ];
     }
 }

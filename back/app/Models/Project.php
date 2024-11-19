@@ -78,11 +78,6 @@ class Project extends Model
         return $this->belongsTo(Jurisdiction::class);
     }
 
-    public function responsiblePerson(): BelongsTo
-    {
-        return $this->belongsTo(Staff::class, 'responsible_person_id');
-    }
-
     public function lawFirm(): BelongsTo
     {
         return $this->belongsTo(LawFirm::class);
@@ -150,14 +145,24 @@ class Project extends Model
         });
     }
 
-    public function getDefendants()
+    public function defendants(): BelongsToMany
     {
-        return $this->partners->where('pivot.role_id', PartnerProjectRole::DEFENDANT);
+        return $this->partners()->wherePivot('role_id', PartnerProjectRole::DEFENDANT);
     }
 
-    public function getPlaintiffs()
+    public function plaintiffs(): BelongsToMany
     {
-        return $this->partners->where('pivot.role_id', PartnerProjectRole::PLAINTIFF);
+        return $this->partners()->wherePivot('role_id', PartnerProjectRole::PLAINTIFF);
+    }
+
+    public function responsiblePerson(): BelongsToMany
+    {
+        return $this->partners()->wherePivot('role_id', PartnerProjectRole::RESPONSIBLE_PERSON);
+    }
+
+    public function guarantor(): BelongsToMany
+    {
+        return $this->partners()->wherePivot('role_id', PartnerProjectRole::GUARANTOR);
     }
 
     public function setName(): void

@@ -30,9 +30,4 @@ class Reminder extends Model
     {
         return $this->belongsTo(Staff::class);
     }
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(Staff::class, 'creator');
-    }
 }

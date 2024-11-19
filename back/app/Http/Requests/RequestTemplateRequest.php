@@ -24,6 +24,7 @@ class RequestTemplateRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'nullable|string',
+            'model' => 'required|string',
             'fields' => 'required|string',
             'json' => 'required|string',
         ];

@@ -26,6 +26,10 @@ const form = {
       label: "Descripción",
       type: "text",
     },
+    model: {
+      name: "model",
+      label: "Modelo",
+    },
     fields: {
       name: "fields",
       label: "Campos",

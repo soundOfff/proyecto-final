@@ -6,36 +6,19 @@ import MDInput from "/components/MDInput";
 
 import { Autocomplete, Icon } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getTables } from "/actions/tables";
-import { getTableFields } from "/actions/table-field";
+import { getModelRelations } from "/actions/model-relations";
 import form from "/app/request-templates/components/form/schemas/form";
 
 export default function Table({ formData }) {
-  const [tables, setTables] = useState([]);
+  const [models, setModels] = useState([]);
 
   const { values, setFieldValue } = formData;
-  const { rows } = values;
+  const { rows, model } = values;
   const { rows: rowsField } = form.formField;
 
-  const handleTableSelected = async (e, tableSelected, currentRowId) => {
-    const newRows = await Promise.all(
-      rows.map(async (row) => {
-        if (row.id === currentRowId) {
-          const data = await getTableFields({ table: tableSelected });
-          const fields = data.map((field) => field.field);
-
-          return { ...row, tableSelected: tableSelected, fields: fields };
-        }
-        return row;
-      })
-    );
-
-    setFieldValue(rowsField.name, newRows);
-  };
-
-  const handleFieldSelected = (e, fieldSelected, currentRowId) => {
+  const handleRelationSelected = (e, relationsSelected, currentRowId) => {
     const newRows = rows.map((row) =>
-      row.id === currentRowId ? { ...row, fieldSelected } : row
+      row.id === currentRowId ? { ...row, relationsSelected } : row
     );
 
     setFieldValue(rowsField.name, newRows);
@@ -60,38 +43,12 @@ export default function Table({ formData }) {
         <Autocomplete
           value={
             rows?.find((row) => row?.id === rowTable.original.id)
-              ?.tableSelected || ""
+              ?.relationsSelected || ""
           }
-          onChange={(e, tableSelected) =>
-            handleTableSelected(e, tableSelected, rowTable.original.id)
+          onChange={(e, relationsSelected) =>
+            handleRelationSelected(e, relationsSelected, rowTable.original.id)
           }
-          options={tables}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-      ),
-    },
-    {
-      Header: "Valor",
-      accessor: "field",
-      Cell: ({ row: rowTable }) => (
-        <Autocomplete
-          value={
-            rows?.find((row) => row?.id === rowTable.original.id)
-              ?.fieldSelected || ""
-          }
-          onChange={(e, fieldSelected) =>
-            handleFieldSelected(e, fieldSelected, rowTable.original.id)
-          }
-          options={
-            rows?.find((row) => row?.id === rowTable.original.id)?.fields || []
-          }
+          options={models}
           renderInput={(params) => (
             <MDInput
               {...params}
@@ -123,10 +80,12 @@ export default function Table({ formData }) {
   const table = { columns, rows };
 
   useEffect(() => {
-    getTables().then((tables) => {
-      setTables(tables);
-    });
-  }, []);
+    if (model) {
+      getModelRelations({ model }).then((relations) => {
+        setModels(relations);
+      });
+    }
+  }, [model]);
 
   return (
     <MDBox>

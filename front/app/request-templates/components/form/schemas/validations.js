@@ -17,12 +17,13 @@ import * as Yup from "yup";
 import checkout from "./form";
 
 const {
-  formField: { name, description, fields, json },
+  formField: { name, description, fields, model, json },
 } = checkout;
 
 const validations = Yup.object().shape({
   [name.name]: Yup.string(),
-  [description.name]: Yup.string(),
+  [description.name]: Yup.string().nullable(),
+  [model.name]: Yup.string(),
   [fields.name]: Yup.string(),
   [json.name]: Yup.string(),
 });

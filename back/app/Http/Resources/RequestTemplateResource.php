@@ -18,6 +18,7 @@ class RequestTemplateResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'model' => $this->model,
             'fields' => $this->fields,
             'json' => $this->json,
         ];

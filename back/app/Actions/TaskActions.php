@@ -13,6 +13,12 @@ use App\Services\MailTemplateService;
 
 class TaskActions
 {
+    public function __construct(
+        protected DocassembleService $docassembleService,
+        protected MailTemplateService $mailTemplateService
+    ) {
+    }
+
     public static function handleAction(Task $task, Action $action)
     {
         switch ($action->action_type_id) {
@@ -60,7 +66,7 @@ class TaskActions
     {
         $fileService = new FileService();
         $docassembleService = new DocassembleService($fileService);
-        // $docassembleService->createDocument();
+        $docassembleService->createDocumentFromAction($task);
     }
 
     public static function handleMail(Task $task, Action $action)

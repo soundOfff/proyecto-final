@@ -28,6 +28,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailTemplateController;
 use App\Http\Controllers\MailTemplateGroupController;
 use App\Http\Controllers\MailTemplateLanguageController;
+use App\Http\Controllers\ModelRelationsController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationPriorityController;
@@ -254,6 +255,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/tables', TableController::class);
     Route::post('/table-fields', TableFieldController::class);
+    Route::post('/model-relations', ModelRelationsController::class);
 
     Route::get('/activity-logs', [ActivityController::class, 'index']);
 

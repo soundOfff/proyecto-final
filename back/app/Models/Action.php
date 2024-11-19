@@ -14,6 +14,7 @@ class Action extends Model
         'mail_template_id',
         'mail_to',
         'is_dispatched',
+        'request_template_id',
     ];
 
     public function task()
@@ -34,5 +35,10 @@ class Action extends Model
     public function mailTemplate()
     {
         return $this->belongsTo(MailTemplate::class);
+    }
+
+    public function requestTemplate()
+    {
+        return $this->belongsTo(RequestTemplate::class);
     }
 }

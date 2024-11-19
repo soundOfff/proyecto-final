@@ -14,8 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('fields');
-            $table->string('json');
+            $table->string('model');
+            $table->string('fields', 1000);
+            $table->string('json', 1000);
             $table->timestamps();
         });
     }

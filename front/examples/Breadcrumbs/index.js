@@ -54,12 +54,12 @@ function Breadcrumbs({ icon, title, route, light = false }) {
       <title>{getPageTitle()}</title>
       <MuiBreadcrumbs
         sx={{
-          maxWidth: "800px",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          overflow: "hidden",
+          overflowX: "hidden",
           whiteSpace: "nowrap",
           display: "inline-block",
+          lineHeight: 1.5,
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) =>
               light ? white.main : grey[600],

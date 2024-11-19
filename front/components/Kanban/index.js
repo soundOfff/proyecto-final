@@ -57,10 +57,11 @@ export default function Kanban({ tasks, refetch }) {
             display: "flex",
             width: "100%",
             alignItems: "inherit !important",
+            justifyContent: { sm: "left", xl: "center" },
           },
           "& .react-kanban-column": {
             backgroundColor: darkMode ? background.card : light.main,
-            width: pxToRem(450),
+            width: pxToRem(300),
             margin: `0 ${pxToRem(20)}`,
             padding: pxToRem(20),
             borderRadius: borderRadius.lg,
@@ -84,7 +85,7 @@ export default function Kanban({ tasks, refetch }) {
               key={id}
               dragging={dragging.toString() || undefined}
               display="block"
-              width="calc(450px - 40px)"
+              width="calc(300px - 40px)"
               bgColor={darkMode ? "transparent" : "white"}
               color="text"
               borderRadius="xl"

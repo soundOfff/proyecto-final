@@ -36,6 +36,8 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
           "reminders",
           "requiredFields",
           "procedure.actions.type",
+          "procedure.outgoingPaths.toProcedure",
+          "procedure.incomingPaths.fromProcedure",
         ],
       });
       setIsLoading(false);

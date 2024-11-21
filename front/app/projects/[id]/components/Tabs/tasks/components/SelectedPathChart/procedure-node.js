@@ -5,16 +5,17 @@ import { Handle, Position } from "@xyflow/react";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
-export default function RectangleNode({ data }) {
+export default function ProcedureNode({ data }) {
   return (
     <MDBox
-      sx={(theme) => ({
+      sx={(_) => ({
         px: 4,
         py: 1,
         border: "3px solid",
         borderColor: "black",
         borderRadius: "10px",
       })}
+      bgColor={data.isSelected ? "success" : "gray"}
     >
       <Handle type="target" position={Position.Left} />
       <MDBox display="block">

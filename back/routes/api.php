@@ -93,8 +93,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
 
-    Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
-
     Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 
     Route::get('/project-statuses', [ProjectStatusController::class, 'index']);
@@ -319,3 +317,5 @@ Route::post('/processes', [ProcessController::class, 'store']);
 Route::get('/processes/{process}', [ProcessController::class, 'show']);
 Route::put('/processes/{process}', [ProcessController::class, 'update']);
 Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
+
+Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);

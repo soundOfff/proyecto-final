@@ -53,10 +53,7 @@ export default function Content({ selectedFork, refetch }) {
   };
 
   const shouldShowNextStepForm =
-    task &&
-    task.isFinalTask &&
-    task.status?.name === DONE_STATUS &&
-    task.procedure?.process?.forks?.length !== 0;
+    task && task.procedure?.isConditional && task.status?.name === DONE_STATUS;
 
   return (
     <Grid item xs={8} wrap="nowrap">

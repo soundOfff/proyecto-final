@@ -74,9 +74,9 @@ class Procedure extends Model
      * @param int $staff_id
      * @param array $createdTasks
      */
-    public function traversePath(Project $project, int $staff_id, array &$createdTasks): void
+    public function traversePath(Project $project, int $staff_id, array &$createdTasks, self|null $parent = null): void
     {
-        $task = $this->convertToTask($project, $staff_id);
+        $task = $this->convertToTask($project, $staff_id, $parent);
         if ($task) {
             $createdTasks[] = $task;
         }
@@ -85,20 +85,30 @@ class Procedure extends Model
 
         foreach ($this->outgoingPaths as $path) {
             if ($path->toProcedure->is_conditional) {
-                break;
+                $path->toProcedure->convertToTask($project, $staff_id, $parent);
+                continue;
             }
-            $path->toProcedure->convertToTaskTraverse($project, $staff_id, $createdTasks);
+
+            $path->toProcedure->traversePath($project, $staff_id, $createdTasks, $this);
         }
     }
 
-    public function convertToTask(Project $project, int $staff_id): Task | null
+    public function convertToTask(Project $project, int $staff_id, self|null $parent): ?Task
     {
-        $isAlreadyCreated = Task::where('procedure_id', $this->id)
+        // TODO: Check if with nested conditional procedures this works...
+        $taskQuery = Task::where('procedure_id', $this->id)
             ->where('taskable_id', $project->id)
-            ->where('taskable_type', Task::TASKABLE_PROJECT)
-            ->exists();
+            ->where('taskable_type', Task::TASKABLE_PROJECT);
 
-        if ($isAlreadyCreated) {
+        $taskExists = $taskQuery->exists();
+
+        if ($taskExists && $this->isBackEdgeCase($parent)) {
+            $taskQuery->update(['task_status_id' => TaskStatus::PENDING]);
+
+            return $taskQuery->first();
+        }
+
+        if ($taskExists && $this->isRedundantCase($parent)) {
             return null;
         }
 
@@ -122,14 +132,13 @@ class Procedure extends Model
 
         $this->load('dependencies');
         if ($this->dependencies->isNotEmpty()) {
-            $procedureDependencies = array_column($this->dependencies->toArray(), 'id');
-            $tasksId = array_map(
+            $procedureDependencies = $this->dependencies->pluck('id');
+            $tasksId = $procedureDependencies->map(
                 fn ($id) => Task::where('procedure_id', $id)
                     ->where('taskable_id', $project->id)
                     ->where('taskable_type', Task::TASKABLE_PROJECT)
-                    ->first()->id,
-                $procedureDependencies
-            );
+                    ->first()->id
+            )->toArray();
             $task->dependencies()->sync($tasksId);
         }
 
@@ -140,6 +149,16 @@ class Procedure extends Model
         }
 
         return $task;
+    }
+
+    private function isBackEdgeCase($parent): bool
+    {
+        return $parent && $parent->id > $this->id;
+    }
+
+    private function isRedundantCase($parent): bool
+    {
+        return (! $parent) || ($parent && $parent->id <= $this->id);
     }
 
     public function outgoingPaths()

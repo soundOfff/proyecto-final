@@ -9,7 +9,8 @@ import MDBadge from "/components/MDBadge";
 import { getStatusColor, getPriorityColor } from "/utils/project-state-colors";
 import { Icon } from "@mui/material";
 
-export default function RectangleNode({ task }) {
+export default function TaskNode({ data }) {
+  const { task } = data;
   return (
     <MDBox
       sx={(theme) => ({
@@ -21,7 +22,7 @@ export default function RectangleNode({ task }) {
         borderRadius: "10px",
       })}
     >
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={Position.Left} />
       <MDBadge
         size="xs"
         color={getPriorityColor(task?.priority?.name)}
@@ -50,7 +51,7 @@ export default function RectangleNode({ task }) {
           &nbsp;{task.start_date} / {task.due_date ?? "----"}
         </MDTypography>
       </MDBox>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Right} />
     </MDBox>
   );
 }

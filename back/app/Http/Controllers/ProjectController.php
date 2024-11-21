@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
+use App\Models\Procedure;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\Staff;
@@ -252,20 +253,24 @@ class ProjectController extends Controller
 
     public function attachTasks(Project $project, Request $request)
     {
-        $process = Process::find($request->get('processId')); // != null means that is from a child process
-        $staff = Staff::find($request->get('staffId'));
+        $staff = Staff::find($request->get('staff_id'));
+        $startingProcedure = Procedure::find($request->get('procedure_id'));
 
         abort_if(! $staff, 404, 'Staff not found');
 
-        if (is_null($process)) { // == null means that is from a root process
-            $process = $project->load('process')->process;
+        $process = $project->load('process')->process;
+
+        if (is_null($startingProcedure)) {
+            // If no procedure is selected, get the root
+            $startingProcedure = $process->load('procedures')->procedures->sortBy('step_number')->first();
         }
 
-        $root = $process->load('procedures')->procedures->sortBy('step_number')->first();
+        $createdTasks = [];
+        $startingProcedure->traversePath($project, $staff->id, $createdTasks);
 
-        $root->traversePath($project, $staff->id, []);
+        $created = count($createdTasks) > 0;
 
-        return response()->json(['createdTasks' => true], 201); // TODO: modify logic
+        return response()->json(['createdTasks' => $created], 201);
     }
 
     /**

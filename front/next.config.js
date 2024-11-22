@@ -8,4 +8,5 @@ module.exports = {
     "@fullcalendar/timegrid",
     "react-github-btn",
   ],
+  reactStrictMode: false,
 };

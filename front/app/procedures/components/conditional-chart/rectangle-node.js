@@ -17,6 +17,9 @@ export default function RectangleNode({ data }) {
       })}
     >
       <Handle type="target" position={Position.Left} />
+      {data.hasBackEdge && (
+        <Handle type="source" id="top" key="top" position={Position.Top} />
+      )}
       <MDBox display="block">
         <MDTypography
           variant="body2"
@@ -29,7 +32,7 @@ export default function RectangleNode({ data }) {
           {data.name}
         </MDTypography>
       </MDBox>
-      <Handle type="source" position={Position.Right} />
+      <Handle type="source" id="right" key="right" position={Position.Right} />
     </MDBox>
   );
 }

@@ -7,9 +7,6 @@ import { memo } from "react";
 function CustomNode({ data }) {
   return data.isConditional ? (
     <RhombusNode data={data} />
-  ) : data.isFinal ? (
-    // <CircleNode data={data} />
-    <RectangleNode data={data} />
   ) : (
     <RectangleNode data={data} />
   );

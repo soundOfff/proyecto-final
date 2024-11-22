@@ -9,6 +9,7 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
+  MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useState } from "react";
@@ -90,17 +91,38 @@ export default function CreateChart({ processId }) {
             target: path.toProcedureId.toString(),
             sourceHandle: index === 0 ? "bellow" : "right",
             type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
+          });
+        } else if (path.fromProcedureId > path.toProcedureId) {
+          edges.push({
+            id: `e${path.fromProcedureId}-${path.toProcedureId}`,
+            source: path.fromProcedureId.toString(),
+            target: path.toProcedureId.toString(),
+            sourceHandle: "top",
+            type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
           });
         } else {
           edges.push({
             id: `e${path.fromProcedureId}-${path.toProcedureId}`,
             source: path.fromProcedureId.toString(),
             target: path.toProcedureId.toString(),
+            sourceHandle: "right",
             type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
           });
-        }
-        if (path.fromProcedureId > path.toProcedureId) {
-          return;
         }
         const currNode = nodes.find(
           (curr) => curr.id === path.fromProcedureId.toString()
@@ -109,8 +131,17 @@ export default function CreateChart({ processId }) {
           (node) => node.id === path.toProcedureId.toString()
         );
 
+        if (path.fromProcedureId > path.toProcedureId) {
+          currNode.data = {
+            ...currNode.data,
+            hasBackEdge: true,
+          };
+          return;
+        }
+
         nextNode.position.x = currNode.position.x + BLOCK;
-        nextNode.position.y = currNode.position.y + (BLOCK / 3) * index;
+        nextNode.position.y =
+          currNode.position.y + (BLOCK / 3) * (!currNode.hasBackEdge * index);
 
         if (currNode.data.isConditional) {
           currNode.position.y -= 4.8;

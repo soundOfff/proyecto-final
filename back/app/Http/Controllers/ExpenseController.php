@@ -14,6 +14,7 @@ use App\Sorts\ExpenseCategorySort;
 use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -155,5 +156,53 @@ class ExpenseController extends Controller
         $expense->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function monthlyExpenses($year)
+    {
+        $currentYear = $year ?: Carbon::now()->year;
+
+        $monthlyExpenses = Expense::selectRaw('expense_category_id, expense_categories.name as category_name, SUM(amount) as total_amount, MONTH(date) as month')
+            ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
+            ->whereYear('date', $currentYear)
+            ->groupBy('expense_category_id', 'month', 'expense_categories.name')
+            ->orderBy('expense_category_id', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        $yearlyTotals = Expense::selectRaw('expense_category_id, expense_categories.name as category_name, SUM(amount) as yearly_total')
+            ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
+            ->whereYear('date', $currentYear)
+            ->groupBy('expense_category_id', 'expense_categories.name')
+            ->get();
+
+        $months = collect(range(1, 12))->mapWithKeys(function ($month) {
+            return [$month => 0];
+        });
+
+        $formattedExpenses = $monthlyExpenses->groupBy('expense_category_id')->map(function ($expenses, $category) use ($yearlyTotals, $months) {
+            $yearlyTotalData = $yearlyTotals->firstWhere('expense_category_id', $category);
+            $yearlyTotal = $yearlyTotalData->yearly_total;
+            $categoryName = $yearlyTotalData->category_name;
+
+            $monthly = $months->map(function ($defaultTotal, $month) use ($expenses) {
+                $expense = $expenses->firstWhere('month', $month);
+
+                return [
+                    'month' => Carbon::createFromDate(null, $month, 1)->format('F'),
+                    'total_amount' => $expense ? $expense->total_amount : $defaultTotal,
+                ];
+            });
+
+            return [
+                'category' => $categoryName,
+                'monthly' => $monthly->values(),
+                'yearly_total' => $yearlyTotal,
+            ];
+        });
+
+        return response()->json([
+            'expenses' => $formattedExpenses,
+        ]);
     }
 }

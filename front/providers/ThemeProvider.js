@@ -1,9 +1,6 @@
 "use client";
 
-import brandfactorsIconWhite from "/assets/logo/White/brandfactors.svg";
-import brandfactorsIconWhiteMini from "/assets/logo/White/brandfactors-mini.png";
-import veloIconWhite from "/assets/logo/White/asset-29.svg";
-import veloIconWhiteMini from "/assets/logo/White/velolegal-mini.svg";
+import crmIconWhite from "/assets/logo/crm-logo-negro-fondo.png";
 
 import {
   useMaterialUIController,
@@ -14,11 +11,6 @@ import {
 import { usePathname } from "next/navigation";
 
 import { CssBaseline } from "@mui/material";
-
-import Icon from "@mui/material/Icon";
-
-// NextJS Material Dashboard 2 PRO components
-import MDBox from "/components/MDBox";
 
 // NextJS Material Dashboard 2 PRO examples
 import Sidenav from "/examples/Sidenav";
@@ -39,7 +31,6 @@ import createCache from "@emotion/cache";
 import { useServerInsertedHTML } from "next/navigation";
 import { CacheProvider as DefaultCacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
-import { BRANDFACTORS } from "/utils/constants/appNames";
 
 export default function Theme(props) {
   const [controller, dispatch] = useMaterialUIController();
@@ -74,12 +65,7 @@ export default function Theme(props) {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const brandIcon =
-    process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS
-      ? miniSidenav
-        ? brandfactorsIconWhiteMini
-        : brandfactorsIconWhite
-      : veloIconWhite;
+  const brandIcon = crmIconWhite;
 
   const { options, CacheProvider = DefaultCacheProvider, children } = props;
 

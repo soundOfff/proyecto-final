@@ -109,4 +109,26 @@ class PaymentController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function paymentsInfo()
+    {
+        /*
+            expensesData = {
+            labels: [],
+            datasets: {
+                label: "Payments",
+                backgroundColors: ["info", "primary", "dark", "secondary", "primary"],
+                data: [],
+                },
+            };
+        */
+        $payments = Payment::selectRaw('payment_method_id, payment_methods.label, COUNT(payment_method_id) as total')
+            ->join('payment_methods', 'payments.payment_method_id', '=', 'payment_methods.id')
+            ->groupBy('payment_method_id')
+            ->orderBy('total', 'desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json(['payments' => $payments]);
+    }
 }

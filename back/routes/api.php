@@ -317,3 +317,8 @@ Route::get('/auth/slack/bot/callback', [LoginController::class, 'slackBotLogin']
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
+
+Route::get('monthly-expenses/{year}', [ExpenseController::class, 'monthlyExpenses']);
+Route::get('payments-info', [PaymentController::class, 'paymentsInfo']);
+Route::get('projects-select', [ProjectController::class, 'selectAll']);
+Route::get('projects-info/{project}', [ProjectController::class, 'lastYearIncomesOutcomes']);

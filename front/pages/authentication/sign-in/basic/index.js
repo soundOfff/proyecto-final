@@ -28,7 +28,7 @@ import MDButton from "/components/MDButton";
 import BasicLayout from "/pagesComponents/authentication/components/BasicLayout";
 
 // Images
-import logoWhite from "/assets/logo/White/asset-29.svg";
+import logoWhite from "/assets/logo/crm-logo-negro-fondo.png";
 
 import google from "/assets/logo/google.svg";
 import Image from "next/image";
@@ -62,7 +62,7 @@ function Basic({ NEXTAUTH_URL }) {
           src={logoWhite}
           alt="logo"
           style={{
-            borderRadius: "50%",
+            borderRadius: "2%",
             width: "80%",
             margin: "auto",
           }}

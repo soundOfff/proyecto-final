@@ -1,13 +1,14 @@
 "use client";
 
+import CircleNode from "./circle-node";
 import RectangleNode from "./rectangle-node";
 import RhombusNode from "./rhombus-node";
 import { memo } from "react";
-function CustomNode({ data: task }) {
-  return task.isFinalTask ? (
-    <RhombusNode task={task} />
+function CustomNode({ data }) {
+  return data.isConditional ? (
+    <RhombusNode data={data} />
   ) : (
-    <RectangleNode task={task} />
+    <RectangleNode data={data} />
   );
 }
 

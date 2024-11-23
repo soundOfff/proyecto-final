@@ -68,7 +68,8 @@ export async function update(id, data) {
 }
 
 export async function attachTasks(params) {
-  const { projectId, processId, staffId } = params;
+  console.log(params);
+  const { projectId, staffId, procedureId } = params;
 
   const url = new URL(
     `${process.env.API_URL}/projects/${projectId}/tasks-attach`
@@ -76,7 +77,7 @@ export async function attachTasks(params) {
 
   const data = await customFetch(url, {
     method: "POST",
-    body: JSON.stringify({ processId, staffId }),
+    body: JSON.stringify({ staff_id: staffId, procedure_id: procedureId }),
   });
 
   revalidatePath("/projects");

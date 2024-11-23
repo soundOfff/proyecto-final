@@ -44,6 +44,11 @@ class Process extends Model
         return $this->belongsToMany(self::class, 'fork_process', 'process_id', 'fork_id');
     }
 
+    public function allForks()
+    {
+        return $this->forks()->with('allForks');
+    }
+
     public function forkedFrom(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'fork_process', 'fork_id', 'process_id');

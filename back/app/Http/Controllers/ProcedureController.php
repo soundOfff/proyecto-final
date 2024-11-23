@@ -23,6 +23,8 @@ class ProcedureController extends Controller
                 'actions.type',
                 'dependencies',
                 'process.procedures',
+                'incomingPaths',
+                'outgoingPaths',
                 'author',
                 'reminders.staff',
             ])
@@ -46,6 +48,8 @@ class ProcedureController extends Controller
                 'dependencies',
                 'actions',
                 'actions.type',
+                'incomingPaths',
+                'outgoingPaths',
                 'status',
                 'author',
                 'reminders.staff',

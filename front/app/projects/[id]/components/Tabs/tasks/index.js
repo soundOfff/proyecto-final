@@ -6,7 +6,7 @@ import Table from "/components/Tasks/table-client";
 import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
 import Kanban from "./components/Kanban/kanban";
-import FlowChart from "./components/FlowChart/flow-chart";
+import SelectedPathChart from "./components/SelectedPathChart/";
 import { useState } from "react";
 import { AccountTree, TableRows, ViewModule } from "@mui/icons-material";
 
@@ -17,8 +17,8 @@ const MODES = {
 };
 
 export default function Tasks() {
-  const { project } = useDataProvider();
   const [mode, setMode] = useState(MODES.TABLE);
+  const { project } = useDataProvider();
 
   return (
     <MDBox>
@@ -47,7 +47,12 @@ export default function Tasks() {
           <MDBox py={1}>
             {mode === MODES.TABLE && <Table project={project} />}
             {mode === MODES.KANBAN && <Kanban />}
-            {mode === MODES.FLOW_CHART && <FlowChart />}
+            {mode === MODES.FLOW_CHART && (
+              <SelectedPathChart
+                processId={project?.process?.id}
+                tasks={project?.tasks}
+              />
+            )}
           </MDBox>
         </Grid>
       </Grid>

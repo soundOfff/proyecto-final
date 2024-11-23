@@ -42,6 +42,7 @@ use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProcedureController;
+use App\Http\Controllers\ProcedurePathController;
 use App\Http\Controllers\ProcedureStatusController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProjectBillingTypeController;
@@ -92,8 +93,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'index']);
 
     Route::post('/project-notes/{project}', [ProjectNoteController::class, 'attach']);
-
-    Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
 
     Route::get('/projects/counts/status', [ProjectController::class, 'countByStatuses']);
 
@@ -234,12 +233,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/credits', [CreditController::class, 'attach']);
     Route::delete('/credits/{credit}', [CreditController::class, 'destroy']);
 
-    Route::get('/processes', [ProcessController::class, 'index']);
-    Route::post('/processes', [ProcessController::class, 'store']);
-    Route::get('/processes/{process}', [ProcessController::class, 'show']);
-    Route::put('/processes/{process}', [ProcessController::class, 'update']);
-    Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
-
     Route::get('/procedures', [ProcedureController::class, 'index']);
     Route::get('/procedures/{procedure}', [ProcedureController::class, 'show']);
     Route::post('/procedures', [ProcedureController::class, 'store']);
@@ -318,7 +311,13 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/documents', [DocumentController::class, 'generate']);
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
-Route::get('monthly-expenses/{year}', [ExpenseController::class, 'monthlyExpenses']);
-Route::get('payments-info', [PaymentController::class, 'paymentsInfo']);
-Route::get('projects-select', [ProjectController::class, 'selectAll']);
-Route::get('projects-info/{project}', [ProjectController::class, 'lastYearIncomesOutcomes']);
+Route::get('procedure-paths', [ProcedurePathController::class, 'index']);
+Route::post('procedure-paths', [ProcedurePathController::class, 'store']);
+
+Route::get('/processes', [ProcessController::class, 'index']);
+Route::post('/processes', [ProcessController::class, 'store']);
+Route::get('/processes/{process}', [ProcessController::class, 'show']);
+Route::put('/processes/{process}', [ProcessController::class, 'update']);
+Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
+
+Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);

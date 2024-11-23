@@ -21,7 +21,10 @@ class ProcessController extends Controller
             'projectServiceType',
             'procedures.status',
             'procedures.responsible',
+            'procedures.outgoingPaths',
+            'procedures.incomingPaths',
             'forks',
+            'allForks',
             'author',
             'toNotify',
         ])
@@ -53,7 +56,10 @@ class ProcessController extends Controller
             'projectServiceType',
             'procedures.status',
             'procedures.responsible',
+            'procedures.outgoingPaths',
+            'procedures.incomingPaths',
             'forks',
+            'allForks',
             'author',
             'toNotify',
         ])

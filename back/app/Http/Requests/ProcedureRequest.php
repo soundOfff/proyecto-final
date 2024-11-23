@@ -25,6 +25,7 @@ class ProcedureRequest extends FormRequest
             'process_id' => 'required|numeric|exists:processes,id',
             'procedure_status_id' => 'nullable|numeric|exists:procedure_statuses,id',
             'author_id' => 'required|numeric|exists:staff,id',
+            'is_conditional' => 'nullable|boolean',
             'step_number' => 'required|numeric',
             'name' => 'required|string',
             'responsible' => 'nullable|string',

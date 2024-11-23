@@ -32,6 +32,14 @@ export async function store(data) {
   revalidatePath("/procedures");
 }
 
+export async function addProcedurePath(data) {
+  const url = new URL(`${process.env.API_URL}/procedure-paths`);
+  await customFetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
 export async function update(id, data) {
   const url = new URL(`${process.env.API_URL}/procedures/${id}`);
   await customFetch(url, {

@@ -27,6 +27,7 @@ class ProjectResource extends JsonResource
             'name' => $this->name,
             'progress' => $this->progress,
             'progressFromTasks' => $this->progress_from_tasks,
+            'responsiblePerson' => $this->responsible_person_id,
             'cost' => $this->cost,
             'ratePerHour' => $this->rate_per_hour,
             'startDate' => $this->start_date,

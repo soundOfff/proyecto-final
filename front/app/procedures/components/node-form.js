@@ -9,12 +9,12 @@ export default function NodeForm({
   processId,
   onSubmit,
   onNodeCreated,
-  totalNodes,
+  totalProcedures,
 }) {
   const [form, setForm] = useState({
     name: node?.name || "",
     isConditional: node?.isConditional || false,
-    stepNumber: node?.stepNumber || totalNodes,
+    stepNumber: totalProcedures + 1,
   });
 
   const handleChange = (e) => {
@@ -34,7 +34,7 @@ export default function NodeForm({
     setForm({
       name: "",
       isConditional: false,
-      stepNumber: 0,
+      stepNumber: totalProcedures + 1,
     });
   };
 

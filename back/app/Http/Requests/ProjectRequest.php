@@ -45,6 +45,7 @@ class ProjectRequest extends FormRequest
             'notes' => 'nullable|array',
             'notes.*.content' => 'required|string',
             'notes.*.staff_id' => 'required|numeric|exists:staff,id',
+            'responsible_person_id' => 'nullable|numeric|exists:staff,id',
         ];
     }
 }

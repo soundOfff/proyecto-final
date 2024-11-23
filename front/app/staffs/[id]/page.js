@@ -8,7 +8,6 @@ import Table from "./components/table";
 export default async function Show({ params: { id } }) {
   const staff = await show(id, { include: "projects.status" });
   const staffStats = await getStaffStats(id);
-
   return (
     <MDBox
       mb={3}

@@ -11,7 +11,6 @@ export default async function Staffs({
     data: { staffs },
     meta,
   } = await getAllStaffs({ perPage, page, sort });
-
   return (
     <MDBox mb={3}>
       <Card>

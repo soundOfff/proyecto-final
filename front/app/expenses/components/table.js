@@ -231,7 +231,6 @@ export default function Table({ rows, meta }) {
           <ModalContent expense={expense} />
         </Modal>
       )}
-
       <DataTable
         table={table}
         meta={meta}

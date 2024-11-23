@@ -2,7 +2,6 @@
 
 import { useMaterialUIController } from "/context";
 import DataTable from "/examples/Tables/DataTableServerPagination";
-
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
 import MDBadge from "/components/MDBadge";

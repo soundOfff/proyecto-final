@@ -275,4 +275,13 @@ class Task extends Model
             ],
         ];
     }
+    
+    public function calculateCost(){
+
+        return $this->timers()
+            ->join('staff', 'task_timers.staff_id', '=', 'staff.id')
+            ->selectRaw('SUM(TIMESTAMPDIFF(HOUR, task_timers.start_time, task_timers.end_time) * staff.hourly_rate) as total')
+            ->value('total') ?? 0;
+
+    }
 }

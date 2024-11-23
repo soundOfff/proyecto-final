@@ -140,4 +140,19 @@ class Estimate extends Model
     {
         return $this->morphMany(LineItem::class, 'line_itemable');
     }
+
+    public function getExpenseCost(){
+        return $this->lineItems()
+            ->where('line_itemable_type', '=','estimate')
+            ->where('line_item_type_id', '=', 2)
+            ->sum('rate');
+    }
+
+    public function getOtherCost(){
+        return $this->lineItems()
+            ->where('line_itemable_type', '=','estimate')
+            ->where('line_item_type_id', '=', 1)
+            ->sum('rate');
+    }
+
 }

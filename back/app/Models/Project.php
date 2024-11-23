@@ -148,4 +148,41 @@ class Project extends Model
             'name' => $name,
         ]);
     }
+    public function estimates(): HasMany
+    {
+        return $this->hasMany(Estimate::class, 'project_id');
+    }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class, 'project_id');
+    }
+    public function expensesCost()
+    {
+        return $this->expenses()->whereNull('invoice_id')->sum('amount');
+    }
+    public function estimatesCost()
+    {
+        return $this->estimates()->sum('subtotal');
+    }
+
+    public function billedCost(){
+        return $this->estimates()
+        ->whereNotNull('invoice_id')
+        ->get()
+        ->sum(function($estimate){
+            return ($estimate->getExpenseCost() + $estimate->getOtherCost());
+        });
+    }
+    public function tasksCost(){
+        return $this->tasks()
+        ->get()
+        ->sum(function ($task) {
+            return $task->calculateCost();
+        });
+    }
+    public function totalCost()
+    {
+        return $this->estimatesCost() + $this->expensesCost() + $this->tasksCost();
+    }
 }

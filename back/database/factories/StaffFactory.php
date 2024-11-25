@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
+use App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
@@ -40,5 +43,30 @@ class StaffFactory extends Factory
             'profile_image' => '/public/profiles/images',
             'skype' => fake()->userName(),
         ];
+    }
+
+    /**
+     * configure the factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Staff $staff) {
+        });
+    }
+
+    /**
+     * Define random relations
+     *
+     * @return $this
+     */
+    public function withRandomRelations()
+    {
+        return $this->state(
+            new Sequence(
+                ['role' => Role::all()->random()]
+            )
+        );
     }
 }

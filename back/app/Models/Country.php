@@ -18,6 +18,13 @@ class Country extends Model
         'un_member',
     ];
 
+    const PANAMA_ID = 172;
+
+    public static function panama(): self
+    {
+        return self::find(self::PANAMA_ID);
+    }
+
     public function partners(): HasMany
     {
         return $this->hasMany(Partner::class);

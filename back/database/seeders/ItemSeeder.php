@@ -8,13 +8,6 @@ use Illuminate\Database\Seeder;
 
 class ItemSeeder extends Seeder
 {
-    private $utils;
-
-    public function __construct(Utils $utils = null)
-    {
-        $this->utils = $utils;
-    }
-
     /**
      * Run the database seeds.
      *
@@ -22,10 +15,5 @@ class ItemSeeder extends Seeder
      */
     public function run()
     {
-        $items = $this->utils->csvToArray(database_path('imports/items.csv'));
-
-        foreach ($items as $item) {
-            Item::updateOrCreate(['id' => $item['id']], $item);
-        }
     }
 }

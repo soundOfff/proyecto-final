@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Partner;
+use App\Models\PartnerType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +29,7 @@ class PartnerFactory extends Factory
             'billing_zip'=> fake()->countryCode(),
             'city'=> fake()->city(),
             'company'=> fake()->name(),
+            'name' => fake()->name(),
             'default_currency' => fake()->randomDigit(),
             'default_language' => fake()->randomElement(['en', 'es']),
             'dv'=> fake()->randomDigit(),
@@ -46,5 +49,51 @@ class PartnerFactory extends Factory
             'website' => fake()->domainName(),
             'zip' => fake()->postcode(),
         ];
+    }
+
+    /**
+     * Define a state for a specific type of partner.
+     *
+     * @return $this
+     */
+    public function juridic()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'company' => fake()->company(),
+                'vat' => fake()->uuid(),
+            ];
+        });
+    }
+
+    /**
+     * Define a state for a specific type of partner.
+     *
+     * @return $this
+     */
+    public function natural()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+
+            ];
+        });
+    }
+
+    /**
+     * Configure the factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Partner $partner) {
+
+            if
+            $partner->relatedPartners()
+                ->attach(
+                    Partner::factory()->create(), ['partner_type_id' => PartnerType::OWNER]
+                );
+        });
     }
 }

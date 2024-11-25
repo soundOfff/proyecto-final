@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Partner;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
@@ -42,5 +44,19 @@ class ContactFactory extends Factory
             'ticket_emails' => fake()->boolean(),
             'title' => fake()->title(),
         ];
+    }
+
+    /**
+     * Define random relations
+     *
+     * @return $this
+     */
+    public function withRandomRelations()
+    {
+        return $this->state(
+            new Sequence(
+                ['partner' => Partner::all()->random()]
+            )
+        );
     }
 }

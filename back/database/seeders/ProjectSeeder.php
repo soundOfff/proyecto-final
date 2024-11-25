@@ -2,19 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\Partner;
+use App\Models\PartnerProjectRole;
 use App\Models\Project;
-use App\Services\Utils;
+use App\Models\ProjectBillingType;
+use App\Models\ProjectStatus;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
 {
-    private $utils;
-
-    public function __construct(Utils $utils = null)
-    {
-        $this->utils = $utils;
-    }
-
     /**
      * Run the database seeds.
      *
@@ -22,10 +19,9 @@ class ProjectSeeder extends Seeder
      */
     public function run()
     {
-        $projects = $this->utils->csvToArray(database_path('imports/projects.csv'));
-
-        foreach ($projects as $project) {
-            Project::updateOrCreate(['id' => $project['id']], $project);
-        }
+        Project::factory()
+            ->count(10)
+            ->withRandomRelations()
+            ->create();
     }
 }

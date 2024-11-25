@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Estimate;
 use Database\Factories\EstimateFactory;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class EstimateSeeder extends Seeder
      */
     public function run()
     {
-        EstimateFactory::new()->count(10)->create();
+        EstimateFactory::new()
+            ->count(10)
+            ->withRandomRelations()
+            ->create();
     }
 }

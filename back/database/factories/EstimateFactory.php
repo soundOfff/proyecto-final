@@ -6,8 +6,8 @@ use App\Models\Currency;
 use App\Models\EstimateStatus;
 use App\Models\Partner;
 use App\Models\Project;
-use App\Models\SaleAgent;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Estimate>
@@ -24,23 +24,19 @@ class EstimateFactory extends Factory
         return [
             'sent' => $this->faker->boolean(),
             'date_send' => $this->faker->dateTime(),
-            'partner_id' => Partner::factory(),
             'deleted_customer_name' => $this->faker->name(),
-            'project_id' => Project::factory(),
             'number' => $this->faker->randomNumber(),
             'prefix' => $this->faker->randomElement(['EST-', 'QTE-', 'INV-']),
             'number_format' => $this->faker->randomNumber(3),
-            'hash' => $this->faker->sha256(),
+            'hash' => $this->faker->word(),
             'created_at' => $this->faker->dateTime(),
             'date' => $this->faker->date(),
             'expiry_date' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'currency_id' => Currency::factory(),
             'subtotal' => $this->faker->randomFloat(2, 100, 1000),
             'total_tax' => $this->faker->randomFloat(2, 10, 100),
             'total' => $this->faker->randomFloat(2, 200, 2000),
             'adjustment' => $this->faker->randomFloat(2, -50, 50),
             'added_from' => $this->faker->randomDigitNotNull(),
-            'estimate_status_id' => EstimateStatus::factory(),
             'client_note' => $this->faker->text(),
             'admin_note' => $this->faker->text(),
             'discount_percent' => $this->faker->randomFloat(2, 0, 20),
@@ -50,7 +46,6 @@ class EstimateFactory extends Factory
             'invoiced_date' => null,
             'terms' => $this->faker->paragraph(),
             'reference_no' => $this->faker->uuid(),
-            'sale_agent_id' => StaffFactory::factory(),
             'billing_street' => $this->faker->streetAddress(),
             'billing_city' => $this->faker->city(),
             'billing_state' => $this->faker->state(),
@@ -63,7 +58,6 @@ class EstimateFactory extends Factory
             'shipping_country_id' => $this->faker->randomDigitNotNull(),
             'include_shipping' => $this->faker->boolean(),
             'show_shipping_on_estimate' => $this->faker->boolean(),
-            'show_quantity_as' => $this->faker->randomElement(['qty', 'units', 'hours']),
             'pipeline_order' => $this->faker->randomDigitNotNull(),
             'is_expiry_notified' => $this->faker->boolean(),
             'acceptance_firstname' => $this->faker->firstName(),
@@ -75,5 +69,24 @@ class EstimateFactory extends Factory
             'cancel_overdue_reminders' => $this->faker->boolean(),
             'recurring_id' => null,
         ];
+    }
+
+    /**
+     * Define random relations
+     *
+     * @return $this
+     */
+    public function withRandomRelations()
+    {
+        return $this->state(
+            new Sequence(
+                fn () => [
+                    'estimate_status_id' => EstimateStatus::all()->random(),
+                    'currency_id' => Currency::all()->random(),
+                    'project_id' => Project::all()->random(),
+                    'partner_id' => Partner::all()->random(),
+                ]
+            )
+        );
     }
 }

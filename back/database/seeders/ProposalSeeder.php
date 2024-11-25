@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\ProposalFactory;
 use Illuminate\Database\Seeder;
 
 class ProposalSeeder extends Seeder
@@ -13,5 +14,9 @@ class ProposalSeeder extends Seeder
      */
     public function run()
     {
+        ProposalFactory::new()
+            ->count(10)
+            ->withRandomRelations()
+            ->create();
     }
 }

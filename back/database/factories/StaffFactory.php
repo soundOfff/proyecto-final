@@ -42,6 +42,7 @@ class StaffFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'profile_image' => '/public/profiles/images',
             'skype' => fake()->userName(),
+            'role_id' => Role::all()->random()->id,
         ];
     }
 
@@ -54,19 +55,5 @@ class StaffFactory extends Factory
     {
         return $this->afterCreating(function (Staff $staff) {
         });
-    }
-
-    /**
-     * Define random relations
-     *
-     * @return $this
-     */
-    public function withRandomRelations()
-    {
-        return $this->state(
-            new Sequence(
-                ['role' => Role::all()->random()]
-            )
-        );
     }
 }

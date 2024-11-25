@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\Partner;
+use App\Models\PartnerIndustry;
 use App\Models\PartnerType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,12 +21,13 @@ class PartnerFactory extends Factory
     public function definition(): array
     {
         return [
+            'country_id' => Country::PANAMA_ID,
             'active' => fake()->boolean(),
             'added_from'=> fake()->randomDigit(1, 5),
             'address'=> fake()->address(),
             'billing_city'=> fake()->city(),
-            'billing_country'=> fake()->randomDigit(1, 10),
-            'billing_state'=> 'accepted',
+            'billing_country_id'=> Country::PANAMA_ID,
+            'billing_state'=> fake('en_US')->state(),
             'billing_street'=> fake()->streetName(),
             'billing_zip'=> fake()->countryCode(),
             'city'=> fake()->city(),
@@ -36,8 +39,8 @@ class PartnerFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'registration_confirmed' => fake()->randomDigit(),
             'shipping_city' => fake()->city(),
-            'shipping_country' => fake()->randomDigit(),
-            'shipping_state' => fake()->randomElement(['accepted', 'rejected']),
+            'shipping_country_id' => Country::PANAMA_ID,
+            'shipping_state' => fake('en_US')->state(),
             'shipping_street' => fake()->streetAddress(),
             'shipping_zip' => fake()->postcode(),
             'show_primary_contact' => fake()->boolean(),
@@ -60,9 +63,8 @@ class PartnerFactory extends Factory
                 'ruc' => fake()->uuid(),
                 'dv' => fake()->numerify('dv-###'),
                 'website' => fake()->domainName(),
-                'industry' => fake()->randomElement(['technology', 'finance', 'health']),
                 'document' => fake()->numerify('document-###'),
-                'language' => fake()->randomElement(['en', 'es']),
+                'default_language' => fake()->randomElement(['en', 'es']),
                 'is_residential' => fake()->boolean(),
                 'file_number' => fake()->numerify('file-###'),
                 'roll_number' => fake()->numerify('roll-###'),
@@ -133,14 +135,23 @@ class PartnerFactory extends Factory
     {
         return $this->afterCreating(function (Partner $partner) {
             if ($partner->isJuridic()) {
-                $partner->relatedPartners()
-                    ->attach([
-                        Partner::factory()->create(), ['partner_type_id' => PartnerType::PRESIDENT],
-                        Partner::factory()->create(), ['partner_type_id' => PartnerType::DIRECTOR],
-                        Partner::factory()->create(), ['partner_type_id' => PartnerType::SECRETARY],
-                        Partner::factory()->create(), ['partner_type_id' => PartnerType::RESPONSIBLE],
-                        Partner::factory()->create(), ['partner_type_id' => PartnerType::OWNER],
+                $relatedPartners = [
+                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::PRESIDENT],
+                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::DIRECTOR],
+                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::SECRETARY],
+                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::RESPONSIBLE],
+                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::OWNER],
+                ];
+
+                foreach ($relatedPartners as $relatedPartner) {
+                    $partner->relatedPartners()->attach($relatedPartner['partner']->id, [
+                        'partner_type_id' => $relatedPartner['type'],
                     ]);
+                }
+            } else {
+                $partner->update([
+                    'industry_id' => PartnerIndustry::all()->random()->id,
+                ]);
             }
         });
     }

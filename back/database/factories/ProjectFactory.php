@@ -59,8 +59,9 @@ class ProjectFactory extends Factory
             $defendant = Partner::factory()->create();
             $owner = Partner::factory()->create();
             $plaintiff = Partner::factory()
-                ->hasAttached($owner, ['partner_type_id' => PartnerType::OWNER])
+                ->hasAttached($owner, ['partner_type_id' => PartnerType::OWNER], 'relatedPartners')
                 ->create();
+
             $guarantor = Partner::factory()->create();
 
             $project->partners()->attach($defendant, ['role_id' => PartnerProjectRole::DEFENDANT]);
@@ -88,12 +89,12 @@ class ProjectFactory extends Factory
         return $this->state(
             new Sequence(
                 fn (Sequence $sequence) => [
-                    'status' => ProjectStatus::all()->random(),
-                    'billingType' => ProjectBillingType::all()->random(),
-                    'billablePartner' => Partner::all()->random(),
-                    'serviceType' => ProjectServiceType::all()->random(),
-                    'process' => Process::all()->random(),
-                    'court' => Court::all()->random(),
+                    'project_status_id' => ProjectStatus::all()->random()->id,
+                    'project_billing_type_id' => ProjectBillingType::all()->random()->id,
+                    'billable_partner_id' => Partner::all()->random()->id,
+                    'project_service_type_id' => ProjectServiceType::all()->random()->id,
+                    'process_id' => Process::all()->random()->id,
+                    'court_id' => Court::all()->random()->id,
                 ]
             )
         );

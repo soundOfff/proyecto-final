@@ -42,6 +42,7 @@ class ContactFactory extends Factory
             'project_emails' => fake()->boolean(),
             'task_emails' => fake()->boolean(),
             'ticket_emails' => fake()->boolean(),
+            'estimate_emails' => fake()->boolean(),
             'title' => fake()->title(),
         ];
     }
@@ -55,7 +56,7 @@ class ContactFactory extends Factory
     {
         return $this->state(
             new Sequence(
-                ['partner' => Partner::all()->random()]
+                ['partner_id' => Partner::all()->random()->id]
             )
         );
     }

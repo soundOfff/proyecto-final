@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\StaffFactory;
 use Illuminate\Database\Seeder;
 
 class StaffSeeder extends Seeder
@@ -13,5 +14,8 @@ class StaffSeeder extends Seeder
      */
     public function run()
     {
+        StaffFactory::new()
+            ->count(10)
+            ->create();
     }
 }

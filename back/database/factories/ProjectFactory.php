@@ -9,6 +9,7 @@ use App\Models\PartnerType;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\ProjectBillingType;
+use App\Models\ProjectNote;
 use App\Models\ProjectServiceType;
 use App\Models\ProjectStatus;
 use App\Models\Staff;
@@ -72,6 +73,8 @@ class ProjectFactory extends Factory
             $project->members()->attach(Staff::all()->random(3));
 
             $project->tags()->attach(Tag::all()->random(3));
+
+            $project->notes()->saveMany(ProjectNote::factory()->count(3)->make());
         });
     }
 
@@ -91,7 +94,6 @@ class ProjectFactory extends Factory
                     'serviceType' => ProjectServiceType::all()->random(),
                     'process' => Process::all()->random(),
                     'court' => Court::all()->random(),
-
                 ]
             )
         );

@@ -114,7 +114,7 @@ export default function FormContent({
     }
   }, [values, stepNumber, procedure, procedures, setFieldError, errors]);
 
-  const responsibles = ["Cliente", "Velo", "Juzgado", "Otros"];
+  const responsibles = ["Cliente", "Abogado", "Juez", "Secretario", "Otros"];
 
   return (
     <Grid container spacing={5}>

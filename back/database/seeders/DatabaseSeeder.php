@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(TaskStatusSeeder::class);
         $this->call(StaffSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(ProjectStatusSeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(ProvinceSeeder::class);
@@ -30,6 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectBillingTypeSeeder::class);
         $this->call(ProjectServiceTypeSeeder::class);
         $this->call(ProjectStageTypeSeeder::class);
+        $this->call(ProcedureStatusSeeder::class);
+        $this->call(ProcessSeeder::class);
         $this->call(ProjectSeeder::class);
         $this->call(ExpenseCategorySeeder::class);
         $this->call(CurrencySeeder::class);
@@ -58,9 +59,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LineItemTaxSeeder::class);
         $this->call(TagSeeder::class);
         $this->call(TaggableSeeder::class);
-        $this->call(ProcedureStatusSeeder::class);
-        $this->call(ProcessSeeder::class);
-        $this->call(ProcedureSeeder::class);
         $this->call(CreditNoteStatusSeeder::class);
     }
 }

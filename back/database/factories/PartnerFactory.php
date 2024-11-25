@@ -28,11 +28,9 @@ class PartnerFactory extends Factory
             'billing_street'=> fake()->streetName(),
             'billing_zip'=> fake()->countryCode(),
             'city'=> fake()->city(),
-            'company'=> fake()->name(),
             'name' => fake()->name(),
             'default_currency' => fake()->randomDigit(),
             'default_language' => fake()->randomElement(['en', 'es']),
-            'dv'=> fake()->randomDigit(),
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),
             'phone_number' => fake()->phoneNumber(),
@@ -43,10 +41,7 @@ class PartnerFactory extends Factory
             'shipping_street' => fake()->streetAddress(),
             'shipping_zip' => fake()->postcode(),
             'show_primary_contact' => fake()->boolean(),
-            'state' => fake()->randomElement(['pending', 'accepted', 'deleted']),
             'stripe_id' => fake()->uuid(),
-            'vat' => fake()->uuid(),
-            'website' => fake()->domainName(),
             'zip' => fake()->postcode(),
         ];
     }
@@ -62,6 +57,16 @@ class PartnerFactory extends Factory
             return [
                 'company' => fake()->company(),
                 'vat' => fake()->uuid(),
+                'ruc' => fake()->uuid(),
+                'dv' => fake()->numerify('dv-###'),
+                'website' => fake()->domainName(),
+                'industry' => fake()->randomElement(['technology', 'finance', 'health']),
+                'document' => fake()->numerify('document-###'),
+                'language' => fake()->randomElement(['en', 'es']),
+                'is_residential' => fake()->boolean(),
+                'file_number' => fake()->numerify('file-###'),
+                'roll_number' => fake()->numerify('roll-###'),
+                'image_number' => fake()->numerify('image-###'),
             ];
         });
     }
@@ -75,7 +80,46 @@ class PartnerFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-
+                'name' => fake()->name(),
+                'number' => fake()->phoneNumber(),
+                'birth_date' => fake()->date(),
+                'expedition_date' => fake()->date(),
+                'expiration_date' => fake()->date(),
+                'is_male' => fake()->boolean(),
+                'id_type' => fake()->randomElement(['Cédula', 'Pasaporte', 'Carnet de Residente', 'Desconocido']),
+                'id_number' => fake()->uuid(),
+                'civil_status' => fake()->randomElement([
+                    'Soltero',
+                    'Casado',
+                    'Divorciado',
+                    'Viudo',
+                    'Soltera',
+                    'Casada',
+                    'Divorciada',
+                    'Viuda',
+                    'Desconocida',
+                    'Desconocido',
+                ]),
+                'occupation' => fake()->randomElement([
+                    'Abogado',
+                    'Autónomo',
+                    'Científico',
+                    'Contador',
+                    'Comerciante',
+                    'Economista',
+                    'Empresario',
+                    'Empleado',
+                    'Ingeniero',
+                    'Médico',
+                    'Político',
+                    'Programador',
+                    'Psicólogo',
+                    'Profesor',
+                    'Secretario',
+                    'Transportista',
+                    'Otro',
+                    'Desconocido',
+                ]),
             ];
         });
     }
@@ -88,12 +132,16 @@ class PartnerFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Partner $partner) {
-
-            if
-            $partner->relatedPartners()
-                ->attach(
-                    Partner::factory()->create(), ['partner_type_id' => PartnerType::OWNER]
-                );
+            if ($partner->isJuridic()) {
+                $partner->relatedPartners()
+                    ->attach([
+                        Partner::factory()->create(), ['partner_type_id' => PartnerType::PRESIDENT],
+                        Partner::factory()->create(), ['partner_type_id' => PartnerType::DIRECTOR],
+                        Partner::factory()->create(), ['partner_type_id' => PartnerType::SECRETARY],
+                        Partner::factory()->create(), ['partner_type_id' => PartnerType::RESPONSIBLE],
+                        Partner::factory()->create(), ['partner_type_id' => PartnerType::OWNER],
+                    ]);
+            }
         });
     }
 }

@@ -17,7 +17,14 @@ class PartnerSeeder extends Seeder
     {
         PartnerFactory::new()
             ->for(Country::panama())
-            ->count(50)
+            ->count(10)
+            ->juridic()
+            ->create();
+
+        PartnerFactory::new()
+            ->for(Country::panama())
+            ->count(10)
+            ->natural()
             ->create();
     }
 }

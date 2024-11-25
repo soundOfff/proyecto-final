@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Credit;
+use App\Models\Estimate;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

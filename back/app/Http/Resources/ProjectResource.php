@@ -59,9 +59,11 @@ class ProjectResource extends JsonResource
             'staffs' => StaffResource::collection($this->whenLoaded('staffs')),
             'partners' => PartnerResource::collection($this->whenLoaded('partners')),
             'process' => ProcessResource::make($this->whenLoaded('process')),
-            'total_cost' => $this->totalCost(),
-            'billed_cost'=>$this->billedCost(),
-            'not_billed_cost'=>$this->totalCost() - $this->billedCost(),
+            'subTotalCost' => $this->subTotalCost(),
+            'subTotalBilledCost'=>$this->subTotalbilledCost(),
+            'totalBilledCost'=>$this->totalBilledCost(),
+            'notBilledCost'=>$this->subTotalCost() - $this->subTotalbilledCost(),
+            'totalPaid'=>$this->totalPaid(),
         ];
     }
 }

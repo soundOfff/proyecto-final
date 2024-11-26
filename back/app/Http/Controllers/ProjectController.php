@@ -261,4 +261,15 @@ class ProjectController extends Controller
 
         return response()->json($project, 201);
     }
+
+    public function getProjectFinancialData(Project $project, Request $request){
+
+        $from = $request->input('from');
+        $until = $request->input('until');
+
+        $billed = $project->totalBilledCostPerMonth($from, $until);
+        $paid = $project->totalPaidCostPerMonth($from, $until);
+        $data = ["paid"=> $paid, "billed"=>$billed];
+        return response()->json($data = $data, 201);
+    }
 }

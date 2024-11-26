@@ -53,7 +53,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProposalStatusSeeder::class);
         $this->call(ProposalSeeder::class);
         $this->call(ProposalCommentSeeder::class);
-        $this->call(ExpenseSeeder::class);
         $this->call(ProjectNoteSeeder::class);
         $this->call(ProjectMemberSeeder::class);
         $this->call(ItemGroupSeeder::class);

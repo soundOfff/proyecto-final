@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\ExpenseFactory;
 use Illuminate\Database\Seeder;
 
 class ExpenseSeeder extends Seeder
@@ -13,5 +14,9 @@ class ExpenseSeeder extends Seeder
      */
     public function run()
     {
+        ExpenseFactory::new()
+            ->count(10)
+            ->withRandomRelations()
+            ->create();
     }
 }

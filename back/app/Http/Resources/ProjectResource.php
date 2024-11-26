@@ -39,6 +39,7 @@ class ProjectResource extends JsonResource
             'billablePartnerId' => $this->billable_partner_id,
             'proposalId' => $this->proposal_id,
             'processId' => $this->process_id,
+            'responsiblePersonId' => $this->responsible_person_id,
             'files' => FileResource::collection($this->whenLoaded('files')),
             'createdAt' => Carbon::parse($this->created_at)->format('d-m-Y'),
             'billingType' => ProjectBillingTypeResource::make($this->whenLoaded('billingType')),
@@ -61,6 +62,7 @@ class ProjectResource extends JsonResource
             'partners' => PartnerResource::collection($this->whenLoaded('partners')),
             'process' => ProcessResource::make($this->whenLoaded('process')),
             'court' => CourtResource::make($this->whenLoaded('court')),
+            'responsiblePerson' => StaffResource::make($this->whenLoaded('responsiblePerson')),
         ];
     }
 }

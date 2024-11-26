@@ -28,6 +28,7 @@ class ProjectRequest extends FormRequest
             'project_members' => 'required|array',
             'project_billing_type_id' => 'required|numeric|exists:project_billing_types,id',
             'project_service_type_id' => 'required|numeric|exists:project_service_types,id',
+            'responsible_person_id' => 'required|numeric|exists:staff,id',
             'proposal_id' => 'nullable|numeric|exists:proposals,id',
             'process_id' => 'nullable|numeric|exists:processes,id',
             'court_id' => 'nullable|numeric|exists:courts,id',

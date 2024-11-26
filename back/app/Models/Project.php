@@ -108,6 +108,11 @@ class Project extends Model
         return $this->belongsTo(Court::class);
     }
 
+    public function responsiblePerson(): BelongsTo
+    {
+        return $this->belongsTo(Staff::class, 'responsible_person_id');
+    }
+
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(Staff::class, 'project_members');
@@ -158,11 +163,6 @@ class Project extends Model
     public function guarantor(): BelongsToMany
     {
         return $this->partners()->wherePivot('role_id', PartnerProjectRole::GUARANTOR);
-    }
-
-    public function responsiblePerson(): BelongsToMany
-    {
-        return $this->partners()->wherePivot('role_id', PartnerProjectRole::RESPONSIBLE_PERSON);
     }
 
     public function setName(): void

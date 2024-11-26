@@ -96,6 +96,7 @@ class ProjectFactory extends Factory
                     'project_service_type_id' => ProjectServiceType::all()->random()->id,
                     'process_id' => Process::all()->random()->id,
                     'court_id' => Court::all()->random()->id,
+                    'responsible_person_id' => Staff::all()->random()->id,
                 ]
             )
         );

@@ -67,7 +67,7 @@ class ProposalFactory extends Factory
                 'partner_id' => Partner::all()->random(),
                 'currency_id' => Currency::all()->random(),
                 'project_id' => Project::all()->random(),
-                'estimate_id' => Estimate::where('invoice_id', null)->get()->random(),
+                'estimate_id' => EstimateFactory::new()->create(), // needs to be unique
                 'invoice_status_id' => InvoiceStatus::all()->random(),
                 'shipping_country_id' => $this->faker->optional()->numberBetween(1, 200),
             ];

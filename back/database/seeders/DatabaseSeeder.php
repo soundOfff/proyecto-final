@@ -41,11 +41,11 @@ class DatabaseSeeder extends Seeder
         $this->call(RecurringSeeder::class);
         $this->call(InvoiceStatusSeeder::class);
         $this->call(TaskPrioritySeeder::class);
-        $this->call(InvoiceSeeder::class);
         $this->call(EstimateStatusSeeder::class);
         $this->call(SubServiceTypeSeeder::class);
         $this->call(DiscountTypeSeeder::class);
         $this->call(EstimateSeeder::class);
+        $this->call(InvoiceSeeder::class);
         $this->call(TaxSeeder::class);
         $this->call(PaymentMethodSeeder::class);
         $this->call(ExpenseRepeatSeeder::class);

@@ -379,4 +379,13 @@ class ProjectController extends Controller
             'incomes' => $formattedInvoices->pluck('total_amount'),
         ]);
     }
+
+    public function getProjectFinancialData(Project $project, Request $request){
+        $from = $request->input('from');
+        $until = $request->input('until');
+        $billed = $project->totalBilledCostPerMonth($from, $until);
+        $paid = $project->totalPaidCostPerMonth($from, $until);
+        $data = ["paid"=> $paid, "billed"=>$billed];
+        return response()->json($data = $data, 201);
+    }
 }

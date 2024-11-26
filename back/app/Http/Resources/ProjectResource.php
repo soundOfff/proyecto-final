@@ -62,6 +62,11 @@ class ProjectResource extends JsonResource
             'partners' => PartnerResource::collection($this->whenLoaded('partners')),
             'process' => ProcessResource::make($this->whenLoaded('process')),
             'court' => CourtResource::make($this->whenLoaded('court')),
+            'subTotalCost' => $this->subTotalCost(),
+            'subTotalBilledCost'=>$this->subTotalbilledCost(),
+            'totalBilledCost'=>$this->totalBilledCost(),
+            'notBilledCost'=>$this->subTotalCost() - $this->subTotalbilledCost(),
+            'totalPaid'=>$this->totalPaid(),
         ];
     }
 }

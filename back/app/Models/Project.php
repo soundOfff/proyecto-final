@@ -225,7 +225,36 @@ class Project extends Model
         return $this->estimates()->sum('subtotal');
     }
 
-    public function billedCost(){
+    public function totalBilledCost($from = null, $until = null){
+
+        $from = $from ?? now()->subYear(2)->startOfYear();
+        $until = $until ?? now();
+
+        return $this->estimates()
+        ->whereNotNull('invoice_id')
+        ->join('invoices', 'invoices.id','=', 'estimates.invoice_id')
+        ->whereDate('invoices.date','<=',$until)
+        ->whereDate('invoices.date','>=',$from)
+        ->sum('estimates.total');
+    }
+
+    public function totalBilledCostPerMonth($from = null, $until = null){
+
+        $from = $from ?? now()->subYear(10)->startOfYear();
+        $until = $until ?? now();
+
+        return $this->estimates()
+        ->whereNotNull('invoice_id')
+        ->join('invoices', 'estimates.invoice_id', '=', 'invoices.id')
+        ->whereBetween('invoices.date', [$from, $until])
+        ->selectRaw("DATE_FORMAT(invoices.date, '%m-%y') as month, SUM(estimates.total) as total")
+        ->groupBy('month')
+        ->orderByRaw("STR_TO_DATE(CONCAT('01-', month), '%d-%m-%y')")
+        ->get();
+    }
+
+
+    public function subTotalbilledCost(){
         return $this->estimates()
         ->whereNotNull('invoice_id')
         ->get()
@@ -240,9 +269,37 @@ class Project extends Model
             return $task->calculateCost();
         });
     }
-    public function totalCost()
+    public function subTotalCost()
     {
         return $this->estimatesCost() + $this->expensesCost() + $this->tasksCost();
+    }
+
+    public function totalPaid($from = null, $until = null){
+
+        $from = $from ?? now()->subYear(2)->startOfYear();
+        $until = $until ?? now();
+
+        return $this->estimates()
+        ->join('invoices','estimates.invoice_id','=','invoices.id')
+        ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'invoices.id')
+        ->whereDate('payment_invoice.created_at','<=',$until)
+        ->whereDate('payment_invoice.created_at','>=',$from)
+        ->sum('payment_invoice.amount');
+    }
+
+    public function totalPaidCostPerMonth($from = null, $until = null){
+
+        $from = $from ?? now()->subYear(2)->startOfYear();
+        $until = $until ?? now();
+
+        return $this->estimates()
+        ->whereNotNull('estimates.invoice_id')
+        ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'estimates.invoice_id')
+        ->whereBetween('payment_invoice.created_at', [$from, $until])
+        ->selectRaw("DATE_FORMAT(payment_invoice.created_at, '%m-%y') as month, SUM(payment_invoice.amount) as total")
+        ->groupBy('month')
+        ->orderByRaw("STR_TO_DATE(CONCAT('01-', month), '%d-%m-%y')")
+        ->get();
     }
 
 }

@@ -87,6 +87,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update']);
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
     Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
+    
+    Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
 
     Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
 

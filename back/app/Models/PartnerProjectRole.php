@@ -19,6 +19,8 @@ class PartnerProjectRole extends Model
 
     public const GUARANTOR = 3;
 
+    public const RESPONSIBLE_PERSON = 4;
+
     public function partnerProject(): HasMany
     {
         return $this->hasMany(PartnerProject::class);

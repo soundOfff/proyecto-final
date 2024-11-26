@@ -160,6 +160,11 @@ class Project extends Model
         return $this->partners()->wherePivot('role_id', PartnerProjectRole::GUARANTOR);
     }
 
+    public function responsiblePerson(): BelongsToMany
+    {
+        return $this->partners()->wherePivot('role_id', PartnerProjectRole::RESPONSIBLE_PERSON);
+    }
+
     public function setName(): void
     {
         $department = $this->serviceType->label;

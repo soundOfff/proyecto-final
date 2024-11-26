@@ -31,7 +31,6 @@ class PartnerFactory extends Factory
             'billing_street'=> fake()->streetName(),
             'billing_zip'=> fake()->countryCode(),
             'city'=> fake()->city(),
-            'name' => fake()->name(),
             'default_currency' => fake()->randomDigit(),
             'default_language' => fake()->randomElement(['en', 'es']),
             'latitude' => fake()->latitude(),
@@ -136,11 +135,11 @@ class PartnerFactory extends Factory
         return $this->afterCreating(function (Partner $partner) {
             if ($partner->isJuridic()) {
                 $relatedPartners = [
-                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::PRESIDENT],
-                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::DIRECTOR],
-                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::SECRETARY],
-                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::RESPONSIBLE],
-                    ['partner' => Partner::factory()->create(), 'type' => PartnerType::OWNER],
+                    ['partner' => Partner::factory()->natural()->create(), 'type' => PartnerType::PRESIDENT],
+                    ['partner' => Partner::factory()->natural()->create(), 'type' => PartnerType::DIRECTOR],
+                    ['partner' => Partner::factory()->natural()->create(), 'type' => PartnerType::SECRETARY],
+                    ['partner' => Partner::factory()->natural()->create(), 'type' => PartnerType::RESPONSIBLE],
+                    ['partner' => Partner::factory()->natural()->create(), 'type' => PartnerType::OWNER],
                 ];
 
                 foreach ($relatedPartners as $relatedPartner) {

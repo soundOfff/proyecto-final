@@ -18,6 +18,7 @@ class PartnerProjectRoleSeeder extends Seeder
             ['id' => 1, 'label' => 'Demandado', 'name' => 'defendant'],
             ['id' => 2, 'label' => 'Demandante', 'name' => 'plaintiff'],
             ['id' => 3, 'label' => 'Fiador', 'name' => 'guarantor'],
+            ['id' => 4, 'label' => 'Persona Responsable', 'name' => 'responsible_person'],
         ];
 
         foreach ($roles as $role) {

@@ -56,13 +56,14 @@ class ProjectFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Project $project) {
-            $defendant = Partner::factory()->create();
-            $owner = Partner::factory()->create();
+            $defendant = Partner::factory()->juridic()->create();
+            $owner = Partner::factory()->natural()->create();
             $plaintiff = Partner::factory()
                 ->hasAttached($owner, ['partner_type_id' => PartnerType::OWNER], 'relatedPartners')
+                ->juridic()
                 ->create();
 
-            $guarantor = Partner::factory()->create();
+            $guarantor = Partner::factory()->natural()->create();
 
             $project->partners()->attach($defendant, ['role_id' => PartnerProjectRole::DEFENDANT]);
             $project->partners()->attach($plaintiff, [

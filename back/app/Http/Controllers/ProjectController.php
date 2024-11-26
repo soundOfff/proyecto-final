@@ -269,7 +269,7 @@ class ProjectController extends Controller
         $process = $project->load('process')->process;
 
         if (is_null($startingProcedure)) {
-            // If no procedure is selected, get the root
+            // If no procedure is selected, get  the root
             $startingProcedure = $process->load('procedures')->procedures->sortBy('step_number')->first();
         }
 

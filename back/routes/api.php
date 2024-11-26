@@ -163,7 +163,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/timers', [TaskTimerController::class, 'store']);
     Route::get('/current-timer/{staff}', [TaskTimerController::class, 'getCurrentTimer']);
 
-    Route::get('/tasks', [TaskController::class, 'index']);
     Route::get('/tasks-select', [TaskController::class, 'select']);
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::get('/tasks/{task}', [TaskController::class, 'show']);
@@ -323,3 +322,4 @@ Route::put('/processes/{process}', [ProcessController::class, 'update']);
 Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 
 Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
+Route::get('/tasks', [TaskController::class, 'index']);

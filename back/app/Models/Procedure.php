@@ -61,12 +61,6 @@ class Procedure extends Model
         return $this->morphMany(Reminder::class, 'reminderable');
     }
 
-    public function isConditional(): bool
-    {
-        // a procedure is conditional if is the last of the process and the process who is belong has forks
-        return $this->process->forks->isNotEmpty() && $this->step_number == $this->process->procedures->count();
-    }
-
     /**
      * Convert a procedure to a task and traverse the path until reach a conditional procedure
      *
@@ -77,16 +71,18 @@ class Procedure extends Model
     public function traversePath(Project $project, int $staff_id, array &$createdTasks, self|null $parent = null): void
     {
         $task = $this->convertToTask($project, $staff_id, $parent);
+
         if ($task) {
             $createdTasks[] = $task;
         }
-
-        $this->load('outgoingPaths');
+        $this->load(['outgoingPaths' => function ($query) {
+            $query->select('id', 'from_procedure_id', 'to_procedure_id');
+        }]);
 
         foreach ($this->outgoingPaths as $path) {
             if ($path->toProcedure->is_conditional) {
                 $path->toProcedure->convertToTask($project, $staff_id, $parent);
-                continue;
+                break;
             }
 
             $path->toProcedure->traversePath($project, $staff_id, $createdTasks, $this);
@@ -129,8 +125,10 @@ class Procedure extends Model
             'name' => $this->name,
             'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder + 1, // Next milestone order,
         ]);
+        // TODO: ACA ROMPE LA FN NOSE PORQUE TIRA  "message": "Allowed memory size of 3196059648 bytes exhausted (tried to allocate 471778415 bytes)",   /**
 
         $this->load('dependencies');
+
         if ($this->dependencies->isNotEmpty()) {
             $procedureDependencies = $this->dependencies->pluck('id');
             $tasksId = $procedureDependencies->map(

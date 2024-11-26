@@ -8,7 +8,6 @@ use App\Models\ProjectServiceType;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
-use Illuminate\Process\FakeProcessResult;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
@@ -26,6 +25,8 @@ class ProcessFactory extends Factory
             'step_quantity' => fake()->randomDigitNotZero(),
             'name' => fake()->words(3, true),
             'description' => fake()->text(),
+            'project_service_type_id' => ProjectServiceType::all()->random()->id,
+            'author_id' => Staff::all()->random()->id,
         ];
     }
 
@@ -37,29 +38,13 @@ class ProcessFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Process $process) {
-            $process->procedures()->createMany(
-                Procedure::factory()
-                    ->count($process->step_quantity)
-                    ->make()
-                    ->toArray()
-            );
+            Procedure::factory()
+                ->for($process)
+                ->count($process->step_quantity)
+                ->sequence(
+                    fn (Sequence $sequence) => ['step_number' => $sequence->index + 1]
+                )
+                ->create();
         });
-    }
-
-    /**
-     * Define random relations
-     *
-     * @return $this
-     */
-    public function withRandomRelations()
-    {
-        return $this->state(
-            new Sequence(
-                fn (Sequence $sequence) => [
-                    'projectServiceType' => ProjectServiceType::all()->random(),
-                    'author' => Staff::all()->random(),
-                ]
-            )
-        );
     }
 }

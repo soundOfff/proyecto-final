@@ -56,24 +56,11 @@ class InvoiceFactory extends Factory
             'show_shipping_on_invoice' => $this->faker->boolean(),
             'number_format' => '0',
             'show_quantity_as' => '0',
+            'partner_id' => Partner::all()->random()->id,
+            'currency_id' => Currency::all()->random()->id,
+            'invoice_status_id' => InvoiceStatus::all()->random()->id,
+            'project_id' => Project::all()->random()->id,
+            'estimate_id' => EstimateFactory::new()->create()->id,
         ];
-    }
-
-    /**
-     * Define random relations
-     *
-     * @return $this
-     */
-    public function withRandomRelations()
-    {
-        return $this->state(function () {
-            return [
-                'partner_id' => Partner::all()->random(),
-                'currency_id' => Currency::all()->random(),
-                'invoice_status_id' => InvoiceStatus::all()->random(),
-                'project_id' => Project::all()->random(),
-                'estimate_id' => EstimateFactory::new()->create(), // needs to be unique
-            ];
-        });
     }
 }

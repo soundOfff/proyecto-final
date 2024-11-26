@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\LineItemFactory;
+use Database\Factories\LineItemTaxFactory;
 use Database\Factories\ProposalFactory;
 use Illuminate\Database\Seeder;
 
@@ -15,8 +17,10 @@ class ProposalSeeder extends Seeder
     public function run()
     {
         ProposalFactory::new()
+            ->has(
+                LineItemFactory::new()->has(LineItemTaxFactory::new(), 'taxes')->count(3), 'lineItems'
+            )
             ->count(10)
-            ->withRandomRelations()
             ->create();
     }
 }

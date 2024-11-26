@@ -52,25 +52,12 @@ class ProposalFactory extends Factory
             'include_shipping' => $this->faker->boolean(),
             'show_shipping_on_invoice' => $this->faker->boolean(),
             'show_quantity_as' => '0',
+            'partner_id' => Partner::all()->random()->id,
+            'currency_id' => Currency::all()->random()->id,
+            'project_id' => Project::all()->random()->id,
+            'estimate_id' => EstimateFactory::new()->create()->id,
+            'invoice_status_id' => InvoiceStatus::all()->random()->id,
+            'shipping_country_id' => $this->faker->optional()->numberBetween(1, 200),
         ];
-    }
-
-    /**
-     * Define random relations
-     *
-     * @return $this
-     */
-    public function withRandomRelations()
-    {
-        return $this->state(function () {
-            return [
-                'partner_id' => Partner::all()->random(),
-                'currency_id' => Currency::all()->random(),
-                'project_id' => Project::all()->random(),
-                'estimate_id' => EstimateFactory::new()->create(), // needs to be unique
-                'invoice_status_id' => InvoiceStatus::all()->random(),
-                'shipping_country_id' => $this->faker->optional()->numberBetween(1, 200),
-            ];
-        });
     }
 }

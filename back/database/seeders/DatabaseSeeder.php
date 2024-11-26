@@ -40,12 +40,11 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class);
         $this->call(RecurringSeeder::class);
         $this->call(InvoiceStatusSeeder::class);
+        $this->call(EstimateStatusSeeder::class);
         $this->call(TaskPrioritySeeder::class);
         $this->call(DiscountTypeSeeder::class);
         $this->call(InvoiceSeeder::class);
-        $this->call(EstimateStatusSeeder::class);
         $this->call(SubServiceTypeSeeder::class);
-        $this->call(EstimateSeeder::class);
         $this->call(InvoiceSeeder::class);
         $this->call(TaxSeeder::class);
         $this->call(PaymentMethodSeeder::class);
@@ -53,6 +52,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ExpenseSeeder::class);
         $this->call(ProposalStatusSeeder::class);
         $this->call(ProposalSeeder::class);
+        $this->call(EstimateSeeder::class);
         $this->call(ProposalCommentSeeder::class);
         $this->call(ProjectNoteSeeder::class);
         $this->call(ProjectMemberSeeder::class);
@@ -60,8 +60,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ItemSeeder::class);
         $this->call(LineItemTypeSeeder::class);
         $this->call(LineItemSeeder::class);
-        $this->call(LineItemTaxSeeder::class);
-        $this->call(TaggableSeeder::class);
         $this->call(CreditNoteStatusSeeder::class);
     }
 }

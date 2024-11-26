@@ -26,7 +26,7 @@ class ProcedureFactory extends Factory
             'name' => fake()->words(3, true),
             'description' => fake()->text(),
             'responsible' => fake()->randomElement(['Cliente', 'Abogado', 'Juez', 'Secretario', 'Otros']),
-            'step_number' => fake()->numberBetween(1, 50),
+            'step_number' => fake()->numberBetween(1, 10),
             'author_id' => Staff::all()->random()->id,
             'procedure_status_id' => ProcedureStatus::all()->random()->id,
         ];
@@ -41,25 +41,8 @@ class ProcedureFactory extends Factory
     {
         return $this->afterCreating(function (Procedure $procedure) {
             $procedure->dependencies()->attach(
-                Procedure::all()->random()->id
+                Procedure::all()->isEmpty() ? [] : Procedure::all()->random()->id
             );
         });
-    }
-
-    /**
-     * Define random relations
-     *
-     * @return $this
-     */
-    public function withRandomRelations()
-    {
-        return $this->state(
-            new Sequence(
-                fn (Sequence $sequence) => [
-
-                    'step_number' => $sequence->index + 1,
-                ]
-            )
-        );
     }
 }

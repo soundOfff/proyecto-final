@@ -68,25 +68,10 @@ class EstimateFactory extends Factory
             'signature' => null,
             'cancel_overdue_reminders' => $this->faker->boolean(),
             'recurring_id' => null,
+            'estimate_status_id' => EstimateStatus::all()->random()->id,
+            'currency_id' => Currency::all()->random()->id,
+            'project_id' => Project::all()->random()->id,
+            'partner_id' => Partner::all()->random()->id,
         ];
-    }
-
-    /**
-     * Define random relations
-     *
-     * @return $this
-     */
-    public function withRandomRelations()
-    {
-        return $this->state(
-            new Sequence(
-                fn () => [
-                    'estimate_status_id' => EstimateStatus::all()->random(),
-                    'currency_id' => Currency::all()->random(),
-                    'project_id' => Project::all()->random(),
-                    'partner_id' => Partner::all()->random(),
-                ]
-            )
-        );
     }
 }

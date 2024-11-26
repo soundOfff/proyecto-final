@@ -391,6 +391,6 @@ class ProjectController extends Controller
         $paid = $project->totalPaidCostPerMonth($from, $until);
         $data = ['paid'=> $paid, 'billed'=>$billed];
 
-        return response()->json($data = $data, 201);
+        return response()->json($data, 200);
     }
 }

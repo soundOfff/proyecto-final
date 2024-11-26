@@ -10,27 +10,25 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Tooltip from "@mui/material/Tooltip";
 
 import DefaultLineChart from "/examples/Charts/LineCharts/DefaultLineChart";
-import defaultLineChartData from "/pagesComponents/dashboards/sales/data/defaultLineChartData";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import moment from "moment";
 
-let projectData = {
-  labels: [],
-  datasets: [
-    {
-      label: "Facebook Ads",
-      color: "info",
-      data: [50, 100, 200, 190, 400, 350, 500, 450, 700],
-    },
-    {
-      label: "Google Ads",
-      color: "dark",
-      data: [10, 30, 40, 120, 150, 220, 280, 250, 280],
-    },
-  ],
-};
-
-function IncomesChart({ projects }) {
+function IncomesChart({ projects, data }) {
+  const projectData = {
+    labels: [],
+    datasets: [
+      {
+        label: "Facturado",
+        color: "info",
+        data: data.billed,
+      },
+      {
+        label: "Pagado",
+        color: "dark",
+        data: data.paid,
+      },
+    ],
+  };
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -42,10 +40,10 @@ function IncomesChart({ projects }) {
   });
 
   const [selectedProject, setSelectedProject] = useState(
-    searchParams.get("projectId")
+    searchParams.get("projectId") ?? projects[0]
   );
 
-  const handleProjectChange = (event, value) => {
+  const handleProjectChange = (_, value) => {
     setSelectedProject(value);
     const params = new URLSearchParams(searchParams);
     params.set("projectId", value.id);

@@ -18,6 +18,9 @@ export default function ProcedureNode({ data }) {
       bgColor={data.isSelected ? "success" : "gray"}
     >
       <Handle type="target" position={Position.Left} />
+      {data?.hasBackEdge && (
+        <Handle type="source" position={Position.Top} key="top" index="top" />
+      )}
       <MDBox display="block">
         <MDTypography
           variant="body2"

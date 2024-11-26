@@ -337,12 +337,8 @@ function Sidenav({
                     <Image
                       src={brand.src}
                       alt={brand.alt}
-                      width={miniSidenav ? 50 : 220}
-                      height={
-                        process.env.NEXT_PUBLIC_APP_NAME === BRANDFACTORS
-                          ? 20
-                          : 30
-                      }
+                      width={miniSidenav ? 60 : 180}
+                      height={miniSidenav ? 60 : 180}
                     />
                   ) : (
                     brand

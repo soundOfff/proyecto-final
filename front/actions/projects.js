@@ -68,7 +68,6 @@ export async function update(id, data) {
 }
 
 export async function attachTasks(params) {
-  console.log(params);
   const { projectId, staffId, procedureId } = params;
 
   const url = new URL(
@@ -106,4 +105,18 @@ export async function destroy(projectId) {
 
   revalidatePath("/projects");
   redirect("/projects");
+}
+
+export async function getBalance(id) {
+  const until = new Date();
+  const from = new Date();
+  from.setFullYear(until.getFullYear() - 5, 0, 1);
+  const url = new URL(
+    `${process.env.API_URL}/projects-data/${id}?from=${
+      from.toISOString().split("T")[0]
+    }&until=${until.toISOString().split("T")[0]}`
+  );
+
+  const data = await customFetch(url, { cache: "no-store" });
+  return data;
 }

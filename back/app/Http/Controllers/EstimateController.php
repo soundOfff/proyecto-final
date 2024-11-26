@@ -24,6 +24,7 @@ class EstimateController extends Controller
     public function toInvoice(Estimate $estimate)
     {
         $estimate->load('lineItems.taxes', 'expenses');
+
         $newInvoice = $estimate->toArray();
         $newInvoice['prefix'] = 'INVOICE-';
         $newInvoice['include_shipping'] = false;
@@ -35,6 +36,7 @@ class EstimateController extends Controller
         $newInvoice['number'] = Invoice::getNextNumber();
 
         $invoice = Invoice::create($newInvoice);
+
         $estimate->update(['invoice_id' => $invoice->id]);
 
         foreach ($estimate->expenses as $expense) {

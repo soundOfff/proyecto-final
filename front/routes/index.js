@@ -143,6 +143,11 @@ const routes = [
         key: "report-timesheets",
         route: "/report-timesheets",
       },
+      {
+        name: "Resumen de Ventas",
+        key: "report-sales",
+        route: "/report-sales",
+      },
     ],
   },
   {

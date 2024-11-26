@@ -249,7 +249,7 @@ class Project extends Model
         ->whereNotNull('invoice_id')
         ->join('invoices', 'estimates.invoice_id', '=', 'invoices.id')
         ->whereBetween('invoices.date', [$from, $until])
-        ->selectRaw("DATE_FORMAT(invoices.date, '%m-%y') as month, SUM(estimates.total) as total")
+        ->selectRaw('MONTH(invoices.date) as month, SUM(estimates.total) as total')
         ->groupBy('month')
         ->orderByRaw("STR_TO_DATE(CONCAT('01-', month), '%d-%m-%y')")
         ->get();
@@ -301,7 +301,7 @@ class Project extends Model
         ->whereNotNull('estimates.invoice_id')
         ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'estimates.invoice_id')
         ->whereBetween('payment_invoice.created_at', [$from, $until])
-        ->selectRaw("DATE_FORMAT(payment_invoice.created_at, '%m-%y') as month, SUM(payment_invoice.amount) as total")
+        ->selectRaw('MONTH(payment_invoice.created_at) as month, SUM(payment_invoice.amount) as total')
         ->groupBy('month')
         ->orderByRaw("STR_TO_DATE(CONCAT('01-', month), '%d-%m-%y')")
         ->get();

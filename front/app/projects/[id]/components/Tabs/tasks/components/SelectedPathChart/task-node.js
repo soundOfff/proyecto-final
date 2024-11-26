@@ -23,6 +23,9 @@ export default function TaskNode({ data }) {
       })}
     >
       <Handle type="target" position={Position.Left} />
+      {data?.hasBackEdge && (
+        <Handle type="source" position={Position.Top} key="top" index="top" />
+      )}
       <MDBadge
         size="xs"
         color={getPriorityColor(task?.priority?.name)}

@@ -88,8 +88,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
     Route::put('/project-members/{project}', [ProjectController::class, 'updateMembers']);
 
-    Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
-
     Route::get('/project-service-types', [ProjectServiceTypeController::class, 'index']);
 
     Route::get('/project-billing-types', [ProjectBillingTypeController::class, 'index']);
@@ -144,7 +142,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/estimates/{estimate}', [EstimateController::class, 'update']);
     Route::get('/estimates/{estimate}', [EstimateController::class, 'show']);
     Route::delete('/estimates/{estimate}', [EstimateController::class, 'destroy']);
-    Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 
     Route::get('/proposals-select', [ProposalController::class, 'select']);
     Route::get('/proposals', [ProposalController::class, 'index']);
@@ -328,3 +325,6 @@ Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 
 Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
 Route::get('/tasks', [TaskController::class, 'index']);
+
+Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
+Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);

@@ -1,5 +1,3 @@
-import UpdateMembers from "./update-members";
-
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDAvatar from "/components/MDAvatar";
@@ -12,6 +10,9 @@ import { useDataProvider } from "/providers/DataProvider";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
 import SelectedProcesses from "/components/Tasks/selected-processes";
 import Link from "next/link";
+import Transactions from "/pagesComponents/pages/account/billing/components/Transactions";
+import Transaction from "/pagesComponents/pages/account/billing/components/Transaction";
+import Icon from "@mui/material/Icon";
 
 const headers = [
   {
@@ -58,7 +59,6 @@ export default function Details() {
     const initials = firstName[0] || "";
     return initials.toUpperCase();
   };
-
   return (
     <>
       <Grid container ml={2}>
@@ -116,6 +116,101 @@ export default function Details() {
             description={project.deadline ?? "Sin Fecha de Fin"}
           />
         </Grid>
+      </Grid>
+
+      <Divider variant="left" sx={{ width: "100%" }} />
+
+      <Grid>
+        <MDBox
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          pt={3}
+          px={2}
+        >
+          <MDTypography
+            variant="h6"
+            fontWeight="medium"
+            textTransform="capitalize"
+          >
+            Balance del proyecto
+          </MDTypography>
+        </MDBox>
+        <MDBox pt={3} pb={2} px={2}>
+          <MDBox
+            component="ul"
+            display="flex"
+            flexDirection="column"
+            p={0}
+            m={0}
+            sx={{ listStyle: "none" }}
+          >
+            <Transaction
+              color="error"
+              icon="remove"
+              name="Deuda del cliente sin facturar"
+              description="27 March 2020, at 12:30 PM"
+              value={`${moneyFormat(project.notBilledCost)}`}
+            />
+          </MDBox>
+          <MDBox
+            component="ul"
+            display="flex"
+            flexDirection="column"
+            p={0}
+            m={0}
+            sx={{ listStyle: "none" }}
+          >
+            <Transaction
+              color="dark"
+              icon="receipt"
+              name="Deuda del cliente facturada"
+              description="26 March 2020, at 13:45 PM"
+              value={`${moneyFormat(project.totalBilledCost)}`}
+            />
+          </MDBox>
+          <MDBox
+            component="ul"
+            display="flex"
+            flexDirection="column"
+            p={0}
+            m={0}
+            sx={{ listStyle: "none" }}
+          >
+            <Transaction
+              color="dark"
+              icon="account_balance"
+              name="Total pago del cliente"
+              description="26 March 2020, at 13:45 PM"
+              value={`${moneyFormat(project.totalPaid)}`}
+            />
+          </MDBox>
+          <MDBox
+            component="ul"
+            display="flex"
+            flexDirection="column"
+            p={0}
+            m={0}
+            sx={{ listStyle: "none" }}
+          >
+            <Transaction
+              color={
+                project.totalPaid -
+                  (project.totalBilledCost + project.notBilledCost) >
+                0
+                  ? "success"
+                  : "error"
+              }
+              icon="attach_money"
+              name="Deuda total"
+              description="26 March 2020, at 13:45 PM"
+              value={`${moneyFormat(
+                project.totalPaid -
+                  (project.totalBilledCost + project.notBilledCost)
+              )}`}
+            />
+          </MDBox>
+        </MDBox>
       </Grid>
 
       <Divider variant="left" sx={{ width: "100%" }} />

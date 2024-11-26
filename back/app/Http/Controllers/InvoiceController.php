@@ -7,6 +7,7 @@ use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\InvoiceResourceCollection;
 use App\Http\Resources\InvoiceSelectResourceCollection;
 use App\Models\Invoice;
+use App\Models\InvoiceStatus;
 use App\Sorts\InvoiceEstimateSort;
 use App\Sorts\InvoicePartnerSort;
 use App\Sorts\InvoiceProjectServiceTypeSort;
@@ -52,6 +53,13 @@ class InvoiceController extends Controller
             ->allowedFilters([
                 'partner_id',
                 'project_id',
+                AllowedFilter::callback('partner_to_pay', function ($query, $value) {
+                    $query->where('partner_id', $value)
+                          ->where(function ($query) {
+                              $query->where('invoice_status_id', InvoiceStatus::TO_PAY)
+                                    ->orWhere('invoice_status_id', InvoiceStatus::PARTIALLY_PAID);
+                          });
+                }),
                 AllowedFilter::custom('to_pay', new InvoiceToPayFilter),
                 AllowedFilter::scope('search'),
                 AllowedFilter::callback('date', function (Builder $query, $values) {

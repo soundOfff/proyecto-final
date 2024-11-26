@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Partner;
 use App\Models\Procedure;
@@ -260,15 +261,18 @@ class ProjectController extends Controller
 
     public function attachTasks(Project $project, Request $request)
     {
-        $staff = Staff::find($request->get('staff_id'));
-        $startingProcedure = Procedure::find($request->get('procedure_id'));
+        $data = $request->validate([
+            'staff_id' => 'required|exists:staff,id',
+            'procedure_id' => 'nullable|exists:procedures,id',
+        ]);
 
-        abort_if(! $staff, 404, 'Staff not found');
+        $staff = Staff::find($data['staff_id']);
 
         $process = $project->load('process')->process;
 
-        if (is_null($startingProcedure)) {
-            // If no procedure is selected, get  the root
+        if (isset($data['procedure_id'])) {
+            $startingProcedure = Procedure::find($data['procedure_id']);
+        } else {
             $startingProcedure = $process->load('procedures')->procedures->sortBy('step_number')->first();
         }
 

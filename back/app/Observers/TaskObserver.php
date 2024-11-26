@@ -15,7 +15,7 @@ class TaskObserver
     public function created(Task $task): void
     {
         // Case 1 - Task is created.
-        $this->dispatchActions($task);
+        // $this->dispatchActions($task);
     }
 
     /**

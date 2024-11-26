@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -71,18 +72,18 @@ class Procedure extends Model
     public function traversePath(Project $project, int $staff_id, array &$createdTasks, self|null $parent = null): void
     {
         $task = $this->convertToTask($project, $staff_id, $parent);
-
         if ($task) {
             $createdTasks[] = $task;
         }
-        $this->load(['outgoingPaths' => function ($query) {
-            $query->select('id', 'from_procedure_id', 'to_procedure_id');
-        }]);
 
+        $this->load('outgoingPaths');
         foreach ($this->outgoingPaths as $path) {
             if ($path->toProcedure->is_conditional) {
-                $path->toProcedure->convertToTask($project, $staff_id, $parent);
-                break;
+                $task = $path->toProcedure->convertToTask($project, $staff_id, $parent);
+                if ($task) {
+                    $createdTasks[] = $task;
+                }
+                continue;
             }
 
             $path->toProcedure->traversePath($project, $staff_id, $createdTasks, $this);
@@ -91,7 +92,6 @@ class Procedure extends Model
 
     public function convertToTask(Project $project, int $staff_id, self|null $parent): ?Task
     {
-        // TODO: Check if with nested conditional procedures this works...
         $taskQuery = Task::where('procedure_id', $this->id)
             ->where('taskable_id', $project->id)
             ->where('taskable_type', Task::TASKABLE_PROJECT);
@@ -113,22 +113,19 @@ class Procedure extends Model
         $task = Task::create([
             'procedure_id' => $this->id,
             'task_priority_id' => TaskPriority::DEFAULT,
-            'repeat_id' => ExpenseRepeat::DEFAULT,
             'task_status_id' => TaskStatus::PENDING,
             'taskable_id' => $project->id,
             'taskable_type' => Task::TASKABLE_PROJECT,
             'partner_id' => $project->billable_partner_id,
             'owner_id' => $project->responsible_person_id,
             'author_id' => $staff_id,
-            'start_date' => now(),
+            'start_date' => now()->toDateString(),
             'description' => $this->description,
             'name' => $this->name,
             'milestone_order' => $latestMilestoneOrder == 0 ? $this->step_number : $latestMilestoneOrder + 1, // Next milestone order,
         ]);
-        // TODO: ACA ROMPE LA FN NOSE PORQUE TIRA  "message": "Allowed memory size of 3196059648 bytes exhausted (tried to allocate 471778415 bytes)",   /**
 
         $this->load('dependencies');
-
         if ($this->dependencies->isNotEmpty()) {
             $procedureDependencies = $this->dependencies->pluck('id');
             $tasksId = $procedureDependencies->map(

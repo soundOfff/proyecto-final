@@ -5,7 +5,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import TableRowComponent from "./table-row-component";
-import { attach, detach } from "/actions/payments";
+import { attach } from "/actions/payments";
 import useInvoicePayments from "/hooks/useInvoicePayments";
 
 const borderBottom = {
@@ -66,10 +66,10 @@ const headers = [
 ];
 
 export default function ModalContent({ payment, setOpenModal }) {
-  const { id: paymentId, partialTotalPaid, partner_id } = payment;
+  const { id: paymentId, partialTotalPaid, partner } = payment;
 
   const { invoices, payments, totalPaid, handleAmountChanges, isValid } =
-    useInvoicePayments(partialTotalPaid, partner_id);
+    useInvoicePayments(partialTotalPaid, partner?.id);
 
   const handlePartialPaymentApply = () => {
     const data = {

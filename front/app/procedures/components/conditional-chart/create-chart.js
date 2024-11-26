@@ -172,7 +172,7 @@ export default function CreateChart({ processId }) {
         processId={processId}
         onSubmit={handleNodeSubmit}
         onNodeCreated={fetchProcess}
-        totalProcedures={process?.procedures?.length || 0}
+        totalNodes={nodes.length}
       />
 
       <ReactFlow

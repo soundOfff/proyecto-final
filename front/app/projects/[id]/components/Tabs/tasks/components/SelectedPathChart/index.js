@@ -8,6 +8,7 @@ import {
   ReactFlow,
   useNodesState,
   useEdgesState,
+  MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useEffect, useState } from "react";
@@ -15,7 +16,7 @@ import CustomNode from "./custom-node";
 import MDButton from "/components/MDButton";
 import { show } from "/actions/processes";
 
-const BLOCK = 350;
+const BLOCK = 450;
 
 export default function SelectedPathChart({ processId = null, tasks = [] }) {
   const [refresher, setRefresher] = useState(false);
@@ -77,6 +78,24 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
             target: path.toProcedureId.toString(),
             sourceHandle: index === 0 ? "bellow" : "right",
             type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
+          });
+        } else if (path.fromProcedureId > path.toProcedureId) {
+          edges.push({
+            id: `e${path.fromProcedureId}-${path.toProcedureId}`,
+            source: path.fromProcedureId.toString(),
+            target: path.toProcedureId.toString(),
+            sourceHandle: "top",
+            type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
           });
         } else {
           edges.push({
@@ -84,10 +103,12 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
             source: path.fromProcedureId.toString(),
             target: path.toProcedureId.toString(),
             type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
           });
-        }
-        if (path.fromProcedureId > path.toProcedureId) {
-          return;
         }
         const currNode = nodes.find(
           (curr) => curr.id === path.fromProcedureId.toString()
@@ -96,8 +117,17 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
           (node) => node.id === path.toProcedureId.toString()
         );
 
+        if (path.fromProcedureId > path.toProcedureId) {
+          currNode.data = {
+            ...currNode.data,
+            hasBackEdge: true,
+          };
+          return;
+        }
+
         nextNode.position.x = currNode.position.x + BLOCK;
-        nextNode.position.y = currNode.position.y + (BLOCK / 2) * index;
+        nextNode.position.y =
+          currNode.position.y + (BLOCK / 3) * (!currNode.hasBackEdge * index);
 
         if (currNode.data.isConditional) {
           currNode.position.y -= 4.8;

@@ -58,7 +58,7 @@ export default function NodeForm({
           }}
         />
         <TextField
-          label="Step Number"
+          label="Numero de paso"
           name="stepNumber"
           value={form.stepNumber}
           onChange={handleChange}

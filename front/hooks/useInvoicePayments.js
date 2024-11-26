@@ -46,8 +46,7 @@ export default function useInvoicePayments(total, partnerId) {
 
   useEffect(() => {
     const params = {
-      "filter[partner_id]": partnerId,
-      "filter[to_pay]": true,
+      "filter[partner_to_pay]": partnerId,
     };
 
     getAllInvoices(params).then((response) => {

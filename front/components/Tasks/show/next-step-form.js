@@ -13,24 +13,24 @@ import { attachTasks } from "/actions/projects";
 
 import { useMaterialUIController, setSnackbar } from "/context";
 
-export default function NextStepForm({ task, selectedFork }) {
-  const [controller, dispatch] = useMaterialUIController();
+export default function NextStepForm({ task }) {
+  const [_, dispatch] = useMaterialUIController();
   const { data: session } = useSession();
 
-  const [selectedProcess, setSelectedProcess] = useState(selectedFork);
+  const [selectedProcedure, setSelectedProcedure] = useState(null);
   const [isAttachingTasks, setIsAttachingTasks] = useState(false);
 
   const handleSelectNextStep = async () => {
     setIsAttachingTasks(true);
     try {
       await attachTasks({
-        projectId: task.taskable.id,
-        processId: selectedProcess.id,
-        staffId: session.staff.id,
+        project_id: task.taskable.id,
+        procedure_id: selectedProcedure?.toProcedureId,
+        staff_id: session.staff.id,
       });
       setSnackbar(dispatch, {
         color: "success",
-        icon: "check_circle",
+        icons: "check_circle",
         title: "El paso se ha seleccionado correctamente",
         content: "Se han creado las tareas correspondientes",
         bgWhite: true,
@@ -71,10 +71,10 @@ export default function NextStepForm({ task, selectedFork }) {
         >
           <Grid item xs={12} sm={4}>
             <Autocomplete
-              value={task?.procedure?.process}
+              value={task?.procedure?.incomingPaths[0]}
               disabled
-              options={[]}
-              getOptionLabel={(option) => option.name}
+              options={task?.procedure?.incomingPaths}
+              getOptionLabel={(option) => option.fromProcedure?.name}
               renderInput={(params) => (
                 <MDInput
                   {...params}
@@ -88,12 +88,12 @@ export default function NextStepForm({ task, selectedFork }) {
           </Grid>
           <Grid item xs={12} sm={5}>
             <Autocomplete
-              value={selectedProcess}
-              onChange={(e, value) => {
-                setSelectedProcess(value);
+              value={selectedProcedure}
+              onChange={(_, value) => {
+                setSelectedProcedure(value);
               }}
-              options={task?.procedure?.process?.forks || []}
-              getOptionLabel={(option) => option.name}
+              options={task?.procedure?.outgoingPaths}
+              getOptionLabel={(option) => option.toProcedure.name}
               renderInput={(params) => (
                 <MDInput
                   {...params}
@@ -104,21 +104,12 @@ export default function NextStepForm({ task, selectedFork }) {
                 />
               )}
             />
-            {selectedProcess && selectedProcess.realStepQuantity == 0 && (
-              <MDTypography variant="caption" color="error">
-                Este paso no tiene procedimientos asociados
-              </MDTypography>
-            )}
           </Grid>
           <Grid item xs={12} sm={2}>
             <MDButton
               variant="gradient"
               color="dark"
-              disabled={
-                !selectedProcess ||
-                isAttachingTasks ||
-                selectedProcess.realStepQuantity == 0
-              }
+              disabled={!selectedProcedure || isAttachingTasks}
               onClick={handleSelectNextStep}
             >
               Seleccionar paso

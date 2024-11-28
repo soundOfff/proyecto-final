@@ -231,13 +231,7 @@ class Task extends Model
 
     public function isFinalTask()
     {
-        if (! $this->procedure) {
-            return false;
-        }
-
-        $relatedProcedures = $this->procedure->process->procedures->sortByDesc('step_number');
-
-        return $relatedProcedures->first()->id === $this->procedure->id;
+        return $this->procedure ? $this->procedure->is_conditional : false;
     }
 
     public function requiredFields()

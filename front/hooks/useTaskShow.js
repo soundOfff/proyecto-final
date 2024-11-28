@@ -36,6 +36,8 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
           "reminders",
           "requiredFields",
           "procedure.actions.type",
+          "procedure.outgoingPaths.toProcedure",
+          "procedure.incomingPaths.fromProcedure",
         ],
       });
       setIsLoading(false);
@@ -46,21 +48,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setTask(null);
-  };
-
-  const getSelectedFork = (children = []) => {
-    // Check if the task has a fork selected
-    let selectedFork = null;
-    children.forEach((child) => {
-      if (
-        tasks.some(
-          (task) => task.procedure && task.procedure.process.id === child.id
-        )
-      ) {
-        selectedFork = child;
-      }
-    });
-    return selectedFork;
   };
 
   const stopTimer = async (timerId, note = "") => {
@@ -87,7 +74,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
       task_status_id: statuses.find((status) => status.name === DONE_STATUS)
         ?.id,
     });
-    setOpenModal(false);
   };
 
   const saveTask = async (taskId, data) => {
@@ -136,7 +122,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
     handleCloseModal,
     setTask,
     handleCompleteTask,
-    getSelectedFork,
     stopTimer,
     startTimer,
     handleSaveTask,

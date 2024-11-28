@@ -28,6 +28,9 @@ class ProcedureResource extends JsonResource
             'actions' => ActionResource::collection($this->whenLoaded('actions')),
             'author' => StaffResource::make($this->whenLoaded('author')),
             'reminders' => ReminderResource::collection($this->whenLoaded('reminders')),
+            'outgoingPaths' => ProcedurePathResource::collection($this->whenLoaded('outgoingPaths')),
+            'incomingPaths' => ProcedurePathResource::collection($this->whenLoaded('incomingPaths')),
+            'isConditional' => $this->is_conditional,
         ];
     }
 }

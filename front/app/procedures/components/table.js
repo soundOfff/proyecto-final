@@ -190,6 +190,7 @@ export default function Procedures({ procedures, actionTypes, processId }) {
         justifyContent="space-between"
         alignItems="center"
         mb={5}
+        mx={5}
       >
         <MDBox display="flex" alignItems="center">
           {loading && (
@@ -220,14 +221,16 @@ export default function Procedures({ procedures, actionTypes, processId }) {
           </Link>
         </MDBox>
       </MDBox>
-      <DataTable
-        table={table}
-        entriesPerPage={{ defaultValue: 50 }}
-        showTotalEntries={false}
-        moveRow={moveRow}
-        isSorted={false}
-        noEndBorder
-      />
+      <MDBox mx={5}>
+        <DataTable
+          table={table}
+          entriesPerPage={{ defaultValue: 50 }}
+          showTotalEntries={false}
+          moveRow={moveRow}
+          isSorted={false}
+          noEndBorder
+        />
+      </MDBox>
       <DeleteRow
         {...{
           setOpenDeleteConfirmation,

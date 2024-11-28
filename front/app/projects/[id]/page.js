@@ -8,7 +8,7 @@ const include = [
   "billablePartner",
   "tasks",
   "billingType",
-  "serviceType.processes.forks",
+  "serviceType",
   "responsiblePerson",
   "status",
   "members",

@@ -128,7 +128,7 @@ function CustomStepper({ processes, tasks }) {
 
     // Needed because the component is builded like (progress bar) + (node)
     // and we need the value of the completed tasks in the prev process
-    const totalPrevTasks = key === 0 ? 1 : processes[key - 1].realStepQuantity;
+    const totalPrevTasks = key === 0 ? 1 : processes[key - 1].stepQuantity;
     const totalPrevCompletedTasks =
       key === 0 ? 0 : completedTasks[processes[key - 1].id] || 0;
     const totalPrevInProgressProcessTasks =

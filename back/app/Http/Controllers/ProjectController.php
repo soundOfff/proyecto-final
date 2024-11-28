@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectResourceCollection;
 use App\Http\Resources\ProjectSelectResourceCollection;
 use App\Models\Partner;
+use App\Models\Procedure;
 use App\Models\Process;
 use App\Models\Project;
 use App\Models\Staff;
@@ -171,7 +172,7 @@ class ProjectController extends Controller
                 'staffs',
                 'billablePartner',
                 'billingType',
-                'serviceType.processes.forks',
+                'serviceType',
                 'files',
                 'status',
                 'members',
@@ -252,26 +253,27 @@ class ProjectController extends Controller
 
     public function attachTasks(Project $project, Request $request)
     {
-        $process = Process::find($request->get('processId')); // != null means that is from a child process
-        $staff = Staff::find($request->get('staffId'));
+        $data = $request->validate([
+            'staff_id' => 'required|exists:staff,id',
+            'procedure_id' => 'nullable|exists:procedures,id',
+        ]);
 
-        abort_if(! $staff, 404, 'Staff not found');
+        $staff = Staff::find($data['staff_id']);
 
-        if (is_null($process)) { // == null means that is from a root process
-            $process = $project->load('process')->process;
+        $process = $project->load('process')->process;
+
+        if (isset($data['procedure_id'])) {
+            $startingProcedure = Procedure::find($data['procedure_id']);
+        } else {
+            $startingProcedure = $process->load('procedures')->procedures->sortBy('step_number')->first();
         }
 
-        $procedures = $process->load('procedures')->procedures->sortBy('step_number');
-        $createdTasks = false;
+        $createdTasks = [];
+        $startingProcedure->traversePath($project, $staff->id, $createdTasks);
 
-        foreach ($procedures as $procedure) {
-            $task = $procedure->convertToTask($project, $staff->id);
-            if ($task) {
-                $createdTasks = true;
-            }
-        }
+        $created = count($createdTasks) > 0;
 
-        return response()->json(['createdTasks' => $createdTasks], 201);
+        return response()->json(['createdTasks' => $created], 201);
     }
 
     /**

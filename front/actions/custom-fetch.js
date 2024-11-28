@@ -32,6 +32,5 @@ export async function customFetch(url, options = {}) {
   if (response.status === 204) {
     return null;
   }
-
   return response.json();
 }

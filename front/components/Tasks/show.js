@@ -19,7 +19,6 @@ export default function Show({
   markAsCompleted,
   stopTimer,
   startTimer,
-  getSelectedFork,
   isSaving,
   handleSaveTask,
   closeShowModal,
@@ -40,10 +39,6 @@ export default function Show({
   const [assigneds, setAssigneds] = useState(task.assigneds);
   const [followers, setFollowers] = useState(task.followers);
   const [reminders, setReminders] = useState(task.reminders || []);
-
-  const selectedFork = task.isFinalTask
-    ? getSelectedFork(task.procedure.process.forks)
-    : null;
 
   const saveTask = async () => {
     await handleSaveTask(task.id, {
@@ -83,7 +78,6 @@ export default function Show({
         markAsCompleted,
         stopTimer,
         startTimer,
-        getSelectedFork,
         notificationPriorities,
         isSaving,
         handleSaveTask,
@@ -93,7 +87,7 @@ export default function Show({
       <MDBox>
         <Header />
         <Grid container>
-          <Content selectedFork={selectedFork} refetch={refetch} />
+          <Content refetch={refetch} />
           <Aside
             {...{
               statusId,

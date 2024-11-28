@@ -22,7 +22,6 @@ class ProcessFactory extends Factory
     public function definition(): array
     {
         return [
-            'step_quantity' => fake()->randomDigitNotZero(),
             'name' => fake()->words(3, true),
             'description' => fake()->text(),
             'project_service_type_id' => ProjectServiceType::all()->random()->id,

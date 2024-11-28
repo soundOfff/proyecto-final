@@ -61,5 +61,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ItemSeeder::class);
         $this->call(LineItemSeeder::class);
         $this->call(CreditNoteStatusSeeder::class);
+        $this->call(ActionTypeSeeder::class);
+        $this->call(MailTemplateLanguageSeeder::class);
+        $this->call(MailTemplateGroupSeeder::class);
+        $this->call(MailTemplateSeeder::class);
     }
 }

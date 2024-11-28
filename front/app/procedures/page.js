@@ -1,8 +1,7 @@
-import { Card } from "@mui/material";
-import Table from "./components/table";
+import { Card, Grid } from "@mui/material";
+import Index from ".";
 import { getAll as getAllProcedures } from "/actions/procedures";
 import { getAll as getAllActionTypes } from "/actions/action-types";
-import MDBox from "/components/MDBox";
 
 export const dynamic = "force-dynamic";
 
@@ -15,16 +14,15 @@ export default async function Procedures({ searchParams: { processId } }) {
   });
 
   const actionTypes = await getAllActionTypes();
-
   return (
     <Card>
-      <MDBox p={5}>
-        <Table
+      <Grid container spacing={4}>
+        <Index
           procedures={procedures}
           actionTypes={actionTypes}
           processId={processId}
         />
-      </MDBox>
+      </Grid>
     </Card>
   );
 }

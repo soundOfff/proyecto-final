@@ -54,6 +54,7 @@ class TaskController extends Controller
                 'partner',
                 'followers',
                 'taskable',
+                'procedure',
                 'reminders',
                 'actions',
                 'author',
@@ -327,8 +328,10 @@ class TaskController extends Controller
                 'actions',
                 'requiredFields',
                 'author',
-                'procedure.actions.type',
                 'partner',
+                'procedure.actions.type',
+                'procedure.outgoingPaths.toProcedure',
+                'procedure.incomingPaths.fromProcedure',
             ])
             ->find($task->id);
 

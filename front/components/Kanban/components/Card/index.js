@@ -55,6 +55,11 @@ export default function Card({ task, refetch, handleOpenShowModal, ...rest }) {
     refetch();
   };
 
+  const getInitials = (firstName) => {
+    const initials = firstName[0] || "";
+    return initials.toUpperCase();
+  };
+
   const renderMembers = assigneds.map((member, key) => {
     const imageAlt = `image-${key}`;
     const isExternalUrl =
@@ -116,6 +121,8 @@ export default function Card({ task, refetch, handleOpenShowModal, ...rest }) {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
+          flexWrap="wrap"
+          gap={2}
         >
           <MDBox display="flex">
             <MDBadge
@@ -181,7 +188,12 @@ export default function Card({ task, refetch, handleOpenShowModal, ...rest }) {
           <MDTypography variant="body2" color="text" mb={1}>
             #{milestone_order}
           </MDTypography>
-          <MDTypography variant="body2" color="text" mb={1}>
+          <MDTypography
+            variant="body2"
+            color="text"
+            mb={1}
+            sx={{ fontSize: { xs: "12px", md: "16px" } }}
+          >
             {name}
           </MDTypography>
           {progress > 0 && (
@@ -210,6 +222,9 @@ export default function Card({ task, refetch, handleOpenShowModal, ...rest }) {
                     variant="button"
                     fontWeight="regular"
                     color="text"
+                    sx={{
+                      fontSize: { xs: "10px", md: "16px" },
+                    }}
                   >
                     &nbsp;{filesCount}
                   </MDTypography>

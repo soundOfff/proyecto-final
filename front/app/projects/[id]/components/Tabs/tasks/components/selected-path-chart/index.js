@@ -8,26 +8,22 @@ import {
   ReactFlow,
   useNodesState,
   useEdgesState,
-  addEdge,
+  MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useCallback, useEffect, useState } from "react";
-import CustomNode from "./custom-node";
-import MDButton from "/components/MDButton";
-import NodeForm from "../node-form";
-import { store } from "/actions/procedures";
+import { useEffect, useState } from "react";
 import { show } from "/actions/processes";
-import { addProcedurePath } from "/actions/procedures";
+import CustomNode from "./nodes/custom-node";
+import MDButton from "/components/MDButton";
 
-const BLOCK = 350;
+const BLOCK = 450;
 
-export default function CreateChart({ processId }) {
+export default function SelectedPathChart({ processId = null, tasks = [] }) {
   const [refresher, setRefresher] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [process, setProcess] = useState(null);
 
-  // Fetch process data
   const fetchProcess = async () => {
     const process = await show(processId, {
       include: ["procedures.outgoingPaths"],
@@ -39,21 +35,7 @@ export default function CreateChart({ processId }) {
     fetchProcess();
   }, []);
 
-  const handleNodeSubmit = async (formData) => {
-    await store(formData);
-  };
-
-  const onConnect = useCallback(
-    async (params) => {
-      setEdges((eds) => addEdge(params, eds));
-      addProcedurePath({
-        from_procedure_id: params.source,
-        to_procedure_id: params.target,
-      });
-      await fetchProcess();
-    },
-    [setEdges]
-  );
+  const onConnect = () => {};
 
   const createNodesAndEdges = (process) => {
     const nodes = [];
@@ -64,14 +46,19 @@ export default function CreateChart({ processId }) {
 
     process.procedures.forEach((procedure) => {
       const isConditional = Boolean(procedure.isConditional);
-      const isFinal = procedure.outgoingPaths.length === 0;
+      const relatedTask = tasks.find(
+        (task) => task.procedure?.id === procedure.id
+      );
+      const isSelected = !isConditional && relatedTask;
+
       nodes.push({
         id: procedure.id.toString(),
         data: {
           ...procedure,
           processId: process.id,
-          isFinal,
           isConditional,
+          isSelected,
+          task: relatedTask,
         },
         position: {
           x: xPos,
@@ -90,6 +77,24 @@ export default function CreateChart({ processId }) {
             target: path.toProcedureId.toString(),
             sourceHandle: index === 0 ? "bellow" : "right",
             type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
+          });
+        } else if (path.fromProcedureId > path.toProcedureId) {
+          edges.push({
+            id: `e${path.fromProcedureId}-${path.toProcedureId}`,
+            source: path.fromProcedureId.toString(),
+            target: path.toProcedureId.toString(),
+            sourceHandle: "top",
+            type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
           });
         } else {
           edges.push({
@@ -97,10 +102,12 @@ export default function CreateChart({ processId }) {
             source: path.fromProcedureId.toString(),
             target: path.toProcedureId.toString(),
             type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 30,
+              height: 30,
+            },
           });
-        }
-        if (path.fromProcedureId > path.toProcedureId) {
-          return;
         }
         const currNode = nodes.find(
           (curr) => curr.id === path.fromProcedureId.toString()
@@ -109,8 +116,17 @@ export default function CreateChart({ processId }) {
           (node) => node.id === path.toProcedureId.toString()
         );
 
+        if (path.fromProcedureId > path.toProcedureId) {
+          currNode.data = {
+            ...currNode.data,
+            hasBackEdge: true,
+          };
+          return;
+        }
+
         nextNode.position.x = currNode.position.x + BLOCK;
-        nextNode.position.y = currNode.position.y + (BLOCK / 3) * index;
+        nextNode.position.y =
+          currNode.position.y + (BLOCK / 3) * (!currNode.hasBackEdge * index);
 
         if (currNode.data.isConditional) {
           currNode.position.y -= 4.8;
@@ -137,12 +153,6 @@ export default function CreateChart({ processId }) {
       sx={{ height: "100vh" }}
     >
       <MDButton onClick={() => setRefresher(!refresher)}>Refresh</MDButton>
-      <NodeForm
-        processId={processId}
-        onSubmit={handleNodeSubmit}
-        onNodeCreated={fetchProcess}
-      />
-
       <ReactFlow
         nodes={nodes}
         edges={edges}

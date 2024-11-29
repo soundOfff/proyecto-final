@@ -43,27 +43,8 @@ export default function Table({ rows }) {
       ),
     },
     {
-      id: "project",
-      Header: "Caso",
-      accessor: "project.name",
-      Cell: ({ row }) => {
-        return row.original.project ? (
-          <Link
-            href={`/projects/${row.original.project?.id}`}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            {row.original.project?.name}
-          </Link>
-        ) : null;
-      },
-    },
-    {
       Header: "Fecha",
       accessor: "date",
-    },
-    {
-      Header: "Fecha De Caducidad",
-      accessor: "dueDate",
     },
     {
       Header: "Proforma",
@@ -74,9 +55,8 @@ export default function Table({ rows }) {
         ) : null,
     },
     {
-      id: "serviceType",
-      Header: "Departamento",
-      accessor: "project.serviceType.label",
+      Header: "Fecha De Caducidad",
+      accessor: "dueDate",
     },
   ];
 

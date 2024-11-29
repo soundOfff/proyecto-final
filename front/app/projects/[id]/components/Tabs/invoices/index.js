@@ -29,7 +29,7 @@ export default function Invoices() {
       "filter[project_id]": project.id,
       ...invoiceDateFilter,
       ...invoiceSearchFilter,
-      include: ["project", "partner"],
+      include: ["project", "partner", "estimate"],
     }).then((data) => {
       setInvoices(data.data.invoices);
       setIsLoading(false);

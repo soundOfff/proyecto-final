@@ -19,6 +19,7 @@ class InvoiceResource extends JsonResource
             'number' => $this->number,
             'addedFrom' => $this->added_from,
             'adjustment' => $this->adjustment,
+            'estimateId' => $this->estimate_id,
             'adminNote' => $this->admin_note,
             'allowedPaymentModes' => $this->allowed_payment_modes,
             'billingCity' => $this->billing_city,

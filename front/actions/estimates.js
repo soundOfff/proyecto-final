@@ -53,7 +53,6 @@ export async function toInvoice(estimateId, params) {
 
   revalidatePath(`/invoices/${invoiceId}`);
   revalidatePath(`/estimates/${estimateId}`);
-  redirect(`/invoices/${invoiceId}`);
 }
 
 export async function getMaxId() {

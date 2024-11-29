@@ -5,13 +5,21 @@ import MDBox from "/components/MDBox";
 import moneyFormat from "/utils/moneyFormat";
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
-import { Tooltip } from "@mui/material";
+import { CircularProgress, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { destroy } from "/actions/estimates";
 import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
+import MDTypography from "/components/MDTypography";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import { useMaterialUIController, setSnackbar } from "/context";
+import { useState } from "react";
+import { toInvoice } from "/actions/estimates";
 
 export default function Table({ rows, projectId }) {
+  const [_, dispatch] = useMaterialUIController();
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedEstimate, setSelectedEstimate] = useState(null);
   const {
     setOpenDeleteConfirmation,
     errorSB,
@@ -23,6 +31,32 @@ export default function Table({ rows, projectId }) {
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
 
+  async function convertToInvoice(row) {
+    setSelectedEstimate(row.original.id);
+    try {
+      setIsLoading(true);
+      await toInvoice(row.original.id);
+      setIsLoading(false);
+      setSnackbar(dispatch, {
+        color: "success",
+        icon: "check",
+        title: "Proforma convertida a factura",
+        content: "La proforma ha sido convertida a factura",
+        bgWhite: true,
+      });
+      setSelectedEstimate(null);
+    } catch (error) {
+      setSnackbar(dispatch, {
+        color: "error",
+        icon: "warning",
+        title: "Error al convertir a factura",
+        content: error?.message,
+        bgWhite: true,
+      });
+      setIsLoading(false);
+      setSelectedEstimate(null);
+    }
+  }
   const columns = [
     {
       Header: "id",
@@ -59,19 +93,20 @@ export default function Table({ rows, projectId }) {
       ),
     },
     {
-      id: "project",
-      Header: "Caso",
-      accessor: "project.name",
-      Cell: ({ row }) => {
-        return row.original.project ? (
-          <Link
-            href={`/projects/${row.original.project?.id}`}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            {row.original.project?.name}
-          </Link>
-        ) : null;
-      },
+      id: "invoice",
+      Header: "Factura asociada",
+      accessor: "invoiceId",
+      Cell: ({ row }) => (
+        <Link
+          href={{
+            pathname: `/invoices/${row.original.invoiceId}`,
+            query: { source: `/projects/${projectId}?tab=estimates` },
+          }}
+          sx={{ cursor: "pointer", mx: "auto" }}
+        >
+          {row.original.invoiceId}
+        </Link>
+      ),
     },
     {
       Header: "Fecha",
@@ -82,32 +117,38 @@ export default function Table({ rows, projectId }) {
       accessor: "expiryDate",
     },
     {
-      Header: "Referencia #",
-      accessor: "referenceNo",
-    },
-    {
-      id: "serviceType",
-      Header: "Departamento",
-      accessor: "project.serviceType",
-      Cell: ({ row }) => row.original.project?.serviceType?.label,
-    },
-    {
       id: "actions",
       Header: "Acciones",
       disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex">
-          <Link
-            href={{
-              pathname: `/estimates/${row.original.id}/edit`,
-              query: { source: `/projects/${projectId}?tab=estimates` },
-            }}
-            sx={{ cursor: "pointer", color: "info" }}
-          >
-            <Tooltip title="Editar" placement="top">
-              <EditIcon fontSize="medium" color="warning" />
-            </Tooltip>
-          </Link>
+          <Tooltip title="Convertir a factura" placement="top">
+            {isLoading && row.original.id === selectedEstimate ? (
+              <CircularProgress size={24} color="dark" />
+            ) : (
+              !row.original.invoiceId && (
+                <PaymentsOutlinedIcon
+                  fontSize="medium"
+                  color="success"
+                  onClick={() => convertToInvoice(row)}
+                  sx={{ cursor: "pointer", mr: 2 }}
+                />
+              )
+            )}
+          </Tooltip>
+          {!row.original.invoiceId && (
+            <Link
+              href={{
+                pathname: `/estimates/${row.original.id}/edit`,
+                query: { source: `/projects/${projectId}?tab=estimates` },
+              }}
+              sx={{ cursor: "pointer" }}
+            >
+              <Tooltip title="Editar" placement="top">
+                <EditIcon fontSize="medium" color="info" />
+              </Tooltip>
+            </Link>
+          )}
           <Tooltip title="Eliminar">
             <DeleteIcon
               color="error"
@@ -115,7 +156,7 @@ export default function Table({ rows, projectId }) {
               onClick={() => {
                 handleDelete(row.original.id);
               }}
-              sx={{ ml: 3, cursor: "pointer" }}
+              sx={{ ml: 2, cursor: "pointer" }}
             />
           </Tooltip>
         </MDBox>

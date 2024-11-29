@@ -39,7 +39,7 @@ class ProcessFactory extends Factory
         return $this->afterCreating(function (Process $process) {
             Procedure::factory()
                 ->for($process)
-                ->count($process->step_quantity)
+                ->count(5)
                 ->sequence(
                     fn (Sequence $sequence) => ['step_number' => $sequence->index + 1]
                 )

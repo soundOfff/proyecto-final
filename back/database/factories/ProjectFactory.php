@@ -94,9 +94,9 @@ class ProjectFactory extends Factory
                     'project_billing_type_id' => ProjectBillingType::all()->random()->id,
                     'billable_partner_id' => Partner::all()->random()->id,
                     'project_service_type_id' => ProjectServiceType::all()->random()->id,
-                    'process_id' => Process::all()->random()->id,
                     'court_id' => Court::all()->random()->id,
                     'responsible_person_id' => Staff::all()->random()->id,
+                    'process_id' => Process::all()->random()->id,
                 ]
             )
         );

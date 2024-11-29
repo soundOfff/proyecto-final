@@ -52,8 +52,9 @@ export default function Content({ refetch }) {
     setShowConfirmModal(true);
   };
 
-  const shouldShowNextStepForm =
-    task && task.procedure?.isConditional && task.status?.name === DONE_STATUS;
+  const shouldShowNextStepForm = Boolean(
+    task && task.procedure?.isConditional && task.status?.name === DONE_STATUS
+  );
 
   return (
     <Grid item xs={8} wrap="nowrap">

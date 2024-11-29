@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Exception;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Procedure extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'id',
         'process_id',

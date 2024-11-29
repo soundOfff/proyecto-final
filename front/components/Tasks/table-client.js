@@ -50,7 +50,6 @@ export default function Table({ project }) {
     handleCloseModal: handleCloseShowModal,
     isSaving,
     handleCompleteTask,
-    getSelectedFork,
     stopTimer,
     startTimer,
     handleSaveTask,
@@ -345,7 +344,6 @@ export default function Table({ project }) {
                   markAsCompleted: handleCompleteTask,
                   stopTimer,
                   startTimer,
-                  getSelectedFork,
                   handleSaveTask,
                   closeShowModal: handleCloseShowModal,
                 }}

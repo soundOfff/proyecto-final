@@ -180,7 +180,7 @@ class ProjectController extends Controller
                 'staffs',
                 'billablePartner',
                 'billingType',
-                'serviceType.processes.forks',
+                'serviceType',
                 'files',
                 'status',
                 'members',

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
  */
-class ProjectMemberFactory extends Factory
+class TagFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,6 +16,8 @@ class ProjectMemberFactory extends Factory
      */
     public function definition(): array
     {
-        return [];
+        return [
+            'name' => fake()->word(),
+        ];
     }
 }

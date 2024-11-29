@@ -4,8 +4,7 @@ import Image from "next/image";
 import { Grid } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import logoBlack from "/assets/logo/Black/asset-27.svg";
-import logoWhite from "/assets/logo/White/asset-29.svg";
+import logo from "/assets/logo/brandfactors-logo.png";
 import { useMaterialUIController } from "/context";
 import Link from "next/link";
 
@@ -17,9 +16,9 @@ export default function Header({ estimate }) {
     <MDBox p={3}>
       <Grid container justifyContent="space-between">
         <Grid item xs={6}>
-          <MDBox width="50%" p={1} mb={6}>
+          <MDBox width="80%" p={1} mb={6}>
             <Image
-              src={darkMode ? logoWhite : logoBlack}
+              src={logo}
               alt="Logo"
               style={{
                 width: "100%",

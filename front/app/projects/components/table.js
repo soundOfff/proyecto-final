@@ -38,7 +38,6 @@ export default function Table({ rows, meta }) {
             "billingType",
             "serviceType",
             "members",
-            "responsiblePerson",
             "partners",
             "proposal",
           ],

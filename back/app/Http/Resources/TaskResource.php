@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
 
 class TaskResource extends JsonResource
 {
@@ -53,7 +52,7 @@ class TaskResource extends JsonResource
             'dependencies' => self::collection($this->whenLoaded('dependencies')),
             'requiredFields' => TaskRequiredFieldResource::collection($this->whenLoaded('requiredFields')),
             'author' => StaffResource::make($this->whenLoaded('author')),
-            'procedure' => $this->procedure ? ProcedureResource::make($this->whenLoaded('procedure')->load('process.forks')) : null,
+            'procedure' => $this->procedure ? ProcedureResource::make($this->whenLoaded('procedure')) : null,
             'isFinalTask' => $this->isFinalTask(),
             'isBlocked' => $this->is_blocked,
             'filesCount' => $this->files_count,

@@ -19,17 +19,13 @@ class ProcessResource extends JsonResource
             'id' => $this->id,
             'projectId' => $this->project_id,
             'projectServiceTypeId' => $this->project_service_type_id,
-            'stepQuantity' => $this->step_quantity,
-            'realStepQuantity' => $this->procedures->count(),
             'name' => $this->name,
             'description' => $this->description,
+            'stepQuantity' => $this->step_quantity,
             'createdAt' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
             'projectServiceType' => ProjectServiceTypeResource::make($this->whenLoaded('projectServiceType')),
             'procedures' => ProcedureResource::collection($this->whenLoaded('procedures')),
             'author' => StaffResource::make($this->whenLoaded('author')),
-            'forks' => self::collection($this->whenLoaded('forks')),
-            'allForks' => self::collection($this->whenLoaded('allForks')),
-            'forkedFrom' => self::make($this->whenLoaded('forkedFrom')),
             'toNotify' => StaffResource::collection($this->whenLoaded('toNotify')),
         ];
     }

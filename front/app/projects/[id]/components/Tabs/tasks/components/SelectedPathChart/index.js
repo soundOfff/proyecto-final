@@ -12,9 +12,9 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useEffect, useState } from "react";
-import CustomNode from "./custom-node";
-import MDButton from "/components/MDButton";
 import { show } from "/actions/processes";
+import CustomNode from "./Nodes/custom-node";
+import MDButton from "/components/MDButton";
 
 const BLOCK = 450;
 
@@ -24,7 +24,6 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [process, setProcess] = useState(null);
 
-  // Fetch process data
   const fetchProcess = async () => {
     const process = await show(processId, {
       include: ["procedures.outgoingPaths"],

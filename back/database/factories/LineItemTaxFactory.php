@@ -2,12 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\LineItemType;
+use App\Models\Tax;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
  */
-class JurisdictionFactory extends Factory
+class LineItemTaxFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,8 +18,13 @@ class JurisdictionFactory extends Factory
      */
     public function definition(): array
     {
+        $tax = Tax::all()->random();
+
         return [
-            'name' => fake()->city(),
+            'line_item_taxable_id' => fake()->randomDigitNotNull(),
+            'line_item_taxable_type' => LineItemType::class,
+            'name' => $tax->name,
+            'rate' => $tax->rate,
         ];
     }
 }

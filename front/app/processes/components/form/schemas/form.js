@@ -25,20 +25,10 @@ const form = {
       name: "description",
       label: "Descripción",
     },
-    stepQuantity: {
-      name: "step_quantity",
-      type: "number",
-      label: "Cantidad de Pasos",
-      errorMsg: "La Cantidad de Pasos es obligatoria",
-    },
     projectServiceType: {
       name: "project_service_type_id",
       label: "Departamento",
       errorMsg: "El Tipo de Caso es obligatorio",
-    },
-    forks: {
-      name: "forks",
-      label: "Subprocesos",
     },
     staffs: {
       name: "staffs",

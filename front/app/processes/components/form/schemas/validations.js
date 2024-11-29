@@ -15,27 +15,15 @@ Coded by www.creative-tim.com
 
 import * as Yup from "yup";
 import checkout from "./form";
-import { MAX_AMOUNT } from "/utils/constants/maxInputNumber";
 
 const {
-  formField: {
-    description,
-    name,
-    stepQuantity,
-    projectServiceType,
-    forks,
-    staffs,
-  },
+  formField: { description, name, projectServiceType, staffs },
 } = checkout;
 
 const validations = Yup.object().shape({
   [name.name]: Yup.string().required(name.errorMsg),
-  [stepQuantity.name]: Yup.number()
-    .max(MAX_AMOUNT, `El valor no puede ser mayor a ${MAX_AMOUNT}`)
-    .required(stepQuantity.errorMsg),
   [description.name]: Yup.string(),
   [projectServiceType.name]: Yup.number().required(projectServiceType.errorMsg),
-  [forks.name]: Yup.array(),
   [staffs.name]: Yup.array(),
 });
 

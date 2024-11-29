@@ -113,13 +113,9 @@ export default function ConditionalChart() {
 
         // Connect the final task in the current group to the first task of the next group
         const lastTask = group[group.length - 1];
-        console.log(lastTask.isFinalTask);
-        console.log(index);
-        console.log(allGroups.length);
 
         if (lastTask.isFinalTask && index < allGroups.length - 1) {
           const nextGroupFirstTask = allGroups[index + 1][0];
-          console.log(nextGroupFirstTask);
           groupEdges.push({
             id: `e${lastTask.id}-${nextGroupFirstTask.id}`,
             source: lastTask.id.toString(),
@@ -130,8 +126,6 @@ export default function ConditionalChart() {
         return groupEdges;
       }
     );
-
-    console.log(edges);
 
     setNodes(nodes);
     setEdges(edges);

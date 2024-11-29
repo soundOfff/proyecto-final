@@ -23,8 +23,6 @@ class ProcessController extends Controller
             'procedures.responsible',
             'procedures.outgoingPaths',
             'procedures.incomingPaths',
-            'forks',
-            'allForks',
             'author',
             'toNotify',
         ])
@@ -36,7 +34,6 @@ class ProcessController extends Controller
             'name',
             'department',
             'description',
-            AllowedSort::field('stepQuantity', 'step_quantity'),
             AllowedSort::field('createdAt', 'created_at'),
             AllowedSort::custom('projectServiceType', new ProcessProjectServiceTypeSort(), 'label'),
             AllowedSort::custom('author', new ProcessAuthorSort(), 'first_name'),
@@ -58,8 +55,6 @@ class ProcessController extends Controller
             'procedures.responsible',
             'procedures.outgoingPaths',
             'procedures.incomingPaths',
-            'forks',
-            'allForks',
             'author',
             'toNotify',
         ])
@@ -74,11 +69,9 @@ class ProcessController extends Controller
     public function store(ProcessRequest $request)
     {
         $newProcess = $request->validated();
-        $forkIds = array_column($newProcess['forks'], 'id');
         $staffs = array_column($newProcess['staffs'], 'id');
 
         $process = Process::create($newProcess);
-        $process->forks()->sync($forkIds);
         $process->toNotify()->sync($staffs);
 
         return response()->json(null, 201);
@@ -87,11 +80,9 @@ class ProcessController extends Controller
     public function update(ProcessRequest $request, Process $process)
     {
         $updatedProcess = $request->validated();
-        $forkIds = array_column($updatedProcess['forks'], 'id');
         $staffs = array_column($updatedProcess['staffs'], 'id');
 
         $process->update($updatedProcess);
-        $process->forks()->sync($forkIds);
         $process->toNotify()->sync($staffs);
 
         return response()->json(null, 204);

@@ -67,22 +67,20 @@ export async function update(id, data) {
   revalidatePath("/projects");
 }
 
-export async function attachTasks(params) {
-  const { projectId, staffId, procedureId } = params;
-
+export async function attachTasks(data) {
   const url = new URL(
-    `${process.env.API_URL}/projects/${projectId}/tasks-attach`
+    `${process.env.API_URL}/projects/${data.project_id}/tasks-attach`
   );
 
-  const data = await customFetch(url, {
+  const res = await customFetch(url, {
     method: "POST",
-    body: JSON.stringify({ staff_id: staffId, procedure_id: procedureId }),
+    body: JSON.stringify(data),
   });
 
   revalidatePath("/projects");
   revalidatePath("/tasks");
 
-  return data;
+  return res;
 }
 
 export async function updateMembers(id, data) {

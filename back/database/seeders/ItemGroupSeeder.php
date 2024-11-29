@@ -15,17 +15,16 @@ class ItemGroupSeeder extends Seeder
     public function run()
     {
         $itemGroups = [
-            ['id' => 14, 'name' => 'SA & Fundaciones'],
-            ['id' => 15, 'name' => 'Corporativo'],
-            ['id' => 16, 'name' => 'Administrativo'],
-            ['id' => 17, 'name' => 'Veló Recovery'],
-            ['id' => 18, 'name' => 'Judicial'],
-            ['id' => 19, 'name' => 'Propiedad Intelectual'],
-            ['id' => 20, 'name' => 'Migración'],
-            ['id' => 21, 'name' => 'Laboral'],
-            ['id' => 22, 'name' => 'Familia'],
-            ['id' => 23, 'name' => 'Penal'],
-            ['id' => 24, 'name' => 'Tecnología e Innovación'],
+            ['id' => 1, 'name' => 'Civil'],
+            ['id' =>  2, 'name' => 'Corporativo'],
+            ['id' =>  3, 'name' => 'Administrativo'],
+            ['id' =>  4, 'name' => 'Judicial'],
+            ['id' =>  5, 'name' => 'Propiedad Intelectual'],
+            ['id' =>  6, 'name' => 'Migración'],
+            ['id' =>  7, 'name' => 'Laboral'],
+            ['id' =>  8, 'name' => 'Familia'],
+            ['id' =>  9, 'name' => 'Penal'],
+            ['id' =>  10, 'name' => 'Tecnología e Innovación'],
         ];
 
         foreach ($itemGroups as $itemGroup) {

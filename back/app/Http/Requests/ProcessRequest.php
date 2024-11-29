@@ -26,9 +26,6 @@ class ProcessRequest extends FormRequest
             'author_id' => 'sometimes|numeric|exists:staff,id',
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'step_quantity' => 'required|numeric',
-            'forks' => 'nullable|array',
-            'forks.*.id' => 'required|numeric|exists:processes,id',
             'staffs' => 'nullable|array',
             'staffs.*.id' => 'required|numeric|exists:staff,id',
         ];

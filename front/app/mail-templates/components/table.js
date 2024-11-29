@@ -134,7 +134,7 @@ export default function Table({ groups, langs }) {
             size="small"
             onClick={openMenu}
           >
-            {langs.find((lang) => lang.code === selectedLang).name}
+            {langs.find((lang) => lang.code === selectedLang)?.name}
             <Icon>keyboard_arrow_down</Icon>
           </MDButton>
           {renderMenu()}

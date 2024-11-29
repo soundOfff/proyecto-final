@@ -50,21 +50,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
     setTask(null);
   };
 
-  const getSelectedFork = (children = []) => {
-    // Check if the task has a fork selected
-    let selectedFork = null;
-    children.forEach((child) => {
-      if (
-        tasks.some(
-          (task) => task.procedure && task.procedure.process.id === child.id
-        )
-      ) {
-        selectedFork = child;
-      }
-    });
-    return selectedFork;
-  };
-
   const stopTimer = async (timerId, note = "") => {
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
     await updateTimer(timerId, { end_time: date, note });
@@ -89,7 +74,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
       task_status_id: statuses.find((status) => status.name === DONE_STATUS)
         ?.id,
     });
-    setOpenModal(false);
   };
 
   const saveTask = async (taskId, data) => {
@@ -138,7 +122,6 @@ export default function useTaskShow({ tasks, dispatch, refetch = () => {} }) {
     handleCloseModal,
     setTask,
     handleCompleteTask,
-    getSelectedFork,
     stopTimer,
     startTimer,
     handleSaveTask,

@@ -3,23 +3,32 @@ import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { useState } from "react";
 import MDBox from "/components/MDBox";
 import MDButton from "/components/MDButton";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function NodeForm({
   node = null,
   processId,
   onSubmit,
   onNodeCreated,
-  totalProcedures,
+  totalNodes,
 }) {
+  const { data: session } = useSession();
   const [form, setForm] = useState({
     name: node?.name || "",
     isConditional: node?.isConditional || false,
-    stepNumber: totalProcedures + 1,
+    stepNumber: totalNodes ?? 1,
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (totalNodes) {
+      setForm({ ...form, stepNumber: totalNodes + 1 });
+    }
+  }, [totalNodes]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,14 +36,14 @@ export default function NodeForm({
       name: form.name,
       step_number: form.stepNumber,
       is_conditional: form.isConditional,
-      author_id: 1,
+      author_id: session?.staff?.id,
       process_id: processId,
     });
-    onNodeCreated();
+    await onNodeCreated();
     setForm({
       name: "",
       isConditional: false,
-      stepNumber: totalProcedures + 1,
+      stepNumber: totalNodes + 1,
     });
   };
 
@@ -58,7 +67,7 @@ export default function NodeForm({
           }}
         />
         <TextField
-          label="Numero de paso"
+          label="Número de paso"
           name="stepNumber"
           value={form.stepNumber}
           onChange={handleChange}

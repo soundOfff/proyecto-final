@@ -29,9 +29,10 @@ export default function ProcedureNode({ data }) {
           sx={{
             width: "200px",
             maxHeight: "80px",
-            whitespace: "nowrap",
             overflow: "hidden",
-            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 3,
           }}
         >
           {data.name}

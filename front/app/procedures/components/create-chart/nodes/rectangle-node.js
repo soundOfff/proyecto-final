@@ -27,6 +27,10 @@ export default function RectangleNode({ data }) {
           sx={{
             width: "200px",
             maxHeight: "80px",
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 3,
           }}
         >
           {data.name}

@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectStatusSeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(TagSeeder::class);
+        $this->call(ProjectServiceTypeSeeder::class);
+        $this->call(ProcessSeeder::class);
         $this->call(ProvinceSeeder::class);
         $this->call(DistrictSeeder::class);
         $this->call(JurisdictionSeeder::class);
@@ -32,10 +34,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PartnerSeeder::class);
         $this->call(ContactSeeder::class);
         $this->call(ProjectBillingTypeSeeder::class);
-        $this->call(ProjectServiceTypeSeeder::class);
         $this->call(ProjectStageTypeSeeder::class);
         $this->call(ProcedureStatusSeeder::class);
-        $this->call(ProcessSeeder::class);
         $this->call(ProjectSeeder::class);
         $this->call(ExpenseCategorySeeder::class);
         $this->call(CurrencySeeder::class);

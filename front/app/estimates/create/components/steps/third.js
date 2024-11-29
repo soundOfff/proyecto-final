@@ -14,6 +14,7 @@ import ItemTable from "/components/ItemTable";
 import ItemForm from "/components/ItemForm";
 import ItemTotals from "/components/ItemTotals";
 import AttachExpenses from "/components/AttachExpenses";
+import AttachTasks from "/components/AttachTasks";
 
 export default function Third({
   formData,
@@ -120,6 +121,9 @@ export default function Third({
       </Grid>
       <Grid item xs={12}>
         <AttachExpenses formData={formData} projectId={values[project.name]} />
+      </Grid>
+      <Grid item xs={12}>
+        <AttachTasks formData={formData} projectId={values[project.name]} />
       </Grid>
     </Grid>
   );

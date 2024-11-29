@@ -37,9 +37,9 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'canChangeStatus' => $this->can_change_status,
             'is_file_needed' => $this->is_file_needed,
-            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'total_time' => $this->getTotalTime(),
             'parsed_total_time' => $this->getParsedTotalTime(),
+            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'timers' => TaskTimerResource::collection($this->whenLoaded('timers')),
             'priority' => TaskPriorityResource::make($this->whenLoaded('priority')),
             'status' => TaskStatusResource::make($this->whenLoaded('status')),
@@ -67,6 +67,7 @@ class TaskResource extends JsonResource
             }),
             'actions' => ActionResource::collection($this->whenLoaded('actions')),
             'files' => FileResource::collection($this->whenLoaded('files')),
+            'cost' => $this->when(request()->has('includeCost'), fn () => $this->calculateCost()),
         ];
     }
 }

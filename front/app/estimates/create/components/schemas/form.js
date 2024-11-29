@@ -176,6 +176,9 @@ const form = {
     expenses: {
       name: "expenses",
     },
+    tasks: {
+      name: "tasks",
+    },
   },
 };
 

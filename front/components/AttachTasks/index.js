@@ -6,33 +6,33 @@ import MDButton from "/components/MDButton";
 import Table from "./components/table";
 
 import { useEffect, useState } from "react";
-import { getAll as getAllExpenses } from "/actions/expenses";
+import { getAll as getAllTasks } from "/actions/tasks";
+import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
 
-export default function AttachExpenses({ formData, projectId }) {
+export default function AttachTasks({ formData, projectId }) {
   const {
     values: externalValues,
     formField,
     setFieldValue: setFieldValueExternal,
   } = formData;
   const { items } = formField;
-  const [expenses, setExpenses] = useState([]);
-  const [selectedExpenses, setSelectedExpenses] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState([]);
 
   const handleAddItems = () => {
-    const mappedExpenses = selectedExpenses
-      .map((expense) => {
+    const mappedTasks = selectedTask
+      .map((task) => {
         if (
           externalValues["items"].some(
-            (item) =>
-              item.description === (expense.name || `Gasto #${expense.id}`)
+            (item) => item.description === (task.name || `Tarea #${task.id}`)
           )
         ) {
           return null;
         }
         return {
-          description: expense.name ?? `Gasto #${expense.id}`,
-          rate: expense.amount,
-          long_description: expense.note,
+          description: task.name ?? `Tarea #${task.id}`,
+          rate: parseFloat(task.cost ?? 0),
+          long_description: task.description,
           line_item_type_id: "",
           quantity: 1,
           taxes: [],
@@ -43,17 +43,18 @@ export default function AttachExpenses({ formData, projectId }) {
       .filter(Boolean);
     setFieldValueExternal(items.name, [
       ...externalValues.items,
-      ...mappedExpenses,
+      ...mappedTasks,
     ]);
   };
 
   useEffect(() => {
     const filters = {
-      "filter[is_generic]": true,
-      "filter[project_id]": projectId,
+      "filter[taskable_id]": projectId,
+      "filter[taskable_type]": PROJECT_TYPE,
+      includeCost: true,
     };
-    getAllExpenses(filters).then((response) => {
-      setExpenses(response.data.expenses);
+    getAllTasks(filters).then((response) => {
+      setTasks(response.data.tasks);
     });
   }, [projectId]);
 
@@ -67,13 +68,13 @@ export default function AttachExpenses({ formData, projectId }) {
         alignItems="center"
       >
         <MDTypography variant="h5" fontWeight="medium">
-          Agregar Gastos
+          Agregar Tareas
         </MDTypography>
         <MDButton
           onClick={handleAddItems}
           type="button"
           size="small"
-          disabled={expenses.length === 0}
+          disabled={tasks.length === 0}
           color="success"
           sx={{ mt: 1.5 }}
         >
@@ -81,9 +82,9 @@ export default function AttachExpenses({ formData, projectId }) {
         </MDButton>
       </MDBox>
       <Table
-        rows={expenses}
+        rows={tasks}
         formData={formData}
-        setSelectedExpenses={setSelectedExpenses}
+        setSelectedTasks={setSelectedTask}
       />
     </MDBox>
   );

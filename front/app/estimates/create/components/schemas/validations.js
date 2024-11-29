@@ -41,6 +41,7 @@ const {
     terms,
     items,
     expenses,
+    tasks,
   },
 } = checkout;
 
@@ -101,6 +102,7 @@ const validations = [
       )
       .min(1, "Debe agregar al menos un item"),
     [expenses.name]: Yup.array(),
+    [tasks.name]: Yup.array(),
   }),
 ];
 export default validations;

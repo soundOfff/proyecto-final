@@ -17,9 +17,9 @@ class PartnerProjectRole extends Model
 
     public const PLAINTIFF = 2;
 
-    public const RESPONSIBLE_PERSON = 3;
+    public const GUARANTOR = 3;
 
-    public const GUARANTOR = 4;
+    public const RESPONSIBLE_PERSON = 4;
 
     public function partnerProject(): HasMany
     {

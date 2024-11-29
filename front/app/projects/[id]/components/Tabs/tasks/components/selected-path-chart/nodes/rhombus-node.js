@@ -39,7 +39,7 @@ export default function RhombusNode({ data }) {
         sx={{ transform: "rotate(-45deg)", textAlign: "center" }}
       >
         <MDTypography
-          variant="body2"
+          variant="caption"
           color="light"
           sx={{
             maxWidth: "150px",

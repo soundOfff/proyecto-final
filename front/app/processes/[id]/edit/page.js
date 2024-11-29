@@ -6,7 +6,7 @@ import { select as selectStaff } from "/actions/staffs";
 export default async function CreateProcess({ params: { id } }) {
   const projectServiceTypes = await getAllProjectServiceTypes();
   const process = await show(id, {
-    include: ["projectServiceType", "forks", "toNotify"],
+    include: ["projectServiceType", "toNotify"],
   });
   let {
     data: { processes },

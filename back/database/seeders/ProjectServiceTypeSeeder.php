@@ -17,10 +17,9 @@ class ProjectServiceTypeSeeder extends Seeder
         $serviceTypes = [
             ['id' => 1, 'name' => 'sa_foundations', 'label' => 'SA & Fundaciones'],
             ['id' => 2, 'name' => 'administrative', 'label' => 'Administrativo'],
-            ['id' => 3, 'name' => 'velo_recovery', 'label' => 'Velo Recovery'],
-            ['id' => 4, 'name' => 'judicial', 'label' => 'Judicial'],
-            ['id' => 5, 'name' => 'corporate', 'label' => 'Corporativo'],
-            ['id' => 6, 'name' => 'labor', 'label' => 'Laboral'],
+            ['id' => 3, 'name' => 'judicial', 'label' => 'Judicial'],
+            ['id' => 4, 'name' => 'corporate', 'label' => 'Corporativo'],
+            ['id' => 5, 'name' => 'labor', 'label' => 'Laboral'],
         ];
 
         foreach ($serviceTypes as $serviceType) {

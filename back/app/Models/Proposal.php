@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,6 +14,8 @@ use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 
 class Proposal extends Model
 {
+    use HasFactory;
+
     public static $SPANISH_CLASS_NAME = 'proforma';
 
     protected $fillable = [

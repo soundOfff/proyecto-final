@@ -156,8 +156,8 @@ class TaskController extends Controller
         $tags = isset($newTask['tags']) ? $newTask['tags'] : null;
         $comments = isset($newTask['comments']) ? $newTask['comments'] : null;
         $checklistItems = isset($newTask['checklist_items']) ? $newTask['checklist_items'] : null;
-        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : [];
-        $followers = isset($newTask['followers']) ? $newTask['followers'] : [];
+        $assigneds = isset($newTask['assigneds']) ? $newTask['assigneds'] : null;
+        $followers = isset($newTask['followers']) ? $newTask['followers'] : null;
         $reminders = isset($newTask['reminders']) ? $newTask['reminders'] : null;
         $requiredFields = isset($newTask['requiredFields']) ? $newTask['requiredFields'] : null;
 
@@ -233,11 +233,19 @@ class TaskController extends Controller
             $task->dependencies()->sync($dependencyIds);
         }
 
-        $assignedIds = array_column($assigneds, 'id');
-        $task->assigneds()->sync($assignedIds);
+        if ($assigneds) {
+            $assignedIds = array_column($assigneds, 'id');
+            $task->assigneds()->sync($assignedIds);
+        } elseif ($assigneds === []) {
+            $task->assigneds()->detach();
+        }
 
-        $followerIds = array_column($followers, 'id');
-        $task->followers()->sync($followerIds);
+        if ($followers) {
+            $followerIds = array_column($followers, 'id');
+            $task->followers()->sync($followerIds);
+        } elseif ($followers === []) {
+            $task->followers()->detach();
+        }
 
         if (isset($newTask['task_status_id']) && $newTask['task_status_id'] == TaskStatus::COMPLETED && $task->isFinalTask()) {
             $staffs = Staff::whereIn(
@@ -249,14 +257,16 @@ class TaskController extends Controller
                 )
             )->with('devices')->get();
             foreach ($staffs as $staff) {
-                $this->notificationService->sendSlackNotification(
-                    staffId: $staff->id,
-                    header: 'Tarea Completada',
-                    body: "La tarea \"$task->name\" ha sido completada, puede elegir el siguiente proceso",
-                    url: "/tasks?taskId={$task->id}",
-                    modelId: $task->id,
-                    modelType: Task::class
-                );
+                if ($staff->slackWorkspace) {
+                    $this->notificationService->sendSlackNotification(
+                        staffId: $staff->id,
+                        header: 'Tarea Completada',
+                        body: "La tarea \"$task->name\" ha sido completada, puede elegir el siguiente proceso",
+                        url: "/tasks?taskId={$task->id}",
+                        modelId: $task->id,
+                        modelType: Task::class
+                    );
+                }
                 foreach ($staff->devices as $device) {
                     $taskName = isset($newTask['name']) ? $newTask['name'] : $task->name;
                     $this->notificationService->sendWebPushNotification(

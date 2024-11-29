@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,7 @@ class ProjectNoteFactory extends Factory
     {
         return [
             'content' => fake()->text(),
+            'staff_id' => Staff::all()->random()->id,
         ];
     }
 }

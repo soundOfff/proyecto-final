@@ -7,7 +7,6 @@ import Table from "./components/table";
 
 import { useEffect, useState } from "react";
 import { getAll as getAllExpenses } from "/actions/expenses";
-import moment from "moment";
 
 export default function AttachExpenses({ formData, projectId }) {
   const {

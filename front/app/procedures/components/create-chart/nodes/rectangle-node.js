@@ -5,7 +5,7 @@ import { Handle, Position } from "@xyflow/react";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 
-export default function ProcedureNode({ data }) {
+export default function RectangleNode({ data }) {
   return (
     <MDBox
       sx={(_) => ({
@@ -15,11 +15,10 @@ export default function ProcedureNode({ data }) {
         borderColor: "black",
         borderRadius: "10px",
       })}
-      bgColor={data.isSelected ? "success" : "gray"}
     >
       <Handle type="target" position={Position.Left} />
-      {data?.hasBackEdge && (
-        <Handle type="source" position={Position.Top} key="top" index="top" />
+      {data.hasBackEdge && (
+        <Handle type="source" id="top" key="top" position={Position.Top} />
       )}
       <MDBox display="block">
         <MDTypography
@@ -28,12 +27,16 @@ export default function ProcedureNode({ data }) {
           sx={{
             width: "200px",
             maxHeight: "80px",
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 3,
           }}
         >
           {data.name}
         </MDTypography>
       </MDBox>
-      <Handle type="source" position={Position.Right} />
+      <Handle type="source" id="right" key="right" position={Position.Right} />
     </MDBox>
   );
 }

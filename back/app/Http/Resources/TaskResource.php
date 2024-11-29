@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
 
 class TaskResource extends JsonResource
 {
@@ -38,9 +37,9 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'canChangeStatus' => $this->can_change_status,
             'is_file_needed' => $this->is_file_needed,
-            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'total_time' => $this->getTotalTime(),
             'parsed_total_time' => $this->getParsedTotalTime(),
+            'partner' => PartnerResource::make($this->whenLoaded('partner')),
             'timers' => TaskTimerResource::collection($this->whenLoaded('timers')),
             'priority' => TaskPriorityResource::make($this->whenLoaded('priority')),
             'status' => TaskStatusResource::make($this->whenLoaded('status')),
@@ -53,7 +52,7 @@ class TaskResource extends JsonResource
             'dependencies' => self::collection($this->whenLoaded('dependencies')),
             'requiredFields' => TaskRequiredFieldResource::collection($this->whenLoaded('requiredFields')),
             'author' => StaffResource::make($this->whenLoaded('author')),
-            'procedure' => $this->procedure ? ProcedureResource::make($this->whenLoaded('procedure')->load('process.forks')) : null,
+            'procedure' => $this->procedure ? ProcedureResource::make($this->whenLoaded('procedure')) : null,
             'isFinalTask' => $this->isFinalTask(),
             'isBlocked' => $this->is_blocked,
             'filesCount' => $this->files_count,
@@ -68,6 +67,7 @@ class TaskResource extends JsonResource
             }),
             'actions' => ActionResource::collection($this->whenLoaded('actions')),
             'files' => FileResource::collection($this->whenLoaded('files')),
+            'cost' => $this->when(request()->has('includeCost'), fn () => $this->calculateCost()),
         ];
     }
 }

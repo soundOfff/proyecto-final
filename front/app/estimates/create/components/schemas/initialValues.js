@@ -46,6 +46,7 @@ const {
     unit,
     taxes,
     expenses,
+    tasks,
   },
 } = checkout;
 
@@ -75,6 +76,7 @@ const initialValues = {
   [unit.name]: "Cantidad",
   [taxes.name]: [],
   [expenses.name]: [],
+  [tasks.name]: [],
 };
 
 export default initialValues;

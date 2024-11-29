@@ -15,7 +15,7 @@ class LawFirmSeeder extends Seeder
     public function run()
     {
         $lawFirms = [
-            ['id' => 1, 'name' => 'Velo Legal'],
+            ['id' => 1, 'name' => 'Law Firm 1'],
         ];
         foreach ($lawFirms as $lawFirm) {
             LawFirm::updateOrCreate(['id' => $lawFirm['id']], $lawFirm);

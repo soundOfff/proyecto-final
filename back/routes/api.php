@@ -162,7 +162,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/tasks-select', [TaskController::class, 'select']);
     Route::post('/tasks', [TaskController::class, 'store']);
-    Route::get('/tasks/{task}', [TaskController::class, 'show']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('/tasks-delete-many', [TaskController::class, 'destroyMany']);
@@ -325,6 +324,7 @@ Route::delete('/processes/{process}', [ProcessController::class, 'destroy']);
 
 Route::post('/projects/{project}/tasks-attach', [ProjectController::class, 'attachTasks']);
 Route::get('/tasks', [TaskController::class, 'index']);
+Route::get('/tasks/{task}', [TaskController::class, 'show']);
 
 Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);

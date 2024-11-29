@@ -8,16 +8,11 @@ import { Divider, Grid, Table, TableBody, TableRow } from "@mui/material";
 import moneyFormat from "/utils/moneyFormat";
 import { useDataProvider } from "/providers/DataProvider";
 import { parseProjectDescription } from "/utils/parseProjectDescription";
-import SelectedProcesses from "/components/Tasks/selected-processes";
 import Link from "next/link";
-import Transactions from "/pagesComponents/pages/account/billing/components/Transactions";
 import Transaction from "/pagesComponents/pages/account/billing/components/Transaction";
-import Icon from "@mui/material/Icon";
 import { useState } from "react";
 import Modal from "/components/Modal";
 import ModalContent from "./modal/content";
-
-
 
 const headers = [
   {
@@ -63,11 +58,10 @@ export default function Details() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInovoiceState, setModalInvoiceState] = useState(0);
 
-
-  const handleModalOpen = (state) =>{
+  const handleModalOpen = (state) => {
     setIsModalOpen(true);
     setModalInvoiceState(state);
-  }
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -196,25 +190,19 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-              <MDBox
-                onClick = {() => (handleModalOpen(2))}
-              >{isModalOpen &&(
-                  <Modal
-                    height="60%"
-                    open={open}
-                    onClose={handleCloseModal}
-                >
+            <MDBox onClick={() => handleModalOpen(2)}>
+              {isModalOpen && (
+                <Modal height="60%" open={open} onClose={handleCloseModal}>
                   <ModalContent state={modalInovoiceState} />
                 </Modal>
-                )}
-                <Transaction
-                  
-                  color="dark"
-                  icon="account_balance"
-                  name="Total pago del cliente"
-                  description="26 March 2020, at 13:45 PM"
-                  value={`${moneyFormat(project.totalPaid)}`}
-                />
+              )}
+              <Transaction
+                color="dark"
+                icon="account_balance"
+                name="Total pago del cliente"
+                description="26 March 2020, at 13:45 PM"
+                value={`${moneyFormat(project.totalPaid)}`}
+              />
             </MDBox>
           </MDBox>
           <MDBox
@@ -225,17 +213,12 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-            <MDBox
-               onClick = {() => (handleModalOpen(1))}
-            >{isModalOpen &&(
-              <Modal
-                height="60%"
-                open={open}
-                onClose={handleCloseModal}
-            >
-              <ModalContent state={modalInovoiceState} />
-            </Modal>
-            )}
+            <MDBox onClick={() => handleModalOpen(1)}>
+              {isModalOpen && (
+                <Modal height="60%" open={open} onClose={handleCloseModal}>
+                  <ModalContent state={modalInovoiceState} />
+                </Modal>
+              )}
               <Transaction
                 color={
                   project.totalPaid -

@@ -20,7 +20,6 @@ const include = [
   "serviceType",
   "status",
   "members",
-  "responsiblePerson",
   "proposal",
   "notes",
   "court",

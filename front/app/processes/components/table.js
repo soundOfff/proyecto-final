@@ -21,7 +21,6 @@ export default function Table({ rows, meta }) {
     openDeleteConfirmation,
     setDeleteConfirmed,
   } = useDeleteRow(destroy);
-
   const columns = [
     {
       id: "name",

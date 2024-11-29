@@ -23,7 +23,7 @@ import SlackShare from "/components/SlackShare";
 import ActionList from "./action-list";
 import NextStepForm from "./next-step-form";
 
-export default function Content({ selectedFork, refetch }) {
+export default function Content({ refetch }) {
   const {
     task,
     isTimerStarted,
@@ -52,8 +52,9 @@ export default function Content({ selectedFork, refetch }) {
     setShowConfirmModal(true);
   };
 
-  const shouldShowNextStepForm =
-    task && task.procedure?.isConditional && task.status?.name === DONE_STATUS;
+  const shouldShowNextStepForm = Boolean(
+    task && task.procedure?.isConditional && task.status?.name === DONE_STATUS
+  );
 
   return (
     <Grid item xs={8} wrap="nowrap">
@@ -230,12 +231,10 @@ export default function Content({ selectedFork, refetch }) {
           </Grid>
         </MDBox>
         <Divider />
-        {shouldShowNextStepForm && (
-          <NextStepForm selectedFork={selectedFork} task={task} />
-        )}
+        {shouldShowNextStepForm && <NextStepForm task={task} />}
         <MDBox py={2} display="flex" flexDirection="column">
           <MDTypography variant="body2" fontWeight="bold" pb={2}>
-            Descripbión
+            Descripción
           </MDTypography>
           <FormField
             name="description"

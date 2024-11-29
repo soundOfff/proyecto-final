@@ -23,8 +23,8 @@ export default function TaskNode({ data }) {
       })}
     >
       <Handle type="target" position={Position.Left} />
-      {data?.hasBackEdge && (
-        <Handle type="source" position={Position.Top} key="top" index="top" />
+      {data.hasBackEdge && (
+        <Handle type="source" id="top" key="top" position={Position.Top} />
       )}
       <MDBadge
         size="xs"

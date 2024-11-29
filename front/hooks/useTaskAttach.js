@@ -9,8 +9,8 @@ export default function useTaskAttach({ project, staffId = null, dispatch }) {
     setIsFetching(true);
     try {
       const { createdTasks } = await attachTasks({
-        projectId: project?.id,
-        staffId,
+        project_id: project?.id,
+        staff_id: staffId,
       });
       if (createdTasks) {
         setSnackbar(dispatch, {

@@ -4,15 +4,11 @@ import { Handle, Position } from "@xyflow/react";
 
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
-import MDBadge from "/components/MDBadge";
-
-import { getStatusColor, getPriorityColor } from "/utils/project-state-colors";
-import { Icon } from "@mui/material";
 
 export default function RhombusNode({ data }) {
   return (
     <MDBox
-      sx={(theme) => ({
+      sx={(_) => ({
         py: 0,
         border: "3px solid",
         borderRadius: "0%",

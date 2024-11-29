@@ -8,23 +8,28 @@ import {
   ReactFlow,
   useNodesState,
   useEdgesState,
+  addEdge,
   MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useEffect, useState } from "react";
-import CustomNode from "./custom-node";
+import { useCallback, useEffect, useState } from "react";
+import CustomNode from "./nodes/custom-node";
 import MDButton from "/components/MDButton";
+import NodeForm from "../node-form";
+import { store } from "/actions/procedures";
 import { show } from "/actions/processes";
+import { addProcedurePath } from "/actions/procedures";
+import { Icon } from "@mui/material";
 
-const BLOCK = 450;
+const BLOCK = 350;
+const MAX_HEIGHT = 120;
 
-export default function SelectedPathChart({ processId = null, tasks = [] }) {
+export default function CreateChart({ processId }) {
   const [refresher, setRefresher] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [process, setProcess] = useState(null);
 
-  // Fetch process data
   const fetchProcess = async () => {
     const process = await show(processId, {
       include: ["procedures.outgoingPaths"],
@@ -36,7 +41,20 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
     fetchProcess();
   }, []);
 
-  const onConnect = () => {};
+  const handleNodeSubmit = async (formData) => {
+    await store(formData);
+  };
+
+  const onConnect = useCallback(
+    async (params) => {
+      setEdges((eds) => addEdge(params, eds));
+      addProcedurePath({
+        from_procedure_id: params.source,
+        to_procedure_id: params.target,
+      });
+    },
+    [setEdges]
+  );
 
   const createNodesAndEdges = (process) => {
     const nodes = [];
@@ -47,19 +65,14 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
 
     process.procedures.forEach((procedure) => {
       const isConditional = Boolean(procedure.isConditional);
-      const relatedTask = tasks.find(
-        (task) => task.procedure?.id === procedure.id
-      );
-      const isSelected = !isConditional && relatedTask;
-
+      const isFinal = procedure.outgoingPaths.length === 0;
       nodes.push({
         id: procedure.id.toString(),
         data: {
           ...procedure,
           processId: process.id,
+          isFinal,
           isConditional,
-          isSelected,
-          task: relatedTask,
         },
         position: {
           x: xPos,
@@ -67,6 +80,9 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
         },
         type: "custom",
       });
+      if (procedure.outgoingPaths.length == 0) {
+        yPos += MAX_HEIGHT;
+      }
     });
 
     process.procedures.forEach((procedure) => {
@@ -102,6 +118,7 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
             id: `e${path.fromProcedureId}-${path.toProcedureId}`,
             source: path.fromProcedureId.toString(),
             target: path.toProcedureId.toString(),
+            sourceHandle: "right",
             type: "smoothstep",
             markerEnd: {
               type: MarkerType.ArrowClosed,
@@ -127,7 +144,7 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
 
         nextNode.position.x = currNode.position.x + BLOCK;
         nextNode.position.y =
-          currNode.position.y + (BLOCK / 3) * (!currNode.hasBackEdge * index);
+          currNode.position.y + MAX_HEIGHT * (!currNode.hasBackEdge * index);
 
         if (currNode.data.isConditional) {
           currNode.position.y -= 4.8;
@@ -146,6 +163,10 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
     }
   }, [refresher, process]);
 
+  useEffect(() => {
+    fetchProcess();
+  }, [refresher]);
+
   return (
     <MDBox
       display="flex"
@@ -153,7 +174,12 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
       spacing={2}
       sx={{ height: "100vh" }}
     >
-      <MDButton onClick={() => setRefresher(!refresher)}>Refresh</MDButton>
+      <NodeForm
+        processId={processId}
+        onSubmit={handleNodeSubmit}
+        onNodeCreated={fetchProcess}
+        totalNodes={process?.procedures?.length}
+      />
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -166,6 +192,23 @@ export default function SelectedPathChart({ processId = null, tasks = [] }) {
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
+        <MDBox
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            p: 5,
+            zIndex: 100,
+          }}
+        >
+          <MDButton
+            color="info"
+            variant="gradient"
+            onClick={() => setRefresher(!refresher)}
+          >
+            Refrescar <Icon sx={{ ml: 1 }}>loop</Icon>
+          </MDButton>
+        </MDBox>
       </ReactFlow>
     </MDBox>
   );

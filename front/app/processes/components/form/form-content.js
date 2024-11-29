@@ -19,20 +19,11 @@ export default function First({
   setFieldValue,
   projectServiceTypes,
   process,
-  processes,
   staffData,
 }) {
   const {
-    formField: {
-      description,
-      name,
-      stepQuantity,
-      projectServiceType,
-      forks,
-      staffs,
-    },
+    formField: { description, name, projectServiceType, staffs },
   } = form;
-  const [forksOptions, setForksOptions] = useState([]);
 
   const staffsSelected = values[staffs.name].map((staff) => ({
     id: staff.id,
@@ -40,40 +31,16 @@ export default function First({
   }));
 
   useEffect(() => {
-    if (values.project_service_type_id) {
-      setForksOptions(
-        processes.filter(
-          (p) =>
-            p.projectServiceTypeId == values.project_service_type_id &&
-            values.forks.find((f) => f.id == p.id) == undefined &&
-            p.id != process?.id
-        )
-      );
-    }
-  }, [values.project_service_type_id, processes, process?.id]);
-
-  useEffect(() => {
     if (process) {
       setFieldValue(name.name, process.name || "");
       setFieldValue(description.name, process.description || "");
-      setFieldValue(stepQuantity.name, process.stepQuantity || "");
       setFieldValue(
         projectServiceType.name,
         process.projectServiceType?.id || ""
       );
-      setFieldValue(forks.name, process.forks || "");
       setFieldValue(staffs.name, process.toNotify || "");
     }
-  }, [
-    process,
-    setFieldValue,
-    name,
-    description,
-    stepQuantity,
-    projectServiceType,
-    forks,
-    staffs,
-  ]);
+  }, [process, setFieldValue, name, description, projectServiceType, staffs]);
 
   return (
     <Grid container spacing={5}>
@@ -104,22 +71,7 @@ export default function First({
           rows={3}
         />
       </Grid>
-
-      <Grid item xs={12} sm={6}>
-        <FormField
-          value={values[stepQuantity.name]}
-          name={stepQuantity.name}
-          label={stepQuantity.label}
-          type={stepQuantity.type}
-          placeholder={stepQuantity.placeholder}
-          error={errors[stepQuantity.name] && touched[stepQuantity.name]}
-          success={
-            values[stepQuantity.name]?.length > 0 && !errors[stepQuantity.name]
-          }
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <Select
           value={values[projectServiceType.name]}
           options={projectServiceTypes}
@@ -129,37 +81,6 @@ export default function First({
           setFieldValue={setFieldValue}
         />
       </Grid>
-      <Grid item xs={12}>
-        <Autocomplete
-          multiple
-          value={values[forks.name]}
-          onChange={(e, forksSelected) =>
-            setFieldValue(forks.name, forksSelected)
-          }
-          options={forksOptions}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <MDInput
-              {...params}
-              variant="standard"
-              label={forks.label}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          )}
-        />
-        <MDBox mt={0.75}>
-          <MDTypography
-            component="div"
-            variant="caption"
-            color="error"
-            fontWeight="regular"
-          >
-            <ErrorMessage name={forks.name} />
-          </MDTypography>
-        </MDBox>
-      </Grid>
-
       <Grid item xs={12}>
         <MDTypography variant="h6" fontWeight="bold" mt={2}>
           Notificar a

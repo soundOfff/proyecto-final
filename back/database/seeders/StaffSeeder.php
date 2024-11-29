@@ -3,18 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Staff;
-use App\Services\Utils;
+use Database\Factories\StaffFactory;
 use Illuminate\Database\Seeder;
 
 class StaffSeeder extends Seeder
 {
-    private $utils;
-
-    public function __construct(Utils $utils = null)
-    {
-        $this->utils = $utils;
-    }
-
     /**
      * Run the database seeds.
      *
@@ -22,10 +15,19 @@ class StaffSeeder extends Seeder
      */
     public function run()
     {
-        $staff = $this->utils->csvToArray(database_path('imports/staff.csv'));
+        $staffs = [
+            ['id' => 1, 'role_id' => 1, 'first_name' => 'Julián', 'last_name' => 'Villoria', 'email' => 'julian@polluxcoop.com'],
+            ['id' => 2, 'role_id' => 2, 'first_name' => 'José', 'last_name' => 'García', 'email' => 'jg@brandfactors.com'],
+            ['id' => 3, 'role_id' => 3, 'first_name' => 'Tomás', 'last_name' => 'Brasca', 'email' => 'tomas@polluxcoop.com'],
+            ['id' => 4, 'role_id' => 4, 'first_name' => 'Sergio', 'last_name' => 'Milardovich', 'email' => 'sergio@polluxcoop.com'],
+        ];
 
-        foreach ($staff as $newStaff) {
-            Staff::updateOrCreate(['id' => $newStaff['id']], $newStaff);
+        foreach ($staffs as $staff) {
+            Staff::updateOrCreate(['id' => $staff['id']], $staff);
         }
+
+        StaffFactory::new()
+            ->count(10)
+            ->create();
     }
 }

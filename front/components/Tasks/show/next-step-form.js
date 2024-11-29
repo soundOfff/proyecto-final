@@ -24,13 +24,13 @@ export default function NextStepForm({ task }) {
     setIsAttachingTasks(true);
     try {
       await attachTasks({
-        projectId: task.taskable.id,
-        procedureId: selectedProcedure.toProcedureId,
-        staffId: session.staff.id,
+        project_id: task.taskable.id,
+        procedure_id: selectedProcedure?.toProcedureId,
+        staff_id: session.staff.id,
       });
       setSnackbar(dispatch, {
         color: "success",
-        icon: "check_circle",
+        icons: "check_circle",
         title: "El paso se ha seleccionado correctamente",
         content: "Se han creado las tareas correspondientes",
         bgWhite: true,

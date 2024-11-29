@@ -5,8 +5,8 @@ import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Table from "/components/Tasks/table-client";
 import MDBox from "/components/MDBox";
 import Stats from "./components/stats";
-import Kanban from "./components/Kanban/kanban";
-import SelectedPathChart from "./components/SelectedPathChart/";
+import Kanban from "./components/kanban/";
+import SelectedPathChart from "./components/selected-path-chart/";
 import { useState } from "react";
 import { AccountTree, TableRows, ViewModule } from "@mui/icons-material";
 

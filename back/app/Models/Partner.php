@@ -271,6 +271,11 @@ class Partner extends Model
         });
     }
 
+    public function isJuridic(): bool
+    {
+        return $this->company !== null;
+    }
+
     public function getSlackNotificationBlocks(SectionBlock $block): void
     {
         if ($this->company) { // if is juridical

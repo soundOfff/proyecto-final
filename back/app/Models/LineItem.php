@@ -20,7 +20,6 @@ class LineItem extends Model
         'unit',
         'item_order',
         'discount',
-        'type_id',
     ];
 
     public function lineItemable(): MorphTo

@@ -2,19 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Expense;
-use App\Services\Utils;
+use Database\Factories\ExpenseFactory;
 use Illuminate\Database\Seeder;
 
 class ExpenseSeeder extends Seeder
 {
-    private $utils;
-
-    public function __construct(Utils $utils = null)
-    {
-        $this->utils = $utils;
-    }
-
     /**
      * Run the database seeds.
      *
@@ -22,10 +14,9 @@ class ExpenseSeeder extends Seeder
      */
     public function run()
     {
-        $expenses = $this->utils->csvToArray(database_path('imports/expenses.csv'));
-
-        foreach ($expenses as $expense) {
-            Expense::updateOrCreate(['id' => $expense['id']], $expense);
-        }
+        ExpenseFactory::new()
+            ->count(10)
+            ->withRandomRelations()
+            ->create();
     }
 }

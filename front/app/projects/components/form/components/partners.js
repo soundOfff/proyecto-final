@@ -12,6 +12,7 @@ import { convertToRaw } from "draft-js";
 import Description from "./description";
 import NoteForm from "./noteForm";
 import NoteList from "./noteList";
+import { editorStateToHtml } from "../../../../../utils/parseEditorState";
 
 export default function Partners({
   partnerData,
@@ -30,10 +31,9 @@ export default function Partners({
   );
 
   useEffect(() => {
-    const raw = convertToRaw(descriptionEditorState.getCurrentContent());
-    const strDescription = JSON.stringify(raw);
+    const content = editorStateToHtml(descriptionEditorState);
 
-    setFieldValue(description.name, strDescription);
+    setFieldValue(description.name, content);
   }, [descriptionEditorState, setFieldValue, description]);
 
   return (

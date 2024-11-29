@@ -13,6 +13,11 @@ import Link from "next/link";
 import Transactions from "/pagesComponents/pages/account/billing/components/Transactions";
 import Transaction from "/pagesComponents/pages/account/billing/components/Transaction";
 import Icon from "@mui/material/Icon";
+import { useState } from "react";
+import Modal from "/components/Modal";
+import ModalContent from "./modal/content";
+
+
 
 const headers = [
   {
@@ -54,6 +59,20 @@ const borderBottom = {
 export default function Details() {
   const { project } = useDataProvider();
   const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalInovoiceState, setModalInvoiceState] = useState(0);
+
+
+  const handleModalOpen = (state) =>{
+    setIsModalOpen(true);
+    setModalInvoiceState(state);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalInvoiceState(0);
+  };
 
   const getInitials = (firstName) => {
     const initials = firstName[0] || "";
@@ -177,13 +196,26 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-            <Transaction
-              color="dark"
-              icon="account_balance"
-              name="Total pago del cliente"
-              description="26 March 2020, at 13:45 PM"
-              value={`${moneyFormat(project.totalPaid)}`}
-            />
+              <MDBox
+                onClick = {() => (handleModalOpen(2))}
+              >{isModalOpen &&(
+                  <Modal
+                    height="60%"
+                    open={open}
+                    onClose={handleCloseModal}
+                >
+                  <ModalContent state={modalInovoiceState} />
+                </Modal>
+                )}
+                <Transaction
+                  
+                  color="dark"
+                  icon="account_balance"
+                  name="Total pago del cliente"
+                  description="26 March 2020, at 13:45 PM"
+                  value={`${moneyFormat(project.totalPaid)}`}
+                />
+            </MDBox>
           </MDBox>
           <MDBox
             component="ul"
@@ -193,22 +225,34 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-            <Transaction
-              color={
-                project.totalPaid -
-                  (project.totalBilledCost + project.notBilledCost) >
-                0
-                  ? "success"
-                  : "error"
-              }
-              icon="attach_money"
-              name="Deuda total"
-              description="26 March 2020, at 13:45 PM"
-              value={`${moneyFormat(
-                project.totalPaid -
-                  (project.totalBilledCost + project.notBilledCost)
-              )}`}
-            />
+            <MDBox
+               onClick = {() => (handleModalOpen(1))}
+            >{isModalOpen &&(
+              <Modal
+                height="60%"
+                open={open}
+                onClose={handleCloseModal}
+            >
+              <ModalContent state={modalInovoiceState} />
+            </Modal>
+            )}
+              <Transaction
+                color={
+                  project.totalPaid -
+                    (project.totalBilledCost + project.notBilledCost) >=
+                  0
+                    ? "success"
+                    : "error"
+                }
+                icon="attach_money"
+                name="Deuda total"
+                description="26 March 2020, at 13:45 PM"
+                value={`${moneyFormat(
+                  project.totalPaid -
+                    (project.totalBilledCost + project.notBilledCost)
+                )}`}
+              />
+            </MDBox>
           </MDBox>
         </MDBox>
       </Grid>

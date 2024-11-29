@@ -80,29 +80,9 @@ export default function DataTableRow({
   const getLevelColor = () => {
     if (!row.original.procedure) return "white";
 
-    let currentColor = "rgb(225, 225, 225, 0.4)";
-    let previousProcessId = null;
-
-    for (let i = 0; i < rows.length; i++) {
-      const currentRow = rows[i];
-      const currentProcessId =
-        currentRow.original.procedure &&
-        currentRow.original.procedure.process.id;
-
-      if (currentProcessId !== previousProcessId) {
-        currentColor =
-          currentColor === "rgb(225, 225, 225, 0.4)"
-            ? "rgb(180, 210, 255, 0.4)"
-            : "rgb(225, 225, 225, 0.4)";
-        previousProcessId = currentProcessId;
-      }
-
-      if (currentRow.original === row.original) {
-        return currentColor;
-      }
-    }
-
-    return "white";
+    return row.original.procedure.isConditional
+      ? "rgb(180, 210, 255, 0.4)"
+      : "white";
   };
 
   const { key: rowKey, rowProps } = row.getRowProps();

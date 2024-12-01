@@ -242,15 +242,6 @@ export default function Details() {
 
       <Divider variant="left" sx={{ width: "100%" }} />
 
-      <Grid container mt={3} xs={12} display="flex" justifyContent="center">
-        <SelectedProcesses
-          selectedProcesses={project.selectedProcesses}
-          tasks={filteredTasks}
-        />
-      </Grid>
-
-      <Divider variant="left" sx={{ width: "100%" }} />
-
       <Grid container>
         <Grid xs={12} md={6} mt={3}>
           <DefaultItem

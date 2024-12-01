@@ -328,3 +328,4 @@ Route::get('/tasks/{task}', [TaskController::class, 'show']);
 
 Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
+Route::get('/generate-balance-pdf/{project}', [PDFController::class, 'generateBalancePDF']);

@@ -123,6 +123,11 @@ class Project extends Model
         return $this->belongsToMany(Staff::class, 'project_staff');
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function partners(): BelongsToMany
     {
         return $this->belongsToMany(Partner::class, 'partner_project')->using(PartnerProject::class)->withPivot('role_id', 'owner_id');

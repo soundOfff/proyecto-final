@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -12,11 +13,11 @@ class PDFController extends Controller
         $doc_type = $request->get('document_type'); // To find the model
         $doc_id = $request->get('document_id');
 
-        $model = 'App\Models\\' . ucfirst($doc_type);
+        $model = 'App\Models\\'.ucfirst($doc_type);
 
         $model = $model::find($doc_id);
 
-        abort_if(!$model, 404, 'Resource not found or class type is not correctly set');
+        abort_if(! $model, 404, 'Resource not found or class type is not correctly set');
 
         $model->lineItems->load('taxes');
 
@@ -25,7 +26,7 @@ class PDFController extends Controller
         $number = $model->number ?? $model->id;
         $projectName = $model->project->name ?? $model->subject;
         $modelPartner = $model->partner ?? $model->proposable;
-        $projectName = $model->project ? mb_strtoupper($model->project->name ?? "") : null;
+        $projectName = $model->project ? mb_strtoupper($model->project->name ?? '') : null;
 
         $state = null;
         if ($modelPartner->jurisdiction) {
@@ -34,15 +35,15 @@ class PDFController extends Controller
         } elseif ($modelPartner->state) {
             $state = mb_strtoupper("{$modelPartner->state}, {$modelPartner->city}");
         } else {
-            $state = mb_strtoupper($modelPartner->city ?? "") ?? null;
+            $state = mb_strtoupper($modelPartner->city ?? '') ?? null;
         }
 
         $partnerData = [
             'name' => mb_strtoupper($modelPartner->mergedName),
             'country' => mb_strtoupper($modelPartner->country->short_name),
-            'country_info' => mb_strtoupper($modelPartner->country->short_name) . ", " . $state,
-            'address' => mb_strtoupper($model->partner->address ?? ""),
-            'zip' => $modelPartner->zip ? "CO" . $modelPartner->zip : null,
+            'country_info' => mb_strtoupper($modelPartner->country->short_name).', '.$state,
+            'address' => mb_strtoupper($model->partner->address ?? ''),
+            'zip' => $modelPartner->zip ? 'CO'.$modelPartner->zip : null,
             'phone' => $modelPartner->phone_number ?? null,
             'email' => mb_strtoupper($modelPartner->email ?? null),
         ];
@@ -62,6 +63,32 @@ class PDFController extends Controller
         ];
 
         $pdf = PDF::loadView('document', $data);
-        return $pdf->stream("bill-" . now() . ".pdf", array("Attachment" => false));
+
+        return $pdf->stream('bill-'.now().'.pdf', ['Attachment' => false]);
+    }
+
+    public function generateBalancePDF(Project $project)
+    {
+        $modelPartner = $project->billablePartner()->first();
+
+        $partnerData = [
+            'name' => mb_strtoupper($modelPartner->company ?? $modelPartner->name ?? 'SIN NOMBRE'),
+            'country' => mb_strtoupper($modelPartner->country->short_name ?? 'DESCONOCIDO'),
+            'country_info' => mb_strtoupper(($modelPartner->country->short_name ?? 'DESCONOCIDO').', '.($modelPartner->state ?? '')),
+            'address' => mb_strtoupper($modelPartner->address ?? 'SIN DIRECCIÓN'),
+            'zip' => $modelPartner->zip ? 'CO'.$modelPartner->zip : null,
+            'phone' => $modelPartner->phone_number ?? 'SIN TELÉFONO',
+            'email' => mb_strtoupper($modelPartner->email ?? 'SIN EMAIL'),
+        ];
+
+        $data = [
+            'project' => $project,
+            'partner' => $partnerData,
+            'items' => $project->invoices,
+        ];
+
+        $pdf = PDF::loadView('balance', $data);
+
+        return $pdf->stream('balance-'.now()->format('Y-m-d').'.pdf', ['Attachment' => false]);
     }
 }

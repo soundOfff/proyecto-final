@@ -15,6 +15,7 @@ import DeleteRow from "/components/DeleteRow";
 import useDeleteRow from "/hooks/useDeleteRow";
 import { destroy } from "/actions/payments";
 import { useState } from "react";
+import useInvoicePayments from "../../../hooks/useInvoicePayments";
 
 export default function Table({ rows, meta }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,6 +100,26 @@ export default function Table({ rows, meta }) {
     {
       Header: "Monto",
       accessor: "amount",
+    },
+    {
+      Header: "Monto Restante",
+      accessor: "remainingAmount",
+      Cell: ({ row }) => {
+        const { partialTotalPaid, partner } = row.original;
+        const { totalPaid } = useInvoicePayments(partialTotalPaid, partner?.id);
+        return (
+          <MDTypography
+            variant="caption"
+            display="flex"
+            justifyContent="center"
+            fontWeight="regular"
+            fontSize="small"
+            color="text"
+          >
+            {(partialTotalPaid - totalPaid).toFixed(2)}
+          </MDTypography>
+        );
+      },
     },
     {
       Header: "Fecha",

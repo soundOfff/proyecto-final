@@ -5,7 +5,7 @@ import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
 import TableRowComponent from "./table-row-component";
-import { attach, detach } from "/actions/payments";
+import { attach } from "/actions/payments";
 import useInvoicePayments from "/hooks/useInvoicePayments";
 
 const borderBottom = {

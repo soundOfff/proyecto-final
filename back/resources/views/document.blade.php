@@ -152,7 +152,7 @@
 
 <body>
     <header>
-        <img src="@get_public_file(brandfactors-logo.png)" width="300" height="72" />
+        <!-- <img src="@get_public_file(new-logo.png)" width="300" height="72" /> -->
         <table class="header-table" style="width: 100%;" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width: 50%;">

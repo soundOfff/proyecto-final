@@ -65,6 +65,7 @@ class PaymentController extends Controller
         foreach ($partialPays as $partialPay) {
             $payment->invoices()->attach($partialPay['invoice_id'], [
                 'amount' => $partialPay['amount'],
+                'created_at' => now(),
             ]);
 
             $invoice = Invoice::find($partialPay['invoice_id']);

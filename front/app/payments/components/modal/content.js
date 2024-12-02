@@ -135,7 +135,7 @@ export default function ModalContent({ payment, setOpenModal }) {
           color={partialTotalPaid >= totalPaid ? "text" : "error"}
           fontWeight="medium"
         >
-          Importe Pendiente: ${partialTotalPaid - totalPaid}
+          Importe Pendiente: ${(partialTotalPaid - totalPaid).toFixed(2)}
         </MDTypography>
       </MDBox>
       <MDBox display="flex" justifyContent="end" mt={5}>

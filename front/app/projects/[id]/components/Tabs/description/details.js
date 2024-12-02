@@ -1,6 +1,7 @@
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDAvatar from "/components/MDAvatar";
+import MDButton from "/components/MDButton";
 
 import DefaultItem from "/examples/Items/DefaultItem";
 import { Divider, Grid, Table, TableBody, TableRow } from "@mui/material";
@@ -12,7 +13,9 @@ import Link from "next/link";
 import Transaction from "/pagesComponents/pages/account/billing/components/Transaction";
 import { useState } from "react";
 import Modal from "/components/Modal";
+import DownloadIcon from "@mui/icons-material/Download";
 import ModalContent from "./modal/content";
+import { generateBalancePdf } from "/actions/generate-pdf";
 
 const headers = [
   {
@@ -53,11 +56,23 @@ const borderBottom = {
 
 export default function Details() {
   const { project } = useDataProvider();
-  const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
 
   const [isBilledPayedModalOpen, setsIsBilledPayedModalOpen] = useState(false);
-  const [isBilledNotPayedModalOpen, setIsBilledNotPayedModalOpen] = useState(false);
-  const [modalInovoiceState, setModalInvoiceState] = useState(0);
+  const [isBilledNotPayedModalOpen, setIsBilledNotPayedModalOpen] =
+    useState(false);
+  const [modalInvoiceState, setModalInvoiceState] = useState(0);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+  const handlePrint = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      const pdfUrl = await generateBalancePdf(project.id);
+      window.open(pdfUrl, "_blank");
+    } catch (error) {
+      console.log(error);
+    }
+    setIsGeneratingPdf(false);
+  };
 
   const handleModalBilledPayedOpen = (state) => {
     setsIsBilledPayedModalOpen(true);
@@ -199,7 +214,7 @@ export default function Details() {
             <MDBox onClick={() => handleModalBilledPayedOpen(2)}>
               {isBilledPayedModalOpen && (
                 <Modal height="60%" open={open} onClose={handleCloseModal}>
-                  <ModalContent state={modalInovoiceState} />
+                  <ModalContent state={modalInvoiceState} />
                 </Modal>
               )}
               <Transaction
@@ -219,10 +234,10 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-            <MDBox onClick={() => handleModalBilledNotPayedOpen (1)}>
+            <MDBox onClick={() => handleModalBilledNotPayedOpen(1)}>
               {isBilledNotPayedModalOpen && (
                 <Modal height="60%" open={open} onClose={handleCloseModal}>
-                  <ModalContent state={modalInovoiceState} />
+                  <ModalContent state={modalInvoiceState} />
                 </Modal>
               )}
               <Transaction
@@ -243,6 +258,38 @@ export default function Details() {
               />
             </MDBox>
           </MDBox>
+        </MDBox>
+        <MDBox display="flex" justifyContent="end">
+          <MDButton
+            variant="gradient"
+            color="dark"
+            size="small"
+            onClick={handlePrint}
+            disabled={isGeneratingPdf}
+            sx={{ displayPrint: "none" }}
+          >
+            {isGeneratingPdf ? (
+              "Generando..."
+            ) : (
+              <MDBox>
+                <MDTypography
+                  variant="caption"
+                  fontWeight="medium"
+                  color="light"
+                >
+                  Imprimir Balance
+                </MDTypography>
+                <DownloadIcon
+                  color="white"
+                  sx={{
+                    fontSize: "2rem",
+                    marginLeft: "0.5rem",
+                    verticalAlign: "middle",
+                  }}
+                />
+              </MDBox>
+            )}
+          </MDButton>
         </MDBox>
       </Grid>
 

@@ -58,7 +58,7 @@
             text-align: right;
             width: max-content;
             font-weight: bold;
-            padding-right: 16px;
+            padding: 16px;
             white-space: nowrap;
         }
 
@@ -105,6 +105,10 @@
             color: black;
         }
 
+        .header-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
         .header-table,
         .header-table td {
             border: none !important;
@@ -152,7 +156,7 @@
 
 <body>
     <header>
-        <img src="@get_public_file(brandfactors-logo.png)" width="300" height="72" />
+        <!-- <img src="@get_public_file(new-logo.png)" width="300" height="72" /> -->
         <table class="header-table" style="width: 100%;" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width: 50%;">
@@ -184,19 +188,18 @@
         <table>
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Factura</th>
+                    <th>Factura #</th>
                     <th>Subtotal</th>
                     <th>Ajuste</th>
-                    <th>Total</th>
+                    <th>Facturado</th>
                     <th>Pagos</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($items as $index => $item)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td class="description"><b>Factura # {{$item->number}}</b></td>
+                    <td class="description"><b>{{$item->number}}</b></td>
                     <td>
                         <p>@money_format($item->subtotal)</p>
                     </td>
@@ -208,20 +211,37 @@
                     </td>
                     <td>
                     @foreach($item->payments as $index => $pay)
-                        <p>@money_format($pay->pivot->amount)</p>
+                        <p>@money_format($pay->pivot->amount) - {{ \Carbon\Carbon::parse($pay->pivot->created_at)->format('d/m/Y') }}</p>
                     @endforeach
+                    </td>
+                    <td>
+                        <p>@money_format($item->pending_to_pay)</p>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
-                <tr>
-                    <td colspan="5" class="table-footer">Total neto:</td>
-                    <td>
-                        <p>@money_format(1200)</p>
-                    </td>
-                </tr>
-            </tfoot>
+    <tr>
+        <td colspan="6" style="text-align: right;">
+            <ul style="list-style: none; margin: 0; padding: 0; text-align: right;">
+                <li>
+                    <strong>Deuda facturada:</strong>
+                    <span>@money_format($total_billed)</span>
+                </li>
+                <li>
+                    <strong>Total pago:</strong>
+                    <span>@money_format($total_paid)</span>
+                </li>
+                <li>
+                    <strong>Total neto:</strong>
+                    <span>@money_format($total)</span>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</tfoot>
+
+
         </table>
     </div>
 </body>

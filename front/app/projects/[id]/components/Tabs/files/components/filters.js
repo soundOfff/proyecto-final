@@ -11,8 +11,8 @@ import MDDatePicker from "/components/MDDatePicker";
 export default function Filters() {
   const [search, setSearch] = useState(null);
   const [filterDates, setFilterDates] = useState({
-    dateFrom: moment().subtract(1, "day").format("YYYY-MM-DD"),
-    dateTo: moment().format("YYYY-MM-DD"),
+    dateFrom: moment().subtract(1, "month").format("YYYY-MM-DD"),
+    dateTo: moment().add(5, "days").format("YYYY-MM-DD"),
   });
 
   function handleSearch(e) {

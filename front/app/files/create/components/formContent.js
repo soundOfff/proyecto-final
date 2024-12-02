@@ -149,18 +149,22 @@ export default function FormContent({ values, setFieldValue, errors }) {
       if (searchParams.get("projectId")) {
         setFieldValue(fileableType.name, PROJECT_FILEABLE_TYPE);
         setFieldValue(fileableId.name, Number(searchParams.get("projectId")));
+        setFieldValue(path.name, `/projects/${searchParams.get("projectId")}/`);
       }
       if (searchParams.get("partnerId")) {
         setFieldValue(fileableType.name, PARTNER_FILEABLE_TYPE);
         setFieldValue(fileableId.name, Number(searchParams.get("partnerId")));
+        setFieldValue(path.name, `/partners/${searchParams.get("partnerId")}/`);
       }
       if (searchParams.get("expenseId")) {
         setFieldValue(fileableType.name, EXPENSE_FILEABLE_TYPE);
         setFieldValue(fileableId.name, Number(searchParams.get("expenseId")));
+        setFieldValue(path.name, `/expenses/${searchParams.get("expenseId")}/`);
       }
       if (searchParams.get("taskId")) {
         setFieldValue(fileableType.name, TASK_FILEABLE_TYPE);
         setFieldValue(fileableId.name, Number(searchParams.get("taskId")));
+        setFieldValue(path.name, `/tasks/${searchParams.get("taskId")}/`);
       }
     }
   }, [searchParams, fileableId, fileableType, setFieldValue, values]);

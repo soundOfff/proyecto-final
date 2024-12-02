@@ -110,7 +110,6 @@ export default function FormComponent({
     await revalidateExpenses("create-files");
     returnToSource();
   };
-
   return (
     <MDBox py={3} mb={5} height="100%">
       <Grid

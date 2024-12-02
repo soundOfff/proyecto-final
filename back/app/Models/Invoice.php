@@ -188,9 +188,21 @@ class Invoice extends Model
         $block->field("*Vencimiento:* $expiryDate")->markdown();
     }
 
-    public function totalPaid(){
-
+    public function totalPaid()
+    {
         return $this->payments()->sum('payment_invoice.amount');
+    }
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query
+                    ->where('number', 'like', "%$search%")
+                    ->orWhereHas('partner', function ($query) use ($search) {
+                        $query->where('name', 'like', "%$search%");
+                    });
+            });
+        });
     }
 }

@@ -127,13 +127,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
 
-    Route::get('/expenses', [ExpenseController::class, 'index']);
-    Route::post('/expenses', [ExpenseController::class, 'store']);
-    Route::put('/expenses/{expense}', [ExpenseController::class, 'update']);
-    Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
-    Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
-    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);
-
     Route::get('/estimate-statuses', [EstimateStatusController::class, 'index']);
 
     Route::get('/estimates-max-id', [EstimateController::class, 'maxId']);
@@ -202,12 +195,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/sub-service-types', [SubServiceTypeController::class, 'index']);
 
     Route::get('/recurrings', [RecurringController::class, 'index']);
-
-    Route::get('/files', [FileController::class, 'index']);
-    Route::get('/files/{file}', [FileController::class, 'show']);
-    Route::delete('/files/{file}', [FileController::class, 'destroy']);
-    Route::post('/files', [FileController::class, 'store']);
-    Route::post('/files-store-many', [FileController::class, 'storeMany']);
 
     Route::get('/permissions', [PermissionController::class, 'index']);
 
@@ -329,3 +316,16 @@ Route::get('/tasks/{task}', [TaskController::class, 'show']);
 Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFinancialData']);
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 Route::get('/generate-balance-pdf/{project}', [PDFController::class, 'generateBalancePDF']);
+
+Route::get('/expenses', [ExpenseController::class, 'index']);
+Route::post('/expenses', [ExpenseController::class, 'store']);
+Route::put('/expenses/{expense}', [ExpenseController::class, 'update']);
+Route::get('/expenses/{expense}', [ExpenseController::class, 'show']);
+Route::get('/expense-repeats', [ExpenseRepeatController::class, 'index']);
+Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy']);
+
+Route::get('/files', [FileController::class, 'index']);
+Route::get('/files/{file}', [FileController::class, 'show']);
+Route::delete('/files/{file}', [FileController::class, 'destroy']);
+Route::post('/files', [FileController::class, 'store']);
+Route::post('/files-store-many', [FileController::class, 'storeMany']);

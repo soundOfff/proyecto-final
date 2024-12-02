@@ -81,10 +81,19 @@ class PDFController extends Controller
             'email' => mb_strtoupper($modelPartner->email ?? 'SIN EMAIL'),
         ];
 
+        $totalPaid = $project->totalPaid();
+
+        $totalBilled = $project->totalBilledCost();
+
+        $total = $totalPaid - $totalBilled;
+
         $data = [
             'project' => $project,
             'partner' => $partnerData,
             'items' => $project->invoices,
+            'total' => $total,
+            'total_billed' => $totalBilled,
+            'total_paid' => $totalPaid,
         ];
 
         $pdf = PDF::loadView('balance', $data);

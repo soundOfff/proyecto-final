@@ -43,8 +43,8 @@ class ExpenseController extends Controller
                 AllowedFilter::exact('project_id'),
                 AllowedFilter::custom('is_generic', new IsGenericExpenseFilter()),
                 AllowedFilter::scope('search'),
-                AllowedFilter::callback('date', function ($query, $value) {
-                    $query->whereDate('date', $value);
+                AllowedFilter::callback('date', function ($query, $values) {
+                    $query->whereBetween('date', [$values[0], $values[1]]);
                 }),
             ])
             ->defaultSort('-id')

@@ -8,7 +8,6 @@ export default async function PartnerInvoices({ params: { id } }) {
     include: ["paymentMethod", "partner", "invoices"],
     "filter[partner_id]": id,
   });
-
   return (
     <MDBox my={3}>
       <Card>

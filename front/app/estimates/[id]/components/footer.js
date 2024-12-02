@@ -11,7 +11,7 @@ import usePrint from "/hooks/usePrint";
 import SlackShare from "/components/SlackShare";
 
 export default function Footer({ estimate }) {
-  const { itbmsTotalTax, retainingTotalTax } = useItemTotals({
+  const { itemsTotalTax, retainingTotalTax } = useItemTotals({
     items: estimate.items,
     discountType: estimate.discountType,
   });
@@ -60,7 +60,7 @@ export default function Footer({ estimate }) {
                 </MDTypography>
               </Grid>
 
-              {itbmsTotalTax != 0 && (
+              {itemsTotalTax != 0 && (
                 <>
                   <Grid item xs={12} sm={7} />
                   <Grid item xs={12} sm={3}>
@@ -68,7 +68,7 @@ export default function Footer({ estimate }) {
                   </Grid>
                   <Grid item xs={12} sm={2}>
                     <MDTypography variant="body">
-                      ${numberFormat(itbmsTotalTax)}
+                      ${numberFormat(itemsTotalTax)}
                     </MDTypography>
                   </Grid>
                 </>

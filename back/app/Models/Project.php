@@ -229,7 +229,7 @@ class Project extends Model
 
     public function estimatesCost()
     {
-        return $this->estimates()->sum('subtotal');
+        return $this->estimates()->whereNull('invoice_id')->sum('subtotal');
     }
 
     public function totalBilledCost($from = null, $until = null)
@@ -281,7 +281,8 @@ class Project extends Model
 
     public function subTotalCost()
     {
-        return $this->estimatesCost() + $this->expensesCost() + $this->tasksCost();
+        return $this->estimatesCost() + $this->expensesCost() ;
+        //+ $this->tasksCost();
     }
 
     public function totalPaid($from = null, $until = null)

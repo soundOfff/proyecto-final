@@ -55,6 +55,18 @@ export default function TableRowComponent({ invoice, handleAmountChanges }) {
         sx={borderBottom}
       >
         <MDTypography variant="body2" color="text" fontWeight="regular">
+          {invoice.project?invoice.project.name:""}
+        </MDTypography>
+      </MDBox>
+      <MDBox
+        component="td"
+        textAlign="left"
+        py={1}
+        pr={1}
+        pl={3}
+        sx={borderBottom}
+      >
+        <MDTypography variant="body2" color="text" fontWeight="regular">
           ${numberFormat(invoice.total)}
         </MDTypography>
       </MDBox>

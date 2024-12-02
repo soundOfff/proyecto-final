@@ -50,7 +50,19 @@ export default function TableRowComponent({ invoice }) {
         sx={borderBottom}
       >
         <MDTypography variant="body2" color="text" fontWeight="regular">
-          ${numberFormat(invoice.total)}
+          ${numberFormat(invoice.total - invoice.pendingToPay)}
+        </MDTypography>
+      </MDBox>
+      <MDBox
+        component="td"
+        textAlign="left"
+        py={1}
+        pr={1}
+        pl={3}
+        sx={borderBottom}
+      >
+        <MDTypography variant="body2" color="text" fontWeight="regular">
+          ${numberFormat(invoice.pendingToPay)}
         </MDTypography>
       </MDBox>
     </TableRow>

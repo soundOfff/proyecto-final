@@ -78,6 +78,7 @@ class InvoiceResource extends JsonResource
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
             'parcial_amount' => is_null($this->pivot) ? null : $this->pivot->amount,
             'pivot' => $this->pivot,
+            'totalPaid'=>$this->totalPaid(),
         ];
     }
 }

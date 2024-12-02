@@ -187,4 +187,10 @@ class Invoice extends Model
         $block->field("*Fecha:* $date")->markdown();
         $block->field("*Vencimiento:* $expiryDate")->markdown();
     }
+
+    public function totalPaid(){
+
+        return $this->payments()->sum('payment_invoice.amount');
+
+    }
 }

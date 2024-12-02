@@ -55,16 +55,22 @@ export default function Details() {
   const { project } = useDataProvider();
   const filteredTasks = project.tasks.filter((task) => task.procedure !== null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBilledPayedModalOpen, setsIsBilledPayedModalOpen] = useState(false);
+  const [isBilledNotPayedModalOpen, setIsBilledNotPayedModalOpen] = useState(false);
   const [modalInovoiceState, setModalInvoiceState] = useState(0);
 
-  const handleModalOpen = (state) => {
-    setIsModalOpen(true);
+  const handleModalBilledPayedOpen = (state) => {
+    setsIsBilledPayedModalOpen(true);
+    setModalInvoiceState(state);
+  };
+  const handleModalBilledNotPayedOpen = (state) => {
+    setIsBilledNotPayedModalOpen(true);
     setModalInvoiceState(state);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsBilledNotPayedModalOpen(false);
+    setsIsBilledPayedModalOpen(false);
     setModalInvoiceState(0);
   };
 
@@ -190,8 +196,8 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-            <MDBox onClick={() => handleModalOpen(2)}>
-              {isModalOpen && (
+            <MDBox onClick={() => handleModalBilledPayedOpen(2)}>
+              {isBilledPayedModalOpen && (
                 <Modal height="60%" open={open} onClose={handleCloseModal}>
                   <ModalContent state={modalInovoiceState} />
                 </Modal>
@@ -213,8 +219,8 @@ export default function Details() {
             m={0}
             sx={{ listStyle: "none" }}
           >
-            <MDBox onClick={() => handleModalOpen(1)}>
-              {isModalOpen && (
+            <MDBox onClick={() => handleModalBilledNotPayedOpen (1)}>
+              {isBilledNotPayedModalOpen && (
                 <Modal height="60%" open={open} onClose={handleCloseModal}>
                   <ModalContent state={modalInovoiceState} />
                 </Modal>

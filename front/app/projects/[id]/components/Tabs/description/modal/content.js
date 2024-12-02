@@ -43,7 +43,17 @@ const headers = [
       pl: 3,
       textAlign: "left",
     },
-    header: "Total de Factura",
+    header: "Total Pagado",
+  },
+  {
+    box: {
+      width: "auto",
+      py: 1.5,
+      pr: 1,
+      pl: 3,
+      textAlign: "left",
+    },
+    header: "Total Pendiente",
   }
 ];
 
@@ -86,7 +96,7 @@ export default function ModalContent({ state }) {
         </MDBox>
         <TableBody>
           {invoices.map((invoice) => (
-            (invoice.status.id == state) &&
+            (invoice.status.id == state || invoice.status.id == 1) &&
             <TableRowComponent
               key={invoice.id}
               invoice={invoice}

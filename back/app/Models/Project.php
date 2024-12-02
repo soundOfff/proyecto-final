@@ -286,14 +286,14 @@ class Project extends Model
 
     public function totalPaid($from = null, $until = null)
     {
-        $from = $from ?? now()->subYear(2)->startOfYear();
+        $from = $from ?? now()->subYear(10)->startOfYear();
         $until = $until ?? now();
 
         return $this->estimates()
         ->join('invoices', 'estimates.invoice_id', '=', 'invoices.id')
         ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'invoices.id')
-        ->whereDate('payment_invoice.created_at', '<=', $until)
-        ->whereDate('payment_invoice.created_at', '>=', $from)
+        // ->whereDate('payment_invoice.created_at', '<=', $until)
+        // ->whereDate('payment_invoice.created_at', '>=', $from)
         ->sum('payment_invoice.amount');
     }
 

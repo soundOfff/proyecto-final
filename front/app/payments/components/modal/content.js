@@ -27,11 +27,21 @@ const headers = [
     box: {
       width: "auto",
       py: 1.5,
-      pr: 1,
+      pr: 1.5,
       pl: 3,
       textAlign: "left",
     },
     header: "Fecha de Factura",
+  },
+  {
+    box: {
+      width: "auto",
+      py: 3,
+      pr: 1,
+      pl: 3,
+      textAlign: "left",
+    },
+    header: "Nombre de Projecto",
   },
   {
     box: {

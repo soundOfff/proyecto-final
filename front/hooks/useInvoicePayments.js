@@ -5,6 +5,10 @@ export default function useInvoicePayments(total, partnerId) {
   const [invoices, setInvoices] = useState([]);
   const [payments, setPayments] = useState([]);
 
+  const include = [
+    "project.billablePartner",
+  ];
+
   const totalPaid = payments.reduce((acc, payment) => {
     return acc + payment.amount;
   }, 0);
@@ -47,6 +51,7 @@ export default function useInvoicePayments(total, partnerId) {
   useEffect(() => {
     const params = {
       "filter[partner_to_pay]": partnerId,
+      include
     };
 
     getAllInvoices(params).then((response) => {

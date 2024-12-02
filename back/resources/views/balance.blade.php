@@ -69,13 +69,23 @@
         }
 
         .header {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             margin-top: 10px;
+        }
+
+        .header h3 {
+            margin: 0;
+            font-weight: bold;
         }
 
         .header p {
             margin-top: 10px;
             font-weight: bold;
+            color:#999;
+        }
+
+        .header p b {
+            color: black;
         }
 
         .header-info {
@@ -156,7 +166,12 @@
 
 <body>
     <header>
-        <!-- <img src="@get_public_file(new-logo.png)" width="300" height="72" /> -->
+        <div class="header">
+            <h3>{{ $project->name }}</h3>
+            <p><b>Expediente </b>#{{$project->expedient}}</p>
+            <p><b>Estado:</b> {{ $project->status->label }}</p>
+            <p><b>Contacto:</b> {{ $project->responsiblePerson->email }}</p>
+        </div>            
         <table class="header-table" style="width: 100%;" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width: 50%;">

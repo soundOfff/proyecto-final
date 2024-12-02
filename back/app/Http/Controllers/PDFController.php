@@ -85,7 +85,7 @@ class PDFController extends Controller
 
         $totalBilled = $project->totalBilledCost();
 
-        $total = $totalBilled - $totalPaid;
+        $total = $totalPaid - $totalBilled;
 
         $data = [
             'project' => $project,

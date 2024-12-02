@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use PDO;
 
 class Partner extends Model
 {
@@ -166,7 +167,7 @@ class Partner extends Model
 
     public function projects(): HasMany
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Project::class, 'billable_partner_id', 'id');
     }
 
     public function country(): BelongsTo
@@ -327,5 +328,22 @@ class Partner extends Model
             $block->field("*Mail:* {$mail}")->markdown();
             $block->field("*Ubicación:* {$place}")->markdown();
         }
+    }
+
+    public function totalPaid(){
+
+        return $this->projects()
+        ->get()
+        ->sum(function($project){
+            return $project->totalPaid();
+        });
+    }
+
+    public function totalBilledCost(){
+        return $this->projects()
+        ->get()
+        ->sum(function($project){
+            return $project->totalBilledCost();
+        })??0;
     }
 }

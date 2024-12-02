@@ -101,6 +101,13 @@ class PartnerResource extends JsonResource
             'owner' => $this->whenPivotLoaded('partner_project', function () {
                 return $this->pivot->owner;
             }),
+            'financial' =>
+                [
+                "totalPaid"=>$this->totalPaid(),
+                "totalBilledCost"=>$this->totalBilledCost(),
+                ],
+            'totalPaid'=>$this->totalPaid(),
+            'totalBilledCost'=>$this->totalBilledCost(),
         ];
     }
 }

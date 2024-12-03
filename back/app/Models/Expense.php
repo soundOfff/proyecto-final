@@ -105,6 +105,11 @@ class Expense extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
+    }
+
     public function getSlackNotificationBlocks(SectionBlock $block): void
     {
         $name = $this->name ?: '-';

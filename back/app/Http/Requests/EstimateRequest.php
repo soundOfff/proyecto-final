@@ -47,6 +47,8 @@ class EstimateRequest extends FormRequest
             'items.*.description' => 'required|string',
             'items.*.long_description' => 'nullable|string',
             'items.*.line_item_type_id' => 'nullable|numeric|exists:line_item_types,id',
+            'items.*.task_id' => 'nullable|numeric|exists:tasks,id',
+            'items.*.expense_id' => 'nullable|numeric|exists:expenses,id',
             'items.*.quantity' => 'required|numeric',
             'items.*.rate' => 'required|numeric',
             'items.*.discount' => 'nullable|numeric',

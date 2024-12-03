@@ -303,6 +303,11 @@ class Task extends Model
         ];
     }
 
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
+    }
+
     public function getSlackNotificationBlocks(SectionBlock $block): void
     {
         $name = $this->name;

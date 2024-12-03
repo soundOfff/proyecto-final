@@ -80,9 +80,9 @@ class TaskController extends Controller
                     AllowedFilter::exact('taskable_id'),
                     AllowedFilter::exact('task_priority_id'),
                     AllowedFilter::exact('start_date'),
+                    AllowedFilter::callback('not_in_line_item', fn (Builder $query) => $query->whereDoesntHave('lineItems')),
                     AllowedFilter::callback('range_start_date',
                         fn (Builder $query, $value) => $query->whereBetween('start_date', $value)
-
                     ),
                     AllowedFilter::callback('range_due_date',
                         fn (Builder $query, $value) => $query->whereBetween('due_date', $value)

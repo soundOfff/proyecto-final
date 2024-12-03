@@ -14,8 +14,8 @@ export default function Header({ proposal }) {
   return (
     <MDBox p={3}>
       <Grid container justifyContent="space-between">
-        <Grid item xs={6}>
-          <MDBox width="80%" p={1} mb={6}>
+        <Grid item xs={4}>
+          <MDBox>
             <Image
               src={logo}
               alt="Logo"

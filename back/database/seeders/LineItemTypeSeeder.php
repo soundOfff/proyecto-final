@@ -17,6 +17,7 @@ class LineItemTypeSeeder extends Seeder
         $itemTypes = [
             ['id' => 1, 'label' => 'Honorarios'],
             ['id' => 2, 'label' => 'Gastos'],
+            ['id' => 3, 'label' => 'Tareas'],
         ];
 
         foreach ($itemTypes as $itemType) {

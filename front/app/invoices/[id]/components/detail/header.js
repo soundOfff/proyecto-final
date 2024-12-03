@@ -17,8 +17,8 @@ export default function Header({ invoice }) {
   return (
     <MDBox p={3}>
       <Grid container justifyContent="space-between">
-        <Grid item xs={6}>
-          <MDBox width="80%" p={1} mb={6}>
+        <Grid item xs={4}>
+          <MDBox>
             <Image
               src={logo}
               alt="Logo"
@@ -31,7 +31,7 @@ export default function Header({ invoice }) {
           </MDBox>
         </Grid>
         <Grid item xs={6}>
-          <MDBox p={1} display="flex" justifyContent="end">
+          <MDBox px={1} display="flex" justifyContent="end">
             <MDTypography
               variant="h6"
               color={darkMode ? "text" : "secondary"}
@@ -89,7 +89,7 @@ export default function Header({ invoice }) {
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
           <MDBox width="100%" textAlign={{ xs: "left", md: "right" }}>
-            <MDBox mt={1}>
+            <MDBox>
               <MDTypography variant="h6" fontWeight="medium">
                 Para: {invoice?.partner?.mergedName ?? "---"}
               </MDTypography>

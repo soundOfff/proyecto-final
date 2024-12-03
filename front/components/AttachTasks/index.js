@@ -8,6 +8,7 @@ import Table from "./components/table";
 import { useEffect, useState } from "react";
 import { getAll as getAllTasks } from "/actions/tasks";
 import { PROJECT_TYPE } from "/utils/constants/taskableTypes";
+import { LINE_ITEM_TYPES } from "/utils/constants/lineItemTypes";
 
 export default function AttachTasks({ formData, projectId }) {
   const {
@@ -33,10 +34,11 @@ export default function AttachTasks({ formData, projectId }) {
           description: task.name ?? `Tarea #${task.id}`,
           rate: parseFloat(task.cost ?? 0),
           long_description: task.description,
-          line_item_type_id: "",
+          line_item_type_id: LINE_ITEM_TYPES.TASK,
           quantity: 1,
           taxes: [],
           discount: "",
+          task_id: task.id,
           unit: "",
         };
       })
@@ -49,8 +51,9 @@ export default function AttachTasks({ formData, projectId }) {
 
   useEffect(() => {
     const filters = {
-      "filter[taskable_id]": projectId,
       "filter[taskable_type]": PROJECT_TYPE,
+      "filter[taskable_id]": projectId,
+      "filter[not_in_line_item]": true,
       includeCost: true,
     };
     getAllTasks(filters).then((response) => {

@@ -7,6 +7,7 @@ import Table from "./components/table";
 
 import { useEffect, useState } from "react";
 import { getAll as getAllExpenses } from "/actions/expenses";
+import { LINE_ITEM_TYPES } from "/utils/constants/lineItemTypes";
 
 export default function AttachExpenses({ formData, projectId }) {
   const {
@@ -33,10 +34,11 @@ export default function AttachExpenses({ formData, projectId }) {
           description: expense.name ?? `Gasto #${expense.id}`,
           rate: expense.amount,
           long_description: expense.note,
-          line_item_type_id: "",
+          line_item_type_id: LINE_ITEM_TYPES.EXPENSE,
           quantity: 1,
           taxes: [],
           discount: "",
+          expense_id: expense.id,
           unit: "",
         };
       })
@@ -51,6 +53,7 @@ export default function AttachExpenses({ formData, projectId }) {
     const filters = {
       "filter[is_generic]": true,
       "filter[project_id]": projectId,
+      "filter[not_in_line_item]": true,
     };
     getAllExpenses(filters).then((response) => {
       setExpenses(response.data.expenses);

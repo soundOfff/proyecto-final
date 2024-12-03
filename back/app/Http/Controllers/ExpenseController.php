@@ -9,12 +9,12 @@ use App\Http\Resources\ExpenseResourceCollection;
 use App\Models\Expense;
 use App\Models\ExpenseRepeat;
 use App\Models\File;
-use App\Models\Project;
 use App\Sorts\ExpenseCategorySort;
 use App\Sorts\ExpenseInvoiceSort;
 use App\Sorts\ExpensePartnerSort;
 use App\Sorts\ExpenseProjectSort;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -43,6 +43,7 @@ class ExpenseController extends Controller
                 AllowedFilter::exact('project_id'),
                 AllowedFilter::custom('is_generic', new IsGenericExpenseFilter()),
                 AllowedFilter::scope('search'),
+                AllowedFilter::callback('not_in_line_item', fn (Builder $query) => $query->whereDoesntHave('lineItems')),
                 AllowedFilter::callback('date', function ($query, $values) {
                     $query->whereBetween('date', [$values[0], $values[1]]);
                 }),

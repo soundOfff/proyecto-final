@@ -20,11 +20,23 @@ class LineItem extends Model
         'unit',
         'item_order',
         'discount',
+        'task_id',
+        'expense_id',
     ];
 
     public function lineItemable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    public function expense(): BelongsTo
+    {
+        return $this->belongsTo(Expense::class);
     }
 
     public function taxes(): HasMany

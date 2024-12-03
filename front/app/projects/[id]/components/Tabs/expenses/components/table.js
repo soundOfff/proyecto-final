@@ -128,13 +128,13 @@ export default function Table({ rows, project }) {
                 borderRadius="lg"
                 display="flex"
                 alignItems="center"
-                width="100%"
                 justifyContent="between"
                 p={0.75}
                 sx={{
                   border: ({ borders: { borderWidth, borderColor } }) =>
                     `${borderWidth[1]} solid ${borderColor}`,
                   gap: 1,
+                  maxWidth: "160px",
                 }}
               >
                 <DescriptionOutlined fontSize="small" color="dark" />

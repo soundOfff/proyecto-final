@@ -302,15 +302,7 @@ export default function Table({
         meta={meta}
         showTotalEntries={true}
         isSorted={true}
-        actions={
-          <MDButton
-            variant="gradient"
-            color={darkMode ? "light" : "dark"}
-            onClick={() => handleOpenEditModal()}
-          >
-            Crear nueva tarea
-          </MDButton>
-        }
+        
         noEndBorder
       />
       <DeleteRow

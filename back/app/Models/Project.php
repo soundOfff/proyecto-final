@@ -237,12 +237,17 @@ class Project extends Model
         $from = $from ?? now()->subYear(2)->startOfYear();
         $until = $until ?? now();
 
-        return $this->estimates()
-        ->whereNotNull('invoice_id')
-        ->join('invoices', 'invoices.id', '=', 'estimates.invoice_id')
+        return $this->invoices()
         ->whereDate('invoices.date', '<=', $until)
         ->whereDate('invoices.date', '>=', $from)
-        ->sum('estimates.total');
+        ->sum('invoices.total');
+
+        // return $this->estimates()
+        // ->whereNotNull('invoice_id')
+        // ->join('invoices', 'invoices.id', '=', 'estimates.invoice_id')
+        // ->whereDate('invoices.date', '<=', $until)
+        // ->whereDate('invoices.date', '>=', $from)
+        // ->sum('estimates.total');
     }
 
     public function totalBilledCostPerMonth($from = null, $until = null)
@@ -250,11 +255,9 @@ class Project extends Model
         $from = $from ?? now()->subYear(10)->startOfYear();
         $until = $until ?? now();
 
-        return $this->estimates()
-        ->whereNotNull('invoice_id')
-        ->join('invoices', 'estimates.invoice_id', '=', 'invoices.id')
+        return $this->invoices()
         ->whereBetween('invoices.date', [$from, $until])
-        ->selectRaw('MONTH(invoices.date) as month, SUM(estimates.total) as total')
+        ->selectRaw('MONTH(invoices.date) as month, SUM(invoices.total) as total')
         ->groupBy('month')
         ->orderByRaw("STR_TO_DATE(CONCAT('01-', month), '%d-%m-%y')")
         ->get();
@@ -281,7 +284,8 @@ class Project extends Model
 
     public function subTotalCost()
     {
-        return $this->estimatesCost() + $this->expensesCost() ;
+        return $this->estimatesCost();
+        // + $this->expensesCost() ;
         //+ $this->tasksCost();
     }
 
@@ -290,8 +294,7 @@ class Project extends Model
         $from = $from ?? now()->subYear(10)->startOfYear();
         $until = $until ?? now();
 
-        return $this->estimates()
-        ->join('invoices', 'estimates.invoice_id', '=', 'invoices.id')
+        return $this->invoices()
         ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'invoices.id')
         // ->whereDate('payment_invoice.created_at', '<=', $until)
         // ->whereDate('payment_invoice.created_at', '>=', $from)
@@ -303,9 +306,8 @@ class Project extends Model
         $from = $from ?? now()->subYear(2)->startOfYear();
         $until = $until ?? now();
 
-        return $this->estimates()
-        ->whereNotNull('estimates.invoice_id')
-        ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'estimates.invoice_id')
+        return $this->invoices()
+        ->join('payment_invoice', 'payment_invoice.invoice_id', '=', 'invoices.id')
         ->whereBetween('payment_invoice.created_at', [$from, $until])
         ->selectRaw('MONTH(payment_invoice.created_at) as month, SUM(payment_invoice.amount) as total')
         ->groupBy('month')

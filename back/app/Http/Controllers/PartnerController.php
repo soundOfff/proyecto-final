@@ -10,6 +10,8 @@ use App\Models\Partner;
 use App\Models\PartnerType;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedSort;
+use App\Sorts\TotalBilledPartnerSort;
 
 class PartnerController extends Controller
 {
@@ -72,6 +74,7 @@ class PartnerController extends Controller
                 'name',
                 'company',
                 'created_at',
+                AllowedSort::custom('totalBilledCost', new TotalBilledPartnerSort(), 'totalBilledCost'),
             ]);
 
         $partners = request()->has('perPage')

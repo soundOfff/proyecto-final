@@ -66,7 +66,7 @@ class ProjectResource extends JsonResource
             'subTotalCost' => $this->subTotalCost(),
             'subTotalBilledCost'=>$this->subTotalbilledCost(),
             'totalBilledCost'=>$this->totalBilledCost(),
-            'notBilledCost'=>$this->subTotalCost() - $this->subTotalbilledCost(),
+            'notBilledCost'=>$this->subTotalCost(),
             'totalPaid'=>$this->totalPaid(),
             'responsiblePerson' => StaffResource::make($this->whenLoaded('responsiblePerson')),
         ];

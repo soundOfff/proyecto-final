@@ -44,15 +44,17 @@ export default function Table({ rows, meta }) {
     {
       Header: "Pagado",
       accessor: "totalPaid",
+      disableSortBy:true,
       Cell: ({ value }) => {
         return "$" + `${value}`;
       },
     },
     {
       Header: "Deuda Total",
-      accessor: "financial",
+      accessor: "totalBilledCost",
+      disableSortBy:false,
       Cell: ({ row }) => {
-        return "$" + `${row.original.totalBilledCost - row.original.totalPaid}`;
+        return "$" + `${(row.original.totalBilledCost - row.original.totalPaid).toFixed(2)}`;
       },
     },
     {

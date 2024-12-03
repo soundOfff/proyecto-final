@@ -138,7 +138,7 @@ export default function Table({ rows, meta }) {
       accessor: "taskable",
       width: "20%",
       Cell: ({ row }) => (
-        <Link href={`projects/${row.original?.taskable?.id}`} color="info">
+        <Link href={`/projects/${row.original?.taskable?.id}`} color="info">
           {row.original.taskable?.name}
         </Link>
       ),

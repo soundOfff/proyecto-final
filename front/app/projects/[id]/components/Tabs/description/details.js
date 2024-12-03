@@ -243,7 +243,7 @@ export default function Details() {
               <Transaction
                 color={
                   project.totalPaid -
-                    (project.totalBilledCost + project.notBilledCost) >=
+                    (project.totalBilledCost) >=
                   0
                     ? "success"
                     : "error"
@@ -253,7 +253,7 @@ export default function Details() {
                 description="26 March 2020, at 13:45 PM"
                 value={`${moneyFormat(
                   project.totalPaid -
-                    (project.totalBilledCost + project.notBilledCost)
+                    (project.totalBilledCost)
                 )}`}
               />
             </MDBox>

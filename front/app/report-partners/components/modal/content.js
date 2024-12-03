@@ -4,13 +4,11 @@ import { Table, TableBody, TableRow } from "@mui/material";
 import MDBox from "/components/MDBox";
 import MDTypography from "/components/MDTypography";
 import MDButton from "/components/MDButton";
+import DownloadIcon from "@mui/icons-material/Download";
 import TableRowComponent from "./table-row-component";
-import { attach } from "/actions/payments";
-import useInvoicePayments from "/hooks/useInvoicePayments";
-import {
-  getAll as getAllProjects,
-} from "/actions/projects";
+import { getAll as getAllProjects } from "/actions/projects";
 import { useState, useEffect } from "react";
+import { generatePartnerBalancePdf } from "/actions/generate-pdf";
 
 const borderBottom = {
   borderBottom: ({ borders: { borderWidth }, palette: { light } }) =>
@@ -69,14 +67,25 @@ const headers = [
   },
 ];
 
-
-export default async function ModalContent({ partner }) {
+export default function ModalContent({ partner }) {
   const [projects, setProjects] = useState([]);
-  const {id} = partner;
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const { id } = partner;
+
+  const handlePrint = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      const pdfUrl = await generatePartnerBalancePdf(partner.id);
+      window.open(pdfUrl, "_blank");
+    } catch (error) {
+      console.log(error);
+    }
+    setIsGeneratingPdf(false);
+  };
 
   useEffect(() => {
     getAllProjects({
-      "filter[billable_partner_id]":id
+      "filter[billable_partner_id]": id,
     }).then((data) => {
       setProjects(data.data.projects);
     });
@@ -107,13 +116,37 @@ export default async function ModalContent({ partner }) {
         </MDBox>
         <TableBody>
           {projects.map((project) => (
-            <TableRowComponent
-              key={project.id}
-              project={project}
-            />
+            <TableRowComponent key={project.id} project={project} />
           ))}
         </TableBody>
       </Table>
+      <MDBox display="flex" justifyContent="end" mt={4}>
+        <MDButton
+          variant="gradient"
+          color="dark"
+          onClick={handlePrint}
+          disabled={isGeneratingPdf}
+          sx={{ displayPrint: "none" }}
+        >
+          {isGeneratingPdf ? (
+            "Generando..."
+          ) : (
+            <MDBox>
+              <MDTypography variant="caption" fontWeight="medium" color="light">
+                Imprimir Balance
+              </MDTypography>
+              <DownloadIcon
+                color="white"
+                sx={{
+                  fontSize: "2rem",
+                  marginLeft: "0.5rem",
+                  verticalAlign: "middle",
+                }}
+              />
+            </MDBox>
+          )}
+        </MDButton>
+      </MDBox>
     </MDBox>
   );
 }

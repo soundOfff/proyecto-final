@@ -21,7 +21,7 @@ class MailTemplateSeeder extends Seeder
                 'name' => 'New task Assigned (Sent to Author)',
                 'event' => 'task-assigned',
                 'send_from' => 'Velo Legal | Cases',
-                'subject' => 'New task assigned to you - {task_name}',
+                'subject' => 'New task assigned to you - {task-name}',
                 'body' => 'Hi {task-author-name},<br><br>A new task has been assigned to you. Please check your dashboard for more details.<br><br><b>Task Name</b>: {task-name}<br><b>Due Date</b>: {task-due_date}<br><br><b>Priority</b>: {task-priority-name}<br><br>Thanks Velo Cases',
             ],
             [
@@ -54,7 +54,7 @@ class MailTemplateSeeder extends Seeder
             foreach (MailTemplateLanguage::all() as $lang) {
                 $template['lang_id'] = $lang->id;
                 if ($template['lang_id'] != 1) { // Only seed on en template
-                    $template['body'] = "";
+                    $template['body'] = '';
                 }
                 MailTemplate::updateOrCreate($template);
             }

@@ -228,7 +228,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/actions', [ActionController::class, 'index']);
     Route::get('/action-types', [ActionTypeController::class, 'index']);
-    Route::post('/dispatch-action', [ActionController::class, 'dispatch']);
 
     Route::get('/tables', TableController::class);
     Route::post('/table-fields', TableFieldController::class);
@@ -317,6 +316,8 @@ Route::get('/projects-data/{project}', [ProjectController::class, 'getProjectFin
 Route::get('/estimates-to-invoice/{estimate}', [EstimateController::class, 'toInvoice']);
 Route::get('/generate-balance-pdf/{project}', [PDFController::class, 'generateBalancePDF']);
 
+Route::get('/generate-partner-balance-pdf/{partner}', [PDFController::class, 'generatePartnerPDF']);
+
 Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
 Route::put('/expenses/{expense}', [ExpenseController::class, 'update']);
@@ -329,3 +330,5 @@ Route::get('/files/{file}', [FileController::class, 'show']);
 Route::delete('/files/{file}', [FileController::class, 'destroy']);
 Route::post('/files', [FileController::class, 'store']);
 Route::post('/files-store-many', [FileController::class, 'storeMany']);
+
+Route::post('/dispatch-action', [ActionController::class, 'dispatch']);

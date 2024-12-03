@@ -14,3 +14,11 @@ export async function generateBalancePdf(projectId) {
 
   return url.toString();
 }
+
+export async function generatePartnerBalancePdf(partnerId) {
+  const url = new URL(
+    `${process.env.API_URL}/generate-partner-balance-pdf/${partnerId}`
+  );
+
+  return url.toString();
+}

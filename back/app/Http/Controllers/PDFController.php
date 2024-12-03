@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partner;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use PDF;
@@ -97,6 +98,44 @@ class PDFController extends Controller
         ];
 
         $pdf = PDF::loadView('balance', $data);
+
+        return $pdf->stream('balance-'.now()->format('Y-m-d').'.pdf', ['Attachment' => false]);
+    }
+
+    public function generatePartnerPDF(Partner $partner)
+    {
+        $partnerData = [
+            'name' => mb_strtoupper($partner->company ?? $partner->name ?? 'SIN NOMBRE'),
+            'country' => mb_strtoupper($partner->country->short_name ?? 'DESCONOCIDO'),
+            'country_info' => mb_strtoupper(($partner->country->short_name ?? 'DESCONOCIDO').', '.($partner->state ?? '')),
+            'address' => mb_strtoupper($partner->address ?? 'SIN DIRECCIÓN'),
+            'zip' => $partner->zip ? 'CO'.$partner->zip : null,
+            'phone' => $partner->phone_number ?? 'SIN TELÉFONO',
+            'email' => mb_strtoupper($partner->email ?? 'SIN EMAIL'),
+        ];
+
+        $totalBilled = $partner->totalBilledCost();
+        $totalPaid = $partner->totalPaid();
+        $total = $totalPaid - $totalBilled;
+
+        $items = $partner->projects()->get()->map(function ($project) {
+            return [
+                'name' => $project->name,
+                'paid' => $project->totalPaid(),
+                'billed' => $project->totalBilledCost(),
+                'total' => $project->totalPaid() - $project->totalBilledCost(),
+            ];
+        });
+
+        $data = [
+            'partner' => $partner,
+            'items' => $items,
+            'total_billed' => $totalBilled,
+            'total_paid' => $totalPaid,
+            'total' => $total,
+        ];
+
+        $pdf = PDF::loadView('partner-balance', $data);
 
         return $pdf->stream('balance-'.now()->format('Y-m-d').'.pdf', ['Attachment' => false]);
     }

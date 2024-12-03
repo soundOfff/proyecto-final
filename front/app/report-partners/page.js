@@ -33,16 +33,12 @@ export default async function Partners({ searchParams }) {
     data: { partners },
     meta,
   } = await getAllPartners(params);
-  // const contactStats = await getContactStats();
-  // const partnerStats = await getPartnerStats();
-  // const stats = { contact: contactStats, partner: partnerStats };
 
   return (
     <MDBox mb={3}>
       <Card>
         <Grid container spacing={3} px={5} py={2}>
           <Grid item xs={12}>
-            {/* <Stats stats={stats} /> */}
             <Search />
             <MDBox py={1}>
               <Table rows={partners} meta={meta} />

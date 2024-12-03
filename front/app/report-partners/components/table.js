@@ -2,19 +2,16 @@
 
 import DataTable from "/examples/Tables/DataTableServerPagination";
 import MDBox from "/components/MDBox";
-import MDTypography from "/components/MDTypography";
 
-import { Link, Switch } from "@mui/material";
+import { Link } from "@mui/material";
 import { useState } from "react";
 
 import Tooltip from "@mui/material/Tooltip";
-//PaymentsOutlinedIcon
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import Modal from "/components/Modal";
 import ModalContent from "./modal/content";
 
 export default function Table({ rows, meta }) {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -47,21 +44,21 @@ export default function Table({ rows, meta }) {
     {
       Header: "Pagado",
       accessor: "totalPaid",
-      Cell: ({value}) => {
-        return "$" + `${(value)}`
-      }
+      Cell: ({ value }) => {
+        return "$" + `${value}`;
+      },
     },
-    { 
-      Header: "Deuda Total", 
+    {
+      Header: "Deuda Total",
       accessor: "financial",
-      Cell: ({row}) => {
-          return "$" + `${(row.original.totalBilledCost - row.original.totalPaid)}`
-      }
+      Cell: ({ row }) => {
+        return "$" + `${row.original.totalBilledCost - row.original.totalPaid}`;
+      },
     },
     {
       id: "acciones",
       Header: "Acciones",
-      accessor:"id",
+      accessor: "id",
       disableSortBy: true,
       Cell: ({ row }) => (
         <MDBox display="flex" alignContent="center">
@@ -81,7 +78,6 @@ export default function Table({ rows, meta }) {
   const handleOpenModal = (partner) => {
     setIsModalOpen(true);
     setSelectedRow(partner.original);
-    console.log(partner.original);
   };
 
   const handleCloseModal = () => {
@@ -97,10 +93,9 @@ export default function Table({ rows, meta }) {
         <MDBox display="flex" justifyContent="end" my={3}>
           <Modal open={isModalOpen} onClose={handleCloseModal}>
             <ModalContent partner={selectedRow} />
-            
           </Modal>
         </MDBox>
-      )}  
+      )}
       <DataTable
         table={table}
         meta={meta}
